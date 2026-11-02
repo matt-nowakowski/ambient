@@ -42,7 +42,8 @@ async function tavily(query: string): Promise<SearchResult[]> {
       include_raw_content: false,
       include_images: false,
     }),
-    signal: AbortSignal.timeout(6_000),
+    // Basic search usually answers in 2–4 s; 6 s cut off the slow tail.
+    signal: AbortSignal.timeout(8_000),
   });
   // Runs only on a cache miss: this is the call Tavily bills (1 credit, basic).
   recordUsage({ kind: "search_upstream", plan: "all" });

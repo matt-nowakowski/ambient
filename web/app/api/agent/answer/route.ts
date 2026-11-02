@@ -86,6 +86,7 @@ export async function POST(req: Request) {
   // Search only when the router said so, there's no window text to answer
   // from, and this isn't a follow-up that can reuse earlier results.
   let sources: SearchResult[] = reused;
+  let searchFailed = false;
   // Searches cost the most: paid accounts have their own daily cap (Free's
   // searches already come out of its weekly allowance).
   const searchAllowed = auth.kind === "free" || (await withinFairUse(auth.subject, "search"));
@@ -95,6 +96,7 @@ export async function POST(req: Request) {
       sources = await search(question);
     } catch (err) {
       console.error("[agent] search failed", err);
+      searchFailed = true;
     }
   }
 
@@ -106,6 +108,9 @@ export async function POST(req: Request) {
   let user = question;
   if (sources.length) {
     user += "\n\nSources:\n" + sources.map((s, i) => `[${i + 1}] ${s.title} — ${s.excerpt}`).join("\n");
+  } else if (searchFailed) {
+    // Don't let the model pass off stale knowledge as a live answer.
+    user += "\n\n(The web search failed just now. If the question needs current information, say you couldn't check the web and give only what you know, clearly marked as possibly out of date.)";
   }
   if (context) user += writing ? `\n\nText:\n"""\n${context}\n"""` : `\n\nWindow text:\n"""\n${context}\n"""`;
   messages.push({ role: "user", content: user });
