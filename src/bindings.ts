@@ -706,8 +706,7 @@ async hudHide() : Promise<void> {
 },
 /**
  * What the user did in the HUD. `insert` pastes `text` into the app they were
- * in (the HUD never takes focus, so that app is still frontmost); the rest
- * are forwarded to whichever agent flow owns `id`.
+ * in; the rest are forwarded to whichever agent flow owns `id`.
  */
 async hudAction(id: string, action: string, text: string | null) : Promise<void> {
     await TAURI_INVOKE("hud_action", { id, action, text });
@@ -1421,13 +1420,13 @@ shortcut_activation?: ShortcutActivation;
  * Hold-or-toggle only: a press held at least this long is push-to-talk,
  * anything shorter is a tap that locks recording on.
  */
-hold_threshold_ms?: number;
+hold_threshold_ms?: number; 
 /**
  * Tap/toggle recordings also stop on their own after a long pause that
  * follows speech. Push-to-talk (a held key) never does. Stores from
  * before this key get the default (on) through serde; no rewrite needed.
  */
-auto_stop_on_pause?: boolean;
+auto_stop_on_pause?: boolean; 
 /**
  * That pause, in milliseconds (clamped to `AUTO_STOP_PAUSE_MS_RANGE`).
  */
@@ -1555,13 +1554,13 @@ focused_text?: string | null; text?: string | null;
 /**
  * Unix seconds.
  */
-ts?: number;
+ts?: number; 
 /**
  * URLs of the window's web frames (a browser's page, side panel,
  * extension popup), used only to spot private places; cleared before a
  * snapshot is handed out.
  */
-frame_urls?: string[];
+frame_urls?: string[]; 
 /**
  * Those frames' titles, likewise.
  */
