@@ -292,6 +292,7 @@ export const PrivacyCenter: React.FC = () => {
                   return (
                     <div
                       key={cap}
+                      data-search-row
                       className="flex items-start gap-3 px-row-x py-row-y"
                     >
                       <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">

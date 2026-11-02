@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSettings } from "../../hooks/useSettings";
 import { PageTransition } from "../ui/Motion";
@@ -7,29 +7,43 @@ import { GeneralSettings } from "./general/GeneralSettings";
 import { AdvancedSettings } from "./advanced/AdvancedSettings";
 import { PostProcessingSettings } from "./post-processing/PostProcessingSettings";
 import { AboutSettings } from "./about/AboutSettings";
+import {
+  SETTINGS_TABS,
+  settingsTabVisible,
+  type SettingsTab,
+} from "./settingsTabs";
+import { useSearch } from "../search/searchStore";
 
-type Tab = "general" | "advanced" | "postprocessing" | "about";
+type Tab = SettingsTab;
 
-const TABS: { id: Tab; labelKey: string; component: React.ComponentType }[] = [
-  { id: "general", labelKey: "sidebar.general", component: GeneralSettings },
-  { id: "advanced", labelKey: "sidebar.advanced", component: AdvancedSettings },
-  {
-    id: "postprocessing",
-    labelKey: "sidebar.postProcessing",
-    component: PostProcessingSettings,
-  },
-  { id: "about", labelKey: "sidebar.about", component: AboutSettings },
-];
+const COMPONENTS: Record<Tab, React.ComponentType> = {
+  general: GeneralSettings,
+  advanced: AdvancedSettings,
+  postprocessing: PostProcessingSettings,
+  about: AboutSettings,
+};
+
+const TABS = SETTINGS_TABS.map((x) => ({ ...x, component: COMPONENTS[x.id] }));
 
 /** All settings on one page, split by a segmented control. */
 export const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
   const { settings } = useSettings();
-  const [tab, setTab] = useState<Tab>("general");
+  const searchTarget = useSearch((s) => s.target);
+  const searchNonce = useSearch((s) => s.nonce);
+  const [tab, setTab] = useState<Tab>(
+    searchTarget?.section === "settings" && searchTarget.tab
+      ? searchTarget.tab
+      : "general",
+  );
+  // A search result can point at a tab.
+  useEffect(() => {
+    if (searchTarget?.section === "settings" && searchTarget.tab)
+      setTab(searchTarget.tab);
+  }, [searchTarget, searchNonce]);
 
-  const tabs = TABS.filter(
-    (x) =>
-      x.id !== "postprocessing" || (settings?.post_process_enabled ?? false),
+  const tabs = TABS.filter((x) =>
+    settingsTabVisible(x.id, settings?.post_process_enabled ?? false),
   );
   const active = tabs.find((x) => x.id === tab) ?? tabs[0];
   const Active = active.component;

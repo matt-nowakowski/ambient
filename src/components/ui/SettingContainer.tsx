@@ -36,7 +36,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   if (layout === "stacked") {
     if (descriptionMode === "tooltip") {
       return (
-        <div className={containerClasses}>
+        <div data-search-row className={containerClasses}>
           <div className="flex items-center gap-inline mb-2">
             <h3
               className={`text-ui font-normal ${disabled ? "opacity-50" : ""}`}
@@ -51,7 +51,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
     }
 
     return (
-      <div className={containerClasses}>
+      <div data-search-row className={containerClasses}>
         <div className="mb-2">
           <h3 className={`text-ui font-normal ${disabled ? "opacity-50" : ""}`}>
             {title}
@@ -74,7 +74,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
 
   if (descriptionMode === "tooltip") {
     return (
-      <div className={horizontalContainerClasses}>
+      <div data-search-row className={horizontalContainerClasses}>
         <div className="max-w-2/3">
           <div className="flex items-center gap-inline">
             <h3
@@ -91,7 +91,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   }
 
   return (
-    <div className={horizontalContainerClasses}>
+    <div data-search-row className={horizontalContainerClasses}>
       <div className="max-w-2/3">
         <h3 className={`text-ui font-normal ${disabled ? "opacity-50" : ""}`}>
           {title}
