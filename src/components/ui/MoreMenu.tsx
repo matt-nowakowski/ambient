@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MoreHorizontal } from "lucide-react";
+import { ChevronDown, MoreHorizontal } from "lucide-react";
 import { usePresence } from "./Transitions";
 
 export interface MoreMenuItem {
@@ -16,13 +16,17 @@ interface MoreMenuProps {
   label: string;
   items: MoreMenuItem[];
   className?: string;
+  /** Show a labelled pill ("Pause ▾") instead of the ⋯ icon. */
+  text?: string;
 }
 
-/** A ⋯ button that opens a small menu of actions (right-aligned, below). */
+/** A ⋯ button (or a labelled pill) that opens a small menu of actions,
+ * right-aligned below it. */
 export const MoreMenu: React.FC<MoreMenuProps> = ({
   label,
   items,
   className = "",
+  text,
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -47,15 +51,35 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
       <button
         type="button"
         aria-label={label}
-        title={label}
+        title={text ? undefined : label}
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className={`grid size-8 cursor-pointer place-items-center rounded-full text-ink-2 transition-colors hover:bg-glass-hover hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 active:scale-95 ${
-          open ? "bg-glass-press text-text" : ""
+        className={`cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 active:scale-95 ${
+          text
+            ? `flex h-8 items-center gap-1 whitespace-nowrap rounded-full border-[0.5px] border-glass-edge ps-3 pe-2 text-small font-medium shadow-card ${
+                open
+                  ? "bg-glass-press text-text"
+                  : "bg-glass-strong text-text hover:bg-glass-hover"
+              }`
+            : `grid size-8 place-items-center rounded-full text-ink-2 hover:bg-glass-hover hover:text-text ${
+                open ? "bg-glass-press text-text" : ""
+              }`
         }`}
       >
-        <MoreHorizontal width={16} height={16} strokeWidth={1.75} />
+        {text ? (
+          <>
+            {text}
+            <ChevronDown
+              width={13}
+              height={13}
+              strokeWidth={1.75}
+              className={`text-ink-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+            />
+          </>
+        ) : (
+          <MoreHorizontal width={16} height={16} strokeWidth={1.75} />
+        )}
       </button>
       {menu.mounted && (
         <div
