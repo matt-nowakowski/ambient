@@ -580,7 +580,8 @@ fn is_window_role(r: Option<u32>) -> bool {
 /// from X11, that app is looked at first.
 pub fn active_frame(bus: &Bus, pid_hint: Option<u32>) -> Option<Frame> {
     let deadline = Instant::now() + Duration::from_millis(500);
-    let own = std::process::id();
+    // Our own window counts too (it's on the never-watch list, so it's
+    // named, never read): otherwise the app behind it would look frontmost.
     let mut apps: Vec<(Node, Option<u32>)> = bus
         .apps()
         .into_iter()
@@ -588,7 +589,6 @@ pub fn active_frame(bus: &Bus, pid_hint: Option<u32>) -> Option<Frame> {
             let pid = bus.pid(&a);
             (a, pid)
         })
-        .filter(|(_, pid)| *pid != Some(own))
         .collect();
     if let Some(hint) = pid_hint {
         apps.sort_by_key(|(_, pid)| *pid != Some(hint));
