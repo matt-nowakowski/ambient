@@ -27,6 +27,7 @@ import {
   type SearchKind,
 } from "./searchIndex";
 import { useSearch } from "./searchStore";
+import { hasScreenAgent } from "@/lib/agentPlatform";
 
 const KIND_ICON: Record<SearchKind, React.ElementType> = {
   page: PanelsTopLeft,
@@ -78,6 +79,7 @@ export const GlobalSearch: React.FC<{
       open
         ? buildSearchIndex(t, {
             isMac: os === "macos",
+            screenAgent: hasScreenAgent(os),
             isLinux: os === "linux",
             postProcessEnabled,
             experimentalEnabled,

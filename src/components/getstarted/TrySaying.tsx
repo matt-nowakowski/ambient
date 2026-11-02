@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "motion/react";
 import { AudioLines, Info, Keyboard, Quote } from "lucide-react";
 import { useOsType } from "@/hooks/useOsType";
+import { hasScreenAgent } from "@/lib/agentPlatform";
 import { keycapLabel } from "@/lib/utils/keyboard";
 import { useSettings } from "../../hooks/useSettings";
 import { Keycaps } from "../shared/Keycaps";
@@ -11,15 +12,16 @@ import { Dialog } from "../ui/Dialog";
 
 /** Example phrases per capability. Each group's icon is an orb, as in the tour. */
 const GROUPS = [
-  { key: "answer", count: 4, macOnly: false, orb: "S1" },
-  { key: "act", count: 4, macOnly: false, orb: "C2" },
-  { key: "recall", count: 2, macOnly: false, orb: "G5" },
-  { key: "suggestions", count: 4, macOnly: true, orb: "B1" },
-  { key: "meetings", count: 3, macOnly: true, orb: "B3" },
+  { key: "answer", count: 4, screenAgent: false, orb: "S1" },
+  { key: "act", count: 4, screenAgent: false, orb: "C2" },
+  { key: "recall", count: 2, screenAgent: false, orb: "G5" },
+  { key: "suggestions", count: 4, screenAgent: true, orb: "B1" },
+  { key: "meetings", count: 3, screenAgent: true, orb: "B3" },
 ] as const satisfies readonly {
   key: string;
   count: number;
-  macOnly: boolean;
+  /** Needs screen reading or call audio (macOS and Windows). */
+  screenAgent: boolean;
   orb: OrbVariant;
 }[];
 
@@ -46,7 +48,7 @@ export const TrySaying: React.FC<{
   const dictateBinding = bindings?.transcribe?.current_binding ?? "";
   const ask = keycapLabel(askBinding, os);
   const dictate = keycapLabel(dictateBinding, os);
-  const groups = GROUPS.filter((g) => os === "macos" || !g.macOnly);
+  const groups = GROUPS.filter((g) => hasScreenAgent(os) || !g.screenAgent);
   const [active, setActive] = useState<TrySayingGroup>(group);
 
   // Each opening starts on the group its item asked for.

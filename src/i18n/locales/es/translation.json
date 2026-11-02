@@ -1151,6 +1151,7 @@
       "cantDoYet": "Todavía no puedo hacer eso. El control del ordenador llegará pronto.",
       "appNotFound": "No se encontró esa app.",
       "shortcutNotFound": "No se encontró ese atajo.",
+      "automationNotFound": "No encontré ningún acceso directo del menú Inicio ni flujo de Power Automate con ese nombre.",
       "calendarPermission": "Primero permite el acceso a Calendario y Recordatorios en Ajustes del Sistema.",
       "undone": "Deshecho",
       "meetingStarted": "Tomando notas. Avisa a los demás.",

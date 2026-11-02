@@ -1151,6 +1151,7 @@
       "cantDoYet": "Ainda não consigo fazer isso. O controle do computador chega em breve.",
       "appNotFound": "Não foi possível encontrar esse app.",
       "shortcutNotFound": "Não foi possível encontrar esse atalho.",
+      "automationNotFound": "Não encontrei nenhum atalho do menu Iniciar nem fluxo do Power Automate com esse nome.",
       "calendarPermission": "Primeiro permita o acesso a Calendário e Lembretes nos Ajustes do Sistema.",
       "undone": "Desfeito",
       "meetingStarted": "Anotando. Avise os participantes.",

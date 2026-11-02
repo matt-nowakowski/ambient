@@ -1143,6 +1143,7 @@
       "cantDoYet": "Saya belum bisa melakukan itu. Penggunaan komputer segera hadir.",
       "appNotFound": "Tidak dapat menemukan aplikasi itu.",
       "shortcutNotFound": "Tidak dapat menemukan Pintasan itu.",
+      "automationNotFound": "Tidak menemukan pintasan menu Start atau alur Power Automate dengan nama itu.",
       "calendarPermission": "Izinkan dulu akses Kalender dan Pengingat di System Settings.",
       "undone": "Diurungkan",
       "meetingStarted": "Mencatat. Beri tahu peserta lain.",

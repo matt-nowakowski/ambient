@@ -1143,6 +1143,7 @@
       "cantDoYet": "Tôi chưa làm được việc đó. Tính năng điều khiển máy tính sắp ra mắt.",
       "appNotFound": "Không tìm thấy ứng dụng đó.",
       "shortcutNotFound": "Không tìm thấy phím tắt đó.",
+      "automationNotFound": "Không tìm thấy lối tắt trong menu Start hay luồng Power Automate nào có tên đó.",
       "calendarPermission": "Hãy cho phép truy cập Lịch và Lời nhắc trong Cài đặt hệ thống trước.",
       "undone": "Đã hoàn tác",
       "meetingStarted": "Đang ghi chú. Hãy báo cho mọi người.",

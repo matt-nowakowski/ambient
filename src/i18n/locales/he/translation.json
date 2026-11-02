@@ -1151,6 +1151,7 @@
       "cantDoYet": "אני עוד לא יכול לעשות את זה. שליטה במחשב תגיע בקרוב.",
       "appNotFound": "לא ניתן היה למצוא את האפליקציה הזו.",
       "shortcutNotFound": "לא ניתן היה למצוא את הקיצור הזה.",
+      "automationNotFound": "לא נמצא קיצור דרך בתפריט התחל או זרימת Power Automate בשם הזה.",
       "calendarPermission": "תחילה אפשר גישה ללוח שנה ולתזכורות ב-System Settings.",
       "undone": "בוטל",
       "meetingStarted": "רושם הערות. עדכן את המשתתפים.",

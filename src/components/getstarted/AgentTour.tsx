@@ -5,6 +5,7 @@ import { Check, Plug } from "lucide-react";
 import { toast } from "sonner";
 import { commands, type AgentSettings } from "@/bindings";
 import { useOsType } from "@/hooks/useOsType";
+import { hasScreenAgent } from "@/lib/agentPlatform";
 import { keycapLabel } from "@/lib/utils/keyboard";
 import { useSettings } from "../../hooks/useSettings";
 import { isPaid, usePlan } from "../account/usePlan";
@@ -47,7 +48,7 @@ export const AgentTour: React.FC = () => {
   const { getSetting, refreshSettings } = useSettings();
   const { status } = usePlan();
   const paid = status ? isPaid(status) : false;
-  const isMac = os === "macos";
+  const screenAgent = hasScreenAgent(os);
   const [step, setStep] = useState<0 | 1>(0);
   const agent = getSetting("agent");
   const [picked, setPicked] = useState<Record<Capability, boolean>>({
@@ -89,7 +90,7 @@ export const AgentTour: React.FC = () => {
   const tried = done.includes("answer") || done.includes("reminder");
 
   const finish = async () => {
-    if (agent && isMac && paid) {
+    if (agent && screenAgent && paid) {
       const next: AgentSettings = { ...agent, ...picked };
       const r = await commands.setAgentSettings(next);
       if (r.status === "error") toast.error(r.error);
@@ -122,9 +123,9 @@ export const AgentTour: React.FC = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => (isMac ? setStep(1) : finish())}
+              onClick={() => (screenAgent ? setStep(1) : finish())}
             >
-              {isMac ? t("tour.next") : t("tour.done")}
+              {screenAgent ? t("tour.next") : t("tour.done")}
             </Button>
           ) : (
             <Button variant="primary" size="sm" onClick={finish}>

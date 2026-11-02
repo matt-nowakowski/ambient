@@ -1151,6 +1151,7 @@
       "cantDoYet": "Je ne sais pas encore faire cela. Le contrôle de l'ordinateur arrive bientôt.",
       "appNotFound": "Impossible de trouver cette app.",
       "shortcutNotFound": "Impossible de trouver ce raccourci.",
+      "automationNotFound": "Aucun raccourci du menu Démarrer ni flux Power Automate ne porte ce nom.",
       "calendarPermission": "Autorisez d'abord l'accès à Calendrier et Rappels dans Réglages du système.",
       "undone": "Annulé",
       "meetingStarted": "Prise de notes en cours. Prévenez les participants.",

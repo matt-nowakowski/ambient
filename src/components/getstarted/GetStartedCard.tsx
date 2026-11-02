@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import { Check, X } from "lucide-react";
 import { motion } from "motion/react";
 import { useOsType } from "@/hooks/useOsType";
+import { hasScreenAgent } from "@/lib/agentPlatform";
 import { STEPS, useGetStarted, type Step } from "./store";
 import { TrySaying, type TrySayingGroup } from "./TrySaying";
 
-/** Steps that need the Mac's screen reading or call audio. */
-const MAC_ONLY: Step[] = ["about_screen", "suggestion", "meeting"];
+/** Steps that need screen reading or call audio (macOS and Windows). */
+const SCREEN_AGENT_ONLY: Step[] = ["about_screen", "suggestion", "meeting"];
 
 /** Which examples each item opens on. */
 const GROUP_FOR: Record<Exclude<Step, "privacy">, TrySayingGroup> = {
@@ -31,7 +32,9 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
     setSayGroup(group);
     setSayOpen(true);
   };
-  const steps = STEPS.filter((s) => os === "macos" || !MAC_ONLY.includes(s));
+  const steps = STEPS.filter(
+    (s) => hasScreenAgent(os) || !SCREEN_AGENT_ONLY.includes(s),
+  );
   const finished = steps.every((s) => done.includes(s));
   if (dismissed || finished)
     return (

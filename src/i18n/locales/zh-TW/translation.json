@@ -1143,6 +1143,7 @@
       "cantDoYet": "我還做不到這件事。電腦操控功能即將推出。",
       "appNotFound": "找不到該應用程式。",
       "shortcutNotFound": "找不到該捷徑。",
+      "automationNotFound": "找不到該名稱的「開始」功能表捷徑或 Power Automate 流程。",
       "calendarPermission": "請先在系統設定中允許取用行事曆和提醒事項。",
       "undone": "已還原",
       "meetingStarted": "正在記錄。請告知與會者。",

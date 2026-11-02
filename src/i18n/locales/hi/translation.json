@@ -1143,6 +1143,7 @@
       "cantDoYet": "मैं अभी यह नहीं कर सकता। कंप्यूटर इस्तेमाल जल्द आ रहा है।",
       "appNotFound": "वह ऐप नहीं मिला।",
       "shortcutNotFound": "वह शॉर्टकट नहीं मिला।",
+      "automationNotFound": "उस नाम का कोई स्टार्ट मेनू शॉर्टकट या Power Automate फ़्लो नहीं मिला।",
       "calendarPermission": "पहले System Settings में Calendars और Reminders का ऐक्सेस दें।",
       "undone": "पूर्ववत किया गया",
       "meetingStarted": "नोट्स बन रहे हैं। लोगों को बता दें।",

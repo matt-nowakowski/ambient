@@ -1159,6 +1159,7 @@
       "cantDoYet": "Jeszcze tego nie potrafię. Sterowanie komputerem już wkrótce.",
       "appNotFound": "Nie znaleziono tej aplikacji.",
       "shortcutNotFound": "Nie znaleziono tego skrótu.",
+      "automationNotFound": "Nie znaleziono skrótu w menu Start ani przepływu Power Automate o tej nazwie.",
       "calendarPermission": "Najpierw zezwól na dostęp do Kalendarza i Przypomnień w Ustawieniach systemowych.",
       "undone": "Cofnięto",
       "meetingStarted": "Notuję. Daj znać pozostałym.",

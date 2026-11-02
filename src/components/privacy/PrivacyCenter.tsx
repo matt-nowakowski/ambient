@@ -22,6 +22,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { requestAccessibilityPermission } from "tauri-plugin-macos-permissions-api";
 import { type as osType } from "@tauri-apps/plugin-os";
+import { hasScreenAgent } from "@/lib/agentPlatform";
 import {
   commands,
   type AgentSettings,
@@ -56,14 +57,16 @@ type Capability =
   | "meetings"
   | "wake_word"
   | "on_device_only";
-/** Reading other apps' windows is macOS-only for now (Windows UI Automation is P6). */
-const MAC_ONLY: Capability[] = [
-  "screen_context",
-  "screen_memory",
-  "proactive",
-  "on_device_only",
-];
 const IS_MAC = osType() === "macos";
+/** Reading other apps' windows needs macOS Accessibility or Windows UI
+ * Automation; on-device AI (Apple Intelligence) is macOS only. */
+const SCREEN_AGENT = hasScreenAgent(osType());
+const UNSUPPORTED: Capability[] = [
+  ...(SCREEN_AGENT
+    ? []
+    : (["screen_context", "screen_memory", "proactive"] as Capability[])),
+  ...(IS_MAC ? [] : (["on_device_only"] as Capability[])),
+];
 /** Capabilities grouped by what they touch, each with its icon. */
 const CAPABILITY_GROUPS: {
   key: "screen" | "listening" | "local";
@@ -287,7 +290,7 @@ export const PrivacyCenter: React.FC = () => {
               <div className="divide-y divide-glass-edge">
                 {group.caps.map(({ cap, icon: Icon }) => {
                   const proOnly = cap !== "on_device_only";
-                  const unsupported = !IS_MAC && MAC_ONLY.includes(cap);
+                  const unsupported = UNSUPPORTED.includes(cap);
                   const locked = (proOnly && !paid) || unsupported;
                   return (
                     <div
@@ -446,7 +449,7 @@ export const PrivacyCenter: React.FC = () => {
         )}
 
         {/* What Ambient sees */}
-        {IS_MAC && (
+        {SCREEN_AGENT && (
           <SettingsGroup
             title={t("privacy.preview.title")}
             description={t("privacy.preview.description")}

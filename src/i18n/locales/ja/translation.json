@@ -1143,6 +1143,7 @@
       "cantDoYet": "まだそれはできません。コンピュータ操作は近日対応予定です。",
       "appNotFound": "そのアプリが見つかりませんでした。",
       "shortcutNotFound": "そのショートカットが見つかりませんでした。",
+      "automationNotFound": "その名前のスタートメニューのショートカットや Power Automate フローが見つかりませんでした。",
       "calendarPermission": "まずシステム設定でカレンダーとリマインダーへのアクセスを許可してください。",
       "undone": "取り消しました",
       "meetingStarted": "メモを取っています。参加者に知らせてください。",

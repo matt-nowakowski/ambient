@@ -1143,6 +1143,7 @@
       "cantDoYet": "Det kan jag inte göra än. Datorstyrning kommer snart.",
       "appNotFound": "Kunde inte hitta den appen.",
       "shortcutNotFound": "Kunde inte hitta den genvägen.",
+      "automationNotFound": "Hittade ingen genväg i Start-menyn eller något Power Automate-flöde med det namnet.",
       "calendarPermission": "Tillåt först åtkomst till Kalender och Påminnelser i Systeminställningar.",
       "undone": "Ångrat",
       "meetingStarted": "Antecknar. Berätta det för de andra.",

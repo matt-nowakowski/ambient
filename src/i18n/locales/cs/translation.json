@@ -1159,6 +1159,7 @@
       "cantDoYet": "To zatím neumím. Ovládání počítače brzy přibude.",
       "appNotFound": "Tuto aplikaci se nepodařilo najít.",
       "shortcutNotFound": "Tuto zkratku se nepodařilo najít.",
+      "automationNotFound": "Nenašel jsem zástupce v nabídce Start ani tok Power Automate s tímto názvem.",
       "calendarPermission": "Nejdřív povolte přístup ke Kalendáři a Připomínkám v Nastavení systému.",
       "undone": "Vráceno zpět",
       "meetingStarted": "Dělám poznámky. Dejte ostatním vědět.",

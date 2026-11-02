@@ -1143,6 +1143,7 @@
       "cantDoYet": "Das kann ich noch nicht. Computersteuerung kommt bald.",
       "appNotFound": "Diese App wurde nicht gefunden.",
       "shortcutNotFound": "Dieser Kurzbefehl wurde nicht gefunden.",
+      "automationNotFound": "Keine Startmenü-Verknüpfung und kein Power-Automate-Flow mit diesem Namen gefunden.",
       "calendarPermission": "Erlaube zuerst den Zugriff auf Kalender und Erinnerungen in den Systemeinstellungen.",
       "undone": "Rückgängig gemacht",
       "meetingStarted": "Notizen werden erstellt. Sag den anderen Bescheid.",

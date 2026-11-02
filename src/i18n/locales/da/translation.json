@@ -1143,6 +1143,7 @@
       "cantDoYet": "Det kan jeg ikke endnu. Computerstyring kommer snart.",
       "appNotFound": "Kunne ikke finde den app.",
       "shortcutNotFound": "Kunne ikke finde den genvej.",
+      "automationNotFound": "Kunne ikke finde en genvej i menuen Start eller et Power Automate-flow med det navn.",
       "calendarPermission": "Giv først adgang til Kalender og Påmindelser i Systemindstillinger.",
       "undone": "Fortrudt",
       "meetingStarted": "Tager noter. Giv de andre besked.",

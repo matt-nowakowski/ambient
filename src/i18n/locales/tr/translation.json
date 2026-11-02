@@ -1143,6 +1143,7 @@
       "cantDoYet": "Bunu henüz yapamıyorum. Bilgisayar kullanımı yakında geliyor.",
       "appNotFound": "Bu uygulama bulunamadı.",
       "shortcutNotFound": "Bu kestirme bulunamadı.",
+      "automationNotFound": "Bu adda bir Başlat menüsü kısayolu veya Power Automate akışı bulunamadı.",
       "calendarPermission": "Önce Sistem Ayarları’nda Takvimler ve Anımsatıcılar erişimine izin verin.",
       "undone": "Geri alındı",
       "meetingStarted": "Not alınıyor. Katılımcılara haber verin.",

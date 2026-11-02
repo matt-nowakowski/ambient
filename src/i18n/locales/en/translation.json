@@ -1143,6 +1143,7 @@
       "cantDoYet": "I can't do that yet. Computer use is coming soon.",
       "appNotFound": "Couldn't find that app.",
       "shortcutNotFound": "Couldn't find that Shortcut.",
+      "automationNotFound": "Couldn't find a Start menu shortcut or Power Automate flow with that name.",
       "calendarPermission": "Allow Calendars and Reminders access in System Settings first.",
       "undone": "Undone",
       "meetingStarted": "Taking notes. Let people know.",

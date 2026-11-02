@@ -1143,6 +1143,7 @@
       "cantDoYet": "म अहिले त्यो गर्न सक्दिनँ। कम्प्युटर प्रयोग चाँडै आउँदैछ।",
       "appNotFound": "त्यो एप भेटिएन।",
       "shortcutNotFound": "त्यो सर्टकट भेटिएन।",
+      "automationNotFound": "त्यो नामको स्टार्ट मेनु सर्टकट वा Power Automate फ्लो भेटिएन।",
       "calendarPermission": "पहिले System Settings मा Calendars र Reminders पहुँच दिनुहोस्।",
       "undone": "पूर्ववत गरियो",
       "meetingStarted": "नोट लिँदै। मानिसहरूलाई जानकारी दिनुहोस्।",

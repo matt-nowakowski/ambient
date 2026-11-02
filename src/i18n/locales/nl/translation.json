@@ -1143,6 +1143,7 @@
       "cantDoYet": "Dat kan ik nog niet. Computerbediening komt binnenkort.",
       "appNotFound": "Kan die app niet vinden.",
       "shortcutNotFound": "Kan die opdracht niet vinden.",
+      "automationNotFound": "Geen snelkoppeling in het menu Start of Power Automate-flow met die naam gevonden.",
       "calendarPermission": "Geef eerst toegang tot Agenda en Herinneringen in Systeeminstellingen.",
       "undone": "Ongedaan gemaakt",
       "meetingStarted": "Notities worden gemaakt. Laat het de anderen weten.",

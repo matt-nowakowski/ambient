@@ -1151,6 +1151,7 @@
       "cantDoYet": "Encara no puc fer això. El control de l'ordinador arribarà aviat.",
       "appNotFound": "No s'ha trobat aquesta aplicació.",
       "shortcutNotFound": "No s'ha trobat aquesta drecera.",
+      "automationNotFound": "No he trobat cap drecera del menú Inici ni cap flux de Power Automate amb aquest nom.",
       "calendarPermission": "Primer permeteu l'accés a Calendari i Recordatoris a Configuració del sistema.",
       "undone": "Desfet",
       "meetingStarted": "Prenent notes. Aviseu els participants.",

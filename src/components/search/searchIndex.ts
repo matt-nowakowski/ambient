@@ -43,6 +43,8 @@ interface Place {
 
 export interface SearchContext {
   isMac: boolean;
+  /** The agent can read the screen here (macOS, Windows). */
+  screenAgent: boolean;
   isLinux: boolean;
   postProcessEnabled: boolean;
   experimentalEnabled: boolean;
@@ -301,7 +303,7 @@ const PLACES: Place[] = [
         label: "privacy.preview.title",
         description: "privacy.preview.description",
         rows: [],
-        when: (c) => c.isMac,
+        when: (c) => c.screenAgent,
       },
       {
         label: "privacy.neverWatch.title",

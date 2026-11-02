@@ -14,6 +14,7 @@ import {
   Video,
 } from "lucide-react";
 import { type as osType } from "@tauri-apps/plugin-os";
+import { hasScreenAgent } from "@/lib/agentPlatform";
 import { AnimatePresence, motion } from "motion/react";
 import {
   commands,
@@ -30,7 +31,8 @@ import { SettingsGroup } from "../ui/SettingsGroup";
 import { useSettings } from "../../hooks/useSettings";
 import { isPaid, usePlan } from "../account/usePlan";
 
-const IS_MAC = osType() === "macos";
+/** Call detection and call audio: macOS and Windows. */
+const AUTO_DETECTS = hasScreenAgent(osType());
 
 /** How the automatic flow goes, shown while idle. */
 const AUTO_STEPS = [
@@ -334,7 +336,7 @@ export const MeetingsPage: React.FC = () => {
   // ── list + live ──
   const elapsed = state.started ? now - state.started * 1000 : 0;
   const paid = plan ? isPaid(plan) : false;
-  const autoState: Detection = !IS_MAC
+  const autoState: Detection = !AUTO_DETECTS
     ? "unsupported"
     : agent?.meetings
       ? agent.paused_until && agent.paused_until * 1000 > now
