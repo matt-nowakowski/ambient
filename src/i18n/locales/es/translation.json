@@ -147,7 +147,29 @@
       "pressKeys": "Pulsa las teclas nuevas",
       "addKey": "Ahora añade una tecla",
       "cancel": "Cancelar",
-      "tryIt": "Pruébalo tú"
+      "tryIt": "Pruébalo tú",
+      "addModifier": "Una tecla sola escribe. Añade un modificador.",
+      "lines": {
+        "hold": "¡Sí! Llego diez minutos tarde, guárdame un sitio.",
+        "tap": "Pícnic en el parque el sábado y luego cena en Rosa's. Llevar la manta azul y el altavoz bueno."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Pregunta lo que quieras.</0> <1>Mantén pulsado tu atajo y pregunta.</1> <2>Aparece la respuesta.</2>",
+          "said": "¿Qué tiempo hará mañana en Lisboa?",
+          "reply": "Soleado y 24°, con una brisa suave."
+        },
+        "act": {
+          "sentence": "<0>¿Necesitas algo?</0> <1>Mantén pulsado tu atajo y dilo.</1> <2>Hecho.</2>",
+          "said": "Recuérdame a las 5 que llame a Sam",
+          "reply": "Recordatorio a las 17:00: llamar a Sam."
+        },
+        "recall": {
+          "sentence": "<0>¿Se te olvidó algo?</0> <1>Mantén pulsado tu atajo y pregunta.</1> <2>Lo recuerda.</2>",
+          "said": "¿Qué dijo Ana sobre el local?",
+          "reply": "Reservó en Rosa's para el sábado a las 20:00."
+        }
+      }
     },
     "try": {
       "title": "¡Pruébalo!",
@@ -175,7 +197,10 @@
       "noWordsSub": "Inténtalo de nuevo y di una frase completa.",
       "finish": "Terminar",
       "skip": "Omitir",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Eso era mantener pulsado. Ahora, la forma manos libres.",
+      "heardTap": "Eso era tocar. Ahora prueba a mantenerlas pulsadas mientras hablas.",
+      "gotIt": "Entendí cada palabra: «{{quote}}»"
     },
     "done": {
       "title": "Todo listo",
@@ -1392,11 +1417,11 @@
     "modes": {
       "write": {
         "title": "Escribir",
-        "example": "¿Podemos pasar la reunión de seguimiento al jueves?"
+        "example": "¿Podemos pasarlo al jueves?"
       },
       "answer": {
         "title": "Responder",
-        "example": "¿Cuál es el tipo de las ganancias de capital en el Reino Unido?"
+        "example": "¿Cuánto es el 15 % de 240?"
       },
       "act": {
         "title": "Actuar",
@@ -1404,7 +1429,7 @@
       },
       "recall": {
         "title": "Recordar",
-        "example": "¿Qué dije ayer sobre los precios?"
+        "example": "¿Qué dije sobre los precios?"
       }
     },
     "nothingToConnect": {
@@ -1418,9 +1443,16 @@
     },
     "choose": {
       "title": "Elige qué puede hacer {{appName}}",
-      "description": "Todo desactivado hasta que lo actives. Cámbialo cuando quieras en Privacidad.",
+      "description": "Todo es opcional. Cámbialo cuando quieras en Privacidad.",
       "footnote": "Las contraseñas, los monederos y las ventanas privadas nunca se leen.",
-      "proOnly": "Parte de Pro. Mejora tu plan en Cuenta."
+      "proOnly": "Parte de Pro. Mejora tu plan en Cuenta.",
+      "caps": {
+        "screen_context": "Solo la ventana que preguntes",
+        "proactive": "Se decide en este Mac",
+        "meetings": "El audio no sale de este Mac",
+        "wake_word": "Solo escucha en este Mac",
+        "screen_memory": "Se queda en este Mac, cifrado"
+      }
     }
   },
   "getStarted": {

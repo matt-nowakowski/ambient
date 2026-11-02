@@ -146,7 +146,29 @@
       "pressKeys": "請按下新的按鍵",
       "addKey": "再加上一個按鍵",
       "cancel": "取消",
-      "tryIt": "親自試試看"
+      "tryIt": "親自試試看",
+      "addModifier": "單一按鍵會直接輸入文字。請再加上一個變更鍵。",
+      "lines": {
+        "hold": "會！晚到十分鐘，幫我留個位子。",
+        "tap": "週六去公園野餐，然後到 Rosa's 吃晚餐。帶上藍色毯子和那個好喇叭。"
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>有問題儘管問。</0><1>按住快捷鍵提問。</1><2>答案隨即出現。</2>",
+          "said": "明天里斯本天氣如何？",
+          "reply": "晴天，24°，微風徐徐。"
+        },
+        "act": {
+          "sentence": "<0>有事要辦？</0><1>按住快捷鍵說出來。</1><2>馬上辦好。</2>",
+          "said": "5 點提醒我打電話給 Sam",
+          "reply": "已設定下午 5:00 提醒：打電話給 Sam。"
+        },
+        "recall": {
+          "sentence": "<0>忘了什麼？</0><1>按住快捷鍵提問。</1><2>它都記得。</2>",
+          "said": "Ana 對場地怎麼說？",
+          "reply": "她訂了週六晚上 8 點的 Rosa's。"
+        }
+      }
     },
     "try": {
       "title": "來試試看吧！",
@@ -174,7 +196,10 @@
       "noWordsSub": "再試一次，這次請說完整的一句話。",
       "finish": "完成",
       "skip": "略過",
-      "seconds": "{{value}} 秒"
+      "seconds": "{{value}} 秒",
+      "heardHold": "這就是按住的用法。接下來，試試免持的方式。",
+      "heardTap": "這就是輕按的用法。現在試試邊說話邊按住。",
+      "gotIt": "每個字都聽清楚了：「{{quote}}」"
     },
     "done": {
       "title": "全部設定完成",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "寫",
-        "example": "我們可以把同步會議改到週四嗎？"
+        "example": "可以改到週四嗎？"
       },
       "answer": {
         "title": "答",
-        "example": "英國的資本利得稅率是多少？"
+        "example": "240 的 15% 是多少？"
       },
       "act": {
         "title": "做",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "記",
-        "example": "我昨天說了什麼關於定價的事？"
+        "example": "我之前對定價說了什麼？"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "選擇 {{appName}} 可以做什麼",
-      "description": "全部關閉，直到你開啟。可隨時在「隱私」中更改。",
+      "description": "全部可選。可隨時在「隱私」中更改。",
       "footnote": "絕不讀取密碼、錢包和私密視窗。",
-      "proOnly": "Pro 功能。在「帳戶」中升級。"
+      "proOnly": "Pro 功能。在「帳戶」中升級。",
+      "caps": {
+        "screen_context": "只看你問到的視窗",
+        "proactive": "在這台 Mac 上決定",
+        "meetings": "音訊留在這台 Mac 上",
+        "wake_word": "只在這台 Mac 上聆聽",
+        "screen_memory": "加密儲存在這台 Mac 上"
+      }
     }
   },
   "getStarted": {

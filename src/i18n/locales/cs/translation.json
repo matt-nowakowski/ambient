@@ -148,7 +148,29 @@
       "pressKeys": "Stiskněte nové klávesy",
       "addKey": "Teď přidejte klávesu",
       "cancel": "Zrušit",
-      "tryIt": "Vyzkoušejte si to"
+      "tryIt": "Vyzkoušejte si to",
+      "addModifier": "Samotná klávesa by psala. Přidejte modifikátor.",
+      "lines": {
+        "hold": "Jo! Mám deset minut zpoždění, drž mi místo.",
+        "tap": "V sobotu piknik v parku, pak večeře u Rosa's. Vzít modrou deku a ten dobrý reproduktor."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Zeptejte se na cokoli.</0> <1>Podržte zkratku a zeptejte se.</1> <2>Objeví se odpověď.</2>",
+          "said": "Jaké bude zítra počasí v Lisabonu?",
+          "reply": "Slunečno a 24°, mírný vánek."
+        },
+        "act": {
+          "sentence": "<0>Potřebujete něco zařídit?</0> <1>Podržte zkratku a řekněte to.</1> <2>Hotovo.</2>",
+          "said": "Připomeň mi v 5, ať zavolám Samovi",
+          "reply": "Připomínka v 17:00: zavolat Samovi."
+        },
+        "recall": {
+          "sentence": "<0>Něco jste zapomněli?</0> <1>Podržte zkratku a zeptejte se.</1> <2>Pamatuje si to.</2>",
+          "said": "Co říkala Ana o místě?",
+          "reply": "Zamluvila Rosa's na sobotu na 20:00."
+        }
+      }
     },
     "try": {
       "title": "Zkuste to!",
@@ -176,7 +198,10 @@
       "noWordsSub": "Zkuste to znovu a řekněte celou větu.",
       "finish": "Dokončit",
       "skip": "Přeskočit",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Tohle bylo podržení. Teď to bez rukou.",
+      "heardTap": "Tohle bylo klepnutí. Teď to zkuste s podržením, zatímco mluvíte.",
+      "gotIt": "Mám každé slovo: „{{quote}}“"
     },
     "done": {
       "title": "Hotovo",
@@ -1404,11 +1429,11 @@
     "modes": {
       "write": {
         "title": "Psát",
-        "example": "Můžeme přesunout poradu na čtvrtek?"
+        "example": "Můžeme to dát ve čtvrtek?"
       },
       "answer": {
         "title": "Odpovídat",
-        "example": "Jaká je sazba daně z kapitálových zisků ve Spojeném království?"
+        "example": "Kolik je 15 % z 240?"
       },
       "act": {
         "title": "Jednat",
@@ -1416,7 +1441,7 @@
       },
       "recall": {
         "title": "Vybavit si",
-        "example": "Co jsem včera říkal o cenách?"
+        "example": "Co jsem říkal o cenách?"
       }
     },
     "nothingToConnect": {
@@ -1430,9 +1455,16 @@
     },
     "choose": {
       "title": "Vyberte, co smí {{appName}} dělat",
-      "description": "Vše vypnuto, dokud to nezapnete. Změnit to můžete kdykoli v Soukromí.",
+      "description": "Vše je volitelné. Změnit to můžete kdykoli v Soukromí.",
       "footnote": "Hesla, peněženky a anonymní okna se nikdy nečtou.",
-      "proOnly": "Součást Pro. Upgradujte v sekci Účet."
+      "proOnly": "Součást Pro. Upgradujte v sekci Účet.",
+      "caps": {
+        "screen_context": "Jen okno, na které se ptáte",
+        "proactive": "Rozhoduje se na tomto Macu",
+        "meetings": "Zvuk zůstává na tomto Macu",
+        "wake_word": "Poslouchá jen na tomto Macu",
+        "screen_memory": "Zůstává na tomto Macu, šifrované"
+      }
     }
   },
   "getStarted": {

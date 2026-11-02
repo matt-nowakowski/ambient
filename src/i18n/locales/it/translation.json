@@ -147,7 +147,29 @@
       "pressKeys": "Premi i nuovi tasti",
       "addKey": "Ora aggiungi un tasto",
       "cancel": "Annulla",
-      "tryIt": "Provalo tu stesso"
+      "tryIt": "Provalo tu stesso",
+      "addModifier": "Da solo scriverebbe. Aggiungi un modificatore.",
+      "lines": {
+        "hold": "Sì! Arrivo con dieci minuti di ritardo, tienimi un posto.",
+        "tap": "Picnic al parco sabato, poi cena da Rosa's. Portare la coperta blu e la cassa buona."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Chiedi qualsiasi cosa.</0> <1>Tieni premuta la scorciatoia e chiedi.</1> <2>Ecco la risposta.</2>",
+          "said": "Che tempo farà domani a Lisbona?",
+          "reply": "Sole e 24°, con una brezza leggera."
+        },
+        "act": {
+          "sentence": "<0>Serve fare qualcosa?</0> <1>Tieni premuta la scorciatoia e dillo.</1> <2>Fatto.</2>",
+          "said": "Ricordami alle 5 di chiamare Sam",
+          "reply": "Promemoria alle 17:00: chiamare Sam."
+        },
+        "recall": {
+          "sentence": "<0>Hai dimenticato qualcosa?</0> <1>Tieni premuta la scorciatoia e chiedi.</1> <2>Se lo ricorda.</2>",
+          "said": "Cosa ha detto Ana sul locale?",
+          "reply": "Ha prenotato da Rosa's sabato alle 20."
+        }
+      }
     },
     "try": {
       "title": "Provaci!",
@@ -175,7 +197,10 @@
       "noWordsSub": "Riprova e di' una frase intera.",
       "finish": "Fine",
       "skip": "Salta",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Questo era tenere premuto. Ora, la modalità a mani libere.",
+      "heardTap": "Questo era toccare. Ora prova a tenerli premuti mentre parli.",
+      "gotIt": "Ho preso ogni parola: «{{quote}}»"
     },
     "done": {
       "title": "È tutto pronto",
@@ -1392,11 +1417,11 @@
     "modes": {
       "write": {
         "title": "Scrivi",
-        "example": "Possiamo spostare la riunione a giovedì?"
+        "example": "Possiamo fare giovedì?"
       },
       "answer": {
         "title": "Rispondi",
-        "example": "Qual è l'aliquota sulle plusvalenze nel Regno Unito?"
+        "example": "Quanto fa il 15% di 240?"
       },
       "act": {
         "title": "Agisci",
@@ -1404,7 +1429,7 @@
       },
       "recall": {
         "title": "Ricorda",
-        "example": "Cosa ho detto ieri sui prezzi?"
+        "example": "Cosa ho detto sui prezzi?"
       }
     },
     "nothingToConnect": {
@@ -1418,9 +1443,16 @@
     },
     "choose": {
       "title": "Scegli cosa può fare {{appName}}",
-      "description": "Tutto disattivato finché non lo attivi. Puoi cambiarlo quando vuoi in Privacy.",
+      "description": "Tutto facoltativo. Puoi cambiarlo quando vuoi in Privacy.",
       "footnote": "Password, wallet e finestre private non vengono mai letti.",
-      "proOnly": "Parte di Pro. Passa a Pro in Account."
+      "proOnly": "Parte di Pro. Passa a Pro in Account.",
+      "caps": {
+        "screen_context": "Solo la finestra che chiedi",
+        "proactive": "Deciso su questo Mac",
+        "meetings": "L'audio resta su questo Mac",
+        "wake_word": "Ascolta solo su questo Mac",
+        "screen_memory": "Resta su questo Mac, cifrato"
+      }
     }
   },
   "getStarted": {

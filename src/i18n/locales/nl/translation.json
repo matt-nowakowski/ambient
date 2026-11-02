@@ -146,7 +146,29 @@
       "pressKeys": "Druk op de nieuwe toetsen",
       "addKey": "Voeg nu een toets toe",
       "cancel": "Annuleren",
-      "tryIt": "Probeer het zelf"
+      "tryIt": "Probeer het zelf",
+      "addModifier": "Losse toets typt. Voeg een speciale toets toe.",
+      "lines": {
+        "hold": "Ja! Ik ben tien minuten later, hou een plekje vrij.",
+        "tap": "Zaterdag picknicken in het park, daarna eten bij Rosa's. Neem de blauwe deken en de goede speaker mee."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Vraag maar raak.</0> <1>Houd je sneltoets ingedrukt en vraag het.</1> <2>Het antwoord verschijnt.</2>",
+          "said": "Wat voor weer wordt het morgen in Lissabon?",
+          "reply": "Zonnig en 24°, met een licht briesje."
+        },
+        "act": {
+          "sentence": "<0>Moet er iets gebeuren?</0> <1>Houd je sneltoets ingedrukt en zeg het.</1> <2>Geregeld.</2>",
+          "said": "Herinner me er om 5 uur aan om Sam te bellen",
+          "reply": "Herinnering om 17:00: Sam bellen."
+        },
+        "recall": {
+          "sentence": "<0>Iets vergeten?</0> <1>Houd je sneltoets ingedrukt en vraag het.</1> <2>Het weet het nog.</2>",
+          "said": "Wat zei Ana over de locatie?",
+          "reply": "Ze heeft Rosa's geboekt, zaterdag om 20:00."
+        }
+      }
     },
     "try": {
       "title": "Probeer het maar!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Probeer het opnieuw en zeg een hele zin.",
       "finish": "Afronden",
       "skip": "Overslaan",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Dat was ingedrukt houden. Nu de handsfree manier.",
+      "heardTap": "Dat was tikken. Probeer ze nu ingedrukt te houden terwijl je praat.",
+      "gotIt": "Elk woord opgevangen: ‘{{quote}}’"
     },
     "done": {
       "title": "Alles is klaar",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Schrijven",
-        "example": "Kunnen we het overleg naar donderdag verzetten?"
+        "example": "Kan het donderdag ook?"
       },
       "answer": {
         "title": "Antwoorden",
-        "example": "Wat is het tarief voor vermogenswinstbelasting in het VK?"
+        "example": "Hoeveel is 15% van 240?"
       },
       "act": {
         "title": "Doen",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Terugvinden",
-        "example": "Wat zei ik gisteren over de prijzen?"
+        "example": "Wat zei ik over de prijzen?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Kies wat {{appName}} mag doen",
-      "description": "Alles staat uit tot je het aanzet. Altijd te wijzigen in Privacy.",
+      "description": "Alles is optioneel. Altijd te wijzigen in Privacy.",
       "footnote": "Wachtwoorden, wallets en privévensters worden nooit gelezen.",
-      "proOnly": "Onderdeel van Pro. Upgrade in Account."
+      "proOnly": "Onderdeel van Pro. Upgrade in Account.",
+      "caps": {
+        "screen_context": "Alleen het venster in kwestie",
+        "proactive": "Bepaald op deze Mac",
+        "meetings": "Audio blijft op deze Mac",
+        "wake_word": "Luistert alleen op deze Mac",
+        "screen_memory": "Blijft versleuteld op deze Mac"
+      }
     }
   },
   "getStarted": {

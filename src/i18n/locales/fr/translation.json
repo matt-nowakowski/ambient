@@ -147,7 +147,29 @@
       "pressKeys": "Appuyez sur les nouvelles touches",
       "addKey": "Ajoutez maintenant une touche",
       "cancel": "Annuler",
-      "tryIt": "Essayez vous-même"
+      "tryIt": "Essayez vous-même",
+      "addModifier": "Une touche seule tape. Ajoutez un modificateur.",
+      "lines": {
+        "hold": "Oui ! J'ai dix minutes de retard, garde-moi une place.",
+        "tap": "Pique-nique au parc samedi, puis dîner chez Rosa's. Apporter la couverture bleue et la bonne enceinte."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Demandez n'importe quoi.</0> <1>Maintenez votre raccourci et demandez.</1> <2>La réponse apparaît.</2>",
+          "said": "Quel temps fera-t-il demain à Lisbonne ?",
+          "reply": "Ensoleillé, 24°, avec une petite brise."
+        },
+        "act": {
+          "sentence": "<0>Une chose à faire ?</0> <1>Maintenez votre raccourci et dites-le.</1> <2>C'est fait.</2>",
+          "said": "Rappelle-moi d'appeler Sam à 17 h",
+          "reply": "Rappel à 17 h : appeler Sam."
+        },
+        "recall": {
+          "sentence": "<0>Un oubli ?</0> <1>Maintenez votre raccourci et demandez.</1> <2>Il s'en souvient.</2>",
+          "said": "Qu'a dit Ana à propos du lieu ?",
+          "reply": "Elle a réservé chez Rosa's samedi à 20 h."
+        }
+      }
     },
     "try": {
       "title": "À vous de jouer !",
@@ -175,7 +197,10 @@
       "noWordsSub": "Réessayez, en disant une phrase entière.",
       "finish": "Terminer",
       "skip": "Passer",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Ça, c'était en maintenant. Place à la méthode mains libres.",
+      "heardTap": "Ça, c'était en appuyant. Essayez maintenant de les maintenir enfoncées pendant que vous parlez.",
+      "gotIt": "Chaque mot capté : « {{quote}} »"
     },
     "done": {
       "title": "Tout est prêt",
@@ -1392,11 +1417,11 @@
     "modes": {
       "write": {
         "title": "Écrire",
-        "example": "On peut décaler le point à jeudi ?"
+        "example": "On peut faire jeudi plutôt ?"
       },
       "answer": {
         "title": "Répondre",
-        "example": "Quel est le taux d'imposition des plus-values au Royaume-Uni ?"
+        "example": "Combien font 15 % de 240 ?"
       },
       "act": {
         "title": "Agir",
@@ -1404,7 +1429,7 @@
       },
       "recall": {
         "title": "Retrouver",
-        "example": "Qu'est-ce que j'ai dit sur les prix hier ?"
+        "example": "J'ai dit quoi sur les prix ?"
       }
     },
     "nothingToConnect": {
@@ -1418,9 +1443,16 @@
     },
     "choose": {
       "title": "Choisissez ce que {{appName}} peut faire",
-      "description": "Tout est désactivé jusqu'à ce que vous l'activiez. Modifiable à tout moment dans Confidentialité.",
+      "description": "Tout est facultatif. Modifiable à tout moment dans Confidentialité.",
       "footnote": "Les mots de passe, portefeuilles et fenêtres privées ne sont jamais lus.",
-      "proOnly": "Fait partie de Pro. Passez à Pro dans Compte."
+      "proOnly": "Fait partie de Pro. Passez à Pro dans Compte.",
+      "caps": {
+        "screen_context": "Seule la fenêtre concernée",
+        "proactive": "Décidé sur ce Mac",
+        "meetings": "L'audio reste sur ce Mac",
+        "wake_word": "N'écoute que sur ce Mac",
+        "screen_memory": "Reste sur ce Mac, chiffré"
+      }
     }
   },
   "getStarted": {

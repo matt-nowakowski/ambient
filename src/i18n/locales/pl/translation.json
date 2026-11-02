@@ -148,7 +148,29 @@
       "pressKeys": "Naciśnij nowe klawisze",
       "addKey": "Teraz dodaj klawisz",
       "cancel": "Anuluj",
-      "tryIt": "Wypróbuj sam"
+      "tryIt": "Wypróbuj sam",
+      "addModifier": "Sam klawisz by pisał. Dodaj modyfikator.",
+      "lines": {
+        "hold": "Tak! Spóźnię się dziesięć minut, zajmij mi miejsce.",
+        "tap": "Piknik w parku w sobotę, potem kolacja w Rosa's. Zabrać niebieski koc i dobry głośnik."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Zapytaj o cokolwiek.</0> <1>Przytrzymaj skrót i zapytaj.</1> <2>Pojawia się odpowiedź.</2>",
+          "said": "Jaka będzie jutro pogoda w Lizbonie?",
+          "reply": "Słonecznie, 24°, lekki wiaterek."
+        },
+        "act": {
+          "sentence": "<0>Trzeba coś załatwić?</0> <1>Przytrzymaj skrót i powiedz.</1> <2>Załatwione.</2>",
+          "said": "Przypomnij mi o 17, żeby zadzwonić do Sama",
+          "reply": "Przypomnienie na 17:00: zadzwoń do Sama."
+        },
+        "recall": {
+          "sentence": "<0>Coś umknęło?</0> <1>Przytrzymaj skrót i zapytaj.</1> <2>Wszystko pamięta.</2>",
+          "said": "Co Ana mówiła o lokalu?",
+          "reply": "Zarezerwowała Rosa's na sobotę na 20:00."
+        }
+      }
     },
     "try": {
       "title": "Spróbuj!",
@@ -176,7 +198,10 @@
       "noWordsSub": "Spróbuj jeszcze raz i powiedz całe zdanie.",
       "finish": "Zakończ",
       "skip": "Pomiń",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Tak działa przytrzymanie. Teraz sposób bez rąk.",
+      "heardTap": "Tak działa naciśnięcie. Teraz spróbuj przytrzymać je podczas mówienia.",
+      "gotIt": "Mam każde słowo: „{{quote}}”"
     },
     "done": {
       "title": "Wszystko gotowe",
@@ -1404,11 +1429,11 @@
     "modes": {
       "write": {
         "title": "Pisz",
-        "example": "Możemy przesunąć spotkanie na czwartek?"
+        "example": "A może w czwartek?"
       },
       "answer": {
         "title": "Odpowiadaj",
-        "example": "Jaka jest stawka podatku od zysków kapitałowych w Wielkiej Brytanii?"
+        "example": "Ile to 15% z 240?"
       },
       "act": {
         "title": "Działaj",
@@ -1416,7 +1441,7 @@
       },
       "recall": {
         "title": "Przypominaj",
-        "example": "Co mówiłem wczoraj o cenach?"
+        "example": "Co mówiłem o cenach?"
       }
     },
     "nothingToConnect": {
@@ -1430,9 +1455,16 @@
     },
     "choose": {
       "title": "Wybierz, co może robić {{appName}}",
-      "description": "Wszystko wyłączone, dopóki nie włączysz. Zmienisz to w każdej chwili w sekcji Prywatność.",
+      "description": "Wszystko opcjonalne. Zmienisz to w każdej chwili w sekcji Prywatność.",
       "footnote": "Hasła, portfele i okna prywatne nigdy nie są odczytywane.",
-      "proOnly": "Część Pro. Przejdź na Pro w sekcji Konto."
+      "proOnly": "Część Pro. Przejdź na Pro w sekcji Konto.",
+      "caps": {
+        "screen_context": "Tylko okno, o które pytasz",
+        "proactive": "Decyzja zapada na tym Macu",
+        "meetings": "Dźwięk zostaje na tym Macu",
+        "wake_word": "Słucha tylko na tym Macu",
+        "screen_memory": "Zostaje na tym Macu, szyfrowane"
+      }
     }
   },
   "getStarted": {

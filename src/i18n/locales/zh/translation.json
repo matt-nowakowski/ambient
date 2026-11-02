@@ -146,7 +146,29 @@
       "pressKeys": "请按下新的按键",
       "addKey": "再加一个按键",
       "cancel": "取消",
-      "tryIt": "亲自试试"
+      "tryIt": "亲自试试",
+      "addModifier": "单独一个键会直接输入文字。请再加一个修饰键。",
+      "lines": {
+        "hold": "来！晚到十分钟，帮我留个位子。",
+        "tap": "周六去公园野餐，然后在 Rosa's 吃晚饭。带上蓝色毯子和那个好音箱。"
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>有问题尽管问。</0><1>按住快捷键提问。</1><2>答案随即出现。</2>",
+          "said": "明天里斯本天气怎么样？",
+          "reply": "晴，24°，微风。"
+        },
+        "act": {
+          "sentence": "<0>有事要办？</0><1>按住快捷键说出来。</1><2>马上办好。</2>",
+          "said": "5 点提醒我给 Sam 打电话",
+          "reply": "已设置 17:00 提醒：给 Sam 打电话。"
+        },
+        "recall": {
+          "sentence": "<0>忘了什么？</0><1>按住快捷键提问。</1><2>它都记得。</2>",
+          "said": "Ana 对场地怎么说的？",
+          "reply": "她订了周六晚 8 点的 Rosa's。"
+        }
+      }
     },
     "try": {
       "title": "来试一试吧！",
@@ -174,7 +196,10 @@
       "noWordsSub": "再试一次，说一整句话。",
       "finish": "完成",
       "skip": "跳过",
-      "seconds": "{{value}} 秒"
+      "seconds": "{{value}} 秒",
+      "heardHold": "这就是按住的用法。接下来试试免按住的方式。",
+      "heardTap": "这就是轻按的用法。现在试试说话时按住它们。",
+      "gotIt": "每个字都听清了：“{{quote}}”"
     },
     "done": {
       "title": "一切就绪",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "写",
-        "example": "我们能把同步会改到周四吗？"
+        "example": "能改到周四吗？"
       },
       "answer": {
         "title": "答",
-        "example": "英国的资本利得税率是多少？"
+        "example": "240 的 15% 是多少？"
       },
       "act": {
         "title": "做",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "记",
-        "example": "我昨天关于定价说了什么？"
+        "example": "我之前对定价说了什么？"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "选择 {{appName}} 可以做什么",
-      "description": "全部关闭，直到你打开。可随时在隐私中更改。",
+      "description": "全部可选。可随时在隐私中更改。",
       "footnote": "从不读取密码、钱包和无痕窗口。",
-      "proOnly": "Pro 功能。在账户中升级。"
+      "proOnly": "Pro 功能。在账户中升级。",
+      "caps": {
+        "screen_context": "只看你问到的窗口",
+        "proactive": "在这台 Mac 上决定",
+        "meetings": "音频留在这台 Mac 上",
+        "wake_word": "只在这台 Mac 上聆听",
+        "screen_memory": "加密保存在这台 Mac 上"
+      }
     }
   },
   "getStarted": {

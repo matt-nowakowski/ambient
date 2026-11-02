@@ -146,7 +146,29 @@
       "pressKeys": "Drücke die neuen Tasten",
       "addKey": "Füge jetzt eine Taste hinzu",
       "cancel": "Abbrechen",
-      "tryIt": "Probier es selbst aus"
+      "tryIt": "Probier es selbst aus",
+      "addModifier": "Eine Taste allein tippt. Nimm eine Sondertaste.",
+      "lines": {
+        "hold": "Ja! Bin zehn Minuten später, halt mir einen Platz frei.",
+        "tap": "Samstag Picknick im Park, danach Abendessen bei Rosa's. Die blaue Decke und den guten Lautsprecher mitbringen."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Frag, was du willst.</0> <1>Halte dein Tastenkürzel gedrückt und frag.</1> <2>Die Antwort erscheint.</2>",
+          "said": "Wie wird das Wetter morgen in Lissabon?",
+          "reply": "Sonnig und 24°, mit leichter Brise."
+        },
+        "act": {
+          "sentence": "<0>Soll etwas erledigt werden?</0> <1>Halte dein Tastenkürzel gedrückt und sag es.</1> <2>Erledigt.</2>",
+          "said": "Erinnere mich um 5, Sam anzurufen",
+          "reply": "Erinnerung für 17:00: Sam anrufen."
+        },
+        "recall": {
+          "sentence": "<0>Etwas vergessen?</0> <1>Halte dein Tastenkürzel gedrückt und frag.</1> <2>Es erinnert sich.</2>",
+          "said": "Was hat Ana über die Location gesagt?",
+          "reply": "Sie hat Rosa's für Samstag um 20 Uhr gebucht."
+        }
+      }
     },
     "try": {
       "title": "Probier es aus!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Versuche es noch einmal und sag einen ganzen Satz.",
       "finish": "Fertig",
       "skip": "Überspringen",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Das war Halten. Als Nächstes: freihändig.",
+      "heardTap": "Das war Tippen. Probier jetzt, sie beim Sprechen gedrückt zu halten.",
+      "gotIt": "Jedes Wort erkannt: „{{quote}}“"
     },
     "done": {
       "title": "Alles bereit",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Schreiben",
-        "example": "Können wir das Sync-Meeting auf Donnerstag verschieben?"
+        "example": "Geht auch Donnerstag?"
       },
       "answer": {
         "title": "Antworten",
-        "example": "Wie hoch ist die Kapitalertragsteuer in Großbritannien?"
+        "example": "Wie viel sind 15 % von 240?"
       },
       "act": {
         "title": "Erledigen",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Erinnern",
-        "example": "Was habe ich gestern über die Preise gesagt?"
+        "example": "Was sagte ich zu den Preisen?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Wähle, was {{appName}} darf",
-      "description": "Alles aus, bis du es einschaltest. Jederzeit unter Datenschutz änderbar.",
+      "description": "Alles optional. Jederzeit unter Datenschutz änderbar.",
       "footnote": "Passwörter, Wallets und private Fenster werden nie gelesen.",
-      "proOnly": "Teil von Pro. Upgrade unter Konto."
+      "proOnly": "Teil von Pro. Upgrade unter Konto.",
+      "caps": {
+        "screen_context": "Nur das Fenster, das du meinst",
+        "proactive": "Entschieden auf diesem Mac",
+        "meetings": "Audio bleibt auf diesem Mac",
+        "wake_word": "Hört nur auf diesem Mac zu",
+        "screen_memory": "Verschlüsselt auf diesem Mac"
+      }
     }
   },
   "getStarted": {
