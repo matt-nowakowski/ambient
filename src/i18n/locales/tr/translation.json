@@ -1287,7 +1287,8 @@
         "summary": "Toplantı özeti",
         "act": "Eylem",
         "license": "Hesap kontrolü",
-        "trial": "Deneme"
+        "trial": "Deneme",
+        "warmup": "Bağlantı hazırlığı (hiçbir şey gönderilmedi)"
       }
     },
     "engine": {

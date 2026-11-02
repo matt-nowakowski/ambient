@@ -1298,7 +1298,8 @@
         "summary": "Resumo da reunião",
         "act": "Ação",
         "license": "Verificação da conta",
-        "trial": "Avaliação"
+        "trial": "Avaliação",
+        "warmup": "Preparação da conexão (nada enviado)"
       }
     },
     "engine": {

@@ -1287,7 +1287,8 @@
         "summary": "Meeting summary",
         "act": "Action",
         "license": "Account check",
-        "trial": "Trial"
+        "trial": "Trial",
+        "warmup": "Connection warm-up (nothing sent)"
       }
     },
     "engine": {

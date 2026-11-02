@@ -6,6 +6,7 @@ use serde_json::Value;
 use std::collections::HashSet;
 use std::error::Error as StdError;
 use std::sync::{Mutex, OnceLock};
+use std::time::{Duration, Instant};
 
 #[derive(Debug, Serialize)]
 struct ChatMessage {
@@ -81,8 +82,21 @@ struct ChatCompletionRequest {
     stream: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     response_format: Option<ResponseFormat>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    max_tokens: Option<u32>,
     #[serde(flatten)]
     reasoning: ReasoningParams,
+}
+
+/// Per-request bounds. The defaults leave both to the endpoint.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct RequestLimits {
+    /// Output cap: stops a runaway reply (a model answering instead of
+    /// cleaning up) from holding the paste for seconds.
+    pub max_tokens: Option<u32>,
+    /// Give up after this long; the caller falls back (polish pastes the raw
+    /// transcript).
+    pub timeout: Option<Duration>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -133,13 +147,83 @@ fn build_headers(api_key: &str) -> Result<HeaderMap, String> {
     Ok(headers)
 }
 
-/// Create an HTTP client with the common and auth headers
-fn create_client(api_key: &str) -> Result<reqwest::Client, String> {
-    let headers = build_headers(api_key)?;
-    reqwest::Client::builder()
-        .default_headers(headers)
+/// One HTTP client for every AI request, so connections (TCP + TLS, HTTP/2)
+/// are pooled and reused instead of being set up again for each dictation.
+/// The bearer token goes on each request, not on the client.
+fn shared_client() -> Result<&'static reqwest::Client, String> {
+    static CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
+    if let Some(client) = CLIENT.get() {
+        return Ok(client);
+    }
+    let client = reqwest::Client::builder()
+        .default_headers(build_headers("")?)
+        .connect_timeout(Duration::from_secs(5))
+        .pool_idle_timeout(Duration::from_secs(90))
+        .tcp_keepalive(Duration::from_secs(30))
         .build()
-        .map_err(|e| report_reqwest_error("Failed to build HTTP client", &e))
+        .map_err(|e| report_reqwest_error("Failed to build HTTP client", &e))?;
+    Ok(CLIENT.get_or_init(|| client))
+}
+
+/// Attach the bearer token, if any, to one request.
+fn authorized(request: reqwest::RequestBuilder, api_key: &str) -> reqwest::RequestBuilder {
+    if api_key.is_empty() {
+        request
+    } else {
+        request.bearer_auth(api_key)
+    }
+}
+
+/// When the last request to each AI host went out, to skip needless warm-ups.
+fn last_used() -> &'static Mutex<std::collections::HashMap<String, Instant>> {
+    static LAST: OnceLock<Mutex<std::collections::HashMap<String, Instant>>> = OnceLock::new();
+    LAST.get_or_init(|| Mutex::new(std::collections::HashMap::new()))
+}
+
+fn mark_used(base_url: &str) {
+    if let Ok(mut m) = last_used().lock() {
+        m.insert(base_url.to_string(), Instant::now());
+    }
+}
+
+/// A pooled connection is likely still open this soon after the last request.
+const WARM_FOR: Duration = Duration::from_secs(45);
+
+/// Whether a connection to the provider is probably cold (nothing sent for a
+/// while), so a warm-up would save the next request its handshake.
+pub fn needs_warm_up(provider: &AiProvider) -> bool {
+    let base_url = provider.base_url.trim_end_matches('/');
+    last_used()
+        .lock()
+        .ok()
+        .and_then(|m| m.get(base_url).copied())
+        .is_none_or(|t| t.elapsed() > WARM_FOR)
+}
+
+/// Open (or refresh) the pooled connection to the provider ahead of a
+/// request: DNS, TCP and TLS happen while the user is still speaking. Sends
+/// no token and no user data: an unauthenticated GET of the model list.
+pub async fn warm_up(provider: &AiProvider) {
+    let base_url = provider.base_url.trim_end_matches('/');
+    let Ok(client) = shared_client() else {
+        return;
+    };
+    mark_used(base_url);
+    let started = Instant::now();
+    match client
+        .get(format!("{base_url}/models"))
+        .timeout(Duration::from_secs(5))
+        .send()
+        .await
+    {
+        Ok(response) => debug!(
+            "AI connection warmed in {:?} ({} over {:?})",
+            started.elapsed(),
+            response.status(),
+            response.version()
+        ),
+        Err(e) => debug!("{}", report_reqwest_error("AI warm-up failed", &e)),
+    }
 }
 
 /// Format a bounded error source chain.
@@ -255,17 +339,19 @@ fn report_reqwest_error(context: &str, error: &reqwest::Error) -> String {
     details
 }
 
-/// Send a chat completion request to an OpenAI-compatible API
-/// Returns Ok(Some(content)) on success, Ok(None) if response has no content,
-/// or Err on actual errors (HTTP, parsing, etc.)
-pub async fn send_chat_completion(
+/// Send a chat completion request (one user message) to an OpenAI-compatible
+/// API, within `limits`. Returns Ok(Some(content)) on success, Ok(None) if
+/// the response has no content, or Err on actual errors (HTTP, parsing,
+/// timeout, etc.)
+pub async fn send_chat_completion_limited(
     provider: &AiProvider,
     api_key: String,
     model: &str,
     prompt: String,
     disable_reasoning: bool,
+    limits: RequestLimits,
 ) -> Result<Option<String>, String> {
-    send_chat_completion_with_schema(
+    send_request(
         provider,
         api_key,
         model,
@@ -273,6 +359,7 @@ pub async fn send_chat_completion(
         None,
         None,
         disable_reasoning,
+        limits,
     )
     .await
 }
@@ -295,6 +382,30 @@ pub async fn send_chat_completion_with_schema(
     json_schema: Option<Value>,
     disable_reasoning: bool,
 ) -> Result<Option<String>, String> {
+    send_request(
+        provider,
+        api_key,
+        model,
+        user_content,
+        system_prompt,
+        json_schema,
+        disable_reasoning,
+        RequestLimits::default(),
+    )
+    .await
+}
+
+#[allow(clippy::too_many_arguments)]
+async fn send_request(
+    provider: &AiProvider,
+    api_key: String,
+    model: &str,
+    user_content: String,
+    system_prompt: Option<String>,
+    json_schema: Option<Value>,
+    disable_reasoning: bool,
+    limits: RequestLimits,
+) -> Result<Option<String>, String> {
     let base_url = provider.base_url.trim_end_matches('/');
     let url = format!("{}/chat/completions", base_url);
 
@@ -303,7 +414,15 @@ pub async fn send_chat_completion_with_schema(
         sanitized_url_for_log(&url)
     );
 
-    let client = create_client(&api_key)?;
+    let client = shared_client()?;
+    mark_used(base_url);
+    let post = || {
+        let request = authorized(client.post(&url), &api_key);
+        match limits.timeout {
+            Some(timeout) => request.timeout(timeout),
+            None => request,
+        }
+    };
 
     // Build messages vector
     let mut messages = Vec::new();
@@ -344,11 +463,11 @@ pub async fn send_chat_completion_with_schema(
         messages,
         stream: false,
         response_format,
+        max_tokens: limits.max_tokens,
         reasoning,
     };
 
-    let mut response = client
-        .post(&url)
+    let mut response = post()
         .json(&request_body)
         .send()
         .await
@@ -376,8 +495,7 @@ pub async fn send_chat_completion_with_schema(
         );
 
         request_body.reasoning = ReasoningParams::default();
-        response = client
-            .post(&url)
+        response = post()
             .json(&request_body)
             .send()
             .await
@@ -472,6 +590,7 @@ mod tests {
             }],
             stream: false,
             response_format: None,
+            max_tokens: None,
             reasoning,
         };
         serde_json::to_value(&request).unwrap()
@@ -568,6 +687,47 @@ mod tests {
     }
 
     #[test]
+    fn max_tokens_is_only_sent_when_set() {
+        assert!(request_json(ReasoningParams::default())
+            .get("max_tokens")
+            .is_none());
+    }
+
+    #[tokio::test]
+    async fn polish_requests_carry_the_token_and_output_cap() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        let body = r#"{"choices":[{"message":{"content":"Hi."},"finish_reason":"stop"}]}"#;
+        let server = tokio::spawn(async move {
+            let (mut stream, _) = listener.accept().await.unwrap();
+            let mut request = vec![0_u8; 8192];
+            let n = stream.read(&mut request).await.unwrap();
+            let response = format!(
+                "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+                body.len()
+            );
+            stream.write_all(response.as_bytes()).await.unwrap();
+            String::from_utf8_lossy(&request[..n]).to_string()
+        });
+        let result = send_chat_completion_limited(
+            &provider(&format!("http://{address}")),
+            "key".to_string(),
+            "test-model",
+            "hi".to_string(),
+            false,
+            RequestLimits {
+                max_tokens: Some(64),
+                timeout: Some(Duration::from_secs(5)),
+            },
+        )
+        .await;
+        assert_eq!(result.unwrap().as_deref(), Some("Hi."));
+        let request = server.await.unwrap().to_lowercase();
+        assert!(request.contains("authorization: bearer key"));
+        assert!(request.contains("\"max_tokens\":64"));
+    }
+
+    #[test]
     fn default_reasoning_params_serialize_to_no_fields() {
         let json = request_json(ReasoningParams::default());
         assert!(json.get("reasoning_effort").is_none());
@@ -610,12 +770,13 @@ mod tests {
             r#"{"choices":[{"message":{"content":"Cut off"},"finish_reason":"length"}]}"#,
         )
         .await;
-        let result = send_chat_completion(
+        let result = send_chat_completion_limited(
             &provider(&base_url),
             "key".to_string(),
             "test-model",
             "raw text".to_string(),
             false,
+            RequestLimits::default(),
         )
         .await;
         assert!(result.unwrap_err().contains("truncated"));

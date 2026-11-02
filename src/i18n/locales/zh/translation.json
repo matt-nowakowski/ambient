@@ -1287,7 +1287,8 @@
         "summary": "会议摘要",
         "act": "操作",
         "license": "账户验证",
-        "trial": "试用"
+        "trial": "试用",
+        "warmup": "预热连接（未发送任何内容）"
       }
     },
     "engine": {

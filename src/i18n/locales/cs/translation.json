@@ -1309,7 +1309,8 @@
         "summary": "Shrnutí schůzky",
         "act": "Akce",
         "license": "Kontrola účtu",
-        "trial": "Zkušební verze"
+        "trial": "Zkušební verze",
+        "warmup": "Příprava připojení (nic se neodesílá)"
       }
     },
     "engine": {

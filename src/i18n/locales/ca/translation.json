@@ -1298,7 +1298,8 @@
         "summary": "Resum de la reunió",
         "act": "Acció",
         "license": "Comprovació del compte",
-        "trial": "Prova"
+        "trial": "Prova",
+        "warmup": "Preparació de la connexió (no s'envia res)"
       }
     },
     "engine": {

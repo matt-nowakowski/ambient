@@ -160,6 +160,55 @@ fn build_system_prompt(prompt_template: &str) -> String {
     prompt_template.replace("${output}", "").trim().to_string()
 }
 
+/// Bounds for one polish request. Cleaned-up text is about as long as the
+/// transcript, so the output cap is generous (two tokens a character, plus
+/// room) yet stops a runaway reply; past the deadline the raw transcript is
+/// pasted rather than keeping the user waiting.
+fn polish_limits(transcription: &str) -> crate::llm_client::RequestLimits {
+    let chars = u32::try_from(transcription.chars().count()).unwrap_or(u32::MAX);
+    crate::llm_client::RequestLimits {
+        max_tokens: Some(chars.saturating_mul(2).saturating_add(256).min(2_048)),
+        timeout: Some(POLISH_TIMEOUT),
+    }
+}
+
+/// The hosted endpoint gives its model ~9 s (one retry included).
+const POLISH_TIMEOUT: Duration = Duration::from_secs(10);
+
+/// Warm the connection to the hosted AI while the user is still speaking, if
+/// this dictation will be polished there (or is an Ask): DNS, TCP and TLS
+/// are then done before the request is. Sends no token and no text.
+fn warm_up_hosted_ai(app: &AppHandle, needs_ai: bool) {
+    let settings = get_settings(app);
+    if !needs_ai || settings.agent.on_device_only {
+        return;
+    }
+    // Polish that runs on this Mac needs no connection.
+    if settings.agent.on_device_when_possible && crate::agent::llm::on_device_ready() {
+        return;
+    }
+    let Some(provider) = settings.active_post_process_provider() else {
+        return;
+    };
+    if provider.id != AMBIENT_AI_PROVIDER_ID || !crate::llm_client::needs_warm_up(&provider) {
+        return;
+    }
+    // The Privacy Center lists every request that leaves the Mac.
+    let host = provider
+        .base_url
+        .split("://")
+        .nth(1)
+        .unwrap_or(&provider.base_url)
+        .split('/')
+        .next()
+        .unwrap_or("")
+        .to_string();
+    crate::recall::log_request(&host, "warmup", "");
+    tauri::async_runtime::spawn(async move {
+        crate::llm_client::warm_up(&provider).await;
+    });
+}
+
 /// Returns `true` when a transcription has no meaningful content to
 /// post-process (empty or whitespace-only). Used to skip the post-processing
 /// LLM call when nothing was actually transcribed, which would otherwise make
@@ -419,12 +468,13 @@ async fn post_process_transcription(
     let processed_prompt = prompt.replace("${output}", transcription);
     debug!("Processed prompt length: {} chars", processed_prompt.len());
 
-    match crate::llm_client::send_chat_completion(
+    match crate::llm_client::send_chat_completion_limited(
         &provider,
         api_key,
         model,
         processed_prompt,
         disable_reasoning,
+        polish_limits(transcription),
     )
     .await
     {
@@ -789,6 +839,9 @@ impl ShortcutAction for TranscribeAction {
         if recording_error.is_none() {
             // Dynamically register the cancel shortcut in a separate task to avoid deadlock
             shortcut::register_cancel_shortcut(app);
+            // Off the capture path: the connection opens while they speak.
+            let polish = self.post_process || crate::plan::polish_every_dictation(app);
+            warm_up_hosted_ai(app, polish || self.ask);
         } else {
             // Starting failed (for example due to blocked microphone permissions).
             // Revert UI state so we don't stay stuck in the recording overlay.

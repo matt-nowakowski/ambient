@@ -1287,7 +1287,8 @@
         "summary": "Mötessammanfattning",
         "act": "Åtgärd",
         "license": "Kontokontroll",
-        "trial": "Provperiod"
+        "trial": "Provperiod",
+        "warmup": "Förbereder anslutning (inget skickat)"
       }
     },
     "engine": {

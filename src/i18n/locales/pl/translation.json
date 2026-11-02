@@ -1309,7 +1309,8 @@
         "summary": "Podsumowanie spotkania",
         "act": "Działanie",
         "license": "Sprawdzenie konta",
-        "trial": "Wersja próbna"
+        "trial": "Wersja próbna",
+        "warmup": "Przygotowanie połączenia (nic nie wysłano)"
       }
     },
     "engine": {
