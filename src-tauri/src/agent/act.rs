@@ -196,7 +196,14 @@ fn open_app(name: &str) -> Result<(), String> {
     }
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Linux: the user's script in `~/.local/share/<slug>/actions/`, or an
+/// installed app of that name.
+#[cfg(target_os = "linux")]
+fn run_shortcut(name: &str) -> Result<(), String> {
+    super::linux::shortcut::run(name)
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 fn run_shortcut(_name: &str) -> Result<(), String> {
     Err("hud.status.cantDoYet".into())
 }

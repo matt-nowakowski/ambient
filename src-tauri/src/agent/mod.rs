@@ -4,6 +4,8 @@
 
 pub mod act;
 pub mod answer;
+#[cfg(any(target_os = "linux", test))]
+pub(crate) mod linux;
 pub mod llm;
 pub mod personal;
 pub mod proactive;
@@ -94,10 +96,14 @@ const OFFER_COOLDOWN: Duration = Duration::from_secs(30 * 60);
 pub const MEETING_OFFER_ID: &str = "meeting-offer";
 
 fn is_call(front: &FrontmostApp, never_watch: &[String]) -> bool {
-    if CALL_APPS.contains(&front.bundle_id.as_str()) {
+    if CALL_APPS.contains(&front.bundle_id.as_str())
+        || context::is_platform_call_app(&front.bundle_id)
+    {
         return true;
     }
-    if !BROWSERS.contains(&front.bundle_id.as_str()) {
+    if !BROWSERS.contains(&front.bundle_id.as_str())
+        && !context::is_platform_browser(&front.bundle_id)
+    {
         return false;
     }
     // Browser calls: look at the window's title and URL only (no page text).

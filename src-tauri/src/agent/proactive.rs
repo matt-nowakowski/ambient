@@ -859,7 +859,22 @@ fn upcoming(minutes: i32) -> Vec<Event> {
     out
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Linux: Evolution Data Server (GNOME Calendar's store), if it's running.
+#[cfg(target_os = "linux")]
+fn upcoming(minutes: i32) -> Vec<Event> {
+    super::linux::calendar::upcoming(minutes)
+        .into_iter()
+        .map(|e| Event {
+            id: e.id,
+            title: e.title,
+            notes: e.notes,
+            location: e.location,
+            attendees: e.attendees,
+        })
+        .collect()
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 fn upcoming(_minutes: i32) -> Vec<Event> {
     Vec::new()
 }
