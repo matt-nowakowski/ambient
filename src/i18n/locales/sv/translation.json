@@ -372,6 +372,15 @@
           "push_to_talk": "Spelar in så länge du håller genvägen nedtryckt",
           "toggle": "Tryck på genvägen för att starta inspelningen, tryck igen för att stoppa"
         }
+      },
+      "autoStop": {
+        "label": "Stoppa efter en paus",
+        "description": "När du startar med ett tryck slutar dikteringen också av sig själv när du pausar efter att ha pratat. Korta pauser mitt i en mening räknas inte, och den slutar aldrig innan du har sagt något.",
+        "delay": {
+          "label": "Paus innan stopp",
+          "description": "Hur länge du ska vara tyst efter att ha pratat innan dikteringen slutar.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {

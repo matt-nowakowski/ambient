@@ -372,6 +372,15 @@
           "push_to_talk": "Nimmt auf, solange die Tastenkombination gedrückt bleibt",
           "toggle": "Tastenkombination antippen, um die Aufnahme zu starten, erneut antippen zum Stoppen"
         }
+      },
+      "autoStop": {
+        "label": "Nach einer Pause stoppen",
+        "description": "Wenn du per Tippen startest, stoppt das Diktat auch von selbst, sobald du nach dem Sprechen eine Pause machst. Kurze Pausen mitten im Satz zählen nicht, und es stoppt nie, bevor du etwas gesagt hast.",
+        "delay": {
+          "label": "Pause bis zum Stopp",
+          "description": "Wie lange du nach dem Sprechen still sein musst, bis das Diktat stoppt.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {

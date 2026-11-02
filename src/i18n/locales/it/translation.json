@@ -374,6 +374,15 @@
           "push_to_talk": "Registra finché tieni premuta la scorciatoia",
           "toggle": "Tocca la scorciatoia per avviare la registrazione, tocca di nuovo per fermarla"
         }
+      },
+      "autoStop": {
+        "label": "Interrompi dopo una pausa",
+        "description": "Quando avvii con un tocco, la dettatura si ferma anche da sola appena fai una pausa dopo aver parlato. Le brevi pause a metà frase non contano e non si ferma mai prima che tu abbia detto qualcosa.",
+        "delay": {
+          "label": "Pausa prima dell'arresto",
+          "description": "Quanto restare in silenzio dopo aver parlato prima che la dettatura si fermi.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {

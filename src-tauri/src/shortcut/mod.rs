@@ -600,6 +600,25 @@ pub fn change_hold_threshold_ms_setting(app: AppHandle, ms: u64) -> Result<(), S
 
 #[tauri::command]
 #[specta::specta]
+pub fn change_auto_stop_on_pause_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.auto_stop_on_pause = enabled;
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn change_auto_stop_pause_ms_setting(app: AppHandle, ms: u64) -> Result<(), String> {
+    let range = settings::AUTO_STOP_PAUSE_MS_RANGE;
+    let mut settings = settings::get_settings(&app);
+    settings.auto_stop_pause_ms = ms.clamp(*range.start(), *range.end());
+    settings::write_settings(&app, settings);
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub fn change_audio_feedback_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     settings.audio_feedback = enabled;

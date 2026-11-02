@@ -374,6 +374,15 @@
           "push_to_talk": "Grava enquanto você mantém o atalho pressionado",
           "toggle": "Toque no atalho para começar a gravar, toque novamente para parar"
         }
+      },
+      "autoStop": {
+        "label": "Parar após uma pausa",
+        "description": "Quando você começa com um toque, o ditado também para sozinho assim que você faz uma pausa depois de falar. Pausas curtas no meio da frase não contam, e ele nunca para antes de você dizer algo.",
+        "delay": {
+          "label": "Pausa antes de parar",
+          "description": "Quanto tempo ficar em silêncio depois de falar até o ditado parar.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {

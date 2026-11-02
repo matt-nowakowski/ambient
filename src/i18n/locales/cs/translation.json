@@ -376,6 +376,15 @@
           "push_to_talk": "Nahrává, dokud držíte zkratku",
           "toggle": "Klepněte na zkratku pro zahájení nahrávání, klepněte znovu pro zastavení"
         }
+      },
+      "autoStop": {
+        "label": "Zastavit po pauze",
+        "description": "Když nahrávání spustíte klepnutím, diktování se také samo zastaví, jakmile po mluvení uděláte pauzu. Krátké pauzy uprostřed věty se nepočítají a nikdy se nezastaví dřív, než něco řeknete.",
+        "delay": {
+          "label": "Pauza před zastavením",
+          "description": "Jak dlouho po mluvení mlčet, než se diktování zastaví.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {

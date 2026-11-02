@@ -372,6 +372,15 @@
           "push_to_talk": "Ghi âm trong lúc bạn giữ phím tắt",
           "toggle": "Nhấn phím tắt để bắt đầu ghi âm, nhấn lại để dừng"
         }
+      },
+      "autoStop": {
+        "label": "Dừng sau khi ngừng nói",
+        "description": "Khi bạn bắt đầu bằng một lần chạm, chế độ đọc chính tả cũng tự dừng khi bạn ngừng nói một lúc. Những quãng nghỉ ngắn giữa câu không được tính, và nó không bao giờ dừng trước khi bạn nói gì.",
+        "delay": {
+          "label": "Khoảng lặng trước khi dừng",
+          "description": "Cần im lặng bao lâu sau khi nói để chế độ đọc chính tả dừng.",
+          "seconds": "{{seconds}} giây"
+        }
       }
     },
     "models": {

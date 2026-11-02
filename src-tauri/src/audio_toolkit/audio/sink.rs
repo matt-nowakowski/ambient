@@ -3,7 +3,7 @@ use std::sync::{mpsc, Arc};
 use ambient_recorder::{AudioChunk, Sink};
 
 use crate::audio_toolkit::{
-    audio::AudioVisualiser,
+    audio::{AudioVisualiser, SpeechActivity},
     constants,
     vad::{VadFrame, VoiceActivityDetector},
 };
@@ -92,6 +92,8 @@ pub struct CaptureSink {
     ready: Option<mpsc::Sender<()>>,
     samples: Vec<f32>,
     heard_sound: bool,
+    /// Speech and pauses, for auto-stop (see [`CaptureSink::track_speech`]).
+    speech: Option<Arc<SpeechActivity>>,
 }
 
 /// Spectrum window at 16 kHz: 32 ms, near the overlay's ~30 Hz refresh.
@@ -128,7 +130,24 @@ impl CaptureSink {
             ready: Some(ready),
             samples: Vec::new(),
             heard_sound: false,
+            speech: None,
         }
+    }
+
+    /// Track speech and pauses for this recording (auto-stop on a long
+    /// pause). Only meaningful with a VAD policy; returns `None` without one.
+    pub fn track_speech(&mut self) -> Option<Arc<SpeechActivity>> {
+        if self.policy == VadPolicy::Disabled {
+            return None;
+        }
+        let frame_samples = self.vad.frame_samples();
+        let hangover_frames = self.vad.hangover_for(self.policy);
+        let hangover = std::time::Duration::from_secs_f64(
+            (hangover_frames * frame_samples) as f64 / constants::WHISPER_SAMPLE_RATE as f64,
+        );
+        let activity = Arc::new(SpeechActivity::new(frame_samples, hangover));
+        self.speech = Some(Arc::clone(&activity));
+        Some(activity)
     }
 
     /// The detector, from a sink that never recorded (its start failed).
@@ -197,8 +216,17 @@ impl Sink for CaptureSink {
             .push_frame(chunk.samples)
             .unwrap_or(VadFrame::Speech(chunk.samples))
         {
-            VadFrame::Speech(frame) => Self::emit(&mut self.samples, &self.on_audio, frame),
-            VadFrame::Noise => {}
+            VadFrame::Speech(frame) => {
+                if let Some(speech) = &self.speech {
+                    speech.on_frame(true);
+                }
+                Self::emit(&mut self.samples, &self.on_audio, frame)
+            }
+            VadFrame::Noise => {
+                if let Some(speech) = &self.speech {
+                    speech.on_frame(false);
+                }
+            }
         }
     }
 }

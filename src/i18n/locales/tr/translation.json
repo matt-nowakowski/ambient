@@ -372,6 +372,15 @@
           "push_to_talk": "Kısayolu basılı tuttuğunuz sürece kaydeder",
           "toggle": "Kaydı başlatmak için kısayola dokunun, durdurmak için tekrar dokunun"
         }
+      },
+      "autoStop": {
+        "label": "Duraksamadan sonra durdur",
+        "description": "Dokunarak başlattığınızda, konuştuktan sonra duraksadığınızda dikte kendiliğinden de durur. Cümle ortasındaki kısa duraksamalar sayılmaz ve bir şey söylemeden asla durmaz.",
+        "delay": {
+          "label": "Durmadan önceki duraksama",
+          "description": "Konuştuktan sonra dikte durmadan önce ne kadar sessiz kalınacağı.",
+          "seconds": "{{seconds}} sn"
+        }
       }
     },
     "models": {

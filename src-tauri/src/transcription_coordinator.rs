@@ -13,6 +13,8 @@ use tauri_specta::Event;
 
 const DEBOUNCE: Duration = Duration::from_millis(30);
 const RELEASE_GRACE: Duration = Duration::from_millis(50);
+/// How often a locked recording checks for a long pause (auto-stop).
+const AUTO_STOP_POLL: Duration = Duration::from_millis(150);
 
 /// Recording phase events for windows that follow along (onboarding's Try it).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Type)]
@@ -106,6 +108,9 @@ struct Hold {
     /// ignored. Always set for toggle; set for hold-or-toggle once a release
     /// has been classified as a tap.
     locked: bool,
+    /// The shortcut that started it, for a stop that no key press triggers
+    /// (auto-stop on a long pause).
+    hotkey_string: String,
 }
 
 /// What to do with an input that arrives while the pipeline is busy
@@ -492,6 +497,20 @@ impl CoordinatorState {
         None
     }
 
+    /// The speaker paused long enough after speaking. Only a locked session
+    /// (a tap, or toggle mode) ends this way: a held key (push-to-talk, or
+    /// hold-or-toggle still held) is the user saying when to stop.
+    fn on_auto_stop(&mut self) -> Option<Effect> {
+        let Stage::Recording(binding_id) = &self.stage else {
+            return None;
+        };
+        let hold = self.hold.as_ref().filter(|h| h.locked)?;
+        let (binding_id, hotkey_string) = (binding_id.clone(), hold.hotkey_string.clone());
+        debug!("Auto-stop for '{binding_id}': long pause after speech");
+        self.pending_release = None;
+        Some(self.begin_processing(binding_id, hotkey_string))
+    }
+
     fn on_cancel(&mut self, recording_was_active: bool) {
         self.pending_release = None;
         // An explicit cancel abandons any remembered start too — the user
@@ -542,7 +561,11 @@ impl CoordinatorState {
         locked: bool,
     ) -> Effect {
         self.stage = Stage::Recording(binding_id.clone());
-        self.hold = Some(Hold { pressed_at, locked });
+        self.hold = Some(Hold {
+            pressed_at,
+            locked,
+            hotkey_string: hotkey_string.clone(),
+        });
         Effect::Start {
             binding_id,
             hotkey_string,
@@ -581,12 +604,29 @@ impl TranscriptionCoordinator {
                 let mut state = CoordinatorState::new();
 
                 loop {
-                    let cmd = if let Some(deadline) = state.grace_deadline() {
+                    // A locked recording is polled for a long pause.
+                    let auto_stop_poll = state
+                        .is_recording_locked()
+                        .then(|| Instant::now() + AUTO_STOP_POLL);
+                    let deadline = match (state.grace_deadline(), auto_stop_poll) {
+                        (Some(grace), Some(poll)) => Some(grace.min(poll)),
+                        (grace, poll) => grace.or(poll),
+                    };
+                    let cmd = if let Some(deadline) = deadline {
                         match rx.recv_timeout(deadline.saturating_duration_since(Instant::now())) {
                             Ok(cmd) => cmd,
                             Err(mpsc::RecvTimeoutError::Timeout) => {
                                 let was_locked = state.is_recording_locked();
-                                if let Some(effect) = state.on_grace_expired() {
+                                let grace_expired =
+                                    state.grace_deadline().is_some_and(|d| d <= Instant::now());
+                                let effect = if grace_expired {
+                                    state.on_grace_expired()
+                                } else if state.is_recording_locked() && paused_long_enough(&app) {
+                                    state.on_auto_stop()
+                                } else {
+                                    None
+                                };
+                                if let Some(effect) = effect {
                                     run_effect(&app, &mut state, effect);
                                 }
                                 if !was_locked && state.is_recording_locked() {
@@ -738,6 +778,24 @@ fn run_effect(app: &AppHandle, state: &mut CoordinatorState, effect: Effect) {
             emit_recording_phase(app, RecordingPhase::Stopped);
         }
     }
+}
+
+/// Whether auto-stop is on and the speaker has been quiet, after speaking,
+/// for at least the configured pause.
+fn paused_long_enough(app: &AppHandle) -> bool {
+    let settings = crate::settings::get_settings(app);
+    if !settings.auto_stop_on_pause {
+        return false;
+    }
+    let range = crate::settings::AUTO_STOP_PAUSE_MS_RANGE;
+    let pause = Duration::from_millis(
+        settings
+            .auto_stop_pause_ms
+            .clamp(*range.start(), *range.end()),
+    );
+    app.try_state::<Arc<AudioRecordingManager>>()
+        .and_then(|rm| rm.silence_after_speech())
+        .is_some_and(|quiet| quiet >= pause)
 }
 
 /// Execute a start effect; returns whether recording actually began, so the
@@ -1334,6 +1392,50 @@ mod tests {
         assert!(state.on_input(input(mode, false), t0 + ms(5080)).is_none());
         assert!(state.on_processing_finished().is_none());
         assert_eq!(state.stage, Stage::Idle);
+    }
+
+    /// Auto-stop on a long pause ends tap and toggle sessions, never a key
+    /// that is still held, and never when nothing is recording.
+    #[test]
+    fn auto_stop_ends_only_locked_sessions() {
+        let t0 = Instant::now();
+
+        // Nothing recording.
+        let mut state = CoordinatorState::new();
+        assert!(state.on_auto_stop().is_none());
+
+        // Toggle: locked from the start.
+        let mode = ShortcutActivation::Toggle;
+        assert!(state.on_input(input(mode, true), t0).is_some());
+        assert!(matches!(state.on_auto_stop(), Some(Effect::Stop { .. })));
+        assert_eq!(state.stage, Stage::Processing);
+        assert!(state.on_auto_stop().is_none(), "already stopping");
+        assert!(state.on_processing_finished().is_none());
+
+        // Push-to-talk: the held key decides.
+        let mode = ShortcutActivation::PushToTalk;
+        let mut state = CoordinatorState::new();
+        assert!(state.on_input(input(mode, true), t0).is_some());
+        assert!(state.on_auto_stop().is_none());
+        assert_eq!(state.stage, Stage::Recording(BINDING.to_string()));
+
+        // Hold-or-toggle: not while held, but once a tap locked it.
+        let mode = ShortcutActivation::HoldOrToggle;
+        let mut state = CoordinatorState::new();
+        assert!(state.on_input(input(mode, true), t0).is_some());
+        assert!(state.on_auto_stop().is_none(), "key still held");
+        assert!(state.on_input(input(mode, false), t0 + ms(120)).is_none());
+        assert!(state.on_grace_expired().is_none());
+        match state.on_auto_stop() {
+            Some(Effect::Stop {
+                binding_id,
+                hotkey_string,
+            }) => {
+                assert_eq!(binding_id, BINDING);
+                assert_eq!(hotkey_string, BINDING);
+            }
+            _ => panic!("a tapped session stops on a long pause"),
+        }
     }
 
     /// Hold-or-toggle: a locked session ignores stray releases — only a press

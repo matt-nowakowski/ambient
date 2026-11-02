@@ -372,6 +372,15 @@
           "push_to_talk": "Merekam selama Anda menahan pintasan",
           "toggle": "Ketuk pintasan untuk mulai merekam, lalu ketuk lagi untuk berhenti"
         }
+      },
+      "autoStop": {
+        "label": "Berhenti setelah jeda",
+        "description": "Saat Anda mulai dengan ketukan, dikte juga berhenti sendiri begitu Anda berhenti bicara sejenak. Jeda singkat di tengah kalimat tidak dihitung, dan dikte tidak pernah berhenti sebelum Anda mengatakan sesuatu.",
+        "delay": {
+          "label": "Jeda sebelum berhenti",
+          "description": "Berapa lama diam setelah bicara sebelum dikte berhenti.",
+          "seconds": "{{seconds}} dtk"
+        }
       }
     },
     "models": {

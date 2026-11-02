@@ -374,6 +374,15 @@
           "push_to_talk": "Enregistre tant que le raccourci est maintenu",
           "toggle": "Appuyez sur le raccourci pour démarrer l'enregistrement, appuyez à nouveau pour arrêter"
         }
+      },
+      "autoStop": {
+        "label": "Arrêter après une pause",
+        "description": "Quand vous démarrez d'un appui, la dictée s'arrête aussi d'elle-même dès que vous marquez une pause après avoir parlé. Les courtes pauses en milieu de phrase ne comptent pas, et elle ne s'arrête jamais avant que vous ayez dit quelque chose.",
+        "delay": {
+          "label": "Pause avant l'arrêt",
+          "description": "Combien de temps rester silencieux après avoir parlé avant que la dictée s'arrête.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
