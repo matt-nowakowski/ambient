@@ -209,8 +209,14 @@ pub fn create(app: &AppHandle) {
         .content_protected(true)
         .visible(false)
         .build();
-        if let Err(e) = built {
-            log::error!("Failed to create agent HUD: {e}");
+        match built {
+            // Linux: no focus, no taskbar, and a layer surface where the
+            // compositor has one (see hud_linux.rs).
+            #[cfg(target_os = "linux")]
+            Ok(window) => crate::hud_linux::configure(&window),
+            #[cfg(not(target_os = "linux"))]
+            Ok(_) => {}
+            Err(e) => log::error!("Failed to create agent HUD: {e}"),
         }
     }
 }
@@ -220,6 +226,11 @@ fn place(app: &AppHandle, height: f64) {
         return;
     };
     let height = height.clamp(MIN_HEIGHT, MAX_HEIGHT);
+    // A layer surface is placed by its margins, on the output in focus.
+    #[cfg(target_os = "linux")]
+    if crate::hud_linux::place(&window, WIDTH, height, 38.0, MARGIN) {
+        return;
+    }
     let _ = window.set_size(tauri::Size::Logical(tauri::LogicalSize {
         width: WIDTH,
         height,
@@ -404,7 +415,13 @@ fn mouse_down() -> bool {
     unsafe { CGEventSourceButtonState(0, 0) || CGEventSourceButtonState(0, 1) }
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Linux: the pointer's buttons on X11 (Wayland doesn't expose them).
+#[cfg(target_os = "linux")]
+fn mouse_down() -> bool {
+    crate::hud_linux::mouse_down()
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 fn mouse_down() -> bool {
     false
 }
