@@ -23,8 +23,15 @@ if (typeof document !== "undefined") {
     }),
   ).then(() => continueRender(handle), () => continueRender(handle));
 }
-/** The intro's stack (src/intro/intro.css). */
-export const FONT = `Geist, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+/**
+ * The website's stack (web/app/globals.css --font-sans): the Apple system font
+ * first (SF Pro on a Mac, which is where we render), then Inter and Geist.
+ * FONT is for UI text (SF Pro Text), FONT_DISPLAY for headlines and the lockup
+ * (SF Pro Display). Weights stay 300–500; Geist is still loaded as the fallback.
+ */
+const TAIL = `"Inter", "Geist", "Helvetica Neue", system-ui, sans-serif`;
+export const FONT = `-apple-system, BlinkMacSystemFont, "SF Pro Text", ${TAIL}`;
+export const FONT_DISPLAY = `-apple-system, BlinkMacSystemFont, "SF Pro Display", ${TAIL}`;
 
 // ---------------------------------------------------------------- tokens
 export const C = {
@@ -276,7 +283,7 @@ export const Lockup: React.FC<{ size: number; at?: number; wordAt?: number; colo
   const { fps } = useVideoConfig();
   const k = size / 60;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 18 * k, color, fontFamily: FONT, ...style }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 18 * k, color, fontFamily: FONT_DISPLAY, ...style }}>
       <LensOrb k={k} at={at} color={color} spin={spin} bloomAt={bloomAt} glow={color === "#fafafa" ? 0.22 : 0} />
       <span style={{ display: "inline-flex", fontSize: size, fontWeight: 300, letterSpacing: "-0.04em", lineHeight: 1 }}>
         {Array.from("ambient").map((ch, i) => {
@@ -414,7 +421,7 @@ export const Soft: React.FC<{
   return (
     <div
       style={{
-        fontFamily: FONT,
+        fontFamily: FONT_DISPLAY,
         fontSize: size,
         fontWeight: weight,
         letterSpacing: "-0.035em",

@@ -21,13 +21,15 @@ beds are kept as `bed-v1.mp3` and `bed-v2.mp3`.
 
 **Timing** (`src/beats.ts`): a beat is 0.6 s (18 frames). Each shot keeps v1's
 internal beat numbers, so v1's moves play 1.2× slower, and each shot gets
-extra beats to hold. The music sits a little lower than in v1 (0.72) and ducks
-to 0.36 under the voice.
+extra beats to hold. The music sits a little lower than in v1 (0.72), ducks to 0.3
+under the voice, and eases back by a quarter as the bed builds after beat 30.
 
 **Kept from v2:**
 - the app's `.app-backdrop` (light and dark), with no violet anywhere;
-- the launch-screen lockup (Geist 300, orb 17/14, 18px gap) at 72 px, 64 px vertical;
-- Geist at 300 for display and 400–500 for UI;
+- the launch-screen lockup (weight 300, -0.04em, orb 17/14, 18px gap) at 72 px, 64 px vertical;
+- the website's font stack (`-apple-system`, i.e. SF Pro on the Mac we render
+  on, then Inter, Geist): SF Pro Display for headlines and the lockup, SF Pro
+  Text for UI, at 300 for display and 400–500 for UI, nothing bold;
 - content-sized labels and pills (nothing truncates);
 - product captions that never overlap the UI;
 - sound effects (`npm run sfx`, `public/sfx/`), re-timed to this cut.
