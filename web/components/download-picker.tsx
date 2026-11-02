@@ -3,9 +3,16 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { detectPlatform, guessPlatform, type Platform, type ReleaseId } from "@/lib/platform";
 import { osLabel, releases, releasesByOS, type OS, type Release } from "@/lib/releases";
+import { SuccessCheck } from "./success-check";
 import { buttonClass } from "./ui";
 
 const ORDER: OS[] = ["mac", "windows", "linux"];
+
+const INSTALL_STEPS: Record<OS, string[]> = {
+  mac: ["Open the .dmg from your Downloads", "Drag Ambient into Applications", "Open Ambient from Applications"],
+  windows: ["Open the installer from your Downloads", "Follow the steps, then Ambient opens", "Find it in the system tray"],
+  linux: ["Open or install the file you downloaded", "Start Ambient from your apps menu", "See Linux setup below if the shortcut doesn’t work"],
+};
 
 const noopSubscribe = () => () => {};
 let guessed: Platform | undefined;
@@ -194,14 +201,27 @@ export function DownloadPicker() {
 
   if (started) {
     return (
-      <div className="flex h-[132px] flex-col items-center justify-start text-center" role="status">
-        <p className="text-[15px] text-foreground">Your download has started.</p>
-        <p className="eyebrow mt-4">
-          {started.label} · {started.file}
-        </p>
-        <p className="mt-2.5 text-[13px] text-muted">
-          Didn’t start?{" "}
-          <a href={started.url} className="text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground">
+      <div role="status" className="glass mx-auto w-full max-w-[440px] rounded-[26px] p-6 text-left sm:p-7">
+        <div className="flex items-center gap-4">
+          <SuccessCheck size={44} />
+          <div className="min-w-0">
+            <p className="text-[16px] font-normal tracking-[-0.015em]">Downloading for {osLabel[started.os]}</p>
+            <p className="mt-0.5 truncate text-[12.5px] text-subtle">
+              {started.short} · {started.file}
+            </p>
+          </div>
+        </div>
+        <ol className="mt-6 space-y-2.5 border-t border-border pt-5">
+          {INSTALL_STEPS[started.os].map((step, i) => (
+            <li key={step} className="flex items-baseline gap-3 text-[13.5px] text-muted">
+              <span className="w-4 shrink-0 text-[12px] tabular-nums text-subtle">{i + 1}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4 text-[12.5px] text-subtle">
+          Didn’t start?
+          <a href={started.url} className={buttonClass("glass", "sm")}>
             Download again
           </a>
         </p>

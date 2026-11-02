@@ -91,8 +91,7 @@ export default function DownloadPage() {
           </h2>
           <Stagger className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Step n={1} title="Grant permissions">
-              Allow microphone access. On macOS, also enable {brand.name} under System Settings → Privacy & Security →
-              Accessibility so it can type for you.
+              {brand.name} asks for the microphone, and on a Mac, Accessibility so it can type.
             </Step>
             <Step n={2} title="Press the shortcut">
               <span className="flex flex-wrap items-center gap-1.5">
