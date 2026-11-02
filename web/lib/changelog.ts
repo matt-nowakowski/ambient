@@ -11,6 +11,21 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.1",
+    date: "2026-11-02",
+    title: "Release pipeline",
+    summary:
+      "No app changes. Installers for every platform now come from one automated, signed and notarized release build.",
+    sections: [
+      {
+        heading: "Changes",
+        items: [
+          "macOS disk images are notarized and stapled, so they open offline without a Gatekeeper warning.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.0",
     date: "2026-11-02",
     title: `First release of ${brand.name}`,
