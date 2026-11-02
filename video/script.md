@@ -1,4 +1,22 @@
-# Ambient launch spot: script and cut (v3)
+# Ambient launch spot: script and cut (v4)
+
+**v4** (Matt's notes on v3):
+- clicks and taps are about 10 dB louder, and `click.mp3` is regenerated
+  (`npm run sfx click`), because v3's was about 20 dB too quiet to come through
+  at any level;
+- whooshes are about 13 dB louder, and every whip (the first suggestion
+  included) and every hard cut now has one;
+- the app names hold one beat each, twice v3's dwell;
+- "They asked… Q3 numbers" holds twice as long;
+- the mail window is steady: whole-pixel camera, no slow drift during holds,
+  settled springs, and text that doesn't re-snap while the camera scales;
+- the end card is just the lockup and the domain.
+
+Those two longer holds add 8 beats, so the cut runs 73.8 s. To keep the logo on
+the bed's lift and the end card on its final hit, the bed repeats two bars of
+its steady groove (its beats 40–48) at video beat 48 (`MUSIC_SPLICE`). Below,
+times and beats after 0:28.8 are v3's; add 2.4 s (4 beats) from "suggest" to
+"apps", and 4.8 s (8 beats) after.
 
 v3 is v1's music-led cut (kinetic type, real screens, camera moves, whips)
 slowed down about 1.4×, with v2's polish on top. It runs 69 s at 30 fps in two

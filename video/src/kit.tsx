@@ -71,8 +71,10 @@ export function ease(f: number, [a, b]: [number, number], [from, to]: [number, n
 
 /** 0→1 spring starting at frame `at` (v1's snappy default). */
 export function springAt(f: number, fps: number, at: number, cfg: { damping?: number; stiffness?: number; mass?: number } = {}) {
-  return spring({ frame: f - at, fps, config: { damping: 22, stiffness: 170, mass: 1, ...cfg } });
+  return settle(spring({ frame: f - at, fps, config: { damping: 22, stiffness: 170, mass: 1, ...cfg } }));
 }
+/** Snap a spring's last sub-pixel tail to rest, so settled things stop moving. */
+export const settle = (v: number) => (Math.abs(1 - v) < 0.002 ? 1 : v);
 
 // ---------------------------------------------------------------- stage + camera
 /**
@@ -89,8 +91,9 @@ export const Stage: React.FC<{ children: ReactNode; zoom?: number; cx?: number; 
 }) => {
   const { width, height } = useVideoConfig();
   const s = 2 * zoom;
-  const tx = width / 2 - cx * s;
-  const ty = height / 2 - cy * s;
+  // whole-pixel translate, so a held camera never shimmers between frames
+  const tx = Math.round(width / 2 - cx * s);
+  const ty = Math.round(height / 2 - cy * s);
   return (
     <AbsoluteFill style={{ overflow: "hidden" }}>
       <div
@@ -104,6 +107,8 @@ export const Stage: React.FC<{ children: ReactNode; zoom?: number; cx?: number; 
           transform: `translate(${tx}px, ${ty}px) scale(${s})`,
           fontFamily: FONT,
           letterSpacing: "-0.006em", // UI mock-ups: app scale, root tracking
+          textRendering: "geometricPrecision", // no per-frame glyph re-snapping while the camera scales
+          willChange: "transform",
           ...style,
         }}
       >

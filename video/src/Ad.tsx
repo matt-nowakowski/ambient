@@ -24,10 +24,11 @@ import {
   camera,
   ease,
   hudCard,
+  settle,
   springAt,
   useTall,
 } from "./kit";
-import { FB, MUSIC_TRIM, SHOTS, TOTAL, VO, beat } from "./beats";
+import { FB, FPS, FIRST_BEAT, MUSIC_SPLICE, SHOTS, TOTAL, VO, beat } from "./beats";
 import vo from "./vo";
 
 // ---------------------------------------------------------------- motion helpers
@@ -78,7 +79,7 @@ const Slam: React.FC<{
       }}
     >
       {words.map((w, i) => {
-        const s = spring({ frame: f - w.at, fps, config: fast ? { damping: 26, stiffness: 700, mass: 0.5 } : { damping: 20, stiffness: 260, mass: 0.7 } });
+        const s = settle(spring({ frame: f - w.at, fps, config: fast ? { damping: 26, stiffness: 700, mass: 0.5 } : { damping: 20, stiffness: 260, mass: 0.7 } }));
         const punch = 1 + 0.05 * pulse(f, [w.at + 3], 5);
         return (
           <span key={i} style={{ display: "inline-block", overflow: "hidden", padding: "0.08em 0.12em 0.16em", margin: "-0.08em -0.12em -0.16em", whiteSpace: "nowrap" }}>
@@ -361,16 +362,16 @@ const Writes: React.FC<ShotProps> = ({ len }) => {
     f,
     tall
       ? [
-          [0, 1.22, 610, 300],
+          [0, 1.25, 610, 300],
           [land - 2, 1.25, 610, 300],
           [land + 14, 1.42, 548, 222],
-          [len, 1.46, 548, 220],
+          [len, 1.42, 548, 222],
         ]
       : [
-          [0, 1.45, 640, 330],
+          [0, 1.5, 640, 330],
           [land - 2, 1.5, 640, 330],
           [land + 14, 1.45, 400, 225],
-          [len, 1.5, 400, 222],
+          [len, 1.45, 400, 225],
         ],
   );
   const flyT = ease(f, [land - 4, land + 6], [0, 1], Easing.bezier(0.3, 0, 0.1, 1));
@@ -384,7 +385,7 @@ const Writes: React.FC<ShotProps> = ({ len }) => {
     <AbsoluteFill>
       <Light />
       <Stage {...cam}>
-        <MacWindow w={700} h={420} title="New Message" style={{ left: WX, top: WY + (1 - win) * 30 }}>
+        <MacWindow w={700} h={420} title="New Message" style={{ left: WX, top: WY + Math.round((1 - win) * 30) }}>
           <div style={{ padding: "0 16px", fontSize: 13, color: C.fg }}>
             {[
               ["To:", "Sam Rivera"],
@@ -776,7 +777,7 @@ const Meeting: React.FC<ShotProps> = ({ start, len }) => {
   );
 };
 
-export const NOBOT = (start: number) => ({ press: lb(start, 36.5), sum: lb(start, 37), word: lb(start, 38) });
+export const NOBOT = (start: number) => ({ press: lb(start, 37), sum: lb(start, 38), word: lb(start, 40) });
 
 const NoBot: React.FC<ShotProps> = ({ start }) => {
   const f = useCurrentFrame();
@@ -821,7 +822,7 @@ const NoBot: React.FC<ShotProps> = ({ start }) => {
               <span style={{ fontSize: 12, color: C.subtle }}>· Weekly sync</span>
             </div>
             {["Send the Q3 numbers to Priya by Friday", "Draft the follow-up email"].map((it, i) => {
-              const t = springAt(f, fps, lb(start, 37.5 + i * 0.25), { damping: 18, stiffness: 320 });
+              const t = springAt(f, fps, lb(start, 38.5 + i * 0.25), { damping: 18, stiffness: 320 });
               return (
                 <div key={it} style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 12.5, marginTop: 9, whiteSpace: "nowrap", opacity: Math.min(1, t * 1.5), transform: `translateX(${(1 - t) * -10}px)` }}>
                   <div style={{ width: 12, height: 12, borderRadius: 4, border: "1.5px solid #c7c7cc", flex: "none" }} />
@@ -936,8 +937,8 @@ const DraftCtx: React.FC = () => (
 );
 
 export const APPS = ["Slack", "Gmail", "Notion", "Linear", "Cursor", "VS Code", "Google Docs", "Messages", "ChatGPT", "Figma"];
-/** One app per half-beat after a beat of "In any app." */
-export const appAt = (i: number) => Math.round(FB + i * FB * 0.5);
+/** One app per beat (v4: twice v3's dwell) after a beat of "In any app." */
+export const appAt = (i: number) => Math.round(FB + i * FB);
 
 const Apps: React.FC<ShotProps> = () => {
   const f = useCurrentFrame();
@@ -1186,14 +1187,14 @@ const Tagline: React.FC<ShotProps> = ({ start }) => {
 
 export const ENDCARD = (start: number) => {
   const url = Math.round(vo.free.words[2].start * 30) + lb(start, 81) - 4;
-  return { url, sub: url + 24, hit: lb(start, 86) };
+  return { url, hit: lb(start, 86) };
 };
 
 const EndCard: React.FC<ShotProps> = ({ start, len }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const tall = useTall();
-  const { url, sub, hit } = ENDCARD(start);
+  const { url, hit } = ENDCARD(start);
   const s = springAt(f, fps, 0, { damping: 16, stiffness: 200 });
   const hitP = pulse(f, [hit], 8);
   const out = ease(f, [len - 14, len], [1, 0]);
@@ -1205,23 +1206,6 @@ const EndCard: React.FC<ShotProps> = ({ start, len }) => {
         <div style={{ display: "grid", justifyItems: "center", transform: `scale(${(0.94 + 0.06 * s) * (1 + 0.03 * hitP) * (1 + ease(f, [0, len], [0, 0.03]))})` }}>
           <Lockup size={tall ? 64 : 72} color={C.fg} />
           <Slam words={[{ t: "tryambient.ai", at: url }]} size={64} style={{ marginTop: tall ? 56 : 48 }} />
-          <div
-            style={{
-              marginTop: 18,
-              fontFamily: FONT_DISPLAY,
-              fontSize: tall ? 34 : 30,
-              fontWeight: 300,
-              letterSpacing: "-0.01em",
-              lineHeight: 1.35,
-              color: C.muted,
-              textAlign: "center",
-              maxWidth: tall ? 800 : undefined,
-              opacity: ease(f, [sub, sub + 10], [0, 1]),
-              transform: `translateY(${ease(f, [sub, sub + 12], [12, 0], ARRIVE)}px)`,
-            }}
-          >
-            Free for Mac, Windows and Linux. Agent on Mac.
-          </div>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -1259,44 +1243,52 @@ const v1 = (id: string) => shot(id)[2];
 
 /** Sound effects: [file in public/sfx, global frame, volume, frames to play]. */
 function sfxList(): [string, number, number, number?][] {
+  // v4 levels, so they read plainly over the bed: taps and clicks ×3.2 (+10 dB)
+  // over v3 (and click.mp3 regenerated ~20 dB hotter), whooshes 0.16 → 0.75 (+13 dB).
+  const TAP = 3.2;
+  const WHOOSH = 0.75;
   const L: [string, number, number, number?][] = [];
-  [0, 1, 2, 3].forEach((b) => L.push(["tap", at("open", lb(0, b)), b === 0 ? 0.5 : 0.3]));
+  [0, 1, 2, 3].forEach((b) => L.push(["tap", at("open", lb(0, b)), (b === 0 ? 0.5 : 0.3) * TAP]));
   L.push(["chime", at("open", 2), 0.22]);
-  L.push(["tap", at("speak", 16), 0.45]);
+  L.push(["tap", at("speak", 16), 0.45 * TAP]);
   L.push(["typing", at("writes", WRITES.streamFrom), 0.32, WRITES.streamTo - WRITES.streamFrom + 6]);
-  L.push(["click", at("writes", WRITES.polish), 0.35]);
+  L.push(["click", at("writes", WRITES.polish), 0.35 * TAP]);
   L.push(["swish", at("writes", WRITES.land - 4), 0.22]);
-  L.push(["tap", at("answers", 3), 0.4]);
+  L.push(["tap", at("answers", 3), 0.4 * TAP]);
   L.push(["pop", at("answers", 12), 0.22]);
-  L.push(["tap", at("acts", 3), 0.4]);
+  L.push(["tap", at("acts", 3), 0.4 * TAP]);
   L.push(["pop", at("acts", lb(v1("acts"), 17)), 0.25]);
   L.push(["swish", at("acts", lb(v1("acts"), 17.5)), 0.18]);
-  L.push(["tap", at("remembers", 3), 0.4]);
+  L.push(["tap", at("remembers", 3), 0.4 * TAP]);
   L.push(["pop", at("remembers", 14), 0.22]);
-  [0, 1, 2, 3].forEach((k) => L.push(["tap", at("modes", lb(0, k)), 0.22]));
+  [0, 1, 2, 3].forEach((k) => L.push(["tap", at("modes", lb(0, k)), 0.22 * TAP]));
   L.push(["chime", at("hey", heyAt()), 0.38]);
   const m = MEETING(v1("meeting"));
   L.push(["pop", at("meeting", m.suggest), 0.22]);
-  L.push(["click", at("meeting", m.accept), 0.6]);
+  L.push(["click", at("meeting", m.accept), 0.6 * TAP]);
   L.push(["swish", at("meeting", m.panel), 0.2]);
   const n = NOBOT(v1("nobot"));
   L.push(["pop", at("nobot", 0), 0.22]);
-  L.push(["click", at("nobot", n.press), 0.55]);
+  L.push(["click", at("nobot", n.press), 0.55 * TAP]);
   L.push(["swish", at("nobot", n.sum), 0.18]);
   const each = Math.round(SUGGEST_EACH * FB);
   [0, 1, 2, 3].forEach((k) => {
-    if (k > 0) L.push(["whoosh", at("suggest", k * each - 3), 0.16]);
+    // every suggestion arrives with a whip, the first one included
+    L.push(["whoosh", at("suggest", k * each - 4), WHOOSH]);
     L.push(["pop", at("suggest", k * each + 4), 0.2]);
-    L.push(["click", at("suggest", k * each + 30), 0.55]);
+    L.push(["click", at("suggest", k * each + 30), 0.55 * TAP]);
   });
-  APPS.forEach((_, k) => L.push(["tap", at("apps", appAt(k)), 0.18]));
+  APPS.forEach((_, k) => L.push(["tap", at("apps", appAt(k)), 0.18 * TAP]));
   privateCards(v1("private")).forEach((c) => L.push(["swish", at("private", c), 0.16]));
   L.push(["pop", at("private", privateCards(v1("private"))[2] + 8), 0.2]);
-  L.push(["whoosh", at("gather", 0), 0.22]);
+  L.push(["whoosh", at("gather", 0), WHOOSH]);
   L.push(["logo", at("reveal", revealName() - 18), 0.5]);
   L.push(["chime", at("endcard", ENDCARD(v1("endcard")).hit), 0.25]);
+  // a whoosh under every whip, and a softer one under each hard cut
+  // (not where the open, the chime, the gather or the logo already mark it)
   SHOTS.forEach(([id, b]) => {
-    if (WHIPS.has(id)) L.push(["whoosh", beat(b) - 4, 0.16]);
+    if (WHIPS.has(id)) L.push(["whoosh", beat(b) - 4, WHOOSH]);
+    else if (!["open", "hey", "suggest", "gather", "reveal"].includes(id)) L.push(["whoosh", beat(b) - 4, WHOOSH * 0.6]);
   });
   return L;
 }
@@ -1309,9 +1301,13 @@ function musicVolume(f: number) {
   for (const [a, b2] of voWindows) dist = Math.min(dist, f < a ? a - f : f > b2 ? f - b2 : 0);
   const duck = interpolate(dist, [0, 8], [1, 0], { extrapolateRight: "clamp" });
   // the bed builds about 7 dB through the cut; ease it back so the late lines stay clear
-  const build = interpolate(f, [beat(30), beat(90)], [1, 0.75], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const build = interpolate(f, [beat(30), beat(98)], [1, 0.75], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (0.72 - 0.42 * duck) * build;
 }
+/** Frame in the bed file of its beat b. */
+const musicFrame = (b: number) => Math.round((FIRST_BEAT + (b * 60) / 100) * FPS);
+const SPLICE = beat(MUSIC_SPLICE.at);
+const XF = 3; // a 3-frame crossfade at the splice
 
 export const Ad: React.FC = () => (
   <AbsoluteFill style={{ background: C.bg }}>
@@ -1342,7 +1338,17 @@ export const Ad: React.FC = () => (
         <Audio src={staticFile(`sfx/${id}.mp3`)} volume={dur ? (x) => v * interpolate(x, [dur - 8, dur], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : v} />
       </Sequence>
     ))}
-    <Audio src={staticFile("music/bed.mp3")} trimBefore={MUSIC_TRIM || undefined} volume={musicVolume} />
+    {/* the bed, with two bars repeated at the splice (see beats.ts) */}
+    <Sequence from={0} durationInFrames={SPLICE + XF} name="music a">
+      <Audio src={staticFile("music/bed.mp3")} volume={(x) => musicVolume(x) * interpolate(x, [SPLICE - XF, SPLICE + XF], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
+    </Sequence>
+    <Sequence from={SPLICE - XF} name="music b">
+      <Audio
+        src={staticFile("music/bed.mp3")}
+        trimBefore={musicFrame(MUSIC_SPLICE.to) - XF}
+        volume={(x) => musicVolume(x + SPLICE - XF) * interpolate(x, [0, 2 * XF], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
+      />
+    </Sequence>
   </AbsoluteFill>
 );
 
@@ -1366,9 +1372,6 @@ export const Poster: React.FC<PosterProps> = ({ theme }) => {
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: height * (tall ? 0.66 : 0.7), display: "grid", justifyItems: "center", gap: tall ? 20 : 16, textAlign: "center" }}>
         <div style={{ fontFamily: FONT_DISPLAY, fontSize: 64, fontWeight: 300, letterSpacing: "-0.035em", lineHeight: 1.08, color: ink }}>tryambient.ai</div>
-        <div style={{ fontFamily: FONT_DISPLAY, fontSize: tall ? 34 : 30, fontWeight: 300, letterSpacing: "-0.01em", lineHeight: 1.35, color: dark ? C.mutedDark : C.muted, maxWidth: tall ? 800 : undefined }}>
-          Free for Mac, Windows and Linux. Agent on Mac.
-        </div>
       </div>
     </AbsoluteFill>
   );

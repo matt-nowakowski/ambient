@@ -8,6 +8,11 @@
 // Each shot keeps v1's internal beat numbers (its third column is where it
 // started in v1), so inside a shot v1's moves run on 0.6 s beats (1.2× slower),
 // and the shot itself is given extra beats to hold (about 1.4× v1 overall).
+//
+// v4: "They asked… Q3 numbers" and the app names hold twice as long (+4 beats
+// each). To keep the logo on the bed's lift and the end card on its final hit,
+// the bed repeats two bars of its steady groove (its beats 40–48) at video beat
+// 48 (MUSIC_SPLICE): from there on, music beat = video beat − 8.
 export const FPS = 30;
 export const W = 1920;
 export const H = 1080;
@@ -15,6 +20,8 @@ export const H = 1080;
 export const BPM = 100;
 export const FIRST_BEAT = 0.032;
 export const MUSIC_TRIM = 0;
+/** v4: at video beat `at`, the bed jumps back to its beat `to` (repeats `at − to` beats). */
+export const MUSIC_SPLICE = { at: 48, to: 40 };
 /** Frames per beat. */
 export const FB = (60 / BPM) * FPS;
 /** Global frame of beat b. */
@@ -32,16 +39,16 @@ export const SHOTS: [string, number, number][] = [
   ["hey", 36, 28],
   ["meeting", 42, 32],
   ["nobot", 48, 36],
-  ["suggest", 53, 40],
-  ["apps", 65, 48],
-  ["connect", 73, 54],
-  ["private", 77, 57],
-  ["gather", 84, 62],
-  ["reveal", 88, 64],
-  ["tagline", 96, 72],
-  ["endcard", 104, 80],
+  ["suggest", 57, 40],
+  ["apps", 69, 48],
+  ["connect", 81, 54],
+  ["private", 85, 57],
+  ["gather", 92, 62],
+  ["reveal", 96, 64],
+  ["tagline", 104, 72],
+  ["endcard", 112, 80],
 ];
-export const END_BEAT = 115;
+export const END_BEAT = 123;
 export const TOTAL = beat(END_BEAT);
 
 /** Voice fragments: [file in public/vo, beat it starts on]. */
@@ -53,12 +60,12 @@ export const VO: [string, number][] = [
   ["remembers", 26],
   ["hey", 36],
   ["notes", 42],
-  ["nobot", 50],
-  ["anyapp", 65],
-  ["nothing", 73],
-  ["private", 77.5],
-  ["meet", 88],
-  ["free", 105],
+  ["nobot", 52],
+  ["anyapp", 69],
+  ["nothing", 81],
+  ["private", 85.5],
+  ["meet", 96],
+  ["free", 113],
 ];
 
 /** Chapters for the site's player (seconds). */
@@ -68,8 +75,8 @@ export const CHAPTERS: [string, number][] = [
   ["The agent", 15],
   ["Hey Ambient", 36],
   ["Meetings", 42],
-  ["Suggestions", 53],
-  ["Nothing to connect", 65],
-  ["Privacy", 77],
-  ["Meet Ambient", 88],
+  ["Suggestions", 57],
+  ["Nothing to connect", 69],
+  ["Privacy", 85],
+  ["Meet Ambient", 96],
 ];

@@ -8,7 +8,7 @@ const root = path.dirname(path.dirname(new URL(import.meta.url).pathname));
 const key = (process.env.ELEVENLABS_API_KEY || fs.readFileSync(path.join(os.homedir(), ".ambient/elevenlabs.key"), "utf8")).trim();
 
 export const SFX = {
-  click: { text: "A single soft, subtle UI click, like a premium trackpad click on a Mac. Clean, quiet, short, dry, no reverb.", duration: 0.5 },
+  click: { text: "One crisp, clear UI button click, like pressing a premium Mac trackpad: a short clean tick with a little body, present and well defined, dry, no reverb.", duration: 0.5 },
   tap: { text: "A single gentle soft tap on a glass touch surface, muted, warm, very short, minimal UI sound.", duration: 0.5 },
   typing: { text: "Quiet, soft typing on a modern low-profile laptop keyboard, steady relaxed pace, close and intimate, no room noise.", duration: 3 },
   whoosh: { text: "A very soft, airy, slow whoosh transition, like a breath of wind, smooth and gentle, subtle, cinematic UI.", duration: 1.2 },
