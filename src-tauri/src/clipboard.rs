@@ -89,10 +89,24 @@ fn paste_via_clipboard(
         None
     };
 
-    // Write text to clipboard first
-    write_text_to_clipboard(app_handle, text)?;
+    // Write text to clipboard first, and make sure it's there: ⌘V with the
+    // old contents still on the clipboard pastes them instead of the speech.
+    let ours = match write_and_verify(app_handle, text) {
+        Ok(stamp) => stamp,
+        Err(e) => {
+            restore_saved(app_handle, saved_text, saved_image);
+            return Err(e);
+        }
+    };
 
     std::thread::sleep(Duration::from_millis(paste_delay_ms));
+
+    // Something else may have written the clipboard during the delay (a
+    // clipboard manager, the user): check again right before the keystroke.
+    if !clipboard_still_ours(app_handle, text, ours) {
+        log::warn!("clipboard changed before the paste keystroke; not pasting");
+        return Err("The clipboard changed before pasting".into());
+    }
 
     // Capture key injection errors so the original clipboard is restored before
     // propagating them to the caller.
@@ -120,21 +134,100 @@ fn paste_via_clipboard(
         Ok(())
     })();
 
-    finish_clipboard_paste(paste_result, paste_delay_after_ms, || {
-        // Restore original clipboard content even when key injection failed.
-        // Text takes priority so this path stays identical to the previous behavior;
-        // an image is only restored when the clipboard held no text at all, which is
-        // the case that used to silently wipe screenshots.
-        if let Some(clipboard_content) = saved_text {
-            let _ = write_text_to_clipboard(app_handle, &clipboard_content);
-        } else if let Some(image) = saved_image {
-            info!("Restoring image to clipboard");
-            let _ = clipboard.write_image(&image);
-        } else {
-            // Nothing was there to begin with — don't leave the transcription behind.
-            let _ = clipboard.clear();
+    // The keystroke is only queued: the app reads the clipboard when its
+    // event loop gets to it, so restoring after a short fixed delay can put
+    // the old contents back first and get them pasted instead (#502). Wait
+    // at least RESTORE_FLOOR, and never restore over something newer.
+    let after = paste_delay_after_ms.max(RESTORE_FLOOR_MS);
+    finish_clipboard_paste(paste_result, after, || {
+        if ours.is_some() && pasteboard_change_count() != ours {
+            log::debug!("clipboard changed after the paste; leaving it as is");
+            return;
         }
+        restore_saved(app_handle, saved_text, saved_image);
     })
+}
+
+/// How long the transcript stays on the clipboard after ⌘V, at least, before
+/// the previous contents come back (the paste_tx receipt path waits for the
+/// app's actual read instead).
+const RESTORE_FLOOR_MS: u64 = 500;
+
+/// Restore what the clipboard held before. Text takes priority; an image is
+/// only restored when there was no text, and an empty clipboard is cleared
+/// so the transcript isn't left behind.
+fn restore_saved(
+    app_handle: &AppHandle,
+    saved_text: Option<String>,
+    saved_image: Option<tauri::image::Image<'static>>,
+) {
+    let clipboard = app_handle.clipboard();
+    if let Some(clipboard_content) = saved_text {
+        let _ = write_text_to_clipboard(app_handle, &clipboard_content);
+    } else if let Some(image) = saved_image {
+        info!("Restoring image to clipboard");
+        let _ = clipboard.write_image(&image);
+    } else {
+        let _ = clipboard.clear();
+    }
+}
+
+/// The pasteboard's change count (macOS), which moves on every write.
+#[cfg(target_os = "macos")]
+fn pasteboard_change_count() -> Option<isize> {
+    Some(objc2_app_kit::NSPasteboard::generalPasteboard().changeCount())
+}
+
+#[cfg(not(target_os = "macos"))]
+fn pasteboard_change_count() -> Option<isize> {
+    None
+}
+
+/// Whether the clipboard text is exactly what we mean to paste.
+fn holds_exactly(read_back: Option<&str>, intended: &str) -> bool {
+    read_back == Some(intended)
+}
+
+/// Write `text` and read it back; retry once. Returns the change count
+/// after the write (macOS), to tell later whether anyone wrote since.
+fn write_and_verify(app_handle: &AppHandle, text: &str) -> Result<Option<isize>, String> {
+    for attempt in 0..2 {
+        write_text_to_clipboard(app_handle, text)?;
+        let stamp = pasteboard_change_count();
+        let back = app_handle.clipboard().read_text().ok();
+        // Some Linux setups (wl-copy) can't read back what they wrote.
+        let unreadable = back.is_none() && cfg!(target_os = "linux");
+        if unreadable || holds_exactly(back.as_deref(), text) {
+            log::debug!(
+                "clipboard holds the transcript ({} chars, attempt {})",
+                text.chars().count(),
+                attempt + 1
+            );
+            return Ok(stamp);
+        }
+        log::warn!(
+            "clipboard read back {} chars, not the {} written (attempt {})",
+            back.as_deref().map_or(0, |b| b.chars().count()),
+            text.chars().count(),
+            attempt + 1
+        );
+        std::thread::sleep(Duration::from_millis(30));
+    }
+    Err("The clipboard didn't take the text; nothing was pasted".into())
+}
+
+/// Still ours: the change count hasn't moved (macOS), or the text matches.
+fn clipboard_still_ours(app_handle: &AppHandle, text: &str, ours: Option<isize>) -> bool {
+    match (ours, pasteboard_change_count()) {
+        (Some(a), Some(b)) if a == b => true,
+        _ => holds_exactly(app_handle.clipboard().read_text().ok().as_deref(), text),
+    }
+}
+
+/// Text worth pasting: blank text would send ⌘V with nothing new on the
+/// clipboard (or whitespace), never what was said.
+pub fn is_pasteable(text: &str) -> bool {
+    !text.trim().is_empty()
 }
 
 /// Attempts to send a key combination using Linux-native tools.
@@ -797,6 +890,12 @@ fn should_send_auto_submit(auto_submit: bool, paste_method: PasteMethod) -> bool
 /// Pastes `text` into the focused app. Call from a worker thread, never the main
 /// thread: it sleeps between steps (input injection hops via `with_enigo`).
 pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
+    // Nothing said (a silent auto-stop, VAD trimming everything): paste
+    // nothing, rather than ⌘V over whatever the clipboard already holds.
+    if !is_pasteable(&text) {
+        log::debug!("nothing to paste (blank text); skipping the paste keystroke");
+        return Ok(());
+    }
     let _paste = PASTE_LOCK.lock().unwrap_or_else(PoisonError::into_inner);
     let settings = get_settings(&app_handle);
     let paste_method = settings.paste_method;
@@ -1007,6 +1106,27 @@ e.g. 28:1 28:0 means pressing on the Enter button on a standard US keyboard.
 
         assert_eq!(result.unwrap_err(), "input failed");
         assert!(restored.get());
+    }
+
+    #[test]
+    fn blank_text_is_never_pasted() {
+        for blank in ["", " ", "\n", "\t \r\n", "\u{a0}"] {
+            assert!(!is_pasteable(blank), "{blank:?}");
+        }
+        assert!(is_pasteable("ok"));
+        assert!(is_pasteable(" hello "));
+    }
+
+    #[test]
+    fn only_the_exact_text_counts_as_on_the_clipboard() {
+        assert!(holds_exactly(Some("We're happy."), "We're happy."));
+        // The old clipboard, nothing at all, or a stale near-match: no ⌘V.
+        assert!(!holds_exactly(
+            Some("https://old.example/link"),
+            "We're happy."
+        ));
+        assert!(!holds_exactly(None, "We're happy."));
+        assert!(!holds_exactly(Some("We're happy"), "We're happy."));
     }
 
     #[cfg(unix)]
