@@ -44,14 +44,16 @@ export const AccountSettings: React.FC = () => {
       </header>
       <div className="space-y-section">
         <div className="glass relative overflow-hidden rounded-panel p-hero">
-          {/* The glow gets its own rounded clip: WebKit lets a blurred (composited)
-              child escape a rounded overflow clip, so its square edge poked out. */}
+          {/* The glow is painted as this layer's own background rather than
+              as a blurred child: WebKit composites a filtered child and lets
+              it escape the card's rounded overflow clip (the top-right corner
+              showed a square gradient). A background always follows the
+              layer's border-radius, and the clip-path rounds it again in
+              case a 3D or backdrop-filter context drops the radius. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [mask-image:linear-gradient(#000,#000)]"
-          >
-            <div className="absolute -end-20 -top-28 size-72 rounded-full bg-[radial-gradient(circle,var(--ambient-a),transparent_70%)] blur-2xl" />
-          </div>
+            className="pointer-events-none absolute inset-0 rounded-[inherit] [clip-path:inset(0_round_var(--radius-panel))] bg-[radial-gradient(circle_190px_at_calc(100%-64px)_32px,var(--ambient-a),color-mix(in_srgb,var(--ambient-a)_35%,transparent)_45%,transparent)] rtl:bg-[radial-gradient(circle_190px_at_64px_32px,var(--ambient-a),color-mix(in_srgb,var(--ambient-a)_35%,transparent)_45%,transparent)]"
+          />
           <div className="relative">
             <div className="flex items-start justify-between gap-4">
               <div>

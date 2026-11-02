@@ -566,18 +566,24 @@ export const AccountCard: React.FC<AccountCardProps> = ({
               </AnimatePresence>
 
               {/* A shimmer sweeps the card while the server answers. */}
+              {/* Its own rounded clip: the sweep is a moving (composited)
+                  layer that would otherwise slip past the face's corners. */}
               {phase === "busy" && (
-                <motion.div
+                <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.35)_50%,transparent_65%)]"
-                  initial={{ x: "-100%" }}
-                  animate={{ x: "100%" }}
-                  transition={{
-                    duration: 1.1,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+                  className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [clip-path:inset(0_round_var(--radius-panel))]"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.35)_50%,transparent_65%)]"
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "100%" }}
+                    transition={{
+                      duration: 1.1,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </div>
               )}
             </Face>
 
@@ -830,10 +836,12 @@ const Face: React.FC<{
     {/* The foil and glare get their own clip with the card's radius: inside
         a 3D context WebKit ignores a parent's rounded overflow clip for
         composited children, so the square gradient poked out at the
-        corners. The mask forces the rounded clip. */}
+        corners. A plain rectangular mask doesn't round anything, so the
+        layer is clipped with a rounded clip-path instead, and every layer
+        inside carries the radius itself. */}
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [mask-image:linear-gradient(#000,#000)]"
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [clip-path:inset(0_round_var(--radius-panel))]"
     >
       {/* Iridescent foil, very faint: the only colour in the UI besides "live". */}
       <div className="card-foil absolute inset-0 rounded-[inherit]" />
