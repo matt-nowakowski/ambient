@@ -40,9 +40,7 @@ export const AccountSettings: React.FC = () => {
   return (
     <div className="max-w-3xl w-full mx-auto">
       <header className="mb-section">
-        <h1 className="text-title font-light tracking-[-0.02em]">
-          {t("sidebar.account")}
-        </h1>
+        <h1 className="text-title font-light">{t("sidebar.account")}</h1>
       </header>
       <div className="space-y-section">
         <div className="glass relative overflow-hidden rounded-panel p-hero">
@@ -53,7 +51,7 @@ export const AccountSettings: React.FC = () => {
                 <p className="text-section font-medium text-ink-3">
                   {t("account.currentPlan")}
                 </p>
-                <h2 className="mt-1 text-display font-extralight tracking-[-0.02em]">
+                <h2 className="mt-1 text-display font-extralight">
                   {t(`account.plans.${status.plan}`)}
                 </h2>
                 {(status.account_email ?? status.email) && (

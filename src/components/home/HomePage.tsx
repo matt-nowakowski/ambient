@@ -154,9 +154,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="pointer-events-none absolute -end-16 -top-24 size-72 rounded-full bg-[radial-gradient(circle,var(--ambient-a),transparent_70%)] blur-2xl" />
           <div className="relative flex items-center justify-between gap-6">
             <div>
-              <h1 className="text-greeting font-light tracking-[-0.02em]">
-                {t(greetingKey())}
-              </h1>
+              <h1 className="text-greeting font-light">{t(greetingKey())}</h1>
               <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-2 text-ui font-light text-ink-2">
                 {binding ? (
                   <>
@@ -201,7 +199,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <p className="text-section font-medium text-ink-3">
               {t("home.stats.words")}
             </p>
-            <div className="mt-2 h-7 text-display font-extralight leading-none tracking-[-0.03em] tabular-nums">
+            <div className="mt-2 h-7 text-display font-extralight leading-none tabular-nums">
               <SkeletonReveal
                 loading={!status}
                 skeleton={<Skeleton className="h-7 w-24" />}
@@ -223,7 +221,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <p className="text-section font-medium text-ink-3">
               {t("home.stats.saved")}
             </p>
-            <div className="mt-2 h-7 text-display font-extralight leading-none tracking-[-0.03em] tabular-nums">
+            <div className="mt-2 h-7 text-display font-extralight leading-none tabular-nums">
               <SkeletonReveal
                 loading={!status}
                 skeleton={<Skeleton className="h-7 w-24" />}

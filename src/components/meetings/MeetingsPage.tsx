@@ -201,7 +201,7 @@ export const MeetingsPage: React.FC = () => {
         </button>
         <header className="mb-section flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-title font-light tracking-[-0.02em]">
+            <h1 className="text-title font-light">
               {s?.title || t("meetings.untitled")}
             </h1>
             <p className="mt-1 text-small text-ink-2">
@@ -300,9 +300,7 @@ export const MeetingsPage: React.FC = () => {
   return (
     <div className="max-w-3xl w-full mx-auto">
       <header className="mb-section">
-        <h1 className="text-title font-light tracking-[-0.02em]">
-          {t("meetings.title")}
-        </h1>
+        <h1 className="text-title font-light">{t("meetings.title")}</h1>
         <p className="mt-1 max-w-xl text-small text-ink-2">
           {t("meetings.intro")}
         </p>

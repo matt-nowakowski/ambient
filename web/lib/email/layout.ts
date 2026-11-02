@@ -79,10 +79,12 @@ export type ShellOptions = {
 /** The sign-off on every email. A person, because replies reach one. */
 export const signoff = { name: "Matt", line: `Cofounder, ${brand.name}` } as const;
 
-/** The app's stack (src/intro/intro.css, src/styles/theme.css): Geist / Inter / SF Pro / system.
- *  Headings 300–400, body 400, labels 500 at most. */
-const FONT = `Geist, Inter, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`;
-const DISPLAY = `Geist, Inter, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`;
+/** The site's stack (app/globals.css --font-sans) in email-safe form: SF Pro on Apple
+ *  clients, Inter if installed, then Segoe UI / Roboto / Helvetica / Arial. No webfonts.
+ *  Scale and weights follow brand/TYPOGRAPHY.md: headings 300, body 400, labels and
+ *  buttons 500, never heavier. */
+const FONT = `-apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`;
+const DISPLAY = `-apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`;
 /** One accent: the periwinkle of the site's backdrop light, deepened for text contrast. */
 const C = {
   page: "#f5f5f7",
@@ -126,9 +128,9 @@ function richText(r: Rich) {
 
 type Ctx = { asset: string };
 
-const P = `margin:0 0 16px;font-family:${FONT};font-size:15px;line-height:1.6;font-weight:400;color:${C.muted};`;
+const P = `margin:0 0 16px;font-family:${FONT};font-size:15px;line-height:1.625;font-weight:400;letter-spacing:-0.006em;color:${C.muted};`;
 const sectionTitle = (t?: string) =>
-  t ? `<p class="ink" style="margin:10px 0 14px;font-family:${DISPLAY};font-size:17px;line-height:1.35;font-weight:400;letter-spacing:-0.015em;color:${C.ink};">${esc(t)}</p>` : "";
+  t ? `<p class="ink" style="margin:10px 0 14px;font-family:${DISPLAY};font-size:22px;line-height:1.25;font-weight:300;letter-spacing:-0.03em;color:${C.ink};">${esc(t)}</p>` : "";
 
 const iconImg = (ctx: Ctx, name: IconName, size = 40) =>
   swap(ctx, `icon-${name}`, size, "", Math.round(size * 0.26));
@@ -143,14 +145,14 @@ const swap = (ctx: Ctx, base: string, size: number, alt: string, radius: number,
 function blockHtml(b: Block, ctx: Ctx): string {
   switch (b.t) {
     case "h":
-      return `<h1 class="ink rise" style="margin:0 0 16px;font-family:${DISPLAY};font-size:30px;line-height:1.15;font-weight:300;letter-spacing:-0.03em;color:${C.ink};">${esc(b.text)}</h1>`;
+      return `<h1 class="ink rise" style="margin:0 0 16px;font-family:${DISPLAY};font-size:30px;line-height:1.1;font-weight:300;letter-spacing:-0.035em;color:${C.ink};">${esc(b.text)}</h1>`;
     case "p":
       return b.size === "lead"
-        ? `<p class="ink2" style="margin:0 0 24px;font-family:${FONT};font-size:17px;line-height:1.55;font-weight:300;color:#2c2c31;">${richHtml(b.text)}</p>`
+        ? `<p class="ink2" style="margin:0 0 24px;font-family:${FONT};font-size:17px;line-height:1.5;font-weight:300;letter-spacing:-0.01em;color:#2c2c31;">${richHtml(b.text)}</p>`
         : `<p class="muted" style="${P}">${richHtml(b.text)}</p>`;
     case "button":
       return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 28px;"><tr><td class="btn" bgcolor="${C.ink}" style="border-radius:999px;background:${C.ink};box-shadow:0 1px 2px rgba(0,0,0,0.12);">
-<a href="${esc(b.href)}" class="btn-text" style="display:inline-block;padding:13px 24px;font-family:${FONT};font-size:14px;line-height:1;font-weight:500;color:#ffffff;text-decoration:none;border-radius:999px;">${esc(b.label)} &rarr;</a>
+<a href="${esc(b.href)}" class="btn-text" style="display:inline-block;padding:15px 24px;font-family:${FONT};font-size:13px;line-height:1;font-weight:500;letter-spacing:-0.005em;color:#ffffff;text-decoration:none;border-radius:999px;">${esc(b.label)} &rarr;</a>
 </td></tr></table>`;
     case "signin": {
       // Mirrors the app's card: glass-strong face (frosted, faint foil, glare),
@@ -165,7 +167,7 @@ function blockHtml(b: Block, ctx: Ctx): string {
 </tr></table>
 <div style="height:34px;line-height:34px;font-size:0;">&nbsp;</div>
 ${meta("Sign in with")}
-<div class="ink" style="font-family:${DISPLAY};font-size:24px;line-height:30px;font-weight:300;letter-spacing:-0.025em;color:${C.ink};margin:2px 0 0;word-break:break-all;">${esc(b.email)}</div>
+<div class="ink" style="font-family:${DISPLAY};font-size:24px;line-height:30px;font-weight:300;letter-spacing:-0.03em;color:${C.ink};margin:2px 0 0;word-break:break-all;">${esc(b.email)}</div>
 <div style="height:28px;line-height:28px;font-size:0;">&nbsp;</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
 <td valign="bottom">${meta("Plan")}<div class="ink" style="font-family:${FONT};font-size:12px;line-height:17px;color:${C.ink};">${esc(b.plan)}</div></td>
@@ -193,8 +195,8 @@ ${b.renews ? `<td valign="bottom" align="right">${meta("Renews")}<div class="ink
           (it) => `<tr>
 <td valign="top" style="width:56px;padding:0 0 22px;">${iconImg(ctx, it.icon)}</td>
 <td valign="top" style="padding:0 0 22px;">
-<div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.35;font-weight:500;color:${C.ink};margin:1px 0 3px;">${esc(it.k)}</div>
-<div class="muted" style="font-family:${FONT};font-size:14px;line-height:1.6;color:${C.muted};">${richHtml(it.v)}</div>
+<div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.35;font-weight:400;letter-spacing:-0.01em;color:${C.ink};margin:1px 0 3px;">${esc(it.k)}</div>
+<div class="muted" style="font-family:${FONT};font-size:14px;line-height:1.625;color:${C.muted};">${richHtml(it.v)}</div>
 </td></tr>`,
         )
         .join("")}</table>`;
@@ -202,7 +204,7 @@ ${b.renews ? `<td valign="bottom" align="right">${meta("Renews")}<div class="ink
       return `${sectionTitle(b.title)}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;">${b.items
         .map(
           (it) => `<tr><td class="hair" style="padding:14px 0;border-top:1px solid ${C.hair};">
-<div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.45;font-weight:500;color:${C.ink};margin:0 0 4px;">${esc(it.k)}</div>
+<div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.45;font-weight:400;letter-spacing:-0.01em;color:${C.ink};margin:0 0 4px;">${esc(it.k)}</div>
 <div class="muted" style="font-family:${FONT};font-size:15px;line-height:1.6;color:${C.muted};">${richHtml(it.v)}</div>
 </td></tr>`,
         )
@@ -212,12 +214,12 @@ ${b.renews ? `<td valign="bottom" align="right">${meta("Renews")}<div class="ink
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
 ${b.icon ? `<td valign="top" style="width:48px;">${iconImg(ctx, b.icon, 34)}</td>` : ""}
 <td valign="top">
-<div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.4;font-weight:500;color:${C.ink};margin:0 0 4px;">${esc(b.k)}</div>
+<div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.4;font-weight:400;letter-spacing:-0.01em;color:${C.ink};margin:0 0 4px;">${esc(b.k)}</div>
 <div class="muted" style="font-family:${FONT};font-size:15px;line-height:1.6;color:${C.muted};">${richHtml(b.v)}</div>
 </td></tr></table>
 </td></tr></table>`;
     case "links":
-      return `<p style="margin:-10px 0 26px;font-family:${FONT};font-size:14px;line-height:1.6;">${b.items
+      return `<p style="margin:-10px 0 26px;font-family:${FONT};font-size:13px;line-height:1.6;letter-spacing:-0.005em;">${b.items
         .map((l) => `<a href="${esc(l.href)}" class="link" style="color:${C.accent};text-decoration:none;font-weight:500;">${esc(l.label)}</a>`)
         .join(`<span class="subtle" style="color:${C.subtle};">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`)}</p>`;
     case "note":
@@ -300,7 +302,6 @@ span.orb-dark{display:none;}
 @media (max-width:620px){
   .card-pad{padding:30px 22px 26px !important;}
   .hero-img{height:auto !important;}
-  h1{font-size:29px !important;}
 }
 a{color:inherit;}
 `;
@@ -348,7 +349,7 @@ ${o.hero ? `<tr><td class="hero-cell" bgcolor="${C.page}" style="background:${C.
 ${heroImg("orb-light", `hero-${o.hero}.jpg`)}<div class="orb-dark">${heroImg("", `hero-${o.hero}-dark.jpg`)}</div>
 </td></tr>` : ""}
 <tr><td class="card-pad" style="padding:${o.hero ? "38px" : "40px"} 44px 34px;">
-<p class="eyebrow" style="margin:0 0 12px;font-family:${FONT};font-size:14px;line-height:1.3;font-weight:500;color:${C.accent};">${esc(o.eyebrow)}</p>
+<p class="eyebrow" style="margin:0 0 14px;font-family:${FONT};font-size:12px;line-height:1.4;font-weight:500;letter-spacing:-0.003em;color:${C.accent};">${esc(o.eyebrow)}</p>
 ${body}
 </td></tr>
 </table>

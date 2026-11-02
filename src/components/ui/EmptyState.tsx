@@ -32,7 +32,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
     >
       <Icon width={22} height={22} strokeWidth={1.6} className="text-ink-2" />
     </motion.div>
-    <h3 className="text-heading font-medium tracking-tight">{title}</h3>
+    <h3 className="text-heading font-normal">{title}</h3>
     {description && (
       <p className="mt-1.5 max-w-xs text-ui text-ink-2">{description}</p>
     )}

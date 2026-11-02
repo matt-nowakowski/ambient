@@ -57,7 +57,7 @@ export const BrandWordmark = ({
   size?: number;
 }) => (
   <span
-    className={`inline-flex items-center gap-[0.14em] font-semibold tracking-[-0.04em] text-text select-none ${className}`}
+    className={`inline-flex items-center gap-[0.14em] font-normal tracking-[-0.04em] text-text select-none ${className}`}
   >
     {/* The circles fill only the middle of the orb's box, so the gap is
         tight; nudged down so the orb's centre sits on the x-height. */}

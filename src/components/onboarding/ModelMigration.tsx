@@ -423,7 +423,7 @@ const MigrationRow: React.FC<MigrationRowProps> = ({
         <Radio checked={chosen} className={toggleable ? "" : "opacity-55"} />
       )}
       <div className="min-w-0 flex-1">
-        <p className="m-0 truncate font-display text-row font-medium leading-[1.3]">
+        <p className="m-0 truncate font-display text-row font-normal leading-[1.3]">
           {replacement.name}
         </p>
         <div className="flex items-center gap-[8px] text-small text-ink-2">

@@ -750,7 +750,7 @@ li[data-sonner-toast].ambient-toast[data-expanded="false"][data-front="false"]
 }
 .ambient-toast [data-description] {
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.4;
   color: var(--color-ink-2);
 }

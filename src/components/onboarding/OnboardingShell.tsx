@@ -261,7 +261,7 @@ export const ScreenTitle: React.FC<{
   className?: string;
 }> = ({ children, className = "" }) => (
   <h1
-    className={`m-0 font-display tracking-[-0.02em] text-balance text-title font-light ${className}`}
+    className={`m-0 font-display text-balance text-title font-light ${className}`}
   >
     {children}
   </h1>

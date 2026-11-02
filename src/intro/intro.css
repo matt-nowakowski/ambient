@@ -10,14 +10,11 @@
   overflow: hidden;
   cursor: default;
   user-select: none;
+  /* The website's stack (web/app/globals.css), system fonts only. */
   font-family:
-    "Geist",
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter",
+    "Geist", "Segoe UI Variable Display", "Segoe UI", "Helvetica Neue",
+    system-ui, Roboto, sans-serif;
   color: #fafafa;
   -webkit-font-smoothing: antialiased;
 }

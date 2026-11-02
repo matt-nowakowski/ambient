@@ -133,7 +133,7 @@ const selectStyles: StylesConfig<SelectOption, false> = {
     paddingBlock: 6,
     paddingInline: 10,
     fontSize: "var(--text-ui)",
-    fontWeight: state.isSelected ? 450 : 400,
+    fontWeight: state.isSelected ? 500 : 400,
     backgroundColor: state.isSelected
       ? "var(--glass-press)"
       : state.isFocused

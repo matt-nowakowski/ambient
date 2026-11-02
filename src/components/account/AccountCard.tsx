@@ -468,9 +468,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
                   className="flex flex-col gap-4"
                 >
                   <div>
-                    <p className="text-title font-light tracking-[-0.02em]">
-                      {title}
-                    </p>
+                    <p className="text-title font-light">{title}</p>
                     <p className="mt-1 line-clamp-2 text-small text-ink-2">
                       {description}
                     </p>
@@ -538,7 +536,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
                 <p className="text-meta text-ink-3">
                   {t("account.card.active")}
                 </p>
-                <p className="mt-0.5 text-display font-extralight leading-none tracking-[-0.03em]">
+                <p className="mt-0.5 text-display font-extralight leading-none">
                   {t(`account.plans.${status.plan}`)}
                 </p>
               </div>
@@ -637,7 +635,7 @@ const Brand: React.FC<{ busy?: boolean }> = ({ busy = false }) => (
       label={BRAND.name}
       style={{ "--orb-fg": "currentColor" } as React.CSSProperties}
     />
-    <span className="text-ui font-medium tracking-[-0.02em]">{BRAND.slug}</span>
+    <span className="text-ui font-normal tracking-[-0.04em]">{BRAND.slug}</span>
   </div>
 );
 

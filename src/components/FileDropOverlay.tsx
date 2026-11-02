@@ -40,7 +40,7 @@ export const FileDropOverlay: React.FC<FileDropOverlayProps> = ({
     <div className="fixed inset-0 z-50 p-3 bg-background/85 pointer-events-none">
       <div className="h-full w-full flex flex-col items-center justify-center gap-2 rounded-panel border-2 border-dashed border-logo-primary text-center">
         <BrandGlyph width={44} height={44} />
-        <p className="text-heading font-medium">
+        <p className="text-heading font-normal">
           {t("settings.history.dropTitle")}
         </p>
         <p className="text-small text-ink-2">

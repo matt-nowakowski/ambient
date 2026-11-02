@@ -211,7 +211,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       {showPortableUpdateDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-background border border-line rounded-panel p-hero max-w-md w-full mx-4 space-y-4">
-            <h2 className="text-heading font-medium">
+            <h2 className="text-heading font-normal">
               {t("footer.portableUpdateTitle")}
             </h2>
             <p className="text-small text-ink-2">

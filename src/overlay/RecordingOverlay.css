@@ -1,9 +1,11 @@
 @import "../styles/theme.css";
 
 :root {
+  /* The website's stack (web/app/globals.css), system fonts only. */
   --s-font:
-    "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter",
+    "Geist", "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", system-ui,
+    Roboto, sans-serif;
   /* The overlay is a fixed dark HUD in both themes: it floats over arbitrary
      apps, so it stays high-contrast and recognizable instead of following the
      settings window theme. Red is reserved for the live recording dot. */
@@ -195,7 +197,7 @@
   padding-right: 14px;
   font-size: 15px;
   line-height: 1.35;
-  letter-spacing: -0.003em;
+  letter-spacing: -0.006em;
   color: var(--s-ink);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px);
   mask-image: linear-gradient(to bottom, transparent 0, #000 18px);

@@ -37,9 +37,7 @@ export const SettingsPage: React.FC = () => {
   return (
     <div className="mx-auto w-full max-w-3xl">
       <header className="mb-section flex flex-wrap items-end justify-between gap-4">
-        <h1 className="text-title font-light tracking-[-0.02em]">
-          {t("sidebar.settings")}
-        </h1>
+        <h1 className="text-title font-light">{t("sidebar.settings")}</h1>
         <LiquidIndicatorGroup
           role="tablist"
           className="glass flex rounded-full p-[3px]"

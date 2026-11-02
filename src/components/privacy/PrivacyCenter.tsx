@@ -144,9 +144,7 @@ export const PrivacyCenter: React.FC = () => {
   return (
     <div className="max-w-3xl w-full mx-auto">
       <header className="mb-section">
-        <h1 className="text-title font-light tracking-[-0.02em]">
-          {t("privacy.title")}
-        </h1>
+        <h1 className="text-title font-light">{t("privacy.title")}</h1>
         <p className="mt-1 max-w-xl text-small text-ink-2">
           {t("privacy.promise")}
         </p>

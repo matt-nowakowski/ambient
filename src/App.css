@@ -51,29 +51,39 @@
 /* Onboarding's scale in px (rem steps land on fractions at a 15px root).
    Names avoid Tailwind's defaults, which Settings still uses. */
 @theme {
+  /* The website's stack (web/app/globals.css --font-sans), system fonts only:
+     SF Pro on macOS; Inter or Geist when installed; then Segoe UI on Windows
+     and the desktop's UI font on Linux, as the site falls back. */
   --font-display:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Variable",
-    "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter",
+    "Inter Variable", "Geist", "Segoe UI Variable Display", "Segoe UI",
+    "Helvetica Neue", system-ui, Roboto, sans-serif;
   --font-ui:
-    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter Variable",
-    "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Noto Sans",
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter",
+    "Inter Variable", "Geist", "Segoe UI Variable Text", "Segoe UI",
+    "Helvetica Neue", system-ui, Roboto, "Noto Sans", sans-serif;
   --font-cjk-subset:
-    "Ambient CJK Subset", -apple-system, "Segoe UI Variable Text", "Segoe UI",
-    system-ui, sans-serif;
+    "Ambient CJK Subset", -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
 
   /* Type scale, in px (rem steps land on fractions at the 13px root). One
-     hierarchy for every page: light and small, no bold, no caps. */
+     hierarchy for every page: light and small, no bold, no caps. Tracking
+     follows the site (brand/TYPOGRAPHY.md): tighter as text grows. */
   --text-greeting: 24px; /* Home's greeting */
   --text-greeting--line-height: 30px;
+  --text-greeting--letter-spacing: -0.03em;
   --text-title: 22px; /* page and screen titles */
   --text-title--line-height: 28px;
+  --text-title--letter-spacing: -0.03em;
   --text-display: 28px; /* display numbers (stats, plan price) */
   --text-display--line-height: 34px;
+  --text-display--letter-spacing: -0.035em;
   --text-heading: 15px; /* dialog and empty-state headings */
   --text-heading--line-height: 21px;
+  --text-heading--letter-spacing: -0.01em;
   --text-name: 13.5px; /* the model name on Model's Full card */
   --text-row: 14.5px; /* onboarding row titles */
+  --text-row--letter-spacing: -0.01em;
   --text-ui: 13px; /* body, card and row titles, md buttons, fields */
   --text-ui--line-height: 19px;
   --text-body: 13px; /* onboarding body, subtitles */
@@ -81,6 +91,7 @@
   --text-small--line-height: 17px;
   --text-section: 12px; /* the label above a group or card */
   --text-section--line-height: 16px;
+  --text-section--letter-spacing: -0.003em;
   --text-label: 11px; /* meta, tertiary */
   --text-label--line-height: 15px;
   --text-meta: 11px; /* timestamps, captions */
@@ -88,13 +99,15 @@
   --text-tag: 10px; /* tags, column codes, small grade chips */
   --text-cta: 14px; /* onboarding's large call-to-action buttons */
 
-  /* Light, quiet type: the whole app runs a step lighter than Tailwind's
-     defaults, so `font-semibold` reads as medium and `font-medium` as book. */
+  /* The site's weights: 200 for display, 300 for headings, 400 for body and
+     titles, 500 for labels and buttons. Nothing heavier: semibold and bold
+     are capped at 500 so a stray class can't break the rule. */
+  --font-weight-extralight: 200;
   --font-weight-light: 300;
   --font-weight-normal: 400;
-  --font-weight-medium: 450;
+  --font-weight-medium: 500;
   --font-weight-semibold: 500;
-  --font-weight-bold: 550;
+  --font-weight-bold: 500;
   --font-mono:
     "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
 
@@ -253,7 +266,7 @@
   font-size: 13px;
   line-height: 19px;
   font-family: var(--font-ui);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.006em; /* the site's body tracking */
   font-weight: 400;
 
   /* Typography settings */

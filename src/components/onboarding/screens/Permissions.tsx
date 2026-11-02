@@ -54,7 +54,7 @@ const PermissionRow: React.FC<PermissionRowProps> = ({
         {icon}
       </motion.span>
       <div>
-        <b className="block font-display text-row font-medium leading-[1.3]">
+        <b className="block font-display text-row font-normal leading-[1.3]">
           {title}
         </b>
         <p

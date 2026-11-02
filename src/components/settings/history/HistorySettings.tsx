@@ -410,9 +410,7 @@ export const HistorySettings: React.FC = () => {
   return (
     <div className="mx-auto w-full max-w-3xl">
       <header className="mb-section flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-        <h1 className="text-title font-light tracking-[-0.02em]">
-          {t("settings.history.title")}
-        </h1>
+        <h1 className="text-title font-light">{t("settings.history.title")}</h1>
         <div className="flex items-center gap-inline">
           <SearchField value={query} onChange={setQuery} />
           <Button
