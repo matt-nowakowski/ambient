@@ -1135,7 +1135,10 @@
       "sensitivePaused": "Sat på pause her: vinduet viser en gendannelsessætning eller privat nøgle.",
       "fairUse": "Du har nået dagens grænse for rimelig brug. Den nulstilles ved midnat UTC.",
       "slowDown": "Det er mange anmodninger på én gang. Prøv igen om et minut.",
-      "listening": "Lytter…"
+      "listening": "Lytter…",
+      "heardNothing": "Jeg hørte dig, men fangede ikke en forespørgsel.",
+      "noWebResults": "Kunne ikke søge på nettet lige nu, så det her er ud fra det, jeg ved.",
+      "timeout": "Det tog for lang tid. Prøv igen."
     },
     "undo": "Fortryd",
     "close": "Luk",
@@ -1175,7 +1178,23 @@
       "searchInstead": "Skrevet. Søg på det i stedet?",
       "search": "Søg"
     },
-    "suggestionTip": "Sig »ja«, »ikke nu« eller »vis mig ikke disse«."
+    "suggestionTip": "Sig »ja«, »ikke nu« eller »vis mig ikke disse«.",
+    "replace": "Erstat",
+    "actions": {
+      "reply": "Svar",
+      "copyCode": "Kopiér kode",
+      "openLink": "Åbn link",
+      "addToCalendar": "Føj til kalender"
+    },
+    "draft": {
+      "title": "Ville du skrive det her?",
+      "composed": "Her er dit udkast.",
+      "focusHint": "Klik i et tekstfelt for at indsætte det."
+    },
+    "source": {
+      "searchDrive": "Søg i Google Drev",
+      "searchGmail": "Søg i Gmail"
+    }
   },
   "privacy": {
     "title": "Privatliv",

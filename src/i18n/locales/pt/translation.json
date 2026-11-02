@@ -1143,7 +1143,10 @@
       "sensitivePaused": "Pausado aqui: esta janela mostra uma frase de recuperação ou uma chave privada.",
       "fairUse": "Você atingiu o limite de uso justo de hoje. Ele reinicia à meia-noite UTC.",
       "slowDown": "São muitas solicitações de uma vez. Tente novamente em um minuto.",
-      "listening": "Ouvindo…"
+      "listening": "Ouvindo…",
+      "heardNothing": "Ouvi, mas não percebi o pedido.",
+      "noWebResults": "Não foi possível pesquisar na web agora, por isso isto é o que sei.",
+      "timeout": "Demorou demasiado. Tente novamente."
     },
     "undo": "Desfazer",
     "close": "Fechar",
@@ -1183,7 +1186,23 @@
       "searchInstead": "Digitado. Pesquisar isto em vez disso?",
       "search": "Pesquisar"
     },
-    "suggestionTip": "Diga “sim”, “agora não” ou “não me mostre isso”."
+    "suggestionTip": "Diga “sim”, “agora não” ou “não me mostre isso”.",
+    "replace": "Substituir",
+    "actions": {
+      "reply": "Responder",
+      "copyCode": "Copiar código",
+      "openLink": "Abrir link",
+      "addToCalendar": "Adicionar ao calendário"
+    },
+    "draft": {
+      "title": "Queria digitar isto?",
+      "composed": "Aqui está o rascunho.",
+      "focusHint": "Clique num campo de texto para o inserir."
+    },
+    "source": {
+      "searchDrive": "Pesquisar no Google Drive",
+      "searchGmail": "Pesquisar no Gmail"
+    }
   },
   "privacy": {
     "title": "Privacidade",

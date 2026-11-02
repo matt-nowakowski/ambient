@@ -502,10 +502,17 @@ pub(crate) async fn process_transcription_output(
         };
     }
     let cues = crate::agent::router::cues_cover(&settings.spoken_languages);
+    // An answer card is up: what's said next may be a follow-up to it.
+    let follow_up = mode == OutputMode::Dictation && crate::hud::showing_answer();
+    let help = crate::agent::router::is_help_request(transcription);
+    let compose = crate::agent::router::compose_request(transcription);
     let routable = ask
         || (mode == OutputMode::Dictation
             && settings.agent.routing
             && (crate::agent::router::looks_like_request(transcription)
+                || help
+                || compose.is_some()
+                || follow_up
                 || (!cues && post_process)));
     let place = if routable {
         tauri::async_runtime::spawn_blocking(crate::agent::router::place)
@@ -517,6 +524,45 @@ pub(crate) async fn process_transcription_output(
     // Typing a prompt into ChatGPT/Claude is writing, however it sounds.
     let routable =
         routable && (ask || !crate::agent::router::always_write_here(&place, transcription));
+    let agent_route = |route: crate::agent::router::Route| ProcessedTranscription {
+        final_text: String::new(),
+        post_processed_text: None,
+        post_process_prompt: None,
+        agent_route: Some(route),
+        offer_search: None,
+    };
+    if routable && !is_blank_transcription(transcription) {
+        // Decided here, with no model call: "what can I say?" and "reply
+        // here saying …" (drafted, never typed word for word).
+        if help {
+            return agent_route(crate::agent::router::Route::Help);
+        }
+        if let Some(instruction) = compose {
+            return agent_route(crate::agent::router::Route::Compose(instruction));
+        }
+    }
+    // Certainly for the agent: the Ask key, or a follow-up while the answer
+    // card is up and no text field has focus.
+    let to_agent = ask || (follow_up && !place.editable);
+    if routable && to_agent && !is_blank_transcription(transcription) {
+        // Show it was heard straight away, and read the screen while the
+        // router decides.
+        crate::hud::show(
+            app,
+            crate::hud::HudContent::Listening {
+                heard: transcription.trim().to_string(),
+            },
+        );
+        crate::agent::answer::prefetch_screen(app);
+        if crate::agent::llm::target(app).is_none() {
+            // No model to route with: answer it (the server says why if it can't).
+            return agent_route(crate::agent::router::Route::Answer {
+                query: transcription.to_string(),
+                needs_web: false,
+                about_screen: false,
+            });
+        }
+    }
     if routable
         && !is_blank_transcription(transcription)
         && crate::agent::llm::target(app).is_some()
@@ -526,10 +572,16 @@ pub(crate) async fn process_transcription_output(
         } else {
             String::new()
         };
-        let routed = crate::agent::router::route(app, transcription, &rules, &place, ask).await;
+        let previous =
+            (ask || follow_up || crate::agent::router::looks_like_request(transcription))
+                .then(crate::agent::answer::last_turn)
+                .flatten();
+        let routed =
+            crate::agent::router::route(app, transcription, &rules, &place, to_agent, previous)
+                .await;
         // Ask never types: if the router still said "write", answer it instead.
         let routed = match routed {
-            Some(crate::agent::router::Route::Write(_)) | None if ask => {
+            Some(crate::agent::router::Route::Write(_)) | None if to_agent => {
                 Some(crate::agent::router::Route::Answer {
                     query: transcription.to_string(),
                     needs_web: false,
@@ -550,7 +602,7 @@ pub(crate) async fn process_transcription_output(
                 let question = transcription.trim_end().ends_with('?')
                     || crate::agent::router::starts_like_question(transcription);
                 let offer_search =
-                    (!ask && question && !place.is_messaging() && !place.is_ai_chat())
+                    (!to_agent && question && !place.is_messaging() && !place.is_ai_chat())
                         .then(|| transcription.trim().to_string());
                 return ProcessedTranscription {
                     final_text,
@@ -560,15 +612,7 @@ pub(crate) async fn process_transcription_output(
                     offer_search,
                 };
             }
-            Some(route) => {
-                return ProcessedTranscription {
-                    final_text: String::new(),
-                    post_processed_text: None,
-                    post_process_prompt: None,
-                    agent_route: Some(route),
-                    offer_search: None,
-                };
-            }
+            Some(route) => return agent_route(route),
             // Router unavailable or unsure: fall through to plain dictation.
             None => {}
         }
@@ -1020,6 +1064,24 @@ impl ShortcutAction for TranscribeAction {
                                             return;
                                         }
 
+                                        // No text field to type into: offer the
+                                        // text instead of typing into nothing.
+                                        if crate::agent::draft_instead_of_paste(
+                                            &ah_clone,
+                                            &final_text,
+                                        ) {
+                                            if RECORDING_SESSION.load(Ordering::SeqCst) == session {
+                                                utils::hide_recording_overlay(&ah_clone);
+                                                set_tray_state(&ah_clone, TrayIconState::Idle);
+                                            }
+                                            emit_transcription_complete(
+                                                &ah_clone,
+                                                TranscriptionOutcome::Agent,
+                                                sample_count,
+                                                stop_time,
+                                            );
+                                            return;
+                                        }
                                         let outcome =
                                             match utils::paste(final_text, ah_clone.clone()) {
                                                 Ok(()) => {

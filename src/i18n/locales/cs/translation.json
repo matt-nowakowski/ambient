@@ -1151,7 +1151,10 @@
       "sensitivePaused": "Tady pozastaveno: toto okno zobrazuje frázi pro obnovení nebo soukromý klíč.",
       "fairUse": "Dosáhli jste dnešního limitu férového používání. Obnoví se o půlnoci UTC.",
       "slowDown": "To je mnoho požadavků najednou. Zkuste to znovu za minutu.",
-      "listening": "Poslouchám…"
+      "listening": "Poslouchám…",
+      "heardNothing": "Slyšel jsem vás, ale nezachytil jsem žádný požadavek.",
+      "noWebResults": "Teď se nepodařilo hledat na webu, takže odpovídám z toho, co vím.",
+      "timeout": "Trvalo to příliš dlouho. Zkuste to znovu."
     },
     "undo": "Zpět",
     "close": "Zavřít",
@@ -1191,7 +1194,23 @@
       "searchInstead": "Napsáno. Místo toho to vyhledat?",
       "search": "Hledat"
     },
-    "suggestionTip": "Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“."
+    "suggestionTip": "Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“.",
+    "replace": "Nahradit",
+    "actions": {
+      "reply": "Odpovědět",
+      "copyCode": "Kopírovat kód",
+      "openLink": "Otevřít odkaz",
+      "addToCalendar": "Přidat do kalendáře"
+    },
+    "draft": {
+      "title": "Chtěli jste napsat tohle?",
+      "composed": "Tady je koncept.",
+      "focusHint": "Klikněte do textového pole a vložte ho."
+    },
+    "source": {
+      "searchDrive": "Hledat na Disku Google",
+      "searchGmail": "Hledat v Gmailu"
+    }
   },
   "privacy": {
     "title": "Soukromí",

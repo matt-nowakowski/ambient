@@ -1135,7 +1135,10 @@
       "sensitivePaused": "Pausad här: fönstret visar en återställningsfras eller privat nyckel.",
       "fairUse": "Du har nått dagens gräns för skälig användning. Den återställs vid midnatt UTC.",
       "slowDown": "Det är många förfrågningar på en gång. Försök igen om en minut.",
-      "listening": "Lyssnar…"
+      "listening": "Lyssnar…",
+      "heardNothing": "Jag hörde dig, men uppfattade ingen begäran.",
+      "noWebResults": "Kunde inte söka på webben just nu, så det här är vad jag vet.",
+      "timeout": "Det tog för lång tid. Försök igen."
     },
     "undo": "Ångra",
     "close": "Stäng",
@@ -1175,7 +1178,23 @@
       "searchInstead": "Skrivet. Sök på det i stället?",
       "search": "Sök"
     },
-    "suggestionTip": "Säg ”ja”, ”inte nu” eller ”visa inte sådana”."
+    "suggestionTip": "Säg ”ja”, ”inte nu” eller ”visa inte sådana”.",
+    "replace": "Ersätt",
+    "actions": {
+      "reply": "Svara",
+      "copyCode": "Kopiera kod",
+      "openLink": "Öppna länk",
+      "addToCalendar": "Lägg till i kalendern"
+    },
+    "draft": {
+      "title": "Menade du att skriva det här?",
+      "composed": "Här är ditt utkast.",
+      "focusHint": "Klicka i ett textfält för att infoga det."
+    },
+    "source": {
+      "searchDrive": "Sök i Google Drive",
+      "searchGmail": "Sök i Gmail"
+    }
   },
   "privacy": {
     "title": "Integritet",

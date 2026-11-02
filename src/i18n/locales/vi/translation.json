@@ -1135,7 +1135,10 @@
       "sensitivePaused": "Đã tạm dừng tại đây: cửa sổ này hiển thị cụm từ khôi phục hoặc khóa riêng tư.",
       "fairUse": "Bạn đã đạt giới hạn sử dụng hợp lý của hôm nay. Giới hạn được đặt lại vào nửa đêm UTC.",
       "slowDown": "Có quá nhiều yêu cầu cùng lúc. Hãy thử lại sau một phút.",
-      "listening": "Đang nghe…"
+      "listening": "Đang nghe…",
+      "heardNothing": "Đã nghe, nhưng chưa nhận ra yêu cầu.",
+      "noWebResults": "Hiện không tìm được trên web, nên đây là từ những gì tôi biết.",
+      "timeout": "Mất quá lâu. Hãy thử lại."
     },
     "undo": "Hoàn tác",
     "close": "Đóng",
@@ -1175,7 +1178,23 @@
       "searchInstead": "Đã nhập. Tìm kiếm nội dung này thay thế?",
       "search": "Tìm kiếm"
     },
-    "suggestionTip": "Nói “có”, “để sau” hoặc “đừng hiện những cái này”."
+    "suggestionTip": "Nói “có”, “để sau” hoặc “đừng hiện những cái này”.",
+    "replace": "Thay thế",
+    "actions": {
+      "reply": "Trả lời",
+      "copyCode": "Sao chép mã",
+      "openLink": "Mở liên kết",
+      "addToCalendar": "Thêm vào lịch"
+    },
+    "draft": {
+      "title": "Bạn có định gõ nội dung này không?",
+      "composed": "Đây là bản nháp của bạn.",
+      "focusHint": "Nhấp vào một ô văn bản để chèn."
+    },
+    "source": {
+      "searchDrive": "Tìm trong Google Drive",
+      "searchGmail": "Tìm trong Gmail"
+    }
   },
   "privacy": {
     "title": "Quyền riêng tư",

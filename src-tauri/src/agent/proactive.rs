@@ -268,6 +268,61 @@ static DATE: Lazy<Regex> = Lazy::new(|| {
 static MESSAGE_MARK: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?im)^(?:from:|on .{5,80} wrote:|\w+ \w+ <[^>]+@[^>]+>)").expect("message pattern")
 });
+/// One per message in a thread as mail apps lay it out through
+/// accessibility: Gmail's "10:14 AM (2 days ago)" stamps, a sender's
+/// address on its own line ("<ana@x.com>"), Mail's "To:" header. Counted
+/// separately, since one message can show several of them.
+static THREAD_MARKS: Lazy<[Regex; 3]> = Lazy::new(|| {
+    [
+        r"(?i)\(\d+\s+(?:minutes?|hours?|days?|weeks?|months?)\s+ago\)",
+        r"(?m)^\s*<?[\w.+-]+@[\w-]+(?:\.[\w-]+)+>?\s*$",
+        r"(?im)^to:\s",
+    ]
+    .map(|p| Regex::new(p).expect("thread pattern"))
+});
+/// Gmail shows the collapsed middle of a long thread as a count ("12 older
+/// messages") or a bare number on its own line next to the senders.
+static COLLAPSED: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)\b(\d{1,3})\s+(?:older\s+)?messages?\b|^\s*(\d{1,3})\s*$").expect("collapsed")
+});
+/// Message timestamps ("Mon, Oct 3, 10:14 AM (2 days ago)") look like
+/// dates to DATE but say when mail arrived, not what's being arranged.
+static STAMP_LINE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)^.*\(\d+\s+(?:minutes?|hours?|days?|weeks?|months?)\s+ago\).*$|^\s*(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*,?\s+(?:\d{1,2}\s+)?(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s*\d{0,2},?\s+(?:\d{4},?\s+)?(?:at\s+)?\d{1,2}:\d{2}\s?(?:am|pm)?\s*$")
+        .expect("stamp")
+});
+
+/// Whether text mentions a date or time worth adding to a calendar.
+pub fn mentions_date(text: &str) -> bool {
+    DATE.is_match(&STAMP_LINE.replace_all(text, ""))
+}
+
+/// Roughly how many messages a mail thread on screen holds.
+fn thread_messages(text: &str) -> usize {
+    let marks = THREAD_MARKS
+        .iter()
+        .map(|r| r.find_iter(text).count())
+        .chain(std::iter::once(MESSAGE_MARK.find_iter(text).count()))
+        .max()
+        .unwrap_or(0);
+    let collapsed = COLLAPSED
+        .captures_iter(text)
+        .filter_map(|c| c.get(1).or_else(|| c.get(2)))
+        .filter_map(|m| m.as_str().parse::<usize>().ok())
+        .filter(|n| (2..=500).contains(n))
+        .max()
+        .unwrap_or(0);
+    marks + collapsed
+}
+
+/// A thread long enough that a summary helps.
+const LONG_THREAD: usize = 4;
+
+/// Browsers don't always report the page URL without reading the page;
+/// webmail titles end with the service's name.
+fn is_webmail_title(title: &str) -> bool {
+    title.ends_with(" - Gmail") || title.ends_with(" - Outlook") || title.contains(" - Mail - ")
+}
 
 fn is_webmail(url: &str) -> bool {
     url.contains("mail.google.com")
@@ -298,7 +353,7 @@ fn classify(snap: &ContextSnapshot) -> Option<Kind> {
             .chars()
             .rev()
             .collect();
-        if DATE.is_match(&tail) {
+        if mentions_date(&tail) {
             return Some(Kind::AddToCalendar);
         }
     }
@@ -321,14 +376,17 @@ fn classify(snap: &ContextSnapshot) -> Option<Kind> {
     if sheet && SHEET_ERROR.is_match(text) {
         return Some(Kind::FixFormula);
     }
-    let mail = MAIL_APPS.contains(&bundle) || (BROWSERS.contains(&bundle) && is_webmail(url));
+    let mail = MAIL_APPS.contains(&bundle)
+        || (BROWSERS.contains(&bundle)
+            && (is_webmail(url) || is_webmail_title(&snap.window_title)));
     if mail {
-        if DATE.is_match(text) {
-            return Some(Kind::AddToCalendar);
-        }
-        let messages = MESSAGE_MARK.find_iter(text).count();
-        if messages >= 3 || text.len() > 4000 {
+        // A long thread outranks a date in it: the summary covers the date.
+        let messages = thread_messages(text);
+        if messages >= LONG_THREAD || text.len() > 4000 {
             return Some(Kind::SummariseThread);
+        }
+        if mentions_date(text) {
+            return Some(Kind::AddToCalendar);
         }
         if messages >= 1 && text.contains('?') {
             return Some(Kind::DraftReply);
@@ -461,6 +519,8 @@ fn offer(
             accept_label: kind.accept_key().into(),
         },
     );
+    // "Yes" / "not now" by voice while it's up, without the shortcut.
+    super::wake::listen_for_reply(app);
 }
 
 pub fn text_chars() -> usize {
@@ -593,6 +653,18 @@ fn run(app: AppHandle, p: Pending) {
     });
 }
 
+/// "Add to calendar" on an answer that mentions a date.
+pub fn add_answer_to_calendar(app: &AppHandle, text: String) {
+    hud::show(
+        app,
+        HudContent::Listening {
+            heard: String::new(),
+        },
+    );
+    let app = app.clone();
+    tauri::async_runtime::spawn(async move { add_to_calendar(app, text).await });
+}
+
 /// Pull the event out of the thread (the one model call), then create it.
 async fn add_to_calendar(app: AppHandle, context: String) {
     let now = chrono::Local::now().format("%A %Y-%m-%d %H:%M").to_string();
@@ -679,6 +751,46 @@ mod tests {
             )),
             Some(Kind::PriceCheck)
         );
+    }
+
+    #[test]
+    fn long_threads_in_gmail_and_mail() {
+        // Gmail through accessibility: sender, address, stamp per message,
+        // and the collapsed middle as a count.
+        let mut gmail = String::from("Re: Q4 pricing\nInbox\n");
+        for i in 0..3 {
+            gmail.push_str(&format!(
+                "Ana Lopez\n<ana@bingx.com>\nMon, Oct {}, 10:14 AM (2 days ago)\nto me\nThanks, see below.\n",
+                i + 1
+            ));
+        }
+        gmail.push_str("18\n");
+        let s = ContextSnapshot {
+            window_title: "Re: Q4 pricing - sam@gmail.com - Gmail".into(),
+            ..snap("com.google.Chrome", "", &gmail)
+        };
+        assert_eq!(classify(&s), Some(Kind::SummariseThread));
+        // Same, with the URL instead of the title.
+        assert_eq!(
+            classify(&snap(
+                "com.google.Chrome",
+                "https://mail.google.com/mail/u/0/#inbox/FMfcgz",
+                &gmail
+            )),
+            Some(Kind::SummariseThread)
+        );
+        // Apple Mail's conversation view.
+        let mut mail = String::new();
+        for _ in 0..4 {
+            mail.push_str("Ana Lopez\nTo: Sam\nThe numbers are in the sheet.\n");
+        }
+        assert_eq!(
+            classify(&snap("com.apple.mail", "", &mail)),
+            Some(Kind::SummariseThread)
+        );
+        // A message's own timestamp isn't a date to add.
+        assert!(!mentions_date("Mon, Oct 3, 10:14 AM (2 days ago)"));
+        assert!(mentions_date("Can we do Friday at 3pm?"));
     }
 
     #[test]
@@ -834,7 +946,8 @@ pub fn set_pref(app: &AppHandle, kind: &str, off: Option<bool>, mute_app: Option
 /// "yes", "not now" or "don't show me these", act on it and return true.
 /// English answers to a suggestion are matched instantly; anything else short
 /// is classified by one small model call, so it works in every language.
-async fn classify_feedback(app: &AppHandle, t: &str) -> Option<&'static str> {
+/// The reply, from the English patterns alone (no model call).
+fn classify_feedback_locally(t: &str) -> Option<&'static str> {
     if YES.is_match(t) {
         return Some("yes");
     }
@@ -848,6 +961,13 @@ async fn classify_feedback(app: &AppHandle, t: &str) -> Option<&'static str> {
     if NO.is_match(t) {
         return Some("no");
     }
+    None
+}
+
+async fn classify_feedback(app: &AppHandle, t: &str) -> Option<&'static str> {
+    if let Some(answer) = classify_feedback_locally(t) {
+        return Some(answer);
+    }
     if t.split_whitespace().count() > 8 {
         return None;
     }
@@ -859,26 +979,46 @@ async fn classify_feedback(app: &AppHandle, t: &str) -> Option<&'static str> {
         .find(|w| word.starts_with(w))
 }
 
-pub async fn handle_voice_feedback(app: &AppHandle, transcript: &str) -> bool {
-    if !hud::is_visible() {
-        return false;
-    }
+/// A suggestion or meeting nudge is on screen, waiting for an answer.
+pub fn awaiting_reply() -> bool {
+    hud::is_visible()
+        && (crate::meeting::pending_nudge().is_some()
+            || !STATE
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .pending
+                .is_empty())
+}
+
+/// Hands-free reply to a suggestion (heard without a shortcut, on this Mac):
+/// only clear English answers count, and nothing is sent anywhere to decide.
+pub fn handle_spoken_reply(app: &AppHandle, transcript: &str) -> bool {
     let t = transcript.trim();
-    if t.split_whitespace().count() > 14 {
+    if !awaiting_reply() || t.split_whitespace().count() > 8 {
         return false;
     }
-    let has_pending = crate::meeting::pending_nudge().is_some()
-        || !STATE
-            .lock()
-            .unwrap_or_else(std::sync::PoisonError::into_inner)
-            .pending
-            .is_empty();
-    if !has_pending {
+    match classify_feedback_locally(t) {
+        Some(answer) => {
+            apply_feedback(app, answer);
+            true
+        }
+        None => false,
+    }
+}
+
+pub async fn handle_voice_feedback(app: &AppHandle, transcript: &str) -> bool {
+    let t = transcript.trim();
+    if t.split_whitespace().count() > 14 || !awaiting_reply() {
         return false;
     }
     let Some(answer) = classify_feedback(app, t).await else {
         return false;
     };
+    apply_feedback(app, answer)
+}
+
+/// Act on "yes" / "no" / "never" / "not_here" for what's on screen.
+fn apply_feedback(app: &AppHandle, answer: &str) -> bool {
     // A meeting nudge takes the same answers.
     if let Some((id, kind)) = crate::meeting::pending_nudge() {
         match answer {

@@ -1135,7 +1135,10 @@
       "sensitivePaused": "여기서 일시 정지됨: 이 창에 복구 문구 또는 개인 키가 표시되어 있습니다.",
       "fairUse": "오늘의 공정 사용 한도에 도달했습니다. UTC 자정에 초기화됩니다.",
       "slowDown": "한 번에 요청이 너무 많습니다. 1분 후에 다시 시도하세요.",
-      "listening": "듣는 중…"
+      "listening": "듣는 중…",
+      "heardNothing": "들었지만 요청을 알아듣지 못했어요.",
+      "noWebResults": "지금은 웹을 검색할 수 없어 알고 있는 내용으로 답했어요.",
+      "timeout": "너무 오래 걸렸어요. 다시 시도해 주세요."
     },
     "undo": "실행 취소",
     "close": "닫기",
@@ -1175,7 +1178,23 @@
       "searchInstead": "입력했습니다. 대신 이걸 검색할까요?",
       "search": "검색"
     },
-    "suggestionTip": "“응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요."
+    "suggestionTip": "“응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요.",
+    "replace": "바꾸기",
+    "actions": {
+      "reply": "답장",
+      "copyCode": "코드 복사",
+      "openLink": "링크 열기",
+      "addToCalendar": "캘린더에 추가"
+    },
+    "draft": {
+      "title": "이걸 입력하려고 하셨나요?",
+      "composed": "초안입니다.",
+      "focusHint": "텍스트 필드를 클릭하면 삽입할 수 있어요."
+    },
+    "source": {
+      "searchDrive": "Google Drive에서 검색",
+      "searchGmail": "Gmail에서 검색"
+    }
   },
   "privacy": {
     "title": "개인정보 보호",

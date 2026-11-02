@@ -1143,7 +1143,10 @@
       "sensitivePaused": "In pausa qui: questa finestra mostra una frase di recupero o una chiave privata.",
       "fairUse": "Hai raggiunto il limite di utilizzo equo di oggi. Si azzera a mezzanotte UTC.",
       "slowDown": "Sono troppe richieste tutte insieme. Riprova tra un minuto.",
-      "listening": "In ascolto…"
+      "listening": "In ascolto…",
+      "heardNothing": "Ti ho sentito, ma non ho capito la richiesta.",
+      "noWebResults": "Ora non sono riuscito a cercare sul web, quindi questo è ciò che so.",
+      "timeout": "Ci è voluto troppo. Riprova."
     },
     "undo": "Annulla",
     "close": "Chiudi",
@@ -1183,7 +1186,23 @@
       "searchInstead": "Scritto. Cercarlo invece?",
       "search": "Cerca"
     },
-    "suggestionTip": "Di' «sì», «non ora» o «non mostrarmeli»."
+    "suggestionTip": "Di' «sì», «non ora» o «non mostrarmeli».",
+    "replace": "Sostituisci",
+    "actions": {
+      "reply": "Rispondi",
+      "copyCode": "Copia codice",
+      "openLink": "Apri link",
+      "addToCalendar": "Aggiungi al calendario"
+    },
+    "draft": {
+      "title": "Volevi scrivere questo?",
+      "composed": "Ecco la bozza.",
+      "focusHint": "Fai clic in un campo di testo per inserirla."
+    },
+    "source": {
+      "searchDrive": "Cerca in Google Drive",
+      "searchGmail": "Cerca in Gmail"
+    }
   },
   "privacy": {
     "title": "Privacy",

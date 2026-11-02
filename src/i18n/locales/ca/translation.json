@@ -1143,7 +1143,10 @@
       "sensitivePaused": "En pausa aquí: aquesta finestra mostra una frase de recuperació o una clau privada.",
       "fairUse": "Heu arribat al límit d'ús raonable d'avui. Es reinicia a mitjanit UTC.",
       "slowDown": "Són moltes peticions alhora. Torneu-ho a provar d'aquí a un minut.",
-      "listening": "Escoltant…"
+      "listening": "Escoltant…",
+      "heardNothing": "T'he sentit, però no he entès la petició.",
+      "noWebResults": "Ara no he pogut cercar al web, així que això és el que sé.",
+      "timeout": "Ha trigat massa. Torna-ho a provar."
     },
     "undo": "Desfés",
     "close": "Tanca",
@@ -1183,7 +1186,23 @@
       "searchInstead": "Escrit. Voleu cercar-ho en lloc d'això?",
       "search": "Cerca"
     },
-    "suggestionTip": "Digueu «sí», «ara no» o «no me'ls mostris»."
+    "suggestionTip": "Digueu «sí», «ara no» o «no me'ls mostris».",
+    "replace": "Substitueix",
+    "actions": {
+      "reply": "Respon",
+      "copyCode": "Copia el codi",
+      "openLink": "Obre l'enllaç",
+      "addToCalendar": "Afegeix al calendari"
+    },
+    "draft": {
+      "title": "Volies escriure això?",
+      "composed": "Aquí tens l'esborrany.",
+      "focusHint": "Fes clic en un camp de text per inserir-lo."
+    },
+    "source": {
+      "searchDrive": "Cerca a Google Drive",
+      "searchGmail": "Cerca a Gmail"
+    }
   },
   "privacy": {
     "title": "Privadesa",

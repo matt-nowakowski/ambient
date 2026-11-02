@@ -116,6 +116,23 @@ private func findWebArea(_ root: AXUIElement, depth: Int = 0) -> AXUIElement? {
     return nil
 }
 
+/// The page's `role="main"` region (AXLandmarkMain), breadth-first and
+/// bounded, if the page marks one.
+private func findMain(_ root: AXUIElement, deadline: Date) -> AXUIElement? {
+    var queue: [(AXUIElement, Int)] = [(root, 0)]
+    var visited = 0
+    while !queue.isEmpty, visited < 600, Date() < deadline {
+        let (el, depth) = queue.removeFirst()
+        visited += 1
+        if stringAttr(el, kAXSubroleAttribute) == "AXLandmarkMain" { return el }
+        if depth >= 14 { continue }
+        if let children = attr(el, kAXChildrenAttribute) as? [AXUIElement] {
+            queue.append(contentsOf: children.map { ($0, depth + 1) })
+        }
+    }
+    return nil
+}
+
 /// Snapshot of the given app's focused window as JSON:
 /// {"window_title", "url", "focused_role", "editable", "secure", "selection", "text"}.
 /// `maxChars` <= 0 skips the text walk (metadata only).
@@ -154,7 +171,10 @@ public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeM
         // Browsers: read the page, not the tab strip, and take its URL.
         let root = findWebArea(window) ?? window
         if let url = stringAttr(root, "AXURL") { result["url"] = url }
-        result["text"] = collectText(root, maxChars: Int(maxChars), deadline: deadline)
+        // Web apps like Gmail spend the node and time budget on navigation
+        // before reaching the content; start at the page's main region.
+        let content = findMain(root, deadline: Date().addingTimeInterval(0.2)) ?? root
+        result["text"] = collectText(content, maxChars: Int(maxChars), deadline: deadline)
     }
     return json(result)
 }
