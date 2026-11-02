@@ -610,27 +610,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Genvejstast"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Valgt prompt",
-          "description": "Vælg en skabelon til at forfine transskriptioner, eller opret en ny. Brug ${output} i promptteksten for at referere til den fangede transskription."
-        },
-        "noPrompts": "Ingen prompts tilgængelige",
-        "selectPrompt": "Vælg en prompt",
-        "createNew": "Opret ny prompt",
-        "promptLabel": "Promptnavn",
-        "promptLabelPlaceholder": "Indtast promptnavn",
-        "promptInstructions": "Promptinstruktioner",
-        "promptInstructionsPlaceholder": "Skriv de instruktioner, der skal køres efter transskription. Eksempel: Forbedr grammatik og klarhed for følgende tekst: ${output}",
-        "promptTip": "Tip: Brug <code>${output}</code> til at indsætte den transskriberede tekst i din prompt.",
-        "updatePrompt": "Opdater prompt",
-        "deletePrompt": "Slet prompt",
-        "createPrompt": "Opret prompt",
-        "cancel": "Annuller",
-        "selectToEdit": "Vælg en prompt ovenfor for at se og redigere dens detaljer.",
-        "createFirst": "Klik på 'Opret ny prompt' ovenfor for at oprette din første efterbehandlingsprompt."
       }
     },
     "history": {
@@ -988,7 +967,8 @@
         "inactive": "Abonnementet for denne kode er ikke aktivt. Forny det for at låse din plan op.",
         "rate_limited": "For mange forsøg. Prøv igen om 15 minutter.",
         "server": "Aktiveringen mislykkedes hos os. Prøv igen om lidt."
-      }
+      },
+      "menu": "Kontohandlinger"
     },
     "signIn": {
       "sectionTitle": "Din konto",
@@ -1091,8 +1071,10 @@
       "polishUnlimited": "AI-finpudsning er ubegrænset.",
       "polishLeft": "{{left}} af {{limit}} gratis brug af AI-finpudsning tilbage i denne uge · nulstilles {{day}}",
       "polishFree": "Gratis inkluderer en ugentlig kvote til AI-finpudsning.",
-      "usageToday": "I dag: AI-anmodninger {{ai}} · søgninger {{search}} · rimelig brug {{aiLimit}} om dagen",
-      "meetingsLeft": "Møder denne måned: {{used}} af {{limit}}"
+      "meetingsLeft": "{{left}} af {{limit}} mødenoter tilbage denne måned",
+      "aiLeft": "{{left}} af {{limit}} AI-forespørgsler tilbage i dag",
+      "searchLeft": "Søgninger tilbage: {{count}}",
+      "meterLabel": "Resterende kvote"
     },
     "privacy": {
       "title": "Privatliv",
@@ -1179,7 +1161,7 @@
   },
   "privacy": {
     "title": "Privatliv",
-    "promise": "Slået fra, indtil du slår det til. Gemt krypteret på denne Mac. Hver anmodning, der sendes ud, bliver vist.",
+    "promise": "Hvad {{appName}} kan læse, hvad der forlader denne Mac, og hvad den gemmer.",
     "state": {
       "on": "Holder øje, som du har tilladt",
       "onDetail": "Kun de funktioner, du har slået til nedenfor.",
@@ -1189,8 +1171,9 @@
       "pausedDetail": "Intet læses, før du genoptager.",
       "pausedUntil": "Intet læses før {{time}}.",
       "resume": "Genoptag",
-      "pauseHour": "Pause i 1 time",
-      "pauseDay": "Indtil i morgen"
+      "pauseHour": "I 1 time",
+      "pauseDay": "Indtil i morgen",
+      "pause": "Pause"
     },
     "accessibility": "{{appName}} skal have adgang til Hjælpemidler for at læse tekst fra andre apps.",
     "grant": "Giv adgang",
@@ -1226,6 +1209,11 @@
         "title": "Håndfri: sig »Hej Ambient«",
         "reads": "Lytter efter »Hej Ambient« på denne Mac. Alt andet kasseres, mens du taler.",
         "leaves": "Intet optages eller sendes, før du siger det."
+      },
+      "groups": {
+        "screen": "Din skærm",
+        "listening": "Lytning",
+        "local": "På denne Mac"
       }
     },
     "retention": "Gem i",
@@ -1306,26 +1294,19 @@
       }
     },
     "macOnly": "Kun på Mac indtil videre",
-    "protections": {
-      "audio": "Din stemme transskriberes på denne Mac og gemmes aldrig af os.",
-      "text": "Læser tekst, tager aldrig skærmbilleder.",
-      "passwords": "Adgangskodefelter, adgangskodeadministratorer og private vinduer læses aldrig.",
-      "wallets": "Kryptotegnebøger, gendannelsessætninger og private nøgler: den holder sig helt væk.",
-      "secrets": "Kortnumre, nøgler og koder fjernes, før noget sendes.",
-      "suggestions": "Forslag afgøres på denne Mac; intet sendes, medmindre du accepterer.",
-      "stored": "Det, den gemmer, bliver på denne Mac, krypteret, indtil du sletter det.",
-      "ledger": "Hver anmodning, der sendes ud, står nedenfor med præcis det, der blev sendt."
+    "promises": {
+      "voice": "Din stemme bliver på denne Mac",
+      "text": "Læser tekst, aldrig skærmbilleder",
+      "sensitive": "Springer adgangskoder, tegnebøger og private vinduer over",
+      "ledger": "Hver forespørgsel, der forlader din Mac, står på listen nedenfor"
     }
   },
   "meetings": {
     "title": "Møder",
     "intro": "Noter til ethvert opkald: dig og de andre, transskriberet på denne Mac. Lyd gemmes aldrig.",
-    "idle": "Tager ikke noter",
-    "idleDetail": "Start, når et opkald begynder, eller slå mødeforslag til under Privatliv.",
     "live": "Tager noter · {{time}}",
     "capturingBoth": "Hører dig og opkaldet.",
     "capturingMic": "Hører kun din mikrofon.",
-    "start": "Start noter",
     "stop": "Stop og opsummer",
     "listening": "Lytter…",
     "consent": "Fortæl alle, at du tager noter.",
@@ -1366,7 +1347,27 @@
       "notFound": "Det møde findes ikke længere.",
       "followUp": "Kunne ikke skrive opfølgningen lige nu."
     },
-    "freeLeft": "Gratis møder tilbage denne måned: {{left}} af {{limit}}. Pro er ubegrænset."
+    "freeLeft": "Gratis møder tilbage denne måned: {{left}} af {{limit}}. Pro er ubegrænset.",
+    "startNow": "Start nu",
+    "startNowHint": "Tag noter nu uden at vente på et opkald",
+    "auto": {
+      "on": "Klar til dit næste opkald",
+      "onDetail": "Når et opkald starter, tilbyder {{appName}} at tage noter. Sig ja, eller ignorer det.",
+      "off": "Opkaldsregistrering er slået fra",
+      "offDetail": "Slå det til, så tilbyder {{appName}} at tage noter, når et opkald starter.",
+      "paused": "På pause",
+      "pausedDetail": "{{appName}} tilbyder ikke noter, før du genoptager det under Privatliv.",
+      "pro": "Tager ikke noter",
+      "proDetail": "Med Pro opdager {{appName}} dine opkald og tilbyder at tage noter.",
+      "unsupported": "Tager ikke noter",
+      "unsupportedDetail": "Start noter, når dit opkald begynder.",
+      "turnOn": "Slå til"
+    },
+    "steps": {
+      "join": "Deltag i et opkald i en hvilken som helst app",
+      "accept": "Sig ja, når {{appName}} tilbyder det",
+      "summary": "Få et resumé, når det slutter"
+    }
   },
   "tour": {
     "skip": "Spring over",
@@ -1429,7 +1430,6 @@
   "trySaying": {
     "title": "Hvad kan jeg sige?",
     "close": "Luk",
-    "description": "Hold {{ask}} nede for at tale med agenten. {{dictate}} skriver, medmindre du beder om noget.",
     "footnote": "I ChatGPT eller Claude skal du starte med »Hej Ambient« for at tale med agenten i stedet.",
     "groups": {
       "answer": {
@@ -1439,7 +1439,8 @@
           "Opsummer det her.",
           "Hvad betyder den her fejl?",
           "Oversæt det her til spansk."
-        ]
+        ],
+        "hint": "Spørgsmål om alt muligt, også om det, der er på din skærm."
       },
       "act": {
         "title": "Gør",
@@ -1448,43 +1449,56 @@
           "Tilføj frokost med Ana fredag kl. 13.",
           "Åbn Linear.",
           "Kør min standup-genvej."
-        ]
+        ],
+        "hint": "Påmindelser, begivenheder, apps og genveje."
       },
       "recall": {
         "title": "Husk",
         "examples": [
           "Hvad sagde jeg om priserne i går?",
           "Find Q3-præsentationen."
-        ]
+        ],
+        "hint": "Ting, du har sagt, set eller arbejdet på."
       },
       "suggestions": {
-        "title": "Når et forslag dukker op",
+        "title": "Forslag",
         "examples": [
           "»Ja« eller »gør det« for at acceptere.",
           "»Ikke nu« for at afvise.",
           "»Vis mig ikke disse« for at slå den slags fra.",
           "»Ikke her« for at stoppe det i denne app."
-        ]
+        ],
+        "hint": "Svar på et forslag højt."
       },
       "meetings": {
-        "title": "Under møder",
+        "title": "Møder",
         "examples": [
           "Start noter fra Møder, eller sig ja, når Ambient tilbyder det.",
           "»Find det«, når nogen beder dig om noget.",
           "»Mind mig om det«, når du lover at gøre noget."
-        ]
+        ],
+        "hint": "Mens {{appName}} tager noter i et opkald."
       },
       "talking": {
-        "title": "Tal med Ambient",
-        "examples": [
-          "Hold {{ask}} nede, og tal: det er altid til Ambient.",
-          "Eller brug din dikteringstast, og start med »Hej Ambient, …«. Ellers bliver dine ord skrevet.",
-          "Håndfri (slå til under Privatliv): sig bare »Hej Ambient, …«."
-        ]
+        "title": "Sådan taler du"
       }
+    },
+    "subtitle": "Tal, som du ville spørge en kollega. Et par måder at komme i gang på.",
+    "ways": {
+      "0": "Hold nede for at tale med agenten.",
+      "1": "Hold nede for at diktere. Start med “Hey {{appName}}” for at spørge i stedet.",
+      "2": "Håndfri: sig “Hey {{appName}}, …”. Slå det til under Privatliv."
     }
   },
   "app": {
     "starting": "Starter {{appName}}…"
+  },
+  "search": {
+    "label": "Søg",
+    "button": "Søg",
+    "placeholder": "Søg i indstillinger og sider",
+    "empty": "Intet matcher “{{query}}”.",
+    "jumpTo": "Gå til",
+    "escape": "esc"
   }
 }

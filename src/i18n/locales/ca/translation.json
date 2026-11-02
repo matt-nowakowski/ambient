@@ -613,27 +613,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Drecera de teclat"
-      },
-      "prompts": {
-        "title": "Indicació",
-        "selectedPrompt": {
-          "title": "Indicació seleccionada",
-          "description": "Seleccioneu una plantilla per millorar les transcripcions o creeu-ne una de nova. Utilitzeu ${output} dins del text de la indicació per fer referència a la transcripció enregistrada."
-        },
-        "noPrompts": "No hi ha indicacions disponibles",
-        "selectPrompt": "Seleccioneu una indicació",
-        "createNew": "Creeu una indicació nova",
-        "promptLabel": "Nom de la indicació",
-        "promptLabelPlaceholder": "Introduïu el nom de la indicació",
-        "promptInstructions": "Instruccions de la indicació",
-        "promptInstructionsPlaceholder": "Escriviu les instruccions que s'executaran després de la transcripció. Exemple: Millora la gramàtica i la claredat del text següol: ${output}",
-        "promptTip": "Consell: utilitzeu <code>${output}</code> per inserir el text transcrit a la indicació.",
-        "updatePrompt": "Actualitzeu la indicació",
-        "deletePrompt": "Suprimiu la indicació",
-        "createPrompt": "Creeu la indicació",
-        "cancel": "Cancel·leu",
-        "selectToEdit": "Seleccioneu una indicació more amunt per veure'n i editar-ne els detalls.",
-        "createFirst": "Feu clic a «Creeu una indicació nova» més amunt per crear la primera indicació de postprocessament."
       }
     },
     "history": {
@@ -993,7 +972,8 @@
         "inactive": "La subscripció d'aquest codi no és activa. Renova-la per desbloquejar el pla.",
         "rate_limited": "Massa intents. Torna-ho a provar d'aquí a 15 minuts.",
         "server": "L'activació ha fallat per part nostra. Torna-ho a provar d'aquí a un moment."
-      }
+      },
+      "menu": "Accions del compte"
     },
     "signIn": {
       "sectionTitle": "El teu compte",
@@ -1099,8 +1079,10 @@
       "polishUnlimited": "Polit amb IA és il·limitat.",
       "polishLeft": "Et queden {{left}} de {{limit}} usos gratuïts de polit amb IA aquesta setmana · es reinicia {{day}}",
       "polishFree": "El pla gratuït inclou una quota setmanal de polit amb IA.",
-      "usageToday": "Avui: peticions d'IA {{ai}} · cerques {{search}} · ús raonable {{aiLimit}} al dia",
-      "meetingsLeft": "Reunions aquest mes: {{used}} de {{limit}}"
+      "meetingsLeft": "Aquest mes queden {{left}} de {{limit}} notes de reunions",
+      "aiLeft": "Avui queden {{left}} de {{limit}} sol·licituds d'IA",
+      "searchLeft": "Cerques restants: {{count}}",
+      "meterLabel": "Marge restant"
     },
     "privacy": {
       "title": "Privadesa",
@@ -1187,7 +1169,7 @@
   },
   "privacy": {
     "title": "Privadesa",
-    "promise": "Desactivat fins que l'activeu. Es desa en aquest Mac, xifrat. Cada petició que surt queda registrada.",
+    "promise": "Què pot llegir el {{appName}}, què surt d'aquest Mac i què conserva.",
     "state": {
       "on": "Observant, tal com heu permès",
       "onDetail": "Només les funcions que heu activat a sota.",
@@ -1197,8 +1179,9 @@
       "pausedDetail": "No es llegeix res fins que reprengueu.",
       "pausedUntil": "No es llegeix res fins a les {{time}}.",
       "resume": "Reprèn",
-      "pauseHour": "Pausa d'1 hora",
-      "pauseDay": "Fins demà"
+      "pauseHour": "Durant 1 hora",
+      "pauseDay": "Fins demà",
+      "pause": "Pausa"
     },
     "accessibility": "El {{appName}} necessita accés d'Accessibilitat per llegir text d'altres aplicacions.",
     "grant": "Permet l'accés",
@@ -1234,6 +1217,11 @@
         "title": "Mans lliures: digueu «Hola Ambient»",
         "reads": "Escolta «Hola Ambient» en aquest Mac. Tota la resta es descarta mentre parleu.",
         "leaves": "No es grava ni s'envia res fins que ho dieu."
+      },
+      "groups": {
+        "screen": "La vostra pantalla",
+        "listening": "Escolta",
+        "local": "En aquest Mac"
       }
     },
     "retention": "Conserva durant",
@@ -1317,27 +1305,20 @@
       }
     },
     "macOnly": "De moment, només al Mac",
-    "protections": {
-      "audio": "La vostra veu es transcriu en aquest Mac i mai no la guardem.",
-      "text": "Llegeix text, mai no fa captures de pantalla.",
-      "passwords": "Els camps de contrasenya, els gestors de contrasenyes i les finestres privades no es llegeixen mai.",
-      "wallets": "Moneders de criptomonedes, frases de recuperació i claus privades: s'aparta del tot.",
-      "secrets": "Els números de targeta, claus i codis s'eliminen abans d'enviar res.",
-      "suggestions": "Els suggeriments es decideixen en aquest Mac; no s'envia res si no ho accepteu.",
-      "stored": "El que conserva es queda en aquest Mac, xifrat, fins que ho suprimiu.",
-      "ledger": "Cada petició que surt apareix a sota, amb exactament el que s'ha enviat."
-    },
-    "days_many": "{{count}} dies"
+    "days_many": "{{count}} dies",
+    "promises": {
+      "voice": "La vostra veu es queda en aquest Mac",
+      "text": "Llegeix text, mai captures de pantalla",
+      "sensitive": "Ignora contrasenyes, carteres i finestres privades",
+      "ledger": "Cada sol·licitud que surt apareix a sota"
+    }
   },
   "meetings": {
     "title": "Reunions",
     "intro": "Notes per a qualsevol trucada: vós i els altres, transcrits en aquest Mac. L'àudio no es desa mai.",
-    "idle": "Sense prendre notes",
-    "idleDetail": "Comenceu quan comenci una trucada o activeu els suggeriments de reunions a Privadesa.",
     "live": "Prenent notes · {{time}}",
     "capturingBoth": "Us sent a vós i la trucada.",
     "capturingMic": "Només sent el vostre micròfon.",
-    "start": "Comença les notes",
     "stop": "Atura i resumeix",
     "listening": "Escoltant…",
     "consent": "Aviseu tothom que esteu prenent notes.",
@@ -1378,7 +1359,27 @@
       "notFound": "Aquesta reunió ja no existeix.",
       "followUp": "No s'ha pogut redactar el seguiment ara mateix."
     },
-    "freeLeft": "Reunions gratuïtes restants aquest mes: {{left}} de {{limit}}. Pro és il·limitat."
+    "freeLeft": "Reunions gratuïtes restants aquest mes: {{left}} de {{limit}}. Pro és il·limitat.",
+    "startNow": "Comença ara",
+    "startNowHint": "Preneu notes ara, sense esperar una trucada",
+    "auto": {
+      "on": "A punt per a la propera trucada",
+      "onDetail": "Quan comença una trucada, el {{appName}} us ofereix prendre notes. Digueu que sí, o ignoreu-ho.",
+      "off": "La detecció de trucades és desactivada",
+      "offDetail": "Activeu-la i el {{appName}} us oferirà prendre notes quan comenci una trucada.",
+      "paused": "En pausa",
+      "pausedDetail": "El {{appName}} no oferirà notes fins que el reprengueu a Privadesa.",
+      "pro": "No pren notes",
+      "proDetail": "Amb Pro, el {{appName}} detecta les trucades i ofereix prendre notes.",
+      "unsupported": "No pren notes",
+      "unsupportedDetail": "Comenceu a prendre notes quan comenci la trucada.",
+      "turnOn": "Activa"
+    },
+    "steps": {
+      "join": "Uniu-vos a una trucada en qualsevol aplicació",
+      "accept": "Digueu que sí quan el {{appName}} ho ofereixi",
+      "summary": "Rebeu un resum quan acabi"
+    }
   },
   "tour": {
     "skip": "Omet",
@@ -1441,7 +1442,6 @@
   "trySaying": {
     "title": "Què puc dir?",
     "close": "Tanca",
-    "description": "Manteniu premut {{ask}} per parlar amb l'agent. {{dictate}} escriu, tret que demaneu alguna cosa.",
     "footnote": "A ChatGPT o Claude, comenceu amb «Hola Ambient» per parlar amb l'agent.",
     "groups": {
       "answer": {
@@ -1451,7 +1451,8 @@
           "Resumeix això.",
           "Què vol dir aquest error?",
           "Tradueix això a l'anglès."
-        ]
+        ],
+        "hint": "Preguntes sobre qualsevol cosa, també sobre el que hi ha a la pantalla."
       },
       "act": {
         "title": "Fer",
@@ -1460,43 +1461,56 @@
           "Afegeix un dinar amb l'Ana divendres a la una.",
           "Obre Linear.",
           "Executa la meva drecera de la reunió diària."
-        ]
+        ],
+        "hint": "Recordatoris, esdeveniments, aplicacions i dreceres."
       },
       "recall": {
         "title": "Recordar",
         "examples": [
           "Què vaig dir ahir sobre els preus?",
           "Troba la presentació del T3."
-        ]
+        ],
+        "hint": "Coses que heu dit, vist o en què heu treballat."
       },
       "suggestions": {
-        "title": "Quan apareix un suggeriment",
+        "title": "Suggeriments",
         "examples": [
           "«Sí» o «fes-ho» per acceptar-lo.",
           "«Ara no» per descartar-lo.",
           "«No me'ls mostris» per desactivar aquest tipus.",
           "«Aquí no» per aturar-lo en aquesta aplicació."
-        ]
+        ],
+        "hint": "Responeu un suggeriment en veu alta."
       },
       "meetings": {
-        "title": "A les reunions",
+        "title": "Reunions",
         "examples": [
           "Comenceu les notes des de Reunions, o digueu que sí quan l'Ambient ho ofereixi.",
           "«Troba-ho» quan us demanin alguna cosa.",
           "«Recorda-m'ho» quan prometeu fer alguna cosa."
-        ]
+        ],
+        "hint": "Mentre el {{appName}} pren notes en una trucada."
       },
       "talking": {
-        "title": "Parlar amb l'Ambient",
-        "examples": [
-          "Manteniu premut {{ask}} i parleu: sempre és per a l'Ambient.",
-          "O feu servir la tecla de dictat i comenceu amb «Hola Ambient, …». Si no, les paraules s'escriuen.",
-          "Mans lliures (activeu-ho a Privadesa): només cal dir «Hola Ambient, …»."
-        ]
+        "title": "Com parlar"
       }
+    },
+    "subtitle": "Parleu com ho faríeu amb un company de feina. Algunes maneres de començar.",
+    "ways": {
+      "0": "Manteniu premut per parlar amb l'agent.",
+      "1": "Manteniu premut per dictar. Comenceu amb “Hey {{appName}}” per preguntar.",
+      "2": "Mans lliures: digueu “Hey {{appName}}, …”. Activeu-ho a Privadesa."
     }
   },
   "app": {
     "starting": "S'està iniciant {{appName}}…"
+  },
+  "search": {
+    "label": "Cerca",
+    "button": "Cerca",
+    "placeholder": "Cerca configuracions i pàgines",
+    "empty": "Cap resultat per a “{{query}}”.",
+    "jumpTo": "Vés a",
+    "escape": "esc"
   }
 }

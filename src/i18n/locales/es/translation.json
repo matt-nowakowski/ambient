@@ -613,27 +613,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Tecla de acceso rápido"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Prompt seleccionado",
-          "description": "Selecciona una plantilla para refinar las transcripciones o crea una nueva. Usa ${output} dentro del texto del prompt para hacer referencia a la transcripción capturada."
-        },
-        "noPrompts": "No hay prompts disponibles",
-        "selectPrompt": "Seleccionar un prompt",
-        "createNew": "Crear nuevo prompt",
-        "promptLabel": "Etiqueta del prompt",
-        "promptLabelPlaceholder": "Ingresa el nombre del prompt",
-        "promptInstructions": "Instrucciones del prompt",
-        "promptInstructionsPlaceholder": "Escribe las instrucciones para ejecutar después de la transcripción. Ejemplo: Mejora la gramática y claridad del siguiente texto: ${output}",
-        "promptTip": "Consejo: Usa <code>${output}</code> para insertar el texto transcrito en tu prompt.",
-        "updatePrompt": "Actualizar prompt",
-        "deletePrompt": "Eliminar prompt",
-        "createPrompt": "Crear prompt",
-        "cancel": "Cancelar",
-        "selectToEdit": "Selecciona un prompt arriba para ver y editar sus detalles.",
-        "createFirst": "Haz clic en 'Crear nuevo prompt' arriba para crear tu primer prompt de post procesamiento."
       }
     },
     "history": {
@@ -993,7 +972,8 @@
         "inactive": "La suscripción de este código no está activa. Renuévala para desbloquear tu plan.",
         "rate_limited": "Demasiados intentos. Vuelve a intentarlo en 15 minutos.",
         "server": "La activación falló por nuestra parte. Inténtalo de nuevo en un momento."
-      }
+      },
+      "menu": "Acciones de la cuenta"
     },
     "signIn": {
       "sectionTitle": "Tu cuenta",
@@ -1099,8 +1079,10 @@
       "polishUnlimited": "Pulido con IA es ilimitado.",
       "polishLeft": "Te quedan {{left}} de {{limit}} usos gratuitos de pulido con IA esta semana · se restablece el {{day}}",
       "polishFree": "El plan gratuito incluye una cuota semanal de pulido con IA.",
-      "usageToday": "Hoy: peticiones de IA {{ai}} · búsquedas {{search}} · uso razonable {{aiLimit}} al día",
-      "meetingsLeft": "Reuniones este mes: {{used}} de {{limit}}"
+      "meetingsLeft": "Te quedan {{left}} de {{limit}} notas de reuniones este mes",
+      "aiLeft": "Te quedan {{left}} de {{limit}} solicitudes de IA hoy",
+      "searchLeft": "Búsquedas restantes: {{count}}",
+      "meterLabel": "Cupo restante"
     },
     "privacy": {
       "title": "Privacidad",
@@ -1187,7 +1169,7 @@
   },
   "privacy": {
     "title": "Privacidad",
-    "promise": "Desactivado hasta que lo actives. Se guarda en este Mac, cifrado. Cada petición que sale queda registrada.",
+    "promise": "Lo que {{appName}} puede leer, lo que sale de este Mac y lo que conserva.",
     "state": {
       "on": "Observando, como permitiste",
       "onDetail": "Solo las funciones que activaste abajo.",
@@ -1197,8 +1179,9 @@
       "pausedDetail": "No se lee nada hasta que lo reanudes.",
       "pausedUntil": "No se lee nada hasta las {{time}}.",
       "resume": "Reanudar",
-      "pauseHour": "Pausar 1 hora",
-      "pauseDay": "Hasta mañana"
+      "pauseHour": "Durante 1 hora",
+      "pauseDay": "Hasta mañana",
+      "pause": "Pausar"
     },
     "accessibility": "{{appName}} necesita acceso de Accesibilidad para leer texto de otras apps.",
     "grant": "Permitir acceso",
@@ -1234,6 +1217,11 @@
         "title": "Manos libres: di «Hola Ambient»",
         "reads": "Escucha «Hola Ambient» en este Mac. Todo lo demás se descarta mientras hablas.",
         "leaves": "No se graba ni se envía nada hasta que lo dices."
+      },
+      "groups": {
+        "screen": "Tu pantalla",
+        "listening": "Escucha",
+        "local": "En este Mac"
       }
     },
     "retention": "Conservar durante",
@@ -1317,27 +1305,20 @@
       }
     },
     "macOnly": "Solo en Mac por ahora",
-    "protections": {
-      "audio": "Tu voz se transcribe en este Mac y nunca la guardamos.",
-      "text": "Lee texto, nunca hace capturas de pantalla.",
-      "passwords": "Los campos de contraseña, los gestores de contraseñas y las ventanas privadas nunca se leen.",
-      "wallets": "Monederos de criptomonedas, frases de recuperación y claves privadas: se aparta por completo.",
-      "secrets": "Los números de tarjeta, claves y códigos se eliminan antes de enviar nada.",
-      "suggestions": "Las sugerencias se deciden en este Mac; no se envía nada a menos que aceptes.",
-      "stored": "Lo que guarda se queda en este Mac, cifrado, hasta que lo elimines.",
-      "ledger": "Cada petición que sale aparece abajo, con exactamente lo que se envió."
-    },
-    "days_many": "{{count}} días"
+    "days_many": "{{count}} días",
+    "promises": {
+      "voice": "Tu voz se queda en este Mac",
+      "text": "Lee texto, nunca capturas de pantalla",
+      "sensitive": "Omite contraseñas, carteras y ventanas privadas",
+      "ledger": "Cada solicitud que sale aparece en la lista de abajo"
+    }
   },
   "meetings": {
     "title": "Reuniones",
     "intro": "Notas para cualquier llamada: tú y los demás, transcritos en este Mac. El audio nunca se guarda.",
-    "idle": "Sin tomar notas",
-    "idleDetail": "Empieza cuando comience una llamada o activa las sugerencias de reuniones en Privacidad.",
     "live": "Tomando notas · {{time}}",
     "capturingBoth": "Te oye a ti y la llamada.",
     "capturingMic": "Solo oye tu micrófono.",
-    "start": "Empezar notas",
     "stop": "Detener y resumir",
     "listening": "Escuchando…",
     "consent": "Avisa a todos de que estás tomando notas.",
@@ -1378,7 +1359,27 @@
       "notFound": "Esa reunión ya no existe.",
       "followUp": "No se pudo redactar el seguimiento ahora mismo."
     },
-    "freeLeft": "Reuniones gratuitas restantes este mes: {{left}} de {{limit}}. Pro es ilimitado."
+    "freeLeft": "Reuniones gratuitas restantes este mes: {{left}} de {{limit}}. Pro es ilimitado.",
+    "startNow": "Empezar ahora",
+    "startNowHint": "Toma notas ahora, sin esperar a una llamada",
+    "auto": {
+      "on": "Listo para tu próxima llamada",
+      "onDetail": "Cuando empiece una llamada, {{appName}} te ofrecerá tomar notas. Di que sí o ignóralo.",
+      "off": "La detección de llamadas está desactivada",
+      "offDetail": "Actívala y {{appName}} te ofrecerá tomar notas cuando empiece una llamada.",
+      "paused": "En pausa",
+      "pausedDetail": "{{appName}} no ofrecerá notas hasta que lo reanudes en Privacidad.",
+      "pro": "No toma notas",
+      "proDetail": "Con Pro, {{appName}} detecta tus llamadas y te ofrece tomar notas.",
+      "unsupported": "No toma notas",
+      "unsupportedDetail": "Inicia las notas cuando empiece tu llamada.",
+      "turnOn": "Activar"
+    },
+    "steps": {
+      "join": "Únete a una llamada en cualquier app",
+      "accept": "Di que sí cuando {{appName}} te lo ofrezca",
+      "summary": "Recibe un resumen cuando termine"
+    }
   },
   "tour": {
     "skip": "Omitir",
@@ -1441,7 +1442,6 @@
   "trySaying": {
     "title": "¿Qué puedo decir?",
     "close": "Cerrar",
-    "description": "Mantén pulsado {{ask}} para hablar con el agente. {{dictate}} escribe, salvo que pidas algo.",
     "footnote": "En ChatGPT o Claude, empieza con «Hola Ambient» para hablar con el agente.",
     "groups": {
       "answer": {
@@ -1451,7 +1451,8 @@
           "Resume esto.",
           "¿Qué significa este error?",
           "Traduce esto al inglés."
-        ]
+        ],
+        "hint": "Preguntas sobre cualquier cosa, incluido lo que hay en tu pantalla."
       },
       "act": {
         "title": "Hacer",
@@ -1460,43 +1461,56 @@
           "Añade una comida con Ana el viernes a las 13:00.",
           "Abre Linear.",
           "Ejecuta mi atajo de la reunión diaria."
-        ]
+        ],
+        "hint": "Recordatorios, eventos, apps y atajos."
       },
       "recall": {
         "title": "Recordar",
         "examples": [
           "¿Qué dije ayer sobre los precios?",
           "Busca la presentación del T3."
-        ]
+        ],
+        "hint": "Lo que dijiste, viste o en lo que trabajaste."
       },
       "suggestions": {
-        "title": "Cuando aparece una sugerencia",
+        "title": "Sugerencias",
         "examples": [
           "«Sí» o «hazlo» para aceptarla.",
           "«Ahora no» para descartarla.",
           "«No me muestres esto» para desactivar ese tipo.",
           "«Aquí no» para detenerla en esta app."
-        ]
+        ],
+        "hint": "Responde a una sugerencia en voz alta."
       },
       "meetings": {
-        "title": "En reuniones",
+        "title": "Reuniones",
         "examples": [
           "Empieza las notas desde Reuniones, o di que sí cuando Ambient lo ofrezca.",
           "«Buscarlo» cuando te pidan algo.",
           "«Recuérdamelo» cuando prometas hacer algo."
-        ]
+        ],
+        "hint": "Mientras {{appName}} toma notas en una llamada."
       },
       "talking": {
-        "title": "Hablar con Ambient",
-        "examples": [
-          "Mantén pulsado {{ask}} y habla: siempre es para Ambient.",
-          "O usa tu tecla de dictado y empieza con «Hola Ambient, …». Si no, tus palabras se escriben.",
-          "Manos libres (actívalo en Privacidad): solo di «Hola Ambient, …»."
-        ]
+        "title": "Cómo hablar"
       }
+    },
+    "subtitle": "Habla como le preguntarías a un colega. Algunas formas de empezar.",
+    "ways": {
+      "0": "Mantén pulsado para hablar con el agente.",
+      "1": "Mantén pulsado para dictar. Empieza con “Hey {{appName}}” para preguntar en su lugar.",
+      "2": "Manos libres: di “Hey {{appName}}, …”. Actívalo en Privacidad."
     }
   },
   "app": {
     "starting": "Iniciando {{appName}}…"
+  },
+  "search": {
+    "label": "Buscar",
+    "button": "Buscar",
+    "placeholder": "Busca en ajustes y páginas",
+    "empty": "Nada coincide con “{{query}}”.",
+    "jumpTo": "Ir a",
+    "escape": "esc"
   }
 }

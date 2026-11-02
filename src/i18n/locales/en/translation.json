@@ -610,27 +610,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Hotkey"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Selected Prompt",
-          "description": "Select a template for refining transcriptions or create a new one. Use ${output} inside the prompt text to reference the captured transcript."
-        },
-        "noPrompts": "No prompts available",
-        "selectPrompt": "Select a prompt",
-        "createNew": "Create New Prompt",
-        "promptLabel": "Prompt Label",
-        "promptLabelPlaceholder": "Enter prompt name",
-        "promptInstructions": "Prompt Instructions",
-        "promptInstructionsPlaceholder": "Write the instructions to run after transcription. Example: Improve grammar and clarity for the following text: ${output}",
-        "promptTip": "Tip: Use <code>${output}</code> to insert the transcribed text in your prompt.",
-        "updatePrompt": "Update Prompt",
-        "deletePrompt": "Delete Prompt",
-        "createPrompt": "Create Prompt",
-        "cancel": "Cancel",
-        "selectToEdit": "Select a prompt above to view and edit its details.",
-        "createFirst": "Click 'Create New Prompt' above to create your first post-processing prompt."
       }
     },
     "history": {
@@ -988,7 +967,8 @@
         "inactive": "The subscription for this code isn't active. Renew it to unlock your plan.",
         "rate_limited": "Too many attempts. Try again in 15 minutes.",
         "server": "Activation failed on our side. Try again in a moment."
-      }
+      },
+      "menu": "Account actions"
     },
     "signIn": {
       "sectionTitle": "Your account",
@@ -1091,8 +1071,10 @@
       "polishUnlimited": "AI polish is unlimited.",
       "polishLeft": "{{left}} of {{limit}} free AI polishes left this week · resets {{day}}",
       "polishFree": "Free includes a weekly allowance of AI polish.",
-      "usageToday": "Today: {{ai}} AI requests · {{search}} searches · fair use {{aiLimit}} a day",
-      "meetingsLeft": "Meetings this month: {{used}} of {{limit}}"
+      "meetingsLeft": "{{left}} of {{limit}} meeting notes left this month",
+      "aiLeft": "{{left}} of {{limit}} AI requests left today",
+      "searchLeft": "Searches left: {{count}}",
+      "meterLabel": "Allowance left"
     },
     "privacy": {
       "title": "Privacy",
@@ -1179,7 +1161,7 @@
   },
   "privacy": {
     "title": "Privacy",
-    "promise": "Off until you turn it on. Kept on this Mac, encrypted. Every request that leaves is listed.",
+    "promise": "What {{appName}} can read, what leaves this Mac, and what it keeps.",
     "state": {
       "on": "Watching, as you allowed",
       "onDetail": "Only the capabilities you turned on below.",
@@ -1189,8 +1171,9 @@
       "pausedDetail": "Nothing is read until you resume.",
       "pausedUntil": "Nothing is read until {{time}}.",
       "resume": "Resume",
-      "pauseHour": "Pause for 1 hour",
-      "pauseDay": "Until tomorrow"
+      "pauseHour": "For 1 hour",
+      "pauseDay": "Until tomorrow",
+      "pause": "Pause"
     },
     "accessibility": "{{appName}} needs Accessibility access to read text from other apps.",
     "grant": "Allow access",
@@ -1226,6 +1209,11 @@
         "title": "Hands-free: say “Hey Ambient”",
         "reads": "Listens on this Mac for “Hey Ambient”. Everything else is dropped as you speak.",
         "leaves": "Nothing is recorded or sent until you say it."
+      },
+      "groups": {
+        "screen": "Your screen",
+        "listening": "Listening",
+        "local": "On this Mac"
       }
     },
     "retention": "Keep for",
@@ -1306,26 +1294,19 @@
       }
     },
     "macOnly": "Mac only for now",
-    "protections": {
-      "audio": "Your voice is transcribed on this Mac and never stored by us.",
-      "text": "Reads text, never takes screenshots.",
-      "passwords": "Password fields, password managers and private windows are never read.",
-      "wallets": "Crypto wallets, recovery phrases and private keys: it steps back entirely.",
-      "secrets": "Card numbers, keys and codes are removed before anything is sent.",
-      "suggestions": "Suggestions are decided on this Mac; nothing is sent unless you accept.",
-      "stored": "What it keeps stays on this Mac, encrypted, until you delete it.",
-      "ledger": "Every request that leaves is listed below, with exactly what was sent."
+    "promises": {
+      "voice": "Your voice stays on this Mac",
+      "text": "Reads text, never screenshots",
+      "sensitive": "Skips passwords, wallets and private windows",
+      "ledger": "Every request that leaves is listed below"
     }
   },
   "meetings": {
     "title": "Meetings",
     "intro": "Notes for any call: you and them, transcribed on this Mac. Audio is never saved.",
-    "idle": "Not taking notes",
-    "idleDetail": "Start when a call begins, or turn on meeting suggestions in Privacy.",
     "live": "Taking notes · {{time}}",
     "capturingBoth": "Hearing you and the call.",
     "capturingMic": "Hearing your microphone only.",
-    "start": "Start notes",
     "stop": "Stop and summarise",
     "listening": "Listening…",
     "consent": "Let everyone know you're taking notes.",
@@ -1366,7 +1347,27 @@
       "notFound": "That meeting no longer exists.",
       "followUp": "Couldn't draft the follow-up right now."
     },
-    "freeLeft": "{{left}} of {{limit}} free meetings left this month. Pro is unlimited."
+    "freeLeft": "{{left}} of {{limit}} free meetings left this month. Pro is unlimited.",
+    "startNow": "Start now",
+    "startNowHint": "Take notes now, without waiting for a call",
+    "auto": {
+      "on": "Ready for your next call",
+      "onDetail": "When a call starts, {{appName}} offers to take notes. Say yes, or ignore it.",
+      "off": "Call detection is off",
+      "offDetail": "Turn it on and {{appName}} offers to take notes when a call starts.",
+      "paused": "Paused",
+      "pausedDetail": "{{appName}} won't offer notes until you resume it in Privacy.",
+      "pro": "Not taking notes",
+      "proDetail": "With Pro, {{appName}} spots your calls and offers to take notes.",
+      "unsupported": "Not taking notes",
+      "unsupportedDetail": "Start notes when your call begins.",
+      "turnOn": "Turn on"
+    },
+    "steps": {
+      "join": "Join a call in any app",
+      "accept": "Say yes when {{appName}} offers",
+      "summary": "Get a summary when it ends"
+    }
   },
   "tour": {
     "skip": "Skip",
@@ -1429,7 +1430,6 @@
   "trySaying": {
     "title": "What can I say?",
     "close": "Close",
-    "description": "Hold {{ask}} to talk to the agent. {{dictate}} types, unless you ask for something.",
     "footnote": "In ChatGPT or Claude, start with “Hey Ambient” to talk to the agent instead.",
     "groups": {
       "answer": {
@@ -1439,7 +1439,8 @@
           "Summarise this.",
           "What does this error mean?",
           "Translate this into Spanish."
-        ]
+        ],
+        "hint": "Questions about anything, including what's on your screen."
       },
       "act": {
         "title": "Do",
@@ -1448,43 +1449,56 @@
           "Add lunch with Ana on Friday at 1pm.",
           "Open Linear.",
           "Run my standup shortcut."
-        ]
+        ],
+        "hint": "Reminders, events, apps and shortcuts."
       },
       "recall": {
         "title": "Remember",
         "examples": [
           "What did I say about pricing yesterday?",
           "Find the Q3 deck."
-        ]
+        ],
+        "hint": "Things you said, saw or worked on."
       },
       "suggestions": {
-        "title": "When a suggestion appears",
+        "title": "Suggestions",
         "examples": [
           "“Yes” or “do it” to accept.",
           "“Not now” to dismiss.",
           "“Don't show me these” to turn that kind off.",
           "“Not here” to stop it in this app."
-        ]
+        ],
+        "hint": "Answer a suggestion out loud."
       },
       "meetings": {
-        "title": "In meetings",
+        "title": "Meetings",
         "examples": [
           "Start notes from Meetings, or say yes when Ambient offers.",
           "“Find it” when they ask you for something.",
           "“Remind me” when you promise to do something."
-        ]
+        ],
+        "hint": "While {{appName}} takes notes in a call."
       },
       "talking": {
-        "title": "Talking to Ambient",
-        "examples": [
-          "Hold {{ask}} and talk: it's always for Ambient.",
-          "Or use your dictation key and start with “Hey Ambient, …”. Without it, your words are typed.",
-          "Hands-free (turn it on in Privacy): just say “Hey Ambient, …”."
-        ]
+        "title": "How to talk"
       }
+    },
+    "subtitle": "Talk the way you'd ask a colleague. A few ways to start.",
+    "ways": {
+      "0": "Hold to talk to the agent.",
+      "1": "Hold to dictate. Start with “Hey {{appName}}” to ask instead.",
+      "2": "Hands-free: say “Hey {{appName}}, …”. Turn it on in Privacy."
     }
   },
   "app": {
     "starting": "Starting {{appName}}…"
+  },
+  "search": {
+    "label": "Search",
+    "button": "Search",
+    "placeholder": "Search settings and pages",
+    "empty": "Nothing matches “{{query}}”.",
+    "jumpTo": "Jump to",
+    "escape": "esc"
   }
 }

@@ -610,27 +610,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "快捷键"
-      },
-      "prompts": {
-        "title": "提示词",
-        "selectedPrompt": {
-          "title": "已选提示词",
-          "description": "选择用于优化转录的模板或创建新模板。在提示词文本中使用 ${output} 来引用捕获的转录。"
-        },
-        "noPrompts": "没有可用的提示词",
-        "selectPrompt": "选择提示词",
-        "createNew": "创建新提示词",
-        "promptLabel": "提示词名称",
-        "promptLabelPlaceholder": "输入提示词名称",
-        "promptInstructions": "提示词指令",
-        "promptInstructionsPlaceholder": "编写转录后要执行的指令。示例：改进以下文本的语法和清晰度: ${output}",
-        "promptTip": "提示：使用 <code>${output}</code> 将转录文本插入到您的提示词中。",
-        "updatePrompt": "更新提示词",
-        "deletePrompt": "删除提示词",
-        "createPrompt": "创建提示词",
-        "cancel": "取消",
-        "selectToEdit": "选择上方的提示词以查看和编辑其详细信息。",
-        "createFirst": "点击上方的「创建新提示词」来创建您的第一个后处理提示词。"
       }
     },
     "history": {
@@ -988,7 +967,8 @@
         "inactive": "该代码对应的订阅未激活。续订后即可解锁你的套餐。",
         "rate_limited": "尝试次数过多。请 15 分钟后再试。",
         "server": "激活在我们这边失败了。请稍后再试。"
-      }
+      },
+      "menu": "账户操作"
     },
     "signIn": {
       "sectionTitle": "你的账户",
@@ -1091,8 +1071,10 @@
       "polishUnlimited": "AI 润色不限次数。",
       "polishLeft": "本周还剩 {{left}} 次免费AI 润色（共 {{limit}} 次）· {{day}}重置",
       "polishFree": "免费套餐包含每周的AI 润色额度。",
-      "usageToday": "今天：AI 请求 {{ai}} · 搜索 {{search}} · 合理使用每天 {{aiLimit}}",
-      "meetingsLeft": "本月会议：{{used}} / {{limit}}"
+      "meetingsLeft": "本月还剩 {{left}}/{{limit}} 份会议纪要",
+      "aiLeft": "今天还剩 {{left}}/{{limit}} 次 AI 请求",
+      "searchLeft": "剩余搜索次数：{{count}}",
+      "meterLabel": "剩余额度"
     },
     "privacy": {
       "title": "隐私",
@@ -1179,7 +1161,7 @@
   },
   "privacy": {
     "title": "隐私",
-    "promise": "打开前一直关闭。加密保存在这台 Mac 上。每个发出的请求都会列出。",
+    "promise": "{{appName}} 能读取什么、什么会离开这台 Mac，以及保留什么。",
     "state": {
       "on": "正在按你的许可查看",
       "onDetail": "仅限你在下方打开的功能。",
@@ -1189,8 +1171,9 @@
       "pausedDetail": "恢复之前不会读取任何内容。",
       "pausedUntil": "{{time}} 之前不会读取任何内容。",
       "resume": "恢复",
-      "pauseHour": "暂停 1 小时",
-      "pauseDay": "直到明天"
+      "pauseHour": "1 小时",
+      "pauseDay": "直到明天",
+      "pause": "暂停"
     },
     "accessibility": "{{appName}} 需要辅助功能权限才能读取其他应用中的文字。",
     "grant": "允许访问",
@@ -1226,6 +1209,11 @@
         "title": "免提：说“嘿 Ambient”",
         "reads": "在这台 Mac 上聆听“嘿 Ambient”。其他内容会在你说话时直接丢弃。",
         "leaves": "在你说出之前，不会录制或发送任何内容。"
+      },
+      "groups": {
+        "screen": "你的屏幕",
+        "listening": "聆听",
+        "local": "在这台 Mac 上"
       }
     },
     "retention": "保留时长",
@@ -1306,26 +1294,19 @@
       }
     },
     "macOnly": "目前仅限 Mac",
-    "protections": {
-      "audio": "你的语音在这台 Mac 上转录，我们从不存储。",
-      "text": "只读取文字，从不截屏。",
-      "passwords": "从不读取密码字段、密码管理器和无痕窗口。",
-      "wallets": "加密货币钱包、助记词和私钥：完全不碰。",
-      "secrets": "发送任何内容之前，都会移除卡号、密钥和验证码。",
-      "suggestions": "建议在这台 Mac 上决定；除非你接受，否则不会发送任何内容。",
-      "stored": "保存的内容加密留在这台 Mac 上，直到你删除。",
-      "ledger": "每个发出的请求都列在下方，并附上确切的发送内容。"
+    "promises": {
+      "voice": "你的声音只留在这台 Mac 上",
+      "text": "只读取文字，从不截屏",
+      "sensitive": "跳过密码、钱包和隐私窗口",
+      "ledger": "每个发出的请求都列在下方"
     }
   },
   "meetings": {
     "title": "会议",
     "intro": "任何通话都能做笔记：你和对方，在这台 Mac 上转录。音频从不保存。",
-    "idle": "未在记录",
-    "idleDetail": "在通话开始时开始，或在隐私中打开会议建议。",
     "live": "正在记录 · {{time}}",
     "capturingBoth": "正在听你和通话。",
     "capturingMic": "仅在听你的麦克风。",
-    "start": "开始记录",
     "stop": "停止并总结",
     "listening": "正在聆听…",
     "consent": "告诉大家你正在做笔记。",
@@ -1366,7 +1347,27 @@
       "notFound": "该会议已不存在。",
       "followUp": "暂时无法起草跟进邮件。"
     },
-    "freeLeft": "本月剩余免费会议：{{left}} / {{limit}}。Pro 不限次数。"
+    "freeLeft": "本月剩余免费会议：{{left}} / {{limit}}。Pro 不限次数。",
+    "startNow": "立即开始",
+    "startNowHint": "现在就做记录，无需等待通话",
+    "auto": {
+      "on": "已为下一次通话做好准备",
+      "onDetail": "通话开始时，{{appName}} 会提议做记录。同意，或忽略即可。",
+      "off": "通话检测已关闭",
+      "offDetail": "开启后，通话开始时 {{appName}} 会提议做记录。",
+      "paused": "已暂停",
+      "pausedDetail": "在隐私中恢复之前，{{appName}} 不会提议做记录。",
+      "pro": "未做记录",
+      "proDetail": "使用 Pro，{{appName}} 会发现你的通话并提议做记录。",
+      "unsupported": "未做记录",
+      "unsupportedDetail": "通话开始时开始记录。",
+      "turnOn": "开启"
+    },
+    "steps": {
+      "join": "在任意应用中加入通话",
+      "accept": "{{appName}} 提议时说“好”",
+      "summary": "结束后获取摘要"
+    }
   },
   "tour": {
     "skip": "跳过",
@@ -1429,7 +1430,6 @@
   "trySaying": {
     "title": "我可以说什么？",
     "close": "关闭",
-    "description": "按住 {{ask}} 与智能体对话。{{dictate}} 会直接输入文字，除非你提出请求。",
     "footnote": "在 ChatGPT 或 Claude 中，以“嘿 Ambient”开头即可改为与智能体对话。",
     "groups": {
       "answer": {
@@ -1439,7 +1439,8 @@
           "总结一下。",
           "这个错误是什么意思？",
           "把这个翻译成英文。"
-        ]
+        ],
+        "hint": "什么都可以问，包括屏幕上的内容。"
       },
       "act": {
         "title": "操作",
@@ -1448,43 +1449,53 @@
           "添加周五下午 1 点和 Ana 吃午饭。",
           "打开 Linear。",
           "运行我的站会快捷指令。"
-        ]
+        ],
+        "hint": "提醒、日程、应用和快捷指令。"
       },
       "recall": {
         "title": "回忆",
-        "examples": [
-          "我昨天关于定价说了什么？",
-          "找到第三季度的演示文稿。"
-        ]
+        "examples": ["我昨天关于定价说了什么？", "找到第三季度的演示文稿。"],
+        "hint": "你说过、看过或做过的事。"
       },
       "suggestions": {
-        "title": "出现建议时",
+        "title": "建议",
         "examples": [
           "说“好”或“去做吧”接受。",
           "说“以后再说”关闭。",
           "说“别给我看这些”关闭这类建议。",
           "说“这里不要”在此应用中停止。"
-        ]
+        ],
+        "hint": "大声回答一条建议。"
       },
       "meetings": {
-        "title": "会议中",
+        "title": "会议",
         "examples": [
           "在会议中开始记录，或在 Ambient 提议时说“是”。",
           "有人向你要东西时，“查找”。",
           "你答应做某事时，“提醒我”。"
-        ]
+        ],
+        "hint": "通话时由 {{appName}} 做记录。"
       },
       "talking": {
-        "title": "与 Ambient 对话",
-        "examples": [
-          "按住 {{ask}} 说话：内容始终发给 Ambient。",
-          "或者使用听写键，并以“嘿 Ambient，……”开头。否则你说的话会被输入为文字。",
-          "免提（在隐私中打开）：只需说“嘿 Ambient，……”。"
-        ]
+        "title": "怎么说"
       }
+    },
+    "subtitle": "像请教同事一样说话就行。这里有几种开头方式。",
+    "ways": {
+      "0": "按住说话，与智能体对话。",
+      "1": "按住听写。以“Hey {{appName}}”开头则改为提问。",
+      "2": "免提：说“Hey {{appName}}，……”。在隐私中开启。"
     }
   },
   "app": {
     "starting": "正在启动 {{appName}}…"
+  },
+  "search": {
+    "label": "搜索",
+    "button": "搜索",
+    "placeholder": "搜索设置和页面",
+    "empty": "没有与“{{query}}”匹配的内容。",
+    "jumpTo": "跳转到",
+    "escape": "esc"
   }
 }

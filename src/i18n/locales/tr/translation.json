@@ -610,27 +610,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Kısayol Tuşu"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Seçili Prompt",
-          "description": "Transkripsiyonları iyileştirmek için bir şablon seçin veya yeni bir tane oluşturun. Yakalanan transkripte referans vermek için prompt metni içinde ${output} kullanın."
-        },
-        "noPrompts": "Kullanılabilir prompt yok",
-        "selectPrompt": "Prompt Seç",
-        "createNew": "Yeni Prompt Oluştur",
-        "promptLabel": "Prompt Etiketi",
-        "promptLabelPlaceholder": "Prompt adı girin",
-        "promptInstructions": "Prompt Talimatları",
-        "promptInstructionsPlaceholder": "Transkripsiyondan sonra çalıştırılacak talimatları yazın. Örnek: Aşağıdaki metnin dilbilgisini ve açıklığını iyileştir: ${output}",
-        "promptTip": "İpucu: Transkribe edilen metni promptunuza eklemek için <code>${output}</code> kullanın.",
-        "updatePrompt": "Promptu Güncelle",
-        "deletePrompt": "Promptu Sil",
-        "createPrompt": "Prompt Oluştur",
-        "cancel": "İptal",
-        "selectToEdit": "Ayrıntılarını görüntülemek ve düzenlemek için yukarıdan bir prompt seçin.",
-        "createFirst": "İlk son işlem promptunuzu oluşturmak için yukarıdaki “Yeni Prompt Oluştur” seçeneğine tıklayın."
       }
     },
     "history": {
@@ -988,7 +967,8 @@
         "inactive": "Bu kodun aboneliği etkin değil. Planınızın kilidini açmak için yenileyin.",
         "rate_limited": "Çok fazla deneme. 15 dakika sonra tekrar deneyin.",
         "server": "Etkinleştirme bizim tarafımızda başarısız oldu. Birazdan tekrar deneyin."
-      }
+      },
+      "menu": "Hesap işlemleri"
     },
     "signIn": {
       "sectionTitle": "Hesabın",
@@ -1091,8 +1071,10 @@
       "polishUnlimited": "Yapay zekâ cilası sınırsızdır.",
       "polishLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı · {{day}} sıfırlanır",
       "polishFree": "Ücretsiz plan haftalık yapay zekâ cilası hakkı içerir.",
-      "usageToday": "Bugün: yapay zekâ istekleri {{ai}} · aramalar {{search}} · adil kullanım günde {{aiLimit}}",
-      "meetingsLeft": "Bu ayki toplantılar: {{used}}/{{limit}}"
+      "meetingsLeft": "Bu ay {{limit}} toplantı notundan {{left}} tanesi kaldı",
+      "aiLeft": "Bugün {{limit}} yapay zeka isteğinden {{left}} tanesi kaldı",
+      "searchLeft": "Kalan aramalar: {{count}}",
+      "meterLabel": "Kalan hak"
     },
     "privacy": {
       "title": "Gizlilik",
@@ -1179,7 +1161,7 @@
   },
   "privacy": {
     "title": "Gizlilik",
-    "promise": "Siz açana kadar kapalı. Bu Mac’te şifreli olarak saklanır. Dışarı giden her istek listelenir.",
+    "promise": "{{appName}} neyi okuyabilir, neyi bu Mac’ten dışarı çıkar, neyi saklar.",
     "state": {
       "on": "İzin verdiğiniz şekilde izliyor",
       "onDetail": "Yalnızca aşağıda açtığınız özellikler.",
@@ -1189,8 +1171,9 @@
       "pausedDetail": "Siz devam ettirene kadar hiçbir şey okunmaz.",
       "pausedUntil": "{{time}} saatine kadar hiçbir şey okunmaz.",
       "resume": "Sürdür",
-      "pauseHour": "1 saat duraklat",
-      "pauseDay": "Yarına kadar"
+      "pauseHour": "1 saatliğine",
+      "pauseDay": "Yarına kadar",
+      "pause": "Duraklat"
     },
     "accessibility": "{{appName}}, diğer uygulamalardaki metni okumak için Erişilebilirlik erişimine ihtiyaç duyar.",
     "grant": "Erişime izin ver",
@@ -1226,6 +1209,11 @@
         "title": "Eller serbest: “Merhaba Ambient” deyin",
         "reads": "Bu Mac’te “Merhaba Ambient” ifadesini dinler. Geri kalan her şey siz konuşurken atılır.",
         "leaves": "Siz söyleyene kadar hiçbir şey kaydedilmez veya gönderilmez."
+      },
+      "groups": {
+        "screen": "Ekranınız",
+        "listening": "Dinleme",
+        "local": "Bu Mac’te"
       }
     },
     "retention": "Saklama süresi",
@@ -1306,26 +1294,19 @@
       }
     },
     "macOnly": "Şimdilik yalnızca Mac’te",
-    "protections": {
-      "audio": "Sesiniz bu Mac’te yazıya dökülür ve tarafımızca asla saklanmaz.",
-      "text": "Metni okur, asla ekran görüntüsü almaz.",
-      "passwords": "Parola alanları, parola yöneticileri ve gizli pencereler asla okunmaz.",
-      "wallets": "Kripto cüzdanları, kurtarma ifadeleri ve özel anahtarlar: tamamen geri çekilir.",
-      "secrets": "Kart numaraları, anahtarlar ve kodlar herhangi bir şey gönderilmeden önce kaldırılır.",
-      "suggestions": "Öneriler bu Mac’te belirlenir; siz kabul etmedikçe hiçbir şey gönderilmez.",
-      "stored": "Sakladıkları siz silene kadar şifreli olarak bu Mac’te kalır.",
-      "ledger": "Dışarı giden her istek, tam olarak ne gönderildiğiyle birlikte aşağıda listelenir."
+    "promises": {
+      "voice": "Sesiniz bu Mac’te kalır",
+      "text": "Metni okur, ekran görüntüsünü asla",
+      "sensitive": "Parolaları, cüzdanları ve gizli pencereleri atlar",
+      "ledger": "Dışarı çıkan her istek aşağıda listelenir"
     }
   },
   "meetings": {
     "title": "Toplantılar",
     "intro": "Her görüşme için notlar: siz ve karşı taraf, bu Mac’te yazıya dökülür. Ses asla kaydedilmez.",
-    "idle": "Not alınmıyor",
-    "idleDetail": "Bir görüşme başladığında başlatın veya Gizlilik bölümünde toplantı önerilerini açın.",
     "live": "Not alınıyor · {{time}}",
     "capturingBoth": "Sizi ve görüşmeyi duyuyor.",
     "capturingMic": "Yalnızca mikrofonunuzu duyuyor.",
-    "start": "Not almaya başla",
     "stop": "Durdur ve özetle",
     "listening": "Dinliyor…",
     "consent": "Herkese not aldığınızı bildirin.",
@@ -1366,7 +1347,27 @@
       "notFound": "Bu toplantı artık mevcut değil.",
       "followUp": "Takip e-postası şu anda hazırlanamadı."
     },
-    "freeLeft": "Bu ay kalan ücretsiz toplantılar: {{left}}/{{limit}}. Pro sınırsızdır."
+    "freeLeft": "Bu ay kalan ücretsiz toplantılar: {{left}}/{{limit}}. Pro sınırsızdır.",
+    "startNow": "Şimdi başlat",
+    "startNowHint": "Görüşme beklemeden şimdi not alın",
+    "auto": {
+      "on": "Sonraki görüşmenize hazır",
+      "onDetail": "Görüşme başlayınca {{appName}} not almayı önerir. Evet deyin ya da yok sayın.",
+      "off": "Görüşme algılama kapalı",
+      "offDetail": "Açın, görüşme başlayınca {{appName}} not almayı önersin.",
+      "paused": "Duraklatıldı",
+      "pausedDetail": "Gizlilik bölümünden devam ettirene kadar {{appName}} not önermeyecek.",
+      "pro": "Not alınmıyor",
+      "proDetail": "Pro ile {{appName}} görüşmelerinizi fark eder ve not almayı önerir.",
+      "unsupported": "Not alınmıyor",
+      "unsupportedDetail": "Görüşmeniz başlayınca not almaya başlayın.",
+      "turnOn": "Aç"
+    },
+    "steps": {
+      "join": "Herhangi bir uygulamada görüşmeye katılın",
+      "accept": "{{appName}} önerince evet deyin",
+      "summary": "Bittiğinde özet alın"
+    }
   },
   "tour": {
     "skip": "Atla",
@@ -1429,7 +1430,6 @@
   "trySaying": {
     "title": "Ne söyleyebilirim?",
     "close": "Kapat",
-    "description": "Aracıyla konuşmak için {{ask}} tuşunu basılı tutun. {{dictate}}, bir şey istemediğiniz sürece yazar.",
     "footnote": "ChatGPT veya Claude’da aracıyla konuşmak için “Merhaba Ambient” diye başlayın.",
     "groups": {
       "answer": {
@@ -1439,7 +1439,8 @@
           "Bunu özetle.",
           "Bu hata ne anlama geliyor?",
           "Bunu İspanyolcaya çevir."
-        ]
+        ],
+        "hint": "Her konuda sorular, ekranınızda olanlar dahil."
       },
       "act": {
         "title": "Yap",
@@ -1448,43 +1449,56 @@
           "Cuma saat 13’te Ana ile öğle yemeği ekle.",
           "Linear’ı aç.",
           "Standup kestirmemi çalıştır."
-        ]
+        ],
+        "hint": "Hatırlatıcılar, etkinlikler, uygulamalar ve kısayollar."
       },
       "recall": {
         "title": "Hatırla",
         "examples": [
           "Dün fiyatlandırma hakkında ne demiştim?",
           "3. çeyrek sunumunu bul."
-        ]
+        ],
+        "hint": "Söylediğiniz, gördüğünüz veya üzerinde çalıştığınız şeyler."
       },
       "suggestions": {
-        "title": "Bir öneri çıktığında",
+        "title": "Öneriler",
         "examples": [
           "Kabul etmek için “evet” veya “yap”.",
           "Kapatmak için “şimdi değil”.",
           "O türü kapatmak için “bunları gösterme”.",
           "Bu uygulamada durdurmak için “burada değil”."
-        ]
+        ],
+        "hint": "Bir öneriyi sesli yanıtlayın."
       },
       "meetings": {
-        "title": "Toplantılarda",
+        "title": "Toplantılar",
         "examples": [
           "Notları Toplantılar’dan başlatın veya Ambient önerdiğinde evet deyin.",
           "Sizden bir şey istendiğinde “Bul”.",
           "Bir şey yapmaya söz verdiğinizde “Hatırlat”."
-        ]
+        ],
+        "hint": "{{appName}} bir görüşmede not alırken."
       },
       "talking": {
-        "title": "Ambient ile konuşmak",
-        "examples": [
-          "{{ask}} tuşunu basılı tutup konuşun: her zaman Ambient içindir.",
-          "Ya da dikte tuşunuzu kullanıp “Merhaba Ambient, …” ile başlayın. Aksi halde sözleriniz yazılır.",
-          "Eller serbest (Gizlilik bölümünden açın): sadece “Merhaba Ambient, …” deyin."
-        ]
+        "title": "Nasıl konuşulur"
       }
+    },
+    "subtitle": "Bir iş arkadaşınıza sorar gibi konuşun. Başlamak için birkaç yol.",
+    "ways": {
+      "0": "Ajanla konuşmak için basılı tutun.",
+      "1": "Dikte etmek için basılı tutun. Bunun yerine soru sormak için “Hey {{appName}}” ile başlayın.",
+      "2": "Eller serbest: “Hey {{appName}}, …” deyin. Gizlilik bölümünden açın."
     }
   },
   "app": {
     "starting": "{{appName}} başlatılıyor…"
+  },
+  "search": {
+    "label": "Ara",
+    "button": "Ara",
+    "placeholder": "Ayarlarda ve sayfalarda ara",
+    "empty": "“{{query}}” ile eşleşen bir şey yok.",
+    "jumpTo": "Git",
+    "escape": "esc"
   }
 }

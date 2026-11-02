@@ -616,27 +616,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Klávesová zkratka"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Vybraný prompt",
-          "description": "Vyberte šablonu pro zpřesnění přepisu nebo vytvořte novou. V textu promptu použijte ${output} pro vložení zachyceného přepisu."
-        },
-        "noPrompts": "Nejsou k dispozici žádné prompty",
-        "selectPrompt": "Vyberte prompt",
-        "createNew": "Vytvořit nový prompt",
-        "promptLabel": "Název promptu",
-        "promptLabelPlaceholder": "Zadejte název promptu",
-        "promptInstructions": "Instrukce promptu",
-        "promptInstructionsPlaceholder": "Napište instrukce, které se mají spustit po přepisu. Příklad: Zlepšete gramatiku a srozumitelnost následujícího textu: ${output}",
-        "promptTip": "Tip: Použijte <code>${output}</code> pro vložení přepsaného textu do promptu.",
-        "updatePrompt": "Aktualizovat prompt",
-        "deletePrompt": "Smazat prompt",
-        "createPrompt": "Vytvořit prompt",
-        "cancel": "Zrušit",
-        "selectToEdit": "Vyberte výše prompt, abyste zobrazili a upravili jeho podrobnosti.",
-        "createFirst": "Klikněte nahoře na 'Vytvořit nový prompt' a vytvořte svůj první prompt pro následné zpracování."
       }
     },
     "history": {
@@ -998,7 +977,8 @@
         "inactive": "Předplatné tohoto kódu není aktivní. Obnovte ho, abyste odemkli svůj tarif.",
         "rate_limited": "Příliš mnoho pokusů. Zkuste to znovu za 15 minut.",
         "server": "Aktivace selhala na naší straně. Zkuste to za chvíli znovu."
-      }
+      },
+      "menu": "Akce s účtem"
     },
     "signIn": {
       "sectionTitle": "Váš účet",
@@ -1107,8 +1087,10 @@
       "polishUnlimited": "AI vyladění je neomezené.",
       "polishLeft": "Zbývá {{left}} z {{limit}} bezplatných použití (AI vyladění) tento týden · obnoví se {{day}}",
       "polishFree": "Bezplatný tarif zahrnuje týdenní limit: AI vyladění.",
-      "usageToday": "Dnes: požadavky AI {{ai}} · hledání {{search}} · férové používání {{aiLimit}} denně",
-      "meetingsLeft": "Schůzky tento měsíc: {{used}} z {{limit}}"
+      "meetingsLeft": "Tento měsíc zbývá {{left}} z {{limit}} poznámek ze schůzek",
+      "aiLeft": "Dnes zbývá {{left}} z {{limit}} požadavků AI",
+      "searchLeft": "Zbývající vyhledávání: {{count}}",
+      "meterLabel": "Zbývající limit"
     },
     "privacy": {
       "title": "Soukromí",
@@ -1195,7 +1177,7 @@
   },
   "privacy": {
     "title": "Soukromí",
-    "promise": "Vypnuto, dokud to nezapnete. Uloženo zašifrované na tomto Macu. Každý odchozí požadavek je v seznamu.",
+    "promise": "Co {{appName}} může číst, co opouští tento Mac a co si ponechává.",
     "state": {
       "on": "Sleduje, jak jste povolili",
       "onDetail": "Jen funkce, které jste zapnuli níže.",
@@ -1205,8 +1187,9 @@
       "pausedDetail": "Nic se nečte, dokud nebudete pokračovat.",
       "pausedUntil": "Nic se nečte do {{time}}.",
       "resume": "Pokračovat",
-      "pauseHour": "Pozastavit na 1 hodinu",
-      "pauseDay": "Do zítřka"
+      "pauseHour": "Na 1 hodinu",
+      "pauseDay": "Do zítřka",
+      "pause": "Pozastavit"
     },
     "accessibility": "{{appName}} potřebuje přístup ke Zpřístupnění, aby mohl číst text z jiných aplikací.",
     "grant": "Povolit přístup",
@@ -1242,6 +1225,11 @@
         "title": "Bez rukou: řekněte „Ahoj Ambient“",
         "reads": "Na tomto Macu poslouchá „Ahoj Ambient“. Vše ostatní se průběžně zahazuje.",
         "leaves": "Nic se nenahrává ani neodesílá, dokud to neřeknete."
+      },
+      "groups": {
+        "screen": "Vaše obrazovka",
+        "listening": "Poslech",
+        "local": "Na tomto Macu"
       }
     },
     "retention": "Uchovávat",
@@ -1328,28 +1316,21 @@
       }
     },
     "macOnly": "Zatím jen pro Mac",
-    "protections": {
-      "audio": "Váš hlas se přepisuje na tomto Macu a nikdy ho neukládáme.",
-      "text": "Čte text, nikdy nepořizuje snímky obrazovky.",
-      "passwords": "Pole pro hesla, správci hesel a anonymní okna se nikdy nečtou.",
-      "wallets": "Kryptopeněženky, fráze pro obnovení a soukromé klíče: úplně se stáhne.",
-      "secrets": "Čísla karet, klíče a kódy se odstraní dřív, než se cokoli odešle.",
-      "suggestions": "O návrzích se rozhoduje na tomto Macu; nic se neodešle, dokud nepřijmete.",
-      "stored": "Co si ukládá, zůstává zašifrované na tomto Macu, dokud to nesmažete.",
-      "ledger": "Každý odchozí požadavek je uveden níže i s tím, co přesně se odeslalo."
-    },
     "days_few": "{{count}} dny",
-    "days_many": "{{count}} dne"
+    "days_many": "{{count}} dne",
+    "promises": {
+      "voice": "Váš hlas zůstává na tomto Macu",
+      "text": "Čte text, nikdy snímky obrazovky",
+      "sensitive": "Přeskakuje hesla, peněženky a soukromá okna",
+      "ledger": "Každý odeslaný požadavek je uveden níže"
+    }
   },
   "meetings": {
     "title": "Schůzky",
     "intro": "Poznámky z každého hovoru: vy a ostatní, přepsaní na tomto Macu. Zvuk se nikdy neukládá.",
-    "idle": "Poznámky se nedělají",
-    "idleDetail": "Spusťte, až hovor začne, nebo zapněte návrhy schůzek v Soukromí.",
     "live": "Dělám poznámky · {{time}}",
     "capturingBoth": "Slyší vás i hovor.",
     "capturingMic": "Slyší jen váš mikrofon.",
-    "start": "Spustit poznámky",
     "stop": "Zastavit a shrnout",
     "listening": "Poslouchám…",
     "consent": "Dejte všem vědět, že si děláte poznámky.",
@@ -1390,7 +1371,27 @@
       "notFound": "Tato schůzka už neexistuje.",
       "followUp": "Navazující zprávu teď nešlo navrhnout."
     },
-    "freeLeft": "Zbývající bezplatné schůzky tento měsíc: {{left}} z {{limit}}. Pro je neomezené."
+    "freeLeft": "Zbývající bezplatné schůzky tento měsíc: {{left}} z {{limit}}. Pro je neomezené.",
+    "startNow": "Začít teď",
+    "startNowHint": "Dělat poznámky hned, bez čekání na hovor",
+    "auto": {
+      "on": "Připraveno na další hovor",
+      "onDetail": "Když začne hovor, {{appName}} nabídne poznámky. Souhlaste, nebo to ignorujte.",
+      "off": "Rozpoznání hovorů je vypnuté",
+      "offDetail": "Zapněte to a {{appName}} nabídne poznámky, když začne hovor.",
+      "paused": "Pozastaveno",
+      "pausedDetail": "{{appName}} nenabídne poznámky, dokud to neobnovíte v Soukromí.",
+      "pro": "Poznámky se nedělají",
+      "proDetail": "S Pro {{appName}} rozpozná vaše hovory a nabídne poznámky.",
+      "unsupported": "Poznámky se nedělají",
+      "unsupportedDetail": "Začněte poznámky, když hovor začne.",
+      "turnOn": "Zapnout"
+    },
+    "steps": {
+      "join": "Připojte se k hovoru v libovolné aplikaci",
+      "accept": "Řekněte „ano“, když {{appName}} nabídne",
+      "summary": "Po skončení získejte shrnutí"
+    }
   },
   "tour": {
     "skip": "Přeskočit",
@@ -1453,7 +1454,6 @@
   "trySaying": {
     "title": "Co můžu říct?",
     "close": "Zavřít",
-    "description": "Podržte {{ask}} a mluvte s agentem. {{dictate}} píše, pokud o něco nežádáte.",
     "footnote": "V ChatGPT nebo Claude začněte slovy „Ahoj Ambient“, abyste místo toho mluvili s agentem.",
     "groups": {
       "answer": {
@@ -1463,7 +1463,8 @@
           "Shrň to.",
           "Co znamená tahle chyba?",
           "Přelož to do španělštiny."
-        ]
+        ],
+        "hint": "Otázky na cokoli, včetně toho, co máte na obrazovce."
       },
       "act": {
         "title": "Dělat",
@@ -1472,43 +1473,56 @@
           "Přidej oběd s Annou v pátek ve 13:00.",
           "Otevři Linear.",
           "Spusť moji zkratku na standup."
-        ]
+        ],
+        "hint": "Připomínky, události, aplikace a zkratky."
       },
       "recall": {
         "title": "Vybavit si",
         "examples": [
           "Co jsem včera říkal o cenách?",
           "Najdi prezentaci za Q3."
-        ]
+        ],
+        "hint": "Věci, které jste řekli, viděli nebo dělali."
       },
       "suggestions": {
-        "title": "Když se objeví návrh",
+        "title": "Návrhy",
         "examples": [
           "„Ano“ nebo „udělej to“ pro přijetí.",
           "„Teď ne“ pro zavření.",
           "„Tyhle mi neukazuj“ pro vypnutí tohoto druhu.",
           "„Tady ne“ pro vypnutí v této aplikaci."
-        ]
+        ],
+        "hint": "Odpovězte na návrh nahlas."
       },
       "meetings": {
-        "title": "Na schůzkách",
+        "title": "Schůzky",
         "examples": [
           "Spusťte poznámky v sekci Schůzky, nebo řekněte ano, když to Ambient nabídne.",
           "„Najít“, když vás někdo o něco požádá.",
           "„Připomenout“, když něco slíbíte."
-        ]
+        ],
+        "hint": "Zatímco {{appName}} dělá poznámky při hovoru."
       },
       "talking": {
-        "title": "Mluvení s Ambient",
-        "examples": [
-          "Podržte {{ask}} a mluvte: vždy to jde do Ambient.",
-          "Nebo použijte klávesu diktování a začněte slovy „Ahoj Ambient, …“. Jinak se vaše slova napíšou.",
-          "Bez rukou (zapněte v Soukromí): stačí říct „Ahoj Ambient, …“."
-        ]
+        "title": "Jak mluvit"
       }
+    },
+    "subtitle": "Mluvte tak, jak byste se zeptali kolegy. Pár způsobů, jak začít.",
+    "ways": {
+      "0": "Podržte a mluvte s agentem.",
+      "1": "Podržte a diktujte. Začněte slovy „Hey {{appName}}“, pokud se chcete zeptat.",
+      "2": "Bez rukou: řekněte „Hey {{appName}}, …“. Zapněte to v Soukromí."
     }
   },
   "app": {
     "starting": "Spouštění {{appName}}…"
+  },
+  "search": {
+    "label": "Hledat",
+    "button": "Hledat",
+    "placeholder": "Hledat v nastavení a na stránkách",
+    "empty": "Nic neodpovídá „{{query}}“.",
+    "jumpTo": "Přejít na",
+    "escape": "esc"
   }
 }
