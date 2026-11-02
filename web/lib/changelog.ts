@@ -11,6 +11,40 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.4",
+    date: "2026-11-02",
+    title: "Suggestions that think, replies that land",
+    summary:
+      "Ambient now looks at any window you stay on and offers help when it can, judged on your Mac. Replies open the reply box for you, and a proper Dock icon.",
+    sections: [
+      {
+        heading: "The agent",
+        items: [
+          "Suggestions for far more situations. On Macs with Apple Intelligence, an on-device model decides whether it can help with the window you're on; nothing is sent to decide.",
+          "New suggestions: help filling in forms, translate a page in another language, summarise long documents, reply to a question in chat, explain a terminal error.",
+          "Long email threads are recognised in Google Workspace mail too, and in Arc.",
+          "Replies understand how people actually ask: “please reply to this email saying…”, “let them know…”, “write back…”. With no reply box open, Ambient opens one (Mail and Gmail) and writes the reply into it.",
+          "Cards close reliably when you click elsewhere, with a quicker, softer fade.",
+        ],
+      },
+      {
+        heading: "Privacy",
+        items: [
+          "Chrome, Brave and Edge: Ambient now steps back from crypto wallets in the side panel and extension pop-ups too.",
+        ],
+      },
+      {
+        heading: "Fixes",
+        items: [
+          "Dictation never pastes what was already on your clipboard instead of what you said.",
+          "A proper Ambient icon in the Dock instead of a tiny dot.",
+          "Search (⌘K) highlights the matching setting in its real shape.",
+          "The Pro card's corners are clean.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.3",
     date: "2026-11-02",
     title: "Smoother setup, a smarter agent",
