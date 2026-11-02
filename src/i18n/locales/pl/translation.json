@@ -892,7 +892,7 @@
       },
       "wake": {
         "label": "Bez użycia rąk: powiedz „Cześć Ambient”",
-        "description": "Rozmawiaj z {{appName}} bez klawisza: „Cześć Ambient, co mam w kalendarzu?”. Słucha na tym Macu i ignoruje wszystko, co nie zaczyna się od jego nazwy. Gdy funkcja jest włączona, Mac pokazuje wskaźnik mikrofonu."
+        "description": "Rozmawiaj z {{appName}} bez klawisza: „Cześć Ambient, co mam w kalendarzu?”. Słucha na tym komputerze i ignoruje wszystko, co nie zaczyna się od jego nazwy. Gdy funkcja jest włączona, komputer pokazuje wskaźnik mikrofonu."
       }
     }
   },
@@ -1145,7 +1145,7 @@
     "stop": "Zatrzymaj",
     "status": {
       "needScreenContext": "Aby z tego skorzystać, włącz „Czytaj to, o co pytasz” w sekcji Prywatność.",
-      "onDeviceFailed": "Nie udało się teraz odpowiedzieć na tym Macu.",
+      "onDeviceFailed": "Nie udało się teraz odpowiedzieć na tym komputerze.",
       "offline": "Nie można połączyć się z {{appName}}. Sprawdź połączenie.",
       "weeklyLimit": "Darmowe użycia AI w tym tygodniu się wyczerpały. Pro nie ma limitu.",
       "account": "Twój dostęp do Pro wymaga uwagi w sekcji Konto.",
@@ -1171,7 +1171,9 @@
       "listening": "Słucham…",
       "heardNothing": "Słyszę cię, ale nie wychwyciłem prośby.",
       "noWebResults": "Nie udało się teraz przeszukać sieci, więc to odpowiedź z mojej wiedzy.",
-      "timeout": "Trwało to zbyt długo. Spróbuj ponownie."
+      "timeout": "Trwało to zbyt długo. Spróbuj ponownie.",
+      "needsCloud": "To wymaga chmury, a Inteligencja jest ustawiona na „Tylko na tym komputerze”. Zmień to w sekcji Prywatność.",
+      "cloudOfferOn": "Sugestie z chmury są włączone. Zmień to w sekcji Prywatność."
     },
     "undo": "Cofnij",
     "close": "Zamknij",
@@ -1233,11 +1235,12 @@
     "source": {
       "searchDrive": "Szukaj na Dysku Google",
       "searchGmail": "Szukaj w Gmailu"
-    }
+    },
+    "cloudOffer": "{{appName}} może podpowiadać pomoc na tym komputerze, wysyłając na swoje serwery fragment okna z ukrytymi poufnymi danymi. Włączyć?"
   },
   "privacy": {
     "title": "Prywatność",
-    "promise": "Co {{appName}} może czytać, co opuszcza tego Maca i co zachowuje.",
+    "promise": "Co {{appName}} może czytać, co opuszcza ten komputer i co zachowuje.",
     "state": {
       "on": "Obserwuje, tak jak zezwolono",
       "onDetail": "Tylko funkcje włączone poniżej.",
@@ -1264,32 +1267,26 @@
       "screen_memory": {
         "title": "Zapamiętuj to, co widzisz",
         "reads": "Pamięta okna, których używałeś, aby można było później o nie zapytać.",
-        "leaves": "Zostaje na tym Macu, zaszyfrowane."
+        "leaves": "Zostaje na tym komputerze, zaszyfrowane."
       },
       "proactive": {
         "title": "Proponuj sugestie",
         "reads": "Proponuje kolejny krok we właściwym momencie: wątki, szkice, daty, błędy, spotkania.",
-        "leaves": "Decyzja zapada na tym Macu. Nic nie jest wysyłane bez twojej zgody, poza podpowiedziami na spotkaniach."
+        "leaves": "Decyzja zapada na tym komputerze albo w chmurze, jeśli wybierzesz to poniżej. Nic więcej nie jest wysyłane bez twojej zgody, poza podpowiedziami na spotkaniach."
       },
       "meetings": {
         "title": "Notatki ze spotkań",
         "reads": "Słyszy mikrofon i rozmowę, gdy robi notatki.",
         "leaves": "Dźwięk zostaje tutaj. Wysyłany jest tylko tekst, do napisania podsumowania."
       },
-      "on_device_only": {
-        "title": "Wszystko na tym Macu",
-        "reads": "Apple Intelligence do wszystkiego i bez wyszukiwania w sieci.",
-        "leaves": "Nic nie jest wysyłane."
-      },
       "wake_word": {
         "title": "Bez użycia rąk: powiedz „Cześć Ambient”",
-        "reads": "Nasłuchuje na tym Macu „Cześć Ambient”. Wszystko inne jest odrzucane na bieżąco.",
+        "reads": "Nasłuchuje na tym komputerze „Cześć Ambient”. Wszystko inne jest odrzucane na bieżąco.",
         "leaves": "Nic nie jest nagrywane ani wysyłane, dopóki tego nie powiesz."
       },
       "groups": {
         "screen": "Twój ekran",
-        "listening": "Nasłuchiwanie",
-        "local": "Na tym Macu"
+        "listening": "Nasłuchiwanie"
       }
     },
     "retention": "Przechowuj przez",
@@ -1317,7 +1314,7 @@
     },
     "stored": {
       "title": "Co jest przechowywane",
-      "description": "Pamięć ekranu na tym Macu. Historia dyktowania jest w sekcji Historia.",
+      "description": "Pamięć ekranu na tym komputerze. Historia dyktowania jest w sekcji Historia.",
       "summary_one": "{{count}} migawka od {{since}}.",
       "summary_few": "{{count}} migawki od {{since}}.",
       "summary_many": "{{count}} migawek od {{since}}.",
@@ -1332,7 +1329,7 @@
       "deletedAll": "Pamięć ekranu i dziennik żądań zostały usunięte."
     },
     "ledger": {
-      "title": "Żądania, które opuściły tego Maca",
+      "title": "Żądania, które opuściły ten komputer",
       "description": "Każde żądanie i dokładnie to, co wysłało. Przechowywane 30 dni.",
       "empty": "Brak żądań.",
       "bytes_one": "{{count}} bajt",
@@ -1348,13 +1345,13 @@
         "act": "Działanie",
         "license": "Sprawdzenie konta",
         "trial": "Wersja próbna",
-        "warmup": "Przygotowanie połączenia (nic nie wysłano)"
+        "warmup": "Przygotowanie połączenia (nic nie wysłano)",
+        "suggest": "Sprawdzenie sugestii"
       }
     },
     "engine": {
-      "title": "Preferuj AI na tym Macu",
-      "description": "Używa Apple Intelligence, gdy to możliwe. Wyniki są mniej dopracowane, więc domyślnie jest wyłączone.",
-      "unavailable": "Apple Intelligence nie jest dostępne na tym Macu, więc używane są serwery {{appName}}."
+      "title": "Używaj Apple Intelligence także do odpowiedzi",
+      "description": "Odpowiedzi i szlifowanie działają na tym komputerze, gdy się mieszczą. Wyniki są mniej dopracowane, więc domyślnie jest wyłączone."
     },
     "suggestions": {
       "title": "Otrzymywane sugestie",
@@ -1375,7 +1372,7 @@
         "commit_message": "Pisanie opisów commitów",
         "fill_form": "Pomoc w wypełnianiu formularzy",
         "translate_page": "Tłumaczenie stron w innych językach",
-        "help_here": "Inna pomoc, oceniana na tym Macu",
+        "help_here": "Inna pomoc, jakiej według niej potrzebujesz",
         "meeting_nudge": "Podpowiedzi podczas spotkań"
       }
     },
@@ -1383,15 +1380,41 @@
     "days_few": "{{count}} dni",
     "days_many": "{{count}} dni",
     "promises": {
-      "voice": "Twój głos zostaje na tym Macu",
+      "voice": "Twój głos zostaje na tym komputerze",
       "text": "Czyta tekst, nigdy zrzuty ekranu",
       "sensitive": "Pomija hasła, portfele i okna prywatne",
       "ledger": "Każde wysłane żądanie jest wymienione poniżej"
+    },
+    "intelligence": {
+      "title": "Gdzie działa inteligencja",
+      "description": "Co decyduje o sugestiach i pisze odpowiedzi. Każda funkcja działa przy każdym wyborze.",
+      "capability": {
+        "apple": "Apple Intelligence jest dostępne na tym komputerze",
+        "none": "Brak modelu na urządzeniu na tym komputerze"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatycznie",
+          "description": "Na tym komputerze, gdy to możliwe. Pyta raz, zanim użyje chmury do sugestii."
+        },
+        "device": {
+          "title": "Tylko na tym komputerze",
+          "description": "Nic nie jest wysyłane, by decydować lub odpowiadać. Funkcje wymagające modelu wracają do prostych reguł albo informują, że nie mogą działać."
+        },
+        "cloud": {
+          "title": "Chmura",
+          "description": "Najlepsze wyniki. Tekst z ukrytymi poufnymi danymi trafia na serwery {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Sugestie z chmury",
+        "description": "Wysyła fragment okna, na którym zostajesz dłużej, z ukrytymi poufnymi danymi, by zdecydować, czy zaproponować pomoc. Każde żądanie jest wymienione poniżej."
+      }
     }
   },
   "meetings": {
     "title": "Spotkania",
-    "intro": "Notatki z każdej rozmowy: ty i rozmówcy, transkrybowani na tym Macu. Dźwięk nigdy nie jest zapisywany.",
+    "intro": "Notatki z każdej rozmowy: ty i rozmówcy, transkrybowani na tym komputerze. Dźwięk nigdy nie jest zapisywany.",
     "live": "Notowanie · {{time}}",
     "capturingBoth": "Słyszy ciebie i rozmowę.",
     "capturingMic": "Słyszy tylko twój mikrofon.",
@@ -1500,10 +1523,10 @@
       "proOnly": "Część Pro. Przejdź na Pro w sekcji Konto.",
       "caps": {
         "screen_context": "Tylko okno, o które pytasz",
-        "proactive": "Decyzja zapada na tym Macu",
-        "meetings": "Dźwięk zostaje na tym Macu",
-        "wake_word": "Słucha tylko na tym Macu",
-        "screen_memory": "Zostaje na tym Macu, szyfrowane"
+        "proactive": "Decyzja zapada na tym komputerze",
+        "meetings": "Dźwięk zostaje na tym komputerze",
+        "wake_word": "Słucha tylko na tym komputerze",
+        "screen_memory": "Zostaje na tym komputerze, szyfrowane"
       }
     }
   },

@@ -180,11 +180,15 @@ const POLISH_TIMEOUT: Duration = Duration::from_secs(10);
 /// are then done before the request is. Sends no token and no text.
 fn warm_up_hosted_ai(app: &AppHandle, needs_ai: bool) {
     let settings = get_settings(app);
-    if !needs_ai || settings.agent.on_device_only {
+    if !needs_ai || settings.agent.device_only() {
         return;
     }
     // Polish that runs on this Mac needs no connection.
-    if settings.agent.on_device_when_possible && crate::agent::llm::on_device_ready() {
+    if crate::agent::llm::prefers_on_device(
+        settings.agent.intelligence,
+        settings.agent.on_device_when_possible,
+    ) && crate::agent::llm::on_device_ready()
+    {
         return;
     }
     let Some(provider) = settings.active_post_process_provider() else {

@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "핸즈프리: “안녕 Ambient”라고 말하기",
-        "description": "키 없이 {{appName}}와(과) 대화하세요: “안녕 Ambient, 내 캘린더에 뭐 있어?” 이 Mac에서 듣고 이름으로 시작하지 않는 말은 모두 무시합니다. 켜져 있는 동안 Mac에 마이크 표시가 나타납니다."
+        "description": "키 없이 {{appName}}와(과) 대화하세요: “안녕 Ambient, 내 캘린더에 뭐 있어?” 이 컴퓨터에서 듣고 이름으로 시작하지 않는 말은 모두 무시합니다. 켜져 있는 동안 컴퓨터에 마이크 표시가 나타납니다."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "중지",
     "status": {
       "needScreenContext": "이 기능을 사용하려면 개인정보 보호에서 ‘질문한 내용 읽기’를 켜세요.",
-      "onDeviceFailed": "지금은 이 Mac에서 답할 수 없습니다.",
+      "onDeviceFailed": "지금은 이 컴퓨터에서 답할 수 없습니다.",
       "offline": "{{appName}}에 연결할 수 없습니다. 연결 상태를 확인하세요.",
       "weeklyLimit": "이번 주 무료 AI 사용량을 모두 사용했습니다. Pro는 무제한입니다.",
       "account": "계정에서 Pro 이용 상태를 확인해야 합니다.",
@@ -1155,7 +1155,9 @@
       "listening": "듣는 중…",
       "heardNothing": "들었지만 요청을 알아듣지 못했어요.",
       "noWebResults": "지금은 웹을 검색할 수 없어 알고 있는 내용으로 답했어요.",
-      "timeout": "너무 오래 걸렸어요. 다시 시도해 주세요."
+      "timeout": "너무 오래 걸렸어요. 다시 시도해 주세요.",
+      "needsCloud": "클라우드가 필요하지만 인텔리전스가 “이 컴퓨터에서만”으로 설정되어 있습니다. 개인정보 보호에서 변경하세요.",
+      "cloudOfferOn": "클라우드 제안이 켜져 있습니다. 개인정보 보호에서 변경하세요."
     },
     "undo": "실행 취소",
     "close": "닫기",
@@ -1217,11 +1219,12 @@
     "source": {
       "searchDrive": "Google Drive에서 검색",
       "searchGmail": "Gmail에서 검색"
-    }
+    },
+    "cloudOffer": "{{appName}}이(가) 창의 내용 일부를 가려서 서버로 보내, 이 컴퓨터에서 도움을 제안할 수 있습니다. 켤까요?"
   },
   "privacy": {
     "title": "개인정보 보호",
-    "promise": "{{appName}}이(가) 읽을 수 있는 것, 이 Mac 밖으로 나가는 것, 보관하는 것.",
+    "promise": "{{appName}}이(가) 읽을 수 있는 것, 이 컴퓨터 밖으로 나가는 것, 보관하는 것.",
     "state": {
       "on": "허용한 대로 보는 중",
       "onDetail": "아래에서 켠 기능만 사용합니다.",
@@ -1248,32 +1251,26 @@
       "screen_memory": {
         "title": "본 내용 기억하기",
         "reads": "사용한 창을 기억해 나중에 물어볼 수 있게 합니다.",
-        "leaves": "암호화되어 이 Mac에 남습니다."
+        "leaves": "암호화되어 이 컴퓨터에 남습니다."
       },
       "proactive": {
         "title": "제안하기",
         "reads": "스레드, 초안, 날짜, 오류, 회의 등 적절한 순간에 다음 단계를 제안합니다.",
-        "leaves": "이 Mac에서 결정됩니다. 회의 중 알림을 제외하면 수락하지 않는 한 아무것도 전송되지 않습니다."
+        "leaves": "이 컴퓨터에서 결정되며, 아래에서 선택하면 클라우드에서 결정됩니다. 회의 중 알림을 제외하면 수락하지 않는 한 아무것도 전송되지 않습니다."
       },
       "meetings": {
         "title": "회의록",
         "reads": "기록하는 동안 마이크와 통화 소리를 듣습니다.",
         "leaves": "오디오는 여기에 남습니다. 요약 작성을 위해 텍스트만 전송됩니다."
       },
-      "on_device_only": {
-        "title": "모든 것을 이 Mac에서 처리",
-        "reads": "모든 작업에 Apple Intelligence를 사용하며 웹 검색은 하지 않습니다.",
-        "leaves": "아무것도 전송되지 않습니다."
-      },
       "wake_word": {
         "title": "핸즈프리: “안녕 Ambient”라고 말하기",
-        "reads": "이 Mac에서 “안녕 Ambient”를 듣습니다. 그 밖의 말은 말하는 즉시 버려집니다.",
+        "reads": "이 컴퓨터에서 “안녕 Ambient”를 듣습니다. 그 밖의 말은 말하는 즉시 버려집니다.",
         "leaves": "말하기 전까지는 아무것도 녹음하거나 전송하지 않습니다."
       },
       "groups": {
         "screen": "내 화면",
-        "listening": "듣기",
-        "local": "이 Mac에서"
+        "listening": "듣기"
       }
     },
     "retention": "보관 기간",
@@ -1301,7 +1298,7 @@
     },
     "stored": {
       "title": "저장된 내용",
-      "description": "이 Mac의 화면 기억입니다. 받아쓰기 기록은 히스토리에 있습니다.",
+      "description": "이 컴퓨터의 화면 기억입니다. 받아쓰기 기록은 히스토리에 있습니다.",
       "summary_one": "{{since}} 이후 스냅샷 {{count}}개.",
       "summary_other": "{{since}} 이후 스냅샷 {{count}}개.",
       "entries_one": "스냅샷 {{count}}개",
@@ -1312,7 +1309,7 @@
       "deletedAll": "화면 기억과 요청 기록이 삭제되었습니다."
     },
     "ledger": {
-      "title": "이 Mac에서 나간 요청",
+      "title": "이 컴퓨터에서 나간 요청",
       "description": "모든 요청과 정확히 전송된 내용입니다. 30일 동안 보관됩니다.",
       "empty": "아직 요청이 없습니다.",
       "bytes_one": "{{count}}바이트",
@@ -1326,13 +1323,13 @@
         "act": "작업",
         "license": "계정 확인",
         "trial": "체험판",
-        "warmup": "연결 준비 (전송된 내용 없음)"
+        "warmup": "연결 준비 (전송된 내용 없음)",
+        "suggest": "제안 확인"
       }
     },
     "engine": {
-      "title": "이 Mac의 AI 우선 사용",
-      "description": "가능한 경우 Apple Intelligence를 사용합니다. 결과가 덜 다듬어져 있어 기본적으로 꺼져 있습니다.",
-      "unavailable": "이 Mac에서는 Apple Intelligence를 사용할 수 없으므로 {{appName}} 서버를 사용합니다."
+      "title": "답변에도 Apple Intelligence 사용",
+      "description": "가능한 경우 답변과 다듬기를 이 컴퓨터에서 실행합니다. 결과가 덜 다듬어져 있어 기본적으로 꺼져 있습니다."
     },
     "suggestions": {
       "title": "받는 제안",
@@ -1353,21 +1350,47 @@
         "commit_message": "커밋 메시지 작성",
         "fill_form": "양식 작성 돕기",
         "translate_page": "다른 언어로 된 페이지 번역",
-        "help_here": "기타 도움 (이 Mac에서 판단)",
+        "help_here": "기타 도움",
         "meeting_nudge": "회의 중 알림"
       }
     },
     "macOnly": "현재 Mac 전용",
     "promises": {
-      "voice": "내 음성은 이 Mac에만 머뭅니다",
+      "voice": "내 음성은 이 컴퓨터에만 머뭅니다",
       "text": "텍스트만 읽고 스크린샷은 찍지 않습니다",
       "sensitive": "비밀번호, 지갑, 비공개 창은 건너뜁니다",
       "ledger": "외부로 나가는 모든 요청이 아래에 표시됩니다"
+    },
+    "intelligence": {
+      "title": "인텔리전스가 실행되는 위치",
+      "description": "제안 여부를 판단하고 답변을 작성하는 곳입니다. 어떤 선택이든 모든 기능을 사용할 수 있습니다.",
+      "capability": {
+        "apple": "이 컴퓨터에서 Apple Intelligence 사용 가능",
+        "none": "이 컴퓨터에 온디바이스 모델 없음"
+      },
+      "options": {
+        "auto": {
+          "title": "자동",
+          "description": "가능하면 이 컴퓨터에서 처리합니다. 제안에 클라우드를 쓰기 전에 한 번 물어봅니다."
+        },
+        "device": {
+          "title": "이 컴퓨터에서만",
+          "description": "판단이나 답변을 위해 아무것도 전송하지 않습니다. 모델이 필요한 기능은 단순 규칙으로 대체되거나 할 수 없다고 알려 줍니다."
+        },
+        "cloud": {
+          "title": "클라우드",
+          "description": "가장 좋은 결과를 제공합니다. 가려진 텍스트가 {{appName}} 서버로 전송됩니다."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "클라우드 제안",
+        "description": "머물렀던 창의 내용 일부를 가려서 보내 도움을 제안할지 판단합니다. 모든 요청은 아래에 표시됩니다."
+      }
     }
   },
   "meetings": {
     "title": "회의",
-    "intro": "모든 통화를 위한 회의록: 나와 상대방을 이 Mac에서 받아씁니다. 오디오는 저장되지 않습니다.",
+    "intro": "모든 통화를 위한 회의록: 나와 상대방을 이 컴퓨터에서 받아씁니다. 오디오는 저장되지 않습니다.",
     "live": "기록 중 · {{time}}",
     "capturingBoth": "나와 통화 소리를 듣고 있습니다.",
     "capturingMic": "마이크만 듣고 있습니다.",
@@ -1476,10 +1499,10 @@
       "proOnly": "Pro 기능입니다. 계정에서 업그레이드하세요.",
       "caps": {
         "screen_context": "물어본 창만",
-        "proactive": "이 Mac에서 결정",
-        "meetings": "오디오는 이 Mac에만 저장",
-        "wake_word": "이 Mac에서만 듣기",
-        "screen_memory": "이 Mac에 암호화해 저장"
+        "proactive": "이 컴퓨터에서 결정",
+        "meetings": "오디오는 이 컴퓨터에만 저장",
+        "wake_word": "이 컴퓨터에서만 듣기",
+        "screen_memory": "이 컴퓨터에 암호화해 저장"
       }
     }
   },

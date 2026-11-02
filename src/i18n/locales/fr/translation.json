@@ -889,7 +889,7 @@
       },
       "wake": {
         "label": "Mains libres : dites « Salut Ambient »",
-        "description": "Parlez à {{appName}} sans touche : « Salut Ambient, qu'est-ce que j'ai dans mon calendrier ? » Il écoute sur ce Mac et ignore tout ce qui ne commence pas par son nom. Votre Mac affiche l'indicateur de micro tant que c'est activé."
+        "description": "Parlez à {{appName}} sans touche : « Salut Ambient, qu'est-ce que j'ai dans mon calendrier ? » Il écoute sur cet ordinateur et ignore tout ce qui ne commence pas par son nom. Votre ordinateur affiche l'indicateur de micro tant que c'est activé."
       }
     }
   },
@@ -1137,7 +1137,7 @@
     "stop": "Arrêter",
     "status": {
       "needScreenContext": "Activez « Lire ce que vous demandez » dans Confidentialité pour utiliser cette fonction.",
-      "onDeviceFailed": "Impossible de répondre sur ce Mac pour le moment.",
+      "onDeviceFailed": "Impossible de répondre sur cet ordinateur pour le moment.",
       "offline": "Impossible de joindre {{appName}}. Vérifiez votre connexion.",
       "weeklyLimit": "Les utilisations gratuites de l'IA de cette semaine sont épuisées. Pro est illimité.",
       "account": "Votre accès Pro requiert votre attention dans Compte.",
@@ -1163,7 +1163,9 @@
       "listening": "Écoute…",
       "heardNothing": "Je vous ai entendu, mais je n'ai pas saisi de demande.",
       "noWebResults": "Impossible de chercher sur le web pour l'instant : voici ce que je sais.",
-      "timeout": "C'était trop long. Réessayez."
+      "timeout": "C'était trop long. Réessayez.",
+      "needsCloud": "Il faut le cloud pour cela, et l'intelligence est réglée sur « Sur cet ordinateur uniquement ». Modifiez-le dans Confidentialité.",
+      "cloudOfferOn": "Les suggestions depuis le cloud sont activées. Modifiez-le dans Confidentialité."
     },
     "undo": "Annuler",
     "close": "Fermer",
@@ -1225,11 +1227,12 @@
     "source": {
       "searchDrive": "Rechercher dans Google Drive",
       "searchGmail": "Rechercher dans Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} peut suggérer de l'aide sur cet ordinateur en envoyant à ses serveurs un extrait expurgé de la fenêtre. Activer ?"
   },
   "privacy": {
     "title": "Confidentialité",
-    "promise": "Ce que {{appName}} peut lire, ce qui quitte ce Mac et ce qu'il conserve.",
+    "promise": "Ce que {{appName}} peut lire, ce qui quitte cet ordinateur et ce qu'il conserve.",
     "state": {
       "on": "Actif, comme vous l'avez autorisé",
       "onDetail": "Uniquement les capacités que vous avez activées ci-dessous.",
@@ -1256,32 +1259,26 @@
       "screen_memory": {
         "title": "Se souvenir de ce que vous avez vu",
         "reads": "Se souvient des fenêtres que vous avez utilisées, pour que vous puissiez l'interroger plus tard.",
-        "leaves": "Reste sur ce Mac, chiffré."
+        "leaves": "Reste sur cet ordinateur, chiffré."
       },
       "proactive": {
         "title": "Proposer des suggestions",
         "reads": "Propose une étape suivante au bon moment : fils, brouillons, dates, erreurs, réunions.",
-        "leaves": "Décidé sur ce Mac. Rien n'est envoyé si vous n'acceptez pas, sauf les rappels en réunion."
+        "leaves": "Décidé sur cet ordinateur, ou dans le cloud si vous le choisissez ci-dessous. Rien d'autre n'est envoyé si vous n'acceptez pas, sauf les rappels en réunion."
       },
       "meetings": {
         "title": "Notes de réunion",
         "reads": "Écoute votre micro et l'appel pendant la prise de notes.",
         "leaves": "L'audio reste ici. Seul le texte est envoyé, pour rédiger le résumé."
       },
-      "on_device_only": {
-        "title": "Tout garder sur ce Mac",
-        "reads": "Apple Intelligence pour tout, et pas de recherche web.",
-        "leaves": "Rien n'est envoyé."
-      },
       "wake_word": {
         "title": "Mains libres : dites « Salut Ambient »",
-        "reads": "Écoute « Salut Ambient » sur ce Mac. Tout le reste est écarté pendant que vous parlez.",
+        "reads": "Écoute « Salut Ambient » sur cet ordinateur. Tout le reste est écarté pendant que vous parlez.",
         "leaves": "Rien n'est enregistré ni envoyé tant que vous ne l'avez pas dit."
       },
       "groups": {
         "screen": "Votre écran",
-        "listening": "Écoute",
-        "local": "Sur ce Mac"
+        "listening": "Écoute"
       }
     },
     "retention": "Conserver pendant",
@@ -1309,7 +1306,7 @@
     },
     "stored": {
       "title": "Ce qui est stocké",
-      "description": "Mémoire d'écran sur ce Mac. L'historique de dictée est dans Historique.",
+      "description": "Mémoire d'écran sur cet ordinateur. L'historique de dictée est dans Historique.",
       "summary_one": "{{count}} capture depuis {{since}}.",
       "summary_many": "{{count}} captures depuis {{since}}.",
       "summary_other": "{{count}} captures depuis {{since}}.",
@@ -1322,7 +1319,7 @@
       "deletedAll": "La mémoire d'écran et le journal des requêtes sont supprimés."
     },
     "ledger": {
-      "title": "Requêtes sorties de ce Mac",
+      "title": "Requêtes sorties de cet ordinateur",
       "description": "Chaque requête et exactement ce qu'elle a envoyé. Conservé 30 jours.",
       "empty": "Aucune requête pour l'instant.",
       "bytes_one": "{{count}} octet",
@@ -1337,13 +1334,13 @@
         "act": "Action",
         "license": "Vérification du compte",
         "trial": "Essai",
-        "warmup": "Préparation de la connexion (rien n'est envoyé)"
+        "warmup": "Préparation de la connexion (rien n'est envoyé)",
+        "suggest": "Vérification de suggestion"
       }
     },
     "engine": {
-      "title": "Privilégier l'IA sur ce Mac",
-      "description": "Utilise Apple Intelligence quand c'est possible. Les résultats sont moins soignés, c'est pourquoi c'est désactivé par défaut.",
-      "unavailable": "Apple Intelligence n'est pas disponible sur ce Mac, les serveurs de {{appName}} sont donc utilisés."
+      "title": "Utiliser aussi Apple Intelligence pour les réponses",
+      "description": "Les réponses et la mise en forme s'exécutent sur ce Mac quand c'est possible. Les résultats sont moins soignés, c'est pourquoi c'est désactivé par défaut."
     },
     "suggestions": {
       "title": "Suggestions que vous recevez",
@@ -1364,22 +1361,48 @@
         "commit_message": "Rédiger des messages de commit",
         "fill_form": "Aider à remplir les formulaires",
         "translate_page": "Traduire les pages dans d'autres langues",
-        "help_here": "Autres aides, évaluées sur ce Mac",
+        "help_here": "Autres aides qu'il pense utiles pour vous",
         "meeting_nudge": "Rappels pendant les réunions"
       }
     },
     "macOnly": "Mac uniquement pour l'instant",
     "days_many": "{{count}} jours",
     "promises": {
-      "voice": "Votre voix reste sur ce Mac",
+      "voice": "Votre voix reste sur cet ordinateur",
       "text": "Lit le texte, jamais de captures d'écran",
       "sensitive": "Ignore mots de passe, portefeuilles et fenêtres privées",
       "ledger": "Chaque requête envoyée est listée ci-dessous"
+    },
+    "intelligence": {
+      "title": "Où tourne l'intelligence",
+      "description": "Ce qui décide des suggestions et rédige les réponses. Chaque fonction marche avec chaque choix.",
+      "capability": {
+        "apple": "Apple Intelligence disponible sur cet ordinateur",
+        "none": "Aucun modèle local sur cet ordinateur"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatique",
+          "description": "Sur cet ordinateur quand c'est possible. Demande une fois avant d'utiliser le cloud pour les suggestions."
+        },
+        "device": {
+          "title": "Sur cet ordinateur uniquement",
+          "description": "Rien n'est envoyé pour décider ou répondre. Les fonctions qui ont besoin d'un modèle se rabattent sur des règles simples, ou indiquent qu'elles ne peuvent pas."
+        },
+        "cloud": {
+          "title": "Cloud",
+          "description": "Les meilleurs résultats. Le texte expurgé est envoyé aux serveurs de {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Suggestions depuis le cloud",
+        "description": "Envoie un extrait expurgé d'une fenêtre sur laquelle vous êtes resté pour décider s'il faut proposer de l'aide. Chaque requête est listée ci-dessous."
+      }
     }
   },
   "meetings": {
     "title": "Réunions",
-    "intro": "Des notes pour tout appel : vous et vos interlocuteurs, transcrits sur ce Mac. L'audio n'est jamais enregistré.",
+    "intro": "Des notes pour tout appel : vous et vos interlocuteurs, transcrits sur cet ordinateur. L'audio n'est jamais enregistré.",
     "live": "Prise de notes · {{time}}",
     "capturingBoth": "Entend votre voix et l'appel.",
     "capturingMic": "Entend uniquement votre micro.",
@@ -1488,10 +1511,10 @@
       "proOnly": "Fait partie de Pro. Passez à Pro dans Compte.",
       "caps": {
         "screen_context": "Seule la fenêtre concernée",
-        "proactive": "Décidé sur ce Mac",
-        "meetings": "L'audio reste sur ce Mac",
-        "wake_word": "N'écoute que sur ce Mac",
-        "screen_memory": "Reste sur ce Mac, chiffré"
+        "proactive": "Décidé sur cet ordinateur",
+        "meetings": "L'audio reste sur cet ordinateur",
+        "wake_word": "N'écoute que sur cet ordinateur",
+        "screen_memory": "Reste sur cet ordinateur, chiffré"
       }
     }
   },

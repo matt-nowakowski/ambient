@@ -284,18 +284,42 @@ const PLACES: Place[] = [
           "proactive",
           "meetings",
           "wake_word",
-          "on_device_only",
         ].map((cap) => ({
           label: `privacy.capabilities.${cap}.title`,
           description: `privacy.capabilities.${cap}.reads`,
         })),
       },
       {
-        label: "privacy.engine.title",
-        description: "privacy.engine.description",
-        keywords: ["apple intelligence", "local", "offline"],
-        rows: [],
-        when: (c) => c.isMac,
+        label: "privacy.intelligence.title",
+        description: "privacy.intelligence.description",
+        keywords: [
+          "intelligence",
+          "ai",
+          "model",
+          "apple intelligence",
+          "on-device",
+          "local",
+          "offline",
+          "cloud",
+          "server",
+        ],
+        rows: [
+          ...["auto", "device", "cloud"].map((key) => ({
+            label: `privacy.intelligence.options.${key}.title`,
+            description: `privacy.intelligence.options.${key}.description`,
+          })),
+          {
+            label: "privacy.engine.title",
+            description: "privacy.engine.description",
+            keywords: ["apple intelligence", "answers", "polish"],
+            when: (c) => c.isMac,
+          },
+          {
+            label: "privacy.intelligence.cloudSuggestions.title",
+            description: "privacy.intelligence.cloudSuggestions.description",
+            keywords: ["suggestions", "cloud"],
+          },
+        ],
       },
       {
         label: "privacy.preview.title",

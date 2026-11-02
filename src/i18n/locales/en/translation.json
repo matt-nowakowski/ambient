@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Hands-free: say “Hey Ambient”",
-        "description": "Talk to {{appName}} without a key: “Hey Ambient, what's on my calendar?” It listens on this Mac and ignores everything that doesn't start with its name. Your Mac shows the mic indicator while it's on."
+        "description": "Talk to {{appName}} without a key: “Hey Ambient, what's on my calendar?” It listens on this computer and ignores everything that doesn't start with its name. Your computer shows that the mic is in use while it's on."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Stop",
     "status": {
       "needScreenContext": "Turn on “Read what you ask about” in Privacy to use this.",
-      "onDeviceFailed": "Couldn't answer on this Mac right now.",
+      "onDeviceFailed": "Couldn't answer on this computer right now.",
       "offline": "Couldn't reach {{appName}}. Check your connection.",
       "weeklyLimit": "This week's free AI uses are spent. Pro is unlimited.",
       "account": "Your Pro access needs attention in Account.",
@@ -1155,7 +1155,9 @@
       "listening": "Listening…",
       "heardNothing": "Heard you, but didn't catch a request.",
       "noWebResults": "Couldn't search the web just now, so this is from what I know.",
-      "timeout": "That took too long. Try again."
+      "timeout": "That took too long. Try again.",
+      "needsCloud": "This needs the cloud, and Intelligence is set to “On this computer only”. Change it in Privacy.",
+      "cloudOfferOn": "Suggestions from the cloud are on. Change it in Privacy."
     },
     "undo": "Undo",
     "close": "Close",
@@ -1217,11 +1219,12 @@
     "source": {
       "searchDrive": "Search Google Drive",
       "searchGmail": "Search Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} can suggest help on this computer by sending a redacted snippet of the window to its servers. Turn on?"
   },
   "privacy": {
     "title": "Privacy",
-    "promise": "What {{appName}} can read, what leaves this Mac, and what it keeps.",
+    "promise": "What {{appName}} can read, what leaves this computer, and what it keeps.",
     "state": {
       "on": "Watching, as you allowed",
       "onDetail": "Only the capabilities you turned on below.",
@@ -1248,32 +1251,26 @@
       "screen_memory": {
         "title": "Remember what you've seen",
         "reads": "Remembers windows you've used, so you can ask about them later.",
-        "leaves": "Stays on this Mac, encrypted."
+        "leaves": "Stays on this computer, encrypted."
       },
       "proactive": {
         "title": "Offer suggestions",
         "reads": "Offers a next step at the right moment: threads, drafts, dates, errors, meetings.",
-        "leaves": "Decided on this Mac. Nothing is sent unless you accept, except meeting nudges."
+        "leaves": "Decided on this computer, or in the cloud if you choose it below. Nothing else is sent unless you accept, except meeting nudges."
       },
       "meetings": {
         "title": "Meeting notes",
         "reads": "Hears your mic and the call while it takes notes.",
         "leaves": "Audio stays here. Only text is sent, to write the summary."
       },
-      "on_device_only": {
-        "title": "Keep everything on this Mac",
-        "reads": "Apple Intelligence for everything, and no web search.",
-        "leaves": "Nothing is sent."
-      },
       "wake_word": {
         "title": "Hands-free: say “Hey Ambient”",
-        "reads": "Listens on this Mac for “Hey Ambient”. Everything else is dropped as you speak.",
+        "reads": "Listens on this computer for “Hey Ambient”. Everything else is dropped as you speak.",
         "leaves": "Nothing is recorded or sent until you say it."
       },
       "groups": {
         "screen": "Your screen",
-        "listening": "Listening",
-        "local": "On this Mac"
+        "listening": "Listening"
       }
     },
     "retention": "Keep for",
@@ -1301,7 +1298,7 @@
     },
     "stored": {
       "title": "What's stored",
-      "description": "Screen memory on this Mac. Dictation history lives in History.",
+      "description": "Screen memory on this computer. Dictation history lives in History.",
       "summary_one": "{{count}} snapshot since {{since}}.",
       "summary_other": "{{count}} snapshots since {{since}}.",
       "entries_one": "{{count}} snapshot",
@@ -1312,7 +1309,7 @@
       "deletedAll": "Screen memory and the request log are deleted."
     },
     "ledger": {
-      "title": "Requests that left this Mac",
+      "title": "Requests that left this computer",
       "description": "Every request and exactly what it sent. Kept 30 days.",
       "empty": "No requests yet.",
       "bytes_one": "{{count}} byte",
@@ -1326,13 +1323,13 @@
         "act": "Action",
         "license": "Account check",
         "trial": "Trial",
-        "warmup": "Connection warm-up (nothing sent)"
+        "warmup": "Connection warm-up (nothing sent)",
+        "suggest": "Suggestion check"
       }
     },
     "engine": {
-      "title": "Prefer AI on this Mac",
-      "description": "Uses Apple Intelligence where it can. Results are less polished, so it's off by default.",
-      "unavailable": "Apple Intelligence isn't available on this Mac, so {{appName}}'s servers are used."
+      "title": "Use Apple Intelligence for answers too",
+      "description": "Answers and polish run on this Mac when they fit. Results are less polished, so it's off by default."
     },
     "suggestions": {
       "title": "Suggestions you get",
@@ -1353,21 +1350,47 @@
         "commit_message": "Write commit messages",
         "fill_form": "Help fill in forms",
         "translate_page": "Translate pages in other languages",
-        "help_here": "Other help, judged on this Mac",
+        "help_here": "Other help it thinks you'd want",
         "meeting_nudge": "Nudges during meetings"
       }
     },
     "macOnly": "Mac only for now",
     "promises": {
-      "voice": "Your voice stays on this Mac",
+      "voice": "Your voice stays on this computer",
       "text": "Reads text, never screenshots",
       "sensitive": "Skips passwords, wallets and private windows",
       "ledger": "Every request that leaves is listed below"
+    },
+    "intelligence": {
+      "title": "Where the intelligence runs",
+      "description": "What decides on suggestions and writes answers. Every feature works with each choice.",
+      "capability": {
+        "apple": "Apple Intelligence available on this computer",
+        "none": "No on-device model on this computer"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatic",
+          "description": "On this computer when it can. Asks once before using the cloud for suggestions."
+        },
+        "device": {
+          "title": "On this computer only",
+          "description": "Nothing is sent to decide or answer. Features that need a model fall back to simple rules, or say they can't."
+        },
+        "cloud": {
+          "title": "Cloud",
+          "description": "The best results. Redacted text is sent to {{appName}}'s servers."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Suggestions from the cloud",
+        "description": "Sends a redacted snippet of a window you've stayed on to decide whether to offer help. Every request is listed below."
+      }
     }
   },
   "meetings": {
     "title": "Meetings",
-    "intro": "Notes for any call: you and them, transcribed on this Mac. Audio is never saved.",
+    "intro": "Notes for any call: you and them, transcribed on this computer. Audio is never saved.",
     "live": "Taking notes · {{time}}",
     "capturingBoth": "Hearing you and the call.",
     "capturingMic": "Hearing your microphone only.",
@@ -1476,10 +1499,10 @@
       "proOnly": "Part of Pro. Upgrade in Account.",
       "caps": {
         "screen_context": "Only the window you ask about",
-        "proactive": "Decided on this Mac",
-        "meetings": "Audio stays on this Mac",
-        "wake_word": "Listens on this Mac only",
-        "screen_memory": "Stays on this Mac, encrypted"
+        "proactive": "Decided on this computer",
+        "meetings": "Audio stays on this computer",
+        "wake_word": "Listens on this computer only",
+        "screen_memory": "Stays on this computer, encrypted"
       }
     }
   },

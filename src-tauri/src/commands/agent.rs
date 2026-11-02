@@ -20,7 +20,7 @@ pub struct AgentStatus {
     pub never_watch_defaults: Vec<String>,
     /// None until the local store has opened.
     pub stats: Option<RecallStats>,
-    /// Apple Intelligence can run tasks on this Mac.
+    /// An on-device model (Apple Intelligence) can run tasks on this computer.
     pub on_device_ready: bool,
     /// Suggestion types, in display order (keys of `suggestion_prefs`).
     pub suggestion_kinds: Vec<String>,
@@ -58,6 +58,8 @@ pub fn set_agent_settings(app: AppHandle, agent: AgentSettings) -> Result<(), St
         suggestions_per_hour: agent.suggestions_per_hour.min(20),
         ..agent
     };
+    // The legacy flag follows the Intelligence choice (older builds read it).
+    s.agent.sync_legacy();
     if let Some(r) = recall::get() {
         r.set_retention_days(i64::from(s.agent.retention_days));
         let _ = r.purge_expired();

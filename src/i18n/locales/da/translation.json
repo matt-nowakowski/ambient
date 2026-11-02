@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Håndfri: sig »Hej Ambient«",
-        "description": "Tal med {{appName}} uden tast: »Hej Ambient, hvad står der i min kalender?« Den lytter på denne Mac og ignorerer alt, der ikke starter med dens navn. Din Mac viser mikrofonindikatoren, mens det er slået til."
+        "description": "Tal med {{appName}} uden tast: »Hej Ambient, hvad står der i min kalender?« Den lytter på denne computer og ignorerer alt, der ikke starter med dens navn. Din computer viser mikrofonindikatoren, mens det er slået til."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Stop",
     "status": {
       "needScreenContext": "Slå »Læs det, du spørger om« til under Privatliv for at bruge dette.",
-      "onDeviceFailed": "Kunne ikke svare på denne Mac lige nu.",
+      "onDeviceFailed": "Kunne ikke svare på denne computer lige nu.",
       "offline": "Kunne ikke nå {{appName}}. Tjek din forbindelse.",
       "weeklyLimit": "Ugens gratis AI-brug er opbrugt. Pro er ubegrænset.",
       "account": "Din Pro-adgang kræver opmærksomhed under Konto.",
@@ -1155,7 +1155,9 @@
       "listening": "Lytter…",
       "heardNothing": "Jeg hørte dig, men fangede ikke en forespørgsel.",
       "noWebResults": "Kunne ikke søge på nettet lige nu, så det her er ud fra det, jeg ved.",
-      "timeout": "Det tog for lang tid. Prøv igen."
+      "timeout": "Det tog for lang tid. Prøv igen.",
+      "needsCloud": "Det kræver skyen, og Intelligence er sat til »Kun på denne computer«. Ændr det under Privatliv.",
+      "cloudOfferOn": "Forslag fra skyen er slået til. Ændr det under Privatliv."
     },
     "undo": "Fortryd",
     "close": "Luk",
@@ -1217,11 +1219,12 @@
     "source": {
       "searchDrive": "Søg i Google Drev",
       "searchGmail": "Søg i Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} kan foreslå hjælp på denne computer ved at sende et maskeret udsnit af vinduet til sine servere. Slå til?"
   },
   "privacy": {
     "title": "Privatliv",
-    "promise": "Hvad {{appName}} kan læse, hvad der forlader denne Mac, og hvad den gemmer.",
+    "promise": "Hvad {{appName}} kan læse, hvad der forlader denne computer, og hvad den gemmer.",
     "state": {
       "on": "Holder øje, som du har tilladt",
       "onDetail": "Kun de funktioner, du har slået til nedenfor.",
@@ -1248,32 +1251,26 @@
       "screen_memory": {
         "title": "Husk det, du har set",
         "reads": "Husker vinduer, du har brugt, så du kan spørge om dem senere.",
-        "leaves": "Bliver krypteret på denne Mac."
+        "leaves": "Bliver krypteret på denne computer."
       },
       "proactive": {
         "title": "Kom med forslag",
         "reads": "Foreslår et næste skridt på det rigtige tidspunkt: tråde, udkast, datoer, fejl, møder.",
-        "leaves": "Afgøres på denne Mac. Intet sendes, medmindre du accepterer, undtagen påmindelser under møder."
+        "leaves": "Afgøres på denne computer, eller i skyen, hvis du vælger det nedenfor. Intet andet sendes, medmindre du accepterer, undtagen påmindelser under møder."
       },
       "meetings": {
         "title": "Mødenoter",
         "reads": "Hører din mikrofon og opkaldet, mens den tager noter.",
         "leaves": "Lyden bliver her. Kun tekst sendes, for at skrive opsummeringen."
       },
-      "on_device_only": {
-        "title": "Hold alt på denne Mac",
-        "reads": "Apple Intelligence til alt, og ingen websøgning.",
-        "leaves": "Intet sendes."
-      },
       "wake_word": {
         "title": "Håndfri: sig »Hej Ambient«",
-        "reads": "Lytter efter »Hej Ambient« på denne Mac. Alt andet kasseres, mens du taler.",
+        "reads": "Lytter efter »Hej Ambient« på denne computer. Alt andet kasseres, mens du taler.",
         "leaves": "Intet optages eller sendes, før du siger det."
       },
       "groups": {
         "screen": "Din skærm",
-        "listening": "Lytning",
-        "local": "På denne Mac"
+        "listening": "Lytning"
       }
     },
     "retention": "Gem i",
@@ -1301,7 +1298,7 @@
     },
     "stored": {
       "title": "Hvad der er gemt",
-      "description": "Skærmhukommelse på denne Mac. Dikteringshistorikken ligger under Historik.",
+      "description": "Skærmhukommelse på denne computer. Dikteringshistorikken ligger under Historik.",
       "summary_one": "{{count}} øjebliksbillede siden {{since}}.",
       "summary_other": "{{count}} øjebliksbilleder siden {{since}}.",
       "entries_one": "{{count}} øjebliksbillede",
@@ -1312,7 +1309,7 @@
       "deletedAll": "Skærmhukommelsen og anmodningsloggen er slettet."
     },
     "ledger": {
-      "title": "Anmodninger, der har forladt denne Mac",
+      "title": "Anmodninger, der har forladt denne computer",
       "description": "Hver anmodning og præcis hvad den sendte. Gemmes i 30 dage.",
       "empty": "Ingen anmodninger endnu.",
       "bytes_one": "{{count}} byte",
@@ -1326,13 +1323,13 @@
         "act": "Handling",
         "license": "Kontotjek",
         "trial": "Prøveperiode",
-        "warmup": "Opvarmning af forbindelse (intet sendt)"
+        "warmup": "Opvarmning af forbindelse (intet sendt)",
+        "suggest": "Forslagstjek"
       }
     },
     "engine": {
-      "title": "Foretræk AI på denne Mac",
-      "description": "Bruger Apple Intelligence, hvor det kan. Resultaterne er mindre finpudsede, så det er slået fra som standard.",
-      "unavailable": "Apple Intelligence er ikke tilgængelig på denne Mac, så {{appName}}s servere bruges."
+      "title": "Brug også Apple Intelligence til svar",
+      "description": "Svar og finpudsning kører på denne computer, når de passer. Resultaterne er mindre finpudsede, så det er slået fra som standard."
     },
     "suggestions": {
       "title": "Forslag, du får",
@@ -1353,21 +1350,47 @@
         "commit_message": "Skriv commit-beskeder",
         "fill_form": "Hjælp til at udfylde formularer",
         "translate_page": "Oversæt sider på andre sprog",
-        "help_here": "Anden hjælp, vurderet på denne Mac",
+        "help_here": "Anden hjælp, den tror, du vil have",
         "meeting_nudge": "Påmindelser under møder"
       }
     },
     "macOnly": "Kun på Mac indtil videre",
     "promises": {
-      "voice": "Din stemme bliver på denne Mac",
+      "voice": "Din stemme bliver på denne computer",
       "text": "Læser tekst, aldrig skærmbilleder",
       "sensitive": "Springer adgangskoder, tegnebøger og private vinduer over",
       "ledger": "Hver forespørgsel, der forlader din Mac, står på listen nedenfor"
+    },
+    "intelligence": {
+      "title": "Hvor intelligensen kører",
+      "description": "Hvad der afgør forslag og skriver svar. Alle funktioner virker med hvert valg.",
+      "capability": {
+        "apple": "Apple Intelligence er tilgængelig på denne computer",
+        "none": "Ingen model på enheden på denne computer"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatisk",
+          "description": "På denne computer, når det er muligt. Spørger én gang, før skyen bruges til forslag."
+        },
+        "device": {
+          "title": "Kun på denne computer",
+          "description": "Intet sendes for at afgøre eller svare. Funktioner, der kræver en model, falder tilbage til simple regler eller siger, at de ikke kan."
+        },
+        "cloud": {
+          "title": "Skyen",
+          "description": "De bedste resultater. Maskeret tekst sendes til {{appName}}s servere."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Forslag fra skyen",
+        "description": "Sender et maskeret udsnit af et vindue, du er blevet på, for at afgøre, om der skal tilbydes hjælp. Hver anmodning er listet nedenfor."
+      }
     }
   },
   "meetings": {
     "title": "Møder",
-    "intro": "Noter til ethvert opkald: dig og de andre, transskriberet på denne Mac. Lyd gemmes aldrig.",
+    "intro": "Noter til ethvert opkald: dig og de andre, transskriberet på denne computer. Lyd gemmes aldrig.",
     "live": "Tager noter · {{time}}",
     "capturingBoth": "Hører dig og opkaldet.",
     "capturingMic": "Hører kun din mikrofon.",
@@ -1476,10 +1499,10 @@
       "proOnly": "En del af Pro. Opgrader under Konto.",
       "caps": {
         "screen_context": "Kun det vindue, du spørger om",
-        "proactive": "Afgøres på denne Mac",
-        "meetings": "Lyd bliver på denne Mac",
-        "wake_word": "Lytter kun på denne Mac",
-        "screen_memory": "Bliver krypteret på denne Mac"
+        "proactive": "Afgøres på denne computer",
+        "meetings": "Lyd bliver på denne computer",
+        "wake_word": "Lytter kun på denne computer",
+        "screen_memory": "Bliver krypteret på denne computer"
       }
     }
   },

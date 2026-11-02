@@ -1346,17 +1346,30 @@ retention_days: number;
  */
 never_watch: string[]; 
 /**
- * Route every model call to Apple Intelligence and disable web search.
+ * Where the intelligence runs: on this computer, in the cloud, or
+ * chosen automatically. Absorbs `on_device_only` (see
+ * `apply_settings_migrations`).
  */
-on_device_only: boolean; 
+intelligence: Intelligence;
 /**
- * Use Apple Intelligence on this Mac whenever a task fits it, and our
- * hosted model only when it doesn't. Off by default: measured against
- * the hosted model, Apple's on-device model polished noticeably worse
- * (numbers, punctuation, once echoing its instructions) and routed 29/33
- * vs 33/33. Quality first; users can still choose privacy over quality.
+ * The one-time offer (Automatic, no on-device model) to judge
+ * suggestions in the cloud, and the answer.
  */
-on_device_when_possible: boolean; 
+cloud_suggestions: CloudSuggestions;
+/**
+ * Legacy mirror of `intelligence == Device`, kept in sync so older
+ * builds reading this store still behave. Read `device_only()` instead.
+ */
+on_device_only: boolean;
+/**
+ * In Automatic: use Apple Intelligence on this Mac whenever a task fits
+ * it, and our hosted model only when it doesn't. Off by default:
+ * measured against the hosted model, Apple's on-device model polished
+ * noticeably worse (numbers, punctuation, once echoing its instructions)
+ * and routed 29/33 vs 33/33. Quality first; users can still choose
+ * privacy over quality. Ignored in the other two modes.
+ */
+on_device_when_possible: boolean;
 /**
  * Unix seconds until which all watching is paused.
  */
@@ -1385,7 +1398,7 @@ never_watch_defaults: string[];
  */
 stats: RecallStats | null; 
 /**
- * Apple Intelligence can run tasks on this Mac.
+ * An on-device model (Apple Intelligence) can run tasks on this computer.
  */
 on_device_ready: boolean; 
 /**
@@ -1538,6 +1551,10 @@ export type ChineseScript =
  */
 "traditional_hk"
 export type ClipboardHandling = "dont_modify" | "copy_to_clipboard"
+/**
+ * The one-time cloud suggestions offer and its answer.
+ */
+export type CloudSuggestions = "unasked" | "accepted" | "declined"
 export type ContextSnapshot = { app?: FrontmostApp; window_title?: string; url?: string | null; focused_role?: string | null; 
 /**
  * A text field has focus (only a hint; writing never depends on it).
@@ -1640,7 +1657,24 @@ reset_bindings: string[] }
  * Where the main window will open, in the intro window's own coordinates
  * (logical px), so the intro can shrink into exactly that spot.
  */
-export type IntroTarget = { x: number; y: number; width: number; height: number }
+/**
+ * Where the agent's intelligence runs.
+ */
+export type Intelligence =
+/**
+ * On this computer when it can (Apple Intelligence); otherwise rules,
+ * plus a one-time offer to judge suggestions in the cloud.
+ */
+"auto" |
+/**
+ * Never send anything to decide or answer: on-device model or rules.
+ */
+"device" |
+/**
+ * Our hosted model: the best results; redacted text is sent.
+ */
+"cloud"
+export type IntroTarget ={ x: number; y: number; width: number; height: number }
 export type KeyboardDiagnosticReport = { secure_input_enabled: boolean; culprit_pid: number | null; culprit_name: string | null; 
 /**
  * Counts only — key identity is deliberately never captured.

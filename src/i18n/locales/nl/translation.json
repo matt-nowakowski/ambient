@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Handsfree: zeg ‘Hallo Ambient’",
-        "description": "Praat met {{appName}} zonder toets: ‘Hallo Ambient, wat staat er in mijn agenda?’ Het luistert op deze Mac en negeert alles wat niet met zijn naam begint. Je Mac toont de microfoonindicator zolang het aanstaat."
+        "description": "Praat met {{appName}} zonder toets: ‘Hallo Ambient, wat staat er in mijn agenda?’ Het luistert op deze computer en negeert alles wat niet met zijn naam begint. Je computer toont de microfoonindicator zolang het aanstaat."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Stop",
     "status": {
       "needScreenContext": "Zet ‘Lezen waar je naar vraagt’ aan in Privacy om dit te gebruiken.",
-      "onDeviceFailed": "Kon nu niet antwoorden op deze Mac.",
+      "onDeviceFailed": "Kon nu niet antwoorden op deze computer.",
       "offline": "Kan {{appName}} niet bereiken. Controleer je verbinding.",
       "weeklyLimit": "De gratis AI-acties van deze week zijn op. Pro is onbeperkt.",
       "account": "Je Pro-toegang vraagt aandacht in Account.",
@@ -1155,7 +1155,9 @@
       "listening": "Luistert…",
       "heardNothing": "Gehoord, maar geen verzoek opgevangen.",
       "noWebResults": "Zoeken op het web lukte nu niet, dus dit is wat ik weet.",
-      "timeout": "Dat duurde te lang. Probeer het opnieuw."
+      "timeout": "Dat duurde te lang. Probeer het opnieuw.",
+      "needsCloud": "Dit heeft de cloud nodig, en Intelligence staat op ‘Alleen op deze computer’. Wijzig dit in Privacy.",
+      "cloudOfferOn": "Suggesties uit de cloud staan aan. Wijzig dit in Privacy."
     },
     "undo": "Ongedaan maken",
     "close": "Sluiten",
@@ -1217,11 +1219,12 @@
     "source": {
       "searchDrive": "Zoeken in Google Drive",
       "searchGmail": "Zoeken in Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} kan hulp voorstellen op deze computer door een geschoond fragment van het venster naar zijn servers te sturen. Aanzetten?"
   },
   "privacy": {
     "title": "Privacy",
-    "promise": "Wat {{appName}} kan lezen, wat deze Mac verlaat en wat het bewaart.",
+    "promise": "Wat {{appName}} kan lezen, wat deze computer verlaat en wat het bewaart.",
     "state": {
       "on": "Kijkt mee, zoals je toestond",
       "onDetail": "Alleen de functies die je hieronder hebt aangezet.",
@@ -1248,32 +1251,26 @@
       "screen_memory": {
         "title": "Onthouden wat je hebt gezien",
         "reads": "Onthoudt vensters die je hebt gebruikt, zodat je er later naar kunt vragen.",
-        "leaves": "Blijft versleuteld op deze Mac."
+        "leaves": "Blijft versleuteld op deze computer."
       },
       "proactive": {
         "title": "Suggesties doen",
         "reads": "Stelt op het juiste moment een volgende stap voor: threads, concepten, datums, fouten, vergaderingen.",
-        "leaves": "Besloten op deze Mac. Er wordt niets verstuurd tenzij je accepteert, behalve tips tijdens vergaderingen."
+        "leaves": "Besloten op deze computer, of in de cloud als je dat hieronder kiest. Er wordt verder niets verstuurd tenzij je accepteert, behalve tips tijdens vergaderingen."
       },
       "meetings": {
         "title": "Vergadernotities",
         "reads": "Hoort je microfoon en het gesprek terwijl het notities maakt.",
         "leaves": "Audio blijft hier. Alleen tekst wordt verstuurd, voor de samenvatting."
       },
-      "on_device_only": {
-        "title": "Alles op deze Mac houden",
-        "reads": "Apple Intelligence voor alles, en geen zoeken op het web.",
-        "leaves": "Er wordt niets verstuurd."
-      },
       "wake_word": {
         "title": "Handsfree: zeg ‘Hallo Ambient’",
-        "reads": "Luistert op deze Mac naar ‘Hallo Ambient’. Al het andere wordt weggegooid terwijl je praat.",
+        "reads": "Luistert op deze computer naar ‘Hallo Ambient’. Al het andere wordt weggegooid terwijl je praat.",
         "leaves": "Er wordt niets opgenomen of verstuurd tot je het zegt."
       },
       "groups": {
         "screen": "Je scherm",
-        "listening": "Luisteren",
-        "local": "Op deze Mac"
+        "listening": "Luisteren"
       }
     },
     "retention": "Bewaren voor",
@@ -1301,7 +1298,7 @@
     },
     "stored": {
       "title": "Wat er is opgeslagen",
-      "description": "Schermgeheugen op deze Mac. Je dicteergeschiedenis staat in Geschiedenis.",
+      "description": "Schermgeheugen op deze computer. Je dicteergeschiedenis staat in Geschiedenis.",
       "summary_one": "{{count}} momentopname sinds {{since}}.",
       "summary_other": "{{count}} momentopnamen sinds {{since}}.",
       "entries_one": "{{count}} momentopname",
@@ -1312,7 +1309,7 @@
       "deletedAll": "Het schermgeheugen en het verzoeklogboek zijn verwijderd."
     },
     "ledger": {
-      "title": "Verzoeken die deze Mac hebben verlaten",
+      "title": "Verzoeken die deze computer hebben verlaten",
       "description": "Elk verzoek en precies wat het verstuurde. 30 dagen bewaard.",
       "empty": "Nog geen verzoeken.",
       "bytes_one": "{{count}} byte",
@@ -1326,13 +1323,13 @@
         "act": "Actie",
         "license": "Accountcontrole",
         "trial": "Proefperiode",
-        "warmup": "Verbinding opwarmen (niets verzonden)"
+        "warmup": "Verbinding opwarmen (niets verzonden)",
+        "suggest": "Suggestiecontrole"
       }
     },
     "engine": {
-      "title": "AI op deze Mac de voorkeur geven",
-      "description": "Gebruikt Apple Intelligence waar het kan. De resultaten zijn minder verfijnd, dus dit staat standaard uit.",
-      "unavailable": "Apple Intelligence is niet beschikbaar op deze Mac, dus worden de servers van {{appName}} gebruikt."
+      "title": "Apple Intelligence ook voor antwoorden gebruiken",
+      "description": "Antwoorden en AI-afwerking draaien op deze computer als ze passen. De resultaten zijn minder verfijnd, dus dit staat standaard uit."
     },
     "suggestions": {
       "title": "Suggesties die je krijgt",
@@ -1353,21 +1350,47 @@
         "commit_message": "Commitberichten schrijven",
         "fill_form": "Helpen met formulieren invullen",
         "translate_page": "Pagina's in andere talen vertalen",
-        "help_here": "Andere hulp, beoordeeld op deze Mac",
+        "help_here": "Andere hulp waarvan het denkt dat je die wilt",
         "meeting_nudge": "Tips tijdens vergaderingen"
       }
     },
     "macOnly": "Voorlopig alleen op Mac",
     "promises": {
-      "voice": "Je stem blijft op deze Mac",
+      "voice": "Je stem blijft op deze computer",
       "text": "Leest tekst, nooit schermafbeeldingen",
       "sensitive": "Slaat wachtwoorden, wallets en privévensters over",
       "ledger": "Elk verzoek dat de Mac verlaat staat hieronder"
+    },
+    "intelligence": {
+      "title": "Waar de intelligentie draait",
+      "description": "Wat beslist over suggesties en antwoorden schrijft. Elke functie werkt met elke keuze.",
+      "capability": {
+        "apple": "Apple Intelligence beschikbaar op deze computer",
+        "none": "Geen model op het apparaat op deze computer"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatisch",
+          "description": "Op deze computer als het kan. Vraagt één keer toestemming voordat de cloud voor suggesties wordt gebruikt."
+        },
+        "device": {
+          "title": "Alleen op deze computer",
+          "description": "Er wordt niets verstuurd om te beslissen of te antwoorden. Functies die een model nodig hebben, vallen terug op eenvoudige regels of melden dat ze niet kunnen."
+        },
+        "cloud": {
+          "title": "Cloud",
+          "description": "De beste resultaten. Geschoonde tekst wordt naar de servers van {{appName}} gestuurd."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Suggesties uit de cloud",
+        "description": "Stuurt een geschoond fragment van een venster waar je een tijdje bent gebleven om te beslissen of er hulp wordt aangeboden. Elk verzoek staat hieronder."
+      }
     }
   },
   "meetings": {
     "title": "Vergaderingen",
-    "intro": "Notities voor elk gesprek: jij en de anderen, getranscribeerd op deze Mac. Audio wordt nooit bewaard.",
+    "intro": "Notities voor elk gesprek: jij en de anderen, getranscribeerd op deze computer. Audio wordt nooit bewaard.",
     "live": "Notities maken · {{time}}",
     "capturingBoth": "Hoort jou en het gesprek.",
     "capturingMic": "Hoort alleen je microfoon.",
@@ -1476,10 +1499,10 @@
       "proOnly": "Onderdeel van Pro. Upgrade in Account.",
       "caps": {
         "screen_context": "Alleen het venster in kwestie",
-        "proactive": "Bepaald op deze Mac",
-        "meetings": "Audio blijft op deze Mac",
-        "wake_word": "Luistert alleen op deze Mac",
-        "screen_memory": "Blijft versleuteld op deze Mac"
+        "proactive": "Bepaald op deze computer",
+        "meetings": "Audio blijft op deze computer",
+        "wake_word": "Luistert alleen op deze computer",
+        "screen_memory": "Blijft versleuteld op deze computer"
       }
     }
   },

@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Tanpa tangan: ucapkan “Halo Ambient”",
-        "description": "Bicara dengan {{appName}} tanpa tombol: “Halo Ambient, apa jadwal di kalender saya?” Ia mendengarkan di Mac ini dan mengabaikan semua yang tidak diawali namanya. Mac Anda menampilkan indikator mikrofon selama fitur ini aktif."
+        "description": "Bicara dengan {{appName}} tanpa tombol: “Halo Ambient, apa jadwal di kalender saya?” Ia mendengarkan di komputer ini dan mengabaikan semua yang tidak diawali namanya. Komputer Anda menampilkan indikator mikrofon selama fitur ini aktif."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Hentikan",
     "status": {
       "needScreenContext": "Aktifkan “Baca yang Anda tanyakan” di Privasi untuk menggunakan ini.",
-      "onDeviceFailed": "Tidak dapat menjawab di Mac ini sekarang.",
+      "onDeviceFailed": "Tidak dapat menjawab di komputer ini sekarang.",
       "offline": "Tidak dapat menghubungi {{appName}}. Periksa koneksi Anda.",
       "weeklyLimit": "Jatah penggunaan AI gratis minggu ini sudah habis. Pro tanpa batas.",
       "account": "Akses Pro Anda perlu diperiksa di Akun.",
@@ -1155,7 +1155,9 @@
       "listening": "Mendengarkan…",
       "heardNothing": "Saya mendengar Anda, tapi tidak menangkap permintaan.",
       "noWebResults": "Tidak bisa mencari di web saat ini, jadi ini dari yang saya tahu.",
-      "timeout": "Terlalu lama. Coba lagi."
+      "timeout": "Terlalu lama. Coba lagi.",
+      "needsCloud": "Ini memerlukan cloud, dan Kecerdasan diatur ke “Hanya di komputer ini”. Ubah di Privasi.",
+      "cloudOfferOn": "Saran dari cloud aktif. Ubah di Privasi."
     },
     "undo": "Urungkan",
     "close": "Tutup",
@@ -1217,11 +1219,12 @@
     "source": {
       "searchDrive": "Cari di Google Drive",
       "searchGmail": "Cari di Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} dapat menyarankan bantuan di komputer ini dengan mengirim cuplikan jendela yang telah disamarkan ke servernya. Aktifkan?"
   },
   "privacy": {
     "title": "Privasi",
-    "promise": "Apa yang dapat dibaca {{appName}}, apa yang keluar dari Mac ini, dan apa yang disimpannya.",
+    "promise": "Apa yang dapat dibaca {{appName}}, apa yang keluar dari komputer ini, dan apa yang disimpannya.",
     "state": {
       "on": "Mengamati, sesuai izin Anda",
       "onDetail": "Hanya kemampuan yang Anda aktifkan di bawah.",
@@ -1248,32 +1251,26 @@
       "screen_memory": {
         "title": "Ingat yang sudah Anda lihat",
         "reads": "Mengingat jendela yang pernah Anda gunakan, agar Anda bisa menanyakannya nanti.",
-        "leaves": "Tetap di Mac ini, terenkripsi."
+        "leaves": "Tetap di komputer ini, terenkripsi."
       },
       "proactive": {
         "title": "Tawarkan saran",
         "reads": "Menawarkan langkah berikutnya di saat yang tepat: utas, draf, tanggal, kesalahan, rapat.",
-        "leaves": "Diputuskan di Mac ini. Tidak ada yang dikirim kecuali Anda menerimanya, selain pengingat dalam rapat."
+        "leaves": "Diputuskan di komputer ini, atau di cloud jika Anda memilihnya di bawah. Tidak ada yang lain dikirim kecuali Anda menerimanya, selain pengingat dalam rapat."
       },
       "meetings": {
         "title": "Catatan rapat",
         "reads": "Mendengar mikrofon dan panggilan saat mencatat.",
         "leaves": "Audio tetap di sini. Hanya teks yang dikirim, untuk menulis ringkasan."
       },
-      "on_device_only": {
-        "title": "Simpan semuanya di Mac ini",
-        "reads": "Apple Intelligence untuk semuanya, tanpa pencarian web.",
-        "leaves": "Tidak ada yang dikirim."
-      },
       "wake_word": {
         "title": "Tanpa tangan: ucapkan “Halo Ambient”",
-        "reads": "Mendengarkan “Halo Ambient” di Mac ini. Selebihnya dibuang saat Anda berbicara.",
+        "reads": "Mendengarkan “Halo Ambient” di komputer ini. Selebihnya dibuang saat Anda berbicara.",
         "leaves": "Tidak ada yang direkam atau dikirim sampai Anda mengucapkannya."
       },
       "groups": {
         "screen": "Layar Anda",
-        "listening": "Mendengarkan",
-        "local": "Di Mac ini"
+        "listening": "Mendengarkan"
       }
     },
     "retention": "Simpan selama",
@@ -1301,7 +1298,7 @@
     },
     "stored": {
       "title": "Yang disimpan",
-      "description": "Memori layar di Mac ini. Riwayat dikte ada di Riwayat.",
+      "description": "Memori layar di komputer ini. Riwayat dikte ada di Riwayat.",
       "summary_one": "{{count}} cuplikan layar sejak {{since}}.",
       "summary_other": "{{count}} cuplikan layar sejak {{since}}.",
       "entries_one": "{{count}} cuplikan layar",
@@ -1312,7 +1309,7 @@
       "deletedAll": "Memori layar dan log permintaan telah dihapus."
     },
     "ledger": {
-      "title": "Permintaan yang keluar dari Mac ini",
+      "title": "Permintaan yang keluar dari komputer ini",
       "description": "Setiap permintaan dan persis apa yang dikirimnya. Disimpan 30 hari.",
       "empty": "Belum ada permintaan.",
       "bytes_one": "{{count}} byte",
@@ -1326,13 +1323,13 @@
         "act": "Tindakan",
         "license": "Pemeriksaan akun",
         "trial": "Uji coba",
-        "warmup": "Pemanasan koneksi (tidak ada yang dikirim)"
+        "warmup": "Pemanasan koneksi (tidak ada yang dikirim)",
+        "suggest": "Pemeriksaan saran"
       }
     },
     "engine": {
-      "title": "Utamakan AI di Mac ini",
-      "description": "Menggunakan Apple Intelligence bila memungkinkan. Hasilnya kurang rapi, jadi nonaktif secara default.",
-      "unavailable": "Apple Intelligence tidak tersedia di Mac ini, jadi server {{appName}} digunakan."
+      "title": "Gunakan Apple Intelligence untuk jawaban juga",
+      "description": "Jawaban dan penyempurnaan berjalan di komputer ini bila memungkinkan. Hasilnya kurang rapi, jadi nonaktif secara default."
     },
     "suggestions": {
       "title": "Saran yang Anda terima",
@@ -1353,21 +1350,47 @@
         "commit_message": "Tulis pesan commit",
         "fill_form": "Bantu mengisi formulir",
         "translate_page": "Terjemahkan halaman dalam bahasa lain",
-        "help_here": "Bantuan lain, dinilai di Mac ini",
+        "help_here": "Bantuan lain yang menurutnya Anda perlukan",
         "meeting_nudge": "Pengingat selama rapat"
       }
     },
     "macOnly": "Untuk saat ini hanya di Mac",
     "promises": {
-      "voice": "Suara Anda tetap di Mac ini",
+      "voice": "Suara Anda tetap di komputer ini",
       "text": "Membaca teks, tidak pernah tangkapan layar",
       "sensitive": "Melewati kata sandi, dompet, dan jendela pribadi",
       "ledger": "Setiap permintaan yang keluar tercantum di bawah"
+    },
+    "intelligence": {
+      "title": "Tempat kecerdasan berjalan",
+      "description": "Yang memutuskan saran dan menulis jawaban. Semua fitur berfungsi dengan setiap pilihan.",
+      "capability": {
+        "apple": "Apple Intelligence tersedia di komputer ini",
+        "none": "Tidak ada model di perangkat pada komputer ini"
+      },
+      "options": {
+        "auto": {
+          "title": "Otomatis",
+          "description": "Di komputer ini bila bisa. Bertanya sekali sebelum memakai cloud untuk saran."
+        },
+        "device": {
+          "title": "Hanya di komputer ini",
+          "description": "Tidak ada yang dikirim untuk memutuskan atau menjawab. Fitur yang memerlukan model beralih ke aturan sederhana, atau menyatakan tidak bisa."
+        },
+        "cloud": {
+          "title": "Cloud",
+          "description": "Hasil terbaik. Teks yang telah disamarkan dikirim ke server {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Saran dari cloud",
+        "description": "Mengirim cuplikan jendela yang telah disamarkan, yang Anda buka cukup lama, untuk memutuskan apakah akan menawarkan bantuan. Setiap permintaan tercantum di bawah."
+      }
     }
   },
   "meetings": {
     "title": "Rapat",
-    "intro": "Catatan untuk panggilan apa pun: Anda dan mereka, ditranskripsikan di Mac ini. Audio tidak pernah disimpan.",
+    "intro": "Catatan untuk panggilan apa pun: Anda dan mereka, ditranskripsikan di komputer ini. Audio tidak pernah disimpan.",
     "live": "Mencatat · {{time}}",
     "capturingBoth": "Mendengar Anda dan panggilan.",
     "capturingMic": "Hanya mendengar mikrofon Anda.",
@@ -1476,10 +1499,10 @@
       "proOnly": "Bagian dari Pro. Upgrade di Akun.",
       "caps": {
         "screen_context": "Hanya jendela yang Anda tanyakan",
-        "proactive": "Diputuskan di Mac ini",
-        "meetings": "Audio tetap di Mac ini",
-        "wake_word": "Hanya mendengarkan di Mac ini",
-        "screen_memory": "Tetap di Mac ini, terenkripsi"
+        "proactive": "Diputuskan di komputer ini",
+        "meetings": "Audio tetap di komputer ini",
+        "wake_word": "Hanya mendengarkan di komputer ini",
+        "screen_memory": "Tetap di komputer ini, terenkripsi"
       }
     }
   },

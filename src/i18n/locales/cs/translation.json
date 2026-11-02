@@ -892,7 +892,7 @@
       },
       "wake": {
         "label": "Bez rukou: řekněte „Ahoj Ambient“",
-        "description": "Mluvte s {{appName}} bez klávesy: „Ahoj Ambient, co mám v kalendáři?“ Poslouchá na tomto Macu a ignoruje vše, co nezačíná jeho jménem. Dokud je to zapnuté, Mac zobrazuje indikátor mikrofonu."
+        "description": "Mluvte s {{appName}} bez klávesy: „Ahoj Ambient, co mám v kalendáři?“ Poslouchá na tomto počítači a ignoruje vše, co nezačíná jeho jménem. Dokud je to zapnuté, počítač zobrazuje indikátor mikrofonu."
       }
     }
   },
@@ -1145,7 +1145,7 @@
     "stop": "Zastavit",
     "status": {
       "needScreenContext": "Chcete-li to použít, zapněte v Soukromí možnost „Číst to, na co se ptáte“.",
-      "onDeviceFailed": "Na tomto Macu teď nešlo odpovědět.",
+      "onDeviceFailed": "Na tomto počítači teď nešlo odpovědět.",
       "offline": "Nelze se spojit s {{appName}}. Zkontrolujte připojení.",
       "weeklyLimit": "Bezplatná použití AI na tento týden jsou vyčerpána. Pro je neomezené.",
       "account": "Váš přístup k Pro vyžaduje pozornost v sekci Účet.",
@@ -1171,7 +1171,9 @@
       "listening": "Poslouchám…",
       "heardNothing": "Slyšel jsem vás, ale nezachytil jsem žádný požadavek.",
       "noWebResults": "Teď se nepodařilo hledat na webu, takže odpovídám z toho, co vím.",
-      "timeout": "Trvalo to příliš dlouho. Zkuste to znovu."
+      "timeout": "Trvalo to příliš dlouho. Zkuste to znovu.",
+      "needsCloud": "Tohle potřebuje cloud a Inteligence je nastavená na „Jen na tomto počítači“. Změňte to v Soukromí.",
+      "cloudOfferOn": "Návrhy z cloudu jsou zapnuté. Změňte to v Soukromí."
     },
     "undo": "Zpět",
     "close": "Zavřít",
@@ -1233,11 +1235,12 @@
     "source": {
       "searchDrive": "Hledat na Disku Google",
       "searchGmail": "Hledat v Gmailu"
-    }
+    },
+    "cloudOffer": "{{appName}} může navrhovat pomoc na tomto počítači tak, že na své servery odešle začerněný výřez okna. Zapnout?"
   },
   "privacy": {
     "title": "Soukromí",
-    "promise": "Co {{appName}} může číst, co opouští tento Mac a co si ponechává.",
+    "promise": "Co {{appName}} může číst, co opouští tento počítač a co si ponechává.",
     "state": {
       "on": "Sleduje, jak jste povolili",
       "onDetail": "Jen funkce, které jste zapnuli níže.",
@@ -1264,32 +1267,26 @@
       "screen_memory": {
         "title": "Pamatovat si, co jste viděli",
         "reads": "Pamatuje si okna, která jste používali, abyste se na ně mohli později zeptat.",
-        "leaves": "Zůstává zašifrované na tomto Macu."
+        "leaves": "Zůstává zašifrované na tomto počítači."
       },
       "proactive": {
         "title": "Nabízet návrhy",
         "reads": "Ve správnou chvíli navrhne další krok: konverzace, koncepty, data, chyby, schůzky.",
-        "leaves": "Rozhoduje se na tomto Macu. Nic se neodešle, dokud nepřijmete, kromě připomínek na schůzkách."
+        "leaves": "Rozhoduje se na tomto počítači, nebo v cloudu, pokud to níže zvolíte. Nic dalšího se neodešle, dokud nepřijmete, kromě připomínek na schůzkách."
       },
       "meetings": {
         "title": "Poznámky ze schůzek",
         "reads": "Slyší váš mikrofon a hovor, zatímco dělá poznámky.",
         "leaves": "Zvuk zůstává tady. Odesílá se jen text, kvůli shrnutí."
       },
-      "on_device_only": {
-        "title": "Vše jen na tomto Macu",
-        "reads": "Apple Intelligence na všechno a žádné hledání na webu.",
-        "leaves": "Nic se neodesílá."
-      },
       "wake_word": {
         "title": "Bez rukou: řekněte „Ahoj Ambient“",
-        "reads": "Na tomto Macu poslouchá „Ahoj Ambient“. Vše ostatní se průběžně zahazuje.",
+        "reads": "Na tomto počítači poslouchá „Ahoj Ambient“. Vše ostatní se průběžně zahazuje.",
         "leaves": "Nic se nenahrává ani neodesílá, dokud to neřeknete."
       },
       "groups": {
         "screen": "Vaše obrazovka",
-        "listening": "Poslech",
-        "local": "Na tomto Macu"
+        "listening": "Poslech"
       }
     },
     "retention": "Uchovávat",
@@ -1317,7 +1314,7 @@
     },
     "stored": {
       "title": "Co je uloženo",
-      "description": "Paměť obrazovky na tomto Macu. Historie diktování je v sekci Historie.",
+      "description": "Paměť obrazovky na tomto počítači. Historie diktování je v sekci Historie.",
       "summary_one": "{{count}} snímek od {{since}}.",
       "summary_few": "{{count}} snímky od {{since}}.",
       "summary_many": "{{count}} snímku od {{since}}.",
@@ -1332,7 +1329,7 @@
       "deletedAll": "Paměť obrazovky a protokol požadavků jsou smazány."
     },
     "ledger": {
-      "title": "Požadavky, které opustily tento Mac",
+      "title": "Požadavky, které opustily tento počítač",
       "description": "Každý požadavek a přesně to, co odeslal. Uchovává se 30 dní.",
       "empty": "Zatím žádné požadavky.",
       "bytes_one": "{{count}} bajt",
@@ -1348,13 +1345,13 @@
         "act": "Akce",
         "license": "Kontrola účtu",
         "trial": "Zkušební verze",
-        "warmup": "Příprava připojení (nic se neodesílá)"
+        "warmup": "Příprava připojení (nic se neodesílá)",
+        "suggest": "Kontrola návrhů"
       }
     },
     "engine": {
-      "title": "Upřednostnit AI na tomto Macu",
-      "description": "Používá Apple Intelligence, kde to jde. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté.",
-      "unavailable": "Apple Intelligence na tomto Macu není k dispozici, proto se používají servery {{appName}}."
+      "title": "Používat Apple Intelligence i pro odpovědi",
+      "description": "Odpovědi a vyladění běží na tomto počítači, když se vejdou. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté."
     },
     "suggestions": {
       "title": "Návrhy, které dostáváte",
@@ -1375,7 +1372,7 @@
         "commit_message": "Psát zprávy commitů",
         "fill_form": "Pomoc s vyplňováním formulářů",
         "translate_page": "Překlad stránek v jiných jazycích",
-        "help_here": "Další pomoc, posouzená na tomto Macu",
+        "help_here": "Další pomoc, o které si myslí, že ji budete chtít",
         "meeting_nudge": "Připomínky během schůzek"
       }
     },
@@ -1383,15 +1380,41 @@
     "days_few": "{{count}} dny",
     "days_many": "{{count}} dne",
     "promises": {
-      "voice": "Váš hlas zůstává na tomto Macu",
+      "voice": "Váš hlas zůstává na tomto počítači",
       "text": "Čte text, nikdy snímky obrazovky",
       "sensitive": "Přeskakuje hesla, peněženky a soukromá okna",
       "ledger": "Každý odeslaný požadavek je uveden níže"
+    },
+    "intelligence": {
+      "title": "Kde běží inteligence",
+      "description": "Co rozhoduje o návrzích a píše odpovědi. Každá funkce funguje s každou volbou.",
+      "capability": {
+        "apple": "Apple Intelligence je dostupná na tomto počítači",
+        "none": "Na tomto počítači není model na zařízení"
+      },
+      "options": {
+        "auto": {
+          "title": "Automaticky",
+          "description": "Na tomto počítači, když to jde. Před použitím cloudu pro návrhy se jednou zeptá."
+        },
+        "device": {
+          "title": "Jen na tomto počítači",
+          "description": "Nic se neodesílá, aby se rozhodlo nebo odpovědělo. Funkce, které potřebují model, se vrátí k jednoduchým pravidlům nebo napíšou, že nemohou."
+        },
+        "cloud": {
+          "title": "Cloud",
+          "description": "Nejlepší výsledky. Začerněný text se odesílá na servery {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Návrhy z cloudu",
+        "description": "Odešle začerněný výřez okna, ve kterém jste zůstali, aby se rozhodlo, zda nabídnout pomoc. Každý požadavek je uvedený níže."
+      }
     }
   },
   "meetings": {
     "title": "Schůzky",
-    "intro": "Poznámky z každého hovoru: vy a ostatní, přepsaní na tomto Macu. Zvuk se nikdy neukládá.",
+    "intro": "Poznámky z každého hovoru: vy a ostatní, přepsaní na tomto počítači. Zvuk se nikdy neukládá.",
     "live": "Dělám poznámky · {{time}}",
     "capturingBoth": "Slyší vás i hovor.",
     "capturingMic": "Slyší jen váš mikrofon.",
@@ -1500,10 +1523,10 @@
       "proOnly": "Součást Pro. Upgradujte v sekci Účet.",
       "caps": {
         "screen_context": "Jen okno, na které se ptáte",
-        "proactive": "Rozhoduje se na tomto Macu",
-        "meetings": "Zvuk zůstává na tomto Macu",
-        "wake_word": "Poslouchá jen na tomto Macu",
-        "screen_memory": "Zůstává na tomto Macu, šifrované"
+        "proactive": "Rozhoduje se na tomto počítači",
+        "meetings": "Zvuk zůstává na tomto počítači",
+        "wake_word": "Poslouchá jen na tomto počítači",
+        "screen_memory": "Zůstává na tomto počítači, šifrované"
       }
     }
   },

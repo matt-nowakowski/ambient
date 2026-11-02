@@ -130,6 +130,10 @@ fn listen_for_offer(app: &AppHandle) {
             crate::meeting::on_nudge_action(&handle, &action.id, &action.action);
             return;
         }
+        if action.id == proactive::CLOUD_OFFER_ID {
+            proactive::on_cloud_offer(&handle, &action.action);
+            return;
+        }
         if action.id.starts_with(proactive::ID_PREFIX) {
             proactive::on_action(&handle, &action.id, &action.action);
             return;
@@ -470,7 +474,7 @@ pub fn handle(app: &AppHandle, route: Route) {
                 needs_web,
                 about_screen,
             } => {
-                let web = needs_web && !settings::get_settings(&app).agent.on_device_only;
+                let web = needs_web && !settings::get_settings(&app).agent.device_only();
                 answer::run(app, query, web, about_screen, None).await;
             }
             Route::Act(action) => act::run(app, action).await,

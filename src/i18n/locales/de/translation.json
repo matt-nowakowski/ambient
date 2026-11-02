@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Freihändig: Sag „Hallo Ambient“",
-        "description": "Sprich mit {{appName}} ohne Taste: „Hallo Ambient, was steht heute in meinem Kalender?“ Es hört auf diesem Mac zu und ignoriert alles, was nicht mit seinem Namen beginnt. Solange es aktiv ist, zeigt dein Mac die Mikrofonanzeige."
+        "description": "Sprich mit {{appName}} ohne Taste: „Hallo Ambient, was steht heute in meinem Kalender?“ Es hört auf diesem Computer zu und ignoriert alles, was nicht mit seinem Namen beginnt. Solange es aktiv ist, zeigt dein Computer die Mikrofonanzeige."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Stopp",
     "status": {
       "needScreenContext": "Schalte „Lesen, wonach du fragst“ unter Datenschutz ein, um das zu nutzen.",
-      "onDeviceFailed": "Konnte gerade nicht auf diesem Mac antworten.",
+      "onDeviceFailed": "Konnte gerade nicht auf diesem Computer antworten.",
       "offline": "{{appName}} ist nicht erreichbar. Prüfe deine Verbindung.",
       "weeklyLimit": "Die kostenlosen KI-Nutzungen dieser Woche sind aufgebraucht. Mit Pro unbegrenzt.",
       "account": "Dein Pro-Zugang erfordert Aufmerksamkeit unter Konto.",
@@ -1155,7 +1155,9 @@
       "listening": "Hört zu…",
       "heardNothing": "Gehört, aber keine Anfrage verstanden.",
       "noWebResults": "Die Websuche hat gerade nicht geklappt, daher ist das aus meinem Wissen.",
-      "timeout": "Das hat zu lange gedauert. Versuch es noch einmal."
+      "timeout": "Das hat zu lange gedauert. Versuch es noch einmal.",
+      "needsCloud": "Dafür braucht es die Cloud, aber die KI ist auf „Nur auf diesem Computer“ gestellt. Ändere das unter Datenschutz.",
+      "cloudOfferOn": "Vorschläge aus der Cloud sind aktiv. Ändere das unter Datenschutz."
     },
     "undo": "Rückgängig",
     "close": "Schließen",
@@ -1217,11 +1219,12 @@
     "source": {
       "searchDrive": "In Google Drive suchen",
       "searchGmail": "In Gmail suchen"
-    }
+    },
+    "cloudOffer": "{{appName}} kann auf diesem Computer Hilfe vorschlagen, indem es einen geschwärzten Ausschnitt des Fensters an seine Server sendet. Aktivieren?"
   },
   "privacy": {
     "title": "Datenschutz",
-    "promise": "Was {{appName}} lesen kann, was diesen Mac verlässt und was gespeichert bleibt.",
+    "promise": "Was {{appName}} lesen kann, was diesen Computer verlässt und was gespeichert bleibt.",
     "state": {
       "on": "Aktiv, wie von dir erlaubt",
       "onDetail": "Nur die Funktionen, die du unten eingeschaltet hast.",
@@ -1248,32 +1251,26 @@
       "screen_memory": {
         "title": "Merken, was du gesehen hast",
         "reads": "Merkt sich Fenster, die du genutzt hast, damit du später danach fragen kannst.",
-        "leaves": "Bleibt verschlüsselt auf diesem Mac."
+        "leaves": "Bleibt verschlüsselt auf diesem Computer."
       },
       "proactive": {
         "title": "Vorschläge machen",
         "reads": "Schlägt im richtigen Moment einen nächsten Schritt vor: Threads, Entwürfe, Termine, Fehler, Meetings.",
-        "leaves": "Wird auf diesem Mac entschieden. Nichts wird gesendet, außer du nimmst an, ausgenommen Hinweise in Meetings."
+        "leaves": "Wird auf diesem Computer entschieden, oder in der Cloud, wenn du sie unten wählst. Sonst wird nichts gesendet, außer du nimmst an, ausgenommen Hinweise in Meetings."
       },
       "meetings": {
         "title": "Meeting-Notizen",
         "reads": "Hört dein Mikrofon und den Anruf, während es Notizen macht.",
         "leaves": "Audio bleibt hier. Nur Text wird gesendet, um die Zusammenfassung zu schreiben."
       },
-      "on_device_only": {
-        "title": "Alles auf diesem Mac behalten",
-        "reads": "Apple Intelligence für alles, und keine Websuche.",
-        "leaves": "Nichts wird gesendet."
-      },
       "wake_word": {
         "title": "Freihändig: Sag „Hallo Ambient“",
-        "reads": "Hört auf diesem Mac auf „Hallo Ambient“. Alles andere wird schon beim Sprechen verworfen.",
+        "reads": "Hört auf diesem Computer auf „Hallo Ambient“. Alles andere wird schon beim Sprechen verworfen.",
         "leaves": "Nichts wird aufgezeichnet oder gesendet, bis du es sagst."
       },
       "groups": {
         "screen": "Dein Bildschirm",
-        "listening": "Zuhören",
-        "local": "Auf diesem Mac"
+        "listening": "Zuhören"
       }
     },
     "retention": "Aufbewahren für",
@@ -1301,7 +1298,7 @@
     },
     "stored": {
       "title": "Was gespeichert ist",
-      "description": "Bildschirmgedächtnis auf diesem Mac. Der Diktatverlauf ist unter Verlauf.",
+      "description": "Bildschirmgedächtnis auf diesem Computer. Der Diktatverlauf ist unter Verlauf.",
       "summary_one": "{{count}} Schnappschuss seit {{since}}.",
       "summary_other": "{{count}} Schnappschüsse seit {{since}}.",
       "entries_one": "{{count}} Schnappschuss",
@@ -1312,7 +1309,7 @@
       "deletedAll": "Bildschirmgedächtnis und Anfrageprotokoll wurden gelöscht."
     },
     "ledger": {
-      "title": "Anfragen, die diesen Mac verlassen haben",
+      "title": "Anfragen, die diesen Computer verlassen haben",
       "description": "Jede Anfrage und genau das, was sie gesendet hat. 30 Tage aufbewahrt.",
       "empty": "Noch keine Anfragen.",
       "bytes_one": "{{count}} Byte",
@@ -1326,13 +1323,13 @@
         "act": "Aktion",
         "license": "Kontoprüfung",
         "trial": "Testversion",
-        "warmup": "Verbindungsaufbau (nichts gesendet)"
+        "warmup": "Verbindungsaufbau (nichts gesendet)",
+        "suggest": "Vorschlagsprüfung"
       }
     },
     "engine": {
-      "title": "KI auf diesem Mac bevorzugen",
-      "description": "Nutzt Apple Intelligence, wo es geht. Die Ergebnisse sind weniger ausgefeilt, daher ist es standardmäßig aus.",
-      "unavailable": "Apple Intelligence ist auf diesem Mac nicht verfügbar, daher werden die Server von {{appName}} genutzt."
+      "title": "Apple Intelligence auch für Antworten nutzen",
+      "description": "Antworten und Feinschliff laufen auf diesem Mac, wenn es passt. Die Ergebnisse sind weniger ausgefeilt, daher ist es standardmäßig aus."
     },
     "suggestions": {
       "title": "Vorschläge, die du bekommst",
@@ -1353,21 +1350,47 @@
         "commit_message": "Commit-Nachrichten schreiben",
         "fill_form": "Beim Ausfüllen von Formularen helfen",
         "translate_page": "Seiten in anderen Sprachen übersetzen",
-        "help_here": "Weitere Hilfe, auf diesem Mac eingeschätzt",
+        "help_here": "Weitere Hilfe, die du vielleicht brauchst",
         "meeting_nudge": "Hinweise während Meetings"
       }
     },
     "macOnly": "Vorerst nur auf dem Mac",
     "promises": {
-      "voice": "Deine Stimme bleibt auf diesem Mac",
+      "voice": "Deine Stimme bleibt auf diesem Computer",
       "text": "Liest Text, nie Screenshots",
       "sensitive": "Überspringt Passwörter, Wallets und private Fenster",
       "ledger": "Jede Anfrage, die den Mac verlässt, steht unten in der Liste"
+    },
+    "intelligence": {
+      "title": "Wo die KI läuft",
+      "description": "Was über Vorschläge entscheidet und Antworten schreibt. Jede Funktion klappt mit jeder Auswahl.",
+      "capability": {
+        "apple": "Apple Intelligence auf diesem Computer verfügbar",
+        "none": "Kein lokales Modell auf diesem Computer"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatisch",
+          "description": "Auf diesem Computer, wenn möglich. Fragt einmal nach, bevor die Cloud für Vorschläge genutzt wird."
+        },
+        "device": {
+          "title": "Nur auf diesem Computer",
+          "description": "Zum Entscheiden oder Antworten wird nichts gesendet. Funktionen, die ein Modell brauchen, nutzen einfache Regeln oder sagen, dass sie nicht gehen."
+        },
+        "cloud": {
+          "title": "Cloud",
+          "description": "Die besten Ergebnisse. Geschwärzter Text wird an die Server von {{appName}} gesendet."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Vorschläge aus der Cloud",
+        "description": "Sendet einen geschwärzten Ausschnitt eines Fensters, auf dem du geblieben bist, um zu entscheiden, ob Hilfe angeboten wird. Jede Anfrage steht unten in der Liste."
+      }
     }
   },
   "meetings": {
     "title": "Meetings",
-    "intro": "Notizen für jeden Anruf: du und die anderen, transkribiert auf diesem Mac. Audio wird nie gespeichert.",
+    "intro": "Notizen für jeden Anruf: du und die anderen, transkribiert auf diesem Computer. Audio wird nie gespeichert.",
     "live": "Notizen laufen · {{time}}",
     "capturingBoth": "Hört dich und den Anruf.",
     "capturingMic": "Hört nur dein Mikrofon.",
@@ -1476,10 +1499,10 @@
       "proOnly": "Teil von Pro. Upgrade unter Konto.",
       "caps": {
         "screen_context": "Nur das Fenster, das du meinst",
-        "proactive": "Entschieden auf diesem Mac",
-        "meetings": "Audio bleibt auf diesem Mac",
-        "wake_word": "Hört nur auf diesem Mac zu",
-        "screen_memory": "Verschlüsselt auf diesem Mac"
+        "proactive": "Entschieden auf diesem Computer",
+        "meetings": "Audio bleibt auf diesem Computer",
+        "wake_word": "Hört nur auf diesem Computer zu",
+        "screen_memory": "Verschlüsselt auf diesem Computer"
       }
     }
   },
