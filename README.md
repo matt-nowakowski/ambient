@@ -141,8 +141,8 @@ crates (`ambient-keys`, `ambient-recorder`, `ambient-cpal`) are vendored in
    (`APPLE_*` secrets), and a Windows signing certificate (Azure Trusted
    Signing via the `AZURE_*` secrets, plus `bundle.windows.signCommand`).
 4. Bump the version in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` (and
-   `Cargo.lock`) and `package.json`, add a `web/lib/changelog.ts` entry, commit
-   to `main`, then push a matching tag:
+   `Cargo.lock`), `package.json` and `RELEASE_VERSION` in `web/lib/releases.ts`,
+   add a `web/lib/changelog.ts` entry, commit to `main`, then push a matching tag:
 
    ```bash
    git tag v0.1.1 && git push origin v0.1.1
@@ -155,8 +155,9 @@ crates (`ambient-keys`, `ambient-recorder`, `ambient-cpal`) are vendored in
    (AppImage, .deb, .rpm; x64 and ARM64), with signed updater artifacts. It
    uploads everything to the R2 bucket (`R2_BUCKET` variable) under
    `releases/<version>/`, writes `releases/latest.json` (updater feed) and
-   `releases/manifest.json` (what `tryambient.ai/dl/<id>` resolves), deletes
-   every older version from R2, and publishes the GitHub release.
+   `releases/manifest.json` (what `tryambient.ai/dl/<id>` resolves), publishes
+   the GitHub release, then deletes older versions from R2 after a 15-minute
+   grace period (`GRACE_MINUTES`) so in-flight downloads and updates finish.
 
    Only the repo admin can create `v*` tags (tag ruleset). Signing, notarization,
    updater and R2 secrets are scoped to the `release` environment, which accepts
