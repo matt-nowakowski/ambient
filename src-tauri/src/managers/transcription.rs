@@ -2297,7 +2297,6 @@ mod tests {
         assert_eq!(plan.target_language, None);
     }
 
-    #[test]
     /// Vocabulary only biases the model; it can still mishear a custom word,
     /// so the post-pass always runs (the tester's "matias pairo").
     #[test]
