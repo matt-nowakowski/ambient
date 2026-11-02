@@ -1192,7 +1192,13 @@
       "reviewCode": "¿Revisar esta pull request?",
       "commitMessage": "¿Escribir un mensaje de commit para esto?",
       "review": "Revisar",
-      "write": "Escribir"
+      "write": "Escribir",
+      "fillForm": "¿Rellenando un formulario? Puedo ayudarte.",
+      "fill": "Ayúdame",
+      "translatePage": "¿Traduzco esta página?",
+      "translate": "Traducir",
+      "helpHere": "¿Te ayudo con algo aquí?",
+      "help": "Ayúdame"
     },
     "nudge": {
       "findIt": "Buscarlo",
@@ -1356,6 +1362,9 @@
         "meeting_prep": "Ponerte al día antes de reuniones",
         "review_code": "Revisar pull requests",
         "commit_message": "Escribir mensajes de commit",
+        "fill_form": "Ayudar a rellenar formularios",
+        "translate_page": "Traducir páginas en otros idiomas",
+        "help_here": "Otras ayudas, decididas en este Mac",
         "meeting_nudge": "Avisos durante reuniones"
       }
     },

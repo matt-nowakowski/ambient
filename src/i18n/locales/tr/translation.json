@@ -1184,7 +1184,13 @@
       "reviewCode": "Bu pull request incelensin mi?",
       "commitMessage": "Bunun için bir commit mesajı yazılsın mı?",
       "review": "İncele",
-      "write": "Yaz"
+      "write": "Yaz",
+      "fillForm": "Form mu dolduruyorsun? Yardım edebilirim.",
+      "fill": "Yardım et",
+      "translatePage": "Bu sayfayı çevireyim mi?",
+      "translate": "Çevir",
+      "helpHere": "Burada yardımcı olabileceğim bir şey var mı?",
+      "help": "Yardım et"
     },
     "nudge": {
       "findIt": "Bul",
@@ -1345,6 +1351,9 @@
         "meeting_prep": "Toplantılardan önce özet sun",
         "review_code": "Pull request’leri incele",
         "commit_message": "Commit mesajları yaz",
+        "fill_form": "Form doldurmaya yardım",
+        "translate_page": "Başka dillerdeki sayfaları çevir",
+        "help_here": "Diğer yardımlar, bu Mac'te değerlendirilir",
         "meeting_nudge": "Toplantı sırasında hatırlatmalar"
       }
     },

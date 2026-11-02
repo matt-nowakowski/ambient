@@ -44,10 +44,17 @@ pub enum Kind {
     ReviewCode,
     /// Staged changes / a diff in the terminal.
     CommitMessage,
+    /// A web form being filled in.
+    FillForm,
+    /// A page in a language the user doesn't speak.
+    TranslatePage,
+    /// Anything else the on-device judge thinks would help; its own words
+    /// are the offer.
+    Help,
 }
 
 impl Kind {
-    pub const ALL: [Kind; 12] = [
+    pub const ALL: [Kind; 15] = [
         Kind::SummariseThread,
         Kind::DraftReply,
         Kind::AddToCalendar,
@@ -60,7 +67,15 @@ impl Kind {
         Kind::MeetingPrep,
         Kind::ReviewCode,
         Kind::CommitMessage,
+        Kind::FillForm,
+        Kind::TranslatePage,
+        Kind::Help,
     ];
+
+    /// The kind with this settings name.
+    pub fn from_name(name: &str) -> Option<Kind> {
+        Kind::ALL.into_iter().find(|k| k.name() == name)
+    }
 
     /// Stable name used in settings (`suggestion_prefs`).
     pub fn name(self) -> &'static str {
@@ -77,6 +92,9 @@ impl Kind {
             Kind::MeetingPrep => "meeting_prep",
             Kind::ReviewCode => "review_code",
             Kind::CommitMessage => "commit_message",
+            Kind::FillForm => "fill_form",
+            Kind::TranslatePage => "translate_page",
+            Kind::Help => "help_here",
         }
     }
 
@@ -94,6 +112,9 @@ impl Kind {
             Kind::MeetingPrep => "hud.suggest.meetingPrep",
             Kind::ReviewCode => "hud.suggest.reviewCode",
             Kind::CommitMessage => "hud.suggest.commitMessage",
+            Kind::FillForm => "hud.suggest.fillForm",
+            Kind::TranslatePage => "hud.suggest.translatePage",
+            Kind::Help => "hud.suggest.helpHere",
         }
     }
     fn accept_key(self) -> &'static str {
@@ -109,6 +130,9 @@ impl Kind {
             Kind::MeetingPrep => "hud.suggest.brief",
             Kind::ReviewCode => "hud.suggest.review",
             Kind::CommitMessage => "hud.suggest.write",
+            Kind::FillForm => "hud.suggest.fill",
+            Kind::TranslatePage => "hud.suggest.translate",
+            Kind::Help => "hud.suggest.help",
         }
     }
 }
@@ -186,6 +210,10 @@ const DEV_APPS: &[&str] = &[
     "com.microsoft.VSCode",
     "com.todesktop.230313mzl4w4u92", // Cursor
     "dev.zed.Zed",
+    "com.mitchellh.ghostty",
+    "net.kovidgoyal.kitty",
+    "org.alacritty",
+    "com.github.wez.wezterm",
 ];
 
 static ERROR: Lazy<Regex> = Lazy::new(|| {
@@ -272,11 +300,15 @@ static MESSAGE_MARK: Lazy<Regex> = Lazy::new(|| {
 /// accessibility: Gmail's "10:14 AM (2 days ago)" stamps, a sender's
 /// address on its own line ("<ana@x.com>"), Mail's "To:" header. Counted
 /// separately, since one message can show several of them.
-static THREAD_MARKS: Lazy<[Regex; 3]> = Lazy::new(|| {
+static THREAD_MARKS: Lazy<[Regex; 4]> = Lazy::new(|| {
     [
         r"(?i)\(\d+\s+(?:minutes?|hours?|days?|weeks?|months?)\s+ago\)",
         r"(?m)^\s*<?[\w.+-]+@[\w-]+(?:\.[\w-]+)+>?\s*$",
         r"(?im)^to:\s",
+        // Gmail's collapsed messages show a bare date or time on its own
+        // line ("Oct 3", "3 Oct 2025", "10:14 AM"); the expanded ones carry
+        // "(2 days ago)". A long thread is mostly collapsed rows.
+        r"(?im)^\s*(?:\d{1,2}:\d{2}\s?(?:am|pm)?|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}(?:,\s*\d{4})?|\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?(?:\s+\d{4})?)\s*$",
     ]
     .map(|p| Regex::new(p).expect("thread pattern"))
 });
@@ -320,8 +352,12 @@ const LONG_THREAD: usize = 4;
 
 /// Browsers don't always report the page URL without reading the page;
 /// webmail titles end with the service's name.
+/// Google Workspace accounts end with the organisation's "… Mail", not
+/// "Gmail" ("Re: Q4 - sam@acme.com - Acme Mail"), as in Arc.
 fn is_webmail_title(title: &str) -> bool {
-    title.ends_with(" - Gmail") || title.ends_with(" - Outlook") || title.contains(" - Mail - ")
+    super::is_webmail_window("", title)
+        || title.ends_with(" - Outlook")
+        || title.contains(" - Mail - ")
 }
 
 fn is_webmail(url: &str) -> bool {
@@ -408,8 +444,190 @@ fn classify(snap: &ContextSnapshot) -> Option<Kind> {
     None
 }
 
+// ── Broader rules: used when the on-device judge can't run ─────────────────
+
+/// Apps that show long documents.
+const DOC_APPS: &[&str] = &[
+    "com.apple.Preview",
+    "com.microsoft.Word",
+    "com.apple.iWork.Pages",
+    "com.adobe.Acrobat.Pro",
+    "com.adobe.Reader",
+    "com.readdle.PDFExpert-Mac",
+    "notion.id",
+    "md.obsidian",
+];
+
+/// Labels a form shows next to its fields.
+static FORM_LABEL: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)^\s*(?:first name|last name|full name|surname|e-?mail(?: address)?|phone(?: number)?|mobile|address(?: line \d)?|street|city|town|state|province|county|post ?code|zip(?: code)?|country|company|job title|date of birth|birthday|nationality|passport|website|linkedin|message|cover letter|how did you hear about us)\s*\*?:?\s*$")
+        .expect("form label")
+});
+/// Login and payment forms: never offered (a password manager's job, and private).
+static PRIVATE_FORM: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?i)\b(?:password|passcode|card number|cvv|cvc|security code|expiry date|iban|sort code|routing number|social security)\b")
+        .expect("private form")
+});
+/// An invitation in mail: "Invitation:", "invited you", and the buttons.
+static INVITE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)^\s*invitation:|\binvited you to\b|\bjoin (?:zoom|google meet|microsoft teams|teams) meeting\b")
+        .expect("invite")
+});
+
+/// The last `n` characters of `text`.
+fn tail(text: &str, n: usize) -> &str {
+    let count = text.chars().count();
+    if count <= n {
+        return text;
+    }
+    let skip = text.char_indices().nth(count - n).map_or(0, |(i, _)| i);
+    &text[skip..]
+}
+
+/// Long prose: enough text, mostly long lines (not a feed or a list).
+fn long_prose(text: &str, min_chars: usize) -> bool {
+    text.len() > min_chars && text.lines().filter(|l| l.len() > 160).count() >= 8
+}
+
+/// The language a page is written in, when it's clearly one (ISO 639-1).
+fn page_language(text: &str) -> Option<String> {
+    crate::audio_toolkit::lang_id::detect_text_language(text)
+}
+
+/// More situations, by plain rules, for Macs where the on-device judge
+/// can't run. Conservative: each needs strong signals, so they rarely nag.
+/// `languages` are the user's (spoken and app) languages.
+pub(crate) fn classify_more(snap: &ContextSnapshot, languages: &[String]) -> Option<Kind> {
+    let text = snap.text.as_deref().unwrap_or("");
+    let bundle = snap.app.bundle_id.as_str();
+    let url = snap.url.as_deref().unwrap_or("");
+    let browser = BROWSERS.contains(&bundle);
+    let mail = MAIL_APPS.contains(&bundle)
+        || (browser && (is_webmail(url) || is_webmail_title(&snap.window_title)));
+
+    // A meeting invitation in mail, whatever its date format.
+    if mail {
+        let lower = text.to_lowercase();
+        if INVITE.is_match(text) && lower.contains("accept") && lower.contains("decline") {
+            return Some(Kind::AddToCalendar);
+        }
+    }
+    // A chat whose last line asks the user something, with their reply box
+    // focused and still empty.
+    if CHAT_APPS.contains(&bundle)
+        && snap.editable
+        && snap
+            .focused_text
+            .as_deref()
+            .is_none_or(|t| t.trim().is_empty())
+    {
+        let last = text
+            .lines()
+            .rev()
+            .find(|l| !l.trim().is_empty())
+            .unwrap_or("");
+        if last.trim_end().ends_with('?') && last.split_whitespace().count() >= 3 {
+            return Some(Kind::DraftReply);
+        }
+    }
+    // A terminal's latest output is an error (old scrollback doesn't count).
+    if DEV_APPS.contains(&bundle) && ERROR.is_match(tail(text, 1500)) {
+        return Some(Kind::ExplainError);
+    }
+    // Spreadsheets in the browser by title too.
+    if (snap.window_title.ends_with("- Google Sheets") || url.contains("/spreadsheets/"))
+        && SHEET_ERROR.is_match(text)
+    {
+        return Some(Kind::FixFormula);
+    }
+    // A form being filled in: focus in a field, several field labels, and
+    // not a login or payment form.
+    if browser && snap.editable && !snap.secure {
+        let labels = FORM_LABEL.find_iter(text).count();
+        if labels >= 4 && !PRIVATE_FORM.is_match(text) {
+            return Some(Kind::FillForm);
+        }
+    }
+    // A long page in a language the user doesn't speak.
+    if browser && text.len() > 1500 && !languages.is_empty() {
+        if let Some(lang) = page_language(text) {
+            if !languages
+                .iter()
+                .any(|l| l.split(['-', '_']).next() == Some(lang.as_str()))
+            {
+                return Some(Kind::TranslatePage);
+            }
+        }
+    }
+    // Long documents in document apps and Google Docs.
+    if (DOC_APPS.contains(&bundle) || url.contains("docs.google.com/document"))
+        && long_prose(text, 6000)
+    {
+        return Some(Kind::SummarisePage);
+    }
+    None
+}
+
+/// Set while a window is being considered (the judge can take seconds).
+static BUSY: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// A judgement is still running; the agent loop waits for it.
+pub fn busy() -> bool {
+    BUSY.load(std::sync::atomic::Ordering::SeqCst)
+}
+
+/// Consider a window on a worker thread, so the agent loop keeps watching
+/// (private places, meetings) while the judge thinks.
+pub fn consider_in_background(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
+    if BUSY.swap(true, std::sync::atomic::Ordering::SeqCst) {
+        return;
+    }
+    let app = app.clone();
+    let spawned = std::thread::Builder::new()
+        .name("ambient-proactive".into())
+        .spawn(move || {
+            consider(&app, snap, per_hour);
+            BUSY.store(false, std::sync::atomic::Ordering::SeqCst);
+        });
+    if spawned.is_err() {
+        BUSY.store(false, std::sync::atomic::Ordering::SeqCst);
+    }
+}
+
+/// Why nothing can be offered right now, before spending a judgement.
+fn blocked(app: &AppHandle, kind: Kind, bundle: &str, key: &str, per_hour: u32) -> Option<String> {
+    if muted(app, kind, bundle) {
+        return Some(format!("{} muted (off, or not in this app)", kind.name()));
+    }
+    let mut st = STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    st.shown.retain(|t| t.elapsed() < Duration::from_secs(3600));
+    st.seen.retain(|_, t| t.elapsed() < WINDOW_REPEAT);
+    if st.shown.len() as u32 >= per_hour {
+        return Some(format!(
+            "rate limit ({} shown this hour, limit {per_hour})",
+            st.shown.len()
+        ));
+    }
+    if st.seen.contains_key(key) {
+        return Some("already offered for this window".into());
+    }
+    if let Some((_, Some(until))) = st.dismissed.get(&kind) {
+        if until.elapsed() < BACKOFF {
+            return Some(format!("{} backed off after dismissals", kind.name()));
+        }
+    }
+    None
+}
+
 /// Called by the agent loop once the user has stayed on a window a while.
+/// Order: the precise rules; else the on-device judge ("is there something
+/// here I can help with?"); else, where the judge can't run, broader rules.
 pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
+    let bundle = snap.app.bundle_id.clone();
+    let tag = crate::context::title_tag(&snap.window_title);
+    let text_len = snap.text.as_deref().map_or(0, |t| t.chars().count());
     // Rephrasing a search three times means the web isn't answering it.
     if let Some(q) = snap.url.as_deref().and_then(search_query) {
         let mut st = STATE
@@ -423,6 +641,9 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
             .iter()
             .filter(|(_, prev)| overlap(prev, &q) >= 0.34)
             .count();
+        log::debug!(
+            "proactive: {bundle} title[{tag}] is a search ({related} related in 4 min, need 3)"
+        );
         if related >= 3 {
             st.searches.clear();
             drop(st);
@@ -434,17 +655,115 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
                 String::new(),
                 String::new(),
                 q,
+                None,
                 per_hour,
             );
         }
         return;
     }
-    let Some(kind) = classify(&snap) else { return };
     let key = format!("{}|{}", snap.app.bundle_id, snap.window_title);
+    let text_raw = snap.text.as_deref().unwrap_or("");
+    let messages = thread_messages(text_raw);
+
+    // 1. The precise rules.
+    if let Some(kind) = classify(&snap) {
+        log::debug!(
+            "proactive: {bundle} title[{tag}] rule fired: {} (text_chars={text_len}, thread_messages={messages}, long_thread_at={LONG_THREAD})",
+            kind.name()
+        );
+        offer_for(app, &snap, kind, None, key, per_hour);
+        return;
+    }
+
+    // 2. The on-device judge, where Apple Intelligence runs.
+    let settings = crate::settings::get_settings(app);
+    if text_len < 200 {
+        log::debug!(
+            "proactive: {bundle} title[{tag}] no rule fired; too little text for the judge (text_chars={text_len}, thread_messages={messages})"
+        );
+        return;
+    }
+    if !super::judge::available() {
+        log::debug!("proactive: judge unavailable (no Apple Intelligence); using broader rules");
+    } else if let Some(why) = blocked(app, Kind::Help, &bundle, &key, per_hour) {
+        // Nothing could be shown anyway: don't spend the judgement.
+        log::debug!("proactive: {bundle} title[{tag}] judge skipped: {why}");
+        return;
+    } else {
+        let started = Instant::now();
+        let text = redact(text_raw).0;
+        match super::judge::judge(
+            &snap.app.name,
+            &snap.window_title,
+            &text,
+            &settings.app_language,
+        ) {
+            Ok(v) => {
+                let worth = super::judge::worth_offering(&v);
+                log::debug!(
+                    "proactive: {bundle} title[{tag}] judge said help={} kind={} confidence={:.2} (threshold {:.2}) in {}ms: {}",
+                    v.help,
+                    v.kind,
+                    v.confidence,
+                    super::judge::MIN_CONFIDENCE,
+                    started.elapsed().as_millis(),
+                    if worth { "offering" } else { "no offer" }
+                );
+                if worth && still_there(&snap) {
+                    let (kind, title) = match Kind::from_name(&v.kind) {
+                        // The kind's own wording (translated) for kinds we know.
+                        Some(k) if k != Kind::Help => (k, None),
+                        _ => (Kind::Help, Some(v.title)),
+                    };
+                    offer_for(app, &snap, kind, title, key, per_hour);
+                } else if worth {
+                    log::debug!("proactive: the user moved on while the judge thought");
+                }
+                return;
+            }
+            Err(e) => log::debug!(
+                "proactive: judge failed ({e:?}) after {}ms; using broader rules",
+                started.elapsed().as_millis()
+            ),
+        }
+    }
+
+    // 3. Broader rules, where the judge can't run.
+    let mut languages = settings.spoken_languages.clone();
+    languages.push(settings.app_language.clone());
+    match classify_more(&snap, &languages) {
+        Some(kind) => {
+            log::debug!(
+                "proactive: {bundle} title[{tag}] fallback rule fired: {} (text_chars={text_len})",
+                kind.name()
+            );
+            offer_for(app, &snap, kind, None, key, per_hour);
+        }
+        None => log::debug!(
+            "proactive: {bundle} title[{tag}] nothing to offer (text_chars={text_len}, thread_messages={messages}, long_thread_at={LONG_THREAD})"
+        ),
+    }
+}
+
+/// The user is still on the window that was judged, and nothing else is up.
+fn still_there(snap: &ContextSnapshot) -> bool {
+    crate::context::frontmost_app().is_some_and(|f| f.pid == snap.app.pid) && !hud::is_visible()
+}
+
+/// Offer `kind` for this window, with what accepting it needs.
+fn offer_for(
+    app: &AppHandle,
+    snap: &ContextSnapshot,
+    kind: Kind,
+    title: Option<String>,
+    key: String,
+    per_hour: u32,
+) {
     let text = redact(snap.text.as_deref().unwrap_or("")).0;
     let focus = match kind {
         Kind::TightenDraft => redact(snap.focused_text.as_deref().unwrap_or("")).0,
         Kind::PriceCheck => snap.window_title.clone(),
+        Kind::Help => title.clone().unwrap_or_default(),
         _ => String::new(),
     };
     let header = format!("{} — {}", snap.app.name, snap.window_title);
@@ -456,6 +775,7 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         text,
         header,
         focus,
+        title,
         per_hour,
     );
 }
@@ -478,24 +798,21 @@ fn offer(
     text: String,
     header: String,
     focus: String,
+    title: Option<String>,
     per_hour: u32,
 ) {
-    if muted(app, kind, bundle) {
+    if let Some(why) = blocked(app, kind, bundle, &key, per_hour) {
+        log::debug!("proactive: not offering {}: {why}", kind.name());
         return;
     }
     let mut st = STATE
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
-    st.shown.retain(|t| t.elapsed() < Duration::from_secs(3600));
-    st.seen.retain(|_, t| t.elapsed() < WINDOW_REPEAT);
-    if st.shown.len() as u32 >= per_hour || st.seen.contains_key(&key) {
-        return;
-    }
-    if let Some((_, Some(until))) = st.dismissed.get(&kind) {
-        if until.elapsed() < BACKOFF {
-            return;
-        }
-    }
+    log::debug!(
+        "proactive: offering {} in {bundle} ({} shown this hour, limit {per_hour})",
+        kind.name(),
+        st.shown.len()
+    );
     let id = format!("{ID_PREFIX}{}", chrono::Utc::now().timestamp_millis());
     st.seen.insert(key, Instant::now());
     st.shown.push_back(Instant::now());
@@ -515,7 +832,11 @@ fn offer(
         app,
         HudContent::Suggestion {
             id,
-            title: kind.title_key().into(),
+            // The judge's own words for "help here" (already in the user's
+            // language); otherwise the kind's i18n key.
+            title: title
+                .filter(|t| !t.trim().is_empty())
+                .unwrap_or_else(|| kind.title_key().into()),
             accept_label: kind.accept_key().into(),
         },
     );
@@ -613,6 +934,38 @@ fn run(app: AppHandle, p: Pending) {
                 answer::run(
                     app,
                     "This spreadsheet shows formula errors. Say what's causing them and give the corrected formula.".into(),
+                    false,
+                    false,
+                    Some(context),
+                )
+                .await
+            }
+            Kind::FillForm => {
+                answer::run(
+                    app,
+                    "Help me fill in this form: what each field needs, suggested answers where the page or what you know makes them clear, and anything to watch out for.".into(),
+                    false,
+                    false,
+                    Some(context),
+                )
+                .await
+            }
+            Kind::TranslatePage => {
+                let language = crate::settings::get_settings(&app).app_language;
+                answer::run(
+                    app,
+                    format!("Translate the main content of this page into the language with code \"{language}\". Keep it faithful; skip menus and boilerplate."),
+                    false,
+                    false,
+                    Some(context),
+                )
+                .await
+            }
+            // The judge's offer, accepted: do what it offered, on the same window.
+            Kind::Help => {
+                answer::run(
+                    app,
+                    format!("You offered the user: \"{}\" and they said yes. Do it now, using the window below.", p.focus),
                     false,
                     false,
                     Some(context),
@@ -794,6 +1147,124 @@ mod tests {
     }
 
     #[test]
+    fn long_gmail_thread_in_arc_with_a_workspace_title() {
+        // Arc, Google Workspace: the title ends "<Org> Mail", and Arc may
+        // not report the URL. A 21-message thread is mostly collapsed rows,
+        // each a sender, a snippet and a bare date.
+        let mut text = String::from("Re: Launch plan\nInbox\n");
+        for (i, day) in ["Oct 3", "Oct 4", "Oct 6", "Oct 7", "Oct 9"]
+            .iter()
+            .enumerate()
+        {
+            text.push_str(&format!(
+                "Person {i}\nSounds good, one more thing on the deck…\n{day}\n"
+            ));
+        }
+        text.push_str("Ana Lopez\n10:14 AM (2 hours ago)\nto me\nFinal numbers attached.\n");
+        let s = ContextSnapshot {
+            window_title: "Re: Launch plan - sam@acme.com - Acme Mail".into(),
+            ..snap("company.thebrowser.Browser", "", &text)
+        };
+        assert!(
+            thread_messages(&text) >= LONG_THREAD,
+            "{}",
+            thread_messages(&text)
+        );
+        assert_eq!(classify(&s), Some(Kind::SummariseThread));
+        // Not every title with "Mail" is webmail.
+        assert!(!is_webmail_title("Mail merge in Word - Microsoft Support"));
+        assert!(is_webmail_title("Inbox (3) - sam@acme.com - Acme Mail"));
+    }
+
+    fn more(s: &ContextSnapshot) -> Option<Kind> {
+        classify_more(s, &["en".to_string()])
+    }
+
+    #[test]
+    fn broader_rules_fire_on_strong_signals_only() {
+        // A form being filled in.
+        let form =
+            "Apply for the role\nFirst name\nLast name\nEmail\nPhone number\nCover letter\nSubmit";
+        let mut s = snap("com.google.Chrome", "https://jobs.example/apply", form);
+        s.editable = true;
+        assert_eq!(more(&s), Some(Kind::FillForm));
+        // Not a login or payment form.
+        let pay = format!("{form}\nCard number\nCVC");
+        let mut p = snap("com.google.Chrome", "https://shop.example/pay", &pay);
+        p.editable = true;
+        assert_eq!(more(&p), None);
+        // Not while just reading it.
+        assert_eq!(
+            more(&snap(
+                "com.google.Chrome",
+                "https://jobs.example/apply",
+                form
+            )),
+            None
+        );
+
+        // A chat asking the user something, reply box focused and empty.
+        let mut chat = snap(
+            "com.tinyspeck.slackmacgap",
+            "",
+            "Ana: shipped the fix\nBen: nice\nAna: can you review the pricing doc today?",
+        );
+        chat.editable = true;
+        assert_eq!(more(&chat), Some(Kind::DraftReply));
+        chat.focused_text = Some("Sure, I'll".into());
+        assert_eq!(more(&chat), None);
+
+        // A terminal whose latest output is an error, not old scrollback.
+        let fresh = format!(
+            "{}\nerror[E0382]: borrow of moved value: `x`",
+            "ok\n".repeat(50)
+        );
+        assert_eq!(
+            more(&snap("com.mitchellh.ghostty", "", &fresh)),
+            Some(Kind::ExplainError)
+        );
+        let old = format!(
+            "error[E0382]: borrow of moved value: `x`\n{}",
+            "all good, tests pass\n".repeat(200)
+        );
+        assert_eq!(more(&snap("com.mitchellh.ghostty", "", &old)), None);
+
+        // A meeting invitation in mail.
+        let invite = "Invitation: Q4 planning @ Thu 6 Nov 2026 15:00 - 16:00 (GMT)\nJoin Google Meet\nAccept  Decline  Maybe";
+        assert_eq!(
+            more(&snap("com.apple.mail", "", invite)),
+            Some(Kind::AddToCalendar)
+        );
+
+        // A long page in a language the user doesn't speak.
+        let german = "Die Bundesregierung hat am Mittwoch beschlossen, die Förderung für erneuerbare Energien deutlich auszubauen. Nach Angaben des Wirtschaftsministeriums sollen in den kommenden Jahren zusätzliche Mittel bereitgestellt werden, um den Ausbau von Wind- und Solaranlagen zu beschleunigen. ".repeat(8);
+        let page = snap(
+            "com.apple.Safari",
+            "https://www.example.de/artikel",
+            &german,
+        );
+        assert_eq!(more(&page), Some(Kind::TranslatePage));
+        assert_eq!(classify_more(&page, &["en".into(), "de".into()]), None);
+
+        // An ordinary page: nothing.
+        let english = "The government decided on Wednesday to expand support for renewable energy significantly over the coming years. ".repeat(20);
+        assert_eq!(
+            more(&snap("com.apple.Safari", "https://example.com/a", &english)),
+            None
+        );
+    }
+
+    #[test]
+    fn judge_kinds_map_to_suggestions() {
+        for name in super::super::judge::JUDGE_KINDS {
+            if *name != "other" {
+                assert!(Kind::from_name(name).is_some(), "{name}");
+            }
+        }
+        assert_eq!(Kind::from_name("other"), None);
+    }
+
+    #[test]
     fn hears_feedback() {
         for y in ["yes", "Yeah, do it.", "sure thanks", "go ahead"] {
             assert!(YES.is_match(y), "{y}");
@@ -897,6 +1368,7 @@ pub fn consider_calendar(app: &AppHandle, per_hour: u32) {
             text,
             e.title.clone(),
             e.title,
+            None,
             per_hour,
         );
         return;

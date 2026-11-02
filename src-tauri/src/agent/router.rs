@@ -121,28 +121,20 @@ pub fn without_address(transcript: &str) -> &str {
     }
 }
 
-/// An instruction to write something rather than the words to type: "reply
-/// here saying Thursday works", "write a reply telling them yes", "draft an
-/// email to Sam about the launch". Plain dictation that happens to start with
-/// "reply" ("Reply to John by Friday") has no "saying/telling/that…" and
-/// stays text.
-static COMPOSE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?ix)^\s*(?:please\s+|can\s+you\s+|could\s+you\s+)?
-        (?:
-            (?:reply|respond|answer|write\s+back)(?:\s+(?:here|to\s+(?:this|that|them|him|her|it|the\s+\w+)|all))?
-              [\s,]+(?:saying|and\s+say|to\s+say|telling\s+\w+|and\s+tell\s+\w+|that|with)\b
-          | (?:write|draft|compose)\s+(?:a|an|the|my|me\s+a)?\s*(?:quick\s+|short\s+|polite\s+|friendly\s+)?
-              (?:reply|response|email|message|answer|follow[\s-]?up|note)\b
-        )",
-    )
-    .expect("compose cues")
-});
-
-/// What to compose, if the transcript is an instruction to write.
+/// An instruction to write something rather than the words to type ("reply
+/// to this email saying we're happy", "draft a quick reply"), decided by the
+/// first pass in `compose`, without a model call.
 pub fn compose_request(transcript: &str) -> Option<String> {
-    let t = without_address(transcript).trim();
-    COMPOSE.is_match(t).then(|| t.to_string())
+    match super::compose::compose_intent(transcript) {
+        super::compose::ComposeIntent::Yes(s) => Some(s),
+        _ => None,
+    }
+}
+
+/// Might be an instruction to write ("tell them we're happy", "Reply to
+/// Sam"): worth a router call, which can answer "compose".
+pub fn compose_maybe(transcript: &str) -> bool {
+    super::compose::compose_intent(transcript) == super::compose::ComposeIntent::Maybe
 }
 
 /// "What can I say?", "what can you do?", "help": the user wants the examples.
@@ -269,11 +261,13 @@ const SYSTEM: &str = r#"You route a voice transcript the user just spoke on thei
 - "answer": they ask YOU, the assistant, for facts, an explanation, a calculation, a translation, or about what's on their screen ("summarise this", "translate this into Spanish", "what does this error mean"). Translating or rewriting text is always "answer", never "act".
 - "act": they want something done on the computer: open an app or website, search the web in the browser, create a reminder or calendar event, run one of their Shortcuts.
 - "recall": they ask about something they said, dictated, read or saw earlier ("what did I say about pricing", "what was that number on the page").
-If unsure, choose "write". A message or email being composed is always "write".
+- "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply to Sam" (with an email or chat open). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). If the transcript reads as the message itself, it's "write".
+If unsure, choose "write". A message or email being dictated word for word is always "write".
 
 Reply with JSON only, no prose:
-{"intent":"write|answer|act|recall","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
+{"intent":"write|answer|act|recall|compose","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
 - write: "text" = the transcript cleaned up following POLISH RULES below.
+- compose: "query" = the instruction, as said.
 - answer: "query" = the question, made self-contained. "needs_web" = true only if it needs current or specific facts you may not know (news, prices, rates, schedules, recent events, specific businesses). "about_screen" = true if it refers to "this"/the current window.
 - recall: "query" = what to look for.
 - act: "action" is one of:
@@ -285,6 +279,20 @@ Reply with JSON only, no prose:
   {"type":"shortcut","name":"..."}
   {"type":"unsupported","description":"..."}
 Resolve relative dates ("Friday", "at 5") against NOW below, in local time."#;
+
+/// The route's name, for logs (never its text).
+pub fn route_name(route: Option<&Route>) -> &'static str {
+    match route {
+        None => "none",
+        Some(Route::Write(_)) => "write",
+        Some(Route::Answer { .. }) => "answer",
+        Some(Route::Act(_)) => "act",
+        Some(Route::Recall(_)) => "recall",
+        Some(Route::Compose(_)) => "compose",
+        Some(Route::Help) => "help",
+        Some(Route::Handled) => "handled",
+    }
+}
 
 #[derive(Deserialize)]
 struct Raw {
@@ -315,6 +323,9 @@ fn parse(reply: &str) -> Option<Route> {
         }),
         "act" => raw.action.map(Route::Act),
         "recall" => nonempty(raw.query).map(Route::Recall),
+        "compose" => nonempty(raw.query)
+            .or(nonempty(raw.text))
+            .map(Route::Compose),
         _ => None,
     }
 }
@@ -411,7 +422,10 @@ pub async fn route(
         where_.push_str(", a text field is focused");
     }
     if place.is_messaging() && !addresses_ambient(transcript) {
-        where_.push_str(". This is a messaging/email/docs app: requests, questions and commands here are almost always text for the people or the document → \"write\", unless they clearly address you, the assistant");
+        where_.push_str(". This is a messaging/email/docs app: requests, questions and commands here are almost always text for the people or the document → \"write\", unless they clearly address you, the assistant, or instruct you to write the message for them (\"compose\")");
+    }
+    if compose_maybe(transcript) {
+        where_.push_str(". The wording may be an instruction to write a message for them: choose \"compose\" if so");
     }
     let follow_up = previous
         .map(|(q, a)| {
@@ -426,6 +440,13 @@ pub async fn route(
     };
     let reply = llm::complete_hosted(app, "route", &system, &user).await?;
     let route = parse(&reply);
+    log::debug!(
+        "router decided {} ({} words, messaging={}, editable={})",
+        route_name(route.as_ref()),
+        transcript.split_whitespace().count(),
+        place.is_messaging(),
+        place.editable
+    );
     if route.is_none() {
         log::debug!("router reply didn't parse; writing instead");
     }
@@ -549,5 +570,9 @@ mod tests {
             })
         ));
         assert_eq!(parse("not json"), None);
+        assert_eq!(
+            parse(r#"{"intent":"compose","query":"tell them we're happy"}"#),
+            Some(Route::Compose("tell them we're happy".into()))
+        );
     }
 }

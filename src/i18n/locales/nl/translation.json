@@ -1184,7 +1184,13 @@
       "reviewCode": "Deze pull request beoordelen?",
       "commitMessage": "Hier een commitbericht voor schrijven?",
       "review": "Beoordelen",
-      "write": "Schrijven"
+      "write": "Schrijven",
+      "fillForm": "Vul je een formulier in? Ik kan helpen.",
+      "fill": "Help",
+      "translatePage": "Deze pagina vertalen?",
+      "translate": "Vertalen",
+      "helpHere": "Kan ik hier ergens mee helpen?",
+      "help": "Help"
     },
     "nudge": {
       "findIt": "Zoeken",
@@ -1345,6 +1351,9 @@
         "meeting_prep": "Je bijpraten voor vergaderingen",
         "review_code": "Pull requests beoordelen",
         "commit_message": "Commitberichten schrijven",
+        "fill_form": "Helpen met formulieren invullen",
+        "translate_page": "Pagina's in andere talen vertalen",
+        "help_here": "Andere hulp, beoordeeld op deze Mac",
         "meeting_nudge": "Tips tijdens vergaderingen"
       }
     },

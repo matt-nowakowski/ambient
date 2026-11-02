@@ -1184,7 +1184,13 @@
       "reviewCode": "이 풀 리퀘스트를 검토할까요?",
       "commitMessage": "이에 대한 커밋 메시지를 작성할까요?",
       "review": "검토",
-      "write": "작성"
+      "write": "작성",
+      "fillForm": "양식을 작성 중인가요? 도와드릴게요.",
+      "fill": "도와줘",
+      "translatePage": "이 페이지를 번역할까요?",
+      "translate": "번역",
+      "helpHere": "여기서 도와드릴 일이 있을까요?",
+      "help": "도와줘"
     },
     "nudge": {
       "findIt": "찾기",
@@ -1345,6 +1351,9 @@
         "meeting_prep": "회의 전 브리핑",
         "review_code": "풀 리퀘스트 검토",
         "commit_message": "커밋 메시지 작성",
+        "fill_form": "양식 작성 돕기",
+        "translate_page": "다른 언어로 된 페이지 번역",
+        "help_here": "기타 도움 (이 Mac에서 판단)",
         "meeting_nudge": "회의 중 알림"
       }
     },
@@ -1516,7 +1525,10 @@
       },
       "recall": {
         "title": "기억하기",
-        "examples": ["어제 가격에 대해 뭐라고 했지?", "3분기 자료 찾아 줘."],
+        "examples": [
+          "어제 가격에 대해 뭐라고 했지?",
+          "3분기 자료 찾아 줘."
+        ],
         "hint": "내가 말하고, 보고, 작업한 내용."
       },
       "suggestions": {

@@ -1200,7 +1200,13 @@
       "reviewCode": "Zkontrolovat tento pull request?",
       "commitMessage": "Napsat k tomu zprávu commitu?",
       "review": "Zkontrolovat",
-      "write": "Napsat"
+      "write": "Napsat",
+      "fillForm": "Vyplňujete formulář? Můžu pomoct.",
+      "fill": "Pomoz",
+      "translatePage": "Přeložit tuto stránku?",
+      "translate": "Přeložit",
+      "helpHere": "Můžu tu s něčím pomoct?",
+      "help": "Pomoz"
     },
     "nudge": {
       "findIt": "Najít",
@@ -1367,6 +1373,9 @@
         "meeting_prep": "Připravit vás před schůzkami",
         "review_code": "Kontrolovat pull requesty",
         "commit_message": "Psát zprávy commitů",
+        "fill_form": "Pomoc s vyplňováním formulářů",
+        "translate_page": "Překlad stránek v jiných jazycích",
+        "help_here": "Další pomoc, posouzená na tomto Macu",
         "meeting_nudge": "Připomínky během schůzek"
       }
     },

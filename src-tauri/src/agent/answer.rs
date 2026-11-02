@@ -372,7 +372,9 @@ pub async fn run_with(
                 let place = super::router::place();
                 (
                     super::can_insert_here(),
-                    place.bundle_id == "com.apple.mail",
+                    place.bundle_id == "com.apple.mail"
+                        || (super::BROWSERS.contains(&place.bundle_id.as_str())
+                            && super::is_webmail_window(&place.url, &place.title)),
                 )
             })
             .await
