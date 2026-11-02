@@ -372,7 +372,7 @@ pub async fn run_with(
                 let place = super::router::place();
                 (
                     super::can_insert_here(),
-                    place.bundle_id == "com.apple.mail",
+                    crate::context::is_mail_app(&place.bundle_id),
                 )
             })
             .await

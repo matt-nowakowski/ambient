@@ -185,6 +185,12 @@ const AI_CHAT_APPS: &[&str] = &[
     "com.todesktop.230313mzl4w4u92", // Cursor (its chat and editor)
     "dev.zed.Zed",
     "com.raycast.macos",
+    // Windows (executable names).
+    "chatgpt.exe",
+    "claude.exe",
+    "perplexity.exe",
+    "cursor.exe",
+    "zed.exe",
 ];
 const AI_CHAT_SITES: &[&str] = &[
     "chatgpt.com",
@@ -212,6 +218,18 @@ const MESSAGING_APPS: &[&str] = &[
     "com.apple.MobileSMS",
     "notion.id",
     "com.linear",
+    // Windows (executable names).
+    "slack.exe",
+    "ms-teams.exe",
+    "teams.exe",
+    "discord.exe",
+    "outlook.exe",
+    "olk.exe",
+    "whatsapp.exe",
+    "whatsapp.root.exe",
+    "telegram.exe",
+    "notion.exe",
+    "linear.exe",
 ];
 const MESSAGING_SITES: &[&str] = &[
     "mail.google.com",

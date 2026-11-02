@@ -80,6 +80,15 @@ const CALL_APPS: &[&str] = &[
     "com.hnc.Discord",
     "Cisco-Systems.Spark",
     "com.webex.meetingmanager",
+    // Windows (executable names).
+    "zoom.exe",
+    "ms-teams.exe",
+    "teams.exe",
+    "slack.exe",
+    "discord.exe",
+    "webex.exe",
+    "ciscocollabhost.exe",
+    "atmgr.exe",
 ];
 const BROWSERS: &[&str] = &[
     "com.google.Chrome",
@@ -88,6 +97,12 @@ const BROWSERS: &[&str] = &[
     "com.microsoft.edgemac",
     "org.mozilla.firefox",
     "com.brave.Browser",
+    // Windows (executable names).
+    "chrome.exe",
+    "msedge.exe",
+    "brave.exe",
+    "firefox.exe",
+    "arc.exe",
 ];
 /// Ask at most once per call app in this window.
 const OFFER_COOLDOWN: Duration = Duration::from_secs(30 * 60);

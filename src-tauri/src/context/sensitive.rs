@@ -70,6 +70,8 @@ pub const PASSWORD_MANAGER_APP_NAMES: &[&str] = &[
     "Dashlane",
     "KeePassXC",
     "KeePassium",
+    "KeePass",
+    "RoboForm",
     "Enpass",
     "Keeper Password Manager",
     "NordPass",
@@ -87,6 +89,30 @@ pub const PASSWORD_MANAGER_BUNDLE_IDS: &[&str] = &[
     "com.apple.keychainaccess",
     "com.apple.Passwords",
     "org.keepassxc.keepassxc",
+    // Windows: executable names.
+    "1password.exe",
+    "bitwarden.exe",
+    "keepass.exe",
+    "keepassxc.exe",
+    "dashlane.exe",
+    "enpass.exe",
+    "nordpass.exe",
+    "proton pass.exe",
+    "keeperpasswordmanager.exe",
+    "roboform.exe",
+];
+
+/// Wallets on Windows, by executable name (their file descriptions vary).
+pub const WALLET_EXE_NAMES: &[&str] = &[
+    "ledger live.exe",
+    "trezor suite.exe",
+    "exodus.exe",
+    "electrum.exe",
+    "sparrow.exe",
+    "wasabi wallet.exe",
+    "wassabee.exe",
+    "atomic wallet.exe",
+    "guarda.exe",
 ];
 
 /// Wallet extension popups and wallet sites, matched on a window or frame
@@ -214,7 +240,7 @@ pub enum SensitivePlace {
 /// before any of its windows is read).
 pub fn sensitive_app(app_name: &str, bundle_id: &str) -> Option<SensitivePlace> {
     let named = |names: &[&str]| names.iter().any(|n| app_name.eq_ignore_ascii_case(n));
-    if named(WALLET_APP_NAMES) {
+    if named(WALLET_APP_NAMES) || WALLET_EXE_NAMES.contains(&bundle_id) {
         return Some(SensitivePlace::Wallet);
     }
     if named(PASSWORD_MANAGER_APP_NAMES) || PASSWORD_MANAGER_BUNDLE_IDS.contains(&bundle_id) {
@@ -421,6 +447,21 @@ mod tests {
         );
         assert_eq!(
             sensitive_app("Bitwarden", "com.bitwarden.desktop"),
+            Some(PasswordManager)
+        );
+        // Windows: by executable name, whatever the file description says.
+        assert_eq!(
+            sensitive_app("KeePass Password Safe", "keepass.exe"),
+            Some(PasswordManager)
+        );
+        assert_eq!(sensitive_app("Ledger", "ledger live.exe"), Some(Wallet));
+        assert_eq!(
+            sensitive_place(
+                "Microsoft Edge",
+                "msedge.exe",
+                &[""],
+                &["edge://settings/passwords"],
+            ),
             Some(PasswordManager)
         );
         assert_eq!(

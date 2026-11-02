@@ -93,6 +93,7 @@ dependencies = [
 name = "ambient"
 version = "0.1.3"
 dependencies = [
+ "ambient-cpal",
  "ambient-keys",
  "ambient-recorder",
  "anyhow",

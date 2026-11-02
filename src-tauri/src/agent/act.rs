@@ -167,9 +167,16 @@ fn run_shortcut(name: &str) -> Result<(), String> {
 
 #[cfg(target_os = "windows")]
 fn open_app(name: &str) -> Result<(), String> {
+    // The Start menu's own shortcut first ("Spotify", "Visual Studio Code").
+    if crate::win::shortcuts::open_app(name) {
+        return Ok(());
+    }
     // `start` resolves registered apps (App Paths) and Store aliases by name.
+    use std::os::windows::process::CommandExt;
+    const CREATE_NO_WINDOW: u32 = 0x0800_0000;
     let ok = std::process::Command::new("cmd")
         .args(["/C", "start", "", name])
+        .creation_flags(CREATE_NO_WINDOW)
         .status()
         .map(|s| s.success())
         .unwrap_or(false);
@@ -196,7 +203,14 @@ fn open_app(name: &str) -> Result<(), String> {
     }
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Windows: a Start menu shortcut by that name, or a Power Automate Desktop
+/// flow.
+#[cfg(target_os = "windows")]
+fn run_shortcut(name: &str) -> Result<(), String> {
+    crate::win::shortcuts::run(name)
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 fn run_shortcut(_name: &str) -> Result<(), String> {
     Err("hud.status.cantDoYet".into())
 }

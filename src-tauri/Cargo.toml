@@ -116,6 +116,7 @@ webview2-com = "0.38"
 windows = { version = "0.61.3", features = [
   "System_UserProfile",
   "Win32_Media_Audio_Endpoints",
+  "Win32_System_Com",
   "Win32_System_Com_StructuredStorage",
   "Win32_System_DataExchange",
   "Win32_System_LibraryLoader",
@@ -124,10 +125,20 @@ windows = { version = "0.61.3", features = [
   "Win32_System_Threading",
   "Win32_System_Variant",
   "Win32_Foundation",
+  "Win32_Graphics_Dwm",
   "Win32_Graphics_Gdi",
+  "Win32_Storage_FileSystem",
+  # The voice agent: reading windows (UI Automation), the HUD's mouse watch,
+  # Start menu shortcuts and known folders (Shell).
+  "Win32_UI_Accessibility",
+  "Win32_UI_Input_KeyboardAndMouse",
+  "Win32_UI_Shell",
   "Win32_UI_WindowsAndMessaging",
 ] }
 winreg = "0.55"
+# Meetings: the call's audio, by WASAPI loopback on the default output
+# device (the same vendored cpal that ambient-recorder uses).
+cpal = { package = "ambient-cpal", path = "vendor/ambient-cpal" }
 
 # Whisper backend per Windows arch. x86_64 ships the Vulkan GPU backend and
 # keeps the dynamic-backends posture (loadable per-ISA CPU modules + Vulkan),

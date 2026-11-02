@@ -1,5 +1,5 @@
-//! Two audio sources for a meeting: the microphone ("you") and the Mac's own
-//! output ("them", the call). Both deliver 16 kHz mono to a channel; nothing
+//! Two audio sources for a meeting: the microphone ("you") and the
+//! computer's own output ("them", the call). Both deliver 16 kHz mono to a channel; nothing
 //! is written to disk.
 
 use std::sync::mpsc::Sender;
@@ -105,7 +105,13 @@ pub mod system {
     }
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Windows: WASAPI loopback and the microphone ConsentStore.
+#[cfg(target_os = "windows")]
+pub mod system {
+    pub use super::super::windows::{mic_in_use, SystemAudio};
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 pub mod system {
     use std::sync::mpsc::Sender;
 

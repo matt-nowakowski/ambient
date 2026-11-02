@@ -209,9 +209,35 @@ pub fn create(app: &AppHandle) {
         .content_protected(true)
         .visible(false)
         .build();
-        if let Err(e) = built {
-            log::error!("Failed to create agent HUD: {e}");
+        match built {
+            #[cfg(target_os = "windows")]
+            Ok(w) => make_non_activating(&w),
+            #[cfg(not(target_os = "windows"))]
+            Ok(_) => {}
+            Err(e) => log::error!("Failed to create agent HUD: {e}"),
         }
+    }
+}
+
+/// Windows: a panel that never takes focus (clicks don't activate it, so
+/// Insert still pastes into the user's app), stays above other windows and
+/// stays out of the taskbar and Alt+Tab.
+#[cfg(target_os = "windows")]
+fn make_non_activating(w: &tauri::WebviewWindow) {
+    use windows::Win32::UI::WindowsAndMessaging::{
+        GetWindowLongPtrW, SetWindowLongPtrW, GWL_EXSTYLE, WS_EX_APPWINDOW, WS_EX_NOACTIVATE,
+        WS_EX_TOOLWINDOW, WS_EX_TOPMOST,
+    };
+    let Ok(hwnd) = w.hwnd() else {
+        return;
+    };
+    unsafe {
+        let style = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+        let style = (style & !WS_EX_APPWINDOW.0)
+            | WS_EX_NOACTIVATE.0
+            | WS_EX_TOOLWINDOW.0
+            | WS_EX_TOPMOST.0;
+        SetWindowLongPtrW(hwnd, GWL_EXSTYLE, style as isize);
     }
 }
 
@@ -339,6 +365,31 @@ fn order_front(app: &AppHandle, w: &tauri::WebviewWindow) {
             return;
         }
     }
+    // Windows: show without activating (`show` would take focus from the
+    // app the user is in) and above everything, including fullscreen-ish
+    // windows that went topmost after the HUD was created.
+    #[cfg(target_os = "windows")]
+    if let Ok(hwnd) = w.hwnd() {
+        use windows::Win32::UI::WindowsAndMessaging::{
+            SetWindowPos, ShowWindow, HWND_TOPMOST, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOSIZE,
+            SWP_SHOWWINDOW, SW_SHOWNOACTIVATE,
+        };
+        make_non_activating(w);
+        unsafe {
+            let _ = ShowWindow(hwnd, SW_SHOWNOACTIVATE);
+            let _ = SetWindowPos(
+                hwnd,
+                Some(HWND_TOPMOST),
+                0,
+                0,
+                0,
+                0,
+                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW,
+            );
+        }
+        let _ = app;
+        return;
+    }
     let _ = app;
     let _ = w.show();
 }
@@ -404,7 +455,17 @@ fn mouse_down() -> bool {
     unsafe { CGEventSourceButtonState(0, 0) || CGEventSourceButtonState(0, 1) }
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Windows: the physical button state, polled (no hook needed).
+#[cfg(target_os = "windows")]
+fn mouse_down() -> bool {
+    use windows::Win32::UI::Input::KeyboardAndMouse::{GetAsyncKeyState, VK_LBUTTON, VK_RBUTTON};
+    let down = |vk: windows::Win32::UI::Input::KeyboardAndMouse::VIRTUAL_KEY| unsafe {
+        GetAsyncKeyState(i32::from(vk.0)) as u16 & 0x8000 != 0
+    };
+    down(VK_LBUTTON) || down(VK_RBUTTON)
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 fn mouse_down() -> bool {
     false
 }

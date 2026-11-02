@@ -35,6 +35,8 @@ mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
 mod utils;
+#[cfg(any(target_os = "windows", test))]
+mod win;
 
 pub use cli::CliArgs;
 #[cfg(debug_assertions)]

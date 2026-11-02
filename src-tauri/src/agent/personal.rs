@@ -192,6 +192,8 @@ const SKIP_EXTENSIONS: &[&str] = &[
     "htm", "xml", "yml", "yaml", "toml", "lock", "log", "plist", "sqlite", "db", "dat", "data",
     "bin", "strings", "po", "mo", "xliff", "ttf", "otf", "woff", "woff2", "svg", "ini", "cfg",
     "conf", "sh", "zsh", "bash", "env", "gguf", "onnx", "pb", "tmp", "cache", "nib", "car",
+    // Windows programs and system files.
+    "exe", "dll", "sys", "msi", "lnk", "bat", "cmd", "ps1", "reg",
 ];
 
 /// Whether a Spotlight hit is one of the user's own documents (or a Mail
@@ -208,6 +210,44 @@ pub fn is_user_file(path: &str, home: &str) -> bool {
     if rel.starts_with("Library/") {
         return false;
     }
+    is_user_rel(rel)
+}
+
+/// Windows: whether a file under the user's profile is one of their own
+/// documents (never under AppData, hidden, project or app folders, nor code
+/// or data). Paths compare without case, as Windows does.
+pub fn is_user_file_windows(path: &str, home: &str) -> bool {
+    let path = path.replace('\\', "/");
+    let home = home.replace('\\', "/");
+    let home = home.trim_end_matches('/');
+    if home.is_empty() || path.len() <= home.len() || !path.is_char_boundary(home.len()) {
+        return false;
+    }
+    let (head, rel) = path.split_at(home.len());
+    if !head.eq_ignore_ascii_case(home) || !rel.starts_with('/') {
+        return false;
+    }
+    let rel = rel.trim_start_matches('/');
+    if rel.to_lowercase().starts_with("appdata/") {
+        return false;
+    }
+    is_user_rel(rel)
+}
+
+/// A file found on this computer is the user's own: the macOS or Windows
+/// rules, by the shape of the path.
+pub fn is_user_path(path: &str, home: &str) -> bool {
+    let windows_path = path.contains('\\') || path.as_bytes().get(1) == Some(&b':');
+    if windows_path {
+        is_user_file_windows(path, home)
+    } else {
+        is_user_file(path, home)
+    }
+}
+
+/// The part of the rules that doesn't depend on the platform: `rel` is the
+/// path under the home folder, with `/` separators.
+fn is_user_rel(rel: &str) -> bool {
     let parts: Vec<&str> = rel.split('/').collect();
     let (name, dirs) = match parts.split_last() {
         Some((name, dirs)) => (*name, dirs),
@@ -241,8 +281,10 @@ pub fn is_meaningful_source(title: &str, url: &str) -> bool {
     match url.strip_prefix("file://") {
         Some(path) => {
             let path = path.replace("%20", " ");
-            let home = std::env::var("HOME").unwrap_or_default();
-            !title.trim().is_empty() && !home.is_empty() && is_user_file(&path, &home)
+            let home = std::env::var("HOME")
+                .or_else(|_| std::env::var("USERPROFILE"))
+                .unwrap_or_default();
+            !title.trim().is_empty() && !home.is_empty() && is_user_path(&path, &home)
         }
         None => false,
     }
@@ -295,6 +337,7 @@ pub fn spotlight_hits(query: &str) -> Vec<(String, String)> {
 }
 
 /// One `mdfind -attr kMDItemDisplayName` line: (path, display name).
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
 fn parse_hit(line: &str) -> Option<(String, String)> {
     const SEP: &str = "   kMDItemDisplayName = ";
     let (path, name) = match line.rfind(SEP) {
@@ -347,7 +390,22 @@ fn spotlight(query: &str) -> Vec<(String, String)> {
         .collect()
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Windows: the Windows Search index, else a bounded walk of Desktop,
+/// Documents, Downloads and Recent items (see `win::files`).
+#[cfg(target_os = "windows")]
+fn spotlight(query: &str) -> Vec<(String, String)> {
+    let words = content_words(query);
+    if words.is_empty() {
+        return Vec::new();
+    }
+    crate::win::files::search(&words)
+        .into_iter()
+        .take(MAX_FILES)
+        .map(|(path, name)| (name, crate::win::rules::file_url(&path)))
+        .collect()
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 fn spotlight(_query: &str) -> Vec<(String, String)> {
     Vec::new()
 }
@@ -382,6 +440,32 @@ mod tests {
         ] {
             assert!(is_user_file(p, HOME), "{p}");
         }
+    }
+
+    #[test]
+    fn windows_files_follow_the_same_rules() {
+        let home = r"C:\Users\Sam";
+        for p in [
+            r"C:\Users\Sam\AppData\Roaming\Code\User\settings.txt",
+            r"C:\Users\Sam\Documents\site\node_modules\pkg\README.md",
+            r"C:\Users\Sam\Documents\app\src\main.pdf",
+            r"C:\Users\Sam\Downloads\setup.exe",
+            r"C:\Users\Sam\.vscode\notes.txt",
+            r"C:\Users\Samuel\Documents\report.pdf",
+            r"D:\Work\report.pdf",
+        ] {
+            assert!(!is_user_file_windows(p, home), "{p}");
+        }
+        for p in [
+            r"C:\Users\Sam\Documents\Q3 numbers final.xlsx",
+            r"c:\users\sam\Desktop\Pitch deck.pptx",
+            r"C:\Users\Sam\OneDrive\Documents\invoice-1042.pdf",
+        ] {
+            assert!(is_user_file_windows(p, home), "{p}");
+        }
+        assert!(is_user_path(r"C:\Users\Sam\Documents\a.docx", home));
+        assert!(is_user_path("/Users/sam/Documents/a.docx", HOME));
+        assert!(!is_user_path("/Users/sam/Library/Caches/a.pdf", HOME));
     }
 
     #[test]

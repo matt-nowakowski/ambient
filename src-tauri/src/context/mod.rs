@@ -11,6 +11,15 @@ pub mod sensitive;
 
 #[cfg(target_os = "macos")]
 mod macos;
+#[cfg(target_os = "windows")]
+mod windows;
+
+#[cfg(target_os = "windows")]
+use self::windows as platform;
+/// The platform's screen reader: the same functions on macOS (Accessibility)
+/// and Windows (UI Automation).
+#[cfg(target_os = "macos")]
+use macos as platform;
 
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -56,12 +65,16 @@ pub struct ContextSnapshot {
     /// Those frames' titles, likewise.
     #[serde(default)]
     pub frame_titles: Vec<String>,
+    /// The window is a private browsing window (Windows: read from the
+    /// browser's own controls, which its title doesn't show). Never sent.
+    #[serde(skip)]
+    pub private_window: bool,
 }
 
 impl ContextSnapshot {
     /// What kind of private place this window is, if any, from its app,
     /// titles and URLs (never its text).
-    #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+    #[cfg_attr(not(any(target_os = "macos", target_os = "windows")), allow(dead_code))]
     fn sensitive_place(&self, app: &FrontmostApp) -> Option<sensitive::SensitivePlace> {
         let mut titles: Vec<&str> = vec![self.window_title.as_str()];
         titles.extend(self.frame_titles.iter().map(String::as_str));
@@ -92,11 +105,11 @@ pub struct OpenWindow {
 /// the never-watch list and private windows, redacted. Only called while
 /// answering something the user asked or accepted.
 pub fn open_windows(never_watch: &[String], max_chars: usize) -> Vec<OpenWindow> {
-    #[cfg(target_os = "macos")]
+    #[cfg(any(target_os = "macos", target_os = "windows"))]
     {
         let mut skip: Vec<String> = DEFAULT_NEVER_WATCH.iter().map(|s| s.to_string()).collect();
         skip.extend(never_watch.iter().cloned());
-        macos::open_windows(&skip, max_chars)
+        platform::open_windows(&skip, max_chars)
             .into_iter()
             .filter(|w| !PRIVATE_TITLE_MARKERS.iter().any(|m| w.title.contains(m)))
             .filter(|w| {
@@ -115,7 +128,7 @@ pub fn open_windows(never_watch: &[String], max_chars: usize) -> Vec<OpenWindow>
             })
             .collect()
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
     {
         let _ = (never_watch, max_chars);
         Vec::new()
@@ -153,6 +166,25 @@ pub const DEFAULT_NEVER_WATCH: &[&str] = &[
     "org.whispersystems.signal-desktop",
     "ru.keepcoder.Telegram",
     "com.apple.systempreferences",
+    // Windows (executable names): password managers, private messaging,
+    // Settings and the sign-in and credential prompts.
+    "1password.exe",
+    "bitwarden.exe",
+    "keepass.exe",
+    "keepassxc.exe",
+    "dashlane.exe",
+    "enpass.exe",
+    "nordpass.exe",
+    "proton pass.exe",
+    "keeperpasswordmanager.exe",
+    "whatsapp.exe",
+    "whatsapp.root.exe",
+    "signal.exe",
+    "telegram.exe",
+    "systemsettings.exe",
+    "credentialuibroker.exe",
+    "lockapp.exe",
+    "consent.exe",
     env!("BRAND_IDENTIFIER"),
 ];
 
@@ -225,34 +257,43 @@ pub fn is_never_watch(bundle_id: &str, extra: &[String]) -> bool {
     DEFAULT_NEVER_WATCH.contains(&bundle_id) || extra.iter().any(|b| b == bundle_id)
 }
 
+/// Whether the screen can be read: Accessibility permission on macOS;
+/// Windows' UI Automation needs none.
 pub fn accessibility_trusted() -> bool {
-    #[cfg(target_os = "macos")]
+    #[cfg(any(target_os = "macos", target_os = "windows"))]
     {
-        macos::ax_trusted()
+        platform::ax_trusted()
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
     {
         false
     }
 }
 
 pub fn frontmost_app() -> Option<FrontmostApp> {
-    #[cfg(target_os = "macos")]
+    #[cfg(any(target_os = "macos", target_os = "windows"))]
     {
-        macos::frontmost_app()
+        platform::frontmost_app()
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
     {
         None
     }
 }
 
+/// Mail apps where Reply (Cmd+R / Ctrl+R) opens a reply to the message in
+/// front: Apple Mail, and Outlook on Windows.
+pub fn is_mail_app(bundle_id: &str) -> bool {
+    bundle_id == "com.apple.mail" || ["outlook.exe", "olk.exe"].contains(&bundle_id)
+}
+
 /// A private browsing window, or a private place.
-#[cfg(target_os = "macos")]
+#[cfg(any(target_os = "macos", target_os = "windows"))]
 fn check_place(app: &FrontmostApp, snap: &ContextSnapshot) -> Result<(), Skipped> {
-    if PRIVATE_TITLE_MARKERS
-        .iter()
-        .any(|m| snap.window_title.contains(m))
+    if snap.private_window
+        || PRIVATE_TITLE_MARKERS
+            .iter()
+            .any(|m| snap.window_title.contains(m))
     {
         return Err(Skipped::NeverWatch);
     }
@@ -283,16 +324,16 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
     if !accessibility_trusted() {
         return Err(Skipped::NoPermission);
     }
-    #[cfg(target_os = "macos")]
+    #[cfg(any(target_os = "macos", target_os = "windows"))]
     {
         // Metadata first (titles, URLs; no text), so a private place is
         // dropped before any of its text is read.
-        let meta = macos::window_snapshot(app.pid, 0).ok_or(Skipped::Unavailable)?;
+        let meta = platform::window_snapshot(app.pid, 0).ok_or(Skipped::Unavailable)?;
         check_place(&app, &meta)?;
         let mut snap = if max_chars == 0 {
             meta
         } else {
-            let full = macos::window_snapshot(app.pid, max_chars).ok_or(Skipped::Unavailable)?;
+            let full = platform::window_snapshot(app.pid, max_chars).ok_or(Skipped::Unavailable)?;
             // The window may have changed in between.
             check_place(&app, &full)?;
             full
@@ -315,7 +356,7 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
         snap.ts = chrono::Utc::now().timestamp();
         Ok(snap)
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
     {
         let _ = (app, max_chars);
         Err(Skipped::Unavailable)

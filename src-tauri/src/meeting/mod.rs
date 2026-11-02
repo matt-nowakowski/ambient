@@ -6,6 +6,8 @@
 
 pub(crate) mod capture;
 pub(crate) mod segmenter;
+#[cfg(target_os = "windows")]
+mod windows;
 
 use std::collections::HashSet;
 use std::sync::mpsc;

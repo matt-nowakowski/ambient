@@ -145,6 +145,9 @@ const MAIL_APPS: &[&str] = &[
     "com.superhuman.electron",
     "com.readdle.SparkDesktop",
     "com.readdle.smartemail-Mac",
+    // Windows (executable names).
+    "outlook.exe",
+    "olk.exe",
 ];
 const BROWSERS: &[&str] = &[
     "com.google.Chrome",
@@ -153,6 +156,12 @@ const BROWSERS: &[&str] = &[
     "com.microsoft.edgemac",
     "org.mozilla.firefox",
     "com.brave.Browser",
+    // Windows (executable names).
+    "chrome.exe",
+    "msedge.exe",
+    "brave.exe",
+    "firefox.exe",
+    "arc.exe",
 ];
 /// Chat apps where "Thursday at 3?" means an invite worth offering.
 const CHAT_APPS: &[&str] = &[
@@ -160,6 +169,11 @@ const CHAT_APPS: &[&str] = &[
     "com.microsoft.teams2",
     "com.microsoft.teams",
     "com.hnc.Discord",
+    // Windows (executable names).
+    "slack.exe",
+    "ms-teams.exe",
+    "teams.exe",
+    "discord.exe",
 ];
 /// Where a long draft in the focused field is worth tightening.
 const WRITING_APPS: &[&str] = &[
@@ -178,6 +192,17 @@ const WRITING_APPS: &[&str] = &[
     "company.thebrowser.Browser",
     "com.microsoft.edgemac",
     "com.brave.Browser",
+    // Windows (executable names).
+    "outlook.exe",
+    "olk.exe",
+    "slack.exe",
+    "ms-teams.exe",
+    "notion.exe",
+    "winword.exe",
+    "chrome.exe",
+    "msedge.exe",
+    "arc.exe",
+    "brave.exe",
 ];
 const DEV_APPS: &[&str] = &[
     "com.apple.Terminal",
@@ -186,6 +211,12 @@ const DEV_APPS: &[&str] = &[
     "com.microsoft.VSCode",
     "com.todesktop.230313mzl4w4u92", // Cursor
     "dev.zed.Zed",
+    // Windows (executable names).
+    "windowsterminal.exe",
+    "code.exe",
+    "cursor.exe",
+    "zed.exe",
+    "warp.exe",
 ];
 
 static ERROR: Lazy<Regex> = Lazy::new(|| {
@@ -198,7 +229,11 @@ static DIFF: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?m)^diff --git a/").expect
 static SHEET_ERROR: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"#(?:REF!|VALUE!|N/A|DIV/0!|NAME\?|NUM!|SPILL!|ERROR!)").expect("sheet pattern")
 });
-const SHEET_APPS: &[&str] = &["com.microsoft.Excel", "com.apple.iWork.Numbers"];
+const SHEET_APPS: &[&str] = &[
+    "com.microsoft.Excel",
+    "com.apple.iWork.Numbers",
+    "excel.exe", // Windows
+];
 
 /// The query of a web search results page, if this is one.
 fn search_query(url: &str) -> Option<String> {
@@ -859,7 +894,16 @@ fn upcoming(minutes: i32) -> Vec<Event> {
     out
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Windows: classic Outlook's calendar, when Outlook is running.
+#[cfg(target_os = "windows")]
+fn upcoming(minutes: i32) -> Vec<Event> {
+    crate::win::calendar::upcoming(minutes)
+        .into_iter()
+        .filter_map(|e| serde_json::from_value(e).ok())
+        .collect()
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 fn upcoming(_minutes: i32) -> Vec<Event> {
     Vec::new()
 }
