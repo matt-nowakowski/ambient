@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { after } from "next/server";
 import { runEmailAction } from "@/lib/email/polar-actions";
 import { decide, verifyPolarWebhook } from "@/lib/email/polar-webhook";
@@ -7,7 +8,8 @@ import { decide, verifyPolarWebhook } from "@/lib/email/polar-webhook";
  * subscription.canceled, subscription.revoked (anything else is accepted and
  * ignored). Fails closed: no POLAR_WEBHOOK_SECRET → 401, bad signature → 403.
  * Answers 202 at once and sends in after(), well inside Polar's 10 s timeout.
- * Never touches the database.
+ * Never touches the database. Any verified event also refreshes the cached
+ * admin figures, so a new sale shows up there right away.
  */
 export async function POST(req: Request) {
   const secret = process.env.POLAR_WEBHOOK_SECRET;
@@ -23,6 +25,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "invalid_signature" }, { status: 403 });
   }
 
+  revalidateTag("admin", { expire: 0 });
   const { action, type, reason } = decide(verified.payload);
   const gift = action?.email === "welcome_gift" ? ` discount="${action.discount.name ?? "?"}" code=${action.discount.code ?? "?"}` : "";
   console.info(`[webhook ${verified.id}] ${type}: ${action ? `send ${action.email}` : "ignore"} (${reason})${gift}`);

@@ -4,13 +4,15 @@ import Link from "next/link";
 import { SuccessCheck } from "@/components/success-check";
 import { ButtonLink, Container, Eyebrow } from "@/components/ui";
 import { brand, mailto } from "@/lib/brand";
-import { getPolar, licenseExpFor, planFor } from "@/lib/polar";
+import type { Subscription } from "@polar-sh/sdk/models/components/subscription.js";
+import { findActiveSubscription, getPolar, licenseExpFor, planFor } from "@/lib/polar";
+import { AutoRefresh } from "@/components/auto-refresh";
 
 export const metadata: Metadata = pageMetadata({ title: "You’re Pro", description: "Sign in to the app to start using Pro.", path: "/checkout/success", noindex: true });
 
 type Result =
   | { ok: true; email: string; plan: string; exp: number }
-  | { ok: false; title: string; message: string };
+  | { ok: false; title: string; message: string; pending?: boolean };
 
 async function issueLicense(checkoutId: string | undefined): Promise<Result> {
   if (!checkoutId || !/^[0-9a-f-]{32,40}$/i.test(checkoutId)) {
@@ -29,18 +31,27 @@ async function issueLicense(checkoutId: string | undefined): Promise<Result> {
   }
 
   // "confirmed" means payment is still processing; the subscription exists once it has succeeded.
-  if (checkout.status === "confirmed") {
-    return { ok: false, title: "Payment is processing", message: "Your payment is being confirmed. Refresh this page in a few seconds." };
-  }
-  if (checkout.status !== "succeeded" || !checkout.subscriptionId || !checkout.customerId) {
+  const settingUp = { ok: false as const, pending: true, title: "Setting up your Pro", message: "Your order went through. We’re finishing your subscription, which takes a few seconds." };
+  if (checkout.status === "confirmed") return settingUp;
+  if (checkout.status !== "succeeded" || !checkout.customerId) {
     return { ok: false, title: "Payment not completed", message: "This checkout hasn’t been paid yet. If you were charged, contact us and we’ll sort it out." };
   }
 
-  let sub: Awaited<ReturnType<typeof polar.subscriptions.get>>;
+  // Polar links the subscription to the checkout only after it's created, which
+  // can trail the redirect by ~20 s, and a fully discounted ($0) checkout may
+  // never get the link. Fall back to the customer's newest live subscription.
+  let sub: Subscription | null = null;
   try {
-    sub = await polar.subscriptions.get({ id: checkout.subscriptionId });
+    sub = checkout.subscriptionId
+      ? await polar.subscriptions.get({ id: checkout.subscriptionId })
+      : await findActiveSubscription(polar, checkout.customerId);
   } catch {
-    return { ok: false, title: "Subscription not found", message: "Your payment went through, but we couldn’t find the subscription." };
+    sub = null;
+  }
+  if (!sub) {
+    const ageMs = Date.now() - new Date(checkout.modifiedAt ?? checkout.createdAt).getTime();
+    if (ageMs < 3 * 60_000) return settingUp;
+    return { ok: false, title: "Subscription not found", message: "Your order went through, but we couldn’t find the subscription. Email us and we’ll sort it out." };
   }
 
   // Nothing to issue here: the app signs in with this email and picks Pro up from Polar.
@@ -51,6 +62,19 @@ async function issueLicense(checkoutId: string | undefined): Promise<Result> {
 export default async function SuccessPage({ searchParams }: { searchParams: Promise<{ checkout_id?: string | string[] }> }) {
   const { checkout_id } = await searchParams;
   const result = await issueLicense(Array.isArray(checkout_id) ? checkout_id[0] : checkout_id);
+
+  if (!result.ok && result.pending) {
+    return (
+      <Container className="page-balanced py-10">
+        <AutoRefresh everyMs={3000} />
+        <div className="glass mx-auto max-w-md rounded-[24px] px-6 py-12 text-center" role="status">
+          <span className="mx-auto block size-6 animate-spin rounded-full border-[1.5px] border-border-strong border-t-foreground motion-reduce:animate-none" aria-hidden="true" />
+          <h1 className="mt-6 text-[30px] font-light tracking-[-0.04em]">{result.title}</h1>
+          <p className="mt-4 text-[14px] text-muted">{result.message}</p>
+        </div>
+      </Container>
+    );
+  }
 
   if (!result.ok) {
     return (
