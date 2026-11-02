@@ -1,11 +1,20 @@
 fn main() {
     let brand_name = emit_brand_env();
 
+    // The Swift bridges are built only when targeting macOS (a Mac host can
+    // also cross-check other targets, which must not link Apple frameworks).
+    #[cfg(target_os = "macos")]
+    let targets_macos = std::env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("macos");
+
     #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
-    build_apple_intelligence_bridge();
+    if targets_macos && std::env::var("CARGO_CFG_TARGET_ARCH").as_deref() == Ok("aarch64") {
+        build_apple_intelligence_bridge();
+    }
 
     #[cfg(target_os = "macos")]
-    build_ambient_native_bridge();
+    if targets_macos {
+        build_ambient_native_bridge();
+    }
 
     generate_tray_translations(&brand_name);
 
