@@ -70,9 +70,7 @@ const useActivePill = (
         bottom: group.clientHeight - el.offsetTop - el.offsetHeight,
         right: group.clientWidth - el.offsetLeft - el.offsetWidth,
       };
-      const transition = animate
-        ? edgeTransition(last.current, edges)
-        : "none";
+      const transition = animate ? edgeTransition(last.current, edges) : "none";
       last.current = edges;
       setPill({ edges, transition });
     };
