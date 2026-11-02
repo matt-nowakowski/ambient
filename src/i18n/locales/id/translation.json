@@ -1170,7 +1170,10 @@
       "steppingBack": "Mundur sejenak: ini tampak pribadi, jadi {{appName}} tidak membacanya.",
       "fairUse": "Anda telah mencapai batas penggunaan wajar hari ini. Batas direset pada tengah malam UTC.",
       "slowDown": "Terlalu banyak permintaan sekaligus. Coba lagi dalam semenit.",
-      "listening": "Mendengarkan…"
+      "listening": "Mendengarkan…",
+      "heardNothing": "Saya mendengar Anda, tapi tidak menangkap permintaan.",
+      "noWebResults": "Tidak bisa mencari di web saat ini, jadi ini dari yang saya tahu.",
+      "timeout": "Terlalu lama. Coba lagi."
     },
     "undo": "Urungkan",
     "close": "Tutup",
@@ -1210,7 +1213,23 @@
       "searchInstead": "Sudah diketik. Cari ini saja?",
       "search": "Cari"
     },
-    "suggestionTip": "Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”."
+    "suggestionTip": "Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”.",
+    "replace": "Ganti",
+    "actions": {
+      "reply": "Balas",
+      "copyCode": "Salin kode",
+      "openLink": "Buka tautan",
+      "addToCalendar": "Tambahkan ke kalender"
+    },
+    "draft": {
+      "title": "Apakah Anda ingin mengetik ini?",
+      "composed": "Ini draf Anda.",
+      "focusHint": "Klik kolom teks untuk menyisipkannya."
+    },
+    "source": {
+      "searchDrive": "Cari di Google Drive",
+      "searchGmail": "Cari di Gmail"
+    }
   },
   "privacy": {
     "title": "Privasi",

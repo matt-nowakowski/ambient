@@ -20,6 +20,11 @@ pub enum Route {
     },
     Act(Action),
     Recall(String),
+    /// Draft text from an instruction ("reply here saying Thursday works"),
+    /// then insert it where the cursor is, or offer it if nothing has focus.
+    Compose(String),
+    /// "What can I say?": show examples.
+    Help,
     /// Already dealt with (e.g. the user answered a suggestion by voice).
     Handled,
 }
@@ -104,6 +109,59 @@ static ADDRESSED: Lazy<Regex> = Lazy::new(|| {
 
 pub fn addresses_ambient(transcript: &str) -> bool {
     ADDRESSED.is_match(transcript)
+}
+
+/// The transcript without a leading "Hey Ambient," / "Ambient,".
+pub fn without_address(transcript: &str) -> &str {
+    match ADDRESSED.find(transcript) {
+        Some(m) => transcript[m.end()..].trim_start_matches(|c: char| {
+            c.is_whitespace() || matches!(c, ',' | ':' | ';' | '.' | '!' | '、' | '，')
+        }),
+        None => transcript,
+    }
+}
+
+/// An instruction to write something rather than the words to type: "reply
+/// here saying Thursday works", "write a reply telling them yes", "draft an
+/// email to Sam about the launch". Plain dictation that happens to start with
+/// "reply" ("Reply to John by Friday") has no "saying/telling/that…" and
+/// stays text.
+static COMPOSE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)^\s*(?:please\s+|can\s+you\s+|could\s+you\s+)?
+        (?:
+            (?:reply|respond|answer|write\s+back)(?:\s+(?:here|to\s+(?:this|that|them|him|her|it|the\s+\w+)|all))?
+              [\s,]+(?:saying|and\s+say|to\s+say|telling\s+\w+|and\s+tell\s+\w+|that|with)\b
+          | (?:write|draft|compose)\s+(?:a|an|the|my|me\s+a)?\s*(?:quick\s+|short\s+|polite\s+|friendly\s+)?
+              (?:reply|response|email|message|answer|follow[\s-]?up|note)\b
+        )",
+    )
+    .expect("compose cues")
+});
+
+/// What to compose, if the transcript is an instruction to write.
+pub fn compose_request(transcript: &str) -> Option<String> {
+    let t = without_address(transcript).trim();
+    COMPOSE.is_match(t).then(|| t.to_string())
+}
+
+/// "What can I say?", "what can you do?", "help": the user wants the examples.
+static HELP: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)^\s*(?:
+            what\s+(?:can|should|do)\s+i\s+(?:say|ask)(?:\s+(?:you|here))?
+          | what\s+can\s+you\s+do(?:\s+for\s+me)?
+          | what\s+(?:are\s+)?(?:your|the)\s+commands
+          | how\s+do\s+i\s+use\s+(?:you|this|ambient)
+          | (?:show\s+(?:me\s+)?)?(?:the\s+)?(?:help|examples|commands)
+          | help(?:\s+me)?
+        )\s*[?.!]*\s*$",
+    )
+    .expect("help cues")
+});
+
+pub fn is_help_request(transcript: &str) -> bool {
+    HELP.is_match(without_address(transcript))
 }
 
 /// Where the user is, as far as routing cares.
@@ -317,12 +375,15 @@ pub async fn on_device_says_write(app: &AppHandle, transcript: &str) -> bool {
 }
 
 /// `ask` is set for the Ask shortcut: the user is talking to the agent.
+/// `previous` is the last question and answer while that card is still up
+/// (or just closed), so "what other emails did we get from them" resolves.
 pub async fn route(
     app: &AppHandle,
     transcript: &str,
     polish_rules: &str,
     place: &Place,
     ask: bool,
+    previous: Option<(String, String)>,
 ) -> Option<Route> {
     let now = chrono::Local::now().format("%A %Y-%m-%d %H:%M").to_string();
     let rules = if polish_rules.trim().is_empty() {
@@ -352,10 +413,16 @@ pub async fn route(
     if place.is_messaging() && !addresses_ambient(transcript) {
         where_.push_str(". This is a messaging/email/docs app: requests, questions and commands here are almost always text for the people or the document → \"write\", unless they clearly address you, the assistant");
     }
+    let follow_up = previous
+        .map(|(q, a)| {
+            let a: String = a.chars().take(600).collect();
+            format!("(Your previous answer is still on screen. If this follows up on it, make \"query\" self-contained using it.)\nPrevious question: {q}\nPrevious answer: {a}\n")
+        })
+        .unwrap_or_default();
     let user = if ask {
-        format!("(The user pressed the Ask shortcut: they are talking to you. Never choose \"write\".)\n{where_}\nTranscript: {transcript}")
+        format!("(The user is talking to you: never choose \"write\".)\n{follow_up}{where_}\nTranscript: {transcript}")
     } else {
-        format!("{where_}\nTranscript: {transcript}")
+        format!("{follow_up}{where_}\nTranscript: {transcript}")
     };
     let reply = llm::complete_hosted(app, "route", &system, &user).await?;
     let route = parse(&reply);
@@ -405,6 +472,61 @@ mod tests {
         for s in ["The ambient lighting is too dim", "I like ambient music"] {
             assert!(!addresses_ambient(s), "{s}");
         }
+    }
+
+    #[test]
+    fn spots_compose_instructions() {
+        for s in [
+            "Reply here saying Thursday works",
+            "reply saying Thursday works for me",
+            "Hey Ambient, reply to them saying yes",
+            "write a reply telling them we're in",
+            "Draft an email to Sam about the launch",
+            "respond and say thanks",
+            "write back saying I'll be late",
+            "can you draft a quick reply",
+        ] {
+            assert!(compose_request(s).is_some(), "{s}");
+        }
+        assert_eq!(
+            compose_request("Hey Ambient, reply saying yes").as_deref(),
+            Some("reply saying yes")
+        );
+        for s in [
+            "Reply to John by Friday",
+            "I'll reply tomorrow",
+            "The response was great, thanks",
+            "Thanks for the reply, I'll send the numbers tomorrow.",
+            "We should write the email copy next week",
+        ] {
+            assert!(compose_request(s).is_none(), "{s}");
+        }
+    }
+
+    #[test]
+    fn spots_help_requests() {
+        for s in [
+            "Hey Ambient, what can I say?",
+            "what can I say",
+            "What can you do?",
+            "Ambient, help",
+            "show me the commands",
+        ] {
+            assert!(is_help_request(s), "{s}");
+        }
+        for s in [
+            "What can I say to Sam about the delay?",
+            "help me write this email",
+            "I need help with the deck",
+        ] {
+            assert!(!is_help_request(s), "{s}");
+        }
+    }
+
+    #[test]
+    fn strips_the_address() {
+        assert_eq!(without_address("Hey Ambient, open Notes"), "open Notes");
+        assert_eq!(without_address("open Notes"), "open Notes");
     }
 
     #[test]

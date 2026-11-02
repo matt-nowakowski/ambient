@@ -380,12 +380,31 @@ pub fn handle(app: &AppHandle, route: Route) {
         Route::Act(router::Action::CalendarEvent { .. }) => milestone(app, "event"),
         Route::Act(_) => milestone(app, "action"),
         Route::Recall(_) => milestone(app, "recall"),
-        Route::Write(_) | Route::Handled => {}
+        Route::Compose(_) => milestone(app, "answer"),
+        Route::Write(_) | Route::Help | Route::Handled => {}
     }
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
         match route {
             Route::Write(_) | Route::Handled => {}
+            Route::Help => crate::hud::show(&app, crate::hud::HudContent::Help),
+            // Draft from the instruction and what's on screen (the thread
+            // being replied to), then insert it or offer it.
+            Route::Compose(instruction) => {
+                answer::run_with(
+                    app,
+                    instruction,
+                    false,
+                    true,
+                    None,
+                    answer::Opts {
+                        write: true,
+                        compose: true,
+                        ..Default::default()
+                    },
+                )
+                .await
+            }
             Route::Answer {
                 query,
                 needs_web,
@@ -397,13 +416,23 @@ pub fn handle(app: &AppHandle, route: Route) {
             Route::Act(action) => act::run(app, action).await,
             Route::Recall(query) => {
                 // Searching windows, meetings and Spotlight blocks; keep it off
-                // the async runtime. Files and Drive/Gmail searches are linked.
+                // the async runtime. Spotlight runs once, alongside the rest,
+                // and feeds both the model's context and the linked files.
+                let q = query.clone();
+                let files =
+                    tauri::async_runtime::spawn_blocking(move || personal::spotlight_hits(&q));
                 let (a, q) = (app.clone(), query.clone());
-                let (context, links) = tauri::async_runtime::spawn_blocking(move || {
-                    (recall_context(&a, &q), personal::find(&q))
-                })
-                .await
-                .unwrap_or_default();
+                let context = tauri::async_runtime::spawn_blocking(move || {
+                    recall_context_without_files(&a, &q)
+                });
+                let files = files.await.unwrap_or_default();
+                let mut context = context.await.unwrap_or_default();
+                append_files(&mut context, &files);
+                let (q, f) = (query.clone(), files);
+                let links =
+                    tauri::async_runtime::spawn_blocking(move || personal::find_with(&q, f))
+                        .await
+                        .unwrap_or_default();
                 answer::run_with(
                     app,
                     query,
@@ -424,6 +453,24 @@ pub fn handle(app: &AppHandle, route: Route) {
 /// Past dictations (and screen memory, if kept) matching the question, as
 /// dated snippets for the model to answer from.
 pub(crate) fn recall_context(app: &AppHandle, query: &str) -> String {
+    let mut out = recall_context_without_files(app, query);
+    append_files(&mut out, &personal::spotlight_hits(query));
+    out
+}
+
+const NOTHING_FOUND: &str = "(Nothing matching was found in the user's history.)";
+
+/// Files and Mail messages on this Mac (Spotlight): names only.
+fn append_files(out: &mut String, files: &[(String, String)]) {
+    if out == NOTHING_FOUND && !files.is_empty() {
+        out.clear();
+    }
+    for (name, url) in files {
+        out.push_str(&format!("[file on this Mac] {name} ({url})\n"));
+    }
+}
+
+fn recall_context_without_files(app: &AppHandle, query: &str) -> String {
     let mut out = String::new();
     let words: Vec<String> = query
         .split_whitespace()
@@ -526,14 +573,192 @@ pub(crate) fn recall_context(app: &AppHandle, query: &str) -> String {
             }
         }
     }
-    // Files, Mail messages and notes on this Mac (Spotlight): names only.
-    for (name, url) in personal::spotlight_hits(query) {
-        out.push_str(&format!("[file on this Mac] {name} ({url})\n"));
-    }
     if out.is_empty() {
-        out.push_str("(Nothing matching was found in the user's history.)");
+        out.push_str(NOTHING_FOUND);
     }
     out
+}
+
+// ── Where text can go ────────────────────────────────────────────────────
+
+/// Focused roles that are certainly not somewhere to type.
+const NOT_TEXT_ROLES: &[&str] = &[
+    "AXWebArea",
+    "AXGroup",
+    "AXButton",
+    "AXLink",
+    "AXList",
+    "AXOutline",
+    "AXTable",
+    "AXRow",
+    "AXCell",
+    "AXScrollArea",
+    "AXWindow",
+    "AXImage",
+    "AXStaticText",
+    "AXMenuItem",
+    "AXCheckBox",
+    "AXRadioButton",
+    "AXPopUpButton",
+    "AXTabGroup",
+    "AXSplitGroup",
+    "AXBrowser",
+    "AXHeading",
+];
+
+/// Whether focus is in a text field: Some(true) yes, Some(false) certainly
+/// not, None when accessibility can't tell (the app exposes nothing).
+pub fn classify_focus(role: Option<&str>, editable: bool, title: &str, url: &str) -> Option<bool> {
+    if editable {
+        return Some(true);
+    }
+    // Web editors that draw their own text surface (Docs, Notion, Figma…)
+    // can report a page or group as focused while the user is typing.
+    if RICH_EDITORS
+        .iter()
+        .any(|s| url.contains(s) || title.contains(s))
+    {
+        return None;
+    }
+    match role {
+        Some(r) if NOT_TEXT_ROLES.contains(&r) => Some(false),
+        _ => None,
+    }
+}
+
+/// Sites (by URL, or the name in the window title) with canvas or custom
+/// editors: never judged "not a text field".
+const RICH_EDITORS: &[&str] = &[
+    "docs.google.com",
+    "- Google Docs",
+    "- Google Sheets",
+    "- Google Slides",
+    "notion.so",
+    "figma.com",
+    "canva.com",
+    "office.com",
+    "sharepoint.com",
+    "overleaf.com",
+    "miro.com",
+    "coda.io",
+    "quip.com",
+    "airtable.com",
+    "excalidraw.com",
+    "vscode.dev",
+    "github.dev",
+    "replit.com",
+    "codesandbox.io",
+];
+
+/// Apps whose accessibility tree reliably says where focus is: browsers
+/// (web pages) and Apple's own apps. Elsewhere (canvas apps, GPU terminals,
+/// games) a "not a text field" reading can be wrong, so dictation is typed
+/// as before.
+fn focus_is_reliable(bundle: &str) -> bool {
+    BROWSERS.contains(&bundle)
+        || (bundle.starts_with("com.apple.") && bundle != "com.apple.Terminal")
+}
+
+/// Focus in the app in front (metadata only, never its text).
+fn field_state() -> (Option<bool>, String) {
+    let Some(front) = context::frontmost_app() else {
+        return (None, String::new());
+    };
+    if front.bundle_id == env!("BRAND_IDENTIFIER") {
+        return (Some(false), front.bundle_id);
+    }
+    match context::snapshot(0, &[]) {
+        Ok(s) => (
+            classify_focus(
+                s.focused_role.as_deref(),
+                s.editable && !s.secure,
+                &s.window_title,
+                s.url.as_deref().unwrap_or(""),
+            ),
+            front.bundle_id,
+        ),
+        Err(_) => (None, front.bundle_id),
+    }
+}
+
+/// Insert makes sense here: a text field has focus, or we can't tell.
+pub fn can_insert_here() -> bool {
+    field_state().0 != Some(false)
+}
+
+/// Dictation with nowhere to go: instead of typing into a page (where keys
+/// can trigger the site's shortcuts) or into nothing, show the text with
+/// Copy, and Insert once a field has focus. Returns true when it did.
+pub fn draft_instead_of_paste(app: &AppHandle, text: &str) -> bool {
+    let (state, bundle) = field_state();
+    if state != Some(false) || !focus_is_reliable(&bundle) || bundle == env!("BRAND_IDENTIFIER") {
+        return false;
+    }
+    show_draft(app, "hud.draft.title", text.to_string(), false);
+    true
+}
+
+fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) {
+    crate::hud::show(
+        app,
+        crate::hud::HudContent::Draft {
+            id: format!("draft-{}", chrono::Utc::now().timestamp_millis()),
+            title: title.into(),
+            text,
+            editable,
+        },
+    );
+}
+
+/// A finished draft the user asked for by voice: typed where the cursor is,
+/// or offered as a card (Copy, and Insert once they click into a field).
+pub fn deliver_draft(app: &AppHandle, text: String, can_insert: bool) {
+    if can_insert {
+        crate::hud::hide(app);
+        let handle = app.clone();
+        std::thread::spawn(move || {
+            std::thread::sleep(Duration::from_millis(150));
+            if let Err(e) = crate::clipboard::paste(text, handle) {
+                log::warn!("inserting the draft failed: {e}");
+            }
+        });
+    } else {
+        show_draft(app, "hud.draft.composed", text, false);
+    }
+}
+
+/// Mail: open a reply to the selected message (Cmd+R) and paste the draft
+/// into it.
+pub fn reply_with(app: &AppHandle, text: String) {
+    let handle = app.clone();
+    std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(150));
+        let opened = handle
+            .try_state::<crate::input::EnigoState>()
+            .and_then(|state| {
+                let mut enigo = state.0.lock().ok()?;
+                use enigo::{Direction, Key, Keyboard};
+                #[cfg(target_os = "macos")]
+                let modifier = Key::Meta;
+                #[cfg(not(target_os = "macos"))]
+                let modifier = Key::Control;
+                enigo.key(modifier, Direction::Press).ok()?;
+                let clicked = enigo.key(Key::Unicode('r'), Direction::Click);
+                std::thread::sleep(Duration::from_millis(30));
+                let _ = enigo.key(modifier, Direction::Release);
+                clicked.ok()
+            })
+            .is_some();
+        if !opened {
+            show_draft(&handle, "hud.draft.composed", text, false);
+            return;
+        }
+        // The reply window needs a moment to open and focus its body.
+        std::thread::sleep(Duration::from_millis(700));
+        if let Err(e) = crate::clipboard::paste(text, handle) {
+            log::warn!("pasting the reply failed: {e}");
+        }
+    });
 }
 
 // ── "Search this instead?" ───────────────────────────────────────────────
@@ -582,4 +807,44 @@ fn on_chip_action(app: &AppHandle, id: &str, action: &str) {
             async move { answer::run(handle, text, true, false, None).await },
         );
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn knows_when_focus_is_not_a_text_field() {
+        let gmail = "https://mail.google.com/mail/u/0/#inbox";
+        assert_eq!(
+            classify_focus(Some("AXTextArea"), true, "", gmail),
+            Some(true)
+        );
+        assert_eq!(
+            classify_focus(Some("AXWebArea"), false, "", gmail),
+            Some(false)
+        );
+        assert_eq!(classify_focus(Some("AXLink"), false, "", ""), Some(false));
+        // Nothing exposed, or an unusual role: can't tell, so type as before.
+        assert_eq!(classify_focus(None, false, "", ""), None);
+        assert_eq!(classify_focus(Some("AXUnknown"), false, "", ""), None);
+        // Canvas editors: never judged by the focused role.
+        assert_eq!(
+            classify_focus(Some("AXWebArea"), false, "Plan - Google Docs", ""),
+            None
+        );
+        assert_eq!(
+            classify_focus(Some("AXGroup"), false, "", "https://www.notion.so/x"),
+            None
+        );
+    }
+
+    #[test]
+    fn only_trusts_focus_where_accessibility_is_reliable() {
+        assert!(focus_is_reliable("com.google.Chrome"));
+        assert!(focus_is_reliable("com.apple.finder"));
+        assert!(!focus_is_reliable("com.figma.Desktop"));
+        assert!(!focus_is_reliable("dev.warp.Warp-Stable"));
+        assert!(!focus_is_reliable("com.apple.Terminal"));
+    }
 }

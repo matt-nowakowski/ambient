@@ -1170,7 +1170,10 @@
       "steppingBack": "ここでは控えます：プライベートな内容のようなので、{{appName}} は読み取りません。",
       "fairUse": "本日のフェアユース上限に達しました。UTCの午前0時にリセットされます。",
       "slowDown": "一度に多くのリクエストが送られています。1分後にもう一度お試しください。",
-      "listening": "聞き取り中…"
+      "listening": "聞き取り中…",
+      "heardNothing": "聞こえましたが、依頼が聞き取れませんでした。",
+      "noWebResults": "今はウェブ検索ができなかったため、知っている範囲で答えています。",
+      "timeout": "時間がかかりすぎました。もう一度お試しください。"
     },
     "undo": "取り消す",
     "close": "閉じる",
@@ -1210,7 +1213,23 @@
       "searchInstead": "入力しました。代わりに検索しますか？",
       "search": "検索"
     },
-    "suggestionTip": "「はい」「今はいい」「これは表示しないで」と言ってください。"
+    "suggestionTip": "「はい」「今はいい」「これは表示しないで」と言ってください。",
+    "replace": "置き換え",
+    "actions": {
+      "reply": "返信",
+      "copyCode": "コードをコピー",
+      "openLink": "リンクを開く",
+      "addToCalendar": "カレンダーに追加"
+    },
+    "draft": {
+      "title": "これを入力するつもりでしたか？",
+      "composed": "下書きです。",
+      "focusHint": "テキストフィールドをクリックすると挿入できます。"
+    },
+    "source": {
+      "searchDrive": "Google ドライブで検索",
+      "searchGmail": "Gmail で検索"
+    }
   },
   "privacy": {
     "title": "プライバシー",

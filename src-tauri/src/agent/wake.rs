@@ -23,6 +23,7 @@ use crate::audio_feedback::{play_feedback_sound, SoundType};
 use crate::hud::{self, HudContent, HudTone};
 use crate::managers::transcription::TranscriptionManager;
 use crate::meeting::capture::Mic;
+use crate::meeting::segmenter::Utterance;
 use crate::meeting::segmenter::{Segmenter, RATE};
 use crate::settings::get_settings;
 
@@ -30,6 +31,10 @@ use crate::settings::get_settings;
 const CHECK_SAMPLES: usize = RATE * 22 / 10; // 2.2 s
 /// After a bare "Hey Ambient", wait this long for the request.
 const FOLLOW_UP: Duration = Duration::from_secs(8);
+/// A spoken reply to a suggestion is short ("yes", "not now").
+const REPLY_SAMPLES: usize = RATE * 3;
+/// The suggestion card's own timeout, plus a little.
+const REPLY_WINDOW: Duration = Duration::from_secs(10);
 
 static RUNNING: AtomicBool = AtomicBool::new(false);
 
@@ -182,6 +187,10 @@ fn listen(app: &AppHandle) {
             if crate::tray::dictation_in_progress(app) {
                 continue; // they're dictating with a key; never interfere
             }
+            // A suggestion is up: "yes" / "not now" answers it, no wake phrase.
+            if heard_reply(app, &tm, &utt) {
+                continue;
+            }
             tm.initiate_model_load();
             if awaiting_request.take().is_some() {
                 // The request after a bare "Hey Ambient".
@@ -198,6 +207,13 @@ fn listen(app: &AppHandle) {
                 continue; // not for us: dropped
             }
             play_feedback_sound(app, SoundType::Start);
+            // Show it was heard at once; the full transcription comes next.
+            hud::show(
+                app,
+                HudContent::Listening {
+                    heard: String::new(),
+                },
+            );
             // Say it in one breath, or pause and then ask.
             let full = if utt.samples.len() > CHECK_SAMPLES {
                 tm.transcribe(utt.samples).unwrap_or(head_text)
@@ -206,17 +222,9 @@ fn listen(app: &AppHandle) {
             };
             match strip_wake(&full).filter(|r| r.split_whitespace().count() >= 2) {
                 Some(request) => handle_request(app, request),
-                None => {
-                    awaiting_request = Some(Instant::now());
-                    hud::show(
-                        app,
-                        HudContent::Status {
-                            text: "hud.status.listening".into(),
-                            tone: HudTone::Neutral,
-                            undo: false,
-                        },
-                    );
-                }
+                // Still listening (the card stays until the request or the
+                // follow-up window ends).
+                None => awaiting_request = Some(Instant::now()),
             }
         }
     }
@@ -227,8 +235,23 @@ fn listen(app: &AppHandle) {
 /// The request goes through the Ask path: answer, act or recall, never typed.
 fn handle_request(app: &AppHandle, text: String) {
     if text.trim().is_empty() {
+        // Heard the name but no request: say so rather than vanish.
+        hud::show(
+            app,
+            HudContent::Status {
+                text: "hud.status.heardNothing".into(),
+                tone: HudTone::Neutral,
+                undo: false,
+            },
+        );
         return;
     }
+    hud::show(
+        app,
+        HudContent::Listening {
+            heard: text.clone(),
+        },
+    );
     super::milestone(app, "wake");
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
@@ -237,6 +260,76 @@ fn handle_request(app: &AppHandle, text: String) {
             super::handle(&app, route);
         }
     });
+}
+
+/// A short utterance while a suggestion waits: answer it if it's a clear
+/// "yes" / "no" / "not now". Transcribed on this Mac; nothing is kept.
+fn heard_reply(app: &AppHandle, tm: &TranscriptionManager, utt: &Utterance) -> bool {
+    if utt.samples.len() > REPLY_SAMPLES
+        || !super::proactive::awaiting_reply()
+        || !tm.is_model_loaded()
+    {
+        return false;
+    }
+    tm.transcribe(utt.samples.clone())
+        .is_ok_and(|text| super::proactive::handle_spoken_reply(app, &text))
+}
+
+static REPLY_LISTENING: AtomicBool = AtomicBool::new(false);
+
+/// While a suggestion card is up, listen for a spoken "yes" / "not now"
+/// without a shortcut. On-device and short-lived: the mic opens only while
+/// the card is visible (≤ 10 s), only when the speech model is already loaded
+/// (no surprise model load), never during dictation or a meeting, and only
+/// short utterances are transcribed and matched against the reply phrases.
+/// Nothing is recorded, stored or sent. With "Hey Ambient" on, its listener
+/// already hears replies, so no second stream is opened.
+pub fn listen_for_reply(app: &AppHandle) {
+    if RUNNING.load(Ordering::SeqCst) || REPLY_LISTENING.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    let tm = app.state::<Arc<TranscriptionManager>>().inner().clone();
+    if !tm.is_model_loaded()
+        || crate::meeting::is_active()
+        || crate::tray::dictation_in_progress(app)
+    {
+        REPLY_LISTENING.store(false, Ordering::SeqCst);
+        return;
+    }
+    let app = app.clone();
+    let spawned = std::thread::Builder::new()
+        .name("ambient-reply".into())
+        .spawn(move || {
+            listen_reply(&app, &tm);
+            REPLY_LISTENING.store(false, Ordering::SeqCst);
+        });
+    if spawned.is_err() {
+        REPLY_LISTENING.store(false, Ordering::SeqCst);
+    }
+}
+
+fn listen_reply(app: &AppHandle, tm: &TranscriptionManager) {
+    let (tx, rx) = mpsc::channel();
+    let Ok(mic) = Mic::start(tx) else { return };
+    let Ok(mut seg) = Segmenter::new() else {
+        mic.stop();
+        return;
+    };
+    let started = Instant::now();
+    'listen: while started.elapsed() < REPLY_WINDOW
+        && super::proactive::awaiting_reply()
+        && !crate::tray::dictation_in_progress(app)
+    {
+        let Ok((_, samples)) = rx.recv_timeout(Duration::from_millis(250)) else {
+            continue;
+        };
+        for utt in seg.push(&samples) {
+            if heard_reply(app, tm, &utt) {
+                break 'listen;
+            }
+        }
+    }
+    mic.stop();
 }
 
 #[cfg(test)]

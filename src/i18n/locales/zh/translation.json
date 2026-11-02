@@ -1170,7 +1170,10 @@
       "steppingBack": "已回避：这里看起来是隐私内容，{{appName}} 不会读取。",
       "fairUse": "你已达到今天的合理使用上限。上限将在 UTC 午夜重置。",
       "slowDown": "同时发出的请求太多。请一分钟后再试。",
-      "listening": "正在聆听…"
+      "listening": "正在聆听…",
+      "heardNothing": "听到了，但没听出具体请求。",
+      "noWebResults": "暂时无法联网搜索，以下内容基于我已知的信息。",
+      "timeout": "耗时太久，请重试。"
     },
     "undo": "撤销",
     "close": "关闭",
@@ -1210,7 +1213,23 @@
       "searchInstead": "已输入。改为搜索这个？",
       "search": "搜索"
     },
-    "suggestionTip": "说“好”“以后再说”或“别给我看这些”。"
+    "suggestionTip": "说“好”“以后再说”或“别给我看这些”。",
+    "replace": "替换",
+    "actions": {
+      "reply": "回复",
+      "copyCode": "复制代码",
+      "openLink": "打开链接",
+      "addToCalendar": "添加到日历"
+    },
+    "draft": {
+      "title": "你是想输入这段文字吗？",
+      "composed": "这是你的草稿。",
+      "focusHint": "点击一个文本框即可插入。"
+    },
+    "source": {
+      "searchDrive": "在 Google 云端硬盘中搜索",
+      "searchGmail": "在 Gmail 中搜索"
+    }
   },
   "privacy": {
     "title": "隐私",

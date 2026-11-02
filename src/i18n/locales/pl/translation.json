@@ -1186,7 +1186,10 @@
       "steppingBack": "Wycofuję się: to wygląda na prywatne, więc {{appName}} tego nie czyta.",
       "fairUse": "Osiągnięto dzisiejszy limit uczciwego użytkowania. Zostanie zresetowany o północy UTC.",
       "slowDown": "To dużo żądań naraz. Spróbuj ponownie za minutę.",
-      "listening": "Słucham…"
+      "listening": "Słucham…",
+      "heardNothing": "Słyszę cię, ale nie wychwyciłem prośby.",
+      "noWebResults": "Nie udało się teraz przeszukać sieci, więc to odpowiedź z mojej wiedzy.",
+      "timeout": "Trwało to zbyt długo. Spróbuj ponownie."
     },
     "undo": "Cofnij",
     "close": "Zamknij",
@@ -1226,7 +1229,23 @@
       "searchInstead": "Wpisano. Wyszukać to zamiast tego?",
       "search": "Szukaj"
     },
-    "suggestionTip": "Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”."
+    "suggestionTip": "Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”.",
+    "replace": "Zastąp",
+    "actions": {
+      "reply": "Odpowiedz",
+      "copyCode": "Kopiuj kod",
+      "openLink": "Otwórz link",
+      "addToCalendar": "Dodaj do kalendarza"
+    },
+    "draft": {
+      "title": "Czy chodziło ci o wpisanie tego?",
+      "composed": "Oto twój szkic.",
+      "focusHint": "Kliknij pole tekstowe, aby go wstawić."
+    },
+    "source": {
+      "searchDrive": "Szukaj na Dysku Google",
+      "searchGmail": "Szukaj w Gmailu"
+    }
   },
   "privacy": {
     "title": "Prywatność",

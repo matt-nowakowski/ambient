@@ -5,7 +5,9 @@
 //! focus from the app you're in, and it's content-protected: invisible in
 //! screen shares and recordings.
 
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::sync::Mutex;
+use std::time::{Duration, Instant};
 
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -20,6 +22,8 @@ const WIDTH: f64 = 440.0;
 const MIN_HEIGHT: f64 = 72.0;
 const MAX_HEIGHT: f64 = 560.0;
 const MARGIN: f64 = 16.0;
+/// How long the card takes to dissolve before the panel is ordered out.
+const CLOSE_MS: u64 = 200;
 
 #[cfg(target_os = "macos")]
 tauri_panel! {
@@ -45,6 +49,12 @@ pub enum HudContent {
         /// Offer Replace (select the field's text, paste over it) instead of
         /// Insert: for rewritten drafts.
         replace: bool,
+        /// What the card offers once done, chosen from where the user is and
+        /// what the answer contains (see `agent::answer::actions_for`).
+        actions: Vec<HudAnswerAction>,
+        /// An i18n key for a quiet line under the answer (e.g. the web search
+        /// failed, so this is from what the model knows).
+        note: Option<String>,
     },
     /// A proactive suggestion: one line, accept or dismiss.
     Suggestion {
@@ -66,12 +76,77 @@ pub enum HudContent {
         steps: Vec<String>,
         done: bool,
     },
+    /// Heard and working: "Listening…" while `heard` is empty, then
+    /// "Thinking…" under what was heard. No timeout; replaced by the result.
+    Listening { heard: String },
+    /// Text that had nowhere to go: dictation with no text field focused, or
+    /// a drafted reply. Copy always; Insert once a text field has focus.
+    Draft {
+        id: String,
+        /// i18n key of the heading.
+        title: String,
+        text: String,
+        editable: bool,
+    },
+    /// "What can I say?": examples from the help sheet.
+    Help,
+}
+
+impl HudContent {
+    /// Short name of the card, for click-outside and focus handling.
+    pub fn kind(&self) -> &'static str {
+        match self {
+            HudContent::Answer { .. } => "answer",
+            HudContent::Suggestion { .. } => "suggestion",
+            HudContent::Status { .. } => "status",
+            HudContent::Steps { .. } => "steps",
+            HudContent::Listening { .. } => "listening",
+            HudContent::Draft { .. } => "draft",
+            HudContent::Help => "help",
+        }
+    }
+
+    fn id(&self) -> String {
+        match self {
+            HudContent::Answer { id, .. }
+            | HudContent::Suggestion { id, .. }
+            | HudContent::Steps { id, .. }
+            | HudContent::Draft { id, .. } => id.clone(),
+            _ => String::new(),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]
 pub struct HudSource {
     pub title: String,
     pub url: String,
+}
+
+/// One action button on a finished answer. `kind` is one of `insert`,
+/// `replace`, `copy`, `copy_code`, `open_link`, `add_to_calendar`, `reply`;
+/// `value` carries what it acts on when that isn't the whole answer (the
+/// link, the code block).
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct HudAnswerAction {
+    pub kind: String,
+    pub value: Option<String>,
+}
+
+impl HudAnswerAction {
+    pub fn new(kind: &str) -> Self {
+        Self {
+            kind: kind.into(),
+            value: None,
+        }
+    }
+
+    pub fn with(kind: &str, value: String) -> Self {
+        Self {
+            kind: kind.into(),
+            value: Some(value),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, Type)]
@@ -84,6 +159,7 @@ pub enum HudTone {
 
 /// Create the HUD hidden; shown on demand.
 pub fn create(app: &AppHandle) {
+    start_watcher(app);
     #[cfg(target_os = "macos")]
     {
         let result = PanelBuilder::<_, AgentHudPanel>::new(app, LABEL)
@@ -186,10 +262,11 @@ fn hold_escape(app: &AppHandle) {
     }
     let registered = gs.on_shortcut(escape(), |app, _, event| {
         if event.state == ShortcutState::Pressed {
+            let id = current().map(|c| c.id()).unwrap_or_default();
             let _ = app.emit(
                 "hud-action",
                 HudActionEvent {
-                    id: String::new(),
+                    id,
                     action: "dismiss".into(),
                 },
             );
@@ -208,8 +285,31 @@ pub fn release_escape(app: &AppHandle) {
     }
 }
 
+/// What the HUD shows right now (None while hidden).
+static CURRENT: Mutex<Option<HudContent>> = Mutex::new(None);
+/// Bumped by every show and hide, so a delayed order-out never hides a card
+/// that was shown after the close began.
+static GENERATION: AtomicU64 = AtomicU64::new(0);
+
+/// The card on screen, if any.
+pub fn current() -> Option<HudContent> {
+    CURRENT.lock().ok().and_then(|g| g.clone())
+}
+
+/// An answer card (or the help card) is on screen, so what the user says
+/// next is probably a follow-up.
+pub fn showing_answer() -> bool {
+    is_visible()
+        && current().is_some_and(|c| matches!(c, HudContent::Answer { .. } | HudContent::Help))
+}
+
 /// Show (or update) the HUD. Safe to call from any thread.
 pub fn show(app: &AppHandle, content: HudContent) {
+    GENERATION.fetch_add(1, Ordering::SeqCst);
+    if let Ok(mut g) = CURRENT.lock() {
+        *g = Some(content.clone());
+    }
+    VISIBLE.store(true, Ordering::SeqCst);
     let handle = app.clone();
     let _ = app.run_on_main_thread(move || {
         if handle.get_webview_window(LABEL).is_none() {
@@ -219,23 +319,194 @@ pub fn show(app: &AppHandle, content: HudContent) {
         if let Some(w) = handle.get_webview_window(LABEL) {
             if !w.is_visible().unwrap_or(false) {
                 place(&handle, MIN_HEIGHT);
-                let _ = w.show();
+                order_front(&handle, &w);
             }
         }
         hold_escape(&handle);
-        VISIBLE.store(true, Ordering::SeqCst);
     });
 }
 
+/// Bring the panel up without activating Ambient: `orderFrontRegardless` on
+/// the non-activating panel rather than `WebviewWindow::show`, which calls
+/// `makeKeyAndOrderFront` and can pull the app (and with it the main window)
+/// forward over the app the user is acting in.
+fn order_front(app: &AppHandle, w: &tauri::WebviewWindow) {
+    #[cfg(target_os = "macos")]
+    {
+        use tauri_nspanel::ManagerExt;
+        if let Ok(panel) = app.get_webview_panel(LABEL) {
+            panel.show();
+            return;
+        }
+    }
+    let _ = app;
+    let _ = w.show();
+}
+
+/// Close the HUD: the card dissolves (the HUD webview animates it out on
+/// `hud-close`), then the panel is ordered out.
 pub fn hide(app: &AppHandle) {
     release_escape(app);
     VISIBLE.store(false, Ordering::SeqCst);
+    if let Ok(mut g) = CURRENT.lock() {
+        *g = None;
+    }
+    let generation = GENERATION.fetch_add(1, Ordering::SeqCst) + 1;
+    let _ = app.emit_to(LABEL, "hud-close", ());
     let handle = app.clone();
-    let _ = app.run_on_main_thread(move || {
-        if let Some(w) = handle.get_webview_window(LABEL) {
-            let _ = w.hide();
+    std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(CLOSE_MS));
+        if GENERATION.load(Ordering::SeqCst) != generation {
+            return; // shown again meanwhile
         }
+        let h = handle.clone();
+        let _ = handle.run_on_main_thread(move || {
+            if GENERATION.load(Ordering::SeqCst) != generation {
+                return;
+            }
+            if let Some(w) = h.get_webview_window(LABEL) {
+                let _ = w.hide();
+            }
+        });
     });
+}
+
+// ── Click outside, and the draft card's Insert ──────────────────────────
+//
+// The panel never becomes key, so it can't see clicks elsewhere. While the
+// HUD is up, a light poll of the mouse button state (no event tap, no extra
+// permission) notices a press outside the card: answers and help dissolve; a
+// draft card instead re-checks whether a text field now has focus, so it can
+// offer Insert.
+
+static WATCHING: AtomicBool = AtomicBool::new(false);
+
+fn start_watcher(app: &AppHandle) {
+    if WATCHING.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    let app = app.clone();
+    let spawned = std::thread::Builder::new()
+        .name("hud-watch".into())
+        .spawn(move || watch(app));
+    if let Err(e) = spawned {
+        log::warn!("HUD click watcher didn't start: {e}");
+    }
+}
+
+#[cfg(target_os = "macos")]
+fn mouse_down() -> bool {
+    #[link(name = "CoreGraphics", kind = "framework")]
+    extern "C" {
+        fn CGEventSourceButtonState(state: i32, button: u32) -> bool;
+    }
+    // kCGEventSourceStateCombinedSessionState; left and right buttons.
+    unsafe { CGEventSourceButtonState(0, 0) || CGEventSourceButtonState(0, 1) }
+}
+
+#[cfg(not(target_os = "macos"))]
+fn mouse_down() -> bool {
+    false
+}
+
+/// Whether the cursor is over the HUD panel (physical pixels).
+fn cursor_inside(app: &AppHandle) -> bool {
+    let Some(w) = app.get_webview_window(LABEL) else {
+        return false;
+    };
+    let (Ok(cursor), Ok(pos), Ok(size)) =
+        (app.cursor_position(), w.outer_position(), w.outer_size())
+    else {
+        return true; // unknown: never dismiss on a guess
+    };
+    let (x, y) = (f64::from(pos.x), f64::from(pos.y));
+    cursor.x >= x
+        && cursor.x <= x + f64::from(size.width)
+        && cursor.y >= y
+        && cursor.y <= y + f64::from(size.height)
+}
+
+#[derive(Debug, PartialEq, Eq)]
+enum ClickOutside {
+    Dismiss,
+    RecheckFocus,
+    Ignore,
+}
+
+/// What a press outside the card does to each kind of card. Suggestions and
+/// status lines leave on their own timers; steps have Stop.
+fn on_click_outside(kind: &str) -> ClickOutside {
+    match kind {
+        "answer" | "help" => ClickOutside::Dismiss,
+        "draft" => ClickOutside::RecheckFocus,
+        _ => ClickOutside::Ignore,
+    }
+}
+
+fn watch(app: AppHandle) {
+    let mut was_down = false;
+    let mut recheck_at: Option<Instant> = None;
+    let mut last_focus_check = Instant::now();
+    loop {
+        let visible = is_visible();
+        std::thread::sleep(Duration::from_millis(if visible { 40 } else { 200 }));
+        if !visible {
+            was_down = false;
+            recheck_at = None;
+            continue;
+        }
+        let Some(card) = current() else { continue };
+        let down = mouse_down();
+        let pressed = down && !was_down;
+        was_down = down;
+        if pressed && !cursor_inside(&app) {
+            match on_click_outside(card.kind()) {
+                ClickOutside::Dismiss => {
+                    let _ = app.emit(
+                        "hud-action",
+                        HudActionEvent {
+                            id: card.id(),
+                            action: "dismiss".into(),
+                        },
+                    );
+                    hide(&app);
+                    continue;
+                }
+                // Focus moves on mouse-up; look shortly after.
+                ClickOutside::RecheckFocus => {
+                    recheck_at = Some(Instant::now() + Duration::from_millis(250));
+                }
+                ClickOutside::Ignore => {}
+            }
+        }
+        // A draft card follows focus: Insert appears once a field has it.
+        if let HudContent::Draft {
+            id,
+            title,
+            text,
+            editable,
+        } = card
+        {
+            let due = recheck_at.is_some_and(|t| Instant::now() >= t)
+                || last_focus_check.elapsed() > Duration::from_millis(700);
+            if due {
+                recheck_at = None;
+                last_focus_check = Instant::now();
+                let now = crate::agent::can_insert_here();
+                if now != editable {
+                    show(
+                        &app,
+                        HudContent::Draft {
+                            id,
+                            title,
+                            text,
+                            editable: now,
+                        },
+                    );
+                }
+            }
+        }
+    }
 }
 
 /// The HUD reports its content height so the panel hugs the card.
@@ -252,9 +523,28 @@ pub fn hud_hide(app: AppHandle) {
     hide(&app);
 }
 
+/// Paste `text` into the app the user is in, after the HUD has gone (the HUD
+/// never takes focus, so that app is still frontmost).
+fn paste_later(app: &AppHandle, text: String, select_all: bool) {
+    let handle = app.clone();
+    std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(150));
+        if select_all {
+            if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
+                if let Ok(mut enigo) = state.0.lock() {
+                    let _ = crate::input::send_select_all(&mut enigo);
+                }
+            }
+            std::thread::sleep(Duration::from_millis(80));
+        }
+        if let Err(e) = crate::clipboard::paste(text, handle) {
+            log::warn!("HUD paste failed: {e}");
+        }
+    });
+}
+
 /// What the user did in the HUD. `insert` pastes `text` into the app they were
-/// in (the HUD never takes focus, so that app is still frontmost); the rest
-/// are forwarded to whichever agent flow owns `id`.
+/// in; the rest are forwarded to whichever agent flow owns `id`.
 #[tauri::command]
 #[specta::specta]
 pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<String>) {
@@ -262,32 +552,26 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
         "insert" => {
             hide(&app);
             if let Some(text) = text {
-                let handle = app.clone();
-                std::thread::spawn(move || {
-                    // Let the hide settle so the paste lands in the user's app.
-                    std::thread::sleep(std::time::Duration::from_millis(120));
-                    if let Err(e) = crate::clipboard::paste(text, handle) {
-                        log::warn!("HUD insert failed: {e}");
-                    }
-                });
+                paste_later(&app, text, false);
             }
         }
         "replace" => {
             hide(&app);
             if let Some(text) = text {
-                let handle = app.clone();
-                std::thread::spawn(move || {
-                    std::thread::sleep(std::time::Duration::from_millis(150));
-                    if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
-                        if let Ok(mut enigo) = state.0.lock() {
-                            let _ = crate::input::send_select_all(&mut enigo);
-                        }
-                    }
-                    std::thread::sleep(std::time::Duration::from_millis(80));
-                    if let Err(e) = crate::clipboard::paste(text, handle) {
-                        log::warn!("HUD replace failed: {e}");
-                    }
-                });
+                paste_later(&app, text, true);
+            }
+        }
+        // Mail: open a reply to the message in front, then paste the draft.
+        "reply" => {
+            hide(&app);
+            if let Some(text) = text {
+                crate::agent::reply_with(&app, text);
+            }
+        }
+        // A date in the answer: pull the event out and add it.
+        "add_to_calendar" => {
+            if let Some(text) = text {
+                crate::agent::proactive::add_answer_to_calendar(&app, text);
             }
         }
         // Sources: web links in the browser, local files (Spotlight results) in
@@ -342,4 +626,18 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
 pub struct HudActionEvent {
     pub id: String,
     pub action: String,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn click_outside_dismisses_answers_but_keeps_drafts() {
+        assert_eq!(on_click_outside("answer"), ClickOutside::Dismiss);
+        assert_eq!(on_click_outside("help"), ClickOutside::Dismiss);
+        assert_eq!(on_click_outside("draft"), ClickOutside::RecheckFocus);
+        assert_eq!(on_click_outside("suggestion"), ClickOutside::Ignore);
+        assert_eq!(on_click_outside("listening"), ClickOutside::Ignore);
+    }
 }

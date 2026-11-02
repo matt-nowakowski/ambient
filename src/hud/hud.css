@@ -40,11 +40,12 @@
   background: var(--h-surface);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
+  /* Hairlines only: an outer drop shadow is clipped by the panel's edge. */
   box-shadow:
     inset 0 0 0 0.5px rgba(255, 255, 255, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 10px 30px rgba(0, 0, 0, 0.35);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  transform-origin: top right;
 }
 
 .hud-head {
@@ -87,30 +88,49 @@
   gap: 6px;
 }
 
-.hud-sources button {
+.hud-sources li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* One line, even padding all round; long titles end in an ellipsis inside
+   the label, never against the chip's edge. */
+.hud-chip {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  max-width: 190px;
-  padding: 3px 8px 3px 4px;
+  max-width: 200px;
+  height: 22px;
+  padding: 0 8px 0 4px;
   border: 0;
   border-radius: 7px;
   background: var(--h-raise);
   color: var(--h-muted);
   font: inherit;
   font-size: 11px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 400;
+  line-height: 1;
+}
+
+button.hud-chip {
   cursor: pointer;
 }
 
-.hud-sources button:hover {
+button.hud-chip:hover {
   background: var(--h-raise-hover);
   color: var(--h-ink);
 }
 
+.hud-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .hud-source-n {
+  flex: none;
   display: inline-grid;
   place-items: center;
   width: 15px;
@@ -118,6 +138,53 @@
   border-radius: 4px;
   background: var(--h-hair);
   font-size: 10px;
+}
+
+.hud-note {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--h-faint);
+}
+
+.hud-listening {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hud-listening-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.hud-help {
+  margin-top: 10px;
+  max-height: 340px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.hud-help h3 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--h-faint);
+}
+
+.hud-help ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 3px;
+  font-size: 12.5px;
+  font-weight: 380;
+  line-height: 1.5;
 }
 
 .hud-actions {

@@ -1586,13 +1586,20 @@ language_source: LanguageSource | null }
 export type HistoryUpdatePayload = { action: "added"; entry: HistoryEntry } | { action: "updated"; entry: HistoryEntry } | { action: "deleted"; id: number } | { action: "toggled"; id: number }
 export type HudActionEvent = { id: string; action: string }
 /**
+ * One action button on a finished answer. `kind` is one of `insert`,
+ * `replace`, `copy`, `copy_code`, `open_link`, `add_to_calendar`, `reply`;
+ * `value` carries what it acts on when that isn't the whole answer (the
+ * link, the code block).
+ */
+export type HudAnswerAction = { kind: string; value: string | null }
+/**
  * What the HUD is showing. Sent to the HUD window as the `hud` event.
  */
 export type HudContent = 
 /**
  * The answer card. `text` grows as the answer streams in.
  */
-{ kind: "answer"; id: string; question: string; text: string; sources: HudSource[]; done: boolean; replace: boolean } | 
+{ kind: "answer"; id: string; question: string; text: string; sources: HudSource[]; done: boolean; replace: boolean; actions: HudAnswerAction[]; note: string | null } | 
 /**
  * A proactive suggestion: one line, accept or dismiss.
  */
@@ -1605,7 +1612,21 @@ export type HudContent =
 /**
  * Acting progress.
  */
-{ kind: "steps"; id: string; title: string; steps: string[]; done: boolean }
+{ kind: "steps"; id: string; title: string; steps: string[]; done: boolean } | 
+/**
+ * Heard and working: "Listening…" while `heard` is empty, then
+ * "Thinking…" under what was heard. No timeout; replaced by the result.
+ */
+{ kind: "listening"; heard: string } | 
+/**
+ * Text that had nowhere to go: dictation with no text field focused, or
+ * a drafted reply. Copy always; Insert once a text field has focus.
+ */
+{ kind: "draft"; id: string; title: string; text: string; editable: boolean } | 
+/**
+ * "What can I say?": examples from the help sheet.
+ */
+{ kind: "help" }
 export type HudSource = { title: string; url: string }
 export type HudTone = "neutral" | "success" | "error"
 /**

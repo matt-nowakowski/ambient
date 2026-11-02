@@ -1170,7 +1170,10 @@
       "steppingBack": "Ik doe een stap terug: dit lijkt privé, dus {{appName}} leest het niet.",
       "fairUse": "Je hebt de fair-uselimiet van vandaag bereikt. Die wordt om middernacht UTC gereset.",
       "slowDown": "Dat zijn veel verzoeken tegelijk. Probeer het over een minuut opnieuw.",
-      "listening": "Luistert…"
+      "listening": "Luistert…",
+      "heardNothing": "Gehoord, maar geen verzoek opgevangen.",
+      "noWebResults": "Zoeken op het web lukte nu niet, dus dit is wat ik weet.",
+      "timeout": "Dat duurde te lang. Probeer het opnieuw."
     },
     "undo": "Ongedaan maken",
     "close": "Sluiten",
@@ -1210,7 +1213,23 @@
       "searchInstead": "Getypt. In plaats daarvan hierop zoeken?",
       "search": "Zoeken"
     },
-    "suggestionTip": "Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’."
+    "suggestionTip": "Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’.",
+    "replace": "Vervangen",
+    "actions": {
+      "reply": "Beantwoorden",
+      "copyCode": "Code kopiëren",
+      "openLink": "Link openen",
+      "addToCalendar": "Aan agenda toevoegen"
+    },
+    "draft": {
+      "title": "Wilde je dit typen?",
+      "composed": "Hier is je concept.",
+      "focusHint": "Klik in een tekstveld om het in te voegen."
+    },
+    "source": {
+      "searchDrive": "Zoeken in Google Drive",
+      "searchGmail": "Zoeken in Gmail"
+    }
   },
   "privacy": {
     "title": "Privacy",

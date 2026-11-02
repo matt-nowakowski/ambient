@@ -1170,7 +1170,10 @@
       "steppingBack": "Stepping back: this looks private, so {{appName}} isn't reading it.",
       "fairUse": "You've reached today's fair-use limit. It resets at midnight UTC.",
       "slowDown": "That's a lot of requests at once. Try again in a minute.",
-      "listening": "Listening…"
+      "listening": "Listening…",
+      "heardNothing": "Heard you, but didn't catch a request.",
+      "noWebResults": "Couldn't search the web just now, so this is from what I know.",
+      "timeout": "That took too long. Try again."
     },
     "undo": "Undo",
     "close": "Close",
@@ -1210,7 +1213,23 @@
       "searchInstead": "Typed it. Search this instead?",
       "search": "Search"
     },
-    "suggestionTip": "Say “yes”, “not now” or “don't show me these”."
+    "suggestionTip": "Say “yes”, “not now” or “don't show me these”.",
+    "replace": "Replace",
+    "actions": {
+      "reply": "Reply",
+      "copyCode": "Copy code",
+      "openLink": "Open link",
+      "addToCalendar": "Add to calendar"
+    },
+    "draft": {
+      "title": "Did you mean to type this?",
+      "composed": "Here's your draft.",
+      "focusHint": "Click into a text field to insert it."
+    },
+    "source": {
+      "searchDrive": "Search Google Drive",
+      "searchGmail": "Search Gmail"
+    }
   },
   "privacy": {
     "title": "Privacy",

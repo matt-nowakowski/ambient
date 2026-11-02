@@ -1178,7 +1178,10 @@
       "steppingBack": "Me hago a un lado: esto parece privado, así que {{appName}} no lo lee.",
       "fairUse": "Has alcanzado el límite de uso razonable de hoy. Se restablece a medianoche UTC.",
       "slowDown": "Son muchas peticiones a la vez. Vuelve a intentarlo en un minuto.",
-      "listening": "Escuchando…"
+      "listening": "Escuchando…",
+      "heardNothing": "Te he oído, pero no he entendido la petición.",
+      "noWebResults": "Ahora no pude buscar en la web, así que esto es lo que sé.",
+      "timeout": "Ha tardado demasiado. Inténtalo de nuevo."
     },
     "undo": "Deshacer",
     "close": "Cerrar",
@@ -1218,7 +1221,23 @@
       "searchInstead": "Escrito. ¿Buscarlo en su lugar?",
       "search": "Buscar"
     },
-    "suggestionTip": "Di «sí», «ahora no» o «no me muestres esto»."
+    "suggestionTip": "Di «sí», «ahora no» o «no me muestres esto».",
+    "replace": "Reemplazar",
+    "actions": {
+      "reply": "Responder",
+      "copyCode": "Copiar código",
+      "openLink": "Abrir enlace",
+      "addToCalendar": "Añadir al calendario"
+    },
+    "draft": {
+      "title": "¿Querías escribir esto?",
+      "composed": "Aquí tienes el borrador.",
+      "focusHint": "Haz clic en un campo de texto para insertarlo."
+    },
+    "source": {
+      "searchDrive": "Buscar en Google Drive",
+      "searchGmail": "Buscar en Gmail"
+    }
   },
   "privacy": {
     "title": "Privacidad",

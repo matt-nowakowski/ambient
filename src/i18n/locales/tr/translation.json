@@ -1170,7 +1170,10 @@
       "steppingBack": "Geri çekiliyorum: bu özel görünüyor, bu yüzden {{appName}} okumuyor.",
       "fairUse": "Bugünkü adil kullanım sınırına ulaştınız. Gece yarısı UTC’de sıfırlanır.",
       "slowDown": "Aynı anda çok fazla istek var. Bir dakika sonra tekrar deneyin.",
-      "listening": "Dinliyor…"
+      "listening": "Dinliyor…",
+      "heardNothing": "Duydum ama bir istek anlayamadım.",
+      "noWebResults": "Şu an web'de arama yapılamadı, bu yüzden bildiklerimle yanıtlıyorum.",
+      "timeout": "Çok uzun sürdü. Tekrar deneyin."
     },
     "undo": "Geri al",
     "close": "Kapat",
@@ -1210,7 +1213,23 @@
       "searchInstead": "Yazıldı. Bunun yerine bunu aratayım mı?",
       "search": "Ara"
     },
-    "suggestionTip": "“Evet”, “şimdi değil” veya “bunları gösterme” deyin."
+    "suggestionTip": "“Evet”, “şimdi değil” veya “bunları gösterme” deyin.",
+    "replace": "Değiştir",
+    "actions": {
+      "reply": "Yanıtla",
+      "copyCode": "Kodu kopyala",
+      "openLink": "Bağlantıyı aç",
+      "addToCalendar": "Takvime ekle"
+    },
+    "draft": {
+      "title": "Bunu mu yazmak istediniz?",
+      "composed": "İşte taslağınız.",
+      "focusHint": "Eklemek için bir metin alanına tıklayın."
+    },
+    "source": {
+      "searchDrive": "Google Drive'da ara",
+      "searchGmail": "Gmail'de ara"
+    }
   },
   "privacy": {
     "title": "Gizlilik",

@@ -1170,7 +1170,10 @@
       "steppingBack": "已迴避：這裡看起來是隱私內容，{{appName}} 不會讀取。",
       "fairUse": "你已達到今天的合理使用上限。上限將在 UTC 午夜重設。",
       "slowDown": "同時送出的請求太多。請一分鐘後再試。",
-      "listening": "正在聆聽…"
+      "listening": "正在聆聽…",
+      "heardNothing": "聽到了，但沒聽出具體要求。",
+      "noWebResults": "暫時無法上網搜尋，以下內容根據我已知的資訊。",
+      "timeout": "花太久了，請再試一次。"
     },
     "undo": "還原",
     "close": "關閉",
@@ -1210,7 +1213,23 @@
       "searchInstead": "已輸入。改為搜尋這個？",
       "search": "搜尋"
     },
-    "suggestionTip": "說「好」「稍後再說」或「別給我看這些」。"
+    "suggestionTip": "說「好」「稍後再說」或「別給我看這些」。",
+    "replace": "取代",
+    "actions": {
+      "reply": "回覆",
+      "copyCode": "複製程式碼",
+      "openLink": "開啟連結",
+      "addToCalendar": "加入行事曆"
+    },
+    "draft": {
+      "title": "你是想輸入這段文字嗎？",
+      "composed": "這是你的草稿。",
+      "focusHint": "點一下文字欄位即可插入。"
+    },
+    "source": {
+      "searchDrive": "在 Google 雲端硬碟中搜尋",
+      "searchGmail": "在 Gmail 中搜尋"
+    }
   },
   "privacy": {
     "title": "隱私",

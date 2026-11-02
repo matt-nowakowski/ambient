@@ -1170,7 +1170,10 @@
       "steppingBack": "Ich halte mich raus: Das wirkt privat, daher liest {{appName}} es nicht.",
       "fairUse": "Du hast das heutige Fair-Use-Limit erreicht. Es wird um Mitternacht UTC zurückgesetzt.",
       "slowDown": "Das sind sehr viele Anfragen auf einmal. Versuch es in einer Minute noch einmal.",
-      "listening": "Hört zu…"
+      "listening": "Hört zu…",
+      "heardNothing": "Gehört, aber keine Anfrage verstanden.",
+      "noWebResults": "Die Websuche hat gerade nicht geklappt, daher ist das aus meinem Wissen.",
+      "timeout": "Das hat zu lange gedauert. Versuch es noch einmal."
     },
     "undo": "Rückgängig",
     "close": "Schließen",
@@ -1210,7 +1213,23 @@
       "searchInstead": "Getippt. Stattdessen danach suchen?",
       "search": "Suchen"
     },
-    "suggestionTip": "Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“."
+    "suggestionTip": "Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“.",
+    "replace": "Ersetzen",
+    "actions": {
+      "reply": "Antworten",
+      "copyCode": "Code kopieren",
+      "openLink": "Link öffnen",
+      "addToCalendar": "Zum Kalender hinzufügen"
+    },
+    "draft": {
+      "title": "Wolltest du das tippen?",
+      "composed": "Hier ist dein Entwurf.",
+      "focusHint": "Klicke in ein Textfeld, um ihn einzufügen."
+    },
+    "source": {
+      "searchDrive": "In Google Drive suchen",
+      "searchGmail": "In Gmail suchen"
+    }
   },
   "privacy": {
     "title": "Datenschutz",

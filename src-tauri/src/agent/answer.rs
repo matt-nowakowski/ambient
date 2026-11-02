@@ -5,17 +5,25 @@ use std::sync::Mutex;
 use std::time::{Duration, Instant};
 
 use futures_util::StreamExt;
+use once_cell::sync::Lazy;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 
 use super::llm;
 use crate::context::{self, redact::redact};
-use crate::hud::{self, HudContent, HudSource, HudTone};
+use crate::hud::{self, HudAnswerAction, HudContent, HudSource, HudTone};
 use crate::settings::get_settings;
 
 /// Follow-ups ("make it shorter") within this window continue the last answer.
 const FOLLOW_UP_WINDOW: Duration = Duration::from_secs(90);
 const CONTEXT_CHARS: usize = 6000;
+/// Waiting for the server to start answering (a web search runs first).
+const FIRST_BYTE_TIMEOUT: Duration = Duration::from_secs(25);
+/// Longest silence mid-answer before it counts as interrupted.
+const STREAM_IDLE_TIMEOUT: Duration = Duration::from_secs(20);
+/// A screen capture taken while the router decided is good for this long.
+const PREFETCH_FRESH: Duration = Duration::from_secs(5);
 
 #[derive(Serialize, Deserialize, Clone)]
 struct Source {
@@ -40,6 +48,17 @@ struct Conversation {
 
 static LAST: Mutex<Option<Conversation>> = Mutex::new(None);
 
+/// One HTTP client for every answer, so follow-ups reuse the open connection
+/// instead of paying DNS + TLS again.
+static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
+    reqwest::Client::builder()
+        .connect_timeout(Duration::from_secs(6))
+        .pool_idle_timeout(Duration::from_secs(90))
+        .tcp_keepalive(Duration::from_secs(30))
+        .build()
+        .unwrap_or_default()
+});
+
 /// Base URL for our server. Debug builds can point at a local dev server.
 pub fn api_base() -> String {
     #[cfg(debug_assertions)]
@@ -49,8 +68,26 @@ pub fn api_base() -> String {
     env!("BRAND_API_BASE_URL").to_string()
 }
 
-/// Text of the window the user is asking about, if they've allowed it.
-fn screen_text(app: &AppHandle) -> Option<String> {
+/// The last question and answer, while a follow-up would still continue it.
+pub fn last_turn() -> Option<(String, String)> {
+    let g = LAST.lock().ok()?;
+    let c = g.as_ref().filter(|c| c.at.elapsed() < FOLLOW_UP_WINDOW)?;
+    c.turns.last().map(|t| (t.q.clone(), t.a.clone()))
+}
+
+/// The window a question is about: its text for the model, and a chip so the
+/// user sees what was read.
+#[derive(Clone)]
+struct Screen {
+    pid: i32,
+    text: String,
+    source: Option<HudSource>,
+}
+
+static PREFETCH: Mutex<Option<(Instant, Screen)>> = Mutex::new(None);
+
+/// Read the window in front, if the user has allowed it. Blocking (AX).
+fn capture_screen(app: &AppHandle) -> Option<Screen> {
     let agent = get_settings(app).agent;
     if !agent.screen_context || agent.is_paused() {
         return None;
@@ -58,10 +95,56 @@ fn screen_text(app: &AppHandle) -> Option<String> {
     let snap = context::snapshot(CONTEXT_CHARS, &agent.never_watch).ok()?;
     let text = snap
         .selection
+        .clone()
         .filter(|s| s.trim().len() > 20)
-        .or(snap.text)?;
+        .or(snap.text.clone())?;
     let header = format!("{} — {}", snap.app.name, snap.window_title);
-    Some(format!("{header}\n{}", redact(&text).0))
+    let url = snap
+        .url
+        .clone()
+        .filter(|u| u.starts_with("https://") || u.starts_with("http://"))
+        .unwrap_or_default();
+    let title = if snap.window_title.trim().is_empty() {
+        snap.app.name.clone()
+    } else {
+        snap.window_title.clone()
+    };
+    Some(Screen {
+        pid: snap.app.pid,
+        text: format!("{header}\n{}", redact(&text).0),
+        source: (!title.trim().is_empty()).then_some(HudSource { title, url }),
+    })
+}
+
+/// Start reading the window in front while the router is still deciding, so
+/// an answer about the screen doesn't wait for it afterwards. Stays in memory
+/// for a few seconds and is only sent if the answer needs it.
+pub fn prefetch_screen(app: &AppHandle) {
+    let app = app.clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        if let Some(screen) = capture_screen(&app) {
+            if let Ok(mut g) = PREFETCH.lock() {
+                *g = Some((Instant::now(), screen));
+            }
+        }
+    });
+}
+
+/// The window in front: the prefetched capture if it's fresh and still the
+/// same app, otherwise a new one.
+async fn screen(app: &AppHandle) -> Option<Screen> {
+    let cached = PREFETCH.lock().ok().and_then(|mut g| g.take());
+    let front = context::frontmost_app().map(|f| f.pid);
+    if let Some((at, s)) = cached {
+        if at.elapsed() < PREFETCH_FRESH && front == Some(s.pid) {
+            return Some(s);
+        }
+    }
+    let app = app.clone();
+    tauri::async_runtime::spawn_blocking(move || capture_screen(&app))
+        .await
+        .ok()
+        .flatten()
 }
 
 /// How an answer card behaves beyond the question itself.
@@ -74,6 +157,9 @@ pub struct Opts {
     /// Extra links shown with the sources, e.g. searches in the user's own
     /// logged-in Drive or Gmail (no accounts connected).
     pub links: Vec<(String, String)>,
+    /// A drafted reply the user asked for by voice: inserted where the cursor
+    /// is when done, or offered as a draft when nothing has focus.
+    pub compose: bool,
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -96,6 +182,68 @@ pub async fn run(
     .await
 }
 
+/// What the card offers once an answer is done.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct Situation {
+    /// A text field in the user's app has focus (or we can't tell).
+    pub can_insert: bool,
+    /// Apple Mail is in front: a reply window can be opened for them.
+    pub in_mail: bool,
+    pub write: bool,
+    pub replace: bool,
+}
+
+static CODE_BLOCK: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?s)```[\w+-]*\n?(.*?)```").expect("code block"));
+static LINK: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r#"https?://[^\s<>()\[\]"']+[^\s<>()\[\]"'.,;:!?]"#).expect("link"));
+
+/// The actions an answer earns: Insert only when a text field has focus,
+/// Reply in Mail for drafts, Copy code for code, Open for a link, Add to
+/// calendar for a date or time. Copy is always there. The first is primary.
+pub fn actions_for(text: &str, s: Situation) -> Vec<HudAnswerAction> {
+    let mut out = Vec::new();
+    if s.can_insert {
+        out.push(HudAnswerAction::new(if s.replace {
+            "replace"
+        } else {
+            "insert"
+        }));
+    } else if s.write && s.in_mail {
+        out.push(HudAnswerAction::new("reply"));
+    }
+    out.push(HudAnswerAction::new("copy"));
+    if let Some(code) = CODE_BLOCK
+        .captures(text)
+        .and_then(|c| c.get(1))
+        .map(|m| m.as_str().trim_end().to_string())
+        .filter(|c| !c.trim().is_empty())
+    {
+        out.push(HudAnswerAction::with("copy_code", code));
+    }
+    if let Some(link) = LINK.find(text) {
+        out.push(HudAnswerAction::with(
+            "open_link",
+            link.as_str().to_string(),
+        ));
+    }
+    if !s.write && super::proactive::mentions_date(text) {
+        out.push(HudAnswerAction::new("add_to_calendar"));
+    }
+    out
+}
+
+fn to_chips(sources: &[Source]) -> Vec<HudSource> {
+    sources
+        .iter()
+        .filter(|s| super::personal::is_meaningful_source(&s.title, &s.url))
+        .map(|s| HudSource {
+            title: s.title.clone(),
+            url: s.url.clone(),
+        })
+        .collect()
+}
+
 pub async fn run_with(
     app: AppHandle,
     question: String,
@@ -105,6 +253,50 @@ pub async fn run_with(
     opts: Opts,
 ) {
     let id = format!("answer-{}", chrono::Utc::now().timestamp_millis());
+    let extra: Vec<Source> = opts
+        .links
+        .iter()
+        .map(|(title, url)| Source {
+            title: title.clone(),
+            url: url.clone(),
+            excerpt: String::new(),
+        })
+        .collect();
+    // The window that was read, shown as the first chip.
+    let window_chip: Mutex<Option<HudSource>> = Mutex::new(None);
+    let show_full = |text: &str,
+                     sources: &[Source],
+                     done: bool,
+                     actions: Vec<HudAnswerAction>,
+                     note: Option<String>| {
+        let all: Vec<Source> = sources.iter().chain(extra.iter()).cloned().collect();
+        let mut chips: Vec<HudSource> = window_chip
+            .lock()
+            .ok()
+            .and_then(|g| g.clone())
+            .into_iter()
+            .collect();
+        chips.extend(to_chips(&all));
+        hud::show(
+            &app,
+            HudContent::Answer {
+                id: id.clone(),
+                question: question.clone(),
+                text: text.to_string(),
+                sources: chips,
+                done,
+                replace: opts.replace,
+                actions,
+                note,
+            },
+        );
+    };
+    let show = |text: &str, sources: &[Source], done: bool| {
+        show_full(text, sources, done, Vec::new(), None)
+    };
+    // The card first, so the user sees it was heard while context is read.
+    show("", &[], false);
+
     // Continue the previous conversation if it's recent.
     let previous = LAST
         .lock()
@@ -118,50 +310,27 @@ pub async fn run_with(
     if given_context.is_some() {
         context = given_context;
     } else if about_screen && context.is_none() {
-        context = screen_text(&app);
-        if context.is_none() && !get_settings(&app).agent.screen_context {
-            hud::show(
-                &app,
-                HudContent::Status {
-                    text: "hud.status.needScreenContext".into(),
-                    tone: HudTone::Error,
-                    undo: false,
-                },
-            );
-            return;
+        match screen(&app).await {
+            Some(s) => {
+                if let Ok(mut g) = window_chip.lock() {
+                    *g = s.source;
+                }
+                context = Some(s.text);
+            }
+            None if !opts.compose && !get_settings(&app).agent.screen_context => {
+                hud::show(
+                    &app,
+                    HudContent::Status {
+                        text: "hud.status.needScreenContext".into(),
+                        tone: HudTone::Error,
+                        undo: false,
+                    },
+                );
+                return;
+            }
+            None => {}
         }
     }
-
-    let extra: Vec<Source> = opts
-        .links
-        .iter()
-        .map(|(title, url)| Source {
-            title: title.clone(),
-            url: url.clone(),
-            excerpt: String::new(),
-        })
-        .collect();
-    let show = |text: &str, sources: &[Source], done: bool| {
-        let sources: Vec<&Source> = sources.iter().chain(extra.iter()).collect();
-        hud::show(
-            &app,
-            HudContent::Answer {
-                id: id.clone(),
-                question: question.clone(),
-                text: text.to_string(),
-                sources: sources
-                    .iter()
-                    .map(|s| HudSource {
-                        title: s.title.clone(),
-                        url: s.url.clone(),
-                    })
-                    .collect(),
-                done,
-                replace: opts.replace,
-            },
-        );
-    };
-    show("", &[], false);
 
     // Web questions need our server; everything else runs on this Mac when
     // Apple Intelligence can take it (screen text then never leaves).
@@ -174,7 +343,11 @@ pub async fn run_with(
     let result = if on_device {
         on_device_answer(&app, &question, &history, context.as_deref(), opts.write)
             .await
-            .map(|t| (t, Vec::new()))
+            .map(|t| Answered {
+                text: t,
+                sources: Vec::new(),
+                note: None,
+            })
     } else {
         server_answer(
             &app,
@@ -190,8 +363,35 @@ pub async fn run_with(
     };
 
     match result {
-        Ok((text, sources)) => {
-            show(&text, &sources, true);
+        Ok(Answered {
+            text,
+            sources,
+            note,
+        }) => {
+            let situation = tauri::async_runtime::spawn_blocking(|| {
+                let place = super::router::place();
+                (
+                    super::can_insert_here(),
+                    place.bundle_id == "com.apple.mail",
+                )
+            })
+            .await
+            .unwrap_or((true, false));
+            let (can_insert, in_mail) = situation;
+            if opts.compose && !text.trim().is_empty() {
+                super::deliver_draft(&app, text.clone(), can_insert);
+            } else {
+                let actions = actions_for(
+                    &text,
+                    Situation {
+                        can_insert,
+                        in_mail,
+                        write: opts.write,
+                        replace: opts.replace,
+                    },
+                );
+                show_full(&text, &sources, true, actions, note);
+            }
             let mut turns = history;
             turns.push(Turn {
                 q: question.clone(),
@@ -215,6 +415,13 @@ pub async fn run_with(
             },
         ),
     }
+}
+
+struct Answered {
+    text: String,
+    sources: Vec<Source>,
+    /// i18n key of a quiet note under the answer.
+    note: Option<String>,
 }
 
 async fn on_device_answer(
@@ -242,6 +449,59 @@ async fn on_device_answer(
         .ok_or_else(|| "hud.status.onDeviceFailed".to_string())
 }
 
+/// Why sending the request failed, before any answer arrived.
+enum SendError {
+    /// Worth one more try: no connection, a timeout, or the server (or its
+    /// model provider) briefly failing.
+    Retry(&'static str),
+    /// Final: the i18n key to show.
+    Final(String),
+}
+
+async fn send_once(
+    app: &AppHandle,
+    url: &str,
+    body: &serde_json::Value,
+) -> Result<reqwest::Response, SendError> {
+    let request = CLIENT
+        .post(url)
+        .bearer_auth(llm::server_token(app))
+        .json(body)
+        .send();
+    let res = match tokio::time::timeout(FIRST_BYTE_TIMEOUT, request).await {
+        Err(_) => return Err(SendError::Retry("hud.status.timeout")),
+        Ok(Err(e)) if e.is_timeout() => return Err(SendError::Retry("hud.status.timeout")),
+        Ok(Err(e)) => {
+            log::warn!("answer request failed: {e}");
+            return Err(SendError::Retry("hud.status.offline"));
+        }
+        Ok(Ok(res)) => res,
+    };
+    match res.status().as_u16() {
+        200 => Ok(res),
+        429 => {
+            // Free's weekly allowance, a paid plan's daily fair use, or the per-minute limit.
+            let body = res.text().await.unwrap_or_default();
+            Err(SendError::Final(if body.contains("fair_use") {
+                "hud.status.fairUse".into()
+            } else if body.contains("rate_limited") {
+                "hud.status.slowDown".into()
+            } else {
+                "hud.status.weeklyLimit".into()
+            }))
+        }
+        401 | 402 => Err(SendError::Final("hud.status.account".into())),
+        code @ (502..=504) => {
+            log::warn!("answer server returned {code}");
+            Err(SendError::Retry("hud.status.failed"))
+        }
+        code => {
+            log::warn!("answer server returned {code}");
+            Err(SendError::Final("hud.status.failed".into()))
+        }
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
 async fn server_answer(
     app: &AppHandle,
@@ -252,7 +512,7 @@ async fn server_answer(
     sources_in: &[Source],
     context: Option<&str>,
     show: &impl Fn(&str, &[Source], bool),
-) -> Result<(String, Vec<Source>), String> {
+) -> Result<Answered, String> {
     let body = serde_json::json!({
         "question": question,
         "needs_web": needs_web,
@@ -270,52 +530,67 @@ async fn server_answer(
         .next()
         .unwrap_or("")
         .to_string();
-    // The ledger shows the question and any window text, exactly as sent.
-    crate::recall::log_request(
-        &host,
-        if needs_web { "search" } else { "answer" },
-        &format!(
-            "{question}{}",
-            context.map(|c| format!("\n\n{c}")).unwrap_or_default()
-        ),
-    );
+    let searching = needs_web && sources_in.is_empty() && context.is_none();
 
     crate::plan::record_hosted_use(app, "ai");
-    if needs_web && sources_in.is_empty() && context.is_none() {
+    if searching {
         crate::plan::record_hosted_use(app, "search");
     }
-    let res = reqwest::Client::new()
-        .post(&url)
-        .bearer_auth(llm::server_token(app))
-        .json(&body)
-        .timeout(Duration::from_secs(40))
-        .send()
-        .await
-        .map_err(|_| "hud.status.offline".to_string())?;
-    match res.status().as_u16() {
-        200 => {}
-        429 => {
-            // Free's weekly allowance, a paid plan's daily fair use, or the per-minute limit.
-            let body = res.text().await.unwrap_or_default();
-            return Err(if body.contains("fair_use") {
-                "hud.status.fairUse".into()
-            } else if body.contains("rate_limited") {
-                "hud.status.slowDown".into()
-            } else {
-                "hud.status.weeklyLimit".into()
-            });
+    // One retry for a dropped connection, a timeout or a brief server error;
+    // never for limits or account problems. Each attempt is in the ledger,
+    // with the question and any window text exactly as sent.
+    let mut attempt = 0;
+    let res = loop {
+        attempt += 1;
+        crate::recall::log_request(
+            &host,
+            if needs_web { "search" } else { "answer" },
+            &format!(
+                "{question}{}",
+                context.map(|c| format!("\n\n{c}")).unwrap_or_default()
+            ),
+        );
+        match send_once(app, &url, &body).await {
+            Ok(res) => break res,
+            Err(SendError::Retry(key)) if attempt < 2 => {
+                log::info!("answer attempt {attempt} failed ({key}); retrying");
+                tokio::time::sleep(Duration::from_millis(400)).await;
+            }
+            Err(SendError::Retry(key)) => return Err(key.into()),
+            Err(SendError::Final(key)) => return Err(key),
         }
-        401 | 402 => return Err("hud.status.account".into()),
-        _ => return Err("hud.status.failed".into()),
-    }
+    };
 
     let mut text = String::new();
     let mut sources: Vec<Source> = Vec::new();
+    let mut got_sources = false;
     let mut buf = String::new();
     let mut stream = res.bytes_stream();
     let mut last_paint = Instant::now();
-    while let Some(chunk) = stream.next().await {
-        let chunk = chunk.map_err(|_| "hud.status.interrupted".to_string())?;
+    // The web was asked for but nothing came back: say the answer is from
+    // what the model knows rather than leave it looking searched.
+    let no_web = |got: bool, sources: &[Source]| {
+        (searching && got && sources.is_empty()).then(|| "hud.status.noWebResults".to_string())
+    };
+    let interrupted = |text: String, sources: Vec<Source>| {
+        if text.trim().is_empty() {
+            Err("hud.status.interrupted".to_string())
+        } else {
+            // Keep what arrived; say it was cut short.
+            Ok(Answered {
+                text,
+                sources,
+                note: Some("hud.status.interrupted".into()),
+            })
+        }
+    };
+    loop {
+        let chunk = match tokio::time::timeout(STREAM_IDLE_TIMEOUT, stream.next()).await {
+            Err(_) => return interrupted(text, sources),
+            Ok(None) => break,
+            Ok(Some(Err(_))) => return interrupted(text, sources),
+            Ok(Some(Ok(chunk))) => chunk,
+        };
         buf.push_str(&String::from_utf8_lossy(&chunk));
         while let Some(end) = buf.find("\n\n") {
             let event: String = buf.drain(..end + 2).collect();
@@ -329,9 +604,25 @@ async fn server_answer(
                 }
             }
             match name {
-                "sources" => sources = serde_json::from_str(data).unwrap_or_default(),
-                "error" => return Err("hud.status.failed".into()),
-                "done" => return Ok((text, sources)),
+                "sources" => {
+                    got_sources = true;
+                    sources = serde_json::from_str(data).unwrap_or_default();
+                }
+                "error" => {
+                    return if text.trim().is_empty() {
+                        Err("hud.status.failed".into())
+                    } else {
+                        interrupted(text, sources)
+                    }
+                }
+                "done" => {
+                    let note = no_web(got_sources, &sources);
+                    return Ok(Answered {
+                        text,
+                        sources,
+                        note,
+                    });
+                }
                 _ => {
                     if let Ok(v) = serde_json::from_str::<serde_json::Value>(data) {
                         if let Some(t) = v.get("t").and_then(|t| t.as_str()) {
@@ -347,5 +638,80 @@ async fn server_answer(
             last_paint = Instant::now();
         }
     }
-    Ok((text, sources))
+    let note = no_web(got_sources, &sources);
+    Ok(Answered {
+        text,
+        sources,
+        note,
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn kinds(a: &[HudAnswerAction]) -> Vec<&str> {
+        a.iter().map(|a| a.kind.as_str()).collect()
+    }
+
+    #[test]
+    fn insert_only_with_a_focused_field() {
+        let plain = "The capital gains rate is 20%.";
+        assert_eq!(
+            kinds(&actions_for(
+                plain,
+                Situation {
+                    can_insert: true,
+                    ..Default::default()
+                }
+            )),
+            vec!["insert", "copy"]
+        );
+        assert_eq!(
+            kinds(&actions_for(plain, Situation::default())),
+            vec!["copy"]
+        );
+        assert_eq!(
+            kinds(&actions_for(
+                plain,
+                Situation {
+                    can_insert: true,
+                    replace: true,
+                    write: true,
+                    ..Default::default()
+                }
+            )),
+            vec!["replace", "copy"]
+        );
+    }
+
+    #[test]
+    fn reply_in_mail_for_drafts() {
+        let s = Situation {
+            in_mail: true,
+            write: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            kinds(&actions_for("Thursday works.", s)),
+            vec!["reply", "copy"]
+        );
+    }
+
+    #[test]
+    fn code_links_and_dates() {
+        let code = "Use this:\n```rust\nfn main() {}\n```\nSee https://doc.rust-lang.org/book.";
+        let a = actions_for(code, Situation::default());
+        assert_eq!(kinds(&a), vec!["copy", "copy_code", "open_link"]);
+        assert_eq!(a[1].value.as_deref(), Some("fn main() {}"));
+        assert_eq!(
+            a[2].value.as_deref(),
+            Some("https://doc.rust-lang.org/book")
+        );
+        let date = "The dentist moved you to Friday at 3pm.";
+        assert_eq!(
+            kinds(&actions_for(date, Situation::default())),
+            vec!["copy", "add_to_calendar"]
+        );
+    }
 }

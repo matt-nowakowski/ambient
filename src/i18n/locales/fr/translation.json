@@ -1178,7 +1178,10 @@
       "steppingBack": "Je me retire : cela semble privé, donc {{appName}} ne le lit pas.",
       "fairUse": "Vous avez atteint la limite d'utilisation raisonnable du jour. Elle est réinitialisée à minuit UTC.",
       "slowDown": "Cela fait beaucoup de requêtes à la fois. Réessayez dans une minute.",
-      "listening": "Écoute…"
+      "listening": "Écoute…",
+      "heardNothing": "Je vous ai entendu, mais je n'ai pas saisi de demande.",
+      "noWebResults": "Impossible de chercher sur le web pour l'instant : voici ce que je sais.",
+      "timeout": "C'était trop long. Réessayez."
     },
     "undo": "Annuler",
     "close": "Fermer",
@@ -1218,7 +1221,23 @@
       "searchInstead": "Texte tapé. Lancer plutôt une recherche ?",
       "search": "Rechercher"
     },
-    "suggestionTip": "Dites « oui », « pas maintenant » ou « ne me montre plus ça »."
+    "suggestionTip": "Dites « oui », « pas maintenant » ou « ne me montre plus ça ».",
+    "replace": "Remplacer",
+    "actions": {
+      "reply": "Répondre",
+      "copyCode": "Copier le code",
+      "openLink": "Ouvrir le lien",
+      "addToCalendar": "Ajouter au calendrier"
+    },
+    "draft": {
+      "title": "Vouliez-vous taper ceci ?",
+      "composed": "Voici votre brouillon.",
+      "focusHint": "Cliquez dans un champ de texte pour l'insérer."
+    },
+    "source": {
+      "searchDrive": "Rechercher dans Google Drive",
+      "searchGmail": "Rechercher dans Gmail"
+    }
   },
   "privacy": {
     "title": "Confidentialité",
