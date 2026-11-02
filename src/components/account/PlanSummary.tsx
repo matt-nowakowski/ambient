@@ -27,6 +27,19 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
   const paid = isPaid(status);
   const days = trialDaysLeft(status);
   const left = usage ? Math.max(0, usage.limit - usage.used) : null;
+  const fmt = new Intl.NumberFormat(i18n.language);
+  // Paid plans have a daily fair-use ceiling; show what is left of it.
+  const aiLeft = paid && today ? Math.max(0, today.ai_limit - today.ai) : null;
+  const searchLeft =
+    paid && today && today.search_limit > 0
+      ? Math.max(0, today.search_limit - today.search)
+      : null;
+  const meter =
+    paid && today && today.ai_limit > 0 && aiLeft !== null
+      ? aiLeft / today.ai_limit
+      : !paid && usage && usage.limit > 0 && left !== null
+        ? left / usage.limit
+        : null;
   const resets = usage
     ? new Date(usage.resets_at * 1000).toLocaleDateString(i18n.language, {
         weekday: "long",
@@ -53,11 +66,10 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
         </p>
         <p className="mt-0.5 text-small text-ink-2">
           {paid
-            ? today
-              ? t("home.plan.usageToday", {
-                  ai: today.ai,
-                  search: today.search,
-                  aiLimit: today.ai_limit,
+            ? aiLeft !== null && today
+              ? t("home.plan.aiLeft", {
+                  left: fmt.format(aiLeft),
+                  limit: fmt.format(today.ai_limit),
                 })
               : t("home.plan.polishUnlimited")
             : usage
@@ -67,20 +79,35 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
                   day: resets,
                 })
               : t("home.plan.polishFree")}
+          {paid && searchLeft !== null && (
+            <span className="text-ink-3">
+              {" · "}
+              {t("home.plan.searchLeft", { count: searchLeft })}
+            </span>
+          )}
         </p>
         {today?.meetings_limit != null && (
           <p className="mt-0.5 text-small text-ink-2">
             {t("home.plan.meetingsLeft", {
-              used: today.meetings,
+              left: Math.max(0, today.meetings_limit - today.meetings),
               limit: today.meetings_limit,
             })}
           </p>
         )}
-        {!paid && usage && (
-          <div className="mt-2 h-1 w-48 overflow-hidden rounded-full bg-glass-press">
+        {/* The meter shows what is left: full at the start of the day or
+            week, draining towards the limit. */}
+        {meter !== null && (
+          <div
+            role="meter"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(meter * 100)}
+            aria-label={t("home.plan.meterLabel")}
+            className="mt-2 h-1 w-48 overflow-hidden rounded-full bg-glass-press"
+          >
             <div
-              className={`h-full rounded-full ${left === 0 ? "bg-error" : "bg-logo-primary"}`}
-              style={{ width: `${(usage.used / usage.limit) * 100}%` }}
+              className={`h-full rounded-full transition-[width] duration-500 ${meter <= 0.1 ? "bg-error" : "bg-logo-primary"}`}
+              style={{ width: `${meter * 100}%` }}
             />
           </div>
         )}
