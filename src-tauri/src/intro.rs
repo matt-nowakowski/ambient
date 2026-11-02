@@ -56,7 +56,10 @@ pub fn play(app: &AppHandle) -> bool {
             // front, and WebKit pauses animation in windows that aren't on
             // screen: become a regular app first, then show and focus.
             #[cfg(target_os = "macos")]
-            let _ = app.set_activation_policy(tauri::ActivationPolicy::Regular);
+            {
+                let _ = app.set_activation_policy(tauri::ActivationPolicy::Regular);
+                crate::refresh_dock_icon(app);
+            }
             let _ = window.show();
             let _ = window.set_always_on_top(true);
             let _ = window.set_focus();

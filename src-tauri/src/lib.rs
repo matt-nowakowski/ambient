@@ -135,6 +135,22 @@ fn arm_exit_watchdog() {
     }
 }
 
+/// After a runtime Accessory → Regular promotion, macOS 26 can create the Dock
+/// tile without its image, leaving a tiny placeholder with a running dot.
+/// Resetting the application icon to nil (AppKit's "use the bundle icon")
+/// makes the Dock redraw the tile with the real icon.
+#[cfg(target_os = "macos")]
+pub(crate) fn refresh_dock_icon(app: &AppHandle) {
+    let _ = app.run_on_main_thread(|| {
+        let Some(mtm) = objc2::MainThreadMarker::new() else {
+            return;
+        };
+        let ns_app = objc2_app_kit::NSApplication::sharedApplication(mtm);
+        unsafe { ns_app.setApplicationIconImage(None) };
+        ns_app.dockTile().display();
+    });
+}
+
 pub(crate) fn show_main_window(app: &AppHandle) {
     if let Some(main_window) = app.get_webview_window("main") {
         if let Err(e) = main_window.unminimize() {
@@ -147,6 +163,7 @@ pub(crate) fn show_main_window(app: &AppHandle) {
             if let Err(e) = app.set_activation_policy(tauri::ActivationPolicy::Regular) {
                 log::error!("Failed to set activation policy to Regular: {}", e);
             }
+            refresh_dock_icon(app);
         }
         if let Err(e) = main_window.show() {
             log::error!("Failed to show webview window: {}", e);

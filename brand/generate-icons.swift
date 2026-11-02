@@ -123,12 +123,51 @@ let appSizes: [(String, Int)] = [
 ]
 for (name, size) in appSizes { render(size, "\(icons)/\(name)", draw: mark) }
 
+/// The macOS app icon: the mark on Apple's icon grid tile (an 824/1024
+/// rounded square with the standard drop shadow), filled with the website's
+/// light backdrop: blue glow top-left, warm glow bottom-right. Bare dots on
+/// transparency read as a tiny smudge in the macOS 26 Dock.
+func macTile(_ ctx: CGContext, _ s: CGFloat) {
+  let inset = s * 100 / 1024, side = s * 824 / 1024
+  let tile = CGRect(x: inset, y: inset, width: side, height: side)
+  let path = CGPath(roundedRect: tile, cornerWidth: side * 0.225, cornerHeight: side * 0.225, transform: nil)
+  ctx.saveGState()
+  ctx.setShadow(offset: CGSize(width: 0, height: s * 10 / 1024), blur: s * 20 / 1024,
+                color: CGColor(red: 0, green: 0, blue: 0, alpha: 0.28))
+  ctx.addPath(path)
+  ctx.setFillColor(CGColor(red: 0.961, green: 0.961, blue: 0.969, alpha: 1))  // #F5F5F7
+  ctx.fillPath()
+  ctx.restoreGState()
+  ctx.saveGState()
+  ctx.addPath(path)
+  ctx.clip()
+  let space = CGColorSpace(name: CGColorSpace.sRGB)!
+  for (x, y, c) in [(0.18, 0.12, CGColor(red: 186 / 255, green: 204 / 255, blue: 236 / 255, alpha: 0.85)),
+                    (0.86, 0.92, CGColor(red: 236 / 255, green: 214 / 255, blue: 204 / 255, alpha: 0.75))] {
+    let centre = CGPoint(x: tile.minX + side * x, y: tile.minY + side * y)
+    let g = CGGradient(colorsSpace: space, colors: [c, c.copy(alpha: 0)!] as CFArray, locations: [0, 1])!
+    ctx.drawRadialGradient(g, startCenter: centre, startRadius: 0, endCenter: centre, endRadius: side * 0.75, options: [])
+  }
+  // A hairline rim, like the app's glass edges.
+  ctx.addPath(path)
+  ctx.setStrokeColor(CGColor(red: 0, green: 0, blue: 0, alpha: 0.06))
+  ctx.setLineWidth(max(1, s / 512))
+  ctx.strokePath()
+  ctx.restoreGState()
+  let m = side * 0.68
+  ctx.saveGState()
+  ctx.translateBy(x: (s - m) / 2, y: (s - m) / 2)
+  mark(ctx, m)
+  ctx.restoreGState()
+}
+
 let iconset = "\(build)/icon.iconset"
 try? FileManager.default.createDirectory(atPath: iconset, withIntermediateDirectories: true)
 for base in [16, 32, 128, 256, 512] {
-  render(base, "\(iconset)/icon_\(base)x\(base).png", draw: mark)
-  render(base * 2, "\(iconset)/icon_\(base)x\(base)@2x.png", draw: mark)
+  render(base, "\(iconset)/icon_\(base)x\(base).png", draw: macTile)
+  render(base * 2, "\(iconset)/icon_\(base)x\(base)@2x.png", draw: macTile)
 }
+render(1024, "\(build)/mac-icon-1024.png", draw: macTile)
 for size in [16, 24, 32, 48, 64, 128, 256] { render(size, "\(build)/ico-\(size).png", draw: mark) }
 render(1024, "\(root)/brand/mark-1024.png", draw: mark)
 // Web: apple-touch-icon and PWA icons are opaque (iOS ignores transparency).
