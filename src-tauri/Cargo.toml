@@ -175,6 +175,10 @@ objc2-service-management = "0.3.2"
 [target.'cfg(target_os = "linux")'.dependencies]
 gtk-layer-shell = { version = "0.8", features = ["v0_6"] }
 gtk = "0.18"
+# The agent's Linux context (AT-SPI2 over D-Bus, Evolution Data Server) and the
+# X11 active window. Both pure Rust; versions match what Tauri already pulls in.
+zbus = "5"
+x11rb = "0.13"
 transcribe-cpp = { version = "0.4.0", default-features = false, features = [
   "dynamic-backends",
   "vulkan",

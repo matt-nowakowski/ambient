@@ -34,10 +34,7 @@ pub fn get_agent_status(app: AppHandle) -> AgentStatus {
         paused: s.is_paused(),
         settings: s,
         accessibility: context::accessibility_trusted(),
-        never_watch_defaults: context::DEFAULT_NEVER_WATCH
-            .iter()
-            .map(|s| s.to_string())
-            .collect(),
+        never_watch_defaults: context::default_never_watch().map(str::to_string).collect(),
         stats: recall::get_if_open().and_then(|r| r.stats().ok()),
         on_device_ready: crate::agent::llm::on_device_ready(),
         suggestion_kinds: crate::agent::proactive::Kind::ALL
