@@ -1,70 +1,109 @@
 name: "Release"
 
-on: workflow_dispatch
+# Trigger: push a version tag that matches tauri.conf.json, from main.
+#   git tag v0.1.1 && git push origin v0.1.1
+# The tag must point at a commit on main and equal the app version, or the run
+# stops before any secret is touched. Signing, notarization, updater and R2
+# secrets are read only by jobs that declare `environment: release`, which
+# accepts deployments from main and v* tags only.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+# One release at a time: two runs would race on R2 (upload, manifest, prune).
+concurrency:
+  group: ambient-r2-write
+  cancel-in-progress: false
 
 jobs:
   create-release:
+    if: github.repository_owner == 'matt-nowakowski'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
-    runs-on: ubuntu-latest
     outputs:
       release-id: ${{ steps.create-release.outputs.result }}
-      version: ${{ steps.get-version.outputs.version }}
+      version: ${{ steps.check.outputs.version }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Get version from tauri.conf.json
-        id: get-version
+      - name: Check tag matches app version and is on main
+        id: check
         shell: bash
         run: |
-          VERSION=$(grep -o '"version": "[^"]*"' src-tauri/tauri.conf.json | cut -d'"' -f4)
-          echo "Application version from tauri.conf.json: $VERSION"
+          set -euo pipefail
+          VERSION=$(jq -r .version src-tauri/tauri.conf.json)
+          TAG="${GITHUB_REF_NAME}"
+          if [ "$TAG" != "v$VERSION" ]; then
+            echo "::error::Tag $TAG does not match tauri.conf.json version $VERSION"; exit 1
+          fi
+          CARGO_VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' src-tauri/Cargo.toml | head -1)
+          if [ "$CARGO_VERSION" != "$VERSION" ]; then
+            echo "::error::src-tauri/Cargo.toml version $CARGO_VERSION != $VERSION"; exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tagged commit $GITHUB_SHA is not on main"; exit 1
+          fi
+          echo "Releasing $VERSION from $GITHUB_SHA"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Create Draft Release
+      - name: Create draft release
         id: create-release
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
+            const tag = `v${{ steps.check.outputs.version }}`;
+            const { owner, repo } = context.repo;
+            // A re-run of the whole workflow starts from a clean draft.
+            const releases = await github.paginate(github.rest.repos.listReleases, { owner, repo });
+            for (const r of releases) {
+              if (r.tag_name !== tag) continue;
+              if (!r.draft) core.setFailed(`${tag} is already published`);
+              else await github.rest.repos.deleteRelease({ owner, repo, release_id: r.id });
+            }
             const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `v${{ steps.get-version.outputs.version }}`,
-              name: `v${{ steps.get-version.outputs.version }}`,
-              draft: true,
-              prerelease: false,
-              generate_release_notes: true
-            })
+              owner, repo, tag_name: tag, name: tag, draft: true, prerelease: false,
+              generate_release_notes: true,
+            });
             return data.id
 
+  # The draft GitHub release is only a staging area: tauri-action uploads each
+  # platform's installers and merges the updater feed (latest.json) there.
   publish-tauri:
+    needs: create-release
     permissions:
       contents: write
-    needs: create-release
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: "macos-26" # for Arm based macs (M1 and above). Uses macOS 26 for Apple Intelligence SDK.
+          - platform: "macos-26" # Apple silicon. macOS 26 for the Apple Intelligence SDK.
             args: "--target aarch64-apple-darwin"
             target: "aarch64-apple-darwin"
-          - platform: "macos-latest" # for Intel based macs.
+          - platform: "macos-latest" # Intel, cross-compiled.
             args: "--target x86_64-apple-darwin"
             target: "x86_64-apple-darwin"
-          - platform: "ubuntu-22.04" # Build .deb on 22.04
+          - platform: "ubuntu-22.04" # .deb on 22.04 for an older glibc floor
             args: "--bundles deb"
             target: "x86_64-unknown-linux-gnu"
-          - platform: "ubuntu-24.04" # Build AppImage and RPM on 24.04
+          - platform: "ubuntu-24.04" # AppImage and RPM
             args: "--bundles appimage,rpm"
             target: "x86_64-unknown-linux-gnu"
-          - platform: "ubuntu-24.04-arm" # Build for ARM64 Linux
+          - platform: "ubuntu-24.04-arm"
             args: "--bundles appimage,deb,rpm"
             target: "aarch64-unknown-linux-gnu"
-          - platform: "windows-latest"
+          - platform: "windows-latest" # x64. Unsigned unless AZURE_* secrets exist.
             args: ""
             target: "x86_64-pc-windows-msvc"
-          - platform: "windows-11-arm" # for ARM64 Windows runner
+          - platform: "windows-11-arm"
             args: "--target aarch64-pc-windows-msvc"
             target: "aarch64-pc-windows-msvc"
 
@@ -77,19 +116,17 @@ jobs:
       asset-prefix: "ambient"
       upload-artifacts: false
       release-id: ${{ needs.create-release.outputs.release-id }}
-      # Releases always build from scratch — never restore the Rust cache, so a
-      # stale cached native lib can never be linked into a shipped artifact.
-      no-cache: true
     secrets: inherit
 
-  # The GitHub repo is private, so installers and the updater feed are served
-  # from R2 instead. Layout: releases/<version>/<asset>, plus
-  # releases/latest.json (Tauri updater, URLs rewritten to our domain) and
-  # releases/manifest.json (what the website's /dl/<id> links resolve).
-  # Only the current version is kept, to stay inside R2's free tier.
+  # Installers and the updater feed are served from R2. Layout:
+  # releases/<version>/<asset>, plus releases/latest.json (Tauri updater, URLs
+  # rewritten to our domain) and releases/manifest.json (what the website's
+  # /dl/<id> links resolve). Only the current version is kept (R2 free tier).
   publish-r2:
     needs: [create-release, publish-tauri]
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: release
     permissions:
       contents: write
     env:
@@ -119,6 +156,20 @@ jobs:
           done
           ls -la
 
+      - name: Validate updater feed
+        run: |
+          set -euo pipefail
+          jq -e --arg v "$VERSION" '.version == $v' dist/latest.json > /dev/null \
+            || { echo "::error::latest.json missing or not version $VERSION"; exit 1; }
+          echo "Updater platforms:"; jq -r '.platforms | keys[]' dist/latest.json
+          for p in darwin-aarch64 darwin-x86_64 windows-x86_64 linux-x86_64; do
+            jq -e --arg p "$p" '.platforms[$p].signature | length > 0' dist/latest.json > /dev/null \
+              || { echo "::error::latest.json has no signed entry for $p"; exit 1; }
+          done
+
+      - name: List R2 releases before
+        run: aws --endpoint-url "$R2_ENDPOINT" s3 ls "$R2/releases/" --recursive || true
+
       - name: Check R2 budget
         run: |
           set -euo pipefail
@@ -144,19 +195,23 @@ jobs:
           sed -E "s#https://github.com/[^\"]+/releases/download/[^/\"]+/#$PUBLIC_BASE/$VERSION/#g" \
             dist/latest.json > latest.json
           grep -q "github.com" latest.json && { echo "::error::latest.json still points at GitHub"; exit 1; }
+          jq -e . latest.json > /dev/null
           ls dist | grep -v '^latest.json$' \
             | jq -R . | jq -s --arg v "$VERSION" '{version: $v, files: .}' > manifest.json
           for f in latest.json manifest.json; do
             aws s3 cp "$f" "$R2/releases/$f" --content-type application/json --cache-control "no-cache"
           done
+          cat manifest.json
 
-      - name: Prune older versions
+      - name: Retire older versions
         run: |
           set -euo pipefail
           aws() { command aws --endpoint-url "$R2_ENDPOINT" "$@"; }
           for p in $(aws s3 ls "$R2/releases/" | awk '/PRE/ {print $2}'); do
             [ "$p" = "$VERSION/" ] || aws s3 rm "$R2/releases/$p" --recursive
           done
+          echo "R2 releases after:"
+          aws s3 ls "$R2/releases/" --recursive
 
       - name: Publish GitHub release
-        run: gh api -X PATCH "repos/${{ github.repository }}/releases/$RELEASE_ID" -F draft=false
+        run: gh api -X PATCH "repos/${{ github.repository }}/releases/$RELEASE_ID" -F draft=false --silent

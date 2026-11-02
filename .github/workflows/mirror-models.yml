@@ -22,22 +22,40 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: read
+
+# Shares the release's lock: both write to the same R2 bucket.
+concurrency:
+  group: ambient-r2-write
+  cancel-in-progress: false
+
 jobs:
   mirror:
+    if: github.actor == github.repository_owner
     runs-on: ubuntu-latest
+    timeout-minutes: 120
+    # R2 credentials live in the release environment (main and v* tags only).
+    environment: release
     env:
       R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
       R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
       R2_BUCKET: ${{ vars.R2_BUCKET }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
       - name: Mirror
+        env:
+          IDS: ${{ inputs.ids }}
+          BUDGET_GB: ${{ inputs.budget-gb }}
+          EXECUTE: ${{ inputs.execute && '--execute' || '' }}
         run: |
           uv run scripts/mirror_models.py \
             --prefix models/ \
-            --ids "${{ inputs.ids }}" \
-            --budget-gb "${{ inputs.budget-gb }}" \
+            --ids "$IDS" \
+            --budget-gb "$BUDGET_GB" \
             --tmpdir "$RUNNER_TEMP" \
-            ${{ inputs.execute && '--execute' || '' }}
+            $EXECUTE

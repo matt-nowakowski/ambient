@@ -140,9 +140,27 @@ crates (`ambient-keys`, `ambient-recorder`, `ambient-cpal`) are vendored in
 3. Code signing: an Apple Developer ID certificate + notarization for macOS
    (`APPLE_*` secrets), and a Windows signing certificate (Azure Trusted
    Signing via the `AZURE_*` secrets, plus `bundle.windows.signCommand`).
-4. Bump `version` in `tauri.conf.json`, then run **Actions → Release**
-   (`.github/workflows/release.yml`). It builds every platform and drafts a
-   GitHub release with the installers the website's download page links to.
+4. Bump the version in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` (and
+   `Cargo.lock`) and `package.json`, add a `web/lib/changelog.ts` entry, commit
+   to `main`, then push a matching tag:
+
+   ```bash
+   git tag v0.1.1 && git push origin v0.1.1
+   ```
+
+   That one tag runs **Release** (`.github/workflows/release.yml`). It checks the
+   tag equals the app version and points at a commit on `main`, then builds
+   macOS (Apple silicon and Intel; signed, notarized and stapled, DMG included),
+   Windows (x64 and ARM64; unsigned unless `AZURE_*` secrets exist) and Linux
+   (AppImage, .deb, .rpm; x64 and ARM64), with signed updater artifacts. It
+   uploads everything to the R2 bucket (`R2_BUCKET` variable) under
+   `releases/<version>/`, writes `releases/latest.json` (updater feed) and
+   `releases/manifest.json` (what `tryambient.ai/dl/<id>` resolves), deletes
+   every older version from R2, and publishes the GitHub release.
+
+   Only the repo admin can create `v*` tags (tag ruleset). Signing, notarization,
+   updater and R2 secrets are scoped to the `release` environment, which accepts
+   runs from `main` and `v*` tags only. Watch a run with `gh run watch`.
 
 ## Troubleshooting
 

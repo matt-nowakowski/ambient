@@ -6,8 +6,12 @@ name: "Build Mac (test)"
 
 on: workflow_dispatch
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    if: github.actor == github.repository_owner
     permissions:
       contents: write
     uses: ./.github/workflows/build.yml

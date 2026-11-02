@@ -51,11 +51,22 @@ on:
 env:
   TSC_VERSION: "0.9.0"
 
+permissions:
+  contents: read
+
 jobs:
   build:
     permissions:
       contents: write
     runs-on: ${{ inputs.platform }}
+    timeout-minutes: 150
+    # Signing, notarization and updater secrets live in this environment, which
+    # only accepts runs from main and v* tags.
+    environment: release
+    env:
+      # Windows code signing is optional: without Azure secrets the installers
+      # ship unsigned and the signing tool steps are skipped.
+      AZURE_SIGNING: ${{ secrets.AZURE_CLIENT_ID != '' && 'true' || 'false' }}
     steps:
       # Kept for git checkout and general tooling headroom. The native
       # transcribe-cpp-sys build no longer needs path help: since 0.1.3 its
@@ -72,11 +83,12 @@ jobs:
           git config --system core.longpaths true
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           repository: ${{ inputs.repository }}
           ref: ${{ inputs.ref }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Get version from tauri.conf.json
         id: get-version
@@ -99,20 +111,27 @@ jobs:
           fi
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+
+      - name: Bun install cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-${{ runner.arch }}-
 
       - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ contains(inputs.platform, 'macos') && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Rust cache
-        # Release builds skip the cache (no-cache: true) so the artifact is
-        # always compiled clean — no risk of a stale cached native lib being
-        # linked. PR/test builds keep caching for speed.
+        # Keyed on platform + target + Cargo.lock (rust-cache adds the lockfile
+        # and rustc hashes). Tag runs can only restore their own ref's cache or
+        # main's, so in practice this speeds up re-runs of a failed release.
         if: ${{ !inputs.no-cache }}
-        uses: swatinem/rust-cache@v2
+        uses: swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
         with:
           workspaces: "./src-tauri -> target"
           key: ${{ inputs.platform }}-${{ inputs.target }}-no-bin-v2
@@ -161,21 +180,21 @@ jobs:
       # built there and no Vulkan SDK, headers, or glslc are needed.
       - name: Install Vulkan SDK (Windows x64)
         if: contains(inputs.platform, 'windows') && !contains(inputs.target, 'aarch64')
-        uses: humbletim/install-vulkan-sdk@v1.2
+        uses: humbletim/install-vulkan-sdk@30ba978f977e81b72d091fc8888feb1fb26f9aff # v1.2
         with:
           version: 1.4.309.0
           cache: true
 
       - name: Cache trusted-signing-cli
-        if: contains(inputs.platform, 'windows') && inputs.sign-binaries
+        if: contains(inputs.platform, 'windows') && inputs.sign-binaries && env.AZURE_SIGNING == 'true'
         id: cache-tsc
-        uses: actions/cache@v5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ~/.cargo/bin/trusted-signing-cli*
           key: trusted-signing-cli-${{ env.TSC_VERSION }}-${{ runner.os }}-${{ runner.arch }}
 
       - name: Install trusted-signing-cli
-        if: contains(inputs.platform, 'windows') && inputs.sign-binaries && steps.cache-tsc.outputs.cache-hit != 'true'
+        if: contains(inputs.platform, 'windows') && inputs.sign-binaries && env.AZURE_SIGNING == 'true' && steps.cache-tsc.outputs.cache-hit != 'true'
         run: cargo install --locked --force trusted-signing-cli@${{ env.TSC_VERSION }}
 
       - name: Prepare Vulkan SDK for Ubuntu 24.04
@@ -189,7 +208,7 @@ jobs:
 
       - name: Prepare Vulkan SDK for Ubuntu ARM64
         if: contains(inputs.platform, 'ubuntu') && contains(inputs.platform, 'arm')
-        uses: jakoch/install-vulkan-sdk-action@v1
+        uses: jakoch/install-vulkan-sdk-action@d17de7e2f5e50efb5d2123efed18497d3c58c533 # v1
         with:
           vulkan_version: 1.4.335.0
           cache: true
@@ -227,21 +246,28 @@ jobs:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        shell: bash
         run: |
-          echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
+          set -euo pipefail
+          # Temporary keychain and certificate file, both removed in the
+          # always() cleanup step at the end of the job.
+          cert="$RUNNER_TEMP/certificate.p12"
+          printf '%s' "$APPLE_CERTIFICATE" | base64 --decode > "$cert"
           security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security default-keychain -s build.keychain
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security set-keychain-settings -t 3600 -u build.keychain
-          security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+          security import "$cert" -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          rm -f "$cert"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain > /dev/null
           security find-identity -v -p codesigning build.keychain
 
       - name: verify certificate
         if: contains(inputs.platform, 'macos') && inputs.sign-binaries
         run: |
           CERT_INFO=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application")
-          CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}')
+          CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}' | head -1)
+          [ -n "$CERT_ID" ] || { echo "::error::No Developer ID Application identity in the keychain"; exit 1; }
           echo "CERT_ID=$CERT_ID" >> $GITHUB_ENV
           echo "Certificate imported."
 
@@ -255,7 +281,7 @@ jobs:
         run: |
           if [ -n "$APPLE_API_KEY_P8" ]; then
             path="$RUNNER_TEMP/AuthKey.p8"
-            printf '%s' "$APPLE_API_KEY_P8" > "$path"
+            ( umask 077; printf '%s' "$APPLE_API_KEY_P8" > "$path" )
             echo "APPLE_API_KEY_PATH=$path" >> "$GITHUB_ENV"
           fi
 
@@ -464,7 +490,7 @@ jobs:
           "$tools_dir/linuxdeploy-${arch}.AppImage" --appimage-extract-and-run --version
 
       - name: Build with Tauri
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@84b9d35b5fc46c1e45415bdb6144030364f7ebc5 # v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Notarization uses the App Store Connect API key only. Tauri picks the
@@ -496,6 +522,52 @@ jobs:
           releaseId: ${{ inputs.release-id }}
           assetNamePattern: ${{ steps.patch-release-name.outputs.platform }}
           args: ${{ inputs.build-args }}
+
+      # Tauri notarizes and staples the .app; the DMG around it is not. Sign,
+      # notarize and staple the DMG too, so Gatekeeper accepts the download
+      # offline, then replace the DMG tauri-action already uploaded.
+      - name: Notarize and staple DMG (macOS)
+        if: contains(inputs.platform, 'macos') && inputs.sign-binaries
+        shell: bash
+        env:
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_ID: ${{ inputs.release-id }}
+        run: |
+          set -euo pipefail
+          bundle="src-tauri/target/${{ inputs.target }}/${{ steps.build-profile.outputs.profile }}/bundle"
+          app=$(ls -d "$bundle"/macos/*.app | head -1)
+          dmg=$(ls "$bundle"/dmg/*.dmg | head -1)
+          echo "App: $app"; echo "DMG: $dmg"
+          xcrun stapler validate "$app"
+          codesign --verify --strict "$dmg" 2>/dev/null \
+            || codesign --force --sign "$CERT_ID" --timestamp "$dmg"
+          out=$(xcrun notarytool submit "$dmg" --key "$APPLE_API_KEY_PATH" \
+            --key-id "$APPLE_API_KEY" --issuer "$APPLE_API_ISSUER" \
+            --wait --timeout 45m --output-format json)
+          echo "$out" | jq '{id, status}'
+          if [ "$(echo "$out" | jq -r .status)" != "Accepted" ]; then
+            xcrun notarytool log "$(echo "$out" | jq -r .id)" --key "$APPLE_API_KEY_PATH" \
+              --key-id "$APPLE_API_KEY" --issuer "$APPLE_API_ISSUER" || true
+            echo "::error::DMG notarization was not accepted"; exit 1
+          fi
+          xcrun stapler staple "$dmg"
+          xcrun stapler validate "$dmg"
+          spctl -a -t open --context context:primary-signature -vv "$dmg"
+          if [ -n "$RELEASE_ID" ]; then
+            name=$(basename "$dmg")
+            repo="${{ github.repository }}"
+            for id in $(gh api --paginate "repos/$repo/releases/$RELEASE_ID/assets" \
+                --jq ".[] | select(.name == \"$name\") | .id"); do
+              gh api -X DELETE "repos/$repo/releases/assets/$id"
+            done
+            curl -sSf -o /dev/null -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" -H "Content-Type: application/octet-stream" \
+              --data-binary @"$dmg" \
+              "https://uploads.github.com/repos/$repo/releases/$RELEASE_ID/assets?name=$name"
+            echo "Replaced release asset $name with the stapled DMG"
+          fi
 
       # tauri-action uploads release assets before returning. All AppImage
       # filtering therefore happens inside linuxdeploy above; this verifies the
@@ -533,7 +605,7 @@ jobs:
 
       - name: Upload artifacts (macOS)
         if: inputs.upload-artifacts && contains(inputs.platform, 'macos')
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: ${{ inputs.asset-prefix }}-${{ inputs.target }}
           path: |
@@ -715,7 +787,7 @@ jobs:
 
       - name: Upload artifacts (Linux)
         if: inputs.upload-artifacts && contains(inputs.platform, 'ubuntu')
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: ${{ inputs.asset-prefix }}-${{ inputs.platform }}-${{ inputs.target }}
           path: |
@@ -829,10 +901,17 @@ jobs:
 
       - name: Upload artifacts (Windows)
         if: inputs.upload-artifacts && contains(inputs.platform, 'windows')
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: ${{ inputs.asset-prefix }}-${{ inputs.target }}
           path: |
             src-tauri/target/${{ inputs.target != '' && inputs.target != 'x86_64-pc-windows-msvc' && format('{0}/{1}', inputs.target, steps.build-profile.outputs.profile) || steps.build-profile.outputs.profile }}/bundle/msi/*.msi
             src-tauri/target/${{ inputs.target != '' && inputs.target != 'x86_64-pc-windows-msvc' && format('{0}/{1}', inputs.target, steps.build-profile.outputs.profile) || steps.build-profile.outputs.profile }}/bundle/nsis/*.exe
           retention-days: 30
+
+      - name: Clean up signing material (macOS)
+        if: always() && contains(inputs.platform, 'macos')
+        shell: bash
+        run: |
+          security delete-keychain build.keychain 2>/dev/null || true
+          rm -f "$RUNNER_TEMP/AuthKey.p8" "$RUNNER_TEMP/certificate.p12"
