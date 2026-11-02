@@ -36,10 +36,21 @@ type How = "auto" | "five" | "skip";
 
 /** "Give me five" is up this long, the glove winding up, before it's given. */
 const WINDUP_MS = 950;
+/** The guide in the note's corner: small, so it never crowds the note. */
+const MASCOT_PX = 56;
 /** The flight from the note's corner into the icon. */
 const FLIGHT_MS = 560;
 /** How far through the flight the glove starts fading into the icon. */
 const FADE_FROM = 0.7;
+
+/** What was said, short enough to quote in the bubble. */
+const clip = (said: string) => {
+  const words = said.split(/\s+/);
+  if (words.length > 1)
+    return words.length > 7 ? `${words.slice(0, 6).join(" ")}…` : said;
+  const chars = [...said];
+  return chars.length > 16 ? `${chars.slice(0, 14).join("")}…` : said;
+};
 
 /** The bubble's content. A new `id` fades in; the same `id` stays mounted. */
 type Say =
@@ -359,8 +370,8 @@ export const TryIt: React.FC<TryItProps> = ({
     const keys = el.getBoundingClientRect();
     setTip({ x: keys.left + keys.width / 2 - box.left, y: keys.top - box.top });
   };
-  const { capturing, partial } = e.capture;
-  const captureHint = captureHintKey(partial);
+  const { capturing, partial, refused } = e.capture;
+  const captureHint = captureHintKey(partial, refused);
   const keysLabel = keycapLabel(e.shortcut, os);
 
   /* ---------- what the glove says ---------- */
@@ -428,23 +439,53 @@ export const TryIt: React.FC<TryItProps> = ({
       );
 
     const r = e.result;
+    // A reply to what was said: the model's, else the words themselves.
+    const heard = (said: string) => {
+      const reply = e.replyTo(said);
+      return reply
+        ? { id: "reply", line: reply }
+        : {
+            id: "quote",
+            line: t("onboarding.try.gotIt", { quote: clip(said) }),
+          };
+    };
     switch (r.kind) {
-      case "done":
-        return r.way === "hold"
-          ? {
-              shape: "outcome",
-              id: "doneHold",
-              line: t("onboarding.try.doneHold"),
-              sub: t("onboarding.try.doneHoldNext"),
-              mood: "cheer",
-            }
-          : {
-              shape: "outcome",
-              id: "doneTap",
-              line: t("onboarding.try.doneTap"),
-              sub: t("onboarding.try.doneTapNext"),
-              mood: "cheer",
-            };
+      case "done": {
+        const hold = r.way === "hold";
+        // Nothing to quote (the words landed elsewhere): the plain cheer.
+        if (!r.said)
+          return {
+            shape: "outcome",
+            id: hold ? "doneHold" : "doneTap",
+            line: t(
+              hold ? "onboarding.try.doneHold" : "onboarding.try.doneTap",
+            ),
+            sub: t(
+              hold
+                ? "onboarding.try.doneHoldNext"
+                : "onboarding.try.doneTapNext",
+            ),
+            mood: "cheer",
+          };
+        const h = heard(r.said);
+        return {
+          shape: "outcome",
+          id: `${r.way}-${h.id}`,
+          line: h.line,
+          sub: t(hold ? "onboarding.try.heardHold" : "onboarding.try.heardTap"),
+          mood: "cheer",
+        };
+      }
+      case "heard": {
+        const h = heard(r.said);
+        return {
+          shape: "outcome",
+          id: `heard-${h.id}`,
+          line: h.line,
+          sub: null,
+          mood: "cheer",
+        };
+      }
       // Silent mic: offer the picker inline, keeping focus in the note.
       case "silent":
         return {
@@ -658,7 +699,7 @@ export const TryIt: React.FC<TryItProps> = ({
                 <span className="try-pose">
                   <Mascot
                     key={fived ? "finale" : e.fives}
-                    size={88}
+                    size={MASCOT_PX}
                     animation={fived || e.fives ? "slap" : "wave"}
                   />
                 </span>
@@ -696,7 +737,7 @@ export const TryIt: React.FC<TryItProps> = ({
                     <p key={`line:${say.id}`} className="try-say-main">
                       {say.line}
                     </p>
-                    {say.shape !== "instruction" && (
+                    {say.shape !== "instruction" && say.sub && (
                       <div
                         key={`sub:${say.id}`}
                         className={`try-say-sub ${say.id === "ask" ? "try-ask" : ""}`}

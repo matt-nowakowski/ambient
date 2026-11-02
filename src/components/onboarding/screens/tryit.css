@@ -197,7 +197,7 @@
   --try-bubble-fill: var(--color-demo-window);
   --try-bubble-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.22);
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
   border: 1px solid var(--try-bubble-edge);
   border-radius: 16px;
   background: var(--try-bubble-fill);
@@ -215,13 +215,13 @@
   --try-bubble-fill: var(--color-warning-wash);
 }
 /* Rotated square, half inside the bubble to cover its edge. It needs 17px of
-   straight side: centred on a one-line bubble, else at the glove's face (31px
+   straight side: centred on a one-line bubble, else at the glove's face (28px
    up). */
 .try-bubble::after {
   content: "";
   position: absolute;
   inset-inline-end: -6.5px;
-  bottom: min(calc(50% - 6px), 25px);
+  bottom: min(calc(50% - 6px), 18px);
   width: 12px;
   height: 12px;
   border: 0 solid var(--try-bubble-edge);
