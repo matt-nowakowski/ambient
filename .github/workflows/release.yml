@@ -125,7 +125,7 @@ jobs:
   publish-r2:
     needs: [create-release, publish-tauri]
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     environment: release
     permissions:
       contents: write
@@ -144,6 +144,7 @@ jobs:
       PUBLIC_BASE: ${{ vars.DOWNLOADS_BASE_URL || 'https://tryambient.ai' }}/releases
       # Account-wide R2 ceiling (free tier is 10 GB, shared with other projects).
       BUDGET_BYTES: "9500000000"
+      GRACE_MINUTES: "15"
     steps:
       - name: Download release assets
         run: |
@@ -203,15 +204,20 @@ jobs:
           done
           cat manifest.json
 
+      - name: Publish GitHub release
+        run: gh api -X PATCH "repos/${{ github.repository }}/releases/$RELEASE_ID" -F draft=false --silent
+
+      # The feed and manifest already point at the new version; the old files
+      # stay up briefly so downloads and updates already in flight can finish.
       - name: Retire older versions
         run: |
           set -euo pipefail
           aws() { command aws --endpoint-url "$R2_ENDPOINT" "$@"; }
+          echo "Keeping older versions for $GRACE_MINUTES minutes"
+          sleep $((GRACE_MINUTES * 60))
           for p in $(aws s3 ls "$R2/releases/" | awk '/PRE/ {print $2}'); do
             [ "$p" = "$VERSION/" ] || aws s3 rm "$R2/releases/$p" --recursive
           done
           echo "R2 releases after:"
           aws s3 ls "$R2/releases/" --recursive
 
-      - name: Publish GitHub release
-        run: gh api -X PATCH "repos/${{ github.repository }}/releases/$RELEASE_ID" -F draft=false --silent
