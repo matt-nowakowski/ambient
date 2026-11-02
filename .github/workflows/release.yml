@@ -142,8 +142,9 @@ jobs:
       AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
       # Public base for asset URLs; the website redirects /releases/* to R2.
       PUBLIC_BASE: ${{ vars.DOWNLOADS_BASE_URL || 'https://tryambient.ai' }}/releases
-      # Ambient's share of the account's 10 GB free tier (other projects use the rest).
-      BUDGET_BYTES: "4000000000"
+      # Ambient's share of the account's 10 GB free tier (other projects use the
+      # rest). Same cap as mirror-models.yml; releases and models share the bucket.
+      BUDGET_BYTES: "6000000000"
       GRACE_MINUTES: "15"
     steps:
       - name: Download release assets

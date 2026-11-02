@@ -15,8 +15,8 @@ on:
         description: "Catalog ids to mirror (comma-separated)"
         default: "parakeet-unified-en-0.6b,nemotron-3.5-asr-streaming-0.6b,canary-180m-flash,whisper-medium,lang-id-voxlingua107-ecapa"
       budget-gb:
-        description: "Max total R2 usage across the account after this run"
-        default: "7"
+        description: "Max ambient-builds bucket usage after this run, in GB"
+        default: "6"
       execute:
         description: "Write to R2 (otherwise dry run)"
         type: boolean

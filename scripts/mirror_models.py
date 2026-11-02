@@ -38,9 +38,9 @@ for download; --all-quants widens to every listed quant. --ids narrows to a
 comma-separated list of catalog ids (the mirror is only a fallback behind
 Hugging Face, so a partial mirror is fine).
 
---budget-gb refuses to write if the account's R2 usage (every bucket the key
-can list) plus this run's uploads would exceed it. The R2 free tier is 10 GB
-and is shared with other projects on the account.
+--budget-gb refuses to write if the bucket's usage plus this run's uploads
+would exceed it. The CI key is scoped to the bucket; the account's 10 GB free
+tier is shared with other projects, so keep Ambient's share well under it.
 
 Env:  R2_ENDPOINT (https://<account>.r2.cloudflarestorage.com)
       R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET
@@ -109,13 +109,12 @@ def head_meta(s3, bucket, key):
         raise
 
 
-def account_usage(s3):
-    """Bytes stored across every bucket this key can list."""
+def bucket_usage(s3, bucket):
+    """Bytes stored in the bucket (releases, media and models)."""
     total = 0
     paginator = s3.get_paginator("list_objects_v2")
-    for b in s3.list_buckets().get("Buckets", []):
-        for page in paginator.paginate(Bucket=b["Name"]):
-            total += sum(o["Size"] for o in page.get("Contents", []))
+    for page in paginator.paginate(Bucket=bucket):
+        total += sum(o["Size"] for o in page.get("Contents", []))
     return total
 
 
@@ -250,9 +249,9 @@ def main():
         say("no R2 credentials: offline plan (every file counts as 'upload')")
 
     if args.budget_gb is not None and s3 is not None:
-        used = account_usage(s3)
+        used = bucket_usage(s3, bucket)
         needed = sum(f["size"] for _, _, f, key in jobs if head_meta(s3, bucket, key) is None)
-        say(f"budget: account uses {used/1e9:.2f} GB, this run adds up to {needed/1e9:.2f} GB,"
+        say(f"budget: bucket uses {used/1e9:.2f} GB, this run adds up to {needed/1e9:.2f} GB,"
             f" limit {args.budget_gb:.2f} GB")
         if used + needed > args.budget_gb * 1e9:
             sys.exit("over budget: narrow --ids or raise --budget-gb")
