@@ -474,6 +474,31 @@ fn selected_polish_prompt(settings: &AppSettings) -> Option<String> {
         .map(|p| p.prompt.clone())
 }
 
+/// AI polish may "fix" a custom word's spelling back ("payro" → "Pairo"):
+/// the same conservative custom-word pass runs over its output too.
+fn keep_custom_spellings(settings: &AppSettings, polished: String) -> String {
+    if settings.custom_words.is_empty() {
+        return polished;
+    }
+    // Line by line: the matcher re-joins words with single spaces, and the
+    // polished text's line breaks must survive.
+    polished
+        .split('\n')
+        .map(|line| {
+            if line.trim().is_empty() {
+                line.to_string()
+            } else {
+                crate::audio_toolkit::apply_custom_words(
+                    line,
+                    &settings.custom_words,
+                    settings.word_correction_threshold,
+                )
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 pub(crate) async fn process_transcription_output(
     app: &AppHandle,
     transcription: &str,
@@ -541,6 +566,7 @@ pub(crate) async fn process_transcription_output(
         match routed {
             Some(crate::agent::router::Route::Write(text)) => {
                 if post_process {
+                    let text = keep_custom_spellings(&settings, text);
                     post_processed_text = Some(text.clone());
                     post_process_prompt = Some(rules);
                     final_text = text;
@@ -577,6 +603,7 @@ pub(crate) async fn process_transcription_output(
     if post_process {
         if let Some(processed_text) = post_process_transcription(app, &settings, &final_text).await
         {
+            let processed_text = keep_custom_spellings(&settings, processed_text);
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
 

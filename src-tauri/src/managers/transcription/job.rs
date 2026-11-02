@@ -113,7 +113,6 @@ impl TranscriptionManager {
                 post_process_transcription_text(
                     t.text,
                     &settings,
-                    setup.custom_words_prompted(),
                     &output_language,
                     &setup.languages,
                 )
