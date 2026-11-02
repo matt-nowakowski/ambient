@@ -52,7 +52,6 @@ export const TrySaying: React.FC<{
   // Each opening starts on the group its item asked for.
   useEffect(() => {
     if (open) setActive(groups.some((g) => g.key === group) ? group : "answer");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, group]);
 
   const current = groups.find((g) => g.key === active) ?? groups[0];
