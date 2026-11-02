@@ -21,12 +21,12 @@ export const faqs: FaqItem[] = [
   },
   {
     q: "What leaves my computer?",
-    a: `Never your audio. Speech recognition runs on your device. When an AI feature needs a model, only the text it needs is sent, with passwords, card numbers, API keys and one-time codes removed first. Screen features are off until you turn them on, and password managers, private windows and crypto wallets are never read. Turn on “Keep everything on this Mac” and nothing is sent at all.`,
+    a: `Never your audio. Speech recognition runs on your device. When an AI feature needs a model, only the text it needs is sent, with passwords, card numbers, API keys and one-time codes removed first. Screen features are off until you turn them on, and password managers, private windows and crypto wallets are never read. Set Intelligence to “On this computer only” and nothing is sent for AI at all.`,
   },
   plans,
   {
     q: "Which platforms does it run on?",
-    a: "Dictation runs on macOS, Windows and Linux. The agent (answers, actions, recall, meetings and suggestions) is on macOS for now.",
+    a: "Everything runs on macOS, Windows and Linux: dictation and the whole agent (answers, actions, recall, meetings and suggestions). The agent is in beta on Windows and Linux. What changes between computers is where the AI runs: on the device where it can, or in the cloud if you choose.",
   },
   {
     q: "Does it work offline?",

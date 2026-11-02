@@ -78,7 +78,7 @@ export default function Home() {
                   {video ? "Learn more" : "See pricing"}
                 </ButtonLink>
               </div>
-              <p className="eyebrow mt-6">Dictation on macOS, Windows and Linux · Agent on macOS</p>
+              <p className="eyebrow mt-6">macOS, Windows and Linux · Agent in beta on Windows and Linux</p>
             </Reveal>
           </div>
 

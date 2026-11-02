@@ -65,7 +65,7 @@ const threeThings: Block = {
 
 const macNote: Block = {
   t: "note",
-  text: `The agent is on macOS for now. On Windows and Linux, dictation, answers, web search, links and recall work.`,
+  text: `Everything works on macOS, Windows and Linux. The agent is in beta on Windows and Linux.`,
 };
 
 const guideLinks: Block = {

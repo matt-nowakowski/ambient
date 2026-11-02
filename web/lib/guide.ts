@@ -158,7 +158,7 @@ export const routingRules = [
   },
 ] as const;
 
-export const platformNote = `The agent is on macOS for now. On Windows and Linux, dictation, answers, web search, links and recall work. Reminders and events open as an .ics file in your calendar app.`;
+export const platformNote = `Everything works on macOS, Windows and Linux (the agent is in beta on Windows and Linux). On Windows and Linux, reminders and events open as an .ics file in your calendar app, and your automations are Start menu shortcuts or Power Automate flows on Windows, and apps or scripts on Linux.`;
 
 export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">, Say[]> = {
   answers: [

@@ -182,7 +182,7 @@ ${platformNote}
     `${head("recall")}\nTry saying:\n${say(trySaying.recall)}\n`,
     `${head("meetings")}\nTry saying:\n${say(trySaying.meetings)}\n\nDuring the call: a live transcript of You and Them, rolling notes and nudges (Find it, Remind me, Copy). After: summary, decisions, action items, questions for you and a follow-up email draft. A consent message is offered to paste into the call chat. No bot joins. Audio is never saved.\n`,
     `${head("suggestions")}\nMoments:\n${rows(suggestionMoments)}\n\nWhen one appears, try saying:\n${say(trySaying.suggestions)}\n`,
-    `${head("privacy")}\nSwitches: Read what you ask about; Remember what you’ve seen; Offer suggestions; Meeting notes; Keep everything on this Mac. Never read: password fields, password managers and Keychain, private windows, crypto wallets, and any window showing a recovery phrase or private key. Secrets are removed before text is sent. The network ledger lists every request and exactly what it sent.\n`,
+    `${head("privacy")}\nSwitches: Read what you ask about; Remember what you’ve seen; Offer suggestions; Meeting notes; Hands-free. Intelligence: Automatic, On this computer only, or Cloud. Never read: password fields, password managers and Keychain, private windows, crypto wallets, and any window showing a recovery phrase or private key. Secrets are removed before text is sent. The network ledger lists every request and exactly what it sent.\n`,
   ].join("\n");
 }
 

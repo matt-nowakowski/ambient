@@ -25,7 +25,7 @@ export default function AnswersPage() {
 
       <DocSection id="web-search" title="Web search">
         <p>It searches only for current or specific facts: news, prices, rates, schedules, businesses.</p>
-        <p>Only your question is sent to the search. Turn on Keep everything on this Mac to switch web search off.</p>
+        <p>Only your question is sent to the search. Set Intelligence to On this computer only to switch web search off.</p>
       </DocSection>
 
       <DocSection id="using-the-answer" title="Using the answer">

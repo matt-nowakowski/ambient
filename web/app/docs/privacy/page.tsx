@@ -7,10 +7,10 @@ export const metadata = guideMetadata("privacy");
 
 const switches = [
   { k: "Read what you ask about", v: "Reads the window in front when you ask, searches your open windows, and keeps the last two minutes in memory." },
-  { k: "Remember what you’ve seen", v: "Saves window text on your Mac, encrypted, for recall. Never uploaded. 7 days by default." },
-  { k: "Offer suggestions", v: "Spots moments worth a next step. Decided on your Mac." },
+  { k: "Remember what you’ve seen", v: "Saves window text on your computer, encrypted, for recall. Never uploaded. 7 days by default." },
+  { k: "Offer suggestions", v: "Spots moments worth a next step. Decided on your computer, or by the cloud if you turn that on." },
   { k: "Meeting notes", v: "Listens to your microphone and the call while notes are on." },
-  { k: "Keep everything on this Mac", v: "Uses Apple Intelligence for every AI step and turns off web search. Nothing is sent." },
+  { k: "Intelligence", v: "Where the AI runs: Automatic, On this computer only (nothing sent), or Cloud." },
 ] as const;
 
 const never = [
@@ -24,7 +24,7 @@ const never = [
 
 const check = [
   { k: `What ${brand.name} sees`, v: "Click Preview, switch to any window, and see exactly what it would read after redaction." },
-  { k: "Requests that left this Mac", v: "Every request and exactly what it sent. Kept 30 days." },
+  { k: "Requests that left this computer", v: "Every request and exactly what it sent. Kept 30 days." },
   { k: "What’s stored", v: "Screen memory by app. Delete one app’s, or everything." },
 ] as const;
 
@@ -47,10 +47,11 @@ export default function PrivacyDocsPage() {
         <p>Your voice never does. Speech recognition runs on your computer.</p>
         <p>
           When a request needs a model, only the text it needs is sent. Card numbers, API keys, passwords and one-time
-          codes are removed on your Mac first.
+          codes are removed on your computer first.
         </p>
-        <Callout title="Keep everything on this Mac">
-          Turn it on and every AI step runs on Apple Intelligence, with web search off. Nothing is sent at all.
+        <Callout title="On this computer only">
+          Set Intelligence to this and AI runs only on your device (Apple Intelligence on a Mac), with web search off.
+          Nothing is sent for AI at all.
         </Callout>
       </DocSection>
 

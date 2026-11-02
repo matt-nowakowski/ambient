@@ -11,6 +11,33 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.5",
+    date: "2026-11-03",
+    title: "The agent on Windows and Linux",
+    summary:
+      "Every agent feature now runs on macOS, Windows and Linux (in beta on Windows and Linux). A new Intelligence setting decides where the AI runs.",
+    sections: [
+      {
+        heading: "Windows and Linux (beta)",
+        items: [
+          "Ask about what's on screen, recall what you've seen and find your files, with suggestions, meeting notes from the call's audio and call detection.",
+          "Windows reads windows through UI Automation, finds files with Windows Search, reads upcoming meetings from Outlook, and runs Start menu shortcuts or Power Automate flows.",
+          "Linux reads windows through AT-SPI (we show you how to turn it on), finds files with Tracker or locate, reads meetings from GNOME Calendar, and runs your apps or scripts.",
+          "The answer card floats above your apps without taking focus.",
+        ],
+      },
+      {
+        heading: "Intelligence: where the AI runs",
+        items: [
+          "Automatic (default), On this computer only, or Cloud, in Privacy. Every feature works with each choice.",
+          "On this computer only now covers AI polish too: nothing is sent for AI at all.",
+          "Suggestions from the cloud: an opt-in for computers without an on-device model (Pro). Redacted, listed in your request log, off until you say yes.",
+          "“This Mac” is now “this computer” throughout.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.4",
     date: "2026-11-02",
     title: "Suggestions that think, replies that land",

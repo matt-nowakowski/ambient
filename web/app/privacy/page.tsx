@@ -60,19 +60,20 @@ export default function PrivacyPage() {
             <>
               <p>
                 {brand.name} uses a language model to polish dictation, answer questions, write drafts, summarise text and
-                meetings, and work out what you are asking it to do. It runs on our server by default, or on your Mac if
-                you choose:
+                meetings, decide whether to offer a suggestion, and work out what you are asking it to do. Every feature
+                works on macOS, Windows and Linux. The <strong>Intelligence</strong> setting chooses where the model runs:
+                Automatic (the default), On this computer only, or Cloud.
               </p>
               <ul>
                 <li>
-                  <strong>On your Mac (optional).</strong> On Macs with Apple Intelligence you can turn on “Prefer AI on
-                  this Mac”. AI tasks then run on the device whenever they fit (polish, answers that don’t need the web,
-                  drafts, summaries, suggestion work and meeting nudges) and nothing is sent for them. Apple Intelligence
-                  is Apple’s on-device model; {brand.name} sends nothing to Apple.
+                  <strong>On your device.</strong> On Macs with Apple Intelligence, suggestions are always decided on the
+                  device, and you can choose to run other AI tasks there whenever they fit (polish, answers that don’t
+                  need the web, drafts, summaries and meeting nudges); nothing is sent for them. Apple Intelligence is
+                  Apple’s on-device model; {brand.name} sends nothing to Apple.
                 </li>
                 <li>
-                  <strong>On our server (default).</strong> Otherwise, including on Windows and Linux, when text is too
-                  long for the on-device model, and for questions that need the web, the app sends the{" "}
+                  <strong>On our server.</strong> Otherwise, when text is too long for the on-device model, and for
+                  questions that need the web, the app sends the{" "}
                   <strong>text</strong> of the request (never audio) to our server, identified by your signed license token or, on
                   Free, by the device hash described below. We pass it to our model provider, Baseten, which runs the
                   language model (a DeepSeek model) in the United States and returns the result. We do not store the text
@@ -91,9 +92,10 @@ export default function PrivacyPage() {
                 our server for up to 6 hours, stored against the query only and not linked to you or your device.
               </p>
               <p>
-                <strong>Keep everything on this Mac.</strong> On Macs with Apple Intelligence you can turn on “Keep
-                everything on this Mac”. AI then runs only on your Mac and web search is turned off, so no text is sent
-                to us for AI processing.
+                <strong>On this computer only.</strong> With Intelligence set to “On this computer only”, no text is sent
+                to us for AI processing and web search is off. On a computer without an on-device model, features that
+                need one fall back to simple on-device rules, type your words unpolished, or tell you they need the
+                cloud.
               </p>
               <p>
                 <strong>Secrets are removed first.</strong> Before text from your screen leaves your device, the app
@@ -104,13 +106,14 @@ export default function PrivacyPage() {
         },
         {
           id: "screen",
-          title: "Screen context and screen memory (optional, Mac only)",
+          title: "Screen context and screen memory (optional)",
           body: (
             <>
               <p>
                 <strong>Screen context</strong> is off until you turn it on, and is part of Pro. When you ask about
                 “this”, or ask {brand.name} to find something, the app reads the text of the front window and of your
-                other open windows using macOS Accessibility. It keeps a rolling buffer of the last 2 minutes of window
+                other open windows using the system’s accessibility interface (Accessibility on macOS, UI Automation
+                on Windows, AT-SPI on Linux). It keeps a rolling buffer of the last 2 minutes of window
                 text in memory only; that buffer is never written to disk. Screenshots are never stored or sent.
               </p>
               <p>
@@ -121,7 +124,8 @@ export default function PrivacyPage() {
               </p>
               <p>
                 <strong>Screen memory</strong> is a separate opt-in. If you turn it on, window text is saved on your
-                device, encrypted (AES-256-GCM, with the key kept in your macOS Keychain), so you can find things you
+                device, encrypted (AES-256-GCM, with the key kept in your macOS Keychain, or in a key file in the app’s
+                own data folder on Windows and Linux), so you can find things you
                 saw earlier. It is kept for 7 days by default (you can choose 1 to 90 days), and you can delete it for a
                 single app or entirely at any time. Screen memory is never uploaded.
               </p>
@@ -187,8 +191,14 @@ export default function PrivacyPage() {
           title: "Proactive suggestions (optional)",
           body: (
             <p>
-              If you turn on suggestions, {brand.name} decides on your device, using local rules on the text of your
-              window, whether to offer help. Nothing is sent unless you accept a suggestion. The one exception is meeting
+              If you turn on suggestions, {brand.name} decides whether to offer help with the window you are using. On
+              Macs with Apple Intelligence it decides on the device, and otherwise with local rules; nothing is sent
+              unless you accept a suggestion. <strong>Suggestions from the cloud</strong> (optional, Pro, off until you
+              say yes) let a computer without an on-device model ask our server instead: the app name, window title and
+              up to 3,500 characters of the window’s text, with secrets redacted first, are sent to decide, and the
+              answer is a short yes or no with a one-line offer. This text is not stored or logged, every such request
+              appears in the app’s list of requests that left your computer, and you can turn it off at any time. The
+              other exception is meeting
               nudges: during a meeting you have chosen to take notes on, the app checks the last few minutes of the
               transcript about every 90 seconds, on your device when possible and otherwise through our server as
               described above. Preferences learned from your feedback (for example, “don’t show me these”) are stored
@@ -410,11 +420,11 @@ export default function PrivacyPage() {
           body: (
             <p>
               On-device processing is our main safeguard: audio never leaves your device, and you can choose to run AI
-              on your Mac with Apple Intelligence. When text must leave, the app sends only what the
+              on your device. When text must leave, the app sends only what the
               request needs and redacts secrets such as card numbers, API keys, passwords and one-time codes first. Apps
               and sites on the never-watch list, password fields, crypto wallets, and any window showing a recovery
               phrase or private key are never read. Screen memory is encrypted on your
-              device with a key held in your macOS Keychain, meeting records are stored encrypted, and the network ledger lets you check
+              device (with the key in your macOS Keychain on a Mac), meeting records are stored encrypted, and the network ledger lets you check
               every request the app has made. Sign-in sessions and license tokens are signed so they cannot be forged, connections to our
               servers use HTTPS, downloaded models and updates are checked against cryptographic hashes or signatures
               before use, and access to billing data is limited to people who need it.

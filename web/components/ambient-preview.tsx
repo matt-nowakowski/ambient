@@ -115,7 +115,7 @@ const suggestionPreview: PreviewProps = {
     "Ana: Can we walk through it on Thursday at 3pm?",
   ],
   offer: "Add “Launch review” on Thursday at 3pm to your calendar?",
-  meta: "Spotted on this Mac · nothing sent",
+  meta: "Spotted on this computer · nothing sent",
   accept: "Add it",
   orb: "C4",
 };

@@ -15,7 +15,7 @@ export const apps = ["Slack", "Gmail", "Notion", "Linear", "Cursor", "VS Code", 
 export const shortcuts = { dictate: "⌥ Space", ask: "⌃ ⌥ Space" };
 
 /** Honest platform note for the agent features. */
-export const macFirst = "The agent features are on macOS for now. Dictation runs on macOS, Windows and Linux.";
+export const macFirst = "Dictation and the agent run on macOS, Windows and Linux (the agent is in beta on Windows and Linux).";
 
 /** Free dictation (the landing-page grid). */
 export const features = [
@@ -148,12 +148,12 @@ export const trust = {
     },
     { k: "Suggestions stay local", v: "Suggestions are decided on your Mac. Nothing is sent unless you accept one." },
     {
-      k: "Stored on your Mac, encrypted",
+      k: "Stored on your computer, encrypted",
       v: "Screen memory is kept 7 days by default, meetings until you delete them. Delete everything with one click.",
     },
     {
-      k: "Keep everything on this Mac",
-      v: "An optional mode that uses Apple Intelligence on your Mac and turns off web search, so nothing is sent.",
+      k: "On this computer only",
+      v: "An optional Intelligence mode: AI runs on your device (Apple Intelligence on a Mac) and web search is off, so nothing is sent.",
     },
     { k: "Invisible in screen shares", v: "The HUD doesn’t appear in screen shares or recordings. One key pauses everything." },
     { k: "No bots, no accounts", v: "No bot joins your calls and there is nothing to connect. The only account is the email you sign in with for Pro." },
@@ -245,7 +245,7 @@ export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
   },
   {
     label: "Platforms",
-    us: "macOS, Windows, Linux; agent on macOS",
+    us: "macOS, Windows, Linux (agent in beta on Windows and Linux)",
     // docs.wisprflow.ai supported devices. cluely.com/download, support.cluely.com system requirements.
     them: ["macOS, Windows, iPhone, Android", "macOS, Windows, iPhone"],
   },
