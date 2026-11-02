@@ -396,15 +396,14 @@ export type LaunchVideo = {
   captions?: VideoCaptions;
 };
 // Versioned filenames in R2 (served immutable); upload a new name for a new cut.
-// v2 will be:
-//   horizontal: { url: "/media/ambient-launch-v2.mp4",
-//                 poster: { light: "/media/ambient-launch-v2.jpg", dark: "/media/ambient-launch-v2-dark.jpg" } },
-//   vertical:   { url: "/media/ambient-launch-v2-vertical.mp4",
-//                 poster: { light: "/media/ambient-launch-v2-vertical.jpg", dark: "/media/ambient-launch-v2-vertical-dark.jpg" } },
 export const launchVideo: LaunchVideo | null = {
   title: `${brand.name} launch video`,
   horizontal: {
-    url: "/media/ambient-launch-v1.mp4",
-    poster: { light: "/media/ambient-launch-v1.jpg" },
+    url: "/media/ambient-launch-v4.mp4",
+    poster: { light: "/media/ambient-launch-v4.jpg", dark: "/media/ambient-launch-v4-dark.jpg" },
+  },
+  vertical: {
+    url: "/media/ambient-launch-v4-vertical.mp4",
+    poster: { light: "/media/ambient-launch-v4-vertical.jpg", dark: "/media/ambient-launch-v4-vertical-dark.jpg" },
   },
 };
