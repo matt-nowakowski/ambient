@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Fragment } from "react";
 import { AgentDemo } from "@/components/agent-demo";
+import { DownloadButton } from "@/components/download-picker";
 import { AmbientPreview } from "@/components/ambient-preview";
 import { Compare } from "@/components/compare";
 import { Faq } from "@/components/faq";
@@ -71,12 +72,10 @@ export default function Home() {
               <p className="mx-auto mt-7 max-w-[480px] text-pretty text-[15px] leading-relaxed text-muted">
                 {heroSub}
               </p>
-              <div className="mt-9 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
-                <ButtonLink href="/download" size="lg" className="w-full sm:w-auto">
-                  Download for free
-                </ButtonLink>
-                <ButtonLink href="/pricing" variant="glass" size="lg" className="w-full sm:w-auto">
-                  See pricing
+              <div className="mx-auto mt-9 flex max-w-[400px] items-center justify-center gap-2.5 sm:max-w-none">
+                <DownloadButton className="min-w-0 flex-1 sm:flex-none" />
+                <ButtonLink href={video ? "#video" : "/pricing"} variant="glass" size="lg" className="shrink-0 px-5 sm:px-6">
+                  {video ? "Learn more" : "See pricing"}
                 </ButtonLink>
               </div>
               <p className="eyebrow mt-6">Dictation on macOS, Windows and Linux · Agent on macOS</p>
@@ -135,6 +134,17 @@ export default function Home() {
           </div>
         </Container>
       </section>
+
+      {/* Launch video: renders nothing until a URL is set in lib/content.ts */}
+      {video ? (
+        <section id="video" aria-label={video.title}>
+          <Container className="pt-28 sm:pt-36">
+            <Reveal className="mx-auto max-w-[880px]">
+              <LaunchVideo video={video} />
+            </Reveal>
+          </Container>
+        </section>
+      ) : null}
 
       {/* Nothing to connect */}
       <section id="nothing-to-connect" aria-labelledby="connect-heading">
@@ -239,16 +249,6 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Launch video: renders nothing until a URL is set in lib/content.ts */}
-      {video ? (
-        <section id="video" aria-label={video.title}>
-          <Container className="pt-28 sm:pt-36">
-            <Reveal className="mx-auto max-w-[880px]">
-              <LaunchVideo video={video} />
-            </Reveal>
-          </Container>
-        </section>
-      ) : null}
 
       {/* Trust */}
       <section id="privacy-promise" aria-labelledby="trust-heading">
