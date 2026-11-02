@@ -21,7 +21,7 @@ export const SettingsGroup: React.FC<SettingsGroupProps> = ({
           )}
         </div>
       )}
-      <div className="glass rounded-panel overflow-visible">
+      <div data-search-panel className="glass rounded-panel overflow-visible">
         <div className="divide-y divide-glass-edge">{children}</div>
       </div>
     </div>

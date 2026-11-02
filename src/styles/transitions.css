@@ -834,19 +834,36 @@ li[data-sonner-toast].ambient-toast[data-expanded="false"][data-front="false"]
 }
 
 /* ── Global search: the row a result jumped to ───────────────────────── */
+/* The ring follows the row's visual shape: `--search-hit-radius` is set from
+   script (see `hitRadius` in GlobalSearch.tsx) to the row's own radii, or, for
+   a row inside a rounded group, the group's radius on the corners the row
+   shares with it and square corners elsewhere. The tint is a background image
+   over the row's own background (a glass row keeps its glass and its shadow),
+   and the ring is an inset outline; both follow that radius. */
+@property --search-hit-tint {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
 .search-hit {
-  border-radius: var(--radius-control);
+  border-radius: var(--search-hit-radius, 0);
+  background-image: linear-gradient(
+    var(--search-hit-tint),
+    var(--search-hit-tint)
+  );
+  outline: 1px solid transparent;
+  outline-offset: -1px;
   animation: search-hit 2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @keyframes search-hit {
   0%,
   35% {
-    background-color: var(--glass-press);
-    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+    --search-hit-tint: var(--glass-press);
+    outline-color: var(--color-line-strong);
   }
   100% {
-    background-color: rgba(0, 0, 0, 0);
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0);
+    --search-hit-tint: transparent;
+    outline-color: transparent;
   }
 }
 @media (prefers-reduced-motion: reduce) {
