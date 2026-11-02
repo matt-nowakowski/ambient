@@ -35,6 +35,7 @@ import { MotionConfig } from "motion/react";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { FileDropOverlay } from "./components/FileDropOverlay";
 import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
+import { GlobalSearch, useSearchJump } from "./components/search/GlobalSearch";
 import { WhatsNewGate } from "./components/whats-new";
 import { useSettings } from "./hooks/useSettings";
 import { useSettingsStore } from "./stores/settingsStore";
@@ -138,6 +139,8 @@ function App() {
   useLayoutEffect(() => {
     settingsScrollRef.current?.scrollTo({ top: 0 });
   }, [currentSection]);
+  // A global search result scrolls to (and highlights) its row.
+  useSearchJump(currentSection, settingsScrollRef);
 
   useEffect(() => {
     checkOnboardingStatus();
@@ -501,6 +504,9 @@ function App() {
         </ErrorBoundary>
         <ErrorBoundary context="Agent tour">
           <AgentTourGate />
+        </ErrorBoundary>
+        <ErrorBoundary context="Search">
+          <GlobalSearch onNavigate={setCurrentSection} />
         </ErrorBoundary>
         {/* Inset layout (shadcn "inset" sidebar): the sidebar sits on the
             window backdrop; the page floats in a rounded panel beside it. */}

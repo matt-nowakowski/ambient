@@ -2,12 +2,22 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
-  Check,
+  ArrowUpRight,
+  AudioLines,
   ChevronDown,
   Eye,
+  History,
+  KeyRound,
+  Laptop,
+  ListChecks,
   Lock,
+  Mic,
+  ScanText,
   ShieldCheck,
+  Sparkles,
   Trash2,
+  Users,
+  type LucideIcon,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { requestAccessibilityPermission } from "tauri-plugin-macos-permissions-api";
@@ -21,21 +31,18 @@ import {
 } from "@/bindings";
 import { Button } from "../ui/Button";
 import { Switch } from "../ui/Switch";
+import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
 
 const RETENTION_CHOICES = [1, 3, 7, 14, 30];
-/** The guarantees, always shown above the switches. */
-const PROTECTIONS = [
-  "audio",
-  "text",
-  "passwords",
-  "wallets",
-  "secrets",
-  "suggestions",
-  "stored",
-  "ledger",
+/** The guarantees, always shown at the top: four short lines. */
+const PROMISES = [
+  { key: "voice", icon: Mic },
+  { key: "text", icon: ScanText },
+  { key: "sensitive", icon: KeyRound },
+  { key: "ledger", icon: ListChecks },
 ] as const;
 const PREVIEW_DELAY_MS = 3000;
 
@@ -57,13 +64,27 @@ const MAC_ONLY: Capability[] = [
   "on_device_only",
 ];
 const IS_MAC = osType() === "macos";
-const CAPABILITIES: Capability[] = [
-  "screen_context",
-  "screen_memory",
-  "proactive",
-  "meetings",
-  "wake_word",
-  "on_device_only",
+/** Capabilities grouped by what they touch, each with its icon. */
+const CAPABILITY_GROUPS: {
+  key: "screen" | "listening" | "local";
+  caps: { cap: Capability; icon: LucideIcon }[];
+}[] = [
+  {
+    key: "screen",
+    caps: [
+      { cap: "screen_context", icon: ScanText },
+      { cap: "screen_memory", icon: History },
+      { cap: "proactive", icon: Sparkles },
+    ],
+  },
+  {
+    key: "listening",
+    caps: [
+      { cap: "meetings", icon: Users },
+      { cap: "wake_word", icon: AudioLines },
+    ],
+  },
+  { key: "local", caps: [{ cap: "on_device_only", icon: Laptop }] },
 ];
 
 export const PrivacyCenter: React.FC = () => {
@@ -141,6 +162,19 @@ export const PrivacyCenter: React.FC = () => {
       ? "on"
       : "off";
 
+  const pauseItems: MoreMenuItem[] = [
+    {
+      key: "hour",
+      label: t("privacy.state.pauseHour"),
+      onSelect: () => commands.pauseAgent(60).then(refresh),
+    },
+    {
+      key: "day",
+      label: t("privacy.state.pauseDay"),
+      onSelect: () => commands.pauseAgent(60 * 24).then(refresh),
+    },
+  ];
+
   return (
     <div className="max-w-3xl w-full mx-auto">
       <header className="mb-section">
@@ -148,37 +182,48 @@ export const PrivacyCenter: React.FC = () => {
         <p className="mt-1 max-w-xl text-small text-ink-2">
           {t("privacy.promise")}
         </p>
-        <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
-          {PROTECTIONS.map((key) => (
-            <li
-              key={key}
-              className="flex items-start gap-2 text-small text-ink-2"
-            >
-              <Check
-                width={13}
-                height={13}
-                strokeWidth={2}
-                className="mt-[3px] shrink-0 text-text"
-              />
-              <span>{t(`privacy.protections.${key}`)}</span>
-            </li>
-          ))}
-        </ul>
       </header>
 
       <div className="space-y-section">
-        {/* State + pause */}
-        <div className="glass rounded-panel p-card">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="grid size-8 place-items-center rounded-card bg-glass-press">
-                <ShieldCheck width={15} height={15} strokeWidth={1.75} />
+        {/* The promise: four short lines, always in view. */}
+        <ul className="grid grid-cols-2 gap-2">
+          {PROMISES.map(({ key, icon: Icon }) => (
+            <li
+              key={key}
+              className="glass flex items-center gap-2.5 rounded-card px-3 py-2.5"
+            >
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+                <Icon width={14} height={14} strokeWidth={1.75} />
               </span>
-              <div>
+              <span className="text-small text-ink-2">
+                {t(`privacy.promises.${key}`)}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        {/* State + pause */}
+        <div className="glass rounded-panel px-card py-3.5">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="relative grid size-8 shrink-0 place-items-center rounded-full bg-glass-press">
+                <ShieldCheck width={15} height={15} strokeWidth={1.75} />
+                <span
+                  aria-hidden="true"
+                  className={`absolute end-0 top-0 size-2 rounded-full ${
+                    state === "on"
+                      ? "bg-[#22c55e]"
+                      : state === "paused"
+                        ? "bg-warning"
+                        : "bg-ink-3"
+                  }`}
+                />
+              </span>
+              <div className="min-w-0">
                 <p className="text-ui font-medium">
                   {t(`privacy.state.${state}`)}
                 </p>
-                <p className="text-small text-ink-2">
+                <p className="truncate text-small text-ink-2">
                   {status.paused && s.paused_until
                     ? t("privacy.state.pausedUntil", {
                         time: time(s.paused_until),
@@ -192,37 +237,29 @@ export const PrivacyCenter: React.FC = () => {
                 <Button
                   variant="secondary"
                   size="sm"
+                  className="shrink-0 whitespace-nowrap"
                   onClick={() => commands.pauseAgent(null).then(refresh)}
                 >
                   {t("privacy.state.resume")}
                 </Button>
               ) : (
-                <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => commands.pauseAgent(60).then(refresh)}
-                  >
-                    {t("privacy.state.pauseHour")}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => commands.pauseAgent(60 * 24).then(refresh)}
-                  >
-                    {t("privacy.state.pauseDay")}
-                  </Button>
-                </div>
+                <MoreMenu
+                  className="shrink-0"
+                  text={t("privacy.state.pause")}
+                  label={t("privacy.state.pause")}
+                  items={pauseItems}
+                />
               ))}
           </div>
           {!status.accessibility && (
-            <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-              <p className="text-small text-ink-2">
+            <div className="mt-3 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-3">
+              <p className="min-w-0 text-small text-ink-2">
                 {t("privacy.accessibility")}
               </p>
               <Button
                 variant="secondary"
                 size="sm"
+                className="shrink-0 whitespace-nowrap"
                 onClick={() => requestAccessibilityPermission()}
               >
                 {t("privacy.grant")}
@@ -231,74 +268,102 @@ export const PrivacyCenter: React.FC = () => {
           )}
         </div>
 
-        {/* Capabilities */}
-        <SettingsGroup
-          title={t("privacy.capabilities.title")}
-          description={t("privacy.capabilities.description")}
-        >
-          {CAPABILITIES.map((cap) => {
-            const proOnly = cap !== "on_device_only";
-            const unsupported = !IS_MAC && MAC_ONLY.includes(cap);
-            const locked = (proOnly && !paid) || unsupported;
-            return (
-              <div
-                key={cap}
-                className="flex items-start justify-between gap-6 px-row-x py-row-y"
-              >
-                <div className="min-w-0">
-                  <p className="flex items-center gap-2 text-ui">
-                    {t(`privacy.capabilities.${cap}.title`)}
-                    {unsupported ? (
-                      <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
-                        {t("privacy.macOnly")}
+        {/* Capabilities, grouped by what they touch. Each row: what it reads,
+            then (smaller) what leaves the Mac. */}
+        <div className="space-y-label">
+          <div className="px-row-x">
+            <h2 className="text-section font-medium text-ink-3">
+              {t("privacy.capabilities.title")}
+            </h2>
+            <p className="mt-1 text-meta text-ink-3">
+              {t("privacy.capabilities.description")}
+            </p>
+          </div>
+          {CAPABILITY_GROUPS.map((group) => (
+            <div key={group.key} className="glass rounded-panel">
+              <p className="px-row-x pt-3 pb-1 text-meta font-medium text-ink-3">
+                {t(`privacy.capabilities.groups.${group.key}`)}
+              </p>
+              <div className="divide-y divide-glass-edge">
+                {group.caps.map(({ cap, icon: Icon }) => {
+                  const proOnly = cap !== "on_device_only";
+                  const unsupported = !IS_MAC && MAC_ONLY.includes(cap);
+                  const locked = (proOnly && !paid) || unsupported;
+                  return (
+                    <div
+                      key={cap}
+                      data-search-row
+                      className="flex items-start gap-3 px-row-x py-row-y"
+                    >
+                      <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+                        <Icon width={14} height={14} strokeWidth={1.75} />
                       </span>
-                    ) : (
-                      locked && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
-                          <Lock width={10} height={10} />
-                          {t("account.plans.pro")}
-                        </span>
-                      )
-                    )}
-                  </p>
-                  <p className="mt-0.5 text-small text-ink-2">
-                    {t(`privacy.capabilities.${cap}.reads`)}
-                  </p>
-                  <p className="mt-0.5 text-small text-ink-3">
-                    {t(`privacy.capabilities.${cap}.leaves`)}
-                  </p>
-                  {cap === "screen_memory" && s.screen_memory && (
-                    <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                      <span className="text-small text-ink-2">
-                        {t("privacy.retention")}
-                      </span>
-                      {RETENTION_CHOICES.map((d) => (
-                        <button
-                          key={d}
-                          type="button"
-                          onClick={() => save({ ...s, retention_days: d })}
-                          className={`rounded-full px-2.5 py-0.5 text-meta transition-colors ${
-                            s.retention_days === d
-                              ? "bg-text text-background"
-                              : "bg-glass-press text-ink-2 hover:text-text"
-                          }`}
-                        >
-                          {t("privacy.days", { count: d })}
-                        </button>
-                      ))}
+                      <div className="min-w-0 flex-1">
+                        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
+                          {t(`privacy.capabilities.${cap}.title`)}
+                          {unsupported ? (
+                            <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                              {t("privacy.macOnly")}
+                            </span>
+                          ) : (
+                            locked && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                                <Lock width={10} height={10} />
+                                {t("account.plans.pro")}
+                              </span>
+                            )
+                          )}
+                        </p>
+                        <p className="mt-0.5 text-small text-ink-2">
+                          {t(`privacy.capabilities.${cap}.reads`)}
+                        </p>
+                        <p className="mt-1 flex items-center gap-1 text-meta text-ink-3">
+                          <ArrowUpRight
+                            width={11}
+                            height={11}
+                            strokeWidth={1.75}
+                            className="shrink-0"
+                            aria-hidden="true"
+                          />
+                          {t(`privacy.capabilities.${cap}.leaves`)}
+                        </p>
+                        {cap === "screen_memory" && s.screen_memory && (
+                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span className="text-small text-ink-2">
+                              {t("privacy.retention")}
+                            </span>
+                            {RETENTION_CHOICES.map((d) => (
+                              <button
+                                key={d}
+                                type="button"
+                                onClick={() =>
+                                  save({ ...s, retention_days: d })
+                                }
+                                className={`rounded-full px-2.5 py-0.5 text-meta transition-colors ${
+                                  s.retention_days === d
+                                    ? "bg-text text-background"
+                                    : "bg-glass-press text-ink-2 hover:text-text"
+                                }`}
+                              >
+                                {t("privacy.days", { count: d })}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <Switch
+                        checked={s[cap]}
+                        disabled={locked}
+                        ariaLabel={t(`privacy.capabilities.${cap}.title`)}
+                        onChange={(on) => save({ ...s, [cap]: on })}
+                      />
                     </div>
-                  )}
-                </div>
-                <Switch
-                  checked={s[cap]}
-                  disabled={locked}
-                  ariaLabel={t(`privacy.capabilities.${cap}.title`)}
-                  onChange={(on) => save({ ...s, [cap]: on })}
-                />
+                  );
+                })}
               </div>
-            );
-          })}
-        </SettingsGroup>
+            </div>
+          ))}
+        </div>
 
         {/* Where AI runs (Apple Intelligence: Mac only) */}
         {IS_MAC && (

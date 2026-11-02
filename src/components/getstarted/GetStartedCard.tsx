@@ -4,10 +4,19 @@ import { Check, X } from "lucide-react";
 import { motion } from "motion/react";
 import { useOsType } from "@/hooks/useOsType";
 import { STEPS, useGetStarted, type Step } from "./store";
-import { TrySaying } from "./TrySaying";
+import { TrySaying, type TrySayingGroup } from "./TrySaying";
 
 /** Steps that need the Mac's screen reading or call audio. */
 const MAC_ONLY: Step[] = ["about_screen", "suggestion", "meeting"];
+
+/** Which examples each item opens on. */
+const GROUP_FOR: Record<Exclude<Step, "privacy">, TrySayingGroup> = {
+  answer: "answer",
+  reminder: "act",
+  about_screen: "answer",
+  suggestion: "suggestions",
+  meeting: "meetings",
+};
 
 /** Home: learn by doing. Each step ticks itself off when done for real. */
 export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
@@ -17,10 +26,17 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
   const os = useOsType();
   const { done, dismissed, dismiss, openTour } = useGetStarted();
   const [sayOpen, setSayOpen] = useState(false);
+  const [sayGroup, setSayGroup] = useState<TrySayingGroup>("answer");
+  const openSay = (group: TrySayingGroup) => {
+    setSayGroup(group);
+    setSayOpen(true);
+  };
   const steps = STEPS.filter((s) => os === "macos" || !MAC_ONLY.includes(s));
   const finished = steps.every((s) => done.includes(s));
   if (dismissed || finished)
-    return <TrySaying open={sayOpen} onOpenChange={setSayOpen} />;
+    return (
+      <TrySaying open={sayOpen} onOpenChange={setSayOpen} group={sayGroup} />
+    );
 
   const count = steps.filter((s) => done.includes(s)).length;
   return (
@@ -55,7 +71,7 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
                     useGetStarted.getState().mark("privacy");
                     onOpenPrivacy();
                   } else {
-                    setSayOpen(true);
+                    openSay(GROUP_FOR[s]);
                   }
                 }}
                 className="flex w-full items-center gap-2.5 rounded-control px-1 py-1 text-start text-ui hover:bg-glass-hover"
@@ -86,7 +102,7 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
       <div className="mt-3 flex gap-3 border-t-[0.5px] border-glass-edge pt-3 text-small">
         <button
           type="button"
-          onClick={() => setSayOpen(true)}
+          onClick={() => openSay("answer")}
           className="text-text underline decoration-line-strong underline-offset-4"
         >
           {t("getStarted.whatToSay")}
@@ -99,7 +115,7 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
           {t("getStarted.replayTour")}
         </button>
       </div>
-      <TrySaying open={sayOpen} onOpenChange={setSayOpen} />
+      <TrySaying open={sayOpen} onOpenChange={setSayOpen} group={sayGroup} />
     </section>
   );
 };

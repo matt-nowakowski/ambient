@@ -12,7 +12,7 @@ export const SettingsGroup: React.FC<SettingsGroupProps> = ({
   children,
 }) => {
   return (
-    <div className="space-y-label">
+    <div data-search-row className="space-y-label">
       {title && (
         <div className="px-row-x">
           <h2 className="text-section font-medium text-ink-3">{title}</h2>

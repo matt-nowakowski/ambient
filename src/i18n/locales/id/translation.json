@@ -644,27 +644,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Pintasan"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Prompt Terpilih",
-          "description": "Pilih templat untuk menyempurnakan transkripsi atau buat yang baru. Gunakan ${output} dalam teks prompt untuk merujuk ke hasil transkripsi."
-        },
-        "noPrompts": "Tidak ada prompt yang tersedia",
-        "selectPrompt": "Pilih prompt",
-        "createNew": "Buat Prompt Baru",
-        "promptLabel": "Label Prompt",
-        "promptLabelPlaceholder": "Masukkan nama prompt",
-        "promptInstructions": "Instruksi Prompt",
-        "promptInstructionsPlaceholder": "Tulis instruksi yang dijalankan setelah transkripsi. Contoh: Perbaiki tata bahasa dan kejelasan teks berikut: ${output}",
-        "promptTip": "Tips: Gunakan <code>${output}</code> untuk menyisipkan teks hasil transkripsi ke prompt Anda.",
-        "updatePrompt": "Perbarui Prompt",
-        "deletePrompt": "Hapus Prompt",
-        "createPrompt": "Buat Prompt",
-        "cancel": "Batal",
-        "selectToEdit": "Pilih prompt di atas untuk melihat dan mengedit detailnya.",
-        "createFirst": "Klik 'Buat Prompt Baru' di atas untuk membuat prompt pascaproses pertama Anda."
       }
     },
     "history": {
@@ -1022,7 +1001,8 @@
         "inactive": "Langganan untuk kode ini tidak aktif. Perpanjang untuk membuka paket Anda.",
         "rate_limited": "Terlalu banyak percobaan. Coba lagi dalam 15 menit.",
         "server": "Aktivasi gagal di pihak kami. Coba lagi sebentar lagi."
-      }
+      },
+      "menu": "Tindakan akun"
     },
     "signIn": {
       "sectionTitle": "Akun kamu",
@@ -1125,8 +1105,10 @@
       "polishUnlimited": "Poles AI tanpa batas.",
       "polishLeft": "Sisa {{left}} dari {{limit}} poles AI gratis minggu ini · direset {{day}}",
       "polishFree": "Paket Gratis mencakup jatah poles AI mingguan.",
-      "usageToday": "Hari ini: permintaan AI {{ai}} · pencarian {{search}} · penggunaan wajar {{aiLimit}} per hari",
-      "meetingsLeft": "Rapat bulan ini: {{used}} dari {{limit}}"
+      "meetingsLeft": "Sisa {{left}} dari {{limit}} catatan rapat bulan ini",
+      "aiLeft": "Sisa {{left}} dari {{limit}} permintaan AI hari ini",
+      "searchLeft": "Sisa pencarian: {{count}}",
+      "meterLabel": "Sisa jatah"
     },
     "privacy": {
       "title": "Privasi",
@@ -1233,7 +1215,7 @@
   },
   "privacy": {
     "title": "Privasi",
-    "promise": "Nonaktif sampai Anda mengaktifkannya. Disimpan di Mac ini, terenkripsi. Setiap permintaan yang keluar tercantum.",
+    "promise": "Apa yang dapat dibaca {{appName}}, apa yang keluar dari Mac ini, dan apa yang disimpannya.",
     "state": {
       "on": "Mengamati, sesuai izin Anda",
       "onDetail": "Hanya kemampuan yang Anda aktifkan di bawah.",
@@ -1243,8 +1225,9 @@
       "pausedDetail": "Tidak ada yang dibaca sampai Anda melanjutkan.",
       "pausedUntil": "Tidak ada yang dibaca sampai {{time}}.",
       "resume": "Lanjutkan",
-      "pauseHour": "Jeda 1 jam",
-      "pauseDay": "Sampai besok"
+      "pauseHour": "Selama 1 jam",
+      "pauseDay": "Sampai besok",
+      "pause": "Jeda"
     },
     "accessibility": "{{appName}} memerlukan akses Aksesibilitas untuk membaca teks dari aplikasi lain.",
     "grant": "Izinkan akses",
@@ -1280,6 +1263,11 @@
         "title": "Tanpa tangan: ucapkan “Halo Ambient”",
         "reads": "Mendengarkan “Halo Ambient” di Mac ini. Selebihnya dibuang saat Anda berbicara.",
         "leaves": "Tidak ada yang direkam atau dikirim sampai Anda mengucapkannya."
+      },
+      "groups": {
+        "screen": "Layar Anda",
+        "listening": "Mendengarkan",
+        "local": "Di Mac ini"
       }
     },
     "retention": "Simpan selama",
@@ -1361,26 +1349,19 @@
       }
     },
     "macOnly": "Untuk saat ini hanya di Mac",
-    "protections": {
-      "audio": "Suara Anda ditranskripsikan di Mac ini dan tidak pernah kami simpan.",
-      "text": "Membaca teks, tidak pernah mengambil tangkapan layar.",
-      "passwords": "Kolom kata sandi, pengelola kata sandi, dan jendela pribadi tidak pernah dibaca.",
-      "wallets": "Dompet kripto, frasa pemulihan, dan kunci pribadi: ia sepenuhnya menjauh.",
-      "secrets": "Nomor kartu, kunci, dan kode dihapus sebelum apa pun dikirim.",
-      "suggestions": "Saran diputuskan di Mac ini; tidak ada yang dikirim kecuali Anda menerimanya.",
-      "stored": "Yang disimpannya tetap di Mac ini, terenkripsi, sampai Anda menghapusnya.",
-      "ledger": "Setiap permintaan yang keluar tercantum di bawah, beserta persis apa yang dikirim."
+    "promises": {
+      "voice": "Suara Anda tetap di Mac ini",
+      "text": "Membaca teks, tidak pernah tangkapan layar",
+      "sensitive": "Melewati kata sandi, dompet, dan jendela pribadi",
+      "ledger": "Setiap permintaan yang keluar tercantum di bawah"
     }
   },
   "meetings": {
     "title": "Rapat",
     "intro": "Catatan untuk panggilan apa pun: Anda dan mereka, ditranskripsikan di Mac ini. Audio tidak pernah disimpan.",
-    "idle": "Tidak sedang mencatat",
-    "idleDetail": "Mulai saat panggilan dimulai, atau aktifkan saran rapat di Privasi.",
     "live": "Mencatat · {{time}}",
     "capturingBoth": "Mendengar Anda dan panggilan.",
     "capturingMic": "Hanya mendengar mikrofon Anda.",
-    "start": "Mulai mencatat",
     "stop": "Hentikan dan ringkas",
     "listening": "Mendengarkan…",
     "consent": "Beri tahu semua orang bahwa Anda sedang mencatat.",
@@ -1421,7 +1402,27 @@
       "notFound": "Rapat itu sudah tidak ada.",
       "followUp": "Tidak dapat membuat draf tindak lanjut sekarang."
     },
-    "freeLeft": "Sisa rapat gratis bulan ini: {{left}} dari {{limit}}. Pro tanpa batas."
+    "freeLeft": "Sisa rapat gratis bulan ini: {{left}} dari {{limit}}. Pro tanpa batas.",
+    "startNow": "Mulai sekarang",
+    "startNowHint": "Catat sekarang, tanpa menunggu panggilan",
+    "auto": {
+      "on": "Siap untuk panggilan berikutnya",
+      "onDetail": "Saat panggilan dimulai, {{appName}} menawarkan untuk mencatat. Setujui, atau abaikan.",
+      "off": "Deteksi panggilan nonaktif",
+      "offDetail": "Aktifkan, dan {{appName}} menawarkan pencatatan saat panggilan dimulai.",
+      "paused": "Dijeda",
+      "pausedDetail": "{{appName}} tidak akan menawarkan pencatatan sampai Anda melanjutkannya di Privasi.",
+      "pro": "Tidak mencatat",
+      "proDetail": "Dengan Pro, {{appName}} mengenali panggilan Anda dan menawarkan pencatatan.",
+      "unsupported": "Tidak mencatat",
+      "unsupportedDetail": "Mulai mencatat saat panggilan Anda dimulai.",
+      "turnOn": "Aktifkan"
+    },
+    "steps": {
+      "join": "Gabung panggilan di aplikasi apa pun",
+      "accept": "Katakan ya saat {{appName}} menawarkan",
+      "summary": "Dapatkan ringkasan saat selesai"
+    }
   },
   "tour": {
     "skip": "Lewati",
@@ -1491,7 +1492,6 @@
   "trySaying": {
     "title": "Apa yang bisa saya katakan?",
     "close": "Tutup",
-    "description": "Tahan {{ask}} untuk berbicara dengan agen. {{dictate}} mengetik, kecuali Anda meminta sesuatu.",
     "footnote": "Di ChatGPT atau Claude, mulailah dengan “Halo Ambient” untuk berbicara dengan agen.",
     "groups": {
       "answer": {
@@ -1501,7 +1501,8 @@
           "Ringkas ini.",
           "Apa arti kesalahan ini?",
           "Terjemahkan ini ke bahasa Inggris."
-        ]
+        ],
+        "hint": "Pertanyaan tentang apa pun, termasuk yang ada di layar Anda."
       },
       "act": {
         "title": "Lakukan",
@@ -1510,43 +1511,56 @@
           "Tambahkan makan siang dengan Ana hari Jumat jam 1 siang.",
           "Buka Linear.",
           "Jalankan pintasan standup saya."
-        ]
+        ],
+        "hint": "Pengingat, acara, aplikasi, dan pintasan."
       },
       "recall": {
         "title": "Ingat",
         "examples": [
           "Apa yang saya katakan soal harga kemarin?",
           "Cari presentasi Q3."
-        ]
+        ],
+        "hint": "Hal yang Anda katakan, lihat, atau kerjakan."
       },
       "suggestions": {
-        "title": "Saat saran muncul",
+        "title": "Saran",
         "examples": [
           "“Ya” atau “lakukan” untuk menerima.",
           "“Nanti saja” untuk menutup.",
           "“Jangan tampilkan ini” untuk menonaktifkan jenis itu.",
           "“Jangan di sini” untuk menghentikannya di aplikasi ini."
-        ]
+        ],
+        "hint": "Jawab saran dengan suara."
       },
       "meetings": {
-        "title": "Dalam rapat",
+        "title": "Rapat",
         "examples": [
           "Mulai catatan dari Rapat, atau ucapkan ya saat Ambient menawarkan.",
           "“Temukan” saat seseorang meminta sesuatu kepada Anda.",
           "“Ingatkan saya” saat Anda berjanji melakukan sesuatu."
-        ]
+        ],
+        "hint": "Saat {{appName}} mencatat di sebuah panggilan."
       },
       "talking": {
-        "title": "Berbicara dengan Ambient",
-        "examples": [
-          "Tahan {{ask}} dan bicaralah: selalu untuk Ambient.",
-          "Atau gunakan tombol dikte dan mulai dengan “Halo Ambient, …”. Tanpa itu, ucapan Anda diketik.",
-          "Tanpa tangan (aktifkan di Privasi): cukup ucapkan “Halo Ambient, …”."
-        ]
+        "title": "Cara berbicara"
       }
+    },
+    "subtitle": "Bicaralah seperti Anda bertanya pada rekan kerja. Beberapa cara untuk memulai.",
+    "ways": {
+      "0": "Tahan untuk berbicara dengan agen.",
+      "1": "Tahan untuk mendikte. Mulai dengan “Hey {{appName}}” untuk bertanya.",
+      "2": "Bebas tangan: ucapkan “Hey {{appName}}, …”. Aktifkan di Privasi."
     }
   },
   "app": {
     "starting": "Memulai {{appName}}…"
+  },
+  "search": {
+    "label": "Cari",
+    "button": "Cari",
+    "placeholder": "Cari pengaturan dan halaman",
+    "empty": "Tidak ada yang cocok dengan “{{query}}”.",
+    "jumpTo": "Buka",
+    "escape": "esc"
   }
 }

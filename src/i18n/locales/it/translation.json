@@ -647,27 +647,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Tasto di scelta rapida"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Prompt Selezionato",
-          "description": "Seleziona un template per migliorare le trascrizioni o creane uno nuovo. Usa ${output} nel prompt per fare riferimento alla trascrizione."
-        },
-        "noPrompts": "Nessun prompt disponibile",
-        "selectPrompt": "Scegli un prompt",
-        "createNew": "Crea un nuovo prompt",
-        "promptLabel": "Etichetta del Prompt",
-        "promptLabelPlaceholder": "Inserisci il nome del prompt",
-        "promptInstructions": "Istruzioni del Prompt",
-        "promptInstructionsPlaceholder": "Scrivi le istruzioni da eseguire dopo la trascrizione. Esempio: Migliora la grammatica e la chiarezza per il seguente testo: ${output}",
-        "promptTip": "Suggerimento: Usa <code>${output}</code> per inserire il testo trascritto nel tuo prompt.",
-        "updatePrompt": "Aggiorna Prompt",
-        "deletePrompt": "Elimina Prompt",
-        "createPrompt": "Crea Prompt",
-        "cancel": "Annulla",
-        "selectToEdit": "Scegli un prompt qui sopra per visualizzare o modificare i dettagli.",
-        "createFirst": "Clicca 'Crea un nuovo prompt' qui sopra per creare il tuo primo prompt di post-elaborazione."
       }
     },
     "history": {
@@ -1027,7 +1006,8 @@
         "inactive": "L'abbonamento di questo codice non è attivo. Rinnovalo per sbloccare il piano.",
         "rate_limited": "Troppi tentativi. Riprova tra 15 minuti.",
         "server": "Attivazione non riuscita da parte nostra. Riprova tra poco."
-      }
+      },
+      "menu": "Azioni dell'account"
     },
     "signIn": {
       "sectionTitle": "Il tuo account",
@@ -1133,8 +1113,10 @@
       "polishUnlimited": "La rifinitura con IA è illimitata.",
       "polishLeft": "Ti restano {{left}} di {{limit}} usi gratuiti della rifinitura con IA questa settimana · si azzera {{day}}",
       "polishFree": "Il piano gratuito include una quota settimanale di rifinitura con IA.",
-      "usageToday": "Oggi: richieste IA {{ai}} · ricerche {{search}} · utilizzo equo {{aiLimit}} al giorno",
-      "meetingsLeft": "Riunioni questo mese: {{used}} di {{limit}}"
+      "meetingsLeft": "Ti restano {{left}} note di riunione su {{limit}} questo mese",
+      "aiLeft": "Oggi hai ancora {{left}} richieste IA su {{limit}}",
+      "searchLeft": "Ricerche rimaste: {{count}}",
+      "meterLabel": "Quota rimasta"
     },
     "privacy": {
       "title": "Privacy",
@@ -1241,7 +1223,7 @@
   },
   "privacy": {
     "title": "Privacy",
-    "promise": "Disattivato finché non lo attivi. Conservato su questo Mac, cifrato. Ogni richiesta che esce è elencata.",
+    "promise": "Cosa può leggere {{appName}}, cosa esce da questo Mac e cosa conserva.",
     "state": {
       "on": "Attivo, come hai consentito",
       "onDetail": "Solo le funzioni che hai attivato qui sotto.",
@@ -1251,8 +1233,9 @@
       "pausedDetail": "Non viene letto nulla finché non riprendi.",
       "pausedUntil": "Non viene letto nulla fino alle {{time}}.",
       "resume": "Riprendi",
-      "pauseHour": "Pausa di 1 ora",
-      "pauseDay": "Fino a domani"
+      "pauseHour": "Per 1 ora",
+      "pauseDay": "Fino a domani",
+      "pause": "Pausa"
     },
     "accessibility": "{{appName}} ha bisogno dell'accesso ad Accessibilità per leggere il testo da altre app.",
     "grant": "Consenti accesso",
@@ -1288,6 +1271,11 @@
         "title": "Mani libere: di' «Ciao Ambient»",
         "reads": "Ascolta «Ciao Ambient» su questo Mac. Tutto il resto viene scartato mentre parli.",
         "leaves": "Non viene registrato né inviato nulla finché non lo dici."
+      },
+      "groups": {
+        "screen": "Il tuo schermo",
+        "listening": "Ascolto",
+        "local": "Su questo Mac"
       }
     },
     "retention": "Conserva per",
@@ -1372,27 +1360,20 @@
       }
     },
     "macOnly": "Per ora solo su Mac",
-    "protections": {
-      "audio": "La tua voce viene trascritta su questo Mac e non viene mai conservata da noi.",
-      "text": "Legge il testo, non fa mai screenshot.",
-      "passwords": "Campi password, gestori di password e finestre private non vengono mai letti.",
-      "wallets": "Wallet di criptovalute, frasi di recupero e chiavi private: si fa completamente da parte.",
-      "secrets": "Numeri di carta, chiavi e codici vengono rimossi prima di qualsiasi invio.",
-      "suggestions": "I suggerimenti vengono decisi su questo Mac; non viene inviato nulla se non accetti.",
-      "stored": "Ciò che conserva resta su questo Mac, cifrato, finché non lo elimini.",
-      "ledger": "Ogni richiesta che esce è elencata qui sotto, con esattamente ciò che è stato inviato."
-    },
-    "days_many": "{{count}} giorni"
+    "days_many": "{{count}} giorni",
+    "promises": {
+      "voice": "La tua voce resta su questo Mac",
+      "text": "Legge il testo, mai gli screenshot",
+      "sensitive": "Salta password, portafogli e finestre private",
+      "ledger": "Ogni richiesta in uscita è elencata qui sotto"
+    }
   },
   "meetings": {
     "title": "Riunioni",
     "intro": "Appunti per qualsiasi chiamata: tu e gli altri, trascritti su questo Mac. L'audio non viene mai salvato.",
-    "idle": "Nessun appunto in corso",
-    "idleDetail": "Avvia quando inizia una chiamata, oppure attiva i suggerimenti per le riunioni in Privacy.",
     "live": "Appunti in corso · {{time}}",
     "capturingBoth": "Sente te e la chiamata.",
     "capturingMic": "Sente solo il tuo microfono.",
-    "start": "Avvia appunti",
     "stop": "Interrompi e riassumi",
     "listening": "In ascolto…",
     "consent": "Avvisa tutti che stai prendendo appunti.",
@@ -1433,7 +1414,27 @@
       "notFound": "Quella riunione non esiste più.",
       "followUp": "Impossibile scrivere il follow-up al momento."
     },
-    "freeLeft": "Riunioni gratuite rimaste questo mese: {{left}} di {{limit}}. Pro è illimitato."
+    "freeLeft": "Riunioni gratuite rimaste questo mese: {{left}} di {{limit}}. Pro è illimitato.",
+    "startNow": "Inizia ora",
+    "startNowHint": "Prendi appunti subito, senza aspettare una chiamata",
+    "auto": {
+      "on": "Pronto per la prossima chiamata",
+      "onDetail": "Quando inizia una chiamata, {{appName}} si offre di prendere appunti. Rispondi sì oppure ignora.",
+      "off": "Il rilevamento delle chiamate è disattivato",
+      "offDetail": "Attivalo e {{appName}} si offrirà di prendere appunti quando inizia una chiamata.",
+      "paused": "In pausa",
+      "pausedDetail": "{{appName}} non proporrà appunti finché non lo riprendi in Privacy.",
+      "pro": "Nessun appunto",
+      "proDetail": "Con Pro, {{appName}} riconosce le tue chiamate e si offre di prendere appunti.",
+      "unsupported": "Nessun appunto",
+      "unsupportedDetail": "Avvia gli appunti quando inizia la chiamata.",
+      "turnOn": "Attiva"
+    },
+    "steps": {
+      "join": "Partecipa a una chiamata in qualsiasi app",
+      "accept": "Rispondi sì quando {{appName}} si offre",
+      "summary": "Ricevi un riepilogo alla fine"
+    }
   },
   "tour": {
     "skip": "Salta",
@@ -1503,7 +1504,6 @@
   "trySaying": {
     "title": "Cosa posso dire?",
     "close": "Chiudi",
-    "description": "Tieni premuto {{ask}} per parlare con l'agente. {{dictate}} scrive, a meno che tu non chieda qualcosa.",
     "footnote": "In ChatGPT o Claude, inizia con «Ciao Ambient» per parlare invece con l'agente.",
     "groups": {
       "answer": {
@@ -1513,7 +1513,8 @@
           "Riassumi questo.",
           "Cosa significa questo errore?",
           "Traduci questo in spagnolo."
-        ]
+        ],
+        "hint": "Domande su qualsiasi cosa, anche su ciò che hai sullo schermo."
       },
       "act": {
         "title": "Fai",
@@ -1522,43 +1523,56 @@
           "Aggiungi pranzo con Ana venerdì alle 13.",
           "Apri Linear.",
           "Esegui il mio comando rapido dello standup."
-        ]
+        ],
+        "hint": "Promemoria, eventi, app e scorciatoie."
       },
       "recall": {
         "title": "Ricorda",
         "examples": [
           "Cosa ho detto ieri sui prezzi?",
           "Trova la presentazione del Q3."
-        ]
+        ],
+        "hint": "Ciò che hai detto, visto o su cui hai lavorato."
       },
       "suggestions": {
-        "title": "Quando compare un suggerimento",
+        "title": "Suggerimenti",
         "examples": [
           "«Sì» o «fallo» per accettare.",
           "«Non ora» per ignorarlo.",
           "«Non mostrarmeli» per disattivare quel tipo.",
           "«Non qui» per fermarlo in questa app."
-        ]
+        ],
+        "hint": "Rispondi a un suggerimento a voce."
       },
       "meetings": {
-        "title": "In riunione",
+        "title": "Riunioni",
         "examples": [
           "Avvia gli appunti da Riunioni, oppure di' sì quando Ambient lo propone.",
           "«Trova» quando ti chiedono qualcosa.",
           "«Ricordamelo» quando prometti di fare qualcosa."
-        ]
+        ],
+        "hint": "Mentre {{appName}} prende appunti durante una chiamata."
       },
       "talking": {
-        "title": "Parlare con Ambient",
-        "examples": [
-          "Tieni premuto {{ask}} e parla: è sempre per Ambient.",
-          "Oppure usa il tasto di dettatura e inizia con «Ciao Ambient, …». Altrimenti le tue parole vengono scritte.",
-          "Mani libere (attivalo in Privacy): di' semplicemente «Ciao Ambient, …»."
-        ]
+        "title": "Come parlare"
       }
+    },
+    "subtitle": "Parla come faresti con un collega. Qualche modo per iniziare.",
+    "ways": {
+      "0": "Tieni premuto per parlare con l'agente.",
+      "1": "Tieni premuto per dettare. Inizia con “Hey {{appName}}” per fare una domanda.",
+      "2": "A mani libere: di' “Hey {{appName}}, …”. Attivalo in Privacy."
     }
   },
   "app": {
     "starting": "Avvio di {{appName}}…"
+  },
+  "search": {
+    "label": "Cerca",
+    "button": "Cerca",
+    "placeholder": "Cerca nelle impostazioni e nelle pagine",
+    "empty": "Nessun risultato per “{{query}}”.",
+    "jumpTo": "Vai a",
+    "escape": "esc"
   }
 }

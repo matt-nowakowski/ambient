@@ -151,7 +151,14 @@ export const HomePage: React.FC<HomePageProps> = ({
       </StaggerItem>
       <StaggerItem>
         <section className="glass relative overflow-hidden rounded-panel p-hero">
-          <div className="pointer-events-none absolute -end-16 -top-24 size-72 rounded-full bg-[radial-gradient(circle,var(--ambient-a),transparent_70%)] blur-2xl" />
+          {/* The glow gets its own rounded clip: WebKit lets a blurred (composited)
+              child escape a rounded overflow clip, so its square edge poked out. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [mask-image:linear-gradient(#000,#000)]"
+          >
+            <div className="absolute -end-16 -top-24 size-72 rounded-full bg-[radial-gradient(circle,var(--ambient-a),transparent_70%)] blur-2xl" />
+          </div>
           <div className="relative flex items-center justify-between gap-6">
             <div>
               <h1 className="text-greeting font-light">{t(greetingKey())}</h1>
@@ -189,12 +196,14 @@ export const HomePage: React.FC<HomePageProps> = ({
         </section>
       </StaggerItem>
 
-      <div className="grid grid-cols-2 gap-grid">
-        <StaggerItem>
+      {/* Rows stretch, and each card fills its cell, so the two stay the
+          same height when one hint wraps. */}
+      <div className="grid grid-cols-2 items-stretch gap-grid">
+        <StaggerItem className="h-full">
           <motion.div
             whileHover={{ y: -2 }}
             transition={spring}
-            className="glass rounded-panel p-card"
+            className="glass flex h-full flex-col rounded-panel p-card"
           >
             <p className="text-section font-medium text-ink-3">
               {t("home.stats.words")}
@@ -212,11 +221,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
           </motion.div>
         </StaggerItem>
-        <StaggerItem>
+        <StaggerItem className="h-full">
           <motion.div
             whileHover={{ y: -2 }}
             transition={spring}
-            className="glass rounded-panel p-card"
+            className="glass flex h-full flex-col rounded-panel p-card"
           >
             <p className="text-section font-medium text-ink-3">
               {t("home.stats.saved")}

@@ -647,29 +647,18 @@
   }
 }
 
-/* ── transitions.dev — Tabs sliding (pill) ──────────────────────────── */
-/* Ambient: the pill is transparent — it is the element a liquid-gooey
-   `move` item trails, so the liquid silhouette is what you see. JS writes
-   its translate / size; this owns the tween. */
-.t-tabs-pill {
+/* ── Liquid pill (LiquidIndicatorGroup) ─────────────────────────────── */
+/* JS writes the four edges and a per-edge transition (the leading edge
+   runs ahead of the trailing one, so the pill stretches as it flows). */
+.t-liquid-pill {
   position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(0, 0);
-  transition:
-    transform var(--tabs-dur) var(--tabs-ease),
-    width var(--tabs-dur) var(--tabs-ease),
-    height var(--tabs-dur) var(--tabs-ease);
-  will-change: transform, width;
   z-index: 0;
   pointer-events: none;
-}
-.t-tabs-pill.is-snapping {
-  transition: none;
+  will-change: top, bottom, left, right;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .t-tabs-pill {
+  .t-liquid-pill {
     transition: none !important;
   }
 }
@@ -842,4 +831,28 @@ li[data-sonner-toast].ambient-toast[data-expanded="false"][data-front="false"]
 .ambient-toast .sonner-loader {
   display: grid;
   place-items: center;
+}
+
+/* ── Global search: the row a result jumped to ───────────────────────── */
+.search-hit {
+  border-radius: var(--radius-control);
+  animation: search-hit 2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes search-hit {
+  0%,
+  35% {
+    background-color: var(--glass-press);
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-hit {
+    animation-duration: 0.01s;
+    animation-delay: 1.2s;
+    animation-fill-mode: backwards;
+  }
 }

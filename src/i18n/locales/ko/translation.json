@@ -644,27 +644,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "단축키"
-      },
-      "prompts": {
-        "title": "프롬프트",
-        "selectedPrompt": {
-          "title": "선택된 프롬프트",
-          "description": "텍스트 변환을 개선하기 위한 템플릿을 선택하거나 새로 만드세요. 프롬프트 텍스트 내에서 ${output}를 사용하여 캡처된 텍스트를 참조하세요."
-        },
-        "noPrompts": "사용 가능한 프롬프트 없음",
-        "selectPrompt": "프롬프트 선택",
-        "createNew": "새 프롬프트 만들기",
-        "promptLabel": "프롬프트 레이블",
-        "promptLabelPlaceholder": "프롬프트 이름 입력",
-        "promptInstructions": "프롬프트 지시사항",
-        "promptInstructionsPlaceholder": "텍스트 변환 후 실행할 지시사항을 작성하세요. 예: 다음 텍스트의 문법과 명확성을 개선하세요: ${output}",
-        "promptTip": "팁: 프롬프트에서 변환된 텍스트를 삽입하려면 <code>${output}</code>을 사용하세요.",
-        "updatePrompt": "프롬프트 업데이트",
-        "deletePrompt": "프롬프트 삭제",
-        "createPrompt": "프롬프트 만들기",
-        "cancel": "취소",
-        "selectToEdit": "세부 정보를 보고 편집하려면 위에서 프롬프트를 선택하세요.",
-        "createFirst": "첫 번째 후처리 프롬프트를 만들려면 위의 '새 프롬프트 만들기'를 클릭하세요."
       }
     },
     "history": {
@@ -1022,7 +1001,8 @@
         "inactive": "이 코드의 구독이 활성 상태가 아닙니다. 갱신하면 요금제가 잠금 해제됩니다.",
         "rate_limited": "시도 횟수가 너무 많습니다. 15분 후에 다시 시도하세요.",
         "server": "저희 쪽에서 활성화에 실패했습니다. 잠시 후 다시 시도하세요."
-      }
+      },
+      "menu": "계정 작업"
     },
     "signIn": {
       "sectionTitle": "내 계정",
@@ -1125,8 +1105,10 @@
       "polishUnlimited": "AI 다듬기는 무제한입니다.",
       "polishLeft": "이번 주 무료 AI 다듬기 {{limit}}회 중 {{left}}회 남음 · {{day}}에 초기화",
       "polishFree": "무료 요금제에는 매주 AI 다듬기 이용량이 포함됩니다.",
-      "usageToday": "오늘: AI 요청 {{ai}} · 검색 {{search}} · 공정 사용 하루 {{aiLimit}}",
-      "meetingsLeft": "이번 달 회의: {{used}} / {{limit}}"
+      "meetingsLeft": "이번 달 회의 노트 {{left}}/{{limit}}개 남음",
+      "aiLeft": "오늘 AI 요청 {{left}}/{{limit}}회 남음",
+      "searchLeft": "남은 검색: {{count}}회",
+      "meterLabel": "남은 사용량"
     },
     "privacy": {
       "title": "개인정보 보호",
@@ -1233,7 +1215,7 @@
   },
   "privacy": {
     "title": "개인정보 보호",
-    "promise": "켜기 전까지 꺼져 있습니다. 암호화되어 이 Mac에 보관됩니다. 밖으로 나가는 모든 요청이 목록에 표시됩니다.",
+    "promise": "{{appName}}이(가) 읽을 수 있는 것, 이 Mac 밖으로 나가는 것, 보관하는 것.",
     "state": {
       "on": "허용한 대로 보는 중",
       "onDetail": "아래에서 켠 기능만 사용합니다.",
@@ -1243,8 +1225,9 @@
       "pausedDetail": "다시 시작할 때까지 아무것도 읽지 않습니다.",
       "pausedUntil": "{{time}}까지 아무것도 읽지 않습니다.",
       "resume": "다시 시작",
-      "pauseHour": "1시간 일시 정지",
-      "pauseDay": "내일까지"
+      "pauseHour": "1시간 동안",
+      "pauseDay": "내일까지",
+      "pause": "일시정지"
     },
     "accessibility": "다른 앱의 텍스트를 읽으려면 {{appName}}에 손쉬운 사용 접근 권한이 필요합니다.",
     "grant": "접근 허용",
@@ -1280,6 +1263,11 @@
         "title": "핸즈프리: “안녕 Ambient”라고 말하기",
         "reads": "이 Mac에서 “안녕 Ambient”를 듣습니다. 그 밖의 말은 말하는 즉시 버려집니다.",
         "leaves": "말하기 전까지는 아무것도 녹음하거나 전송하지 않습니다."
+      },
+      "groups": {
+        "screen": "내 화면",
+        "listening": "듣기",
+        "local": "이 Mac에서"
       }
     },
     "retention": "보관 기간",
@@ -1361,26 +1349,19 @@
       }
     },
     "macOnly": "현재 Mac 전용",
-    "protections": {
-      "audio": "음성은 이 Mac에서 받아쓰며 저희가 저장하지 않습니다.",
-      "text": "텍스트만 읽으며 스크린샷은 찍지 않습니다.",
-      "passwords": "암호 입력란, 암호 관리자, 비공개 창은 절대 읽지 않습니다.",
-      "wallets": "암호화폐 지갑, 복구 문구, 개인 키: 완전히 손을 뗍니다.",
-      "secrets": "카드 번호, 키, 코드는 전송 전에 제거됩니다.",
-      "suggestions": "제안은 이 Mac에서 결정되며, 수락하지 않으면 아무것도 전송되지 않습니다.",
-      "stored": "보관하는 내용은 삭제할 때까지 암호화되어 이 Mac에 남습니다.",
-      "ledger": "밖으로 나간 모든 요청과 정확히 전송된 내용이 아래에 표시됩니다."
+    "promises": {
+      "voice": "내 음성은 이 Mac에만 머뭅니다",
+      "text": "텍스트만 읽고 스크린샷은 찍지 않습니다",
+      "sensitive": "비밀번호, 지갑, 비공개 창은 건너뜁니다",
+      "ledger": "외부로 나가는 모든 요청이 아래에 표시됩니다"
     }
   },
   "meetings": {
     "title": "회의",
     "intro": "모든 통화를 위한 회의록: 나와 상대방을 이 Mac에서 받아씁니다. 오디오는 저장되지 않습니다.",
-    "idle": "기록하지 않음",
-    "idleDetail": "통화가 시작되면 시작하거나, 개인정보 보호에서 회의 제안을 켜세요.",
     "live": "기록 중 · {{time}}",
     "capturingBoth": "나와 통화 소리를 듣고 있습니다.",
     "capturingMic": "마이크만 듣고 있습니다.",
-    "start": "기록 시작",
     "stop": "중지하고 요약",
     "listening": "듣는 중…",
     "consent": "모두에게 기록 중임을 알리세요.",
@@ -1421,7 +1402,27 @@
       "notFound": "해당 회의가 더 이상 존재하지 않습니다.",
       "followUp": "지금은 후속 메일 초안을 작성할 수 없습니다."
     },
-    "freeLeft": "이번 달 남은 무료 회의: {{left}} / {{limit}}. Pro는 무제한입니다."
+    "freeLeft": "이번 달 남은 무료 회의: {{left}} / {{limit}}. Pro는 무제한입니다.",
+    "startNow": "지금 시작",
+    "startNowHint": "통화를 기다리지 않고 지금 노트 작성",
+    "auto": {
+      "on": "다음 통화 준비 완료",
+      "onDetail": "통화가 시작되면 {{appName}}이(가) 노트 작성을 제안합니다. 수락하거나 무시하세요.",
+      "off": "통화 감지 꺼짐",
+      "offDetail": "켜면 통화가 시작될 때 {{appName}}이(가) 노트 작성을 제안합니다.",
+      "paused": "일시정지됨",
+      "pausedDetail": "개인정보 보호에서 다시 시작하기 전까지 {{appName}}은(는) 노트를 제안하지 않습니다.",
+      "pro": "노트 작성 안 함",
+      "proDetail": "Pro에서는 {{appName}}이(가) 통화를 감지해 노트 작성을 제안합니다.",
+      "unsupported": "노트 작성 안 함",
+      "unsupportedDetail": "통화가 시작되면 노트를 시작하세요.",
+      "turnOn": "켜기"
+    },
+    "steps": {
+      "join": "아무 앱에서나 통화 참여",
+      "accept": "{{appName}}이(가) 제안하면 수락",
+      "summary": "끝나면 요약 받기"
+    }
   },
   "tour": {
     "skip": "건너뛰기",
@@ -1491,7 +1492,6 @@
   "trySaying": {
     "title": "무엇을 말할 수 있나요?",
     "close": "닫기",
-    "description": "{{ask}}을(를) 누른 채 에이전트와 대화하세요. {{dictate}}은(는) 요청하지 않는 한 그대로 입력합니다.",
     "footnote": "ChatGPT나 Claude에서는 “안녕 Ambient”로 시작하면 에이전트와 대화할 수 있습니다.",
     "groups": {
       "answer": {
@@ -1501,7 +1501,8 @@
           "이거 요약해 줘.",
           "이 오류는 무슨 뜻이야?",
           "이거 영어로 번역해 줘."
-        ]
+        ],
+        "hint": "화면에 보이는 내용을 포함해 무엇이든 물어보세요."
       },
       "act": {
         "title": "하기",
@@ -1510,43 +1511,53 @@
           "금요일 오후 1시에 아나와 점심 추가해 줘.",
           "Linear 열어 줘.",
           "스탠드업 단축어 실행해 줘."
-        ]
+        ],
+        "hint": "미리 알림, 일정, 앱, 단축어."
       },
       "recall": {
         "title": "기억하기",
-        "examples": [
-          "어제 가격에 대해 뭐라고 했지?",
-          "3분기 자료 찾아 줘."
-        ]
+        "examples": ["어제 가격에 대해 뭐라고 했지?", "3분기 자료 찾아 줘."],
+        "hint": "내가 말하고, 보고, 작업한 내용."
       },
       "suggestions": {
-        "title": "제안이 나타나면",
+        "title": "제안",
         "examples": [
           "수락하려면 “응” 또는 “해 줘”.",
           "닫으려면 “나중에”.",
           "그 종류를 끄려면 “이런 건 보여 주지 마”.",
           "이 앱에서 멈추려면 “여기선 안 돼”."
-        ]
+        ],
+        "hint": "제안에 소리 내어 답하세요."
       },
       "meetings": {
-        "title": "회의 중에",
+        "title": "회의",
         "examples": [
           "회의에서 기록을 시작하거나, Ambient가 제안하면 그렇다고 답하세요.",
           "누가 무언가를 요청하면 “찾기”.",
           "무언가를 약속하면 “알림 설정”."
-        ]
+        ],
+        "hint": "통화 중 {{appName}}이(가) 노트를 작성합니다."
       },
       "talking": {
-        "title": "Ambient와 대화하기",
-        "examples": [
-          "{{ask}}을(를) 누른 채 말하세요: 항상 Ambient에게 전달됩니다.",
-          "또는 받아쓰기 키를 사용하고 “안녕 Ambient, …”로 시작하세요. 그렇지 않으면 말한 내용이 입력됩니다.",
-          "핸즈프리(개인정보 보호에서 켜기): “안녕 Ambient, …”라고 말하기만 하면 됩니다."
-        ]
+        "title": "말하는 방법"
       }
+    },
+    "subtitle": "동료에게 부탁하듯 말해 보세요. 시작하는 방법 몇 가지.",
+    "ways": {
+      "0": "누르고 있는 동안 에이전트에게 말합니다.",
+      "1": "누르고 있는 동안 받아쓰기합니다. 질문하려면 “Hey {{appName}}”로 시작하세요.",
+      "2": "핸즈프리: “Hey {{appName}}, …”라고 말하세요. 개인정보 보호에서 켤 수 있습니다."
     }
   },
   "app": {
     "starting": "{{appName}} 시작 중…"
+  },
+  "search": {
+    "label": "검색",
+    "button": "검색",
+    "placeholder": "설정 및 페이지 검색",
+    "empty": "“{{query}}”와(과) 일치하는 항목이 없습니다.",
+    "jumpTo": "이동",
+    "escape": "esc"
   }
 }

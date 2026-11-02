@@ -644,27 +644,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Snabbkommando"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Vald prompt",
-          "description": "Välj en mall för att förfina transkriptioner eller skapa en ny. Använd ${output} inuti prompttexten för att referera till den fångade transkriptionen."
-        },
-        "noPrompts": "Inga prompter tillgängliga",
-        "selectPrompt": "Välj en prompt",
-        "createNew": "Skapa ny prompt",
-        "promptLabel": "Prompt-etikett",
-        "promptLabelPlaceholder": "Ange namn på prompt",
-        "promptInstructions": "Prompt-instruktioner",
-        "promptInstructionsPlaceholder": "Skriv instruktionerna som ska köras efter transkription. Exempel: Förbättra grammatik och tydlighet för följande text: ${output}",
-        "promptTip": "Tips: Använd <code>${output}</code> för att infoga den transkriberade texten i din prompt.",
-        "updatePrompt": "Uppdatera prompt",
-        "deletePrompt": "Ta bort prompt",
-        "createPrompt": "Skapa prompt",
-        "cancel": "Avbryt",
-        "selectToEdit": "Välj en prompt ovan för att visa och redigera dess detaljer.",
-        "createFirst": "Klicka på 'Skapa ny prompt' ovan för att skapa din första prompt för efterbearbetning."
       }
     },
     "history": {
@@ -1022,7 +1001,8 @@
         "inactive": "Prenumerationen för den här koden är inte aktiv. Förnya den för att låsa upp din plan.",
         "rate_limited": "För många försök. Försök igen om 15 minuter.",
         "server": "Aktiveringen misslyckades hos oss. Försök igen om en stund."
-      }
+      },
+      "menu": "Kontoåtgärder"
     },
     "signIn": {
       "sectionTitle": "Ditt konto",
@@ -1125,8 +1105,10 @@
       "polishUnlimited": "AI-finslipning är obegränsad.",
       "polishLeft": "{{left}} av {{limit}} gratis användningar av AI-finslipning kvar den här veckan · återställs {{day}}",
       "polishFree": "Gratis inkluderar en veckokvot för AI-finslipning.",
-      "usageToday": "I dag: AI-förfrågningar {{ai}} · sökningar {{search}} · skälig användning {{aiLimit}} per dag",
-      "meetingsLeft": "Möten den här månaden: {{used}} av {{limit}}"
+      "meetingsLeft": "{{left}} av {{limit}} mötesanteckningar kvar den här månaden",
+      "aiLeft": "{{left}} av {{limit}} AI-förfrågningar kvar idag",
+      "searchLeft": "Sökningar kvar: {{count}}",
+      "meterLabel": "Återstående kvot"
     },
     "privacy": {
       "title": "Integritet",
@@ -1233,7 +1215,7 @@
   },
   "privacy": {
     "title": "Integritet",
-    "promise": "Av tills du slår på det. Sparas krypterat på den här Macen. Varje förfrågan som lämnar den listas.",
+    "promise": "Vad {{appName}} kan läsa, vad som lämnar den här Macen och vad som sparas.",
     "state": {
       "on": "Tittar, som du tillät",
       "onDetail": "Bara de funktioner du har slagit på nedan.",
@@ -1243,8 +1225,9 @@
       "pausedDetail": "Inget läses förrän du återupptar.",
       "pausedUntil": "Inget läses förrän {{time}}.",
       "resume": "Återuppta",
-      "pauseHour": "Pausa i 1 timme",
-      "pauseDay": "Till i morgon"
+      "pauseHour": "I 1 timme",
+      "pauseDay": "Till i morgon",
+      "pause": "Pausa"
     },
     "accessibility": "{{appName}} behöver åtkomst till Hjälpmedel för att läsa text från andra appar.",
     "grant": "Tillåt åtkomst",
@@ -1280,6 +1263,11 @@
         "title": "Handsfree: säg ”Hej Ambient”",
         "reads": "Lyssnar efter ”Hej Ambient” på den här Macen. Allt annat kastas medan du pratar.",
         "leaves": "Inget spelas in eller skickas förrän du säger det."
+      },
+      "groups": {
+        "screen": "Din skärm",
+        "listening": "Lyssnar",
+        "local": "På den här Macen"
       }
     },
     "retention": "Behåll i",
@@ -1361,26 +1349,19 @@
       }
     },
     "macOnly": "Endast på Mac än så länge",
-    "protections": {
-      "audio": "Din röst transkriberas på den här Macen och sparas aldrig av oss.",
-      "text": "Läser text, tar aldrig skärmbilder.",
-      "passwords": "Lösenordsfält, lösenordshanterare och privata fönster läses aldrig.",
-      "wallets": "Kryptoplånböcker, återställningsfraser och privata nycklar: den håller sig helt undan.",
-      "secrets": "Kortnummer, nycklar och koder tas bort innan något skickas.",
-      "suggestions": "Förslag avgörs på den här Macen; inget skickas om du inte godkänner.",
-      "stored": "Det som sparas stannar på den här Macen, krypterat, tills du raderar det.",
-      "ledger": "Varje förfrågan som lämnar Macen listas nedan, med exakt vad som skickades."
+    "promises": {
+      "voice": "Din röst stannar på den här Macen",
+      "text": "Läser text, aldrig skärmbilder",
+      "sensitive": "Hoppar över lösenord, plånböcker och privata fönster",
+      "ledger": "Varje förfrågan som lämnar Macen listas nedan"
     }
   },
   "meetings": {
     "title": "Möten",
     "intro": "Anteckningar för alla samtal: du och de andra, transkriberade på den här Macen. Ljud sparas aldrig.",
-    "idle": "Antecknar inte",
-    "idleDetail": "Starta när ett samtal börjar, eller slå på mötesförslag under Integritet.",
     "live": "Antecknar · {{time}}",
     "capturingBoth": "Hör dig och samtalet.",
     "capturingMic": "Hör bara din mikrofon.",
-    "start": "Starta anteckningar",
     "stop": "Stoppa och sammanfatta",
     "listening": "Lyssnar…",
     "consent": "Låt alla veta att du antecknar.",
@@ -1421,7 +1402,27 @@
       "notFound": "Mötet finns inte längre.",
       "followUp": "Kunde inte skriva uppföljningen just nu."
     },
-    "freeLeft": "Gratis möten kvar den här månaden: {{left}} av {{limit}}. Pro är obegränsat."
+    "freeLeft": "Gratis möten kvar den här månaden: {{left}} av {{limit}}. Pro är obegränsat.",
+    "startNow": "Starta nu",
+    "startNowHint": "Ta anteckningar nu, utan att vänta på ett samtal",
+    "auto": {
+      "on": "Redo för ditt nästa samtal",
+      "onDetail": "När ett samtal börjar erbjuder {{appName}} sig att ta anteckningar. Säg ja eller ignorera.",
+      "off": "Samtalsavkänning är av",
+      "offDetail": "Slå på den så erbjuder {{appName}} sig att ta anteckningar när ett samtal börjar.",
+      "paused": "Pausad",
+      "pausedDetail": "{{appName}} erbjuder inte anteckningar förrän du återupptar under Integritet.",
+      "pro": "Tar inga anteckningar",
+      "proDetail": "Med Pro upptäcker {{appName}} dina samtal och erbjuder sig att ta anteckningar.",
+      "unsupported": "Tar inga anteckningar",
+      "unsupportedDetail": "Starta anteckningar när ditt samtal börjar.",
+      "turnOn": "Slå på"
+    },
+    "steps": {
+      "join": "Gå med i ett samtal i valfri app",
+      "accept": "Säg ja när {{appName}} erbjuder sig",
+      "summary": "Få en sammanfattning när det är slut"
+    }
   },
   "tour": {
     "skip": "Hoppa över",
@@ -1491,7 +1492,6 @@
   "trySaying": {
     "title": "Vad kan jag säga?",
     "close": "Stäng",
-    "description": "Håll ned {{ask}} för att prata med agenten. {{dictate}} skriver, om du inte ber om något.",
     "footnote": "I ChatGPT eller Claude, börja med ”Hej Ambient” för att prata med agenten i stället.",
     "groups": {
       "answer": {
@@ -1501,7 +1501,8 @@
           "Sammanfatta det här.",
           "Vad betyder det här felet?",
           "Översätt det här till spanska."
-        ]
+        ],
+        "hint": "Frågor om vad som helst, även om vad som finns på skärmen."
       },
       "act": {
         "title": "Gör",
@@ -1510,43 +1511,56 @@
           "Lägg till lunch med Ana på fredag klockan 13.",
           "Öppna Linear.",
           "Kör min standup-genväg."
-        ]
+        ],
+        "hint": "Påminnelser, händelser, appar och genvägar."
       },
       "recall": {
         "title": "Minns",
         "examples": [
           "Vad sa jag om prissättningen i går?",
           "Hitta Q3-presentationen."
-        ]
+        ],
+        "hint": "Saker du sagt, sett eller arbetat med."
       },
       "suggestions": {
-        "title": "När ett förslag dyker upp",
+        "title": "Förslag",
         "examples": [
           "”Ja” eller ”kör” för att godkänna.",
           "”Inte nu” för att avfärda.",
           "”Visa inte sådana” för att stänga av den sortens förslag.",
           "”Inte här” för att stoppa det i den här appen."
-        ]
+        ],
+        "hint": "Svara på ett förslag högt."
       },
       "meetings": {
-        "title": "Under möten",
+        "title": "Möten",
         "examples": [
           "Starta anteckningar från Möten, eller säg ja när Ambient erbjuder det.",
           "”Hitta” när någon ber dig om något.",
           "”Påminn mig” när du lovar att göra något."
-        ]
+        ],
+        "hint": "Medan {{appName}} för anteckningar under ett samtal."
       },
       "talking": {
-        "title": "Prata med Ambient",
-        "examples": [
-          "Håll ned {{ask}} och prata: det går alltid till Ambient.",
-          "Eller använd dikteringstangenten och börja med ”Hej Ambient, …”. Annars skrivs dina ord.",
-          "Handsfree (slå på under Integritet): säg bara ”Hej Ambient, …”."
-        ]
+        "title": "Så pratar du"
       }
+    },
+    "subtitle": "Prata som du skulle fråga en kollega. Några sätt att komma igång.",
+    "ways": {
+      "0": "Håll in för att prata med agenten.",
+      "1": "Håll in för att diktera. Börja med “Hey {{appName}}” för att fråga i stället.",
+      "2": "Handsfree: säg “Hey {{appName}}, …”. Slå på det under Integritet."
     }
   },
   "app": {
     "starting": "Startar {{appName}}…"
+  },
+  "search": {
+    "label": "Sök",
+    "button": "Sök",
+    "placeholder": "Sök i inställningar och sidor",
+    "empty": "Inget matchar “{{query}}”.",
+    "jumpTo": "Hoppa till",
+    "escape": "esc"
   }
 }

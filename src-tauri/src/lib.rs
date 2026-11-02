@@ -106,6 +106,35 @@ fn build_console_filter() -> env_filter::Filter {
     builder.build()
 }
 
+/// How long a quit may take before the process is ended outright.
+const EXIT_WATCHDOG: std::time::Duration = std::time::Duration::from_secs(4);
+
+/// Quitting must end the process. If teardown hangs (a plugin's exit hook, an
+/// audio device or thread that won't let go), the old process lingers with no
+/// windows, and macOS keeps its Dock tile with a running dot that does
+/// nothing: the ghost left behind after Quit and reopen. Arm once per quit; a
+/// normal exit finishes long before it fires.
+fn arm_exit_watchdog() {
+    static ARMED: AtomicBool = AtomicBool::new(false);
+    if ARMED.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    let spawned = std::thread::Builder::new()
+        .name("exit-watchdog".into())
+        .spawn(|| {
+            std::thread::sleep(EXIT_WATCHDOG);
+            log::warn!(
+                "Quit did not finish within {:?}; ending the process",
+                EXIT_WATCHDOG
+            );
+            log::logger().flush();
+            std::process::exit(0);
+        });
+    if let Err(e) = spawned {
+        log::error!("Failed to start the exit watchdog: {}", e);
+    }
+}
+
 pub(crate) fn show_main_window(app: &AppHandle) {
     if let Some(main_window) = app.get_webview_window("main") {
         if let Err(e) = main_window.unminimize() {
@@ -345,6 +374,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
                 cancel_current_operation(app);
             }
             "quit" => {
+                arm_exit_watchdog();
                 app.exit(0);
             }
             id if id.starts_with("model_select:") => {
@@ -1231,6 +1261,9 @@ pub fn run(cli_args: CliArgs) {
             }
             show_main_window(app);
         }
+        // However the app is quitting (tray, Cmd+Q, the menu bar, a
+        // signal), make sure the process actually ends.
+        tauri::RunEvent::Exit => arm_exit_watchdog(),
         // No transcription teardown on exit: transcribe.cpp runs only in the
         // worker process, which exits by itself as soon as this process's end
         // of its stdin closes, even if it is hung. Waiting on an unload here

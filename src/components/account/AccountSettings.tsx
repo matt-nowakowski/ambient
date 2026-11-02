@@ -44,7 +44,14 @@ export const AccountSettings: React.FC = () => {
       </header>
       <div className="space-y-section">
         <div className="glass relative overflow-hidden rounded-panel p-hero">
-          <div className="pointer-events-none absolute -end-20 -top-28 size-72 rounded-full bg-[radial-gradient(circle,var(--ambient-a),transparent_70%)] blur-2xl" />
+          {/* The glow gets its own rounded clip: WebKit lets a blurred (composited)
+              child escape a rounded overflow clip, so its square edge poked out. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [mask-image:linear-gradient(#000,#000)]"
+          >
+            <div className="absolute -end-20 -top-28 size-72 rounded-full bg-[radial-gradient(circle,var(--ambient-a),transparent_70%)] blur-2xl" />
+          </div>
           <div className="relative">
             <div className="flex items-start justify-between gap-4">
               <div>

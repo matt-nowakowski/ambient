@@ -644,27 +644,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Sneltoets"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Geselecteerde prompt",
-          "description": "Selecteer een sjabloon voor het verfijnen van transcripties of maak een nieuwe aan. Gebruik ${output} in de prompttekst om naar de gemaakte transcriptie te verwijzen."
-        },
-        "noPrompts": "Geen prompts beschikbaar",
-        "selectPrompt": "Selecteer een prompt",
-        "createNew": "Nieuwe prompt maken",
-        "promptLabel": "Promptnaam",
-        "promptLabelPlaceholder": "Voer promptnaam in",
-        "promptInstructions": "Prompt-instructies",
-        "promptInstructionsPlaceholder": "Schrijf de instructies die na de transcriptie moeten worden uitgevoerd. Voorbeeld: Verbeter de grammatica en helderheid van de volgende tekst: ${output}",
-        "promptTip": "Tip: Gebruik <code>${output}</code> om de getranscribeerde tekst in je prompt in te voegen.",
-        "updatePrompt": "Prompt bijwerken",
-        "deletePrompt": "Prompt verwijderen",
-        "createPrompt": "Prompt maken",
-        "cancel": "Annuleren",
-        "selectToEdit": "Selecteer hierboven een prompt om de details te bekijken en te bewerken.",
-        "createFirst": "Klik hierboven op 'Nieuwe prompt maken' om je eerste naverwerkingsprompt aan te maken."
       }
     },
     "history": {
@@ -1022,7 +1001,8 @@
         "inactive": "Het abonnement van deze code is niet actief. Verleng het om je abonnement te ontgrendelen.",
         "rate_limited": "Te veel pogingen. Probeer het over 15 minuten opnieuw.",
         "server": "Activeren is bij ons mislukt. Probeer het zo opnieuw."
-      }
+      },
+      "menu": "Accountacties"
     },
     "signIn": {
       "sectionTitle": "Je account",
@@ -1125,8 +1105,10 @@
       "polishUnlimited": "AI-afwerking is onbeperkt.",
       "polishLeft": "Nog {{left}} van {{limit}} gratis keer AI-afwerking deze week · reset op {{day}}",
       "polishFree": "Gratis bevat een wekelijks tegoed aan AI-afwerking.",
-      "usageToday": "Vandaag: AI-verzoeken {{ai}} · zoekopdrachten {{search}} · fair use {{aiLimit}} per dag",
-      "meetingsLeft": "Vergaderingen deze maand: {{used}} van {{limit}}"
+      "meetingsLeft": "Nog {{left}} van {{limit}} vergadernotities over deze maand",
+      "aiLeft": "Nog {{left}} van {{limit}} AI-verzoeken over vandaag",
+      "searchLeft": "Resterende zoekopdrachten: {{count}}",
+      "meterLabel": "Resterend tegoed"
     },
     "privacy": {
       "title": "Privacy",
@@ -1233,7 +1215,7 @@
   },
   "privacy": {
     "title": "Privacy",
-    "promise": "Uit tot je het aanzet. Versleuteld bewaard op deze Mac. Elk verzoek dat vertrekt staat in de lijst.",
+    "promise": "Wat {{appName}} kan lezen, wat deze Mac verlaat en wat het bewaart.",
     "state": {
       "on": "Kijkt mee, zoals je toestond",
       "onDetail": "Alleen de functies die je hieronder hebt aangezet.",
@@ -1243,8 +1225,9 @@
       "pausedDetail": "Er wordt niets gelezen tot je hervat.",
       "pausedUntil": "Er wordt niets gelezen tot {{time}}.",
       "resume": "Hervatten",
-      "pauseHour": "1 uur pauzeren",
-      "pauseDay": "Tot morgen"
+      "pauseHour": "1 uur lang",
+      "pauseDay": "Tot morgen",
+      "pause": "Pauzeren"
     },
     "accessibility": "{{appName}} heeft toegang tot Toegankelijkheid nodig om tekst uit andere apps te lezen.",
     "grant": "Toegang geven",
@@ -1280,6 +1263,11 @@
         "title": "Handsfree: zeg ‘Hallo Ambient’",
         "reads": "Luistert op deze Mac naar ‘Hallo Ambient’. Al het andere wordt weggegooid terwijl je praat.",
         "leaves": "Er wordt niets opgenomen of verstuurd tot je het zegt."
+      },
+      "groups": {
+        "screen": "Je scherm",
+        "listening": "Luisteren",
+        "local": "Op deze Mac"
       }
     },
     "retention": "Bewaren voor",
@@ -1361,26 +1349,19 @@
       }
     },
     "macOnly": "Voorlopig alleen op Mac",
-    "protections": {
-      "audio": "Je stem wordt op deze Mac getranscribeerd en nooit door ons bewaard.",
-      "text": "Leest tekst, maakt nooit schermafbeeldingen.",
-      "passwords": "Wachtwoordvelden, wachtwoordbeheerders en privévensters worden nooit gelezen.",
-      "wallets": "Cryptowallets, herstelzinnen en privésleutels: het houdt zich er volledig buiten.",
-      "secrets": "Kaartnummers, sleutels en codes worden verwijderd voordat er iets wordt verstuurd.",
-      "suggestions": "Suggesties worden op deze Mac bepaald; er wordt niets verstuurd tenzij je accepteert.",
-      "stored": "Wat het bewaart, blijft versleuteld op deze Mac tot je het verwijdert.",
-      "ledger": "Elk verzoek dat vertrekt staat hieronder, met precies wat er is verstuurd."
+    "promises": {
+      "voice": "Je stem blijft op deze Mac",
+      "text": "Leest tekst, nooit schermafbeeldingen",
+      "sensitive": "Slaat wachtwoorden, wallets en privévensters over",
+      "ledger": "Elk verzoek dat de Mac verlaat staat hieronder"
     }
   },
   "meetings": {
     "title": "Vergaderingen",
     "intro": "Notities voor elk gesprek: jij en de anderen, getranscribeerd op deze Mac. Audio wordt nooit bewaard.",
-    "idle": "Geen notities actief",
-    "idleDetail": "Start wanneer een gesprek begint, of zet vergadersuggesties aan in Privacy.",
     "live": "Notities maken · {{time}}",
     "capturingBoth": "Hoort jou en het gesprek.",
     "capturingMic": "Hoort alleen je microfoon.",
-    "start": "Notities starten",
     "stop": "Stoppen en samenvatten",
     "listening": "Luistert…",
     "consent": "Laat iedereen weten dat je notities maakt.",
@@ -1421,7 +1402,27 @@
       "notFound": "Die vergadering bestaat niet meer.",
       "followUp": "Kon de follow-up nu niet opstellen."
     },
-    "freeLeft": "Gratis vergaderingen over deze maand: {{left}} van {{limit}}. Pro is onbeperkt."
+    "freeLeft": "Gratis vergaderingen over deze maand: {{left}} van {{limit}}. Pro is onbeperkt.",
+    "startNow": "Nu starten",
+    "startNowHint": "Maak nu notities, zonder op een gesprek te wachten",
+    "auto": {
+      "on": "Klaar voor je volgende gesprek",
+      "onDetail": "Zodra een gesprek begint, biedt {{appName}} aan notities te maken. Zeg ja of negeer het.",
+      "off": "Gespreksdetectie staat uit",
+      "offDetail": "Zet het aan en {{appName}} biedt aan notities te maken als een gesprek begint.",
+      "paused": "Gepauzeerd",
+      "pausedDetail": "{{appName}} biedt geen notities aan tot je het hervat bij Privacy.",
+      "pro": "Geen notities",
+      "proDetail": "Met Pro merkt {{appName}} je gesprekken op en biedt aan notities te maken.",
+      "unsupported": "Geen notities",
+      "unsupportedDetail": "Start notities wanneer je gesprek begint.",
+      "turnOn": "Aanzetten"
+    },
+    "steps": {
+      "join": "Neem deel aan een gesprek in elke app",
+      "accept": "Zeg ja als {{appName}} het aanbiedt",
+      "summary": "Krijg een samenvatting als het afgelopen is"
+    }
   },
   "tour": {
     "skip": "Overslaan",
@@ -1491,7 +1492,6 @@
   "trySaying": {
     "title": "Wat kan ik zeggen?",
     "close": "Sluiten",
-    "description": "Houd {{ask}} ingedrukt om met de agent te praten. {{dictate}} typt, tenzij je iets vraagt.",
     "footnote": "Begin in ChatGPT of Claude met ‘Hallo Ambient’ om in plaats daarvan met de agent te praten.",
     "groups": {
       "answer": {
@@ -1501,7 +1501,8 @@
           "Vat dit samen.",
           "Wat betekent deze foutmelding?",
           "Vertaal dit naar het Spaans."
-        ]
+        ],
+        "hint": "Vragen over van alles, ook over wat er op je scherm staat."
       },
       "act": {
         "title": "Doen",
@@ -1510,43 +1511,56 @@
           "Zet lunch met Ana op vrijdag om 13.00 uur in mijn agenda.",
           "Open Linear.",
           "Voer mijn standup-opdracht uit."
-        ]
+        ],
+        "hint": "Herinneringen, afspraken, apps en snelkoppelingen."
       },
       "recall": {
         "title": "Terugvinden",
         "examples": [
           "Wat zei ik gisteren over de prijzen?",
           "Zoek de Q3-presentatie."
-        ]
+        ],
+        "hint": "Dingen die je zei, zag of waaraan je werkte."
       },
       "suggestions": {
-        "title": "Als er een suggestie verschijnt",
+        "title": "Suggesties",
         "examples": [
           "‘Ja’ of ‘doe maar’ om te accepteren.",
           "‘Niet nu’ om te negeren.",
           "‘Laat deze niet meer zien’ om dat soort uit te zetten.",
           "‘Niet hier’ om het in deze app te stoppen."
-        ]
+        ],
+        "hint": "Beantwoord een suggestie hardop."
       },
       "meetings": {
-        "title": "In vergaderingen",
+        "title": "Vergaderingen",
         "examples": [
           "Start notities via Vergaderingen, of zeg ja als Ambient het aanbiedt.",
           "‘Zoeken’ als iemand je om iets vraagt.",
           "‘Herinner me’ als je iets belooft te doen."
-        ]
+        ],
+        "hint": "Terwijl {{appName}} notities maakt tijdens een gesprek."
       },
       "talking": {
-        "title": "Praten met Ambient",
-        "examples": [
-          "Houd {{ask}} ingedrukt en praat: het is altijd voor Ambient.",
-          "Of gebruik je dicteertoets en begin met ‘Hallo Ambient, …’. Anders worden je woorden getypt.",
-          "Handsfree (zet het aan in Privacy): zeg gewoon ‘Hallo Ambient, …’."
-        ]
+        "title": "Zo praat je"
       }
+    },
+    "subtitle": "Praat zoals je het aan een collega zou vragen. Een paar manieren om te beginnen.",
+    "ways": {
+      "0": "Houd ingedrukt om met de agent te praten.",
+      "1": "Houd ingedrukt om te dicteren. Begin met “Hey {{appName}}” om in plaats daarvan te vragen.",
+      "2": "Handsfree: zeg “Hey {{appName}}, …”. Zet het aan bij Privacy."
     }
   },
   "app": {
     "starting": "{{appName}} wordt gestart…"
+  },
+  "search": {
+    "label": "Zoeken",
+    "button": "Zoeken",
+    "placeholder": "Zoek in instellingen en pagina's",
+    "empty": "Niets gevonden voor “{{query}}”.",
+    "jumpTo": "Ga naar",
+    "escape": "esc"
   }
 }

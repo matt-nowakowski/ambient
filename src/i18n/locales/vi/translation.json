@@ -644,27 +644,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Phím tắt"
-      },
-      "prompts": {
-        "title": "Câu lệnh",
-        "selectedPrompt": {
-          "title": "Prompt đã chọn",
-          "description": "Chọn một mẫu để tinh chỉnh bản ghi hoặc tạo mới. Sử dụng ${output} trong văn bản prompt để tham chiếu bản ghi đã chụp."
-        },
-        "noPrompts": "Không có prompt nào",
-        "selectPrompt": "Chọn một prompt",
-        "createNew": "Tạo Prompt mới",
-        "promptLabel": "Nhãn Prompt",
-        "promptLabelPlaceholder": "Nhập tên prompt",
-        "promptInstructions": "Hướng dẫn Prompt",
-        "promptInstructionsPlaceholder": "Viết hướng dẫn để chạy sau khi chuyển đổi. Ví dụ: Cải thiện ngữ pháp và độ rõ ràng cho văn bản sau: ${output}",
-        "promptTip": "Mẹo: Sử dụng <code>${output}</code> để chèn văn bản đã chuyển đổi vào prompt của bạn.",
-        "updatePrompt": "Cập nhật Prompt",
-        "deletePrompt": "Xóa Prompt",
-        "createPrompt": "Tạo Prompt",
-        "cancel": "Hủy",
-        "selectToEdit": "Chọn một prompt ở trên để xem và chỉnh sửa chi tiết.",
-        "createFirst": "Nhấn 'Tạo Prompt mới' ở trên để tạo prompt xử lý sau đầu tiên của bạn."
       }
     },
     "history": {
@@ -1022,7 +1001,8 @@
         "inactive": "Gói đăng ký của mã này không còn hoạt động. Hãy gia hạn để mở khóa gói của bạn.",
         "rate_limited": "Quá nhiều lần thử. Hãy thử lại sau 15 phút.",
         "server": "Kích hoạt thất bại từ phía chúng tôi. Hãy thử lại sau giây lát."
-      }
+      },
+      "menu": "Tác vụ tài khoản"
     },
     "signIn": {
       "sectionTitle": "Tài khoản của bạn",
@@ -1125,8 +1105,10 @@
       "polishUnlimited": "Trau chuốt bằng AI không giới hạn.",
       "polishLeft": "Còn {{left}} trên {{limit}} lượt trau chuốt bằng AI miễn phí tuần này · đặt lại vào {{day}}",
       "polishFree": "Gói miễn phí gồm hạn mức trau chuốt bằng AI hằng tuần.",
-      "usageToday": "Hôm nay: yêu cầu AI {{ai}} · tìm kiếm {{search}} · sử dụng hợp lý {{aiLimit}} mỗi ngày",
-      "meetingsLeft": "Cuộc họp tháng này: {{used}}/{{limit}}"
+      "meetingsLeft": "Tháng này còn {{left}}/{{limit}} ghi chú cuộc họp",
+      "aiLeft": "Hôm nay còn {{left}}/{{limit}} yêu cầu AI",
+      "searchLeft": "Số lần tìm kiếm còn lại: {{count}}",
+      "meterLabel": "Hạn mức còn lại"
     },
     "privacy": {
       "title": "Quyền riêng tư",
@@ -1233,7 +1215,7 @@
   },
   "privacy": {
     "title": "Quyền riêng tư",
-    "promise": "Tắt cho đến khi bạn bật. Lưu trên máy Mac này, đã mã hóa. Mọi yêu cầu gửi đi đều được liệt kê.",
+    "promise": "{{appName}} có thể đọc gì, gì rời khỏi Mac này và gì được giữ lại.",
     "state": {
       "on": "Đang quan sát, theo cho phép của bạn",
       "onDetail": "Chỉ những khả năng bạn đã bật bên dưới.",
@@ -1243,8 +1225,9 @@
       "pausedDetail": "Không có gì được đọc cho đến khi bạn tiếp tục.",
       "pausedUntil": "Không có gì được đọc cho đến {{time}}.",
       "resume": "Tiếp tục",
-      "pauseHour": "Tạm dừng 1 giờ",
-      "pauseDay": "Đến ngày mai"
+      "pauseHour": "Trong 1 giờ",
+      "pauseDay": "Đến ngày mai",
+      "pause": "Tạm dừng"
     },
     "accessibility": "{{appName}} cần quyền Trợ năng để đọc văn bản từ các ứng dụng khác.",
     "grant": "Cho phép truy cập",
@@ -1280,6 +1263,11 @@
         "title": "Rảnh tay: nói “Xin chào Ambient”",
         "reads": "Lắng nghe “Xin chào Ambient” trên máy Mac này. Mọi thứ khác bị loại bỏ ngay khi bạn nói.",
         "leaves": "Không ghi âm hay gửi gì cho đến khi bạn nói câu đó."
+      },
+      "groups": {
+        "screen": "Màn hình của bạn",
+        "listening": "Lắng nghe",
+        "local": "Trên Mac này"
       }
     },
     "retention": "Lưu trong",
@@ -1361,26 +1349,19 @@
       }
     },
     "macOnly": "Hiện chỉ có trên Mac",
-    "protections": {
-      "audio": "Giọng nói của bạn được chép lời trên máy Mac này và chúng tôi không bao giờ lưu trữ.",
-      "text": "Đọc văn bản, không bao giờ chụp màn hình.",
-      "passwords": "Ô mật khẩu, trình quản lý mật khẩu và cửa sổ riêng tư không bao giờ được đọc.",
-      "wallets": "Ví tiền mã hóa, cụm từ khôi phục và khóa riêng tư: nó hoàn toàn đứng ngoài.",
-      "secrets": "Số thẻ, khóa và mã được xóa trước khi gửi bất cứ thứ gì.",
-      "suggestions": "Gợi ý được quyết định trên máy Mac này; không gửi gì trừ khi bạn chấp nhận.",
-      "stored": "Những gì nó lưu ở lại trên máy Mac này, đã mã hóa, cho đến khi bạn xóa.",
-      "ledger": "Mọi yêu cầu được gửi đi đều được liệt kê bên dưới, kèm chính xác nội dung đã gửi."
+    "promises": {
+      "voice": "Giọng nói của bạn ở lại trên Mac này",
+      "text": "Đọc văn bản, không bao giờ chụp màn hình",
+      "sensitive": "Bỏ qua mật khẩu, ví và cửa sổ riêng tư",
+      "ledger": "Mọi yêu cầu rời khỏi máy đều được liệt kê bên dưới"
     }
   },
   "meetings": {
     "title": "Cuộc họp",
     "intro": "Ghi chú cho mọi cuộc gọi: bạn và người khác, được chép lời trên máy Mac này. Âm thanh không bao giờ được lưu.",
-    "idle": "Không ghi chú",
-    "idleDetail": "Bắt đầu khi cuộc gọi bắt đầu, hoặc bật gợi ý cuộc họp trong Quyền riêng tư.",
     "live": "Đang ghi chú · {{time}}",
     "capturingBoth": "Đang nghe bạn và cuộc gọi.",
     "capturingMic": "Chỉ nghe micrô của bạn.",
-    "start": "Bắt đầu ghi chú",
     "stop": "Dừng và tóm tắt",
     "listening": "Đang nghe…",
     "consent": "Hãy cho mọi người biết bạn đang ghi chú.",
@@ -1421,7 +1402,27 @@
       "notFound": "Cuộc họp đó không còn tồn tại.",
       "followUp": "Hiện không thể soạn thư theo dõi."
     },
-    "freeLeft": "Cuộc họp miễn phí còn lại tháng này: {{left}}/{{limit}}. Pro không giới hạn."
+    "freeLeft": "Cuộc họp miễn phí còn lại tháng này: {{left}}/{{limit}}. Pro không giới hạn.",
+    "startNow": "Bắt đầu ngay",
+    "startNowHint": "Ghi chú ngay, không cần chờ cuộc gọi",
+    "auto": {
+      "on": "Sẵn sàng cho cuộc gọi tiếp theo",
+      "onDetail": "Khi cuộc gọi bắt đầu, {{appName}} đề nghị ghi chú. Đồng ý, hoặc bỏ qua.",
+      "off": "Tính năng phát hiện cuộc gọi đang tắt",
+      "offDetail": "Bật lên và {{appName}} sẽ đề nghị ghi chú khi cuộc gọi bắt đầu.",
+      "paused": "Đã tạm dừng",
+      "pausedDetail": "{{appName}} sẽ không đề nghị ghi chú cho đến khi bạn tiếp tục trong Quyền riêng tư.",
+      "pro": "Không ghi chú",
+      "proDetail": "Với Pro, {{appName}} nhận ra cuộc gọi của bạn và đề nghị ghi chú.",
+      "unsupported": "Không ghi chú",
+      "unsupportedDetail": "Bắt đầu ghi chú khi cuộc gọi của bạn bắt đầu.",
+      "turnOn": "Bật"
+    },
+    "steps": {
+      "join": "Tham gia cuộc gọi trong bất kỳ ứng dụng nào",
+      "accept": "Nói đồng ý khi {{appName}} đề nghị",
+      "summary": "Nhận bản tóm tắt khi kết thúc"
+    }
   },
   "tour": {
     "skip": "Bỏ qua",
@@ -1491,7 +1492,6 @@
   "trySaying": {
     "title": "Tôi có thể nói gì?",
     "close": "Đóng",
-    "description": "Giữ {{ask}} để nói chuyện với tác nhân. {{dictate}} sẽ nhập văn bản, trừ khi bạn yêu cầu điều gì đó.",
     "footnote": "Trong ChatGPT hoặc Claude, hãy bắt đầu bằng “Xin chào Ambient” để nói chuyện với tác nhân.",
     "groups": {
       "answer": {
@@ -1501,7 +1501,8 @@
           "Tóm tắt cái này.",
           "Lỗi này nghĩa là gì?",
           "Dịch cái này sang tiếng Tây Ban Nha."
-        ]
+        ],
+        "hint": "Hỏi về bất cứ điều gì, kể cả nội dung trên màn hình của bạn."
       },
       "act": {
         "title": "Làm",
@@ -1510,43 +1511,53 @@
           "Thêm bữa trưa với Ana vào thứ Sáu lúc 1 giờ chiều.",
           "Mở Linear.",
           "Chạy phím tắt họp đầu ngày của tôi."
-        ]
+        ],
+        "hint": "Lời nhắc, sự kiện, ứng dụng và phím tắt."
       },
       "recall": {
         "title": "Nhớ",
-        "examples": [
-          "Hôm qua tôi đã nói gì về giá?",
-          "Tìm bản trình bày Q3."
-        ]
+        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
+        "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {
-        "title": "Khi có gợi ý",
+        "title": "Gợi ý",
         "examples": [
           "“Có” hoặc “làm đi” để chấp nhận.",
           "“Để sau” để bỏ qua.",
           "“Đừng hiện những cái này” để tắt loại đó.",
           "“Không phải ở đây” để dừng trong ứng dụng này."
-        ]
+        ],
+        "hint": "Trả lời một gợi ý bằng giọng nói."
       },
       "meetings": {
-        "title": "Trong cuộc họp",
+        "title": "Cuộc họp",
         "examples": [
           "Bắt đầu ghi chú từ Cuộc họp, hoặc nói có khi Ambient đề nghị.",
           "“Tìm” khi ai đó nhờ bạn việc gì.",
           "“Nhắc tôi” khi bạn hứa làm việc gì."
-        ]
+        ],
+        "hint": "Trong lúc {{appName}} ghi chú cuộc gọi."
       },
       "talking": {
-        "title": "Nói chuyện với Ambient",
-        "examples": [
-          "Giữ {{ask}} và nói: luôn dành cho Ambient.",
-          "Hoặc dùng phím đọc chính tả và bắt đầu bằng “Xin chào Ambient, …”. Nếu không, lời bạn nói sẽ được nhập thành văn bản.",
-          "Rảnh tay (bật trong Quyền riêng tư): chỉ cần nói “Xin chào Ambient, …”."
-        ]
+        "title": "Cách nói chuyện"
       }
+    },
+    "subtitle": "Hãy nói như khi bạn hỏi một đồng nghiệp. Vài cách để bắt đầu.",
+    "ways": {
+      "0": "Nhấn giữ để nói chuyện với tác nhân.",
+      "1": "Nhấn giữ để đọc chính tả. Bắt đầu bằng “Hey {{appName}}” để hỏi thay vào đó.",
+      "2": "Rảnh tay: nói “Hey {{appName}}, …”. Bật tính năng này trong Quyền riêng tư."
     }
   },
   "app": {
     "starting": "Đang khởi động {{appName}}…"
+  },
+  "search": {
+    "label": "Tìm kiếm",
+    "button": "Tìm kiếm",
+    "placeholder": "Tìm kiếm cài đặt và trang",
+    "empty": "Không có kết quả nào khớp với “{{query}}”.",
+    "jumpTo": "Chuyển đến",
+    "escape": "esc"
   }
 }

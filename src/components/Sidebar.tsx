@@ -9,6 +9,8 @@ import { HistorySettings, ModelsSettings, SettingsPage } from "./settings";
 import { PrivacyCenter } from "./privacy/PrivacyCenter";
 import { MeetingsPage } from "./meetings/MeetingsPage";
 import { LiquidIndicatorGroup } from "./ui/LiquidIndicator";
+import { Search } from "lucide-react";
+import { useSearch, useSearchShortcutLabel } from "./search/searchStore";
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
 
@@ -107,6 +109,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { settings } = useSettings();
+  const openSearch = useSearch((s) => s.setOpen);
+  const searchShortcut = useSearchShortcutLabel();
 
   const availableSections = Object.entries(SECTIONS_CONFIG)
     .filter(([_, config]) => config.enabled(settings))
@@ -118,9 +122,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
           the window; elsewhere the window has its own title bar. */}
       <BrandWordmark
         size={20}
-        className={`${platform() === "macos" ? "mt-[46px]" : "mt-5"} mb-7 ps-[13px] text-[16px]`}
+        className={`${platform() === "macos" ? "mt-[46px]" : "mt-5"} mb-5 ps-[13px] text-[16px]`}
       />
-      {/* The active pill is liquid: it trails between items (liquid-gooey move). */}
+      {/* Global search: a field-shaped button that opens the ⌘K palette. */}
+      <button
+        type="button"
+        onClick={() => openSearch(true)}
+        aria-keyshortcuts="Meta+K Control+K"
+        className="group mb-4 flex h-[32px] w-full cursor-pointer items-center gap-2 rounded-control border-[0.5px] border-glass-edge bg-glass px-[10px] text-start text-ink-3 transition-colors hover:bg-glass-hover hover:text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25"
+      >
+        <Search
+          width={13}
+          height={13}
+          strokeWidth={1.75}
+          className="shrink-0"
+          aria-hidden="true"
+        />
+        <span className="min-w-0 flex-1 truncate text-small">
+          {t("search.button")}
+        </span>
+        <kbd className="shrink-0 rounded-chip px-1 text-meta font-medium tracking-[0.02em] text-ink-3">
+          {searchShortcut}
+        </kbd>
+      </button>
+      {/* The active pill is liquid: it stretches as it flows between items. */}
       <LiquidIndicatorGroup
         role="navigation"
         className="flex w-full flex-col gap-[6px]"

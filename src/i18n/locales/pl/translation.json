@@ -650,27 +650,6 @@
     "postProcessing": {
       "hotkey": {
         "title": "Skrót klawiszowy"
-      },
-      "prompts": {
-        "title": "Prompt",
-        "selectedPrompt": {
-          "title": "Wybrany prompt",
-          "description": "Wybierz szablon do ulepszania transkrypcji lub utwórz nowy. Użyj ${output} w treści, aby odwołać się do przechwyconej transkrypcji."
-        },
-        "noPrompts": "Brak dostępnych promptów",
-        "selectPrompt": "Wybierz prompt",
-        "createNew": "Utwórz nowy prompt",
-        "promptLabel": "Etykieta promptu",
-        "promptLabelPlaceholder": "Wpisz nazwę promptu",
-        "promptInstructions": "Instrukcje promptu",
-        "promptInstructionsPlaceholder": "Wpisz instrukcje do wykonania po transkrypcji. Przykład: Popraw gramatykę i jasność dla następującego tekstu: ${output}",
-        "promptTip": "Wskazówka: użyj <code>${output}</code>, aby wstawić transkrybowany tekst do promptu.",
-        "updatePrompt": "Zaktualizuj prompt",
-        "deletePrompt": "Usuń prompt",
-        "createPrompt": "Utwórz prompt",
-        "cancel": "Anuluj",
-        "selectToEdit": "Wybierz prompt powyżej, aby zobaczyć i edytować jego szczegóły.",
-        "createFirst": "Kliknij 'Utwórz nowy prompt' powyżej, aby utworzyć pierwszy prompt postprocessingu."
       }
     },
     "history": {
@@ -1032,7 +1011,8 @@
         "inactive": "Subskrypcja tego kodu nie jest aktywna. Odnów ją, aby odblokować plan.",
         "rate_limited": "Zbyt wiele prób. Spróbuj ponownie za 15 minut.",
         "server": "Aktywacja nie powiodła się po naszej stronie. Spróbuj ponownie za chwilę."
-      }
+      },
+      "menu": "Działania na koncie"
     },
     "signIn": {
       "sectionTitle": "Twoje konto",
@@ -1141,8 +1121,10 @@
       "polishUnlimited": "Szlifowanie AI: bez limitu.",
       "polishLeft": "Pozostało {{left}} z {{limit}} darmowych użyć (szlifowanie AI) w tym tygodniu · reset: {{day}}",
       "polishFree": "Plan darmowy obejmuje tygodniowy limit: Szlifowanie AI.",
-      "usageToday": "Dziś: żądania AI {{ai}} · wyszukiwania {{search}} · uczciwe użytkowanie {{aiLimit}} dziennie",
-      "meetingsLeft": "Spotkania w tym miesiącu: {{used}} z {{limit}}"
+      "meetingsLeft": "W tym miesiącu zostało {{left}} z {{limit}} notatek ze spotkań",
+      "aiLeft": "Dziś zostało {{left}} z {{limit}} zapytań AI",
+      "searchLeft": "Pozostałe wyszukiwania: {{count}}",
+      "meterLabel": "Pozostały limit"
     },
     "privacy": {
       "title": "Prywatność",
@@ -1249,7 +1231,7 @@
   },
   "privacy": {
     "title": "Prywatność",
-    "promise": "Wyłączone, dopóki nie włączysz. Przechowywane na tym Macu, zaszyfrowane. Każde wychodzące żądanie jest na liście.",
+    "promise": "Co {{appName}} może czytać, co opuszcza tego Maca i co zachowuje.",
     "state": {
       "on": "Obserwuje, tak jak zezwolono",
       "onDetail": "Tylko funkcje włączone poniżej.",
@@ -1259,8 +1241,9 @@
       "pausedDetail": "Nic nie jest odczytywane, dopóki nie wznowisz.",
       "pausedUntil": "Nic nie jest odczytywane do {{time}}.",
       "resume": "Wznów",
-      "pauseHour": "Wstrzymaj na 1 godzinę",
-      "pauseDay": "Do jutra"
+      "pauseHour": "Na 1 godzinę",
+      "pauseDay": "Do jutra",
+      "pause": "Wstrzymaj"
     },
     "accessibility": "{{appName}} potrzebuje dostępu do funkcji Dostępność, aby odczytywać tekst z innych aplikacji.",
     "grant": "Zezwól na dostęp",
@@ -1296,6 +1279,11 @@
         "title": "Bez użycia rąk: powiedz „Cześć Ambient”",
         "reads": "Nasłuchuje na tym Macu „Cześć Ambient”. Wszystko inne jest odrzucane na bieżąco.",
         "leaves": "Nic nie jest nagrywane ani wysyłane, dopóki tego nie powiesz."
+      },
+      "groups": {
+        "screen": "Twój ekran",
+        "listening": "Nasłuchiwanie",
+        "local": "Na tym Macu"
       }
     },
     "retention": "Przechowuj przez",
@@ -1383,28 +1371,21 @@
       }
     },
     "macOnly": "Na razie tylko na Macu",
-    "protections": {
-      "audio": "Twój głos jest transkrybowany na tym Macu i nigdy nie przechowujemy go u siebie.",
-      "text": "Odczytuje tekst, nigdy nie robi zrzutów ekranu.",
-      "passwords": "Pola haseł, menedżery haseł i okna prywatne nigdy nie są odczytywane.",
-      "wallets": "Portfele kryptowalut, frazy odzyskiwania i klucze prywatne: całkowicie się wycofuje.",
-      "secrets": "Numery kart, klucze i kody są usuwane, zanim cokolwiek zostanie wysłane.",
-      "suggestions": "O sugestiach decyduje ten Mac; nic nie jest wysyłane, dopóki nie zaakceptujesz.",
-      "stored": "To, co zapisuje, zostaje na tym Macu, zaszyfrowane, dopóki tego nie usuniesz.",
-      "ledger": "Każde wychodzące żądanie jest wymienione poniżej, z dokładną treścią tego, co wysłano."
-    },
     "days_few": "{{count}} dni",
-    "days_many": "{{count}} dni"
+    "days_many": "{{count}} dni",
+    "promises": {
+      "voice": "Twój głos zostaje na tym Macu",
+      "text": "Czyta tekst, nigdy zrzuty ekranu",
+      "sensitive": "Pomija hasła, portfele i okna prywatne",
+      "ledger": "Każde wysłane żądanie jest wymienione poniżej"
+    }
   },
   "meetings": {
     "title": "Spotkania",
     "intro": "Notatki z każdej rozmowy: ty i rozmówcy, transkrybowani na tym Macu. Dźwięk nigdy nie jest zapisywany.",
-    "idle": "Notowanie wyłączone",
-    "idleDetail": "Zacznij, gdy rozpocznie się rozmowa, albo włącz sugestie spotkań w sekcji Prywatność.",
     "live": "Notowanie · {{time}}",
     "capturingBoth": "Słyszy ciebie i rozmowę.",
     "capturingMic": "Słyszy tylko twój mikrofon.",
-    "start": "Zacznij notować",
     "stop": "Zatrzymaj i podsumuj",
     "listening": "Słucham…",
     "consent": "Daj wszystkim znać, że robisz notatki.",
@@ -1445,7 +1426,27 @@
       "notFound": "To spotkanie już nie istnieje.",
       "followUp": "Nie udało się teraz przygotować wiadomości uzupełniającej."
     },
-    "freeLeft": "Pozostałe darmowe spotkania w tym miesiącu: {{left}} z {{limit}}. Pro nie ma limitu."
+    "freeLeft": "Pozostałe darmowe spotkania w tym miesiącu: {{left}} z {{limit}}. Pro nie ma limitu.",
+    "startNow": "Zacznij teraz",
+    "startNowHint": "Rób notatki teraz, nie czekając na rozmowę",
+    "auto": {
+      "on": "Gotowe na kolejną rozmowę",
+      "onDetail": "Gdy zacznie się rozmowa, {{appName}} zaproponuje notatki. Zgódź się albo zignoruj.",
+      "off": "Wykrywanie rozmów jest wyłączone",
+      "offDetail": "Włącz, a {{appName}} zaproponuje notatki, gdy zacznie się rozmowa.",
+      "paused": "Wstrzymano",
+      "pausedDetail": "{{appName}} nie zaproponuje notatek, dopóki nie wznowisz tego w sekcji Prywatność.",
+      "pro": "Notatki wyłączone",
+      "proDetail": "W Pro {{appName}} wykrywa Twoje rozmowy i proponuje notatki.",
+      "unsupported": "Notatki wyłączone",
+      "unsupportedDetail": "Zacznij notatki, gdy rozpocznie się rozmowa.",
+      "turnOn": "Włącz"
+    },
+    "steps": {
+      "join": "Dołącz do rozmowy w dowolnej aplikacji",
+      "accept": "Powiedz „tak”, gdy {{appName}} zaproponuje",
+      "summary": "Otrzymaj podsumowanie po zakończeniu"
+    }
   },
   "tour": {
     "skip": "Pomiń",
@@ -1515,7 +1516,6 @@
   "trySaying": {
     "title": "Co mogę powiedzieć?",
     "close": "Zamknij",
-    "description": "Przytrzymaj {{ask}}, aby rozmawiać z agentem. {{dictate}} wpisuje tekst, chyba że o coś prosisz.",
     "footnote": "W ChatGPT lub Claude zacznij od „Cześć Ambient”, aby rozmawiać z agentem.",
     "groups": {
       "answer": {
@@ -1525,7 +1525,8 @@
           "Podsumuj to.",
           "Co oznacza ten błąd?",
           "Przetłumacz to na hiszpański."
-        ]
+        ],
+        "hint": "Pytania o cokolwiek, także o to, co jest na ekranie."
       },
       "act": {
         "title": "Działaj",
@@ -1534,43 +1535,56 @@
           "Dodaj lunch z Anią w piątek o 13.",
           "Otwórz Linear.",
           "Uruchom mój skrót do standupu."
-        ]
+        ],
+        "hint": "Przypomnienia, wydarzenia, aplikacje i skróty."
       },
       "recall": {
         "title": "Przypominaj",
         "examples": [
           "Co mówiłem wczoraj o cenach?",
           "Znajdź prezentację za Q3."
-        ]
+        ],
+        "hint": "To, co powiedziano, zobaczono lub zrobiono."
       },
       "suggestions": {
-        "title": "Gdy pojawi się sugestia",
+        "title": "Sugestie",
         "examples": [
           "„Tak” albo „zrób to”, aby przyjąć.",
           "„Nie teraz”, aby odrzucić.",
           "„Nie pokazuj mi tego”, aby wyłączyć ten rodzaj.",
           "„Nie tutaj”, aby wyłączyć ją w tej aplikacji."
-        ]
+        ],
+        "hint": "Odpowiedz na sugestię na głos."
       },
       "meetings": {
-        "title": "Na spotkaniach",
+        "title": "Spotkania",
         "examples": [
           "Zacznij notatki w sekcji Spotkania albo powiedz „tak”, gdy Ambient to zaproponuje.",
           "„Znajdź”, gdy ktoś cię o coś poprosi.",
           "„Przypomnij mi”, gdy obiecasz coś zrobić."
-        ]
+        ],
+        "hint": "Gdy {{appName}} robi notatki podczas rozmowy."
       },
       "talking": {
-        "title": "Rozmowa z Ambient",
-        "examples": [
-          "Przytrzymaj {{ask}} i mów: to zawsze trafia do Ambient.",
-          "Albo użyj klawisza dyktowania i zacznij od „Cześć Ambient, …”. Bez tego twoje słowa są wpisywane.",
-          "Bez użycia rąk (włącz w sekcji Prywatność): po prostu powiedz „Cześć Ambient, …”."
-        ]
+        "title": "Jak mówić"
       }
+    },
+    "subtitle": "Mów tak, jakbyś prosił o pomoc kolegę. Kilka sposobów na start.",
+    "ways": {
+      "0": "Przytrzymaj, aby rozmawiać z agentem.",
+      "1": "Przytrzymaj, aby dyktować. Zacznij od „Hey {{appName}}”, aby zadać pytanie.",
+      "2": "Bez rąk: powiedz „Hey {{appName}}, …”. Włącz to w sekcji Prywatność."
     }
   },
   "app": {
     "starting": "Uruchamianie {{appName}}…"
+  },
+  "search": {
+    "label": "Szukaj",
+    "button": "Szukaj",
+    "placeholder": "Szukaj w ustawieniach i na stronach",
+    "empty": "Brak wyników dla „{{query}}”.",
+    "jumpTo": "Przejdź do",
+    "escape": "esc"
   }
 }
