@@ -103,6 +103,7 @@ export const Stage: React.FC<{ children: ReactNode; zoom?: number; cx?: number; 
           transformOrigin: "0 0",
           transform: `translate(${tx}px, ${ty}px) scale(${s})`,
           fontFamily: FONT,
+          letterSpacing: "-0.006em", // UI mock-ups: app scale, root tracking
           ...style,
         }}
       >
@@ -546,6 +547,7 @@ export const hudCard: CSSProperties = {
   color: C.hInk,
   fontFamily: FONT,
   fontWeight: 400,
+  letterSpacing: "-0.006em",
 };
 
 export const HudButton: React.FC<{ label: string; kbd?: string; primary?: boolean; press?: number }> = ({ label, kbd, primary, press = 0 }) => (

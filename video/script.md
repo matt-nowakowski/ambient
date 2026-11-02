@@ -29,7 +29,8 @@ under the voice, and eases back by a quarter as the bed builds after beat 30.
 - the launch-screen lockup (weight 300, -0.04em, orb 17/14, 18px gap) at 72 px, 64 px vertical;
 - the website's font stack (`-apple-system`, i.e. SF Pro on the Mac we render
   on, then Inter, Geist): SF Pro Display for headlines and the lockup, SF Pro
-  Text for UI, at 300 for display and 400–500 for UI, nothing bold;
+  Text for UI, sized and weighted per `brand/TYPOGRAPHY.md` (Video): slam words
+  and headlines at 200, display lines and leads at 300, UI at 400–500, nothing bold;
 - content-sized labels and pills (nothing truncates);
 - product captions that never overlap the UI;
 - sound effects (`npm run sfx`, `public/sfx/`), re-timed to this cut.

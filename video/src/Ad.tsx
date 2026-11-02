@@ -54,10 +54,13 @@ const Slam: React.FC<{
   out?: number;
   color?: string;
   fast?: boolean;
-}> = ({ words, size, weight = 300, gap = 0.26, style, out, color = C.fg, fast }) => {
+}> = ({ words, size, weight, gap = 0.26, style, out, color = C.fg, fast }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const o = out === undefined ? 1 : ease(f, [out, out + 6], [1, 0]);
+  // brand/TYPOGRAPHY.md (Video): slam word ≥200px 200/-0.05em/1.02; headline 100–199px
+  // 200/-0.045em/1.05; display line below that 300/-0.035em/1.08.
+  const role = size >= 200 ? { w: 200, t: "-0.05em", lh: 1.02 } : size >= 100 ? { w: 200, t: "-0.045em", lh: 1.05 } : { w: 300, t: "-0.035em", lh: 1.08 };
   return (
     <div
       style={{
@@ -66,9 +69,9 @@ const Slam: React.FC<{
         columnGap: `${gap}em`,
         fontFamily: FONT_DISPLAY,
         fontSize: size,
-        fontWeight: weight,
-        letterSpacing: "-0.03em",
-        lineHeight: 1.06,
+        fontWeight: weight ?? role.w,
+        letterSpacing: role.t,
+        lineHeight: role.lh,
         color,
         opacity: o,
         ...style,
@@ -115,7 +118,7 @@ const SideWord: React.FC<{ text: string; at: number; light?: boolean }> = ({ tex
   const words = text.split(" ").map((t, i) => ({ t, at: at + i * 4 }));
   return tall ? (
     <div style={{ position: "absolute", left: 60, right: 60, top: 330, height: 300, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-      <Slam words={words} size={112} color={light ? "#fff" : C.fg} style={{ justifyContent: "center" }} />
+      <Slam words={words} size={104} color={light ? "#fff" : C.fg} style={{ justifyContent: "center" }} />
     </div>
   ) : (
     <div style={{ position: "absolute", left: 120, top: 0, bottom: 0, width: 700, display: "flex", alignItems: "center" }}>
@@ -664,8 +667,8 @@ const Hey: React.FC<ShotProps> = () => {
         </div>
       </div>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: tall ? 560 : 200 }}>
-        <Slam words={[{ t: "“Hey", at }, { t: "Ambient”", at: at + 5 }]} size={tall ? 104 : 110} color="#fff" />
-        <div style={{ marginTop: 28, fontSize: tall ? 34 : 30, fontWeight: 400, color: C.mutedDark, opacity: ease(f, [at + 10, at + 18], [0, 1]) }}>Optional. No key at all.</div>
+        <Slam words={[{ t: "“Hey", at }, { t: "Ambient”", at: at + 5 }]} size={tall ? 100 : 108} color="#fff" />
+        <div style={{ marginTop: 28, fontSize: tall ? 34 : 32, fontWeight: 300, letterSpacing: "-0.01em", lineHeight: 1.35, color: C.mutedDark, opacity: ease(f, [at + 10, at + 18], [0, 1]) }}>Optional. No key at all.</div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -831,7 +834,7 @@ const NoBot: React.FC<ShotProps> = ({ start }) => {
       </AbsoluteFill>
       <AbsoluteFill style={{ background: `rgba(11,11,13,${0.85 * toWord})`, alignItems: "center", justifyContent: "center" }}>
         <Slam words={[{ t: "No", at: word }, { t: "bot.", at: word + 5 }]} size={tall ? 220 : 260} color="#fff" />
-        <div style={{ position: "absolute", bottom: tall ? 700 : 220, fontFamily: FONT, fontSize: tall ? 38 : 34, fontWeight: 400, color: C.mutedDark, opacity: ease(f, [word + 12, word + 20], [0, 1]) }}>
+        <div style={{ position: "absolute", bottom: tall ? 700 : 220, fontFamily: FONT_DISPLAY, fontSize: tall ? 36 : 32, fontWeight: 300, letterSpacing: "-0.01em", color: C.mutedDark, opacity: ease(f, [word + 12, word + 20], [0, 1]) }}>
           Nothing joins your call.
         </div>
       </AbsoluteFill>
@@ -953,13 +956,13 @@ const Apps: React.FC<ShotProps> = () => {
           { t: "any", at: 4 },
           { t: "app.", at: 8 },
         ]}
-        size={i < 0 ? (tall ? 160 : 200) : tall ? 56 : 64}
+        size={i < 0 ? (tall ? 170 : 260) : 64}
         color={fg}
-        style={{ position: "absolute", top: i < 0 ? (tall ? 860 : 420) : tall ? 700 : 290, opacity: i < 0 ? 1 : 0.7 }}
+        style={{ position: "absolute", top: i < 0 ? (tall ? 850 : 400) : tall ? 690 : 260, opacity: i < 0 ? 1 : 0.7, whiteSpace: "nowrap" }}
       />
       {i >= 0 && (
         <div style={{ transform: `scale(${1 + 0.06 * pulse(f, [at], 5)})` }}>
-          <Slam key={i} words={[{ t: APPS[i], at }]} size={tall ? 130 : 200} color={fg} fast />
+          <Slam key={i} words={[{ t: APPS[i], at }]} size={tall ? 150 : 240} color={fg} fast />
         </div>
       )}
     </AbsoluteFill>
@@ -980,7 +983,7 @@ const Connect: React.FC<ShotProps> = ({ start, len }) => {
             { t: "to", at: 5 },
             { t: "connect.", at: 9 },
           ]}
-          size={tall ? 130 : 170}
+          size={tall ? 104 : 112}
           style={{ justifyContent: "center", maxWidth: tall ? 960 : 1700 }}
         />
       </AbsoluteFill>
@@ -1026,12 +1029,12 @@ const Private: React.FC<ShotProps> = ({ start, len }) => {
             { t: "by", at: 6 },
             { t: "design.", at: 10 },
           ]}
-          size={tall ? 110 : 130}
+          size={tall ? 104 : 112}
           style={{ justifyContent: "center" }}
         />
         <div style={{ display: "flex", flexDirection: tall ? "column" : "row", gap: tall ? 24 : 28, marginTop: tall ? 60 : 70 }}>
           <div style={cardStyle(0)}>
-            <div style={{ fontSize: 24, color: C.subtle }}>Never watched</div>
+            <div style={{ fontSize: tall ? 26 : 24, fontWeight: 500, letterSpacing: "-0.003em", color: C.muted }}>Never watched</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 22 }}>
               {["Passwords", "Keychain", "Private windows", "Messages", "Wallets"].map((c, i) => {
                 const t = springAt(f, fps, cards[0] + 3 + i * 2, { damping: 16, stiffness: 360 });
@@ -1076,7 +1079,7 @@ const Private: React.FC<ShotProps> = ({ start, len }) => {
             </div>
           </div>
           <div style={cardStyle(2)}>
-            <div style={{ fontSize: 24, color: C.subtle }}>Sent</div>
+            <div style={{ fontSize: tall ? 26 : 24, fontWeight: 500, letterSpacing: "-0.003em", color: C.muted }}>Sent</div>
             <div style={{ fontSize: 26, lineHeight: 1.5, marginTop: 18 }}>
               Why does deploy fail with{" "}
               <span style={{ display: "inline-grid", verticalAlign: "bottom" }}>
@@ -1173,7 +1176,7 @@ const Tagline: React.FC<ShotProps> = ({ start }) => {
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", transform: `scale(${1 + 0.03 * pulse(f, ws.map((w) => w.at), 6)})` }}>
         <Slam
           words={ws.map((w, i) => ({ ...w, color: i === latest || (latest === 2 && i === 1) ? C.fg : "#b5b5bb" }))}
-          size={tall ? 110 : 130}
+          size={tall ? 104 : 112}
           style={{ justifyContent: "center", width: tall ? 940 : 1500 }}
         />
       </AbsoluteFill>
@@ -1201,13 +1204,15 @@ const EndCard: React.FC<ShotProps> = ({ start, len }) => {
         {ring(f, hit, 1400, "rgba(0,0,0,0.25)")}
         <div style={{ display: "grid", justifyItems: "center", transform: `scale(${(0.94 + 0.06 * s) * (1 + 0.03 * hitP) * (1 + ease(f, [0, len], [0, 0.03]))})` }}>
           <Lockup size={tall ? 64 : 72} color={C.fg} />
-          <Slam words={[{ t: "tryambient.ai", at: url }]} size={tall ? 52 : 48} weight={300} style={{ marginTop: tall ? 60 : 50 }} />
+          <Slam words={[{ t: "tryambient.ai", at: url }]} size={64} style={{ marginTop: tall ? 56 : 48 }} />
           <div
             style={{
-              marginTop: 20,
-              fontFamily: FONT,
-              fontSize: tall ? 30 : 28,
-              fontWeight: 400,
+              marginTop: 18,
+              fontFamily: FONT_DISPLAY,
+              fontSize: tall ? 34 : 30,
+              fontWeight: 300,
+              letterSpacing: "-0.01em",
+              lineHeight: 1.35,
               color: C.muted,
               textAlign: "center",
               maxWidth: tall ? 800 : undefined,
@@ -1360,8 +1365,8 @@ export const Poster: React.FC<PosterProps> = ({ theme }) => {
         <Lockup size={tall ? 64 : 72} color={ink} />
       </div>
       <div style={{ position: "absolute", left: 0, right: 0, top: height * (tall ? 0.66 : 0.7), display: "grid", justifyItems: "center", gap: tall ? 20 : 16, textAlign: "center" }}>
-        <div style={{ fontSize: tall ? 46 : 40, fontWeight: 300, letterSpacing: "-0.02em", color: ink }}>tryambient.ai</div>
-        <div style={{ fontSize: tall ? 27 : 23, fontWeight: 400, color: dark ? C.mutedDark : C.muted, maxWidth: tall ? 760 : undefined, lineHeight: 1.4 }}>
+        <div style={{ fontFamily: FONT_DISPLAY, fontSize: 64, fontWeight: 300, letterSpacing: "-0.035em", lineHeight: 1.08, color: ink }}>tryambient.ai</div>
+        <div style={{ fontFamily: FONT_DISPLAY, fontSize: tall ? 34 : 30, fontWeight: 300, letterSpacing: "-0.01em", lineHeight: 1.35, color: dark ? C.mutedDark : C.muted, maxWidth: tall ? 800 : undefined }}>
           Free for Mac, Windows and Linux. Agent on Mac.
         </div>
       </div>
