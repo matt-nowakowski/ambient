@@ -282,6 +282,66 @@ const findLabel = (root: HTMLElement, label: string): HTMLElement | null => {
   return loose;
 };
 
+const CORNERS = [
+  "borderTopLeftRadius",
+  "borderTopRightRadius",
+  "borderBottomRightRadius",
+  "borderBottomLeftRadius",
+] as const;
+
+/** A computed corner radius in px (the horizontal one, if it has two). */
+const cornerPx = (
+  style: CSSStyleDeclaration,
+  corner: (typeof CORNERS)[number],
+) => parseFloat(style[corner]) || 0;
+
+/**
+ * The border-radius the highlight should take so it traces the row as drawn.
+ * A row with its own rounding (a standalone glass row) keeps its radii. A row
+ * without any (a row in a grouped list or table) takes, on each corner it
+ * shares with its rounded group, the group's inner radius, and stays square
+ * elsewhere: so a middle row is square and the first and last rows match the
+ * group's outer corners.
+ */
+const hitRadius = (row: HTMLElement): string => {
+  const own = getComputedStyle(row);
+  const radii = CORNERS.map((c) => cornerPx(own, c));
+  if (radii.some((r) => r > 0)) return radii.map((r) => `${r}px`).join(" ");
+
+  let group: HTMLElement | null = row.parentElement;
+  for (let depth = 0; group && depth < 6; depth++) {
+    const style = getComputedStyle(group);
+    const groupRadii = CORNERS.map((c) => cornerPx(style, c));
+    if (groupRadii.some((r) => r > 0)) {
+      const a = row.getBoundingClientRect();
+      const b = group.getBoundingClientRect();
+      // How far each of the row's edges sits inside the group's.
+      const inset = {
+        top: a.top - b.top,
+        right: b.right - a.right,
+        bottom: b.bottom - a.bottom,
+        left: a.left - b.left,
+      };
+      // Corners are listed clockwise from top-left.
+      const pairs = [
+        [inset.top, inset.left],
+        [inset.top, inset.right],
+        [inset.bottom, inset.right],
+        [inset.bottom, inset.left],
+      ];
+      return pairs
+        .map(([y, x], i) => {
+          const gap = Math.max(x, y);
+          // Touching (within the group's border) means the row shares it.
+          return gap <= 2 ? `${Math.max(0, groupRadii[i] - gap)}px` : "0px";
+        })
+        .join(" ");
+    }
+    group = group.parentElement;
+  }
+  return "0px";
+};
+
 /**
  * After a search jump lands on its page, scroll the chosen row into view and
  * highlight it. Retries while the page transition settles.
@@ -321,17 +381,25 @@ export const useSearchJump = (
         return;
       }
       clear();
-      const row =
+      const hit =
         el.closest<HTMLElement>("[data-search-row], section, .glass") ?? el;
+      // A whole group lights up its panel, not the title above it.
+      const row =
+        hit.querySelector<HTMLElement>(":scope > [data-search-panel]") ?? hit;
       row.scrollIntoView({
         block: "center",
         behavior: prefersReducedMotion() ? "auto" : "smooth",
       });
       row.classList.remove("search-hit");
+      // Measured without a previous hit's radius in the way.
+      row.style.setProperty("--search-hit-radius", hitRadius(row));
       void row.offsetWidth; // restart the animation
       row.classList.add("search-hit");
       // Not cancelled with the effect: clearing the target re-runs it.
-      window.setTimeout(() => row.classList.remove("search-hit"), 2200);
+      window.setTimeout(() => {
+        row.classList.remove("search-hit");
+        row.style.removeProperty("--search-hit-radius");
+      }, 2200);
     };
     // Let the page (and tab) transition put the new content in place.
     timers.push(window.setTimeout(attempt, 260));
