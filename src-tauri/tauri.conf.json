@@ -69,7 +69,8 @@
         "depends": [
           "libgtk-layer-shell0",
           "libopenblas0",
-          "libssl3t64 | libssl3"
+          "libssl3t64 | libssl3",
+          "pulseaudio-utils"
         ],
         "files": {
           "/usr/lib/Ambient": "transcribe-libs"
@@ -78,7 +79,8 @@
       "rpm": {
         "depends": [
           "libgtk-layer-shell.so.0()(64bit)",
-          "libopenblas.so.0()(64bit)"
+          "libopenblas.so.0()(64bit)",
+          "/usr/bin/parec"
         ],
         "compression": {
           "type": "none"

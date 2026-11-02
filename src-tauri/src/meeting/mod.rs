@@ -5,6 +5,8 @@
 //! notes are kept encrypted in the local store until the user deletes them.
 
 pub(crate) mod capture;
+#[cfg(any(target_os = "linux", test))]
+mod linux;
 pub(crate) mod segmenter;
 
 use std::collections::HashSet;

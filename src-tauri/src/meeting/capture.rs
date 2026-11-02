@@ -105,7 +105,14 @@ pub mod system {
     }
 }
 
-#[cfg(not(target_os = "macos"))]
+/// Linux: the default output's monitor (PipeWire or PulseAudio), and
+/// `pactl` for whether another app holds the mic. See `meeting/linux.rs`.
+#[cfg(target_os = "linux")]
+pub mod system {
+    pub use super::super::linux::{mic_in_use, SystemAudio};
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 pub mod system {
     use std::sync::mpsc::Sender;
 
