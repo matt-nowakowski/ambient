@@ -46,7 +46,10 @@ export const TrySaying: React.FC<{
   const dictateBinding = bindings?.transcribe?.current_binding ?? "";
   const ask = keycapLabel(askBinding, os);
   const dictate = keycapLabel(dictateBinding, os);
-  const groups = GROUPS.filter((g) => os === "macos" || !g.macOnly);
+  // Suggestions and meetings read windows and call audio: macOS and Linux.
+  const groups = GROUPS.filter(
+    (g) => os === "macos" || os === "linux" || !g.macOnly,
+  );
   const [active, setActive] = useState<TrySayingGroup>(group);
 
   // Each opening starts on the group its item asked for.

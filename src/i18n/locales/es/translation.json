@@ -1239,6 +1239,11 @@
     },
     "accessibility": "{{appName}} necesita acceso de Accesibilidad para leer texto de otras apps.",
     "grant": "Permitir acceso",
+    "accessibilityLinux": "Activa la accesibilidad para que {{appName}} pueda leer la ventana en la que estás. Ejecuta esto y luego cierra sesión y vuelve a entrar.",
+    "accessibilityLinuxChrome": "Las apps de Chrome, Chromium y Electron también necesitan --force-renderer-accessibility.",
+    "copyCommand": "Copiar comando",
+    "commandCopied": "Comando copiado",
+    "commandCopyFailed": "No se pudo copiar el comando",
     "capabilities": {
       "title": "Qué puede hacer {{appName}}",
       "description": "Todo está desactivado hasta que lo actives.",
@@ -1404,7 +1409,8 @@
       "noPermission": "Permite la grabación de pantalla para que {{appName}} pueda oír la llamada. Solo se usa el audio y no se guarda nada.",
       "oldMacOS": "Para oír la llamada se necesita macOS 13 o posterior. Tu micrófono se sigue transcribiendo.",
       "failed": "No se pudo capturar el audio de la llamada. Tu micrófono se sigue transcribiendo.",
-      "unsupported": "Oír la llamada aún no está disponible en este sistema."
+      "unsupported": "Oír la llamada aún no está disponible en este sistema.",
+      "linuxNoParec": "Para oír la llamada hace falta parec (instala pulseaudio-utils). Tu micrófono se sigue transcribiendo."
     },
     "error": {
       "storage": "No se pudo abrir el almacenamiento de reuniones.",

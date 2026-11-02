@@ -1231,6 +1231,11 @@
     },
     "accessibility": "다른 앱의 텍스트를 읽으려면 {{appName}}에 손쉬운 사용 접근 권한이 필요합니다.",
     "grant": "접근 허용",
+    "accessibilityLinux": "{{appName}}이(가) 사용 중인 창을 읽을 수 있도록 접근성을 켜세요. 이 명령을 실행한 다음 로그아웃했다가 다시 로그인하세요.",
+    "accessibilityLinuxChrome": "Chrome, Chromium, Electron 앱에는 --force-renderer-accessibility도 필요합니다.",
+    "copyCommand": "명령 복사",
+    "commandCopied": "명령을 복사했습니다",
+    "commandCopyFailed": "명령을 복사할 수 없습니다",
     "capabilities": {
       "title": "{{appName}}이(가) 할 수 있는 일",
       "description": "각 기능은 켜기 전까지 꺼져 있습니다.",
@@ -1392,7 +1397,8 @@
       "noPermission": "{{appName}}이(가) 통화를 들을 수 있도록 화면 기록을 허용하세요. 오디오만 사용하며 아무것도 저장하지 않습니다.",
       "oldMacOS": "통화 소리를 들으려면 macOS 13 이상이 필요합니다. 마이크는 계속 받아쓰고 있습니다.",
       "failed": "통화 오디오를 가져올 수 없습니다. 마이크는 계속 받아쓰고 있습니다.",
-      "unsupported": "이 시스템에서는 아직 통화 소리를 들을 수 없습니다."
+      "unsupported": "이 시스템에서는 아직 통화 소리를 들을 수 없습니다.",
+      "linuxNoParec": "통화를 들으려면 parec이 필요합니다(pulseaudio-utils 설치). 마이크는 계속 받아쓰고 있습니다."
     },
     "error": {
       "storage": "회의 저장소를 열 수 없습니다.",

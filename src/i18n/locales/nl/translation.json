@@ -1231,6 +1231,11 @@
     },
     "accessibility": "{{appName}} heeft toegang tot Toegankelijkheid nodig om tekst uit andere apps te lezen.",
     "grant": "Toegang geven",
+    "accessibilityLinux": "Zet toegankelijkheid aan zodat {{appName}} het venster kan lezen waarin je bent. Voer dit uit en log daarna uit en weer in.",
+    "accessibilityLinuxChrome": "Chrome-, Chromium- en Electron-apps hebben ook --force-renderer-accessibility nodig.",
+    "copyCommand": "Opdracht kopiëren",
+    "commandCopied": "Opdracht gekopieerd",
+    "commandCopyFailed": "Kon de opdracht niet kopiëren",
     "capabilities": {
       "title": "Wat {{appName}} mag doen",
       "description": "Alles staat uit tot je het aanzet.",
@@ -1392,7 +1397,8 @@
       "noPermission": "Sta Schermopname toe zodat {{appName}} het gesprek kan horen. Alleen audio wordt gebruikt en er wordt niets bewaard.",
       "oldMacOS": "Het gesprek horen vereist macOS 13 of nieuwer. Je microfoon wordt nog steeds getranscribeerd.",
       "failed": "Kon de audio van het gesprek niet opvangen. Je microfoon wordt nog steeds getranscribeerd.",
-      "unsupported": "Het gesprek horen is op dit systeem nog niet beschikbaar."
+      "unsupported": "Het gesprek horen is op dit systeem nog niet beschikbaar.",
+      "linuxNoParec": "Om het gesprek te horen is parec nodig (installeer pulseaudio-utils). Je microfoon wordt nog steeds getranscribeerd."
     },
     "error": {
       "storage": "Kon de opslag voor vergaderingen niet openen.",

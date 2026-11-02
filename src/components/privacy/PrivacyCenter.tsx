@@ -56,14 +56,26 @@ type Capability =
   | "meetings"
   | "wake_word"
   | "on_device_only";
-/** Reading other apps' windows is macOS-only for now (Windows UI Automation is P6). */
+/** Reading other apps' windows needs macOS Accessibility or Linux AT-SPI
+ * (Windows UI Automation is P6); on-device AI is Apple Intelligence. */
 const MAC_ONLY: Capability[] = [
   "screen_context",
   "screen_memory",
   "proactive",
   "on_device_only",
 ];
+const LINUX_TOO: Capability[] = [
+  "screen_context",
+  "screen_memory",
+  "proactive",
+];
 const IS_MAC = osType() === "macos";
+const IS_LINUX = osType() === "linux";
+/** Reads other apps' windows on this platform. */
+const READS_WINDOWS = IS_MAC || IS_LINUX;
+/** The command that turns on AT-SPI for GNOME (and most GTK desktops). */
+const LINUX_A11Y_COMMAND =
+  "gsettings set org.gnome.desktop.interface toolkit-accessibility true";
 /** Capabilities grouped by what they touch, each with its icon. */
 const CAPABILITY_GROUPS: {
   key: "screen" | "listening" | "local";
@@ -251,7 +263,35 @@ export const PrivacyCenter: React.FC = () => {
                 />
               ))}
           </div>
-          {!status.accessibility && (
+          {!status.accessibility && IS_LINUX && (
+            <div className="mt-3 space-y-2 border-t-[0.5px] border-glass-edge pt-3">
+              <p className="text-small text-ink-2">
+                {t("privacy.accessibilityLinux")}
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <code className="min-w-0 truncate rounded-md bg-glass-press px-2 py-1 font-mono text-meta text-ink-2">
+                  {LINUX_A11Y_COMMAND}
+                </code>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="shrink-0 whitespace-nowrap"
+                  onClick={() =>
+                    navigator.clipboard
+                      .writeText(LINUX_A11Y_COMMAND)
+                      .then(() => toast.success(t("privacy.commandCopied")))
+                      .catch(() => toast.error(t("privacy.commandCopyFailed")))
+                  }
+                >
+                  {t("privacy.copyCommand")}
+                </Button>
+              </div>
+              <p className="text-meta text-ink-3">
+                {t("privacy.accessibilityLinuxChrome")}
+              </p>
+            </div>
+          )}
+          {!status.accessibility && !IS_LINUX && (
             <div className="mt-3 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-3">
               <p className="min-w-0 text-small text-ink-2">
                 {t("privacy.accessibility")}
@@ -287,7 +327,10 @@ export const PrivacyCenter: React.FC = () => {
               <div className="divide-y divide-glass-edge">
                 {group.caps.map(({ cap, icon: Icon }) => {
                   const proOnly = cap !== "on_device_only";
-                  const unsupported = !IS_MAC && MAC_ONLY.includes(cap);
+                  const unsupported =
+                    !IS_MAC &&
+                    MAC_ONLY.includes(cap) &&
+                    !(IS_LINUX && LINUX_TOO.includes(cap));
                   const locked = (proOnly && !paid) || unsupported;
                   return (
                     <div
@@ -446,7 +489,7 @@ export const PrivacyCenter: React.FC = () => {
         )}
 
         {/* What Ambient sees */}
-        {IS_MAC && (
+        {READS_WINDOWS && (
           <SettingsGroup
             title={t("privacy.preview.title")}
             description={t("privacy.preview.description")}

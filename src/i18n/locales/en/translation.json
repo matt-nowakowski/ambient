@@ -1231,6 +1231,11 @@
     },
     "accessibility": "{{appName}} needs Accessibility access to read text from other apps.",
     "grant": "Allow access",
+    "accessibilityLinux": "Turn on accessibility so {{appName}} can read the window you're in. Run this, then log out and back in.",
+    "accessibilityLinuxChrome": "Chrome, Chromium and Electron apps also need --force-renderer-accessibility.",
+    "copyCommand": "Copy command",
+    "commandCopied": "Command copied",
+    "commandCopyFailed": "Couldn't copy the command",
     "capabilities": {
       "title": "What {{appName}} may do",
       "description": "Each is off until you turn it on.",
@@ -1392,7 +1397,8 @@
       "noPermission": "Allow Screen Recording so {{appName}} can hear the call. Only audio is used, and nothing is saved.",
       "oldMacOS": "Hearing the call needs macOS 13 or later. Your microphone is still being transcribed.",
       "failed": "Couldn't capture the call audio. Your microphone is still being transcribed.",
-      "unsupported": "Hearing the call isn't available on this system yet."
+      "unsupported": "Hearing the call isn't available on this system yet.",
+      "linuxNoParec": "Hearing the call needs parec (install pulseaudio-utils). Your microphone is still being transcribed."
     },
     "error": {
       "storage": "Couldn't open meeting storage.",

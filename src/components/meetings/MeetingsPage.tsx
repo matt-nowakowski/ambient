@@ -31,6 +31,8 @@ import { useSettings } from "../../hooks/useSettings";
 import { isPaid, usePlan } from "../account/usePlan";
 
 const IS_MAC = osType() === "macos";
+/** Spotting a call (an app in front, someone else on the mic) works here. */
+const DETECTS_CALLS = IS_MAC || osType() === "linux";
 
 /** How the automatic flow goes, shown while idle. */
 const AUTO_STEPS = [
@@ -334,7 +336,7 @@ export const MeetingsPage: React.FC = () => {
   // ── list + live ──
   const elapsed = state.started ? now - state.started * 1000 : 0;
   const paid = plan ? isPaid(plan) : false;
-  const autoState: Detection = !IS_MAC
+  const autoState: Detection = !DETECTS_CALLS
     ? "unsupported"
     : agent?.meetings
       ? agent.paused_until && agent.paused_until * 1000 > now

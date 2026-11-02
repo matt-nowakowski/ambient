@@ -47,7 +47,9 @@ export const AgentTour: React.FC = () => {
   const { getSetting, refreshSettings } = useSettings();
   const { status } = usePlan();
   const paid = status ? isPaid(status) : false;
-  const isMac = os === "macos";
+  // The agent's capabilities (reading windows, suggestions, meetings) run
+  // on macOS and Linux.
+  const canChoose = os === "macos" || os === "linux";
   const [step, setStep] = useState<0 | 1>(0);
   const agent = getSetting("agent");
   const [picked, setPicked] = useState<Record<Capability, boolean>>({
@@ -89,7 +91,7 @@ export const AgentTour: React.FC = () => {
   const tried = done.includes("answer") || done.includes("reminder");
 
   const finish = async () => {
-    if (agent && isMac && paid) {
+    if (agent && canChoose && paid) {
       const next: AgentSettings = { ...agent, ...picked };
       const r = await commands.setAgentSettings(next);
       if (r.status === "error") toast.error(r.error);
@@ -122,9 +124,9 @@ export const AgentTour: React.FC = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => (isMac ? setStep(1) : finish())}
+              onClick={() => (canChoose ? setStep(1) : finish())}
             >
-              {isMac ? t("tour.next") : t("tour.done")}
+              {canChoose ? t("tour.next") : t("tour.done")}
             </Button>
           ) : (
             <Button variant="primary" size="sm" onClick={finish}>

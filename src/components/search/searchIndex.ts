@@ -301,7 +301,7 @@ const PLACES: Place[] = [
         label: "privacy.preview.title",
         description: "privacy.preview.description",
         rows: [],
-        when: (c) => c.isMac,
+        when: (c) => c.isMac || c.isLinux,
       },
       {
         label: "privacy.neverWatch.title",

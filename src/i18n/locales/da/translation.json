@@ -1231,6 +1231,11 @@
     },
     "accessibility": "{{appName}} skal have adgang til Hjælpemidler for at læse tekst fra andre apps.",
     "grant": "Giv adgang",
+    "accessibilityLinux": "Slå tilgængelighed til, så {{appName}} kan læse det vindue, du er i. Kør dette, og log derefter ud og ind igen.",
+    "accessibilityLinuxChrome": "Chrome-, Chromium- og Electron-apps skal også bruge --force-renderer-accessibility.",
+    "copyCommand": "Kopiér kommando",
+    "commandCopied": "Kommando kopieret",
+    "commandCopyFailed": "Kunne ikke kopiere kommandoen",
     "capabilities": {
       "title": "Hvad {{appName}} må",
       "description": "Alt er slået fra, indtil du slår det til.",
@@ -1392,7 +1397,8 @@
       "noPermission": "Tillad Skærmoptagelse, så {{appName}} kan høre opkaldet. Kun lyden bruges, og intet gemmes.",
       "oldMacOS": "Det kræver macOS 13 eller nyere at høre opkaldet. Din mikrofon transskriberes stadig.",
       "failed": "Kunne ikke opfange opkaldets lyd. Din mikrofon transskriberes stadig.",
-      "unsupported": "Det er endnu ikke muligt at høre opkaldet på dette system."
+      "unsupported": "Det er endnu ikke muligt at høre opkaldet på dette system.",
+      "linuxNoParec": "For at høre opkaldet kræves parec (installer pulseaudio-utils). Din mikrofon transskriberes stadig."
     },
     "error": {
       "storage": "Kunne ikke åbne mødelageret.",
