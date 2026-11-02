@@ -1,4 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type PointerEvent,
+} from "react";
 import { listen } from "@tauri-apps/api/event";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -137,6 +143,29 @@ export default function Hud() {
     commands.hudAction(id, "dismiss", null);
   };
 
+  /** A press on the panel's transparent margin, around the card. Rust's
+   * outside-click watcher counts the whole panel as "inside", so the margin
+   * is handled here, with the same rules: finished cards go, cards still
+   * listening, thinking or acting stay. */
+  const onStagePointerDown = (e: PointerEvent) => {
+    if (!content || e.target !== e.currentTarget) return;
+    switch (content.kind) {
+      case "answer":
+        if (content.text || content.done) dismiss();
+        return;
+      case "help":
+      case "draft":
+        return dismiss();
+      case "suggestion":
+        // Clicked away from, not refused: no back-off for this kind.
+        commands.hudAction(content.id, "expire", null);
+        commands.hudHide();
+        return;
+      default:
+        return;
+    }
+  };
+
   const copy = async (key: string, text: string) => {
     await writeText(text);
     setCopied(key);
@@ -173,9 +202,20 @@ export default function Hud() {
   const hidden = reduceMotion
     ? { opacity: 0 }
     : { opacity: 0, scale: 0.97, filter: "blur(2px)" };
+  // Leaving is a quick dissolve: it fades, drifts up a touch and softens,
+  // with no spring. It finishes inside Rust's CLOSE_MS (200 ms), before the
+  // panel is ordered out. Reduced motion: a very short fade.
+  const gone = reduceMotion
+    ? { opacity: 0, transition: { duration: 0.08, ease: "linear" as const } }
+    : {
+        opacity: 0,
+        y: -6,
+        filter: "blur(6px)",
+        transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+      };
 
   return (
-    <div className="hud-stage">
+    <div className="hud-stage" onPointerDown={onStagePointerDown}>
       <AnimatePresence>
         {content && (
           <motion.div
@@ -183,14 +223,8 @@ export default function Hud() {
             ref={cardRef}
             className="hud-card"
             initial={hidden}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{
-              ...hidden,
-              transition: {
-                duration: reduceMotion ? 0.1 : 0.18,
-                ease: "easeOut",
-              },
-            }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            exit={gone}
             transition={transition}
           >
             {content.kind === "answer" && (

@@ -263,6 +263,7 @@ fn hold_escape(app: &AppHandle) {
     let registered = gs.on_shortcut(escape(), |app, _, event| {
         if event.state == ShortcutState::Pressed {
             let id = current().map(|c| c.id()).unwrap_or_default();
+            remember_dismissed(&id);
             let _ = app.emit(
                 "hud-action",
                 HudActionEvent {
@@ -291,6 +292,16 @@ static CURRENT: Mutex<Option<HudContent>> = Mutex::new(None);
 /// that was shown after the close began.
 static GENERATION: AtomicU64 = AtomicU64::new(0);
 
+/// The answer the user dismissed, so the rest of its stream doesn't bring
+/// the card back: the agent keeps calling `show` with each new chunk.
+static DISMISSED: Mutex<Option<String>> = Mutex::new(None);
+
+fn remember_dismissed(id: &str) {
+    if let Ok(mut g) = DISMISSED.lock() {
+        *g = id.starts_with("answer-").then(|| id.to_string());
+    }
+}
+
 /// The card on screen, if any.
 pub fn current() -> Option<HudContent> {
     CURRENT.lock().ok().and_then(|g| g.clone())
@@ -305,6 +316,14 @@ pub fn showing_answer() -> bool {
 
 /// Show (or update) the HUD. Safe to call from any thread.
 pub fn show(app: &AppHandle, content: HudContent) {
+    if let HudContent::Answer { id, .. } = &content {
+        if DISMISSED
+            .lock()
+            .is_ok_and(|g| g.as_deref() == Some(id.as_str()))
+        {
+            return;
+        }
+    }
     GENERATION.fetch_add(1, Ordering::SeqCst);
     if let Ok(mut g) = CURRENT.lock() {
         *g = Some(content.clone());
@@ -374,10 +393,12 @@ pub fn hide(app: &AppHandle) {
 // ── Click outside, and the draft card's Insert ──────────────────────────
 //
 // The panel never becomes key, so it can't see clicks elsewhere. While the
-// HUD is up, a light poll of the mouse button state (no event tap, no extra
-// permission) notices a press outside the card: answers and help dissolve; a
-// draft card instead re-checks whether a text field now has focus, so it can
-// offer Insert.
+// HUD is up, a light poll (no event tap, no extra permission) notices a press
+// outside the card. It reads the window server's mouse-down *counter* rather
+// than the button state: a trackpad tap is down and up within a few ms, which
+// a 40 ms poll of the button state usually missed. Answers, help and
+// suggestions dissolve; a draft card first checks whether the click put focus
+// in a text field (then it stays and offers Insert), and dissolves otherwise.
 
 static WATCHING: AtomicBool = AtomicBool::new(false);
 
@@ -394,19 +415,25 @@ fn start_watcher(app: &AppHandle) {
     }
 }
 
+/// Mouse presses (left, right, other) the window server has seen so far.
 #[cfg(target_os = "macos")]
-fn mouse_down() -> bool {
+fn presses() -> u32 {
     #[link(name = "CoreGraphics", kind = "framework")]
     extern "C" {
-        fn CGEventSourceButtonState(state: i32, button: u32) -> bool;
+        fn CGEventSourceCounterForEventType(state: i32, event_type: u32) -> u32;
     }
-    // kCGEventSourceStateCombinedSessionState; left and right buttons.
-    unsafe { CGEventSourceButtonState(0, 0) || CGEventSourceButtonState(0, 1) }
+    // kCGEventSourceStateCombinedSessionState; kCGEventLeftMouseDown,
+    // kCGEventRightMouseDown, kCGEventOtherMouseDown.
+    unsafe {
+        CGEventSourceCounterForEventType(0, 1)
+            .wrapping_add(CGEventSourceCounterForEventType(0, 3))
+            .wrapping_add(CGEventSourceCounterForEventType(0, 25))
+    }
 }
 
 #[cfg(not(target_os = "macos"))]
-fn mouse_down() -> bool {
-    false
+fn presses() -> u32 {
+    0
 }
 
 /// Whether the cursor is over the HUD panel (physical pixels).
@@ -429,52 +456,82 @@ fn cursor_inside(app: &AppHandle) -> bool {
 #[derive(Debug, PartialEq, Eq)]
 enum ClickOutside {
     Dismiss,
-    RecheckFocus,
+    /// Dismiss, unless the click put focus in a text field: then the draft
+    /// stays and offers Insert.
+    DismissUnlessFocused,
     Ignore,
 }
 
-/// What a press outside the card does to each kind of card. Suggestions and
-/// status lines leave on their own timers; steps have Stop.
-fn on_click_outside(kind: &str) -> ClickOutside {
-    match kind {
-        "answer" | "help" => ClickOutside::Dismiss,
-        "draft" => ClickOutside::RecheckFocus,
-        _ => ClickOutside::Ignore,
+/// What a press outside the card does to each kind of card. In-progress
+/// cards (listening, thinking, acting steps) stay; status lines leave on
+/// their own short timers.
+fn on_click_outside(card: &HudContent) -> ClickOutside {
+    match card {
+        // An answer with nothing in it yet is still "Thinking…".
+        HudContent::Answer { text, done, .. } if text.is_empty() && !done => ClickOutside::Ignore,
+        HudContent::Answer { .. } | HudContent::Help | HudContent::Suggestion { .. } => {
+            ClickOutside::Dismiss
+        }
+        HudContent::Draft { .. } => ClickOutside::DismissUnlessFocused,
+        HudContent::Listening { .. } | HudContent::Steps { .. } | HudContent::Status { .. } => {
+            ClickOutside::Ignore
+        }
     }
 }
 
+/// Dissolve the card because the user clicked away from it.
+fn dismiss_on_click(app: &AppHandle, card: &HudContent) {
+    log::debug!("HUD: click outside dismissed the {} card", card.kind());
+    let id = card.id();
+    remember_dismissed(&id);
+    // A suggestion clicked away from counts as ignored, not refused, so it
+    // doesn't back off that kind of suggestion.
+    let action = if matches!(card, HudContent::Suggestion { .. }) {
+        "expire"
+    } else {
+        "dismiss"
+    };
+    let _ = app.emit(
+        "hud-action",
+        HudActionEvent {
+            id,
+            action: action.into(),
+        },
+    );
+    hide(app);
+}
+
 fn watch(app: AppHandle) {
-    let mut was_down = false;
+    // Presses before the card appeared (say, the click that opened it) don't
+    // count: the baseline keeps moving while the HUD is hidden.
+    let mut seen = presses();
     let mut recheck_at: Option<Instant> = None;
+    // Set by a click outside a draft: dismiss it at the recheck unless a
+    // text field took focus.
+    let mut draft_clicked_away = false;
     let mut last_focus_check = Instant::now();
     loop {
         let visible = is_visible();
-        std::thread::sleep(Duration::from_millis(if visible { 40 } else { 200 }));
+        std::thread::sleep(Duration::from_millis(if visible { 30 } else { 200 }));
+        let count = presses();
+        let pressed = count != seen;
+        seen = count;
         if !visible {
-            was_down = false;
             recheck_at = None;
+            draft_clicked_away = false;
             continue;
         }
         let Some(card) = current() else { continue };
-        let down = mouse_down();
-        let pressed = down && !was_down;
-        was_down = down;
         if pressed && !cursor_inside(&app) {
-            match on_click_outside(card.kind()) {
+            match on_click_outside(&card) {
                 ClickOutside::Dismiss => {
-                    let _ = app.emit(
-                        "hud-action",
-                        HudActionEvent {
-                            id: card.id(),
-                            action: "dismiss".into(),
-                        },
-                    );
-                    hide(&app);
+                    dismiss_on_click(&app, &card);
                     continue;
                 }
                 // Focus moves on mouse-up; look shortly after.
-                ClickOutside::RecheckFocus => {
+                ClickOutside::DismissUnlessFocused => {
                     recheck_at = Some(Instant::now() + Duration::from_millis(250));
+                    draft_clicked_away = true;
                 }
                 ClickOutside::Ignore => {}
             }
@@ -487,12 +544,22 @@ fn watch(app: AppHandle) {
             editable,
         } = card
         {
-            let due = recheck_at.is_some_and(|t| Instant::now() >= t)
-                || last_focus_check.elapsed() > Duration::from_millis(700);
+            let clicked_due = recheck_at.is_some_and(|t| Instant::now() >= t);
+            let due = clicked_due || last_focus_check.elapsed() > Duration::from_millis(700);
             if due {
                 recheck_at = None;
                 last_focus_check = Instant::now();
                 let now = crate::agent::can_insert_here();
+                if clicked_due && std::mem::take(&mut draft_clicked_away) && !now {
+                    let card = HudContent::Draft {
+                        id,
+                        title,
+                        text,
+                        editable,
+                    };
+                    dismiss_on_click(&app, &card);
+                    continue;
+                }
                 if now != editable {
                     show(
                         &app,
@@ -601,7 +668,10 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
             }
             hide(&app);
         }
-        "dismiss" => hide(&app),
+        "dismiss" => {
+            remember_dismissed(&id);
+            hide(&app);
+        }
         "undo" => {
             let ok = crate::agent::act::undo_last();
             show(
@@ -632,12 +702,44 @@ pub struct HudActionEvent {
 mod tests {
     use super::*;
 
+    fn answer(text: &str, done: bool) -> HudContent {
+        HudContent::Answer {
+            id: "answer-1".into(),
+            question: "q".into(),
+            text: text.into(),
+            sources: Vec::new(),
+            done,
+            replace: false,
+            actions: Vec::new(),
+            note: None,
+        }
+    }
+
     #[test]
-    fn click_outside_dismisses_answers_but_keeps_drafts() {
-        assert_eq!(on_click_outside("answer"), ClickOutside::Dismiss);
-        assert_eq!(on_click_outside("help"), ClickOutside::Dismiss);
-        assert_eq!(on_click_outside("draft"), ClickOutside::RecheckFocus);
-        assert_eq!(on_click_outside("suggestion"), ClickOutside::Ignore);
-        assert_eq!(on_click_outside("listening"), ClickOutside::Ignore);
+    fn click_outside_dismisses_finished_cards_but_not_work_in_progress() {
+        assert_eq!(on_click_outside(&answer("Hi", true)), ClickOutside::Dismiss);
+        assert_eq!(
+            on_click_outside(&answer("Hi", false)),
+            ClickOutside::Dismiss
+        );
+        assert_eq!(on_click_outside(&answer("", false)), ClickOutside::Ignore);
+        assert_eq!(on_click_outside(&HudContent::Help), ClickOutside::Dismiss);
+        let suggestion = HudContent::Suggestion {
+            id: "suggest-1".into(),
+            title: "t".into(),
+            accept_label: "a".into(),
+        };
+        assert_eq!(on_click_outside(&suggestion), ClickOutside::Dismiss);
+        let draft = HudContent::Draft {
+            id: "draft-1".into(),
+            title: "t".into(),
+            text: "x".into(),
+            editable: false,
+        };
+        assert_eq!(on_click_outside(&draft), ClickOutside::DismissUnlessFocused);
+        let listening = HudContent::Listening {
+            heard: String::new(),
+        };
+        assert_eq!(on_click_outside(&listening), ClickOutside::Ignore);
     }
 }
