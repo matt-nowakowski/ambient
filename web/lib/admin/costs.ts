@@ -103,7 +103,8 @@ export const DEPENDENCIES: Dependency[] = [
     id: "baseten",
     name: "Baseten",
     group: "AI & data",
-    purpose: "Hosted LLM (DeepSeek V4 Flash) for Pro polish, the agent router and answers (/api/ai, /api/agent/answer).",
+    purpose:
+      "Hosted LLM (DeepSeek V4 Flash) for Pro polish, the agent router, answers and cloud suggestion checks (/api/ai, /api/agent/answer, /api/agent/suggest).",
     plan: "Basic, pay as you go",
     planConfirmed: true,
     unitPrices: {
