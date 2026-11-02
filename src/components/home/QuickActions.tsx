@@ -11,8 +11,12 @@ import { FilePlus, History, Plus } from "lucide-react";
 const PLUS = 36;
 const PILL_W = 168;
 const PILL_H = 30;
-const GAP = 8;
-const HEIGHT = 84;
+// Space between the "+" and the pills, and between the two pills. The goo
+// bridges anything closer than ~2x its blur, so these stay well above that
+// or the resting pills melt into one shape.
+const GAP = 12;
+const PILL_GAP = 16;
+const HEIGHT = PILL_H * 2 + PILL_GAP + 12;
 
 interface QuickAction {
   key: string;
@@ -73,7 +77,7 @@ export const QuickActions: React.FC<{
       style={{ width: PLUS, height: PLUS }}
     >
       <Liquid
-        blur={7}
+        blur={6}
         contrast={20}
         fill="var(--glass-strong)"
         shadow="0 0.5px 1.5px rgba(0,0,0,0.08), 0 8px 20px -10px rgba(0,0,0,0.25)"
@@ -91,7 +95,7 @@ export const QuickActions: React.FC<{
           <Liquid.Item
             key={a.key}
             x={open ? openX : closedX}
-            y={open ? (i === 0 ? -1 : 1) * (PILL_H / 2 + 5) : 0}
+            y={open ? (i === 0 ? -1 : 1) * (PILL_H / 2 + PILL_GAP / 2) : 0}
             scale={open ? 1 : 0.2}
             transition="bouncy"
             delay={open ? i * 40 : 0}
