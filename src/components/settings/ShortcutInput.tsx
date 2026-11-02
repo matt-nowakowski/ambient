@@ -28,7 +28,7 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
   const { t } = useTranslation();
   const { getSetting, resetBinding, isUpdating, isLoading } = useSettings();
   const osType = useOsType();
-  const { capturing, partial, start, cancel } = useShortcutCapture(
+  const { capturing, partial, refused, start, cancel } = useShortcutCapture(
     shortcutId,
     osType,
   );
@@ -113,7 +113,9 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
           >
             {partial
               ? formatKeyCombination(partial, osType)
-              : t("settings.general.shortcut.pressKeys")}
+              : refused
+                ? t("onboarding.demo.addModifier")
+                : t("settings.general.shortcut.pressKeys")}
           </div>
         ) : (
           <div

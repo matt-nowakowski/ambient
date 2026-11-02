@@ -89,11 +89,16 @@ export const KeySlot: React.FC<
   </span>
 );
 
-/** The instruction while capturing: modifiers alone still need a key. */
-export const captureHintKey = (partial: string) =>
-  isOnlyModifiers(bindingKeys(partial))
-    ? "onboarding.demo.addKey"
-    : "onboarding.demo.pressKeys";
+/**
+ * The instruction while capturing: modifiers alone still need a key, and a
+ * lone typing key was refused for want of a modifier.
+ */
+export const captureHintKey = (partial: string, refused = false) =>
+  refused
+    ? "onboarding.demo.addModifier"
+    : isOnlyModifiers(bindingKeys(partial))
+      ? "onboarding.demo.addKey"
+      : "onboarding.demo.pressKeys";
 
 /** While capturing: the keys pressed so far, dashed, or an empty slot before any. */
 export const CapturedKeys: React.FC<{

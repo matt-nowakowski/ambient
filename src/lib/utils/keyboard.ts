@@ -299,3 +299,92 @@ export const keycapLabels = (binding: string, osType: OSType): string[] =>
 /** "⌥ Space" on macOS, "Alt + Space" elsewhere. */
 export const keycapLabel = (binding: string, osType: OSType): string =>
   keycapLabels(binding, osType).join(osType === "macos" ? " " : " + ");
+
+/** "option_left" → "option": the side doesn't change what a key is. */
+const baseKey = (part: string) =>
+  part
+    .trim()
+    .toLowerCase()
+    .replace(/_(left|right)$/, "");
+
+// Keys that type or move the caret: on their own (or with only Shift) they'd
+// fire in every text field, so they can't be a global shortcut.
+const TYPING_KEYS = new Set([
+  "space",
+  "enter",
+  "return",
+  "tab",
+  "backspace",
+  "delete",
+  "escape",
+  "esc",
+  "up",
+  "down",
+  "left",
+  "right",
+  "home",
+  "end",
+  "pageup",
+  "pagedown",
+]);
+
+/**
+ * A key that types, alone or with only Shift ("d", "shift+d", "space"):
+ * not a usable global shortcut. F-keys and modifier-only combos are fine.
+ * Mirrors `types_text` in src-tauri/src/shortcut/mod.rs.
+ */
+export const typesText = (binding: string): boolean => {
+  const parts = bindingKeys(binding).map(baseKey);
+  const keys = parts.filter((p) => !MODIFIERS.includes(p));
+  if (keys.length !== 1) return false;
+  if (parts.some((p) => MODIFIERS.includes(p) && p !== "shift")) return false;
+  const key = keys[0];
+  return (
+    [...key].length === 1 ||
+    TYPING_KEYS.has(key) ||
+    /^(numpad|keypad)/.test(key)
+  );
+};
+
+/** One ambient-keys event while recording (see `FrontendKeyEvent` in Rust). */
+export interface RecordedKeyEvent {
+  modifiers: string[];
+  key: string | null;
+  is_key_down: boolean;
+  hotkey_string: string;
+}
+
+/**
+ * Builds a binding from recorder events in any order ("d" then ⌘ works as
+ * well as ⌘ then "d"): the most keys held at once, finished once everything
+ * is released. `feed` returns the combo so far and, at the end, the binding.
+ */
+export class ChordRecorder {
+  /** Non-modifier keys down, oldest first. */
+  private held: string[] = [];
+  private best: string[] = [];
+
+  feed(e: RecordedKeyEvent): { partial: string; done: string | null } {
+    const parts = bindingKeys(e.hotkey_string);
+    // The string is the modifiers held now, plus this event's key if any.
+    const mods = e.key ? parts.slice(0, -1) : parts;
+    if (e.key) {
+      this.held = this.held.filter((k) => k !== e.key);
+      if (e.is_key_down) this.held.push(e.key);
+    }
+    const now = [...mods, ...this.held.slice(-1)];
+    if (e.is_key_down && now.length && now.length >= this.best.length)
+      this.best = now;
+    const partial = this.best.join("+");
+    // All released. macOS can swallow a key's release while ⌘ is down, so
+    // the last modifier going up ends a combo that has one.
+    const released =
+      !e.is_key_down &&
+      e.modifiers.length === 0 &&
+      (this.held.length === 0 || (!e.key && this.best.length > 1));
+    if (!released) return { partial, done: null };
+    this.held = [];
+    this.best = [];
+    return { partial: "", done: partial || null };
+  }
+}

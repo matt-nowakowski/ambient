@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
-import { formatKeyCombination, getKeyName } from "./keyboard";
+import {
+  ChordRecorder,
+  formatKeyCombination,
+  getKeyName,
+  type RecordedKeyEvent,
+  typesText,
+} from "./keyboard";
 
 const keyboardEvent = (value: { code?: string; key?: string }): KeyboardEvent =>
   value as KeyboardEvent;
@@ -25,3 +31,78 @@ assert.equal(
 );
 
 console.log("keyboard: all assertions passed");
+
+// A typing key can't be a global shortcut on its own (or with only Shift).
+for (const binding of ["d", "shift+d", "space", "5", "shift_left+up", "esc"])
+  assert.equal(typesText(binding), true, binding);
+for (const binding of [
+  "option+space",
+  "command+d",
+  "ctrl+option+space",
+  "option_left+shift+space",
+  "f5",
+  "fn",
+  "option",
+  "command+shift",
+])
+  assert.equal(typesText(binding), false, binding);
+
+// The recorder keeps every key of the combo, whichever is pressed first.
+const ev = (
+  hotkey: string,
+  key: string | null,
+  down: boolean,
+  modifiers: string[] = [],
+): RecordedKeyEvent => ({
+  hotkey_string: hotkey,
+  key,
+  is_key_down: down,
+  modifiers,
+});
+const record = (events: RecordedKeyEvent[]) => {
+  const r = new ChordRecorder();
+  const done = events.map((e) => r.feed(e).done).filter(Boolean);
+  return done;
+};
+
+// ⌘ then D, released in either order.
+assert.deepEqual(
+  record([
+    ev("command", null, true, ["command"]),
+    ev("command+d", "d", true, ["command"]),
+    ev("command+d", "d", false, ["command"]),
+    ev("", null, false),
+  ]),
+  ["command+d"],
+);
+// D first, then ⌘: the old recorder saved just "d".
+assert.deepEqual(
+  record([
+    ev("d", "d", true),
+    ev("command", null, true, ["command"]),
+    ev("command+d", "d", false, ["command"]),
+    ev("", null, false),
+  ]),
+  ["command+d"],
+);
+// ⌥⇧ then Space, with Space's release swallowed by macOS.
+assert.deepEqual(
+  record([
+    ev("option", null, true, ["option"]),
+    ev("option+shift", null, true, ["option", "shift"]),
+    ev("option+shift+space", "space", true, ["option", "shift"]),
+    ev("option", null, false, ["option"]),
+    ev("", null, false),
+  ]),
+  ["option+shift+space"],
+);
+// Modifier only.
+assert.deepEqual(record([ev("fn", null, true, ["fn"]), ev("", null, false)]), [
+  "fn",
+]);
+// A lone key is recorded (the caller refuses it), and nothing commits early.
+assert.deepEqual(record([ev("d", "d", true), ev("d", "d", false)]), ["d"]);
+// The release of the key that started capture (Enter on the button) is ignored.
+assert.deepEqual(record([ev("enter", "enter", false)]), []);
+
+console.log("keyboard: chord assertions passed");
