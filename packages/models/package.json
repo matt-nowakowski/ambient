@@ -1,0 +1,24 @@
+{
+  "name": "@ambient/models",
+  "version": "0.2.3",
+  "private": true,
+  "description": "Ambient's speech-to-text model catalog and recommendation helpers. See NOTICE.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./catalog.json": "./catalog.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "catalog.json",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "sideEffects": false
+}

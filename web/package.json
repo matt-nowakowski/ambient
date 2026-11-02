@@ -1,0 +1,47 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "brand": "node scripts/sync-brand.mjs",
+    "predev": "node scripts/sync-brand.mjs",
+    "dev": "next dev",
+    "prebuild": "node scripts/sync-brand.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "verify-license": "bun scripts/verify-license.ts",
+    "test:license-code": "bun scripts/license-code-test.ts"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "@polar-sh/sdk": "^0.49.0",
+    "geist": "^1.9.0",
+    "liquid-gooey": "0.2.2",
+    "motion": "^14.9.0",
+    "next": "16.3.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.8",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5"
+  },
+  "packageManager": "bun@1.2.12",
+  "ignoreScripts": [
+    "sharp",
+    "unrs-resolver"
+  ],
+  "trustedDependencies": [
+    "sharp",
+    "unrs-resolver"
+  ]
+}

@@ -1,0 +1,20 @@
+name: "Build Mac (test)"
+
+# One signed + notarized Apple Silicon build, uploaded as a workflow artifact.
+# Cheaper than the full matrix for smoke tests (macOS minutes bill at 10x on
+# private repos).
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "macos-26"
+      target: "aarch64-apple-darwin"
+      build-args: "--target aarch64-apple-darwin"
+      sign-binaries: true
+      upload-artifacts: true
+    secrets: inherit

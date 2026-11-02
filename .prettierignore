@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+bun.lock
+package-lock.json
+
+# Build outputs
+dist
+target
+*.bundle.*
+
+# Tauri
+src-tauri/target
+src-tauri/gen
+
+# Generated files
+src/bindings.ts
+src-tauri/src/catalog/catalog.json
+
+# The model catalog (machine-edited; its own compact formatting) and the
+# package's compiled output
+packages/models/catalog.json
+packages/models/dist
+
+# Misc
+.DS_Store
+*.log

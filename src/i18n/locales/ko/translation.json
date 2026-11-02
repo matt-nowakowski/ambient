@@ -1,0 +1,1490 @@
+{
+  "tray": {
+    "settings": "설정...",
+    "checkUpdates": "업데이트 확인...",
+    "copyLastTranscript": "마지막 녹음 내용 복사",
+    "unloadModel": "모델 언로드",
+    "model": "모델",
+    "quit": "종료",
+    "cancel": "취소",
+    "secureInputWarning": "⚠ Secure Input으로 단축키가 차단됨"
+  },
+  "sidebar": {
+    "home": "홈",
+    "general": "일반",
+    "account": "계정",
+    "models": "모델",
+    "advanced": "고급",
+    "postProcessing": "후처리",
+    "history": "히스토리",
+    "debug": "디버그",
+    "about": "정보",
+    "settings": "설정",
+    "privacy": "개인정보 보호",
+    "meetings": "회의"
+  },
+  "onboarding": {
+    "customModelDescription": "공식 지원되지 않음",
+    "migration": {
+      "title": "모델 업데이트가 필요합니다",
+      "description": "{{appName}}이(가) 이제 더 나은 모델을 사용합니다. 계속 받아쓰려면 다운로드하세요.",
+      "replaces": "{{name}} 대체",
+      "oldFormat": "이전 형식",
+      "failed": "다운로드 실패",
+      "retry": "다시 시도",
+      "chooseAnother": "다른 모델 선택",
+      "download": "모델 다운로드 ({{size}})",
+      "continue": "계속"
+    },
+    "errors": {
+      "selectModel": "모델을 선택하지 못했습니다"
+    },
+    "permissions": {
+      "microphone": {
+        "name": "마이크",
+        "why": "{{appName}}이(가) 사용자의 목소리를 들을 수 있도록 하기 위함입니다. 음성은 이 컴퓨터를 벗어나지 않습니다."
+      },
+      "accessibility": {
+        "name": "손쉬운 사용",
+        "why": "단축키가 어디서나 작동하고 입력하는 곳에 텍스트가 들어가도록 하기 위함입니다."
+      },
+      "errors": {
+        "checkFailed": "권한 확인에 실패했습니다. 다시 시도해주세요.",
+        "requestFailed": "권한 요청에 실패했습니다. 다시 시도해주세요."
+      },
+      "titleMac": "권한 두 가지만 허용하면 끝나요",
+      "titleWindows": "권한 한 가지만 허용하면 끝나요",
+      "subtitleMac": "macOS는 앱이 소리를 듣거나 입력하기 전에 먼저 허락을 구합니다.",
+      "subtitleWindows": "Windows는 앱이 소리를 듣기 전에 먼저 허락을 구합니다.",
+      "allow": "허용",
+      "openSettings": "설정 열기",
+      "allowed": "허용됨",
+      "waiting": "대기 중",
+      "turnOnMac": "시스템 설정에서 {{appName}}를 켠 다음 여기로 돌아오세요.",
+      "turnOnWindows": "Windows 설정에서 마이크 접근을 켠 다음 여기로 돌아오세요.",
+      "hintBoth": "계속하려면 둘 다 허용하세요",
+      "hintMicrophone": "계속하려면 마이크를 허용하세요",
+      "welcomeBack": "다시 오셨네요. 하던 곳에서 이어갑니다.",
+      "relaunch": "단축키가 작동하지 않나요? <relaunch>{{appName}} 다시 실행</relaunch>. 바로 이 화면으로 돌아옵니다."
+    },
+    "shell": {
+      "back": "뒤로",
+      "continue": "계속",
+      "progress": "{{count}}단계 중 {{step}}단계"
+    },
+    "welcome": {
+      "title": "어떤 앱에서든 타자 대신 말로 입력하세요",
+      "subtitle": "받아쓰기에 사용할 언어를 선택하세요",
+      "languagesLabel": "언어",
+      "noMatch": "“{{query}}”와(과) 일치하는 항목이 없습니다. 더 많은 언어는 설정에 있습니다.",
+      "appLanguage": "앱 언어",
+      "menusIn": "인터페이스 언어: <b>{{language}}</b>",
+      "chinese": {
+        "question": "{{languages}}을(를) 사용하시네요. {{appName}}가 어떤 글자로 쓸까요?",
+        "label": "중국어 글자",
+        "zh-Hans": "간체",
+        "zh-Hant": "대만",
+        "zh-HK": "홍콩"
+      },
+      "hint": {
+        "pickOne": "언어를 하나 이상 선택하세요",
+        "weak_one": "{{languages}}: 아직 이 언어를 잘 알아듣는 모델이 없습니다",
+        "weak_other": "{{languages}}: 아직 이 언어들을 잘 알아듣는 모델이 없습니다"
+      }
+    },
+    "download": {
+      "checking": "다운로드 확인 중…",
+      "ready": "{{name}} 준비 완료",
+      "failed": "다운로드가 중단되었습니다",
+      "downloading": "{{name}} 다운로드 중",
+      "progress": "{{total}} 중 {{done}}",
+      "progressLeft": "{{total}} 중 {{done}}, {{time}} 남음",
+      "checkingName": "{{name}} 확인 중",
+      "checkingDetail": "다운로드가 완전한지 확인하고 있습니다",
+      "stopped": "{{name}} 다운로드가 중단되었습니다",
+      "retryDetail": "다시 시도하면 중단된 곳에서 이어서 받습니다",
+      "retryDownload": "다운로드 다시 시도",
+      "cardProgress": "다운로드 중 {{percent}}%, {{total}} 중 {{done}}",
+      "timeLeft": "{{time}} 남음",
+      "speedLeft": "{{speed}}, {{time}} 남음"
+    },
+    "model": {
+      "title": "음성 모델 선택",
+      "subtitle": "이 컴퓨터에서 목소리를 텍스트로 변환합니다",
+      "label": "음성 모델",
+      "lines": {
+        "recommended": "사용하는 언어에 맞는 최고의 속도와 정확도",
+        "faster": "더 빠르지만 오류가 조금 더 많습니다",
+        "accurate": "오류가 가장 적지만 더 느립니다"
+      },
+      "shorts": {
+        "recommended": "나에게 가장 균형 잡힌 모델",
+        "faster": "더 빠름, 오류 약간 많음",
+        "accurate": "오류 최소, 더 느림"
+      },
+      "model": "모델",
+      "showAll": "모델 {{count}}개 모두 보기",
+      "download": "{{size}} 다운로드",
+      "downloadInstead": "대신 {{size}} 다운로드",
+      "pauses": "{{name}}은(는) {{percent}}%에서 일시 중지됩니다",
+      "resumeLater": "다시 선택하면 중단된 곳에서 이어받습니다",
+      "hint": "설정을 마치는 동안 다운로드됩니다"
+    },
+    "demo": {
+      "title": "단축키 하나로 어떤 앱에서든 말하세요",
+      "hold": "<0>입력할 곳을 클릭하세요.</0> <1>단축키를 누른 채 말하세요.</1> <2>손을 떼면 말한 내용이 나타납니다.</2>",
+      "tap": "<0>입력할 곳을 클릭하세요.</0> <1>단축키를 탭하고 말하세요.</1> <2>다시 탭하면 말한 내용이 나타납니다.</2>",
+      "apps": {
+        "messages": "메시지",
+        "notes": "메모"
+      },
+      "chat": "오늘 밤에 아직 올 거지?",
+      "noteTitle": "주말 계획",
+      "screenLabel": "노트북 화면: 누군가 앱을 클릭하고 단축키를 누른 채 말하면, 클릭한 곳에 말한 내용이 나타납니다.",
+      "change": "변경",
+      "yourShortcut": "내 단축키:",
+      "pressKeys": "새 키를 누르세요",
+      "addKey": "이제 키를 하나 더 추가하세요",
+      "cancel": "취소",
+      "tryIt": "직접 해보기"
+    },
+    "try": {
+      "title": "한번 해볼까요!",
+      "subtitle": "{{appName}}가 구석에서 차근차근 도와드릴게요",
+      "noteLabel": "메모",
+      "placeholder": "새 메모",
+      "hold": "<keys/>를 누른 채 말하세요.",
+      "tapNext": "이번에는 <keys/>를 한 번 탭한 다음 말하세요.",
+      "letGo": "다 말했으면 <keys/>에서 손을 떼세요.",
+      "tapAgain": "다 말했으면 <keys/>를 다시 탭하세요.",
+      "watch": "메모를 지켜보세요.",
+      "changeKeys": "단축키 변경, {{keys}}",
+      "doneHold": "하이파이브! 누르고 있기 성공이에요.",
+      "doneHoldNext": "다음은 손이 자유로운 방식이에요.",
+      "doneTap": "하이파이브! 탭하기 성공이에요.",
+      "doneTapNext": "이번에는 누른 채로 말해 보세요.",
+      "giveFive": "잘했어요! 하이파이브",
+      "highFive": "하이파이브",
+      "slowLine": "이 컴퓨터에서 {{name}}은(는) {{wait}} 걸렸습니다. <faster>더 빠른 모델 써보기</faster>",
+      "nothingTyped": "음, 아무것도 입력되지 않았어요.",
+      "nothingTypedSub": "먼저 메모를 클릭한 다음 다시 해보세요.",
+      "silent": "아무 소리도 들리지 않았어요.",
+      "silentSub": "이 마이크에서 소리가 나오지 않았습니다. 다른 마이크를 써보세요:",
+      "noWords": "말씀을 알아듣지 못했어요.",
+      "noWordsSub": "다시 해보고, 한 문장을 온전히 말해 보세요.",
+      "finish": "마치기",
+      "skip": "건너뛰기",
+      "seconds": "{{value}}초"
+    },
+    "done": {
+      "title": "준비 완료!",
+      "subMac": "{{appName}}은(는) 메뉴 막대에 있습니다. 아무 앱에서나 <keys/>을(를) 길게 누르거나 탭해서 말하세요.",
+      "subTray": "{{appName}}은(는) 시스템 트레이에 있습니다. 아무 앱에서나 <keys/>을(를) 길게 누르거나 탭해서 말하세요.",
+      "hint": "나중에 설정에서 바꿀 수 있습니다",
+      "highFiveLabel": "하이파이브",
+      "atLogin": "로그인할 때 {{appName}} 시작",
+      "finish": "완료",
+      "panel": {
+        "name": "{{appName}}",
+        "ready": "준비됨",
+        "languages": "언어",
+        "model": "음성 모델",
+        "shortcut": "단축키",
+        "changeLanguages": "언어 변경, {{languages}}",
+        "changeModel": "음성 모델 변경, {{model}}"
+      }
+    },
+    "linux": {
+      "tryIt": "작동하지 않나요? <guide>Linux 설정 가이드</guide>",
+      "done": "다른 앱에서 작동하지 않나요? <guide>Linux 설정 가이드</guide>"
+    }
+  },
+  "modelTable": {
+    "tags": {
+      "preview": "실시간 미리보기",
+      "previewTitle": "말하는 동안 실시간 오버레이에 단어를 보여 주고, 말을 멈추면 입력합니다",
+      "translate": "번역 지원",
+      "translateTitle": "말한 내용을 영어 텍스트로 바꿀 수 있습니다. 설정에서 켜세요"
+    },
+    "rubric": {
+      "gradeTitle": "{{language}} 정확도: {{grade}}",
+      "accuracyTitle": "{{language}} 정확도",
+      "overallTitle": "선택한 언어의 정확도: {{grade}}",
+      "overall": "선택한 언어의 정확도",
+      "meaning": {
+        "A": "오류가 매우 적음: 말한 그대로 입력되는 경우가 대부분입니다",
+        "B": "오류가 약간 있음: 가끔 단어를 고쳐야 할 수 있습니다",
+        "C": "오류가 잦음: 일부 세부 내용이 빠질 수 있습니다",
+        "D": "오류가 많음: 입력된 내용을 확인하고 고쳐야 합니다",
+        "F": "알아듣기 어려운 경우가 많음: 말한 내용 상당수가 틀리게 입력될 수 있습니다"
+      },
+      "unsupported": "이 모델은 {{language}}을(를) 이해하지 못해 입력할 수 없습니다",
+      "unrated": "이 모델은 {{language}}을(를) 이해하지만 얼마나 잘하는지는 아직 측정하지 않았습니다",
+      "under": "{{max}}% 미만",
+      "between": "{{min}}~{{max}}%",
+      "over": "{{min}}% 이상",
+      "speedTitle": "속도: {{speed}}",
+      "speedName": {
+        "0": "매우 느림",
+        "1": "느림",
+        "2": "보통",
+        "3": "빠름",
+        "4": "매우 빠름"
+      },
+      "speedMeaning": {
+        "0": "한참 기다려야 단어가 나타납니다",
+        "1": "기다려야 단어가 나타납니다",
+        "2": "잠시 기다리면 단어가 나타납니다",
+        "3": "거의 바로 단어가 나타납니다",
+        "4": "바로 단어가 나타납니다"
+      },
+      "speedPreview": "{{meaning}}, 말하는 동안 실시간 미리보기 제공",
+      "untimed": "속도를 아직 측정하지 않았습니다",
+      "underSeconds": "{{max}}초 미만",
+      "betweenSeconds": "{{min}}~{{max}}초",
+      "overSeconds": "{{min}}초 이상"
+    },
+    "roles": {
+      "recommended": "추천",
+      "faster": "더 빠름",
+      "accurate": "더 정확함",
+      "fromAll": "전체 모델에서"
+    },
+    "speed": "속도",
+    "size": "크기",
+    "accuracy": "정확도",
+    "search": "모델 검색",
+    "allLabel": "음성 모델 목록",
+    "noMatch": "「{{query}}」와(과) 일치하는 항목이 없습니다. 언어나 Whisper, Parakeet 같은 계열을 검색해 보세요",
+    "noFilterMatch": "이 필터와 일치하는 모델이 없습니다",
+    "speedUntested": "속도를 아직 측정하지 않았습니다",
+    "speedWords": {
+      "0": "매우 느림, 한참 기다려야 단어가 나타납니다",
+      "1": "느림, 기다려야 단어가 나타납니다",
+      "2": "보통, 잠시 기다리면 단어가 나타납니다",
+      "3": "빠름, 거의 바로 단어가 나타납니다",
+      "4": "매우 빠름, 바로 단어가 나타납니다"
+    },
+    "speedWordsPreview": {
+      "0": "매우 느림, 말하는 동안 실시간 미리보기 제공",
+      "1": "느림, 말하는 동안 실시간 미리보기 제공",
+      "2": "보통, 말하는 동안 실시간 미리보기 제공",
+      "3": "빠름, 말하는 동안 실시간 미리보기 제공",
+      "4": "매우 빠름, 말하는 동안 실시간 미리보기 제공"
+    },
+    "missingLanguage": "빠진 언어가 있나요?",
+    "allLanguages": "전체",
+    "downloadingLine": "{{total}} 중 {{percent}}% 다운로드 중",
+    "customLine": "모델 폴더에서 추가됨. 등급 없음."
+  },
+  "languagePicker": {
+    "search": "언어 검색",
+    "addAnother": "추가",
+    "remove": "{{language}} 삭제",
+    "alreadyAdded_one": "{{languages}}은(는) 이미 추가되었습니다.",
+    "alreadyAdded_other": "{{languages}}은(는) 이미 추가되었습니다."
+  },
+  "modelSelector": {
+    "custom": "사용자 정의",
+    "streaming": "스트리밍",
+    "active": "활성",
+    "noModelsAvailable": "사용 가능한 모델이 없습니다",
+    "verifying": "{{modelName}} 검증 중...",
+    "verifyingGeneric": "검증 중...",
+    "downloading": "다운로드 중 {{percentage}}%",
+    "downloadingMultiple": "{{count}}개 모델 다운로드 중...",
+    "modelReady": "모델 준비 완료",
+    "loading": "{{modelName}} 로딩 중...",
+    "loadingGeneric": "로딩 중...",
+    "modelError": "모델 오류",
+    "modelUnloaded": "모델 언로드됨",
+    "noModelDownloadRequired": "모델 없음 - 다운로드 필요",
+    "downloadSpeed": "{{speed}} MB/s",
+    "lockedWhileTranscribing": "히스토리의 받아쓰기가 끝나면 모델을 변경할 수 있습니다."
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "{{model}} 설정"
+    },
+    "general": {
+      "title": "일반",
+      "shortcut": {
+        "title": "{{appName}} 단축키",
+        "description": "음성-텍스트 녹음을 시작하는 키보드 단축키를 설정하세요",
+        "loading": "단축키 로딩 중...",
+        "none": "설정된 단축키 없음",
+        "notFound": "단축키를 찾을 수 없음",
+        "pressKeys": "키를 눌러주세요...",
+        "bindings": {
+          "transcribe": {
+            "name": "음성 텍스트 변환 단축키",
+            "description": "음성을 녹음하고 테스트로 변환하는 키보드 단축키입니다."
+          },
+          "cancel": {
+            "name": "취소 단축키",
+            "description": "현재 녹음을 취소하는 키보드 단축키입니다."
+          },
+          "transcribe_with_post_process": {
+            "name": "후처리 단축키",
+            "description": "선택 사항: 항상 AI 후처리를 적용하는 전용 단축키입니다."
+          },
+          "ask_agent": {
+            "name": "질문 단축키",
+            "description": "항상 에이전트와 대화합니다. 질문하거나 무언가를 해 달라고 요청하세요. 텍스트를 입력하지 않습니다."
+          }
+        },
+        "errors": {
+          "set": "단축키 설정 실패: {{error}}"
+        }
+      },
+      "language": {
+        "title": "언어",
+        "description": "음성 인식 언어를 선택하세요. 자동은 언어를 자동으로 감지하며, 특정 언어를 선택하면 해당 언어의 정확도가 향상될 수 있습니다.",
+        "searchPlaceholder": "언어 검색...",
+        "noResults": "언어를 찾을 수 없습니다",
+        "auto": "자동",
+        "autoUnavailable": {
+          "title": "자동이 꺼져 있습니다",
+          "oneLanguage": "이 모델에서는 사용자 언어 중 하나만 사용할 수 있습니다",
+          "undetectable": "{{languages}}에서는 사용할 수 없습니다",
+          "noMatch": "이 모델에서 사용할 수 있는 언어가 없습니다"
+        },
+        "detectorMissingTitle": "자동을 사용하려면 별도 다운로드가 필요합니다",
+        "detectorMissing": "이 모델은 어떤 언어로 말하는지 구별할 수 없습니다. 자동은 작은 언어 감지기로 언어를 알아냅니다",
+        "stopDetectorDownload": "언어 감지기 다운로드 중지"
+      },
+      "preferredLanguages": {
+        "title": "선호 언어",
+        "description": "내가 사용하는 언어입니다. {{appName}}가 모델을 추천하는 데 사용합니다.",
+        "noMatch": "「{{query}}」와(과) 일치하는 언어가 없습니다",
+        "weak": "아직 {{languages}}을(를) 잘 인식하는 모델이 없습니다."
+      },
+      "shortcutActivation": {
+        "title": "단축키 동작",
+        "description": "음성 텍스트 변환 단축키로 녹음을 시작하고 중지하는 방식을 선택합니다.",
+        "options": {
+          "holdOrToggle": "자동",
+          "pushToTalk": "길게 누르기",
+          "toggle": "전환"
+        },
+        "descriptions": {
+          "hold_or_toggle": "길게 누르면 녹음, 탭하면 전환",
+          "push_to_talk": "단축키를 누르고 있는 동안 녹음합니다",
+          "toggle": "단축키를 탭하면 녹음을 시작하고, 다시 탭하면 중지합니다"
+        }
+      }
+    },
+    "models": {
+      "title": "모델",
+      "changeLanguages": "언어 변경",
+      "sections": {
+        "yours": "이 컴퓨터에 있는 모델",
+        "fits": "선택한 언어용",
+        "untested": "테스트되지 않음"
+      },
+      "untestedNote": "{{appName}}에서 테스트하지 않았습니다. 더 느리거나 오류가 더 많을 수 있습니다.",
+      "untestedHidden_one": "받아쓰기에 맞춰 조정되지 않은 모델이 {{count}}개 더 있습니다. 검색해서 찾아보세요.",
+      "untestedHidden_other": "받아쓰기에 맞춰 조정되지 않은 모델이 {{count}}개 더 있습니다. 검색해서 찾아보세요.",
+      "emptyYours": "아직 모델이 없습니다. 아래에서 하나를 고르면 다운로드된 후 {{appName}}가 사용합니다.",
+      "showMore": "{{count}}개 더 보기",
+      "showFewer": "간략히 보기",
+      "download": "다운로드 후 사용",
+      "downloadingThenUse": "{{total}} 중 {{percent}}%, 완료 후 전환됩니다",
+      "loading": "로딩 중…",
+      "deleteAsk": "{{name}}을(를) 삭제할까요? {{size}}가 확보됩니다.",
+      "deleteAskActive": "{{name}}을(를) 삭제할까요? 다른 모델을 선택하기 전에는 {{appName}}가 전사할 수 없습니다.",
+      "cancel": "취소",
+      "deleteModel": "{{name}} 삭제",
+      "cancelDownload": "{{name}} 다운로드 중지",
+      "legend": {
+        "open": "모델 등급 기준",
+        "accuracyNote": "선택한 언어별로, 테스트 녹음에서 모델이 틀린 단어의 비율입니다.",
+        "speedNote": {
+          "accelerated": "테스트용 노트북의 그래픽 칩에서 30초 분량의 음성을 텍스트로 옮기는 데 걸리는 시간입니다. 이 컴퓨터에서는 다를 수 있습니다.",
+          "cpu": "테스트용 노트북의 프로세서에서 30초 분량의 음성을 텍스트로 옮기는 데 걸리는 시간입니다. 이 컴퓨터에서는 다를 수 있습니다."
+        },
+        "marks": "? 아직 측정되지 않음. — 해당 언어를 인식하지 못함."
+      },
+      "retiredNotice": {
+        "title": "이전 모델은 더 이상 {{appName}}에서 작동하지 않습니다",
+        "description": "컴퓨터에서 {{size}}을(를) 차지하고 있습니다.",
+        "delete": "모델 삭제",
+        "deleted": "이전 모델을 삭제했습니다",
+        "deleteFailed": "일부 이전 모델을 삭제할 수 없습니다. 자세한 내용은 로그를 확인하세요."
+      },
+      "rescan": {
+        "label": "다시 스캔",
+        "tooltip": "{{appName}} 외부에서 모델 폴더 또는 Hugging Face 캐시에 추가된 모델을 다시 스캔합니다"
+      }
+    },
+    "languages": {
+      "title": "언어"
+    },
+    "sound": {
+      "title": "사운드",
+      "microphone": {
+        "title": "마이크",
+        "description": "선호하는 마이크 장치를 선택하세요",
+        "placeholder": "마이크 선택...",
+        "loading": "로딩 중..."
+      },
+      "channel": {
+        "title": "입력 채널",
+        "description": "녹음할 입력 채널을 선택하세요. 오디오 인터페이스에 입력이 여러 개 있는 경우 사용하세요.",
+        "average": "모든 채널 평균",
+        "channel": "채널 {{n}}"
+      },
+      "audioFeedback": {
+        "label": "오디오 피드백",
+        "description": "녹음 시작 및 정지 시 소리 재생"
+      },
+      "outputDevice": {
+        "title": "출력 장치",
+        "description": "피드백 사운드를 위한 오디오 출력 장치를 선택하세요",
+        "placeholder": "출력 장치 선택...",
+        "loading": "로딩 중..."
+      },
+      "volume": {
+        "title": "볼륨",
+        "description": "오디오 피드백 사운드의 볼륨 조절"
+      }
+    },
+    "advanced": {
+      "groups": {
+        "app": "앱",
+        "output": "출력",
+        "transcription": "전사",
+        "history": "히스토리",
+        "experimental": "실험적"
+      },
+      "experimentalToggle": {
+        "label": "실험적 기능",
+        "description": "개발 중인 실험적 기능을 활성화합니다."
+      },
+      "lazyStreamClose": {
+        "label": "전사 사이에 마이크 열어 두기",
+        "description": "녹음 중지 후 30초 동안 마이크 스트림을 열어 두어 연속 전사 시 지연을 줄입니다. 활성화 중 블루투스 오디오 품질이 저하될 수 있습니다."
+      },
+      "acceleration": {
+        "transcribe": {
+          "title": "하드웨어 가속",
+          "description": "음성 인식에 사용할 하드웨어를 선택합니다. 자동 모드는 GPU를 사용할 수 있으면 GPU를, 그렇지 않으면 CPU를 사용합니다."
+        },
+        "gpuDevice": {
+          "auto": "자동"
+        }
+      },
+      "startHidden": {
+        "label": "숨김으로 시작",
+        "description": "창을 열지 않고 시스템 트레이에서 실행합니다."
+      },
+      "autostart": {
+        "label": "시작 시 실행",
+        "description": "컴퓨터 로그인 시 {{appName}}를 자동으로 시작합니다."
+      },
+      "showTrayIcon": {
+        "label": "트레이 아이콘 표시",
+        "description": "시스템 트레이에 {{appName}} 아이콘을 표시합니다."
+      },
+      "overlay": {
+        "style": {
+          "title": "오버레이",
+          "description": "녹음 오버레이를 선택하세요. '없음'은 오버레이를 숨기고, '간단'은 작은 알약 모양 표시를 보여주며, '실시간'은 말하는 동안 전사 결과를 실시간으로 표시합니다(스트리밍 지원 모델만 해당 — 모델 선택기에서 '스트리밍' 배지를 확인하세요). Linux에서는 '없음'을 권장합니다.",
+          "options": {
+            "none": "없음",
+            "minimal": "간단",
+            "live": "실시간"
+          }
+        },
+        "position": {
+          "title": "오버레이 위치",
+          "description": "녹음 및 전사 중 시각적 피드백 오버레이를 표시합니다. Linux에서는 '없음'을 권장합니다.",
+          "options": {
+            "bottom": "하단",
+            "top": "상단"
+          }
+        }
+      },
+      "pasteMethod": {
+        "title": "붙여넣기 방법",
+        "description": "텍스트 삽입 방법을 선택하세요. 직접: 시스템 입력을 통해 타이핑 시뮬레이션. 없음: 붙여넣기를 건너뛰고 히스토리/클립보드만 업데이트합니다.",
+        "options": {
+          "clipboard": "클립보드 ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "클립보드 (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "클립보드 (Shift+Insert)",
+          "direct": "직접",
+          "none": "없음",
+          "externalScript": "외부 스크립트"
+        },
+        "externalScriptPlaceholder": "/path/to/your/script.sh"
+      },
+      "typingTool": {
+        "title": "타이핑 도구",
+        "description": "직접 붙여넣기 방식에 사용할 Linux 타이핑 도구를 선택하세요. Auto는 시스템에서 사용 가능한 최적의 도구를 자동으로 감지해 사용합니다.",
+        "options": {
+          "auto": "Auto (권장)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "클립보드 처리",
+        "description": "클립보드 수정 안 함은 전사 후 현재 클립보드 내용을 보존합니다. 클립보드에 복사는 붙여넣기 후 전사 결과를 클립보드에 남겨둡니다.",
+        "options": {
+          "dontModify": "클립보드 수정 안 함",
+          "copyToClipboard": "클립보드에 복사"
+        }
+      },
+      "autoSubmit": {
+        "title": "자동 제출",
+        "description": "텍스트 삽입 후 선택한 키 조합을 자동으로 전송합니다. macOS에서는 Cmd+Enter가, Windows/Linux에서는 Super+Enter가 적용됩니다.",
+        "options": {
+          "off": "끄기",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "영어로 번역",
+        "description": "텍스트로 변환시 다른 언어의 음성을 자동으로 영어로 번역합니다."
+      },
+      "modelUnload": {
+        "title": "모델 언로드",
+        "description": "모델을 지정된 시간 동안 사용하지 않으면 자동으로 GPU/CPU 메모리를 해제합니다",
+        "options": {
+          "never": "안 함",
+          "immediately": "즉시",
+          "min2": "2분 후",
+          "min5": "5분 후",
+          "min10": "10분 후",
+          "min15": "15분 후",
+          "hour1": "1시간 후",
+          "sec15": "15초 후 (디버그)"
+        }
+      },
+      "customWords": {
+        "title": "사용자 정의 단어",
+        "description": "지원되는 모델이 이름과 전문 용어를 인식하도록 도와줍니다. 퍼지 교정은 현재 A–Z 문자와 숫자를 사용하는 단어로 제한됩니다.",
+        "placeholder": "단어 추가",
+        "add": "추가",
+        "remove": "{{word}} 제거",
+        "duplicate": "\"{{word}}\"이(가) 이미 존재합니다"
+      },
+      "voiceActivityDetection": {
+        "title": "음성 활동 감지",
+        "description": "녹음에서 무음 구간을 걸러냅니다. 스트리밍 지원 모델은 더 긴 VAD 테일을 사용하며, VAD를 끄면 원본 오디오가 그대로 녹음됩니다."
+      },
+      "longFormChunking": {
+        "title": "긴 오디오 분할",
+        "description": "전사하기 전에 긴 녹음을 쉬는 구간에서 나눕니다. 일반적으로 전사 성능이 향상됩니다. 파일 전사와 긴 재전사는 항상 나누어 처리됩니다."
+      },
+      "languageDetection": {
+        "title": "자동을 내 언어로 제한",
+        "description": "자동이 작은 언어 감지기를 사용해 선호 언어 중에서만 고릅니다. 자동이 사용하지 않는 언어를 계속 고르면 켜세요",
+        "downloadHint": "켜면 작은 언어 감지기를 다운로드합니다",
+        "downloadingHint": "언어 감지기를 다운로드하는 중입니다. 취소하려면 끄세요"
+      },
+      "vadBackend": {
+        "title": "음성 활동 감지 백엔드",
+        "description": "무음을 필터링하는 데 사용할 감지기를 선택합니다. Earshot은 실험적 기능입니다. 음성이 잘리거나 소음이 남는 경우 Silero로 되돌리세요.",
+        "options": {
+          "silero": "Silero",
+          "earshot": "Earshot"
+        }
+      },
+      "fillerWordRemoval": {
+        "title": "군더더기 표현 제거",
+        "description": "전사에서 흔한 머뭇거림 표현을 제거합니다. 그대로 두려면 이 옵션을 끄세요."
+      },
+      "chineseScript": {
+        "title": "중국어 간체/번체",
+        "description": "표준 중국어와 광둥어 전사를 간체 또는 대만·홍콩식 번체로 표기합니다. 다른 언어는 변경되지 않습니다.",
+        "options": {
+          "asTranscribed": "전사된 그대로",
+          "simplified": "간체",
+          "traditionalTw": "번체 (대만)",
+          "traditionalHk": "번체 (홍콩)"
+        }
+      }
+    },
+    "postProcessing": {
+      "hotkey": {
+        "title": "단축키"
+      },
+      "prompts": {
+        "title": "프롬프트",
+        "selectedPrompt": {
+          "title": "선택된 프롬프트",
+          "description": "텍스트 변환을 개선하기 위한 템플릿을 선택하거나 새로 만드세요. 프롬프트 텍스트 내에서 ${output}를 사용하여 캡처된 텍스트를 참조하세요."
+        },
+        "noPrompts": "사용 가능한 프롬프트 없음",
+        "selectPrompt": "프롬프트 선택",
+        "createNew": "새 프롬프트 만들기",
+        "promptLabel": "프롬프트 레이블",
+        "promptLabelPlaceholder": "프롬프트 이름 입력",
+        "promptInstructions": "프롬프트 지시사항",
+        "promptInstructionsPlaceholder": "텍스트 변환 후 실행할 지시사항을 작성하세요. 예: 다음 텍스트의 문법과 명확성을 개선하세요: ${output}",
+        "promptTip": "팁: 프롬프트에서 변환된 텍스트를 삽입하려면 <code>${output}</code>을 사용하세요.",
+        "updatePrompt": "프롬프트 업데이트",
+        "deletePrompt": "프롬프트 삭제",
+        "createPrompt": "프롬프트 만들기",
+        "cancel": "취소",
+        "selectToEdit": "세부 정보를 보고 편집하려면 위에서 프롬프트를 선택하세요.",
+        "createFirst": "첫 번째 후처리 프롬프트를 만들려면 위의 '새 프롬프트 만들기'를 클릭하세요."
+      }
+    },
+    "history": {
+      "title": "히스토리",
+      "openFolder": "녹음 폴더 열기",
+      "loading": "히스토리 로딩 중...",
+      "empty": "아직 변환된 내용이 없습니다. 녹음을 시작하여 히스토리를 만드세요!",
+      "copyToClipboard": "녹음 내용을 클립보드에 복사",
+      "copyError": "전사 내용을 클립보드에 복사하지 못했습니다.",
+      "save": "변환된 텍스트 저장",
+      "unsave": "저장에서 제거",
+      "delete": "항목 삭제",
+      "deleteError": "항목 삭제에 실패했습니다. 다시 시도해주세요.",
+      "retranscribe": "다시 전사",
+      "cancelTranscription": "전사 취소",
+      "transcribing": "전사 중...",
+      "transcriptionFailed": "전사에 실패했습니다. 재시도 아이콘을 사용하여 다시 전사할 수 있습니다.",
+      "notTranscribed": "전사되지 않았습니다. 재시도 아이콘을 사용하여 전사할 수 있습니다.",
+      "transcribeFile": "파일 받아쓰기",
+      "mediaFiles": "오디오 및 비디오",
+      "fileUnsupported": "{{name}}에서 오디오를 읽을 수 없습니다.",
+      "readingFile": "{{name}} 읽는 중...",
+      "transcribeFailed": "받아쓰기에 실패했습니다. 다시 시도해 주세요.",
+      "waiting": "받아쓰기 대기 중",
+      "transcribingPercent": "받아쓰는 중, {{percent}}%",
+      "showMore": "더 보기",
+      "showLess": "간략히 보기",
+      "dropTitle": "놓아서 받아쓰기",
+      "dropDescription": "기록에 표시됩니다.",
+      "searchPlaceholder": "히스토리 검색",
+      "clearSearch": "검색어 지우기",
+      "today": "오늘",
+      "yesterday": "어제",
+      "saved": "저장됨",
+      "playRecording": "녹음 재생",
+      "hidePlayer": "플레이어 숨기기",
+      "emptyTitle": "아직 받아쓰기가 없습니다",
+      "emptyDescription": "{{appName}}가 받아쓴 모든 내용이 최신순으로 여기에 표시됩니다. 어떤 앱에서든 단축키를 누른 채 말해 보세요.",
+      "noResultsTitle": "일치하는 항목 없음",
+      "noResultsDescription": "히스토리에 “{{query}}”와(과) 일치하는 항목이 없습니다.",
+      "loadingMore": "더 불러오는 중…",
+      "searchingOlder": "이전 항목 검색 중…"
+    },
+    "debug": {
+      "title": "디버그",
+      "logDirectory": {
+        "title": "로그 디렉토리",
+        "description": "로그 파일이 저장되는 위치"
+      },
+      "logLevel": {
+        "title": "로그 레벨",
+        "description": "로깅의 상세도 설정"
+      },
+      "liveLogs": {
+        "title": "실시간 로그",
+        "description": "로그 파일을 열지 않고도 문제를 진단할 수 있도록 애플리케이션 로그를 실시간으로 표시합니다. 이 패널이 열려 있는 동안 발생한 로그만 표시되며, 위의 로그 레벨 설정을 따릅니다.",
+        "live": "실시간",
+        "paused": "일시정지됨",
+        "pause": "일시정지",
+        "resume": "재개",
+        "copied": "복사됨",
+        "lineCount": "{{count}}줄",
+        "empty": "로그 대기 중… 앱이 로그를 출력하면 여기에 표시됩니다."
+      },
+      "updateChecks": {
+        "label": "업데이트 확인",
+        "description": "{{appName}}의 새 버전을 자동으로 확인합니다",
+        "lockedDescription": "시스템 구성에 의해 비활성화됨 (AMBIENT_DISABLE_UPDATER)"
+      },
+      "whatsNewPreview": {
+        "title": "새 소식 미리보기",
+        "description": "최신 내장 릴리스 노트를 본 것으로 표시하지 않고 엽니다",
+        "button": "미리보기",
+        "noNotes": "내장 릴리스 노트를 찾을 수 없습니다",
+        "error": "릴리스 노트를 미리 볼 수 없습니다"
+      },
+      "onboardingPreview": {
+        "title": "온보딩 미리보기",
+        "description": "권한, 모델 또는 완료 상태를 변경하지 않고 온보딩 화면을 미리 봅니다",
+        "exitButton": "미리보기 종료",
+        "choose": "화면 선택",
+        "screens": {
+          "welcome": "환영",
+          "permissions": "권한",
+          "model": "모델",
+          "demo": "데모",
+          "try": "체험",
+          "done": "준비 완료"
+        }
+      },
+      "onboardingRun": {
+        "title": "온보딩 실행",
+        "description": "온보딩을 처음부터 실제로 진행합니다. 권한을 요청하고, 모델을 다운로드하고, 선택 내용을 저장합니다",
+        "button": "시작"
+      },
+      "modelMigration": {
+        "title": "모델 마이그레이션",
+        "description": "이전 형식 모델 업데이트 화면을 실제로 엽니다. 대체 모델을 다운로드하고, 모델을 전환하고, 이전 파일을 삭제합니다",
+        "button": "열기",
+        "noRetired": "디스크에 이전 형식 모델이 없습니다"
+      },
+      "soundTheme": {
+        "label": "사운드 테마",
+        "description": "녹음 시작 및 정지 피드백을 위한 사운드 테마를 선택하세요"
+      },
+      "wordCorrectionThreshold": {
+        "title": "단어 수정 임계값",
+        "description": "사용자 정의 단어 수정의 민감도"
+      },
+      "historyLimit": {
+        "title": "히스토리 제한",
+        "description": "보관할 최대 히스토리 항목 수",
+        "entries": "항목"
+      },
+      "recordingRetention": {
+        "title": "녹음 자동 삭제",
+        "description": "공간을 절약하기 위해 오래된 녹음을 자동으로 삭제합니다",
+        "never": "안 함",
+        "preserveLimit": "최근 {{count}}개 유지",
+        "days3": "3일 후",
+        "weeks2": "2주 후",
+        "months3": "3개월 후",
+        "placeholder": "보관 기간 선택..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "항상 켜진 마이크",
+        "description": "더 빠른 응답을 위해 마이크를 활성 상태로 유지"
+      },
+      "clamshellMicrophone": {
+        "title": "클램셸 마이크",
+        "description": "노트북 덮개가 닫혀 있을 때 사용할 마이크"
+      },
+      "postProcessingToggle": {
+        "label": "후처리",
+        "description": "텍스트 변환 후 AI 기반 텍스트 개선 활성화"
+      },
+      "muteWhileRecording": {
+        "label": "녹음 중 음소거",
+        "description": "녹음 중 시스템 오디오 음소거"
+      },
+      "appendTrailingSpace": {
+        "label": "끝 공백 추가",
+        "description": "붙여넣은 텍스트 끝에 공백 추가"
+      },
+      "keyboardImplementation": {
+        "title": "키보드 구현",
+        "description": "키보드 단축키 백엔드를 선택하세요.",
+        "bindingsReset": "키보드 단축키가 호환되지 않아 기본값으로 재설정되었습니다"
+      },
+      "pasteDelay": {
+        "title": "붙여넣기 지연 (이전)",
+        "description": "텍스트를 복사한 후 붙여넣기 키 입력을 보내기 전의 지연 시간(밀리초). 아무것도 붙여넣어지지 않으면 늘리세요."
+      },
+      "pasteDelayAfter": {
+        "title": "붙여넣기 지연 (이후)",
+        "description": "붙여넣기 키 입력을 보낸 후 이전 클립보드를 복원하기 전의 지연 시간(밀리초). 전사된 텍스트 대신 이전 클립보드 내용이 붙여넣어지면 늘리세요."
+      },
+      "holdThreshold": {
+        "title": "길게 누르기 기준 시간",
+        "description": "자동 모드 전용: 탭이 아닌 길게 누르기로 인식되려면 단축키를 얼마나 오래(밀리초) 누르고 있어야 하는지 설정합니다. 짧게 누른 뒤에도 녹음이 계속 켜져 있으면 낮추고, 의도한 탭이 길게 누르기로 처리되면 높이세요."
+      },
+      "reliablePaste": {
+        "title": "안정적인 붙여넣기 (Beta)",
+        "description": "고정된 지연 시간이 아니라 대상 앱이 실제로 전사된 텍스트를 읽은 뒤에만 클립보드를 복원합니다. 시스템 부하가 높을 때 이전 클립보드 내용이 붙여넣어지는 문제를 해결하기 위한 옵션입니다. 클립보드를 사용하는 붙여넣기 방법이 필요하며 macOS와 Windows에서만 지원됩니다."
+      },
+      "recordingBuffer": {
+        "title": "추가 녹음 버퍼",
+        "description": "키를 놓은 후 추가로 녹음을 계속하는 시간(밀리초). 후행 오디오를 캡처하기 위함. 0 = 추가 버퍼 없음."
+      },
+      "languageDetectionWindow": {
+        "title": "언어 감지 오디오",
+        "description": "언어 감지기가 듣는 음성의 초 단위 길이입니다. 길수록 정확하지만 느립니다."
+      },
+      "keyboardDiagnostic": {
+        "title": "키보드 진단",
+        "description": "키보드 이벤트가 {{appName}}에 도달하는지 확인합니다. 이벤트 개수만 기록되며, 어떤 키를 눌렀는지는 절대 기록되지 않습니다.",
+        "run": "10초 진단 실행",
+        "running": "수신 중… 단축키를 몇 번 눌러 보세요 (예: Option+Space)",
+        "secureInputLabel": "Secure Input",
+        "enabled": "사용 중",
+        "disabled": "사용 안 함",
+        "holder": "{{name}}(pid {{pid}})이(가) 점유 중",
+        "holderUnknown": "점유 중인 앱을 확인할 수 없음",
+        "keyDown": "키 누름",
+        "keyUp": "키 뗌",
+        "flagsChanged": "조합 키",
+        "mouse": "마우스",
+        "verdictBlocked": "Secure Input이 키 이벤트를 차단하고 있습니다. 해결될 때까지 일반 키가 포함된 단축키는 작동할 수 없습니다.",
+        "verdictSuspicious": "조합 키 이벤트는 도착했지만 키 이벤트는 없습니다. Secure Input은 꺼져 있다고 보고되지만 무언가가 키를 가로막고 있습니다. GitHub에 신고해 주세요.",
+        "verdictOk": "키 이벤트가 {{appName}}에 정상적으로 도달하고 있습니다.",
+        "verdictNoEvents": "이벤트가 감지되지 않았습니다. 테스트 중에 키를 누르셨나요?",
+        "failed": "진단 실패: {{error}}"
+      }
+    },
+    "about": {
+      "title": "정보",
+      "version": {
+        "title": "버전",
+        "description": "{{appName}}의 현재 버전"
+      },
+      "whatsNewUpdates": {
+        "label": "새 소식 표시",
+        "description": "{{appName}} 업데이트 후 릴리스 노트를 표시합니다"
+      },
+      "appDataDirectory": {
+        "title": "앱 데이터 디렉토리",
+        "description": "{{appName}}가 데이터를 저장하는 위치"
+      },
+      "sourceCode": {
+        "title": "웹사이트",
+        "description": "소식, 도움말, 내 계정",
+        "button": "웹사이트 열기"
+      },
+      "acknowledgments": {
+        "title": "감사의 말",
+        "ggml": {
+          "title": "ggml",
+          "description": "OpenAI의 Whisper 자동 음성 인식 모델의 고성능 추론",
+          "details": "{{appName}}는 빠르고 로컬 음성-텍스트 처리를 위해 ggml를 사용합니다. Georgi Gerganov와 기여자들의 놀라운 작업에 감사드립니다."
+        },
+        "licenses": {
+          "title": "Open-source licenses",
+          "description": "Notices for the open-source software {{appName}} includes",
+          "show": "Show licenses",
+          "hide": "Hide licenses"
+        }
+      },
+      "intro": {
+        "title": "환영 인트로",
+        "description": "{{appName}}을(를) 처음 열 때 재생되는 애니메이션입니다.",
+        "button": "인트로 재생"
+      }
+    },
+    "agent": {
+      "title": "음성 에이전트",
+      "description": "입력하는 대신 질문하거나 무언가를 요청하세요.",
+      "routing": {
+        "label": "받아쓰는 중 요청 이해하기",
+        "description": "요청은 처리되고, 나머지는 평소처럼 입력됩니다. 항상 입력하려면 끄세요."
+      },
+      "wake": {
+        "label": "핸즈프리: “안녕 Ambient”라고 말하기",
+        "description": "키 없이 {{appName}}와(과) 대화하세요: “안녕 Ambient, 내 캘린더에 뭐 있어?” 이 Mac에서 듣고 이름으로 시작하지 않는 말은 모두 무시합니다. 켜져 있는 동안 Mac에 마이크 표시가 나타납니다."
+      }
+    }
+  },
+  "footer": {
+    "checkingUpdates": "업데이트 확인 중...",
+    "updateAvailableShort": "업데이트 사용 가능",
+    "upToDate": "최신 상태",
+    "updateCheckingDisabled": "업데이트 확인 비활성화됨",
+    "downloading": "다운로드 중... {{progress}}%",
+    "installing": "설치 중...",
+    "preparing": "준비 중...",
+    "checkForUpdates": "업데이트 확인",
+    "portableUpdateTitle": "수동 업데이트 필요",
+    "portableUpdateMessage": "포터블 설치는 자동으로 업데이트할 수 없습니다. 아래에서 사용 중인 시스템에 맞는 설치 프로그램을 다운로드해 실행하고 같은 폴더에 설치하세요. Data/ 폴더(설정, 모델, 녹음)는 그대로 유지됩니다.",
+    "portableUpdateButton": "설치 프로그램 다운로드",
+    "portableUpdateBrowseMessage": "포터블 설치는 자동으로 업데이트할 수 없습니다. GitHub Releases에서 사용 중인 시스템에 맞는 최신 버전을 다운로드해 같은 폴더에 설치하세요. Data/ 폴더(설정, 모델, 녹음)는 그대로 유지됩니다.",
+    "portableUpdateBrowseButton": "GitHub Releases 열기"
+  },
+  "whatsNew": {
+    "title": "{{appName}} v{{version}}의 새 소식"
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "delete": "삭제",
+    "close": "닫기",
+    "open": "열기",
+    "copy": "복사",
+    "clear": "지우기",
+    "noOptionsFound": "옵션을 찾을 수 없습니다"
+  },
+  "errors": {
+    "loadDirectory": "디렉토리 로딩 오류: {{error}}",
+    "micPermissionDeniedTitle": "마이크 접근이 거부되었습니다",
+    "micPermissionDenied": {
+      "generic": "운영 체제에서 마이크 접근을 거부했습니다. 시스템 설정에서 마이크 권한을 허용해 주세요.",
+      "windows": "설정 → 개인 정보 및 보안 → 마이크(데스크톱 앱 접근 포함)에서 마이크 접근을 활성화하세요.",
+      "macos": "시스템 설정 → 개인 정보 보호 및 보안 → 마이크에서 마이크 접근을 허용하세요.",
+      "linux": "시스템의 소리 또는 개인 정보 설정에서 마이크 접근을 허용하세요."
+    },
+    "noInputDeviceTitle": "마이크를 찾을 수 없음",
+    "noInputDevice": "오디오 입력 장치가 감지되지 않았습니다. 마이크 또는 헤드셋을 연결한 후 다시 시도해 주세요.",
+    "recordingFailed": "녹음을 시작하지 못했습니다: {{error}}",
+    "modelLoadFailed": "모델을 불러오지 못했습니다: {{model}}",
+    "modelLoadFailedUnknown": "알 수 없는 모델",
+    "pasteFailedTitle": "텍스트 붙여넣기 실패",
+    "pasteFailed": "활성 애플리케이션에 텍스트를 붙여넣을 수 없습니다.",
+    "transcriptionFailedTitle": "음성 인식 실패"
+  },
+  "appLanguage": {
+    "title": "애플리케이션 언어",
+    "description": "{{appName}} 인터페이스의 언어를 변경하세요"
+  },
+  "theme": {
+    "title": "앱 테마",
+    "description": "{{appName}}가 시스템 테마를 따를지, 밝게 또는 어둡게 유지할지 선택하세요",
+    "options": {
+      "system": "시스템",
+      "light": "밝게",
+      "dark": "어둡게"
+    }
+  },
+  "overlay": {
+    "transcribing": "텍스트로 변환 중...",
+    "processing": "처리 중...",
+    "loadingModel": "모델 로딩 중..."
+  },
+  "secureInput": {
+    "blockedWithCulprit_one": "{{name}}이(가) 단축키 1개를 차단하고 있을 수 있습니다",
+    "blockedWithCulprit_other": "{{name}}이(가) 단축키 {{count}}개를 차단하고 있을 수 있습니다",
+    "blockedNoCulprit_one": "macOS가 단축키 1개를 일시적으로 차단하고 있습니다",
+    "blockedNoCulprit_other": "macOS가 단축키 {{count}}개를 일시적으로 차단하고 있습니다",
+    "recorderBlockedWithCulprit": "{{name}}이(가) 단축키 변경을 차단하고 있을 수 있습니다",
+    "recorderBlockedNoCulprit": "macOS가 단축키 변경을 일시적으로 차단하고 있습니다",
+    "learnMore": "해결 방법",
+    "recorderBlocked": "지금은 단축키를 등록할 수 없습니다. macOS Secure Input이 키 이벤트를 차단하고 있습니다. Secure Input 경고를 먼저 해결하세요.",
+    "dismiss": "닫기"
+  },
+  "account": {
+    "currentPlan": "현재 요금제",
+    "plans": {
+      "free": "무료",
+      "pro": "Pro",
+      "team": "Team",
+      "trial": "Pro 체험"
+    },
+    "upgrade": "업그레이드",
+    "upgradeTo": "{{plan}}(으)로 업그레이드",
+    "manageBilling": "결제 관리",
+    "usage": "이번 주 {{limit}}단어 중 {{used}}단어 사용",
+    "usageShort": "{{used}} / {{limit}}단어",
+    "resets": "{{date}}에 초기화됩니다",
+    "limitReached": "이번 주 무료 단어를 모두 사용했습니다. 업그레이드하면 무제한으로 받아쓰기를 할 수 있고, 주가 초기화되면 계속 사용할 수도 있습니다.",
+    "limitToast": "이번 주 무료 단어 소진",
+    "proFeatures": {
+      "polish": "모든 받아쓰기에 AI 다듬기",
+      "onDevice": "Apple Intelligence로 기기에서 다듬기",
+      "agent": "출시 그대로의 ambient 에이전트",
+      "priority": "우선 지원"
+    },
+    "card": {
+      "activate": "활성화",
+      "active": "활성 요금제",
+      "remove": "제거",
+      "activating": "활성화하는 중…",
+      "paste": "붙여넣기",
+      "pasteFailed": "클립보드를 읽을 수 없습니다. 대신 ⌘V로 붙여넣으세요.",
+      "holder": "로그인 계정",
+      "renewsLabel": "갱신일",
+      "copied": "복사됨",
+      "errors": {
+        "network": "활성화를 위해 {{appName}}에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+        "inactive": "이 코드의 구독이 활성 상태가 아닙니다. 갱신하면 요금제가 잠금 해제됩니다.",
+        "rate_limited": "시도 횟수가 너무 많습니다. 15분 후에 다시 시도하세요.",
+        "server": "저희 쪽에서 활성화에 실패했습니다. 잠시 후 다시 시도하세요."
+      }
+    },
+    "signIn": {
+      "sectionTitle": "내 계정",
+      "cardLabel": "계정",
+      "title": "Pro 로그인",
+      "description": "Pro를 구매한 이메일을 입력하세요. 6자리 코드를 보내 드립니다.",
+      "emailLabel": "이메일",
+      "emailPlaceholder": "you@example.com",
+      "continue": "계속",
+      "sending": "보내는 중…",
+      "codeTitle": "이메일을 확인하세요",
+      "codeDescription": "{{email}}(으)로 보낸 6자리 코드를 입력하세요.",
+      "codeLabel": "로그인 코드",
+      "digitLabel": "{{n}}번째 자리",
+      "signedInShort": "로그인됨",
+      "resend": "코드 다시 보내기",
+      "resent": "새 코드를 보냈습니다.",
+      "changeEmail": "다른 이메일 사용",
+      "signedInTitle": "로그인됨",
+      "noPurchase": "{{email}}에 아직 Pro 구독이 없습니다. Pro를 구매하면 여기에서 활성화됩니다.",
+      "checkAgain": "다시 확인",
+      "signOut": "로그아웃",
+      "redeemLink": "코드 사용",
+      "redeemTitle": "코드 사용",
+      "redeemDescription": "선물 코드와 지원 코드용입니다.",
+      "redeemPlaceholder": "red-grizzly-4320",
+      "redeemDetected": "{{appName}} 코드로 보입니다.",
+      "backToSignIn": "로그인으로 돌아가기",
+      "gift": {
+        "code": "코드",
+        "codeHidden": "코드 숨김",
+        "showCode": "코드 보기",
+        "hideCode": "코드 숨기기",
+        "copyCode": "코드 복사"
+      },
+      "errors": {
+        "network": "{{appName}}에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+        "invalid_email": "올바른 이메일 주소를 입력하세요.",
+        "rate_limited": "코드 요청이 너무 많습니다. 잠시 후 다시 시도하세요.",
+        "invalid_code": "코드가 올바르지 않습니다. 이메일을 확인하고 다시 시도하세요.",
+        "expired": "코드가 만료되었습니다. 새 코드를 요청하세요.",
+        "too_many_attempts": "시도 횟수가 너무 많습니다. 새 코드를 요청하세요.",
+        "server": "저희 쪽 문제로 로그인에 실패했습니다. 잠시 후 다시 시도하세요.",
+        "redeem_invalid": "인식할 수 없는 코드입니다. 확인 후 다시 시도하세요."
+      }
+    },
+    "polish": {
+      "title": "AI 다듬기",
+      "description": "받아쓰기마다 문장 부호, 군더더기 말, 목록, “방금 말한 거 취소” 같은 정정을 깔끔하게 정리합니다. 텍스트만 전송되고 오디오는 전송되지 않습니다.",
+      "unlock": "무제한 이용하기",
+      "onDevice": "이 Mac에서만 처리",
+      "onDeviceDescription": "대신 Apple Intelligence를 사용하세요. 어떤 데이터도 Mac 밖으로 나가지 않습니다.",
+      "freeLeft": "이번 주 무료 AI 다듬기 {{limit}}회 중 {{left}}회 남음"
+    },
+    "trial": {
+      "daysLeft_one": "{{count}}일 남음",
+      "daysLeft_other": "{{count}}일 남음"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "좋은 아침입니다",
+      "afternoon": "좋은 오후입니다",
+      "evening": "좋은 저녁입니다",
+      "night": "늦은 시간까지 수고하세요"
+    },
+    "hold": "어떤 앱에서든",
+    "anywhere": "키를 누른 채 말해 보세요.",
+    "noShortcut": "받아쓰기를 시작하려면 설정에서 단축키를 지정하세요.",
+    "stats": {
+      "words": "이번 주 단어 수",
+      "wordsHint": "{{appName}}로 받아쓰기",
+      "saved": "절약한 시간",
+      "savedHint": "말하기 {{speaking}} 단어/분 vs 타이핑 {{typing}}",
+      "lessThanMinute": "1분 미만",
+      "minutes_one": "{{count}}분",
+      "minutes_other": "{{count}}분",
+      "hours_one": "{{count}}시간",
+      "hours_other": "{{count}}시간"
+    },
+    "recent": "최근 받아쓰기",
+    "viewAll": "모두 보기",
+    "empty": {
+      "title": "아직 아무것도 없습니다",
+      "description": "어떤 앱에서든 단축키를 누르고 말하세요. 받아쓴 내용이 여기에 표시됩니다."
+    },
+    "tips": {
+      "holdOrTap": "단축키를 누르고 있는 동안 말하거나, 한 번 눌러 시작하고 다시 눌러 중지하세요.",
+      "customWords": "정확도를 높이려면 설정 → 고급 → 사용자 정의 단어에서 이름과 전문 용어를 추가하세요.",
+      "dropFile": "오디오 파일을 이 창에 끌어다 놓으면 받아쓰기할 수 있습니다.",
+      "languages": "설정 → 일반에서 사용하는 언어를 선택하면 더 적합한 모델을 추천해 드립니다."
+    },
+    "quickActions": {
+      "label": "빠른 작업",
+      "transcribeFile": "파일 받아쓰기",
+      "openHistory": "히스토리 열기"
+    },
+    "plan": {
+      "title": "내 요금제",
+      "polishUnlimited": "AI 다듬기는 무제한입니다.",
+      "polishLeft": "이번 주 무료 AI 다듬기 {{limit}}회 중 {{left}}회 남음 · {{day}}에 초기화",
+      "polishFree": "무료 요금제에는 매주 AI 다듬기 이용량이 포함됩니다.",
+      "usageToday": "오늘: AI 요청 {{ai}} · 검색 {{search}} · 공정 사용 하루 {{aiLimit}}",
+      "meetingsLeft": "이번 달 회의: {{used}} / {{limit}}"
+    },
+    "privacy": {
+      "title": "개인정보 보호",
+      "off": "화면을 읽지 않습니다.",
+      "on": "허용됨: {{list}}",
+      "paused": "일시 정지됨. 아무것도 읽지 않습니다."
+    }
+  },
+  "hud": {
+    "thinking": "생각 중…",
+    "sources": "출처",
+    "insert": "삽입",
+    "copy": "복사",
+    "copied": "복사됨",
+    "followUpHint": "이어서 물어보려면 단축키를 길게 누르세요",
+    "yes": "예",
+    "notNow": "나중에",
+    "stop": "중지",
+    "status": {
+      "needScreenContext": "이 기능을 사용하려면 개인정보 보호에서 ‘질문한 내용 읽기’를 켜세요.",
+      "onDeviceFailed": "지금은 이 Mac에서 답할 수 없습니다.",
+      "offline": "{{appName}}에 연결할 수 없습니다. 연결 상태를 확인하세요.",
+      "weeklyLimit": "이번 주 무료 AI 사용량을 모두 사용했습니다. Pro는 무제한입니다.",
+      "account": "계정에서 Pro 이용 상태를 확인해야 합니다.",
+      "failed": "지금은 그 작업을 할 수 없습니다.",
+      "interrupted": "답변이 중단되었습니다.",
+      "opened": "열림",
+      "searching": "브라우저에서 검색 중",
+      "reminderAdded": "미리 알림 추가됨",
+      "eventAdded": "캘린더에 추가됨",
+      "shortcutRan": "단축어 실행됨",
+      "cantDoYet": "아직 그 작업은 할 수 없습니다. 컴퓨터 제어 기능이 곧 제공됩니다.",
+      "appNotFound": "해당 앱을 찾을 수 없습니다.",
+      "shortcutNotFound": "해당 단축어를 찾을 수 없습니다.",
+      "calendarPermission": "먼저 시스템 설정에서 캘린더 및 미리 알림 접근을 허용하세요.",
+      "undone": "실행 취소됨",
+      "meetingStarted": "기록 중입니다. 참석자에게 알리세요.",
+      "copied": "복사됨",
+      "learned": "알겠습니다. 개인정보 보호에서 변경할 수 있습니다.",
+      "sensitivePaused": "여기서 일시 정지됨: 이 창에 복구 문구 또는 개인 키가 표시되어 있습니다.",
+      "fairUse": "오늘의 공정 사용 한도에 도달했습니다. UTC 자정에 초기화됩니다.",
+      "slowDown": "한 번에 요청이 너무 많습니다. 1분 후에 다시 시도하세요.",
+      "listening": "듣는 중…"
+    },
+    "undo": "실행 취소",
+    "close": "닫기",
+    "meetingOffer": "이 통화를 기록할까요?",
+    "takeNotes": "기록하기",
+    "suggest": {
+      "summariseThread": "긴 스레드입니다. 요약할까요?",
+      "draftReply": "이에 대한 답장 초안을 작성할까요?",
+      "addToCalendar": "날짜가 있습니다. 캘린더에 추가할까요?",
+      "summarisePage": "이 페이지를 요약할까요?",
+      "explainError": "이 오류를 설명할까요?",
+      "summarise": "요약",
+      "draft": "초안 작성",
+      "add": "추가",
+      "explain": "설명",
+      "tightenDraft": "이 초안을 다듬을까요?",
+      "priceCheck": "다른 곳이 더 저렴한지 확인할까요?",
+      "answerSearch": "바로 답해 드릴까요?",
+      "fixFormula": "이 수식 오류를 고칠까요?",
+      "meetingPrep": "곧 회의가 있습니다. 브리핑해 드릴까요?",
+      "tighten": "다듬기",
+      "check": "확인",
+      "answer": "답하기",
+      "fix": "고치기",
+      "brief": "브리핑",
+      "reviewCode": "이 풀 리퀘스트를 검토할까요?",
+      "commitMessage": "이에 대한 커밋 메시지를 작성할까요?",
+      "review": "검토",
+      "write": "작성"
+    },
+    "nudge": {
+      "findIt": "찾기",
+      "remindMe": "알림 설정",
+      "copy": "복사"
+    },
+    "chip": {
+      "searchInstead": "입력했습니다. 대신 이걸 검색할까요?",
+      "search": "검색"
+    },
+    "suggestionTip": "“응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요."
+  },
+  "privacy": {
+    "title": "개인정보 보호",
+    "promise": "켜기 전까지 꺼져 있습니다. 암호화되어 이 Mac에 보관됩니다. 밖으로 나가는 모든 요청이 목록에 표시됩니다.",
+    "state": {
+      "on": "허용한 대로 보는 중",
+      "onDetail": "아래에서 켠 기능만 사용합니다.",
+      "off": "보지 않음",
+      "offDetail": "받아쓰기는 평소처럼 작동합니다. 화면의 어떤 내용도 읽지 않습니다.",
+      "paused": "일시 정지됨",
+      "pausedDetail": "다시 시작할 때까지 아무것도 읽지 않습니다.",
+      "pausedUntil": "{{time}}까지 아무것도 읽지 않습니다.",
+      "resume": "다시 시작",
+      "pauseHour": "1시간 일시 정지",
+      "pauseDay": "내일까지"
+    },
+    "accessibility": "다른 앱의 텍스트를 읽으려면 {{appName}}에 손쉬운 사용 접근 권한이 필요합니다.",
+    "grant": "접근 허용",
+    "capabilities": {
+      "title": "{{appName}}이(가) 할 수 있는 일",
+      "description": "각 기능은 켜기 전까지 꺼져 있습니다.",
+      "screen_context": {
+        "title": "질문한 내용 읽기",
+        "reads": "질문한 창을 읽고, 무언가를 찾아 달라고 하면 열려 있는 창도 읽습니다.",
+        "leaves": "답변에 필요한 내용만, 비밀 정보를 제거한 뒤 보냅니다."
+      },
+      "screen_memory": {
+        "title": "본 내용 기억하기",
+        "reads": "사용한 창을 기억해 나중에 물어볼 수 있게 합니다.",
+        "leaves": "암호화되어 이 Mac에 남습니다."
+      },
+      "proactive": {
+        "title": "제안하기",
+        "reads": "스레드, 초안, 날짜, 오류, 회의 등 적절한 순간에 다음 단계를 제안합니다.",
+        "leaves": "이 Mac에서 결정됩니다. 회의 중 알림을 제외하면 수락하지 않는 한 아무것도 전송되지 않습니다."
+      },
+      "meetings": {
+        "title": "회의록",
+        "reads": "기록하는 동안 마이크와 통화 소리를 듣습니다.",
+        "leaves": "오디오는 여기에 남습니다. 요약 작성을 위해 텍스트만 전송됩니다."
+      },
+      "on_device_only": {
+        "title": "모든 것을 이 Mac에서 처리",
+        "reads": "모든 작업에 Apple Intelligence를 사용하며 웹 검색은 하지 않습니다.",
+        "leaves": "아무것도 전송되지 않습니다."
+      },
+      "wake_word": {
+        "title": "핸즈프리: “안녕 Ambient”라고 말하기",
+        "reads": "이 Mac에서 “안녕 Ambient”를 듣습니다. 그 밖의 말은 말하는 즉시 버려집니다.",
+        "leaves": "말하기 전까지는 아무것도 녹음하거나 전송하지 않습니다."
+      }
+    },
+    "retention": "보관 기간",
+    "days_one": "{{count}}일",
+    "days_other": "{{count}}일",
+    "preview": {
+      "title": "{{appName}}이(가) 보는 것",
+      "description": "가림 처리 후 창에서 실제로 읽게 될 내용입니다.",
+      "hint": "미리보기를 클릭한 다음 3초 안에 아무 창으로나 전환하세요.",
+      "switchNow": "지금 다른 창으로 전환하세요…",
+      "button": "미리보기",
+      "noText": "이 창에는 읽을 수 있는 텍스트가 없습니다.",
+      "skipped": {
+        "never_watch": "해당 앱은 ‘보지 않기’ 목록에 있어 아무것도 읽지 않았습니다.",
+        "no_permission": "먼저 손쉬운 사용 접근 권한을 허용하세요.",
+        "unavailable": "해당 창을 읽을 수 없습니다.",
+        "sensitive": "이 창에 복구 문구 또는 개인 키가 표시되어 있어 아무것도 읽지 않았습니다."
+      }
+    },
+    "neverWatch": {
+      "title": "보지 않기",
+      "description": "모두 켜져 있어도 읽지 않습니다. 암호 입력란, 비공개 창, 지갑, 복구 문구도 건너뜁니다.",
+      "this": "이 앱 보지 않기",
+      "added": "{{app}}은(는) 더 이상 읽지 않습니다."
+    },
+    "stored": {
+      "title": "저장된 내용",
+      "description": "이 Mac의 화면 기억입니다. 받아쓰기 기록은 히스토리에 있습니다.",
+      "summary_one": "{{since}} 이후 스냅샷 {{count}}개.",
+      "summary_other": "{{since}} 이후 스냅샷 {{count}}개.",
+      "entries_one": "스냅샷 {{count}}개",
+      "entries_other": "스냅샷 {{count}}개",
+      "deleteApp": "이 앱의 스냅샷 삭제",
+      "empty": "저장된 내용이 없습니다.",
+      "deleteAll": "모두 삭제",
+      "deletedAll": "화면 기억과 요청 기록이 삭제되었습니다."
+    },
+    "ledger": {
+      "title": "이 Mac에서 나간 요청",
+      "description": "모든 요청과 정확히 전송된 내용입니다. 30일 동안 보관됩니다.",
+      "empty": "아직 요청이 없습니다.",
+      "bytes_one": "{{count}}바이트",
+      "bytes_other": "{{count}}바이트",
+      "purpose": {
+        "polish": "AI 다듬기",
+        "answer": "답변",
+        "search": "웹 검색",
+        "suggestion": "제안",
+        "summary": "회의 요약",
+        "act": "작업",
+        "license": "계정 확인",
+        "trial": "체험판"
+      }
+    },
+    "engine": {
+      "title": "이 Mac의 AI 우선 사용",
+      "description": "가능한 경우 Apple Intelligence를 사용합니다. 결과가 덜 다듬어져 있어 기본적으로 꺼져 있습니다.",
+      "unavailable": "이 Mac에서는 Apple Intelligence를 사용할 수 없으므로 {{appName}} 서버를 사용합니다."
+    },
+    "suggestions": {
+      "title": "받는 제안",
+      "description": "제안이 나타나면 “나중에”, “이런 건 보여 주지 마” 또는 “이 앱에서는 안 돼”라고 말하면 학습합니다. 언제든지 여기에서 변경하세요.",
+      "mutedIn": "{{apps}}에서 꺼짐",
+      "kinds": {
+        "summarise_thread": "긴 이메일 스레드 요약",
+        "draft_reply": "답장 초안 작성",
+        "add_to_calendar": "캘린더에 날짜 추가",
+        "summarise_page": "긴 페이지 요약",
+        "explain_error": "오류 및 실패한 테스트 설명",
+        "tighten_draft": "긴 초안 다듬기",
+        "price_check": "다른 곳 가격 확인",
+        "answer_search": "계속 바꿔 검색하는 내용에 답하기",
+        "fix_formula": "스프레드시트 수식 고치기",
+        "meeting_prep": "회의 전 브리핑",
+        "review_code": "풀 리퀘스트 검토",
+        "commit_message": "커밋 메시지 작성",
+        "meeting_nudge": "회의 중 알림"
+      }
+    },
+    "macOnly": "현재 Mac 전용",
+    "protections": {
+      "audio": "음성은 이 Mac에서 받아쓰며 저희가 저장하지 않습니다.",
+      "text": "텍스트만 읽으며 스크린샷은 찍지 않습니다.",
+      "passwords": "암호 입력란, 암호 관리자, 비공개 창은 절대 읽지 않습니다.",
+      "wallets": "암호화폐 지갑, 복구 문구, 개인 키: 완전히 손을 뗍니다.",
+      "secrets": "카드 번호, 키, 코드는 전송 전에 제거됩니다.",
+      "suggestions": "제안은 이 Mac에서 결정되며, 수락하지 않으면 아무것도 전송되지 않습니다.",
+      "stored": "보관하는 내용은 삭제할 때까지 암호화되어 이 Mac에 남습니다.",
+      "ledger": "밖으로 나간 모든 요청과 정확히 전송된 내용이 아래에 표시됩니다."
+    }
+  },
+  "meetings": {
+    "title": "회의",
+    "intro": "모든 통화를 위한 회의록: 나와 상대방을 이 Mac에서 받아씁니다. 오디오는 저장되지 않습니다.",
+    "idle": "기록하지 않음",
+    "idleDetail": "통화가 시작되면 시작하거나, 개인정보 보호에서 회의 제안을 켜세요.",
+    "live": "기록 중 · {{time}}",
+    "capturingBoth": "나와 통화 소리를 듣고 있습니다.",
+    "capturingMic": "마이크만 듣고 있습니다.",
+    "start": "기록 시작",
+    "stop": "중지하고 요약",
+    "listening": "듣는 중…",
+    "consent": "모두에게 기록 중임을 알리세요.",
+    "copyConsent": "메시지 복사",
+    "consentMessage": "알림: 이 통화는 {{appName}}(으)로 기록하고 있습니다.",
+    "openSettings": "설정 열기",
+    "notes": "회의록",
+    "transcript": "녹취록",
+    "past": "지난 회의",
+    "empty": "아직 회의가 없습니다.",
+    "untitled": "제목 없는 회의",
+    "unfinished": "완료되지 않음",
+    "all": "모든 회의",
+    "summary": "요약",
+    "decisions": "결정 사항",
+    "actionItems": "할 일",
+    "questions": "나에게 온 질문",
+    "noSummary": "이 회의의 요약이 없습니다.",
+    "copyMarkdown": "Markdown으로 복사",
+    "followUp": "후속 메일 초안 작성",
+    "followUpTitle": "후속 이메일",
+    "copy": "복사",
+    "copied": "복사됨",
+    "delete": "회의 삭제",
+    "you": "나",
+    "them": "상대방",
+    "systemAudio": {
+      "noPermission": "{{appName}}이(가) 통화를 들을 수 있도록 화면 기록을 허용하세요. 오디오만 사용하며 아무것도 저장하지 않습니다.",
+      "oldMacOS": "통화 소리를 들으려면 macOS 13 이상이 필요합니다. 마이크는 계속 받아쓰고 있습니다.",
+      "failed": "통화 오디오를 가져올 수 없습니다. 마이크는 계속 받아쓰고 있습니다.",
+      "unsupported": "이 시스템에서는 아직 통화 소리를 들을 수 없습니다."
+    },
+    "error": {
+      "storage": "회의 저장소를 열 수 없습니다.",
+      "freeLimit": "무료 요금제에는 매월 회의 2회가 포함됩니다. Pro는 무제한입니다.",
+      "mic": "마이크를 열 수 없습니다.",
+      "notActive": "진행 중인 회의가 없습니다.",
+      "notFound": "해당 회의가 더 이상 존재하지 않습니다.",
+      "followUp": "지금은 후속 메일 초안을 작성할 수 없습니다."
+    },
+    "freeLeft": "이번 달 남은 무료 회의: {{left}} / {{limit}}. Pro는 무제한입니다."
+  },
+  "tour": {
+    "skip": "건너뛰기",
+    "next": "다음",
+    "done": "완료",
+    "start": "{{appName}} 사용 시작",
+    "meet": {
+      "title": "에이전트를 소개합니다",
+      "description": "단축키를 누른 채 말하세요. 나머지는 {{appName}}이(가) 알아서 합니다."
+    },
+    "modes": {
+      "write": {
+        "title": "쓰기",
+        "example": "싱크 미팅을 목요일로 옮길 수 있을까요?"
+      },
+      "answer": {
+        "title": "답하기",
+        "example": "영국의 양도소득세율은 얼마야?"
+      },
+      "act": {
+        "title": "실행",
+        "example": "5시에 샘한테 전화하라고 알려 줘"
+      },
+      "recall": {
+        "title": "기억",
+        "example": "어제 가격에 대해 뭐라고 했지?"
+      }
+    },
+    "nothingToConnect": {
+      "title": "연결할 것이 없습니다.",
+      "body": "계정도, 연동도, 봇도 필요 없습니다. 이미 쓰는 앱과 함께 작동합니다."
+    },
+    "try": {
+      "title": "지금 해 보기",
+      "body": "{{keys}}을(를) 누른 채 물어보세요: “내일 리스본 날씨 어때?”",
+      "done": "끝났습니다. 에이전트를 사용해 보셨어요."
+    },
+    "choose": {
+      "title": "{{appName}}이(가) 할 수 있는 일 선택",
+      "description": "켜기 전까지 모두 꺼져 있습니다. 개인정보 보호에서 언제든지 변경하세요.",
+      "footnote": "암호, 지갑, 비공개 창은 절대 읽지 않습니다.",
+      "proOnly": "Pro 기능입니다. 계정에서 업그레이드하세요."
+    }
+  },
+  "getStarted": {
+    "title": "시작하기",
+    "progress": "{{total}}개 중 {{done}}개 완료",
+    "hide": "숨기기",
+    "whatToSay": "무엇을 말할 수 있나요?",
+    "replayTour": "둘러보기 다시 보기",
+    "steps": {
+      "answer": "에이전트에게 질문하기",
+      "reminder": "음성으로 미리 알림 설정하기",
+      "about_screen": "화면의 내용 요약하기",
+      "suggestion": "제안 수락하기",
+      "meeting": "회의에서 기록하기",
+      "privacy": "{{appName}}이(가) 읽을 수 있는 것과 없는 것 확인하기"
+    }
+  },
+  "trySaying": {
+    "title": "무엇을 말할 수 있나요?",
+    "close": "닫기",
+    "description": "{{ask}}을(를) 누른 채 에이전트와 대화하세요. {{dictate}}은(는) 요청하지 않는 한 그대로 입력합니다.",
+    "footnote": "ChatGPT나 Claude에서는 “안녕 Ambient”로 시작하면 에이전트와 대화할 수 있습니다.",
+    "groups": {
+      "answer": {
+        "title": "묻기",
+        "examples": [
+          "영국의 양도소득세율은 얼마야?",
+          "이거 요약해 줘.",
+          "이 오류는 무슨 뜻이야?",
+          "이거 영어로 번역해 줘."
+        ]
+      },
+      "act": {
+        "title": "하기",
+        "examples": [
+          "5시에 샘한테 전화하라고 알려 줘.",
+          "금요일 오후 1시에 아나와 점심 추가해 줘.",
+          "Linear 열어 줘.",
+          "스탠드업 단축어 실행해 줘."
+        ]
+      },
+      "recall": {
+        "title": "기억하기",
+        "examples": [
+          "어제 가격에 대해 뭐라고 했지?",
+          "3분기 자료 찾아 줘."
+        ]
+      },
+      "suggestions": {
+        "title": "제안이 나타나면",
+        "examples": [
+          "수락하려면 “응” 또는 “해 줘”.",
+          "닫으려면 “나중에”.",
+          "그 종류를 끄려면 “이런 건 보여 주지 마”.",
+          "이 앱에서 멈추려면 “여기선 안 돼”."
+        ]
+      },
+      "meetings": {
+        "title": "회의 중에",
+        "examples": [
+          "회의에서 기록을 시작하거나, Ambient가 제안하면 그렇다고 답하세요.",
+          "누가 무언가를 요청하면 “찾기”.",
+          "무언가를 약속하면 “알림 설정”."
+        ]
+      },
+      "talking": {
+        "title": "Ambient와 대화하기",
+        "examples": [
+          "{{ask}}을(를) 누른 채 말하세요: 항상 Ambient에게 전달됩니다.",
+          "또는 받아쓰기 키를 사용하고 “안녕 Ambient, …”로 시작하세요. 그렇지 않으면 말한 내용이 입력됩니다.",
+          "핸즈프리(개인정보 보호에서 켜기): “안녕 Ambient, …”라고 말하기만 하면 됩니다."
+        ]
+      }
+    }
+  },
+  "app": {
+    "starting": "{{appName}} 시작 중…"
+  }
+}

@@ -1,0 +1,17 @@
+{
+ "id": "nobot",
+ "text": "No bot.",
+ "duration": 1.12,
+ "words": [
+  {
+   "w": "No",
+   "start": 0,
+   "end": 0.32
+  },
+  {
+   "w": "bot.",
+   "start": 0.4,
+   "end": 1.12
+  }
+ ]
+}

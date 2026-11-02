@@ -1,0 +1,520 @@
+import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
+import { listen } from "@tauri-apps/api/event";
+import type {
+  AppSettings as Settings,
+  AudioDevice,
+  ChineseScript,
+  TranscribeAcceleratorSetting,
+  ShortcutActivation,
+  VadBackend,
+  LanguageDetectionMode,
+} from "@/bindings";
+import { commands } from "@/bindings";
+import { toast } from "sonner";
+
+interface SettingsStore {
+  settings: Settings | null;
+  defaultSettings: Settings | null;
+  isLoading: boolean;
+  isUpdating: Record<string, boolean>;
+  audioDevices: AudioDevice[];
+  outputDevices: AudioDevice[];
+  customSounds: { start: boolean; stop: boolean };
+  // null until loadUpdateChecksLocked() resolves
+  updateChecksLocked: boolean | null;
+
+  // Actions
+  initialize: () => Promise<void>;
+  loadDefaultSettings: () => Promise<void>;
+  loadUpdateChecksLocked: () => Promise<void>;
+  updateSetting: <K extends keyof Settings>(
+    key: K,
+    value: Settings[K],
+  ) => Promise<void>;
+  resetSetting: (key: keyof Settings) => Promise<void>;
+  refreshSettings: () => Promise<void>;
+  refreshAudioDevices: () => Promise<void>;
+  refreshOutputDevices: () => Promise<void>;
+  updateBinding: (id: string, binding: string) => Promise<void>;
+  resetBinding: (id: string) => Promise<void>;
+  getSetting: <K extends keyof Settings>(key: K) => Settings[K] | undefined;
+  isUpdatingKey: (key: string) => boolean;
+  playTestSound: (soundType: "start" | "stop") => Promise<void>;
+  checkCustomSounds: () => Promise<void>;
+  setPostProcessProvider: (providerId: string) => Promise<void>;
+
+  // Internal state setters
+  setSettings: (settings: Settings | null) => void;
+  setDefaultSettings: (defaultSettings: Settings | null) => void;
+  setLoading: (loading: boolean) => void;
+  setUpdating: (key: string, updating: boolean) => void;
+  setAudioDevices: (devices: AudioDevice[]) => void;
+  setOutputDevices: (devices: AudioDevice[]) => void;
+  setCustomSounds: (sounds: { start: boolean; stop: boolean }) => void;
+}
+
+// Note: Default settings are now fetched from Rust via commands.getDefaultSettings()
+// This ensures platform-specific defaults (like overlay_position, shortcuts, paste_method) work correctly
+
+const DEFAULT_AUDIO_DEVICE: AudioDevice = {
+  index: "default",
+  name: "Default",
+  is_default: true,
+};
+
+const settingUpdaters: {
+  [K in keyof Settings]?: (value: Settings[K]) => Promise<unknown>;
+} = {
+  always_on_microphone: (value) =>
+    commands.updateMicrophoneMode(value as boolean),
+  audio_feedback: (value) =>
+    commands.changeAudioFeedbackSetting(value as boolean),
+  audio_feedback_volume: (value) =>
+    commands.changeAudioFeedbackVolumeSetting(value as number),
+  sound_theme: (value) => commands.changeSoundThemeSetting(value as string),
+  start_hidden: (value) => commands.changeStartHiddenSetting(value as boolean),
+  autostart_enabled: (value) =>
+    commands.changeAutostartSetting(value as boolean),
+  spoken_languages: (value) =>
+    commands.changeSpokenLanguagesSetting(value as string[]),
+  update_checks_enabled: (value) =>
+    commands.changeUpdateChecksSetting(value as boolean),
+  show_whats_new_on_update: (value) =>
+    commands.changeShowWhatsNewOnUpdateSetting(value as boolean),
+  whats_new_last_seen_version: (value) =>
+    commands.changeWhatsNewLastSeenVersionSetting(value as string),
+  shortcut_activation: (value) =>
+    commands.changeShortcutActivationSetting(value as ShortcutActivation),
+  hold_threshold_ms: (value) =>
+    commands.changeHoldThresholdMsSetting(value as number),
+  selected_microphone: (value) =>
+    commands.setSelectedMicrophone(
+      (value as string) === "Default" || value === null
+        ? "default"
+        : (value as string),
+    ),
+  selected_channel: async (value) => {
+    const result = await commands.setSelectedChannel(
+      (value as number | null | undefined) ?? null,
+    );
+    if (result.status === "error") {
+      throw new Error(result.error);
+    }
+  },
+  clamshell_microphone: (value) =>
+    commands.setClamshellMicrophone(
+      (value as string) === "Default" ? "default" : (value as string),
+    ),
+  selected_output_device: (value) =>
+    commands.setSelectedOutputDevice(
+      (value as string) === "Default" || value === null
+        ? "default"
+        : (value as string),
+    ),
+  recording_retention_period: (value) =>
+    commands.updateRecordingRetentionPeriod(value as string),
+  translate_to_english: (value) =>
+    commands.changeTranslateToEnglishSetting(value as boolean),
+  selected_language: (value) =>
+    commands.changeSelectedLanguageSetting(value as string),
+  overlay_position: (value) =>
+    commands.changeOverlayPositionSetting(value as string),
+  debug_mode: (value) => commands.changeDebugModeSetting(value as boolean),
+  custom_words: (value) => commands.updateCustomWords(value as string[]),
+  word_correction_threshold: (value) =>
+    commands.changeWordCorrectionThresholdSetting(value as number),
+  paste_delay_ms: (value) =>
+    commands.changePasteDelayMsSetting(value as number),
+  paste_delay_after_ms: (value) =>
+    commands.changePasteDelayAfterMsSetting(value as number),
+  reliable_paste: (value) =>
+    commands.changeReliablePasteSetting(value as boolean),
+  paste_method: (value) => commands.changePasteMethodSetting(value as string),
+  typing_tool: (value) => commands.changeTypingToolSetting(value as string),
+  external_script_path: (value) =>
+    commands.changeExternalScriptPathSetting(value as string | null),
+  clipboard_handling: (value) =>
+    commands.changeClipboardHandlingSetting(value as string),
+  auto_submit: (value) => commands.changeAutoSubmitSetting(value as boolean),
+  auto_submit_key: (value) =>
+    commands.changeAutoSubmitKeySetting(value as string),
+  history_limit: (value) => commands.updateHistoryLimit(value as number),
+  post_process_enabled: (value) =>
+    commands.changePostProcessEnabledSetting(value as boolean),
+  post_process_selected_prompt_id: (value) =>
+    commands.setPostProcessSelectedPrompt(value as string),
+  mute_while_recording: (value) =>
+    commands.changeMuteWhileRecordingSetting(value as boolean),
+  append_trailing_space: (value) =>
+    commands.changeAppendTrailingSpaceSetting(value as boolean),
+  log_level: (value) => commands.setLogLevel(value as any),
+  app_language: (value) => commands.changeAppLanguageSetting(value as string),
+  theme: (value) => commands.changeThemeSetting(value as string),
+  experimental_enabled: (value) =>
+    commands.changeExperimentalEnabledSetting(value as boolean),
+  lazy_stream_close: (value) =>
+    commands.changeLazyStreamCloseSetting(value as boolean),
+  overlay_style: (value) => commands.changeOverlayStyleSetting(value as string),
+  vad_enabled: (value) => commands.changeVadEnabledSetting(value as boolean),
+  long_form_chunking: (value) =>
+    commands.changeLongFormChunkingSetting(value as boolean),
+  vad_backend: async (value) => {
+    const result = await commands.changeVadBackendSetting(value as VadBackend);
+    if (result.status === "error") {
+      // Rejected switches (e.g. mid-recording) roll the dropdown back via the
+      // throw below; the toast tells the user why.
+      toast.error(result.error);
+      throw new Error(result.error);
+    }
+  },
+  filler_word_removal_enabled: (value) =>
+    commands.changeFillerWordRemovalEnabledSetting(value as boolean),
+  chinese_script: (value) =>
+    commands.changeChineseScriptSetting(value as ChineseScript),
+  show_tray_icon: (value) =>
+    commands.changeShowTrayIconSetting(value as boolean),
+  transcribe_accelerator: (value) =>
+    commands.changeTranscribeAcceleratorSetting(
+      value as TranscribeAcceleratorSetting,
+    ),
+  transcribe_gpu_device: (value) =>
+    commands.changeTranscribeGpuDevice(value as string | null),
+  extra_recording_buffer_ms: (value) =>
+    commands.changeExtraRecordingBufferSetting(value as number),
+  language_detection: (value) =>
+    commands.changeLanguageDetectionSetting(value as LanguageDetectionMode),
+  language_detection_window_secs: (value) =>
+    commands.changeLanguageDetectionWindowSetting(value as number),
+};
+
+export const useSettingsStore = create<SettingsStore>()(
+  subscribeWithSelector((set, get) => ({
+    settings: null,
+    defaultSettings: null,
+    isLoading: true,
+    isUpdating: {},
+    audioDevices: [],
+    outputDevices: [],
+    customSounds: { start: false, stop: false },
+    updateChecksLocked: null,
+
+    // Internal setters
+    setSettings: (settings) => set({ settings }),
+    setDefaultSettings: (defaultSettings) => set({ defaultSettings }),
+    setLoading: (isLoading) => set({ isLoading }),
+    setUpdating: (key, updating) =>
+      set((state) => ({
+        isUpdating: { ...state.isUpdating, [key]: updating },
+      })),
+    setAudioDevices: (audioDevices) => set({ audioDevices }),
+    setOutputDevices: (outputDevices) => set({ outputDevices }),
+    setCustomSounds: (customSounds) => set({ customSounds }),
+
+    // Getters
+    getSetting: (key) => get().settings?.[key],
+    isUpdatingKey: (key) => get().isUpdating[key] || false,
+
+    // Load settings from store
+    refreshSettings: async () => {
+      try {
+        const result = await commands.getAppSettings();
+        if (result.status === "ok") {
+          const settings = result.data;
+          const normalizedSettings: Settings = {
+            ...settings,
+            always_on_microphone: settings.always_on_microphone ?? false,
+            selected_microphone: settings.selected_microphone ?? "Default",
+            clamshell_microphone: settings.clamshell_microphone ?? "Default",
+            selected_output_device:
+              settings.selected_output_device ?? "Default",
+          };
+          set({ settings: normalizedSettings, isLoading: false });
+        } else {
+          console.error("Failed to load settings:", result.error);
+          set({ isLoading: false });
+        }
+      } catch (error) {
+        console.error("Failed to load settings:", error);
+        set({ isLoading: false });
+      }
+    },
+
+    // Load audio devices
+    refreshAudioDevices: async () => {
+      try {
+        const result = await commands.getAvailableMicrophones();
+        if (result.status === "ok") {
+          const devicesWithDefault = [
+            DEFAULT_AUDIO_DEVICE,
+            ...result.data.filter(
+              (d) => d.name !== "Default" && d.name !== "default",
+            ),
+          ];
+          set({ audioDevices: devicesWithDefault });
+        } else {
+          set({ audioDevices: [DEFAULT_AUDIO_DEVICE] });
+        }
+      } catch (error) {
+        console.error("Failed to load audio devices:", error);
+        set({ audioDevices: [DEFAULT_AUDIO_DEVICE] });
+      }
+    },
+
+    // Load output devices
+    refreshOutputDevices: async () => {
+      try {
+        const result = await commands.getAvailableOutputDevices();
+        if (result.status === "ok") {
+          const devicesWithDefault = [
+            DEFAULT_AUDIO_DEVICE,
+            ...result.data.filter(
+              (d) => d.name !== "Default" && d.name !== "default",
+            ),
+          ];
+          set({ outputDevices: devicesWithDefault });
+        } else {
+          set({ outputDevices: [DEFAULT_AUDIO_DEVICE] });
+        }
+      } catch (error) {
+        console.error("Failed to load output devices:", error);
+        set({ outputDevices: [DEFAULT_AUDIO_DEVICE] });
+      }
+    },
+
+    // Play a test sound
+    playTestSound: async (soundType: "start" | "stop") => {
+      try {
+        await commands.playTestSound(soundType);
+      } catch (error) {
+        console.error(`Failed to play test sound (${soundType}):`, error);
+      }
+    },
+
+    checkCustomSounds: async () => {
+      try {
+        const sounds = await commands.checkCustomSounds();
+        get().setCustomSounds(sounds);
+      } catch (error) {
+        console.error("Failed to check custom sounds:", error);
+      }
+    },
+
+    // Update a specific setting
+    updateSetting: async <K extends keyof Settings>(
+      key: K,
+      value: Settings[K],
+    ) => {
+      const { settings, setUpdating } = get();
+      const updateKey = String(key);
+      const originalValue = settings?.[key];
+
+      setUpdating(updateKey, true);
+
+      try {
+        set((state) => ({
+          settings: state.settings ? { ...state.settings, [key]: value } : null,
+        }));
+
+        const updater = settingUpdaters[key];
+        if (updater) {
+          await updater(value);
+        } else if (key !== "bindings" && key !== "selected_model") {
+          console.warn(`No handler for setting: ${String(key)}`);
+        }
+      } catch (error) {
+        console.error(`Failed to update setting ${String(key)}:`, error);
+        if (settings) {
+          set({ settings: { ...settings, [key]: originalValue } });
+        }
+      } finally {
+        setUpdating(updateKey, false);
+      }
+    },
+
+    // Reset a setting to its default value
+    resetSetting: async (key) => {
+      const { defaultSettings } = get();
+      if (defaultSettings) {
+        const defaultValue = defaultSettings[key];
+        if (defaultValue !== undefined) {
+          await get().updateSetting(key, defaultValue as any);
+        }
+      }
+    },
+
+    // Update a specific binding
+    updateBinding: async (id, binding) => {
+      const { settings, setUpdating } = get();
+      const updateKey = `binding_${id}`;
+      const originalBinding = settings?.bindings?.[id]?.current_binding;
+
+      setUpdating(updateKey, true);
+
+      try {
+        // Optimistic update
+        set((state) => ({
+          settings: state.settings
+            ? {
+                ...state.settings,
+                bindings: {
+                  ...state.settings.bindings,
+                  [id]: {
+                    ...state.settings.bindings?.[id]!,
+                    current_binding: binding,
+                  },
+                },
+              }
+            : null,
+        }));
+
+        const result = await commands.changeBinding(id, binding);
+
+        // Check if the command executed successfully
+        if (result.status === "error") {
+          throw new Error(result.error);
+        }
+
+        // Check if the binding change was successful
+        if (!result.data.success) {
+          throw new Error(result.data.error || "Failed to update binding");
+        }
+      } catch (error) {
+        console.error(`Failed to update binding ${id}:`, error);
+
+        // Rollback on error
+        if (originalBinding && get().settings) {
+          set((state) => ({
+            settings: state.settings
+              ? {
+                  ...state.settings,
+                  bindings: {
+                    ...state.settings.bindings,
+                    [id]: {
+                      ...state.settings.bindings?.[id]!,
+                      current_binding: originalBinding,
+                    },
+                  },
+                }
+              : null,
+          }));
+        }
+
+        // Re-throw to let the caller know it failed
+        throw error;
+      } finally {
+        setUpdating(updateKey, false);
+      }
+    },
+
+    // Reset a specific binding
+    resetBinding: async (id) => {
+      const { setUpdating, refreshSettings } = get();
+      const updateKey = `binding_${id}`;
+
+      setUpdating(updateKey, true);
+
+      try {
+        await commands.resetBinding(id);
+        await refreshSettings();
+      } catch (error) {
+        console.error(`Failed to reset binding ${id}:`, error);
+      } finally {
+        setUpdating(updateKey, false);
+      }
+    },
+
+    setPostProcessProvider: async (providerId) => {
+      const { settings, setUpdating, refreshSettings } = get();
+      const updateKey = "post_process_provider_id";
+      const previousId = settings?.post_process_provider_id ?? null;
+
+      setUpdating(updateKey, true);
+
+      if (settings) {
+        set((state) => ({
+          settings: state.settings
+            ? { ...state.settings, post_process_provider_id: providerId }
+            : null,
+        }));
+      }
+
+      try {
+        await commands.setPostProcessProvider(providerId);
+        await refreshSettings();
+      } catch (error) {
+        console.error("Failed to set post-process provider:", error);
+        if (previousId !== null) {
+          set((state) => ({
+            settings: state.settings
+              ? { ...state.settings, post_process_provider_id: previousId }
+              : null,
+          }));
+        }
+      } finally {
+        setUpdating(updateKey, false);
+      }
+    },
+
+    // Load default settings from Rust
+    loadDefaultSettings: async () => {
+      try {
+        const result = await commands.getDefaultSettings();
+        if (result.status === "ok") {
+          set({ defaultSettings: result.data });
+        } else {
+          console.error("Failed to load default settings:", result.error);
+        }
+      } catch (error) {
+        console.error("Failed to load default settings:", error);
+      }
+    },
+
+    // Check whether update checks are locked by system configuration
+    // (e.g. AMBIENT_DISABLE_UPDATER, set by the Nix package)
+    loadUpdateChecksLocked: async () => {
+      try {
+        const locked = await commands.isUpdateChecksLocked();
+        set({ updateChecksLocked: locked });
+      } catch (error) {
+        console.error("Failed to check update checks lock state:", error);
+        // Fail open: an unknown lock state means "not locked", otherwise the
+        // update checker waits for it forever and checks never start.
+        set({ updateChecksLocked: false });
+      }
+    },
+
+    // Initialize everything
+    initialize: async () => {
+      const {
+        refreshSettings,
+        checkCustomSounds,
+        loadDefaultSettings,
+        loadUpdateChecksLocked,
+      } = get();
+
+      // Note: Audio devices are NOT refreshed here. The frontend (App.tsx)
+      // is responsible for calling refreshAudioDevices/refreshOutputDevices
+      // after onboarding completes. This avoids triggering permission dialogs
+      // on macOS before the user is ready.
+      await Promise.all([
+        loadDefaultSettings(),
+        refreshSettings(),
+        checkCustomSounds(),
+        loadUpdateChecksLocked(),
+      ]);
+
+      // Re-fetch settings when the backend changes them (e.g. language
+      // reset during model switch). The backend is the source of truth.
+      listen("model-state-changed", () => {
+        get().refreshSettings();
+      });
+      listen<{ setting?: string }>("settings-changed", (event) => {
+        get().refreshSettings();
+        if (event.payload.setting === "selected_microphone") {
+          get().refreshAudioDevices();
+        }
+      });
+    },
+  })),
+);

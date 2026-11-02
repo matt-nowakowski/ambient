@@ -1,0 +1,22 @@
+{
+ "id": "nothing",
+ "text": "Nothing to connect.",
+ "duration": 1.6,
+ "words": [
+  {
+   "w": "Nothing",
+   "start": 0,
+   "end": 0.48
+  },
+  {
+   "w": "to",
+   "start": 0.56,
+   "end": 0.64
+  },
+  {
+   "w": "connect.",
+   "start": 0.72,
+   "end": 1.6
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+Copyright (c) 2026 Valenor Core Design FZCO. All rights reserved.
+
+Ambient is proprietary software. This repository is public so that its source
+can be read and reviewed. That is the only thing it is public for.
+
+No license is granted to use, copy, modify, build, compile, run, merge,
+publish, distribute, sublicense or sell this software or any part of it, in
+source or binary form, or to create derivative works from it, except with the
+prior written permission of Valenor Core Design FZCO. Viewing the source on
+GitHub, and forking it within GitHub only as GitHub's Terms of Service
+require, does not grant any of these rights.
+
+The names "Ambient" and "tryambient.ai", the logo and the orb mark are
+trademarks of Valenor Core Design FZCO and may not be used without permission.
+
+Use of the Ambient app, as distributed at https://tryambient.ai, is governed
+by the Terms at https://tryambient.ai/terms.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE.
+
+Third-party components. Ambient includes open-source components, each under
+its own license. Those licenses apply to those components only, not to the
+rest of this repository. Their copyright and license notices are reproduced in
+THIRD_PARTY_NOTICES.md and in the LICENSE and NOTICE files next to the
+vendored code (packages/models, src-tauri/vendor/*), and must be kept in every
+copy.
+
+Permission requests: legal@tryambient.ai

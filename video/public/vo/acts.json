@@ -1,0 +1,17 @@
+{
+ "id": "acts",
+ "text": "It acts.",
+ "duration": 1.28,
+ "words": [
+  {
+   "w": "It",
+   "start": 0,
+   "end": 0.24
+  },
+  {
+   "w": "acts.",
+   "start": 0.4,
+   "end": 1.28
+  }
+ ]
+}

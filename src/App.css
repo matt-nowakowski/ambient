@@ -1,0 +1,449 @@
+/* Scope class detection to src/: scanning the project root walks Rust build
+   output and made the first dev CSS compile take ~16s. */
+@import "tailwindcss" source(".");
+@import "./styles/theme.css";
+@import "./styles/glass.css";
+@import "./styles/transitions.css";
+
+/* Register the shared color tokens (src/styles/theme.css) as Tailwind
+   utilities */
+@theme inline {
+  --color-text: var(--color-text);
+  --color-background: var(--color-background);
+  --color-background-ui: var(--color-background-ui);
+  --color-on-primary: var(--color-on-primary);
+  --color-logo-primary: var(--color-logo-primary);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+  --color-moss: var(--color-moss);
+  --color-plum: var(--color-plum);
+  --color-plum-pick: var(--color-plum-pick);
+  --color-demo-window: var(--color-demo-window);
+  --color-mascot-line: var(--color-mascot-line);
+  --color-wash: var(--color-wash);
+  --color-moss-wash: var(--color-moss-wash);
+  --color-warning-wash: var(--color-warning-wash);
+  --color-error-wash: var(--color-error-wash);
+  --color-ink-2: var(--color-ink-2);
+  --color-ink-3: var(--color-ink-3);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-glass-sidebar: var(--glass-sidebar);
+  --color-glass-edge: var(--glass-edge);
+  --color-glass-hover: var(--glass-hover);
+  --color-glass-press: var(--glass-press);
+  --color-surface-app: var(--surface-app);
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+}
+
+/* Noto Sans CJK subset (see src/lib/utils/cjkFont.ts): Windows' CJK fonts
+   have no semibold to match Segoe UI. */
+@font-face {
+  font-family: "Ambient CJK Subset";
+  src: url("./assets/fonts/cjk-subset.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: block;
+}
+
+/* Onboarding's scale in px (rem steps land on fractions at a 15px root).
+   Names avoid Tailwind's defaults, which Settings still uses. */
+@theme {
+  --font-display:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Variable",
+    "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-ui:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter Variable",
+    "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Noto Sans",
+    sans-serif;
+  --font-cjk-subset:
+    "Ambient CJK Subset", -apple-system, "Segoe UI Variable Text", "Segoe UI",
+    system-ui, sans-serif;
+
+  /* Type scale, in px (rem steps land on fractions at the 13px root). One
+     hierarchy for every page: light and small, no bold, no caps. */
+  --text-greeting: 24px; /* Home's greeting */
+  --text-greeting--line-height: 30px;
+  --text-title: 22px; /* page and screen titles */
+  --text-title--line-height: 28px;
+  --text-display: 28px; /* display numbers (stats, plan price) */
+  --text-display--line-height: 34px;
+  --text-heading: 15px; /* dialog and empty-state headings */
+  --text-heading--line-height: 21px;
+  --text-name: 13.5px; /* the model name on Model's Full card */
+  --text-row: 14.5px; /* onboarding row titles */
+  --text-ui: 13px; /* body, card and row titles, md buttons, fields */
+  --text-ui--line-height: 19px;
+  --text-body: 13px; /* onboarding body, subtitles */
+  --text-small: 12px; /* secondary text, sm buttons, hints */
+  --text-small--line-height: 17px;
+  --text-section: 12px; /* the label above a group or card */
+  --text-section--line-height: 16px;
+  --text-label: 11px; /* meta, tertiary */
+  --text-label--line-height: 15px;
+  --text-meta: 11px; /* timestamps, captions */
+  --text-meta--line-height: 15px;
+  --text-tag: 10px; /* tags, column codes, small grade chips */
+  --text-cta: 14px; /* onboarding's large call-to-action buttons */
+
+  /* Light, quiet type: the whole app runs a step lighter than Tailwind's
+     defaults, so `font-semibold` reads as medium and `font-medium` as book. */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 450;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 550;
+  --font-mono:
+    "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* Corner scale: everything a step less round than a pill. Pills
+     (buttons, search, segmented controls, chips, badges) stay rounded-full. */
+  --radius-window: 14px; /* the inset content window */
+  --radius-panel: 16px; /* hero and large content cards, tables */
+  --radius-card: 12px; /* cards, settings groups, menus, popovers, toasts */
+  --radius-control: 9px; /* fields, dropdown triggers, list rows, nav items */
+  --radius-tip: 8px; /* tooltips, menu items */
+  --radius-chip: 6px; /* small chips, tags, keycaps */
+
+  /* Spacing in px on a 4px grid (Tailwind's numeric steps are rem-based and
+     land at 3.25px steps on the 13px root). */
+  --spacing-section: 24px; /* page title to content; between sections */
+  --spacing-label: 10px; /* a section label to its card */
+  --spacing-grid: 16px; /* between sibling cards */
+  --spacing-card: 20px; /* content-card padding */
+  --spacing-hero: 24px; /* hero and plan-card padding */
+  --spacing-row-x: 16px; /* settings rows */
+  --spacing-row-y: 10px;
+  --spacing-item-x: 12px; /* list rows */
+  --spacing-item-y: 10px;
+  --spacing-list: 4px; /* between list rows without dividers */
+  --spacing-inline: 8px; /* inline control groups, icon to label */
+  --spacing-row: 44px; /* settings row min-height */
+  --spacing-control-sm: 24px; /* control heights: sm buttons, chips */
+  --spacing-control: 28px; /* md buttons, dropdown triggers, fields */
+  --spacing-control-lg: 36px; /* onboarding's large buttons */
+
+  /* Onboarding's side gutter. */
+  --spacing-gutter: 64px;
+  /* Gap under a screen's title; grows to the max when there's room. */
+  --spacing-lead: 20px;
+  --spacing-lead-max: 32px;
+
+  --ease-glide: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* The mascot waves once on arrival (it rests tilted -8deg) */
+  --animate-wave: wave 1100ms var(--ease-glide) 250ms both;
+  /* A high five: lunge, squash, settle; the burst over it */
+  --animate-slap: slap 420ms var(--ease-glide);
+  --animate-burst: burst 420ms var(--ease-glide);
+  /* Something new rises into place */
+  --animate-rise: rise 260ms var(--ease-glide);
+  /* A menu drops open from its button */
+  --animate-drop: drop 160ms var(--ease-glide);
+  /* A glass menu or popover springs open */
+  --animate-menu-pop: menu-pop 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* A word swapped in place (the Models page's pinned section name) */
+  --animate-fade: fade 180ms ease-out;
+  /* A shortcut being captured: the empty slot's dashed edge breathes */
+  --animate-key-slot: key-slot 1.2s ease-in-out infinite;
+
+  @keyframes wave {
+    0% {
+      rotate: -8deg;
+    }
+    20% {
+      rotate: 10deg;
+    }
+    40% {
+      rotate: -14deg;
+    }
+    60% {
+      rotate: 8deg;
+    }
+    80% {
+      rotate: -10deg;
+    }
+    100% {
+      rotate: -8deg;
+    }
+  }
+  @keyframes slap {
+    0% {
+      rotate: -8deg;
+      scale: 1;
+    }
+    30% {
+      rotate: 4deg;
+      scale: 1.16 1.08;
+    }
+    45% {
+      rotate: 2deg;
+      scale: 0.94 1.02;
+    }
+    100% {
+      rotate: -8deg;
+      scale: 1;
+    }
+  }
+  @keyframes burst {
+    0% {
+      opacity: 0;
+      scale: 0.6;
+    }
+    25% {
+      opacity: 1;
+      scale: 1.1;
+    }
+    100% {
+      opacity: 0;
+      scale: 1.3;
+      translate: 0 -6px;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      translate: 0 6px;
+    }
+  }
+  @keyframes menu-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.94) translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes drop {
+    from {
+      opacity: 0;
+      translate: 0 -4px;
+      scale: 0.97;
+    }
+  }
+  /* Via a variable: Tailwind can't polyfill color-mix inside a keyframe. */
+  @keyframes key-slot {
+    50% {
+      border-color: var(--color-plum-faint);
+    }
+  }
+}
+
+/* Onboarding honours reduced motion everywhere inside it. */
+@media (prefers-reduced-motion: reduce) {
+  [data-onboarding] *,
+  [data-onboarding] *::before,
+  [data-onboarding] *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+:root {
+  /* Typography */
+  font-size: 13px;
+  line-height: 19px;
+  font-family: var(--font-ui);
+  letter-spacing: -0.01em;
+  font-weight: 400;
+
+  /* Typography settings */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  --scrollbar-thumb: color-mix(in srgb, var(--color-text), transparent 85%);
+  --scrollbar-thumb-hover: color-mix(
+    in srgb,
+    var(--color-text),
+    transparent 70%
+  );
+
+  /* Log console surface — a subtle shade off the app background so the live log
+     viewer reads as a distinct console. In light mode this is a faint gray code
+     block (matching other surfaces); the dark theme overrides it below. */
+  --color-log-surface: color-mix(in srgb, var(--color-background), black 6%);
+
+  /* Apply colors. The window shows the ambient backdrop behind glass panels. */
+  color: var(--color-text);
+  background-color: var(--surface-app);
+
+  /* Without this, Windows draws a <select> popup white under light text. */
+  color-scheme: light dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+.container {
+  margin: 0;
+  padding-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* A step lighter than the near-black background. */
+    --color-log-surface: color-mix(in srgb, var(--color-background), white 4%);
+  }
+}
+
+/* macOS's own CJK fonts already share their weights. */
+:root[data-platform="macos"] {
+  --font-cjk-subset: var(--font-ui);
+}
+
+/* macOS - tint native overlay scrollbar thumb */
+:root[data-platform="macos"] {
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 20px;
+  border: 3px solid transparent;
+  border-right-width: 4px;
+  border-left-width: 3px;
+  background-clip: content-box;
+  min-height: 32px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Custom range slider: a native <input type="range"> underneath (keyboard and
+   screen readers stay native), drawn as a 4px rounded track with a white
+   thumb. Set `--range-p` (0–1) on the input for the filled portion. */
+.range {
+  --range-p: 0;
+  --range-fill: var(--color-background-ui);
+  --range-rest: var(--glass-press);
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.range:focus {
+  outline: none;
+}
+.range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  /* The fill ends under the thumb's centre, which travels 8px in from each end. */
+  background: linear-gradient(
+    to right,
+    var(--range-fill) calc(8px + (100% - 16px) * var(--range-p)),
+    var(--range-rest) calc(8px + (100% - 16px) * var(--range-p))
+  );
+}
+.range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--range-rest);
+}
+.range::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--range-fill);
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  transition:
+    scale 260ms var(--spring),
+    box-shadow 150ms ease-out;
+}
+.range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  transition:
+    scale 260ms var(--spring),
+    box-shadow 150ms ease-out;
+}
+.range:hover::-webkit-slider-thumb {
+  scale: 1.1;
+}
+.range:hover::-moz-range-thumb {
+  scale: 1.1;
+}
+.range:active::-webkit-slider-thumb {
+  scale: 1.2;
+}
+.range:active::-moz-range-thumb {
+  scale: 1.2;
+}
+.range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 0 0 4px color-mix(in srgb, var(--color-logo-primary) 25%, transparent);
+}
+.range:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.25),
+    0 0 0 4px color-mix(in srgb, var(--color-logo-primary) 25%, transparent);
+}
+.range:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.range:disabled::-webkit-slider-thumb {
+  scale: 1;
+}
+.range:disabled::-moz-range-thumb {
+  scale: 1;
+}
+
+/* A number field with a custom stepper: no native spinners. */
+.no-spinners {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.no-spinners::-webkit-inner-spin-button,
+.no-spinners::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

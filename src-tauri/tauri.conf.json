@@ -1,0 +1,110 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Ambient",
+  "version": "0.1.0",
+  "identifier": "app.ambient.desktop",
+  "build": {
+    "beforeDevCommand": "bun run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "bun run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "windows": [],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": {
+          "allow": ["**"],
+          "requireLiteralLeadingDot": false
+        }
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": "all",
+    "resources": ["resources/**/*"],
+    "license": "Proprietary",
+    "publisher": "Valenor Core Design FZCO",
+    "copyright": "© 2026 Valenor Core Design FZCO. Includes open-source software; see About › Acknowledgments.",
+    "category": "Productivity",
+    "shortDescription": "Private, on-device voice dictation for any app.",
+    "longDescription": "Ambient turns your voice into clean text in any app. Hold a shortcut, speak, and your words are typed where your cursor is. Transcription runs on your device and works offline.",
+    "homepage": "https://tryambient.ai",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "files": {},
+      "hardenedRuntime": true,
+      "minimumSystemVersion": "10.15",
+      "signingIdentity": "Developer ID Application: Mateusz Nowakowski (7NFBM8AU48)",
+      "entitlements": "Entitlements.plist",
+      "dmg": {
+        "background": "./dmg/background.png",
+        "windowSize": {
+          "width": 660,
+          "height": 400
+        },
+        "appPosition": {
+          "x": 180,
+          "y": 205
+        },
+        "applicationFolderPosition": {
+          "x": 480,
+          "y": 205
+        }
+      }
+    },
+    "linux": {
+      "deb": {
+        "depends": [
+          "libgtk-layer-shell0",
+          "libopenblas0",
+          "libssl3t64 | libssl3"
+        ],
+        "files": {
+          "/usr/lib/Ambient": "transcribe-libs"
+        }
+      },
+      "rpm": {
+        "depends": [
+          "libgtk-layer-shell.so.0()(64bit)",
+          "libopenblas.so.0()(64bit)"
+        ],
+        "compression": {
+          "type": "none"
+        },
+        "files": {
+          "/usr/lib/Ambient": "transcribe-libs"
+        }
+      },
+      "appimage": {
+        "bundleMediaFramework": true,
+        "files": {
+          "/usr/lib": "transcribe-libs"
+        }
+      }
+    },
+    "windows": {
+      "nsis": {
+        "template": "nsis/installer.nsi",
+        "installerIcon": "icons/icon.ico"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIxQUY3NTI3MUY4MDZBQjEKUldTeGFvQWZKM1d2SWJZNG1Xb25ZV3dTVnZndGhQa0JTUXVOUkNvbFNGU01mRGFscWZBeVJQancK",
+      "endpoints": ["https://tryambient.ai/releases/latest.json"]
+    }
+  }
+}

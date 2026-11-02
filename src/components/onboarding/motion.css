@@ -1,0 +1,305 @@
+/* Onboarding's motion and glass layer (OnboardingShell imports it once).
+   Visual only: nothing here changes layout or what a screen does. */
+
+[data-onboarding] {
+  /* The one accent: "live" (recording) states. */
+  --onb-live: #ef4444;
+  /* Frosted panels on onboarding's ambient light. */
+  --onb-glass-fill: color-mix(
+    in srgb,
+    var(--color-background) 72%,
+    transparent
+  );
+}
+
+/* ---------- ambient light behind every screen ---------- */
+.onb-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.onb-ambient::before,
+.onb-ambient::after {
+  content: "";
+  position: absolute;
+  width: 62vmax;
+  height: 62vmax;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.85;
+  animation: onb-drift 26s ease-in-out infinite alternate;
+}
+.onb-ambient::before {
+  top: -34vmax;
+  left: -16vmax;
+  background: radial-gradient(circle, var(--ambient-a), transparent 66%);
+}
+.onb-ambient::after {
+  bottom: -38vmax;
+  right: -22vmax;
+  background: radial-gradient(circle, var(--ambient-b), transparent 66%);
+  animation-delay: -13s;
+}
+@keyframes onb-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(5vmax, 3vmax, 0) scale(1.14);
+  }
+}
+
+/* ---------- glass panels ---------- */
+.onb-glass {
+  background: var(--onb-glass-fill);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 0.5px solid var(--glass-edge);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- Welcome ---------- */
+/* A slow breathing glow behind the mark: an ambient presence. */
+.onb-breathe {
+  position: absolute;
+  inset: -45%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, var(--ambient-a), transparent 72%),
+    radial-gradient(closest-side at 62% 60%, var(--ambient-b), transparent 70%);
+  filter: blur(10px);
+  opacity: 0.7;
+  animation: onb-breathe-glow 4.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes onb-breathe-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+/* A soft light that blooms behind the mark as it assembles. */
+.onb-halo {
+  position: absolute;
+  inset: -60%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-text) 14%, transparent),
+    transparent
+  );
+  animation: onb-halo 1.6s var(--ease-glide) 0.1s both;
+  pointer-events: none;
+}
+@keyframes onb-halo {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+/* Chips pop in as languages are picked. */
+.onb-chips > button,
+.onb-chips > span:not(:last-child) {
+  animation: onb-pop 420ms var(--spring) both;
+}
+/* The language grid's first arrival: a quick cascade. */
+.onb-cascade > button {
+  animation: onb-rise-in 460ms var(--ease-glide) both;
+  animation-delay: var(--onb-cascade-at, 0s);
+}
+.onb-cascade > button:nth-child(3n + 2) {
+  animation-delay: calc(var(--onb-cascade-at, 0s) + 30ms);
+}
+.onb-cascade > button:nth-child(3n + 3) {
+  animation-delay: calc(var(--onb-cascade-at, 0s) + 60ms);
+}
+.onb-cascade > button:nth-child(n + 4) {
+  animation-delay: calc(var(--onb-cascade-at, 0s) + 90ms);
+}
+.onb-cascade > button:nth-child(n + 7) {
+  animation-delay: calc(var(--onb-cascade-at, 0s) + 140ms);
+}
+.onb-cascade > button:nth-child(n + 10) {
+  animation-delay: calc(var(--onb-cascade-at, 0s) + 190ms);
+}
+.onb-cascade > button:nth-child(n + 13) {
+  animation-delay: calc(var(--onb-cascade-at, 0s) + 240ms);
+}
+
+/* ---------- Permissions ---------- */
+/* Waiting on the OS: the tile breathes. */
+.onb-waiting {
+  animation: onb-breathe 1.8s ease-in-out infinite;
+}
+@keyframes onb-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-text) 16%, transparent);
+  }
+  60% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+/* A ring that ripples out once from a fresh check. */
+.onb-ripple {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-moss);
+  animation: onb-ripple 700ms var(--ease-glide) 120ms both;
+  pointer-events: none;
+}
+@keyframes onb-ripple {
+  from {
+    opacity: 0.9;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+/* ---------- Model ---------- */
+/* The cards' first arrival. */
+.onb-stagger > * {
+  animation: onb-rise-in 520ms var(--ease-glide) both;
+}
+.onb-stagger > :nth-child(2) {
+  animation-delay: 60ms;
+}
+.onb-stagger > :nth-child(3) {
+  animation-delay: 120ms;
+}
+.onb-stagger > :nth-child(4) {
+  animation-delay: 180ms;
+}
+.onb-stagger-late {
+  animation: onb-rise-in 520ms var(--ease-glide) 220ms both;
+}
+/* Picks lift a little under the pointer. */
+.onb-lift {
+  transition:
+    translate 220ms var(--ease-glide),
+    box-shadow 220ms var(--ease-glide),
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+.onb-lift:hover {
+  translate: 0 -1px;
+  box-shadow: var(--shadow-card);
+}
+.onb-lift:active {
+  translate: 0;
+}
+
+/* Progress: eases between ticks, with a travelling sheen while it fills. */
+.onb-progress > i {
+  position: relative;
+  overflow: hidden;
+  transition: width 420ms var(--ease-glide) !important;
+}
+.onb-progress > i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-background) 55%, transparent),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: onb-sheen 1.5s ease-in-out infinite;
+}
+@keyframes onb-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ---------- Demo and Try it ---------- */
+/* The model's ready: Try it glows once as it turns on. */
+.onb-ready-pop {
+  animation: onb-ready 900ms var(--ease-glide) both;
+}
+@keyframes onb-ready {
+  0% {
+    scale: 0.92;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-text) 35%, transparent);
+  }
+  35% {
+    scale: 1.05;
+  }
+  100% {
+    scale: 1;
+    box-shadow: 0 0 0 14px transparent;
+  }
+}
+/* Captured keys pop in as they're pressed. */
+.onb-keys-pop > * {
+  animation: onb-pop 360ms var(--spring) both;
+}
+
+/* ---------- shared keyframes ---------- */
+@keyframes onb-pop {
+  0% {
+    opacity: 0;
+    scale: 0.6;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@keyframes onb-rise-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+    filter: blur(3px);
+  }
+}
+
+/* Infinite loops would strobe under the global 1ms rule: stop them. */
+@media (prefers-reduced-motion: reduce) {
+  .onb-ambient::before,
+  .onb-ambient::after,
+  .onb-breathe,
+  .onb-halo,
+  .onb-chips > button,
+  .onb-chips > span,
+  .onb-cascade > button,
+  .onb-waiting,
+  .onb-ripple,
+  .onb-stagger > *,
+  .onb-stagger-late,
+  .onb-progress > i::after,
+  .onb-ready-pop,
+  .onb-keys-pop > * {
+    animation: none !important;
+  }
+  .onb-halo,
+  .onb-ripple {
+    display: none;
+  }
+  .onb-lift:hover {
+    translate: none;
+  }
+}

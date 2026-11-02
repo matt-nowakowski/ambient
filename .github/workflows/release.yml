@@ -1,0 +1,162 @@
+name: "Release"
+
+on: workflow_dispatch
+
+jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release-id: ${{ steps.create-release.outputs.result }}
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Get version from tauri.conf.json
+        id: get-version
+        shell: bash
+        run: |
+          VERSION=$(grep -o '"version": "[^"]*"' src-tauri/tauri.conf.json | cut -d'"' -f4)
+          echo "Application version from tauri.conf.json: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create Draft Release
+        id: create-release
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${{ steps.get-version.outputs.version }}`,
+              name: `v${{ steps.get-version.outputs.version }}`,
+              draft: true,
+              prerelease: false,
+              generate_release_notes: true
+            })
+            return data.id
+
+  publish-tauri:
+    permissions:
+      contents: write
+    needs: create-release
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: "macos-26" # for Arm based macs (M1 and above). Uses macOS 26 for Apple Intelligence SDK.
+            args: "--target aarch64-apple-darwin"
+            target: "aarch64-apple-darwin"
+          - platform: "macos-latest" # for Intel based macs.
+            args: "--target x86_64-apple-darwin"
+            target: "x86_64-apple-darwin"
+          - platform: "ubuntu-22.04" # Build .deb on 22.04
+            args: "--bundles deb"
+            target: "x86_64-unknown-linux-gnu"
+          - platform: "ubuntu-24.04" # Build AppImage and RPM on 24.04
+            args: "--bundles appimage,rpm"
+            target: "x86_64-unknown-linux-gnu"
+          - platform: "ubuntu-24.04-arm" # Build for ARM64 Linux
+            args: "--bundles appimage,deb,rpm"
+            target: "aarch64-unknown-linux-gnu"
+          - platform: "windows-latest"
+            args: ""
+            target: "x86_64-pc-windows-msvc"
+          - platform: "windows-11-arm" # for ARM64 Windows runner
+            args: "--target aarch64-pc-windows-msvc"
+            target: "aarch64-pc-windows-msvc"
+
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: ${{ matrix.platform }}
+      target: ${{ matrix.target }}
+      build-args: ${{ matrix.args }}
+      sign-binaries: true
+      asset-prefix: "ambient"
+      upload-artifacts: false
+      release-id: ${{ needs.create-release.outputs.release-id }}
+      # Releases always build from scratch — never restore the Rust cache, so a
+      # stale cached native lib can never be linked into a shipped artifact.
+      no-cache: true
+    secrets: inherit
+
+  # The GitHub repo is private, so installers and the updater feed are served
+  # from R2 instead. Layout: releases/<version>/<asset>, plus
+  # releases/latest.json (Tauri updater, URLs rewritten to our domain) and
+  # releases/manifest.json (what the website's /dl/<id> links resolve).
+  # Only the current version is kept, to stay inside R2's free tier.
+  publish-r2:
+    needs: [create-release, publish-tauri]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      VERSION: ${{ needs.create-release.outputs.version }}
+      RELEASE_ID: ${{ needs.create-release.outputs.release-id }}
+      R2: s3://${{ vars.R2_BUCKET }}
+      R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+      AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+      # Public base for asset URLs; the website redirects /releases/* to R2.
+      PUBLIC_BASE: ${{ vars.DOWNLOADS_BASE_URL || 'https://tryambient.ai' }}/releases
+      # Account-wide R2 ceiling (free tier is 10 GB, shared with other projects).
+      BUDGET_BYTES: "9500000000"
+    steps:
+      - name: Download release assets
+        run: |
+          set -euo pipefail
+          mkdir -p dist && cd dist
+          gh api --paginate "repos/${{ github.repository }}/releases/$RELEASE_ID/assets" \
+            --jq '.[] | "\(.id) \(.name)"' | while read -r id name; do
+            gh api -H "Accept: application/octet-stream" \
+              "repos/${{ github.repository }}/releases/assets/$id" > "$name"
+          done
+          ls -la
+
+      - name: Check R2 budget
+        run: |
+          set -euo pipefail
+          aws() { command aws --endpoint-url "$R2_ENDPOINT" "$@"; }
+          used=0
+          for b in $(aws s3api list-buckets --query 'Buckets[].Name' --output text); do
+            n=$(aws s3api list-objects-v2 --bucket "$b" --query 'sum(Contents[].Size)' --output text)
+            [ "$n" = "None" ] || used=$((used + ${n%.*}))
+          done
+          new=$(du -cb dist/* | tail -1 | cut -f1)
+          echo "R2 account usage: $used bytes; this release adds $new bytes"
+          if [ $((used + new)) -gt "$BUDGET_BYTES" ]; then
+            echo "::error::Release would push R2 over budget"; exit 1
+          fi
+
+      - name: Upload to R2
+        run: |
+          set -euo pipefail
+          aws() { command aws --endpoint-url "$R2_ENDPOINT" "$@"; }
+          aws s3 cp dist/ "$R2/releases/$VERSION/" --recursive --exclude latest.json \
+            --cache-control "public, max-age=31536000, immutable"
+          # Point the updater feed at our host instead of GitHub.
+          sed -E "s#https://github.com/[^\"]+/releases/download/[^/\"]+/#$PUBLIC_BASE/$VERSION/#g" \
+            dist/latest.json > latest.json
+          grep -q "github.com" latest.json && { echo "::error::latest.json still points at GitHub"; exit 1; }
+          ls dist | grep -v '^latest.json$' \
+            | jq -R . | jq -s --arg v "$VERSION" '{version: $v, files: .}' > manifest.json
+          for f in latest.json manifest.json; do
+            aws s3 cp "$f" "$R2/releases/$f" --content-type application/json --cache-control "no-cache"
+          done
+
+      - name: Prune older versions
+        run: |
+          set -euo pipefail
+          aws() { command aws --endpoint-url "$R2_ENDPOINT" "$@"; }
+          for p in $(aws s3 ls "$R2/releases/" | awk '/PRE/ {print $2}'); do
+            [ "$p" = "$VERSION/" ] || aws s3 rm "$R2/releases/$p" --recursive
+          done
+
+      - name: Publish GitHub release
+        run: gh api -X PATCH "repos/${{ github.repository }}/releases/$RELEASE_ID" -F draft=false

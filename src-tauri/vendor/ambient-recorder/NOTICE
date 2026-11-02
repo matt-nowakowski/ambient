@@ -1,0 +1,12 @@
+ambient-recorder
+
+A renamed, vendored copy of handy-recorder 0.1.0 from crates.io
+(upstream: https://github.com/handy-computer/handy-recorder), published by the Handy project
+(https://github.com/cjpais/Handy). Licensed under MIT; the full license
+text is in LICENSE in this directory.
+
+Ambient owns and maintains this copy. Changes from the published crate: the
+crate and library were renamed to ambient-recorder / ambient_recorder, references to the
+upstream project were reworded, registry metadata (.cargo_vcs_info.json,
+Cargo.toml.orig, Cargo.lock) and upstream CI/Docker files were removed, and
+crates in this directory depend on each other by path.

@@ -1,0 +1,21 @@
+/** Public, indexable pages (sitemap, llms.txt). */
+export const publicPages = [
+  { path: "/", title: "Home", priority: 1 },
+  { path: "/pricing", title: "Pricing", priority: 0.9 },
+  { path: "/download", title: "Download", priority: 0.9 },
+  { path: "/features", title: "Features", priority: 0.8 },
+  { path: "/changelog", title: "Release notes", priority: 0.6 },
+  { path: "/contact", title: "Contact", priority: 0.5 },
+  { path: "/sales", title: "Sales", priority: 0.5 },
+  { path: "/docs/getting-started", title: "Getting started with the agent", priority: 0.7 },
+  { path: "/docs/answers", title: "Answers", priority: 0.6 },
+  { path: "/docs/actions", title: "Actions", priority: 0.6 },
+  { path: "/docs/recall", title: "Recall", priority: 0.6 },
+  { path: "/docs/meetings", title: "Meetings", priority: 0.6 },
+  { path: "/docs/suggestions", title: "Suggestions", priority: 0.6 },
+  { path: "/docs/privacy", title: "Privacy controls", priority: 0.6 },
+  { path: "/docs/troubleshooting", title: "Troubleshooting", priority: 0.6 },
+  { path: "/docs/linux", title: "Linux setup", priority: 0.6 },
+  { path: "/privacy", title: "Privacy Policy", priority: 0.3 },
+  { path: "/terms", title: "Terms of Service", priority: 0.3 },
+] as const;

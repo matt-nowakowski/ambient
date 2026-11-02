@@ -1,0 +1,7 @@
+{
+  "name": "Ambient",
+  "slug": "ambient",
+  "identifier": "app.ambient.desktop",
+  "domain": "tryambient.ai",
+  "githubRepo": "matt-nowakowski/ambient"
+}

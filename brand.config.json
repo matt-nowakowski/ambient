@@ -1,0 +1,27 @@
+{
+  "$comment": "Single source of truth for the product brand. Edit this, then run `bun run brand` to rewrite static files (Tauri config, Cargo, installers, docs). The app UI, Rust backend and website read these values directly at build time.",
+  "name": "Ambient",
+  "slug": "ambient",
+  "identifier": "app.ambient.desktop",
+  "domain": "tryambient.ai",
+  "supportEmail": "hello@tryambient.ai",
+  "company": {
+    "legalName": "Valenor Core Design FZCO",
+    "jurisdiction": "Dubai, United Arab Emirates (IFZA free zone company)",
+    "freeZoneAuthority": "International Free Zone Authority (IFZA), Dubai"
+  },
+  "githubRepo": "matt-nowakowski/ambient",
+  "tagline": "Speak. It's written.",
+  "licenseKeyPrefix": "ambient_",
+  "licensePublicKey": "Q2lZImFuxCc/cKTqnQ1lLyI/aZm2NzahLhAH88TMyMg=",
+  "apiBaseUrl": "https://tryambient.ai",
+  "freeWordsPerWeek": 2000,
+  "enforceFreeWordLimit": false,
+  "trialDays": 7,
+  "freePolishPerWeek": 25,
+  "pricing": {
+    "proMonthly": 12,
+    "proYearlyPerMonth": 9,
+    "teamYearlyPerUser": 8
+  }
+}

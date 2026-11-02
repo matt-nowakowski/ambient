@@ -1,0 +1,6 @@
+# Never upload local secrets or build output from CLI deploys
+.env*
+!.env.example
+.next
+node_modules
+.vercel

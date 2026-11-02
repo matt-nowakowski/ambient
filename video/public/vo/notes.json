@@ -1,0 +1,27 @@
+{
+ "id": "notes",
+ "text": "Notes for every call.",
+ "duration": 1.84,
+ "words": [
+  {
+   "w": "Notes",
+   "start": 0,
+   "end": 0.48
+  },
+  {
+   "w": "for",
+   "start": 0.56,
+   "end": 0.64
+  },
+  {
+   "w": "every",
+   "start": 0.8,
+   "end": 1.04
+  },
+  {
+   "w": "call.",
+   "start": 1.12,
+   "end": 1.84
+  }
+ ]
+}

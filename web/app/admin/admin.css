@@ -1,0 +1,331 @@
+/* ==========================================================================
+   Admin dashboard. Mirrors the desktop app's tokens (src/styles/theme.css,
+   src/App.css): ink on paper with ink-2/ink-3 greys, moss/warning/error for
+   status only, 13px body, light titles, 14px inset window on the backdrop.
+   ========================================================================== */
+
+/* The marketing header and footer step aside on /admin. */
+body:has([data-admin-root]) [data-site-chrome] {
+  display: none;
+}
+body:has([data-admin-root]) #main {
+  padding-top: 0;
+}
+
+.admin {
+  --a-ink: var(--foreground);
+  --a-ink-2: color-mix(in srgb, var(--foreground) 60%, transparent);
+  --a-ink-3: #8f8f8f;
+  --a-line: color-mix(in srgb, #8f8f8f 20%, transparent);
+  --a-line-strong: color-mix(in srgb, #8f8f8f 45%, transparent);
+  --a-wash: color-mix(in srgb, #8f8f8f 10%, transparent);
+  --a-moss: #15803d;
+  --a-warning: #d97706;
+  --a-error: #dc2626;
+  --a-moss-wash: color-mix(in srgb, #15803d 12%, transparent);
+  --a-warning-wash: color-mix(in srgb, #d97706 13%, transparent);
+  --a-error-wash: color-mix(in srgb, #dc2626 12%, transparent);
+  --a-panel: color-mix(in srgb, var(--glass-strong) 70%, transparent);
+  /* Chart inks: one hue (the ink), four steps, darkest = most valuable. */
+  --a-s1: color-mix(in srgb, var(--foreground) 88%, transparent);
+  --a-s2: color-mix(in srgb, var(--foreground) 58%, transparent);
+  --a-s3: color-mix(in srgb, var(--foreground) 34%, transparent);
+  --a-s4: color-mix(in srgb, var(--foreground) 17%, transparent);
+  --a-surface: var(--background);
+
+  --radius-window: 14px;
+  --radius-panel: 16px;
+  --radius-card: 12px;
+  --radius-control: 9px;
+  --radius-tip: 8px;
+
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: var(--a-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-color-scheme: dark) {
+  .admin {
+    --a-moss: #4ade80;
+    --a-warning: #fbbf24;
+    --a-error: #f87171;
+    --a-moss-wash: color-mix(in srgb, #4ade80 14%, transparent);
+    --a-warning-wash: color-mix(in srgb, #fbbf24 14%, transparent);
+    --a-error-wash: color-mix(in srgb, #f87171 14%, transparent);
+    --a-s1: color-mix(in srgb, var(--foreground) 90%, transparent);
+    --a-s2: color-mix(in srgb, var(--foreground) 60%, transparent);
+    --a-s3: color-mix(in srgb, var(--foreground) 36%, transparent);
+    --a-s4: color-mix(in srgb, var(--foreground) 19%, transparent);
+  }
+}
+
+.admin-window {
+  border-radius: var(--radius-window);
+}
+
+.admin .ink-2 {
+  color: var(--a-ink-2);
+}
+.admin .ink-3 {
+  color: var(--a-ink-3);
+}
+
+.admin-panel {
+  position: relative;
+  border-radius: var(--radius-card);
+  background: var(--a-panel);
+  border: 0.5px solid var(--a-line);
+}
+
+.admin-title {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+.admin-section-title {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+.admin-label {
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 450;
+  color: var(--a-ink-2);
+}
+.admin-meta {
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--a-ink-3);
+}
+.admin-figure {
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 250;
+  letter-spacing: -0.035em;
+}
+
+/* Pills */
+.admin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 450;
+  white-space: nowrap;
+  background: var(--a-wash);
+  color: var(--a-ink-2);
+}
+.admin-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.9;
+}
+.admin-pill[data-tone="moss"] {
+  background: var(--a-moss-wash);
+  color: var(--a-moss);
+}
+.admin-pill[data-tone="warning"] {
+  background: var(--a-warning-wash);
+  color: var(--a-warning);
+}
+.admin-pill[data-tone="error"] {
+  background: var(--a-error-wash);
+  color: var(--a-error);
+}
+.admin-pill[data-tone="plain"]::before {
+  display: none;
+}
+
+/* Meters */
+.admin-meter {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--a-wash);
+  overflow: hidden;
+}
+.admin-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--a-s1);
+  transform-origin: left center;
+}
+.admin-meter[data-level="approaching"] > span {
+  background: var(--a-warning);
+}
+.admin-meter[data-level="over"] > span {
+  background: var(--a-error);
+}
+
+/* Tables */
+.admin-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+}
+/* Long tables scroll inside their panel, with the header pinned. */
+.admin-table-wrap[data-scroll] {
+  overflow: auto;
+  max-height: 480px;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.admin-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 450;
+  color: var(--a-ink-3);
+  padding: 8px 12px;
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--a-line);
+  white-space: nowrap;
+}
+.admin-table td {
+  padding: 9px 12px;
+  border-bottom: 0.5px solid var(--a-line);
+  vertical-align: top;
+}
+.admin-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.admin-table tbody tr {
+  transition: background-color 120ms ease;
+}
+.admin-table tbody tr:hover {
+  background: var(--a-wash);
+}
+.admin-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Segmented control (period) */
+.admin-seg {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--a-wash);
+}
+.admin-seg a {
+  height: 24px;
+  padding: 0 11px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--a-ink-2);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.admin-seg a:hover {
+  color: var(--a-ink);
+}
+.admin-seg a[aria-current="page"] {
+  background: var(--toggle-pill);
+  color: var(--a-ink);
+  box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.admin-btn {
+  height: 28px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--a-ink-2);
+  border: 0.5px solid var(--a-line-strong);
+  transition: color 160ms ease, background-color 160ms ease, transform 160ms var(--spring);
+}
+.admin-btn:hover {
+  color: var(--a-ink);
+  background: var(--a-wash);
+}
+.admin-btn:active {
+  transform: scale(0.97);
+}
+
+/* Chart tooltip */
+.admin-tip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  min-width: 140px;
+  padding: 8px 10px;
+  border-radius: var(--radius-tip);
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 0.5px solid var(--a-line-strong);
+  box-shadow: var(--shadow-pop);
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.admin-swatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.admin details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+.admin details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin *,
+  .admin *::before,
+  .admin *::after {
+    transition-duration: 1ms !important;
+  }
+}
+
+/* A segmented control that scrolls sideways on a phone rather than wrapping
+   or pushing the page wider. */
+.admin-seg-scroll {
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.admin-seg-scroll::-webkit-scrollbar {
+  display: none;
+}
+.admin-seg-scroll a {
+  flex: none;
+}
+
+/* Section tabs: the segmented control, a touch larger. */
+.admin-tabs a {
+  height: 28px;
+  padding: 0 13px;
+  font-size: 12.5px;
+}

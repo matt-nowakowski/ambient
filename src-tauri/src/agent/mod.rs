@@ -1,0 +1,560 @@
+//! The ambient agent. `handle` runs what the router decided (answer, act,
+//! recall); the background loop watches which app is in front and, when the
+//! user has opted in, keeps encrypted screen memory.
+
+pub mod act;
+pub mod answer;
+pub mod llm;
+pub mod personal;
+pub mod proactive;
+pub mod router;
+pub mod wake;
+
+use std::sync::Mutex;
+use std::time::{Duration, Instant};
+
+use std::sync::Arc;
+
+use tauri::{AppHandle, Manager};
+
+use crate::managers::history::HistoryManager;
+use router::Route;
+
+use crate::context::{self, redact::redact, FrontmostApp};
+use crate::settings;
+
+/// How often the loop checks the frontmost app (cheap: no accessibility calls).
+const TICK: Duration = Duration::from_secs(1);
+/// Re-capture the same app after this long, if its text changed.
+const IDLE_RECAPTURE: Duration = Duration::from_secs(30);
+/// Wait this long after an app switch so the new window has drawn.
+const SETTLE: Duration = Duration::from_millis(1200);
+const SNAPSHOT_CHARS: usize = 6000;
+/// How long the user stays on a window before a suggestion is considered.
+const DWELL: Duration = Duration::from_secs(6);
+
+fn agent_prep_due(last: &mut Option<Instant>) -> bool {
+    if last.is_some_and(|t| t.elapsed() < Duration::from_secs(60)) {
+        return false;
+    }
+    *last = Some(Instant::now());
+    true
+}
+
+fn is_recording(app: &AppHandle) -> bool {
+    app.try_state::<Arc<crate::managers::audio::AudioRecordingManager>>()
+        .is_some_and(|rm| rm.is_recording())
+}
+
+/// The last app the user was in that isn't Ambient itself, so "about this"
+/// still works after the user clicks into an Ambient window.
+static LAST_USER_APP: Mutex<Option<FrontmostApp>> = Mutex::new(None);
+
+pub fn last_user_app() -> Option<FrontmostApp> {
+    LAST_USER_APP.lock().ok().and_then(|g| g.clone())
+}
+
+/// Apps whose being in front, while another app uses the mic, means a call.
+const CALL_APPS: &[&str] = &[
+    "us.zoom.xos",
+    "com.microsoft.teams2",
+    "com.microsoft.teams",
+    "com.apple.FaceTime",
+    "com.tinyspeck.slackmacgap",
+    "com.hnc.Discord",
+    "Cisco-Systems.Spark",
+    "com.webex.meetingmanager",
+];
+const BROWSERS: &[&str] = &[
+    "com.google.Chrome",
+    "com.apple.Safari",
+    "company.thebrowser.Browser",
+    "com.microsoft.edgemac",
+    "org.mozilla.firefox",
+    "com.brave.Browser",
+];
+/// Ask at most once per call app in this window.
+const OFFER_COOLDOWN: Duration = Duration::from_secs(30 * 60);
+pub const MEETING_OFFER_ID: &str = "meeting-offer";
+
+fn is_call(front: &FrontmostApp, never_watch: &[String]) -> bool {
+    if CALL_APPS.contains(&front.bundle_id.as_str()) {
+        return true;
+    }
+    if !BROWSERS.contains(&front.bundle_id.as_str()) {
+        return false;
+    }
+    // Browser calls: look at the window's title and URL only (no page text).
+    context::snapshot(0, never_watch).is_ok_and(|s| {
+        let url = s.url.unwrap_or_default();
+        url.contains("meet.google.com")
+            || url.contains("teams.microsoft.com")
+            || url.contains("teams.live.com")
+            || url.contains("zoom.us/wc")
+            || s.window_title.starts_with("Meet - ")
+            || s.window_title.contains("| Microsoft Teams")
+    })
+}
+
+/// Accepting the HUD's meeting offer starts notes.
+fn listen_for_offer(app: &AppHandle) {
+    use tauri::Listener;
+    let handle = app.clone();
+    app.listen("hud-action", move |event| {
+        let Ok(action) = serde_json::from_str::<crate::hud::HudActionEvent>(event.payload()) else {
+            return;
+        };
+        if action.id.starts_with(CHIP_PREFIX) {
+            on_chip_action(&handle, &action.id, &action.action);
+            return;
+        }
+        if action.id.starts_with(crate::meeting::NUDGE_PREFIX) {
+            crate::meeting::on_nudge_action(&handle, &action.id, &action.action);
+            return;
+        }
+        if action.id.starts_with(proactive::ID_PREFIX) {
+            proactive::on_action(&handle, &action.id, &action.action);
+            return;
+        }
+        if action.id == MEETING_OFFER_ID && action.action == "accept" {
+            crate::hud::hide(&handle);
+            match crate::meeting::start(&handle) {
+                Ok(_) => crate::hud::show(
+                    &handle,
+                    crate::hud::HudContent::Status {
+                        text: "hud.status.meetingStarted".into(),
+                        tone: crate::hud::HudTone::Success,
+                        undo: false,
+                    },
+                ),
+                Err(key) => crate::hud::show(
+                    &handle,
+                    crate::hud::HudContent::Status {
+                        text: key,
+                        tone: crate::hud::HudTone::Error,
+                        undo: false,
+                    },
+                ),
+            }
+        }
+    });
+}
+
+pub fn start(app: AppHandle) {
+    listen_for_offer(&app);
+    wake::start(app.clone());
+    std::thread::Builder::new()
+        .name("ambient-agent".into())
+        .spawn(move || run(app))
+        .expect("spawn agent loop");
+}
+
+fn run(app: AppHandle) {
+    let own_id = env!("BRAND_IDENTIFIER");
+    let mut current: Option<(i32, Instant)> = None; // pid, when it came to front
+    let mut last_capture: Option<Instant> = None;
+    let mut offered: std::collections::HashMap<String, Instant> = std::collections::HashMap::new();
+    // Proactive suggestions look at each window (app + title) once, after
+    // the user has stayed on it for DWELL.
+    let mut window: Option<(i32, String, Instant)> = None;
+    let mut last_prep: Option<Instant> = None;
+    let mut notified_sensitive: Option<String> = None;
+    let mut considered: Option<(i32, String)> = None;
+
+    loop {
+        std::thread::sleep(TICK);
+        let Some(front) = context::frontmost_app() else {
+            continue;
+        };
+        if front.bundle_id != own_id {
+            if let Ok(mut g) = LAST_USER_APP.lock() {
+                *g = Some(front.clone());
+            }
+        }
+
+        let switched = current.map_or(true, |(pid, _)| pid != front.pid);
+        if switched {
+            current = Some((front.pid, Instant::now()));
+            last_capture = None;
+            continue;
+        }
+        let (_, since) = current.expect("set above");
+        if since.elapsed() < SETTLE {
+            continue;
+        }
+
+        // Stepped back from a window showing a recovery phrase or key: say so
+        // once per window, if anything is watching.
+        if let Some((bundle, title)) = context::recent_sensitive() {
+            let key = format!("{bundle}|{title}");
+            let a = settings::get_settings(&app).agent;
+            if (a.screen_context || a.screen_memory || a.proactive)
+                && notified_sensitive.as_deref() != Some(&key)
+            {
+                notified_sensitive = Some(key);
+                crate::hud::show(
+                    &app,
+                    crate::hud::HudContent::Status {
+                        text: "hud.status.sensitivePaused".into(),
+                        tone: crate::hud::HudTone::Neutral,
+                        undo: false,
+                    },
+                );
+            }
+        }
+
+        // Meeting prep from the user's own Calendar, checked once a minute.
+        if agent_prep_due(&mut last_prep) {
+            let a = settings::get_settings(&app).agent;
+            if a.proactive
+                && !a.is_paused()
+                && crate::plan::is_paid(&app)
+                && !crate::hud::is_visible()
+            {
+                proactive::consider_calendar(&app, a.suggestions_per_hour);
+            }
+        }
+
+        // Meeting offer: a call app in front and someone else using the mic.
+        let agent = settings::get_settings(&app).agent;
+        if agent.meetings
+            && !agent.is_paused()
+            && !crate::meeting::is_active()
+            && offered
+                .get(&front.bundle_id)
+                .map_or(true, |t| t.elapsed() > OFFER_COOLDOWN)
+            && crate::meeting::mic_in_use()
+            && is_call(&front, &agent.never_watch)
+        {
+            offered.insert(front.bundle_id.clone(), Instant::now());
+            crate::hud::show(
+                &app,
+                crate::hud::HudContent::Suggestion {
+                    id: MEETING_OFFER_ID.into(),
+                    title: "hud.meetingOffer".into(),
+                    accept_label: "hud.takeNotes".into(),
+                },
+            );
+        }
+        // Proactive: once per visit, after DWELL, never over a recording, a
+        // meeting or another HUD card. Decided on device; nothing is sent.
+        if agent.proactive && !agent.is_paused() && crate::plan::is_paid(&app) {
+            // Metadata only (title), cheap enough for every tick.
+            if let Ok(meta) = context::snapshot(0, &agent.never_watch) {
+                let key = (front.pid, meta.window_title);
+                if window
+                    .as_ref()
+                    .map_or(true, |(p, t, _)| (p, t) != (&key.0, &key.1))
+                {
+                    window = Some((key.0, key.1.clone(), Instant::now()));
+                }
+                let dwelled = window
+                    .as_ref()
+                    .is_some_and(|(_, _, at)| at.elapsed() >= DWELL);
+                if dwelled
+                    && considered.as_ref() != Some(&key)
+                    && !crate::hud::is_visible()
+                    && !crate::meeting::is_active()
+                    && !is_recording(&app)
+                {
+                    considered = Some(key);
+                    if let Ok(snap) = context::snapshot(proactive::text_chars(), &agent.never_watch)
+                    {
+                        proactive::consider(&app, snap, agent.suggestions_per_hour);
+                    }
+                }
+            }
+        }
+
+        let due = last_capture.map_or(true, |t| t.elapsed() >= IDLE_RECAPTURE);
+        if !due {
+            continue;
+        }
+        last_capture = Some(Instant::now());
+
+        // The 2-minute rolling memory (in RAM only) needs screen context;
+        // the encrypted on-disk memory needs screen memory too.
+        if !(agent.screen_context || agent.screen_memory)
+            || agent.is_paused()
+            || !crate::plan::is_paid(&app)
+        {
+            continue;
+        }
+        match context::snapshot(SNAPSHOT_CHARS, &agent.never_watch) {
+            Ok(mut snap) => {
+                snap.text = snap.text.map(|t| redact(&t).0);
+                snap.selection = None;
+                snap.focused_text = None;
+                remember_recent(&snap);
+                if agent.screen_memory {
+                    if let Some(recall) = crate::recall::get() {
+                        if let Err(e) = recall.add_screen(&snap) {
+                            log::debug!("screen memory write failed: {e}");
+                        }
+                    }
+                }
+            }
+            Err(reason) => log::trace!("no snapshot: {reason:?}"),
+        }
+    }
+}
+
+/// agent-watch's idea: the last couple of minutes of windows, kept in memory
+/// only (never on disk), so "what was on the page I just closed?" works even
+/// without screen memory.
+const RECENT_WINDOW: Duration = Duration::from_secs(120);
+static RECENT: Mutex<std::collections::VecDeque<(Instant, context::ContextSnapshot)>> =
+    Mutex::new(std::collections::VecDeque::new());
+
+fn remember_recent(snap: &context::ContextSnapshot) {
+    if let Ok(mut r) = RECENT.lock() {
+        r.retain(|(t, s)| t.elapsed() < RECENT_WINDOW && s.window_title != snap.window_title);
+        r.push_back((Instant::now(), snap.clone()));
+        while r.len() > 12 {
+            r.pop_front();
+        }
+    }
+}
+
+pub fn forget_recent() {
+    if let Ok(mut r) = RECENT.lock() {
+        r.clear();
+    }
+}
+
+/// ±`radius` chars around the first query word found, or None.
+fn snippet(text: &str, words: &[String], radius: usize) -> Option<String> {
+    let lower = text.to_lowercase();
+    let at = words.iter().filter_map(|w| lower.find(w.as_str())).min()?;
+    let start = lower[..at]
+        .char_indices()
+        .rev()
+        .nth(radius)
+        .map_or(0, |(i, _)| i);
+    let tail: String = text[start..].chars().take(radius * 2).collect();
+    Some(tail.replace('\n', " "))
+}
+
+/// Something the user did for the first time worth celebrating: the Home
+/// checklist ticks itself off from these. Names are stable ("answer",
+/// "about_screen", "reminder", "event", "action", "recall", "meeting",
+/// "suggestion").
+pub fn milestone(app: &AppHandle, name: &str) {
+    use tauri::Emitter;
+    let _ = app.emit("agent-milestone", name);
+}
+
+/// Run a routed request (anything but Write, which pastes as usual).
+pub fn handle(app: &AppHandle, route: Route) {
+    match &route {
+        Route::Answer {
+            about_screen: true, ..
+        } => milestone(app, "about_screen"),
+        Route::Answer { .. } => milestone(app, "answer"),
+        Route::Act(router::Action::Reminder { .. }) => milestone(app, "reminder"),
+        Route::Act(router::Action::CalendarEvent { .. }) => milestone(app, "event"),
+        Route::Act(_) => milestone(app, "action"),
+        Route::Recall(_) => milestone(app, "recall"),
+        Route::Write(_) | Route::Handled => {}
+    }
+    let app = app.clone();
+    tauri::async_runtime::spawn(async move {
+        match route {
+            Route::Write(_) | Route::Handled => {}
+            Route::Answer {
+                query,
+                needs_web,
+                about_screen,
+            } => {
+                let web = needs_web && !settings::get_settings(&app).agent.on_device_only;
+                answer::run(app, query, web, about_screen, None).await;
+            }
+            Route::Act(action) => act::run(app, action).await,
+            Route::Recall(query) => {
+                // Searching windows, meetings and Spotlight blocks; keep it off
+                // the async runtime. Files and Drive/Gmail searches are linked.
+                let (a, q) = (app.clone(), query.clone());
+                let (context, links) = tauri::async_runtime::spawn_blocking(move || {
+                    (recall_context(&a, &q), personal::find(&q))
+                })
+                .await
+                .unwrap_or_default();
+                answer::run_with(
+                    app,
+                    query,
+                    false,
+                    false,
+                    Some(context),
+                    answer::Opts {
+                        links,
+                        ..Default::default()
+                    },
+                )
+                .await;
+            }
+        }
+    });
+}
+
+/// Past dictations (and screen memory, if kept) matching the question, as
+/// dated snippets for the model to answer from.
+pub(crate) fn recall_context(app: &AppHandle, query: &str) -> String {
+    let mut out = String::new();
+    let words: Vec<String> = query
+        .split_whitespace()
+        .map(|w| {
+            w.trim_matches(|c: char| !c.is_alphanumeric())
+                .to_lowercase()
+        })
+        .filter(|w| w.len() > 2)
+        .collect();
+    let agent = settings::get_settings(app).agent;
+    // What's open right now, in any app, and what was on screen a moment ago.
+    if agent.screen_context && !agent.is_paused() && !words.is_empty() {
+        for w in context::open_windows(&agent.never_watch, 8000) {
+            if let Some(snip) = snippet(&w.text, &words, 400) {
+                out.push_str(&format!(
+                    "[open now in {} — {}] {}\n",
+                    w.name, w.title, snip
+                ));
+            }
+        }
+        if let Ok(recent) = RECENT.lock() {
+            for (_, s) in recent.iter().rev() {
+                if let Some(snip) = s.text.as_deref().and_then(|t| snippet(t, &words, 400)) {
+                    out.push_str(&format!(
+                        "[seen a moment ago in {} — {}] {}\n",
+                        s.app.name, s.window_title, snip
+                    ));
+                }
+            }
+        }
+    }
+    let fmt = |ts: i64| {
+        chrono::DateTime::from_timestamp(ts, 0)
+            .map(|d| {
+                d.with_timezone(&chrono::Local)
+                    .format("%a %d %b %H:%M")
+                    .to_string()
+            })
+            .unwrap_or_default()
+    };
+    if let Some(history) = app.try_state::<Arc<HistoryManager>>() {
+        if let Ok(entries) = history.search_text(query, 8) {
+            for e in entries {
+                let text = e.post_processed_text.unwrap_or(e.transcription_text);
+                out.push_str(&format!(
+                    "[dictated {}] {}\n",
+                    fmt(e.timestamp),
+                    text.chars().take(600).collect::<String>()
+                ));
+            }
+        }
+    }
+    if agent.screen_memory {
+        if let Some(r) = crate::recall::get_if_open() {
+            if let Ok(entries) = r.search_screen(query, None, 6) {
+                for e in entries {
+                    out.push_str(&format!(
+                        "[seen {} in {} — {}] {}\n",
+                        fmt(e.ts),
+                        e.app,
+                        e.title,
+                        e.text.chars().take(800).collect::<String>()
+                    ));
+                }
+            }
+        }
+    }
+    // Meeting transcripts and notes.
+    if let Some(r) = crate::recall::get_if_open() {
+        if let Ok(meetings) = r.meetings(60) {
+            let mut found = 0;
+            for (_, started, _, plain) in meetings {
+                let Ok(body) = serde_json::from_slice::<crate::meeting::MeetingBody>(&plain) else {
+                    continue;
+                };
+                let title = body
+                    .summary
+                    .as_ref()
+                    .map(|s| s.title.clone())
+                    .unwrap_or_default();
+                let text: String = body
+                    .notes
+                    .iter()
+                    .cloned()
+                    .chain(body.segments.iter().map(|s| s.text.clone()))
+                    .collect::<Vec<_>>()
+                    .join("\n");
+                if let Some(snip) = snippet(&text, &words, 400) {
+                    out.push_str(&format!(
+                        "[meeting {} — {}] {}\n",
+                        fmt(started),
+                        title,
+                        snip
+                    ));
+                    found += 1;
+                    if found >= 4 {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    // Files, Mail messages and notes on this Mac (Spotlight): names only.
+    for (name, url) in personal::spotlight_hits(query) {
+        out.push_str(&format!("[file on this Mac] {name} ({url})\n"));
+    }
+    if out.is_empty() {
+        out.push_str("(Nothing matching was found in the user's history.)");
+    }
+    out
+}
+
+// ── "Search this instead?" ───────────────────────────────────────────────
+
+pub const CHIP_PREFIX: &str = "chip-";
+static CHIP: Mutex<Option<(String, String)>> = Mutex::new(None);
+
+/// After a phrase that sounded like a question was typed (the router said
+/// "write"), offer to search it instead for a few seconds.
+pub fn offer_search_instead(app: &AppHandle, text: &str) {
+    if crate::hud::is_visible() {
+        return;
+    }
+    let id = format!("{CHIP_PREFIX}{}", chrono::Utc::now().timestamp_millis());
+    if let Ok(mut g) = CHIP.lock() {
+        *g = Some((id.clone(), text.to_string()));
+    }
+    crate::hud::show(
+        app,
+        crate::hud::HudContent::Suggestion {
+            id,
+            title: "hud.chip.searchInstead".into(),
+            accept_label: "hud.chip.search".into(),
+        },
+    );
+}
+
+/// Accepting takes the paste back (Cmd+Z) and answers it instead.
+fn on_chip_action(app: &AppHandle, id: &str, action: &str) {
+    let Some((chip_id, text)) = CHIP.lock().ok().and_then(|mut g| g.take()) else {
+        return;
+    };
+    if chip_id != id || action != "accept" {
+        return;
+    }
+    crate::hud::hide(app);
+    let handle = app.clone();
+    std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(150));
+        if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
+            if let Ok(mut enigo) = state.0.lock() {
+                let _ = crate::input::send_undo(&mut enigo);
+            }
+        }
+        tauri::async_runtime::spawn(
+            async move { answer::run(handle, text, true, false, None).await },
+        );
+    });
+}

@@ -1,0 +1,32 @@
+{
+ "id": "hey",
+ "text": "Or just say: Hey Ambient.",
+ "duration": 2.4,
+ "words": [
+  {
+   "w": "Or",
+   "start": 0,
+   "end": 0.24
+  },
+  {
+   "w": "just",
+   "start": 0.32,
+   "end": 0.48
+  },
+  {
+   "w": "say:",
+   "start": 0.56,
+   "end": 0.88
+  },
+  {
+   "w": "Hey",
+   "start": 1.28,
+   "end": 1.44
+  },
+  {
+   "w": "Ambient.",
+   "start": 1.52,
+   "end": 2.4
+  }
+ ]
+}

@@ -1,0 +1,127 @@
+@import "../styles/theme.css";
+
+/* The first-launch intro: a dark frosted veil over the desktop, slow light,
+   the orb assembling and the wordmark; the veil then shrinks into the main
+   window. Fixed dark in both themes,
+   like the HUD. */
+.intro-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  font-family:
+    "Geist",
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: #fafafa;
+  -webkit-font-smoothing: antialiased;
+}
+
+.intro-veil {
+  position: absolute;
+  background: rgba(10, 10, 14, 0.82);
+  backdrop-filter: blur(40px) saturate(140%);
+  -webkit-backdrop-filter: blur(40px) saturate(140%);
+  overflow: hidden;
+  transition: background-color 620ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+/* Landing as the main window: its colour, edge and shadow. */
+.intro-veil[data-morph] {
+  background: var(--color-background);
+  box-shadow:
+    0 0 0 0.5px rgb(255 255 255 / 0.12),
+    0 24px 70px rgb(0 0 0 / 0.45);
+}
+
+.intro-aurora {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.38;
+  mix-blend-mode: screen;
+}
+
+.intro-aurora-a {
+  left: -18vmax;
+  top: -24vmax;
+  background: radial-gradient(circle, rgb(64 84 140) 0%, transparent 65%);
+  animation: intro-drift-a 9s ease-in-out infinite alternate;
+}
+
+.intro-aurora-b {
+  right: -20vmax;
+  bottom: -26vmax;
+  background: radial-gradient(circle, rgb(120 72 64) 0%, transparent 65%);
+  animation: intro-drift-b 11s ease-in-out infinite alternate;
+}
+
+@keyframes intro-drift-a {
+  to {
+    transform: translate(10vmax, 8vmax) scale(1.1);
+  }
+}
+
+@keyframes intro-drift-b {
+  to {
+    transform: translate(-12vmax, -6vmax) scale(1.08);
+  }
+}
+
+.intro-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-lockup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.intro-orb {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.intro-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: #fafafa;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.22);
+}
+
+.intro-bloom {
+  position: absolute;
+  inset: -60%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(150, 170, 220, 0.18) 40%,
+    transparent 70%
+  );
+  filter: blur(18px);
+}
+
+.intro-word {
+  display: inline-flex;
+  font-size: 60px;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.intro-word > span {
+  display: inline-block;
+}

@@ -1,0 +1,1502 @@
+{
+  "tray": {
+    "settings": "Configuració...",
+    "checkUpdates": "Comprova si hi ha actualitzacions...",
+    "copyLastTranscript": "Copia l'última transcripció",
+    "unloadModel": "Allibera el model de la memòria",
+    "model": "Model",
+    "quit": "Surt",
+    "cancel": "Cancel·la",
+    "secureInputWarning": "⚠ Dreceres blocades per l'entrada segura"
+  },
+  "sidebar": {
+    "home": "Inici",
+    "general": "General",
+    "account": "Compte",
+    "models": "Models",
+    "advanced": "Avançat",
+    "postProcessing": "Postprocessament",
+    "history": "Historial",
+    "debug": "Depuració",
+    "about": "Quant a",
+    "settings": "Configuració",
+    "privacy": "Privadesa",
+    "meetings": "Reunions"
+  },
+  "onboarding": {
+    "customModelDescription": "Sense suport oficial",
+    "migration": {
+      "title": "Cal actualitzar els vostres models",
+      "description": "El {{appName}} ara fa servir un model millor. Baixeu-lo per continuar transcrivint.",
+      "replaces": "Substitueix {{name}}",
+      "oldFormat": "Format antic",
+      "failed": "Ha fallat la baixada",
+      "retry": "Torna-ho a provar",
+      "chooseAnother": "Trieu un altre model",
+      "download": "Baixa els models ({{size}})",
+      "continue": "Continua"
+    },
+    "errors": {
+      "selectModel": "No s'ha pogut seleccionar el model"
+    },
+    "permissions": {
+      "microphone": {
+        "name": "Micròfon",
+        "why": "Perquè el {{appName}} us pugui sentir. La vostra veu no surt mai d'aquest ordinador."
+      },
+      "accessibility": {
+        "name": "Accessibilitat",
+        "why": "Perquè la drecera funcioni arreu i el text arribi on escriviu."
+      },
+      "errors": {
+        "checkFailed": "No s'han pogut comprovar els permisos. Torneu-ho a provar.",
+        "requestFailed": "No s'ha pogut sol·licitar el permís. Torneu-ho a provar."
+      },
+      "titleMac": "Dos permisos i ja està",
+      "titleWindows": "Un permís i ja està",
+      "subtitleMac": "El macOS pregunta abans que qualsevol aplicació pugui escoltar o escriure.",
+      "subtitleWindows": "El Windows pregunta abans que qualsevol aplicació pugui escoltar.",
+      "allow": "Permet",
+      "openSettings": "Obre la configuració",
+      "allowed": "Permès",
+      "waiting": "En espera",
+      "turnOnMac": "Activeu el {{appName}} a Configuració del Sistema i torneu aquí.",
+      "turnOnWindows": "Activeu l'accés al micròfon a Configuració de Windows i torneu aquí.",
+      "hintBoth": "Permeteu-los tots dos per continuar",
+      "hintMicrophone": "Permeteu el micròfon per continuar",
+      "welcomeBack": "Us donem la benvinguda de nou. Continuem on ho havíeu deixat.",
+      "relaunch": "La drecera no funciona? <relaunch>Torneu a obrir el {{appName}}</relaunch>. Tornareu directament aquí."
+    },
+    "shell": {
+      "back": "Enrere",
+      "continue": "Continua",
+      "progress": "Pas {{step}} de {{count}}"
+    },
+    "welcome": {
+      "title": "Parleu en lloc d'escriure, a qualsevol aplicació",
+      "subtitle": "Trieu les llengües en què dictareu",
+      "languagesLabel": "Llengües",
+      "noMatch": "No hi ha resultats per a «{{query}}». Hi ha més idiomes a la configuració.",
+      "appLanguage": "Llengua de l'aplicació",
+      "menusIn": "Interfície en <b>{{language}}</b>",
+      "chinese": {
+        "question": "Parleu {{languages}}. Quins caràcters ha d'escriure el {{appName}}?",
+        "label": "Caràcters xinesos",
+        "zh-Hans": "Simplificat",
+        "zh-Hant": "Taiwan",
+        "zh-HK": "Hong Kong"
+      },
+      "hint": {
+        "pickOne": "Trieu almenys una llengua",
+        "weak_one": "{{languages}}: cap model l'entén bé encara",
+        "weak_many": "{{languages}}: cap model les entén bé encara",
+        "weak_other": "{{languages}}: cap model les entén bé encara"
+      }
+    },
+    "download": {
+      "checking": "S'està comprovant la baixada…",
+      "ready": "{{name}} està a punt",
+      "failed": "La baixada s'ha aturat",
+      "downloading": "S'està baixant {{name}}",
+      "progress": "{{done}} de {{total}}",
+      "progressLeft": "{{done}} de {{total}}, queden {{time}}",
+      "checkingName": "S'està comprovant {{name}}",
+      "checkingDetail": "Ens assegurem que la baixada estigui completa",
+      "stopped": "{{name}} ha deixat de baixar-se",
+      "retryDetail": "En tornar-ho a provar, continua on s'havia aturat",
+      "retryDownload": "Torna a provar la baixada",
+      "cardProgress": "S'està baixant {{percent}} %, {{done}} de {{total}}",
+      "timeLeft": "Queden {{time}}",
+      "speedLeft": "{{speed}}, queden {{time}}"
+    },
+    "model": {
+      "title": "Trieu un model de veu",
+      "subtitle": "Converteix la vostra veu en text, en aquest ordinador",
+      "label": "Model de veu",
+      "lines": {
+        "recommended": "La millor velocitat i precisió per als vostres idiomes",
+        "faster": "Més ràpid, amb alguns errors més",
+        "accurate": "Menys errors, però més lent"
+      },
+      "shorts": {
+        "recommended": "El millor equilibri per a vós",
+        "faster": "Més ràpid, uns quants errors més",
+        "accurate": "Menys errors, però més lent"
+      },
+      "model": "Model",
+      "showAll": "Mostra els {{count}} models",
+      "download": "Baixa {{size}}",
+      "downloadInstead": "Baixa {{size}} en lloc seu",
+      "pauses": "{{name}} es posa en pausa al {{percent}} %",
+      "resumeLater": "Torneu-lo a triar per continuar on s'havia quedat",
+      "hint": "Es baixa mentre acabeu la configuració"
+    },
+    "demo": {
+      "title": "Parleu a qualsevol aplicació, amb una sola drecera",
+      "hold": "<0>Feu clic on voldríeu escriure.</0> <1>Manteniu premuda la drecera i parleu.</1> <2>Deixeu-la anar i les paraules apareixeran.</2>",
+      "tap": "<0>Feu clic on voldríeu escriure.</0> <1>Premeu la drecera i parleu.</1> <2>Torneu-la a prémer i les paraules apareixeran.</2>",
+      "apps": {
+        "messages": "Missatges",
+        "notes": "Notes"
+      },
+      "chat": "Al final vindràs aquesta nit?",
+      "noteTitle": "Plans per al cap de setmana",
+      "screenLabel": "Un portàtil: algú fa clic en una aplicació, prem la drecera i parla, i les paraules apareixen on ha fet clic.",
+      "change": "Canvia",
+      "yourShortcut": "La vostra drecera és",
+      "pressKeys": "Premeu les tecles noves",
+      "addKey": "Ara afegiu-hi una tecla",
+      "cancel": "Cancel·la",
+      "tryIt": "Proveu-ho vosaltres mateixos"
+    },
+    "try": {
+      "title": "Proveu-ho!",
+      "subtitle": "El {{appName}} és a la cantonada per guiar-vos",
+      "noteLabel": "Nota",
+      "placeholder": "Nota nova",
+      "hold": "Manteniu premut <keys/> i parleu.",
+      "tapNext": "Ara premeu <keys/> una vegada i parleu.",
+      "letGo": "Deixeu anar <keys/> quan acabeu.",
+      "tapAgain": "Torneu a prémer <keys/> quan acabeu.",
+      "watch": "Mireu la nota.",
+      "changeKeys": "Canvia la drecera, {{keys}}",
+      "doneHold": "Xoqueu-la! Això era mantenir premut.",
+      "doneHoldNext": "Ara, la manera sense mans.",
+      "doneTap": "Xoqueu-la! Això era prémer una vegada.",
+      "doneTapNext": "Ara proveu de mantenir-les premudes mentre parleu.",
+      "giveFive": "Ho heu aconseguit! Xoqueu-la",
+      "highFive": "Xoqueu-la",
+      "slowLine": "{{name}} ha trigat {{wait}} en aquest ordinador. <faster>Proveu un model més ràpid</faster>",
+      "nothingTyped": "Mmm, no ha arribat res.",
+      "nothingTypedSub": "Feu clic primer a la nota i torneu-ho a provar.",
+      "silent": "No he sentit res.",
+      "silentSub": "Aquest micròfon no ha captat cap so. Proveu-ne un altre:",
+      "noWords": "No he entès cap paraula.",
+      "noWordsSub": "Torneu-ho a provar i digueu una frase sencera.",
+      "finish": "Acaba",
+      "skip": "Omet",
+      "seconds": "{{value}} s"
+    },
+    "done": {
+      "title": "Tot a punt",
+      "subMac": "El {{appName}} és a la barra de menús. Manteniu premut o toqueu <keys/> a qualsevol aplicació per parlar.",
+      "subTray": "El {{appName}} és a la safata del sistema. Manteniu premut o toqueu <keys/> a qualsevol aplicació per parlar.",
+      "hint": "Podeu canviar-ho més tard a la configuració",
+      "highFiveLabel": "Xoqueu-la",
+      "atLogin": "Inicia el {{appName}} quan entri a la sessió",
+      "finish": "Fet",
+      "panel": {
+        "name": "{{appName}}",
+        "ready": "A punt",
+        "languages": "Llengües",
+        "model": "Model de veu",
+        "shortcut": "Drecera",
+        "changeLanguages": "Canvia les llengües, {{languages}}",
+        "changeModel": "Canvia el model de veu, {{model}}"
+      }
+    },
+    "linux": {
+      "tryIt": "No funciona? <guide>Guia de configuració per a Linux</guide>",
+      "done": "No funciona a altres aplicacions? <guide>Guia de configuració per a Linux</guide>"
+    }
+  },
+  "modelTable": {
+    "tags": {
+      "preview": "Vista prèvia en directe",
+      "previewTitle": "Mostra les paraules a la finestra superposada En directe mentre parleu i les escriu quan acabeu",
+      "translate": "Tradueix",
+      "translateTitle": "Pot convertir el que digueu en text en anglès. Activeu-ho a la configuració"
+    },
+    "rubric": {
+      "gradeTitle": "Precisió en {{language}}: {{grade}}",
+      "accuracyTitle": "Precisió en {{language}}",
+      "overallTitle": "Precisió en les vostres llengües: {{grade}}",
+      "overall": "Precisió en les vostres llengües",
+      "meaning": {
+        "A": "Molt pocs errors: les paraules solen sortir tal com les dieu",
+        "B": "Alguns errors: caldrà corregir alguna paraula de tant en tant",
+        "C": "Errors freqüents: pot ser que es perdin alguns detalls",
+        "D": "Molts errors: caldrà revisar i corregir el que escriu",
+        "F": "Sovint poc clar: gran part del que digueu pot sortir malament"
+      },
+      "unsupported": "Aquest model no entén {{language}}, així que no el pot escriure",
+      "unrated": "Aquest model entén {{language}}, però encara no hem mesurat com de bé",
+      "under": "menys del {{max}} %",
+      "between": "del {{min}} al {{max}} %",
+      "over": "{{min}} % o més",
+      "speedTitle": "Velocitat: {{speed}}",
+      "speedName": {
+        "0": "Molt lent",
+        "1": "Lent",
+        "2": "Moderat",
+        "3": "Ràpid",
+        "4": "Molt ràpid"
+      },
+      "speedMeaning": {
+        "0": "Les paraules apareixen després d'una espera llarga",
+        "1": "Les paraules apareixen després d'una espera",
+        "2": "Les paraules apareixen després d'una espera breu",
+        "3": "Les paraules apareixen gairebé a l'instant",
+        "4": "Les paraules apareixen a l'instant"
+      },
+      "speedPreview": "{{meaning}}, amb una vista prèvia en directe mentre parleu",
+      "untimed": "Encara no hem mesurat com de ràpid és",
+      "underSeconds": "menys de {{max}} s",
+      "betweenSeconds": "de {{min}} a {{max}} s",
+      "overSeconds": "{{min}} s o més"
+    },
+    "roles": {
+      "recommended": "Recomanat",
+      "faster": "Més ràpid",
+      "accurate": "Més precís",
+      "fromAll": "De tots els models"
+    },
+    "speed": "Velocitat",
+    "size": "Mida",
+    "accuracy": "Precisió",
+    "search": "Cerca models",
+    "allLabel": "Models de veu",
+    "noMatch": "Cap resultat per a «{{query}}». Proveu una llengua o una família com Whisper o Parakeet",
+    "noFilterMatch": "Cap model coincideix amb aquests filtres",
+    "speedUntested": "Velocitat encara sense mesurar",
+    "speedWords": {
+      "0": "Molt lent, les paraules apareixen després d'una espera llarga",
+      "1": "Lent, les paraules apareixen després d'una espera",
+      "2": "Moderat, les paraules apareixen després d'una espera breu",
+      "3": "Ràpid, les paraules apareixen gairebé a l'instant",
+      "4": "Molt ràpid, les paraules apareixen a l'instant"
+    },
+    "speedWordsPreview": {
+      "0": "Molt lent, amb una vista prèvia en directe mentre parleu",
+      "1": "Lent, amb una vista prèvia en directe mentre parleu",
+      "2": "Moderat, amb una vista prèvia en directe mentre parleu",
+      "3": "Ràpid, amb una vista prèvia en directe mentre parleu",
+      "4": "Molt ràpid, amb una vista prèvia en directe mentre parleu"
+    },
+    "missingLanguage": "Falta una llengua",
+    "allLanguages": "Totes",
+    "downloadingLine": "S'està baixant el {{percent}} % de {{total}}",
+    "customLine": "Afegit des de la carpeta de models. Sense puntuar."
+  },
+  "languagePicker": {
+    "search": "Cerca llengües",
+    "addAnother": "Afegeix-ne una altra",
+    "remove": "Elimina {{language}}",
+    "alreadyAdded_one": "{{languages}} ja està afegida.",
+    "alreadyAdded_many": "{{languages}} ja estan afegides.",
+    "alreadyAdded_other": "{{languages}} ja estan afegides."
+  },
+  "modelSelector": {
+    "custom": "Personalitzat",
+    "streaming": "En temps real",
+    "active": "Actiu",
+    "noModelsAvailable": "No hi ha models disponibles",
+    "verifying": "S'està verificant {{modelName}}...",
+    "verifyingGeneric": "S'està verificant...",
+    "downloading": "S'està baixant: {{percentage}}%",
+    "downloadingMultiple": "S'estan baixant {{count}} models...",
+    "modelReady": "Model a punt",
+    "loading": "S'està carregant {{modelName}}...",
+    "loadingGeneric": "S'està carregant...",
+    "modelError": "Error del model",
+    "modelUnloaded": "Model alliberat de la memòria",
+    "noModelDownloadRequired": "No hi ha cap model: cal baixar-ne un",
+    "downloadSpeed": "{{speed}} MB/s",
+    "lockedWhileTranscribing": "Podràs canviar de model quan acabi la transcripció a l'Historial."
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "Configuració de {{model}}"
+    },
+    "general": {
+      "title": "General",
+      "shortcut": {
+        "title": "Dreceres del {{appName}}",
+        "description": "Configura les dreceres de teclat per iniciar l'enregistrament de veu per a la transcripció",
+        "loading": "S'estan carregant les dreceres...",
+        "none": "No hi ha cap drecera configurada",
+        "notFound": "No s'ha trobat la drecera",
+        "pressKeys": "Premeu les tecles...",
+        "bindings": {
+          "transcribe": {
+            "name": "Drecera de transcripció",
+            "description": "La drecera de teclat per enregistrar i transcriure la vostra veu."
+          },
+          "cancel": {
+            "name": "Drecera de cancel·lació",
+            "description": "La drecera de teclat per cancel·lar l'enregistrament actual."
+          },
+          "transcribe_with_post_process": {
+            "name": "Drecera de postprocessament",
+            "description": "Opcional: una drecera específica que sempre aplica postprocessament amb IA a la transcripció."
+          },
+          "ask_agent": {
+            "name": "Drecera per preguntar",
+            "description": "Sempre parla amb l'agent: feu-li una pregunta o demaneu-li que faci alguna cosa. No escriu mai."
+          }
+        },
+        "errors": {
+          "set": "No s'ha pogut definir la drecera: {{error}}"
+        }
+      },
+      "language": {
+        "title": "Llengua",
+        "description": "Seleccioneu la llengua per al reconeixement de la parla. L'opció automàtica detecta la llengua, mentre que seleccionar-ne una d'específica pot millorar-ne la precisió.",
+        "searchPlaceholder": "Cerca llengües...",
+        "noResults": "No s'ha trobat cap llengua",
+        "auto": "Automàtica",
+        "autoUnavailable": {
+          "title": "Automàtica està desactivada",
+          "oneLanguage": "Només una de les teves llengües funciona amb aquest model",
+          "undetectable": "No disponible amb {{languages}}",
+          "noMatch": "Cap de les teves llengües funciona amb aquest model"
+        },
+        "detectorMissingTitle": "Automàtica necessita una baixada a part",
+        "detectorMissing": "Aquest model no pot saber en quin idioma parles. Automàtica necessita un petit detector d'idioma per esbrinar-ho",
+        "stopDetectorDownload": "Atura la baixada del detector d'idioma"
+      },
+      "preferredLanguages": {
+        "title": "Llengües preferides",
+        "description": "Les llengües que parleu. El {{appName}} les utilitza per recomanar models.",
+        "noMatch": "Cap llengua coincideix amb «{{query}}»",
+        "weak": "Cap model reconeix bé {{languages}} encara."
+      },
+      "shortcutActivation": {
+        "title": "Comportament de la drecera",
+        "description": "Trieu com la drecera de transcripció inicia i atura l'enregistrament.",
+        "options": {
+          "holdOrToggle": "Automàtic",
+          "pushToTalk": "Mantén premuda",
+          "toggle": "Commuta"
+        },
+        "descriptions": {
+          "hold_or_toggle": "Manteniu-la premuda per enregistrar o feu una pulsació breu per iniciar o aturar l'enregistrament",
+          "push_to_talk": "Enregistreu mentre manteniu premuda la drecera",
+          "toggle": "Premeu la drecera per iniciar l'enregistrament i torneu-la a prémer per aturar-lo"
+        }
+      }
+    },
+    "models": {
+      "title": "Models",
+      "changeLanguages": "Canvia les llengües",
+      "sections": {
+        "yours": "En aquest ordinador",
+        "fits": "Per a les vostres llengües",
+        "untested": "Sense provar"
+      },
+      "untestedNote": "No s'han provat amb el {{appName}}. Poden ser més lents o cometre més errors.",
+      "untestedHidden_one": "{{count}} model més no està ajustat per al dictat. Cerqueu-lo per trobar-lo.",
+      "untestedHidden_many": "{{count}} models més no estan ajustats per al dictat. Cerqueu per trobar-ne algun.",
+      "untestedHidden_other": "{{count}} models més no estan ajustats per al dictat. Cerqueu per trobar-ne algun.",
+      "emptyYours": "Encara no hi ha models. Trieu-ne un a sota: es baixa i el {{appName}} l'utilitza.",
+      "showMore": "Mostra'n {{count}} més",
+      "showFewer": "Mostra'n menys",
+      "download": "Baixa i utilitza",
+      "downloadingThenUse": "{{percent}} % de {{total}}, i després canvia",
+      "loading": "S'està carregant…",
+      "deleteAsk": "Voleu suprimir {{name}}? S'alliberen {{size}}.",
+      "deleteAskActive": "Voleu suprimir {{name}}? El {{appName}} no podrà transcriure fins que en trieu un altre.",
+      "cancel": "Cancel·la",
+      "deleteModel": "Suprimeix {{name}}",
+      "cancelDownload": "Atura la baixada de {{name}}",
+      "legend": {
+        "open": "Com es puntuen els models",
+        "accuracyNote": "Per a cadascuna de les vostres llengües: quantes paraules ha fallat un model en les nostres gravacions de prova.",
+        "speedNote": {
+          "accelerated": "Quant triguen a escriure's 30 segons de veu amb el xip gràfic del nostre portàtil de prova. Aquest ordinador pot ser diferent.",
+          "cpu": "Quant triguen a escriure's 30 segons de veu amb el processador del nostre portàtil de prova. Aquest ordinador pot ser diferent."
+        },
+        "marks": "? encara no s'ha mesurat. — no entén aquesta llengua."
+      },
+      "retiredNotice": {
+        "title": "Els models antics ja no funcionen amb {{appName}}",
+        "description": "Ocupen {{size}} a l'ordinador.",
+        "delete": "Suprimeix els models",
+        "deleted": "S'han suprimit els models antics",
+        "deleteFailed": "No s'han pogut suprimir alguns models antics. Consulteu el registre per a més detalls."
+      },
+      "rescan": {
+        "label": "Torna a cercar",
+        "tooltip": "Torna a cercar models afegits a la carpeta de models o a la memòria cau de Hugging Face des de fora del {{appName}}"
+      }
+    },
+    "languages": {
+      "title": "Llengües"
+    },
+    "sound": {
+      "title": "So",
+      "microphone": {
+        "title": "Micròfon",
+        "description": "Selecciona el micròfon preferit",
+        "placeholder": "Seleccionaun micròfon...",
+        "loading": "S'està carregant..."
+      },
+      "channel": {
+        "title": "Canal d'entrada",
+        "description": "Seleccioneu el canal d'entrada des del qual voleu enregistrar. Feu servir aquesta opció si la interfície d'àudio té diverses entrades.",
+        "average": "Fes la mitjana de tots els canals",
+        "channel": "Canal {{n}}"
+      },
+      "audioFeedback": {
+        "label": "Avisos sonors",
+        "description": "Reprodueix un so quan s'inicia i s'atura l'enregistrament"
+      },
+      "outputDevice": {
+        "title": "Dispositiu de sortida",
+        "description": "Selecciona el dispositiu de sortida d'àudio preferit per als avisos sonors",
+        "placeholder": "Selecciona un dispositiu de sortida...",
+        "loading": "S'està carregant..."
+      },
+      "volume": {
+        "title": "Volum",
+        "description": "Ajusta el volum dels avisos sonors"
+      }
+    },
+    "advanced": {
+      "groups": {
+        "app": "Aplicació",
+        "output": "Sortida",
+        "transcription": "Transcripció",
+        "history": "Historial",
+        "experimental": "Experimental"
+      },
+      "experimentalToggle": {
+        "label": "Funcions experimentals",
+        "description": "Activa les funcions experimentals que encara estan en desenvolupament."
+      },
+      "lazyStreamClose": {
+        "label": "Mantén el micròfon obert entre transcripcions",
+        "description": "Manté el flux d'àudio del micròfon obert durant 30 segons després d'aturar l'enregistrament per reduir la latència entre transcripcions consecutives. Mentre és actiu, pot reduir la qualitat de l'àudio Bluetooth."
+      },
+      "acceleration": {
+        "transcribe": {
+          "title": "Acceleració per maquinari",
+          "description": "Trieu el maquinari que s'utilitza per a la transcripció. L'opció automàtica utilitza la GPU si està disponible i, si no, recorre a la CPU."
+        },
+        "gpuDevice": {
+          "auto": "Automàtica"
+        }
+      },
+      "startHidden": {
+        "label": "Inicia ocult",
+        "description": "Inicia a la safata del sistema sense obrir la finestra."
+      },
+      "autostart": {
+        "label": "Inicia en entrar a la sessió",
+        "description": "Inicia automàticament el {{appName}} quan entreu a la sessió de l'ordinador."
+      },
+      "showTrayIcon": {
+        "label": "Mostra la icona a la safata",
+        "description": "Mostra la icona del {{appName}} a la safata del sistema."
+      },
+      "overlay": {
+        "style": {
+          "title": "Finestra superposada",
+          "description": "Tria la finestra superposada d'enregistrament: Cap l'amaga, Mínima mostra un indicador compacte i En directe mostra la transcripció en temps real mentre parleu (només amb models compatibles; cerqueu el distintiu En temps real al selector de models). Al Linux es recomana Cap.",
+          "options": {
+            "none": "Cap",
+            "minimal": "Mínima",
+            "live": "En directe"
+          }
+        },
+        "position": {
+          "title": "Posició de la finestra superposada",
+          "description": "On apareix la finestra superposada a la pantalla durant l'enregistrament i la transcripció.",
+          "options": {
+            "bottom": "A baix",
+            "top": "A dalt"
+          }
+        }
+      },
+      "pasteMethod": {
+        "title": "Mètode d'enganxament",
+        "description": "Trieu com s'insereix el text. Directe: simula l'escriptura mitjançant l'entrada del sistema. Cap: no enganxa el text, només actualitza l'historial i el porta-retalls.",
+        "options": {
+          "clipboard": "Porta-retalls ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Porta-retalls (Ctrl+Maj+V)",
+          "clipboardShiftInsert": "Porta-retalls (Maj+Insert)",
+          "direct": "Directe",
+          "none": "Cap",
+          "externalScript": "Script extern"
+        },
+        "externalScriptPlaceholder": "/camí/al/vostre/script.sh"
+      },
+      "typingTool": {
+        "title": "Eina d'escriptura",
+        "description": "Trieu l'eina d'escriptura del Linux que s'utilitzarà amb el mètode d'enganxament directe. L'opció automàtica detecta i utilitza la millor eina disponible per al sistema.",
+        "options": {
+          "auto": "Automàtica (recomanada)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "Gestió del porta-retalls",
+        "description": "«No modifiqueu el porta-retalls» conserva el contingut actual del porta-retalls després de la transcripció. «Copieu al porta-retalls» hi deixa el resultat de la transcripció després d'enganxar-lo.",
+        "options": {
+          "dontModify": "No modifiqueu el porta-retalls",
+          "copyToClipboard": "Copia al porta-retalls"
+        }
+      },
+      "autoSubmit": {
+        "title": "Enviament automàtic",
+        "description": "Envia automàticament la combinació de tecles seleccionada després d'inserir el text. S'utilitza Cmd+Enter al macOS i Super+Enter al Windows i al Linux.",
+        "options": {
+          "off": "Desactivat",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "Traduïu a l'anglès",
+        "description": "Tradueix automàticament la parla d'altres llengües a l'anglès durant la transcripció."
+      },
+      "modelUnload": {
+        "title": "Allibera el model de la memòria",
+        "description": "Allibera automàticament la memòria de la GPU i de la CPU quan el model no s'ha utilitzat durant el temps especificat",
+        "options": {
+          "never": "Mai",
+          "immediately": "Immediatament",
+          "min2": "Al cap de 2 minuts",
+          "min5": "Al cap de 5 minuts",
+          "min10": "Al cap de 10 minuts",
+          "min15": "Al cap de 15 minuts",
+          "hour1": "Al cap d'1 hora",
+          "sec15": "Al cap de 15 segons (depuració)"
+        }
+      },
+      "customWords": {
+        "title": "Paraules personalitzades",
+        "description": "Ajudeu els models compatibles a reconèixer noms i termes especialitzats. Actualment, la correcció per similitu es limita a paraules amb lletres de la A a la Z i números.",
+        "placeholder": "Afegiu una paraula",
+        "add": "Afegiu",
+        "remove": "Suprimiu {{word}}",
+        "duplicate": "«{{word}}» ja existeix"
+      },
+      "voiceActivityDetection": {
+        "title": "Detecció d'activitat de veu",
+        "description": "Filtra els silencis dels enregistraments. Els models compatibles amb la transcripció en temps real utilitzen un marge final de detecció de veu més llarg; si desactiveu la detecció, s'enregistra l'àudio sense filtrar."
+      },
+      "longFormChunking": {
+        "title": "Divisió d'àudio llarg",
+        "description": "Divideix els enregistraments llargs a les pauses abans de transcriure'ls, cosa que normalment millora el rendiment de la transcripció. Els fitxers transcrits i les retranscripcions llargues sempre es divideixen."
+      },
+      "languageDetection": {
+        "title": "Limita Automàtica als meus idiomes",
+        "description": "Automàtica només tria entre els teus idiomes preferits, amb un petit detector d'idioma. Activa-ho si Automàtica tria sovint un idioma que no parles",
+        "downloadHint": "Activar-ho baixa un petit detector d'idioma",
+        "downloadingHint": "S'està baixant el detector d'idioma. Desactiva-ho per cancel·lar"
+      },
+      "vadBackend": {
+        "title": "Motor de detecció d'activitat de veu",
+        "description": "Trieu el detector utilitzat per filtrar els silencis. L'Earshot és experimental; torneu al Silero si es corta la parla o es conserva el soroll.",
+        "options": {
+          "silero": "Silero",
+          "earshot": "Earshot"
+        }
+      },
+      "fillerWordRemoval": {
+        "title": "Elimina les falques",
+        "description": "Elimina les expressions de vacil·lació habituals de les transcripcions. Desactiveu aquesta opció per conservar-les."
+      },
+      "chineseScript": {
+        "title": "Escriptura xinesa",
+        "description": "Escriu les transcripcions en mandarí i cantonès amb caràcters simplificats, o amb caràcters tradicionals tal com s'escriuen a Taiwan o a Hong Kong. Les altres llengües es deixen tal qual.",
+        "options": {
+          "asTranscribed": "Tal com s'ha transcrit",
+          "simplified": "Simplificat",
+          "traditionalTw": "Tradicional (Taiwan)",
+          "traditionalHk": "Tradicional (Hong Kong)"
+        }
+      }
+    },
+    "postProcessing": {
+      "hotkey": {
+        "title": "Drecera de teclat"
+      },
+      "prompts": {
+        "title": "Indicació",
+        "selectedPrompt": {
+          "title": "Indicació seleccionada",
+          "description": "Seleccioneu una plantilla per millorar les transcripcions o creeu-ne una de nova. Utilitzeu ${output} dins del text de la indicació per fer referència a la transcripció enregistrada."
+        },
+        "noPrompts": "No hi ha indicacions disponibles",
+        "selectPrompt": "Seleccioneu una indicació",
+        "createNew": "Creeu una indicació nova",
+        "promptLabel": "Nom de la indicació",
+        "promptLabelPlaceholder": "Introduïu el nom de la indicació",
+        "promptInstructions": "Instruccions de la indicació",
+        "promptInstructionsPlaceholder": "Escriviu les instruccions que s'executaran després de la transcripció. Exemple: Millora la gramàtica i la claredat del text següol: ${output}",
+        "promptTip": "Consell: utilitzeu <code>${output}</code> per inserir el text transcrit a la indicació.",
+        "updatePrompt": "Actualitzeu la indicació",
+        "deletePrompt": "Suprimiu la indicació",
+        "createPrompt": "Creeu la indicació",
+        "cancel": "Cancel·leu",
+        "selectToEdit": "Seleccioneu una indicació more amunt per veure'n i editar-ne els detalls.",
+        "createFirst": "Feu clic a «Creeu una indicació nova» més amunt per crear la primera indicació de postprocessament."
+      }
+    },
+    "history": {
+      "title": "Historial",
+      "openFolder": "Obriu la carpeta d'enregistraments",
+      "loading": "S'està carregant l'historial...",
+      "empty": "Encara no hi ha transcripcions. Comenceu a enregistrar per crear l'historial!",
+      "copyToClipboard": "Copia la transcripció al porta-retalls",
+      "copyError": "No s'ha pogut copiar la transcripció al porta-retalls.",
+      "save": "Desa la transcripció",
+      "unsave": "Treu de les desades",
+      "delete": "Suprimeix l'entrada",
+      "deleteError": "No s'ha pogut suprimir l'entrada. Torneu-ho a provar.",
+      "retranscribe": "Torneu a transcriure",
+      "cancelTranscription": "Cancel·la la transcripció",
+      "transcribing": "S'està transcrivint...",
+      "transcriptionFailed": "La transcripció ha fallat. Podeu tornar a transcriure amb la icona de reintent.",
+      "notTranscribed": "No s'ha transcrit. Podeu transcriure-ho amb la icona de reintent.",
+      "transcribeFile": "Transcriu un fitxer",
+      "mediaFiles": "Àudio i vídeo",
+      "fileUnsupported": "No s'ha pogut llegir l'àudio de {{name}}.",
+      "readingFile": "S'està llegint {{name}}...",
+      "transcribeFailed": "La transcripció ha fallat. Torna-ho a provar.",
+      "waiting": "Esperant per transcriure",
+      "transcribingPercent": "Transcrivint, {{percent}}%",
+      "showMore": "Mostra'n més",
+      "showLess": "Mostra'n menys",
+      "dropTitle": "Deixa anar per transcriure",
+      "dropDescription": "Apareixerà a l'historial.",
+      "searchPlaceholder": "Cerca a l’historial",
+      "clearSearch": "Esborra la cerca",
+      "today": "Avui",
+      "yesterday": "Ahir",
+      "saved": "Desat",
+      "playRecording": "Reprodueix l’enregistrament",
+      "hidePlayer": "Amaga el reproductor",
+      "emptyTitle": "Encara no hi ha dictats",
+      "emptyDescription": "Tot el que {{appName}} transcrigui apareixerà aquí, primer el més recent. Manteniu premuda la vostra drecera a qualsevol aplicació i comenceu a parlar.",
+      "noResultsTitle": "Cap coincidència",
+      "noResultsDescription": "Res de l’historial coincideix amb «{{query}}».",
+      "loadingMore": "Carregant més…",
+      "searchingOlder": "Cercant entrades anteriors…"
+    },
+    "debug": {
+      "title": "Depuració",
+      "logDirectory": {
+        "title": "Directori de registres",
+        "description": "Ubicació on es desen els fitxers de registre"
+      },
+      "logLevel": {
+        "title": "Nivell de registre",
+        "description": "Establiu el nivell de detall dels registres"
+      },
+      "liveLogs": {
+        "title": "Registres en directe",
+        "description": "Mostra els registres de l'aplicació en temps real per diagnosticar problemes sense obrir el fitxer de registre. Només es mostren els registres emesos mentre aquest tauler és obert; es respecta el nivell de registre establert més amunt.",
+        "live": "En directe",
+        "paused": "En pausa",
+        "pause": "Pauseu",
+        "resume": "Repreneu",
+        "copied": "Copiat",
+        "lineCount": "{{count}} línies",
+        "empty": "S'estan esperant registres… Les entrades apareixeran aquí a mesura que l'aplicació les emeti."
+      },
+      "updateChecks": {
+        "label": "Comproveu si hi ha actualitzacions",
+        "description": "Comprova automàticament si hi ha versions noves del {{appName}}",
+        "lockedDescription": "Desactivat per la configuració del sistema (AMBIENT_DISABLE_UPDATER)"
+      },
+      "whatsNewPreview": {
+        "title": "Previsualització de les novetats",
+        "description": "Obre les últimes notes de la versió incloses sense marcar-les com a llegides",
+        "button": "Previsualitzeu",
+        "noNotes": "No s'han trobat notes de la versió incloses",
+        "error": "No s'han pogut previsualitzar les notes de la versió"
+      },
+      "onboardingPreview": {
+        "title": "Previsualització de la configuració inicial",
+        "description": "Previsualitza les pantalles de configuració inicial sense canviar els permisos, os models ni l'estat de compleció",
+        "exitButton": "Sortiu de la previsualització",
+        "choose": "Trieu una pantalla",
+        "screens": {
+          "welcome": "Benvinguda",
+          "permissions": "Permisos",
+          "model": "Model",
+          "demo": "Demostració",
+          "try": "Prova-ho",
+          "done": "Tot a punt"
+        }
+      },
+      "onboardingRun": {
+        "title": "Executa la introducció",
+        "description": "Fa la introducció de debò des del principi: demana permisos, baixa models i desa les vostres opcions",
+        "button": "Inicia"
+      },
+      "modelMigration": {
+        "title": "Migració de models",
+        "description": "Obre de debò la pantalla d'actualització de models de format antic: baixa els substituts, canvia de model i elimina els fitxers antics",
+        "button": "Obre",
+        "noRetired": "No hi ha models de format antic al disc"
+      },
+      "soundTheme": {
+        "label": "Tema de so",
+        "description": "Trieu un tema de so per als avisos d'inici i d'aturada de l'enregistrament"
+      },
+      "wordCorrectionThreshold": {
+        "title": "Llindar de correcció de paraules",
+        "description": "Sensibilitat de les correccions de paraules personalitzades"
+      },
+      "historyLimit": {
+        "title": "Límit de l'historial",
+        "description": "Nombre màxim d'entrades de l'historial que es conservaran",
+        "entries": "entrades"
+      },
+      "recordingRetention": {
+        "title": "Supressió automàtica d'enregistraments",
+        "description": "Suprimeix automàticament els enregistraments antics per estalviar espai",
+        "never": "Mai",
+        "preserveLimit": "Conserva els últims {{count}}",
+        "days3": "Al cap de 3 dies",
+        "weeks2": "Al cap de 2 setmanes",
+        "months3": "Al cap de 3 mesos",
+        "placeholder": "Selecciona el període de conservació..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "Micròfon sempre actiu",
+        "description": "Mantén el micròfon actiu per respondre més de pressa"
+      },
+      "clamshellMicrophone": {
+        "title": "Micròfon amb la tapa tancada",
+        "description": "Micròfon que s'utilitzarà quan la tapa del portàtil estigui tancada"
+      },
+      "postProcessingToggle": {
+        "label": "Postprocessament",
+        "description": "Activa la millora del text amb IA després de la transcripció"
+      },
+      "muteWhileRecording": {
+        "label": "Silencia durant l'enregistrament",
+        "description": "Silencia l'àudio del sistema durant l'enregistrament"
+      },
+      "appendTrailingSpace": {
+        "label": "Afegiu un espai al final",
+        "description": "Afegeix un espai après de la transcripció enganxada"
+      },
+      "keyboardImplementation": {
+        "title": "Implementació del teclat",
+        "description": "Tria el motor de dreceres de teclat.",
+        "bindingsReset": "Les dreceres de teclat eren incompatibles i s'han restablert als valors per defecte"
+      },
+      "pasteDelay": {
+        "title": "Retard abans d'enganxar",
+        "description": "Retard (en mil·lisegons) després de copiar el text i abans d'enviar la combinació de tecles per enganxar-lo. Augmenteu-lo si no s'enganxa res."
+      },
+      "pasteDelayAfter": {
+        "title": "Retard après d'enganxar",
+        "description": "Retard (en mil·lisegons) després d'enviar la combinació de tecles per enganxar i abans de restaurar el porta-retalls anterior. Augmenteu-lo si s'enganxa el contingut antic del porta-retalls en lloc de la transcripció."
+      },
+      "holdThreshold": {
+        "title": "Llindar de pulsació llarga",
+        "description": "Només en mode automàtic: temps (en mil·lisegons) que cal mantenir premuda la drecera perquè es consideri una pulsació llarga en lloc d'una de breu. Reduïu-lo si les pulsacions llargues curtes deixen l'enregistrament actiu; augmenteu-lo si les pulsacions breus intencionades es tracten com a llargues."
+      },
+      "reliablePaste": {
+        "title": "Enganxament fiable (beta)",
+        "description": "Restaura el porta-retalls només quan l'aplicació de destinació ha llegit la transcripció, en lloc de fer-ho després d'un retard fix. Pensat per evitar que s'enganxi el contingut antic del porta-retalls quan el sistema està carregat. Requereix un mètode d'enganxament amb el porta-retalls; només al macOS i al Windows."
+      },
+      "recordingBuffer": {
+        "title": "Marge addicional d'enregistrament",
+        "description": "Temps addicional (en mil·lisegons) durant el qual es continua enregistrant després de deixar anar la tecla per capturar l'àudio final. 0 = sense marge addicional."
+      },
+      "languageDetectionWindow": {
+        "title": "Àudio de detecció d'idioma",
+        "description": "Segons de veu que escolta el detector d'idioma. Més llarg és més precís però més lent."
+      },
+      "keyboardDiagnostic": {
+        "title": "Diagnòstic del teclat",
+        "description": "Comprova si els esdeveniments del teclat arriben al {{appName}}. Només se'n registra el recompte, mai les tecles que premeu.",
+        "run": "Executa un diagnòstic de 10 s",
+        "running": "S'està escoltant… prema la drecera unes quantes vegades (p. ex., Option+Space)",
+        "secureInputLabel": "Entrada segura",
+        "enabled": "activada",
+        "disabled": "desactivada",
+        "holder": "en ús per {{name}} (pid {{pid}})",
+        "holderUnknown": "cap procés responsable visible",
+        "keyDown": "Tecla premuda",
+        "keyUp": "Tecla alliberada",
+        "flagsChanged": "Modificadors",
+        "mouse": "Ratolí",
+        "verdictBlocked": "L'entrada segura bloca els esdeveniments de tecla. Les dreceres amb tecles no poden funcionar fins que es resolgui.",
+        "verdictSuspicious": "Han arribat esdeveniments de modificadors, però no de tecles. Alguna cosa suprimeix les tecles tot i que l'entrada segura consta com a desactivada. Informeu-ne al GitHub.",
+        "verdictOk": "Els esdeveniments de tecla arriben al {{appName}} amb normalitat.",
+        "verdictNoEvents": "No s'ha capturat cap esdeveniment. Heu premut alguna tecla durant la prova?",
+        "failed": "El diagnòstic ha fallat: {{error}}"
+      }
+    },
+    "about": {
+      "title": "Quant a",
+      "version": {
+        "title": "Versió",
+        "description": "Versió actual del {{appName}}"
+      },
+      "whatsNewUpdates": {
+        "label": "Mostra les novetats",
+        "description": "Mostra les notes de la versió després d'actualitzar el {{appName}}"
+      },
+      "appDataDirectory": {
+        "title": "Directori de dades de l'aplicació",
+        "description": "Ubicació on el {{appName}} desa les dades"
+      },
+      "sourceCode": {
+        "title": "Lloc web",
+        "description": "Novetats, ajuda i el teu compte",
+        "button": "Obre el lloc web"
+      },
+      "acknowledgments": {
+        "title": "Agraïments",
+        "ggml": {
+          "title": "ggml",
+          "description": "Biblioteca de tensors d'alt rendiment per a la inferència d'aprenentatge automàtic al dispositiu",
+          "details": "La transcripció local de veu a text del {{appName}} es basa en el transcribe.cpp i el ggml. Gràcies a la gran feina de Georgi Gerganov i dels col·laboradors."
+        },
+        "licenses": {
+          "title": "Open-source licenses",
+          "description": "Notices for the open-source software {{appName}} includes",
+          "show": "Show licenses",
+          "hide": "Hide licenses"
+        }
+      },
+      "intro": {
+        "title": "Introducció de benvinguda",
+        "description": "L'animació que el {{appName}} reprodueix la primera vegada que s'obre.",
+        "button": "Reprodueix la introducció"
+      }
+    },
+    "agent": {
+      "title": "Agent de veu",
+      "description": "Feu una pregunta o demaneu que faci alguna cosa, en lloc d'escriure.",
+      "routing": {
+        "label": "Entendre peticions mentre dicteu",
+        "description": "Les peticions es gestionen; tota la resta s'escriu com sempre. Desactiveu-ho per escriure sempre."
+      },
+      "wake": {
+        "label": "Mans lliures: digueu «Hola Ambient»",
+        "description": "Parleu amb el {{appName}} sense tecles: «Hola Ambient, què tinc al calendari?». Escolta en aquest Mac i ignora tot el que no comenci pel seu nom. El Mac mostra l'indicador del micròfon mentre està activat."
+      }
+    }
+  },
+  "footer": {
+    "checkingUpdates": "S'està comprovant si hi ha actualitzacions...",
+    "updateAvailableShort": "Hi ha una actualització disponible",
+    "upToDate": "Actualitzat",
+    "updateCheckingDisabled": "Comprovació d'actualitzacions desactivada",
+    "downloading": "S'està baixant... {{progress}}%",
+    "installing": "S'està instal·lant...",
+    "preparing": "S'està preparant...",
+    "checkForUpdates": "Comprova si hi ha actualitzacions",
+    "portableUpdateTitle": "Cal actualitzar manualment",
+    "portableUpdateMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixa l'instal·lador per al vostre sistema a continuació, executeu-lo i instal·leu-lo a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
+    "portableUpdateButton": "Baixa l'instal·lador",
+    "portableUpdateBrowseMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixa l'última versió per al vostre sistema des de GitHub Releases i instal·leu-la a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
+    "portableUpdateBrowseButton": "Obriu GitHub Releases"
+  },
+  "whatsNew": {
+    "title": "Novetats del {{appName}} v{{version}}"
+  },
+  "common": {
+    "loading": "S'està carregant...",
+    "delete": "Suprimeix",
+    "close": "Tanca",
+    "open": "Obre",
+    "copy": "Copia",
+    "clear": "Neteja",
+    "noOptionsFound": "No s'ha trobat cap opció"
+  },
+  "errors": {
+    "loadDirectory": "Error en carregar el directori: {{error}}",
+    "micPermissionDeniedTitle": "Accés al micròfon denegat",
+    "micPermissionDenied": {
+      "generic": "El sistema operatiu ha denegat l'accés al micròfon. Concediu el permís del micròfon a la configuració del sistema.",
+      "windows": "Activa l'accés al micròfon a Configuració → Privadesa i seguretat → Micròfon (inclòs l'accés de les aplicacions d'escriptori).",
+      "macos": "Concediu l'accés al micròfon a Configuració del sistema → Privadesa i seguretat → Micròfon.",
+      "linux": "Concediu l'accés al micròfon a la configuració de so o de privadesa del sistema."
+    },
+    "noInputDeviceTitle": "No s'ha trobat cap micròfon",
+    "noInputDevice": "No s'ha detectat cap dispositiu d'entrada d'àudio. Connecteu un micròfon o uns auriculars amb micròfon i torneu-ho a provar.",
+    "recordingFailed": "No s'ha pogut iniciar l'enregistrament: {{error}}",
+    "modelLoadFailed": "No s'ha pogut carregar el model: {{model}}",
+    "modelLoadFailedUnknown": "model desconegut",
+    "pasteFailedTitle": "No s'ha pogut enganxar el text",
+    "pasteFailed": "No s'ha pogut enganxar el text a l'aplicació activa.",
+    "transcriptionFailedTitle": "La transcripció ha fallat"
+  },
+  "appLanguage": {
+    "title": "Llengua de l'aplicació",
+    "description": "Canvia la llengua de la interfície del {{appName}}"
+  },
+  "theme": {
+    "title": "Tema de l'aplicació",
+    "description": "Tria si el {{appName}} segueix el tema del sistema o es manté en mode clar o fosc",
+    "options": {
+      "system": "Sistema",
+      "light": "Clar",
+      "dark": "Fosc"
+    }
+  },
+  "overlay": {
+    "transcribing": "S'està transcrivint...",
+    "processing": "S'està processant...",
+    "loadingModel": "S'està carregant el model..."
+  },
+  "secureInput": {
+    "blockedWithCulprit_one": "{{name}} pot estar blocant 1 drecera",
+    "blockedWithCulprit_many": "{{name}} pot estar blocant {{count}} dreceres",
+    "blockedWithCulprit_other": "{{name}} pot estar blocant {{count}} dreceres",
+    "blockedNoCulprit_one": "El macOS està blocant temporalment 1 drecera",
+    "blockedNoCulprit_many": "El macOS està blocant temporalment {{count}} dreceres",
+    "blockedNoCulprit_other": "El macOS està blocant temporalment {{count}} dreceres",
+    "recorderBlockedWithCulprit": "{{name}} pot estar blocant els canvis de dreceres",
+    "recorderBlockedNoCulprit": "El macOS està blocant temporalment els canvis de dreceres",
+    "learnMore": "Com es resol",
+    "recorderBlocked": "Ara no se'n poden enregistrar dreceres: l'entrada segura del macOS bloca els esdeveniments de tecla. Resol primer l'avís d'entrada segura.",
+    "dismiss": "Descarta"
+  },
+  "account": {
+    "currentPlan": "Pla actual",
+    "plans": {
+      "free": "Gratuït",
+      "pro": "Pro",
+      "team": "Team",
+      "trial": "Prova de Pro"
+    },
+    "upgrade": "Millora el pla",
+    "upgradeTo": "Millora a {{plan}}",
+    "manageBilling": "Gestiona la facturació",
+    "usage": "{{used}} de {{limit}} paraules aquesta setmana",
+    "usageShort": "{{used}} / {{limit}} paraules",
+    "resets": "Es restableix el {{date}}",
+    "limitReached": "Has fet servir les paraules gratuïtes d'aquesta setmana. Millora el pla per dictar sense límits o continua quan es restableixi la setmana.",
+    "limitToast": "Paraules gratuïtes setmanals esgotades",
+    "proFeatures": {
+      "polish": "Polit amb IA a cada dictat",
+      "onDevice": "Polit al dispositiu amb Apple Intelligence",
+      "agent": "L'agent ambient tal com ve de sèrie",
+      "priority": "Assistència prioritària"
+    },
+    "card": {
+      "activate": "Activa",
+      "active": "Pla actiu",
+      "remove": "Elimina",
+      "activating": "Activant…",
+      "paste": "Enganxa",
+      "pasteFailed": "No s’ha pogut llegir el porta-retalls. Enganxeu amb ⌘V.",
+      "holder": "Sessió iniciada com a",
+      "renewsLabel": "Es renova",
+      "copied": "Copiada",
+      "errors": {
+        "network": "No s'ha pogut connectar amb {{appName}} per activar. Comprova la connexió i torna-ho a provar.",
+        "inactive": "La subscripció d'aquest codi no és activa. Renova-la per desbloquejar el pla.",
+        "rate_limited": "Massa intents. Torna-ho a provar d'aquí a 15 minuts.",
+        "server": "L'activació ha fallat per part nostra. Torna-ho a provar d'aquí a un moment."
+      }
+    },
+    "signIn": {
+      "sectionTitle": "El teu compte",
+      "cardLabel": "Compte",
+      "title": "Inicia la sessió per a Pro",
+      "description": "Fes servir el correu amb què vas comprar Pro. T'enviarem un codi de 6 xifres.",
+      "emailLabel": "Correu",
+      "emailPlaceholder": "tu@exemple.cat",
+      "continue": "Continua",
+      "sending": "S'està enviant…",
+      "codeTitle": "Revisa el correu",
+      "codeDescription": "Introdueix el codi de 6 xifres que hem enviat a {{email}}.",
+      "codeLabel": "Codi d'inici de sessió",
+      "digitLabel": "Xifra {{n}}",
+      "signedInShort": "Sessió iniciada",
+      "resend": "Torna a enviar el codi",
+      "resent": "S'ha enviat un codi nou.",
+      "changeEmail": "Fes servir un altre correu",
+      "signedInTitle": "Sessió iniciada",
+      "noPurchase": "{{email}} encara no té cap subscripció Pro. Compra Pro i s'activarà aquí.",
+      "checkAgain": "Torna a comprovar",
+      "signOut": "Tanca la sessió",
+      "redeemLink": "Bescanvia un codi",
+      "redeemTitle": "Bescanvia un codi",
+      "redeemDescription": "Per a codis de regal i d'assistència.",
+      "redeemPlaceholder": "red-grizzly-4320",
+      "redeemDetected": "Sembla un codi de {{appName}}.",
+      "backToSignIn": "Torna a iniciar la sessió",
+      "gift": {
+        "code": "Codi",
+        "codeHidden": "Codi amagat",
+        "showCode": "Mostra el codi",
+        "hideCode": "Amaga el codi",
+        "copyCode": "Copia el codi"
+      },
+      "errors": {
+        "network": "No s'ha pogut connectar amb {{appName}}. Comprova la connexió i torna-ho a provar.",
+        "invalid_email": "Introdueix una adreça de correu vàlida.",
+        "rate_limited": "S'han demanat massa codis. Torna-ho a provar d'aquí a una estona.",
+        "invalid_code": "Aquest codi no és correcte. Revisa el correu i torna-ho a provar.",
+        "expired": "Aquest codi ha caducat. Demana'n un de nou.",
+        "too_many_attempts": "Massa intents. Demana un codi nou.",
+        "server": "L'inici de sessió ha fallat per part nostra. Torna-ho a provar d'aquí a un moment.",
+        "redeem_invalid": "No reconeixem aquest codi. Revisa'l i torna-ho a provar."
+      }
+    },
+    "polish": {
+      "title": "Polit amb IA",
+      "description": "Neteja cada dictat: puntuació, mots de farciment, llistes i correccions com «esborra això». Només s'envia el text, mai l'àudio.",
+      "unlock": "Obtén-ho sense límit",
+      "onDevice": "Mantén-ho en aquest Mac",
+      "onDeviceDescription": "Fes servir Apple Intelligence en lloc d'això. Res no surt del teu Mac.",
+      "freeLeft": "Et queden {{left}} de {{limit}} usos gratuïts de polit amb IA aquesta setmana"
+    },
+    "trial": {
+      "daysLeft_one": "Queda {{count}} dia",
+      "daysLeft_many": "Queden {{count}} dies",
+      "daysLeft_other": "Queden {{count}} dies"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Bon dia",
+      "afternoon": "Bona tarda",
+      "evening": "Bon vespre",
+      "night": "Treballant fins tard"
+    },
+    "hold": "Manteniu premut",
+    "anywhere": "a qualsevol aplicació i comenceu a parlar.",
+    "noShortcut": "Definiu una drecera a Configuració per començar a dictar.",
+    "stats": {
+      "words": "Paraules aquesta setmana",
+      "wordsHint": "Dictades amb {{appName}}",
+      "saved": "Temps estalviat",
+      "savedHint": "Parlant a {{speaking}} ppm davant d’escriure a {{typing}}",
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_many": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} h",
+      "hours_many": "{{count}} h",
+      "hours_other": "{{count}} h"
+    },
+    "recent": "Dictats recents",
+    "viewAll": "Mostra-ho tot",
+    "empty": {
+      "title": "Encara no hi ha res",
+      "description": "Premeu la vostra drecera a qualsevol aplicació i parleu. Els vostres dictats apareixeran aquí."
+    },
+    "tips": {
+      "holdOrTap": "Manteniu premuda la drecera per parlar, o premeu-la una vegada per començar i una altra per aturar.",
+      "customWords": "Afegiu noms i argot a Configuració → Avançat → Paraules personalitzades per a més precisió.",
+      "dropFile": "Deixeu anar un fitxer d’àudio sobre aquesta finestra per transcriure’l.",
+      "languages": "Trieu els idiomes que parleu a Configuració → General per obtenir millors suggeriments de models."
+    },
+    "quickActions": {
+      "label": "Accions ràpides",
+      "transcribeFile": "Transcriu un fitxer",
+      "openHistory": "Obre l’historial"
+    },
+    "plan": {
+      "title": "El teu pla",
+      "polishUnlimited": "Polit amb IA és il·limitat.",
+      "polishLeft": "Et queden {{left}} de {{limit}} usos gratuïts de polit amb IA aquesta setmana · es reinicia {{day}}",
+      "polishFree": "El pla gratuït inclou una quota setmanal de polit amb IA.",
+      "usageToday": "Avui: peticions d'IA {{ai}} · cerques {{search}} · ús raonable {{aiLimit}} al dia",
+      "meetingsLeft": "Reunions aquest mes: {{used}} de {{limit}}"
+    },
+    "privacy": {
+      "title": "Privadesa",
+      "off": "No s'està llegint la pantalla.",
+      "on": "Permès: {{list}}",
+      "paused": "En pausa. No s'està llegint res."
+    }
+  },
+  "hud": {
+    "thinking": "Pensant…",
+    "sources": "Fonts",
+    "insert": "Insereix",
+    "copy": "Copia",
+    "copied": "Copiat",
+    "followUpHint": "Manteniu premuda la drecera per continuar",
+    "yes": "Sí",
+    "notNow": "Ara no",
+    "stop": "Atura",
+    "status": {
+      "needScreenContext": "Activeu «Llegir el que pregunteu» a Privadesa per fer servir això.",
+      "onDeviceFailed": "No s'ha pogut respondre en aquest Mac ara mateix.",
+      "offline": "No s'ha pogut connectar amb el {{appName}}. Comproveu la connexió.",
+      "weeklyLimit": "S'han esgotat els usos gratuïts d'IA d'aquesta setmana. Pro és il·limitat.",
+      "account": "El vostre accés a Pro requereix atenció a Compte.",
+      "failed": "No s'ha pogut fer ara mateix.",
+      "interrupted": "La resposta s'ha interromput.",
+      "opened": "Obert",
+      "searching": "Cercant al navegador",
+      "reminderAdded": "Recordatori afegit",
+      "eventAdded": "Afegit al calendari",
+      "shortcutRan": "Drecera executada",
+      "cantDoYet": "Encara no puc fer això. El control de l'ordinador arribarà aviat.",
+      "appNotFound": "No s'ha trobat aquesta aplicació.",
+      "shortcutNotFound": "No s'ha trobat aquesta drecera.",
+      "calendarPermission": "Primer permeteu l'accés a Calendari i Recordatoris a Configuració del sistema.",
+      "undone": "Desfet",
+      "meetingStarted": "Prenent notes. Aviseu els participants.",
+      "copied": "Copiat",
+      "learned": "Entesos. Podeu canviar-ho a Privadesa.",
+      "sensitivePaused": "En pausa aquí: aquesta finestra mostra una frase de recuperació o una clau privada.",
+      "fairUse": "Heu arribat al límit d'ús raonable d'avui. Es reinicia a mitjanit UTC.",
+      "slowDown": "Són moltes peticions alhora. Torneu-ho a provar d'aquí a un minut.",
+      "listening": "Escoltant…"
+    },
+    "undo": "Desfés",
+    "close": "Tanca",
+    "meetingOffer": "Voleu prendre notes d'aquesta trucada?",
+    "takeNotes": "Pren notes",
+    "suggest": {
+      "summariseThread": "Fil llarg. Voleu resumir-lo?",
+      "draftReply": "Voleu redactar una resposta?",
+      "addToCalendar": "Aquí hi ha una data. Voleu afegir-la al calendari?",
+      "summarisePage": "Voleu resumir aquesta pàgina?",
+      "explainError": "Voleu que s'expliqui aquest error?",
+      "summarise": "Resumeix",
+      "draft": "Redacta",
+      "add": "Afegeix",
+      "explain": "Explica",
+      "tightenDraft": "Voleu polir aquest esborrany?",
+      "priceCheck": "Voleu comprovar si és més barat en un altre lloc?",
+      "answerSearch": "Voleu que ho respongui directament?",
+      "fixFormula": "Voleu corregir aquests errors de fórmula?",
+      "meetingPrep": "Teniu una reunió aviat. Voleu un resum previ?",
+      "tighten": "Poleix",
+      "check": "Comprova",
+      "answer": "Respon",
+      "fix": "Corregeix",
+      "brief": "Posa'm al dia",
+      "reviewCode": "Voleu revisar aquesta pull request?",
+      "commitMessage": "Voleu escriure un missatge de commit per a això?",
+      "review": "Revisa",
+      "write": "Escriu"
+    },
+    "nudge": {
+      "findIt": "Troba-ho",
+      "remindMe": "Recorda-m'ho",
+      "copy": "Copia"
+    },
+    "chip": {
+      "searchInstead": "Escrit. Voleu cercar-ho en lloc d'això?",
+      "search": "Cerca"
+    },
+    "suggestionTip": "Digueu «sí», «ara no» o «no me'ls mostris»."
+  },
+  "privacy": {
+    "title": "Privadesa",
+    "promise": "Desactivat fins que l'activeu. Es desa en aquest Mac, xifrat. Cada petició que surt queda registrada.",
+    "state": {
+      "on": "Observant, tal com heu permès",
+      "onDetail": "Només les funcions que heu activat a sota.",
+      "off": "Sense observar",
+      "offDetail": "El dictat funciona com sempre. No es llegeix res de la pantalla.",
+      "paused": "En pausa",
+      "pausedDetail": "No es llegeix res fins que reprengueu.",
+      "pausedUntil": "No es llegeix res fins a les {{time}}.",
+      "resume": "Reprèn",
+      "pauseHour": "Pausa d'1 hora",
+      "pauseDay": "Fins demà"
+    },
+    "accessibility": "El {{appName}} necessita accés d'Accessibilitat per llegir text d'altres aplicacions.",
+    "grant": "Permet l'accés",
+    "capabilities": {
+      "title": "Què pot fer el {{appName}}",
+      "description": "Cadascuna està desactivada fins que l'activeu.",
+      "screen_context": {
+        "title": "Llegir el que pregunteu",
+        "reads": "Llegeix la finestra sobre la qual pregunteu, i les finestres obertes quan li demaneu que trobi alguna cosa.",
+        "leaves": "Només el necessari per respondre, sense dades secretes."
+      },
+      "screen_memory": {
+        "title": "Recordar el que heu vist",
+        "reads": "Recorda les finestres que heu fet servir, perquè hi pugueu preguntar més tard.",
+        "leaves": "Es queda en aquest Mac, xifrat."
+      },
+      "proactive": {
+        "title": "Oferir suggeriments",
+        "reads": "Proposa un pas següent en el moment just: fils, esborranys, dates, errors, reunions.",
+        "leaves": "Es decideix en aquest Mac. No s'envia res si no ho accepteu, excepte els avisos de les reunions."
+      },
+      "meetings": {
+        "title": "Notes de reunions",
+        "reads": "Escolta el micròfon i la trucada mentre pren notes.",
+        "leaves": "L'àudio es queda aquí. Només s'envia text, per redactar el resum."
+      },
+      "on_device_only": {
+        "title": "Mantenir-ho tot en aquest Mac",
+        "reads": "Apple Intelligence per a tot, i sense cerca web.",
+        "leaves": "No s'envia res."
+      },
+      "wake_word": {
+        "title": "Mans lliures: digueu «Hola Ambient»",
+        "reads": "Escolta «Hola Ambient» en aquest Mac. Tota la resta es descarta mentre parleu.",
+        "leaves": "No es grava ni s'envia res fins que ho dieu."
+      }
+    },
+    "retention": "Conserva durant",
+    "days_one": "{{count}} dia",
+    "days_other": "{{count}} dies",
+    "preview": {
+      "title": "Què veu el {{appName}}",
+      "description": "Exactament el que llegiria d'una finestra, després d'ocultar les dades sensibles.",
+      "hint": "Feu clic a Previsualitza i canvieu a qualsevol finestra en 3 segons.",
+      "switchNow": "Canvieu ara a una altra finestra…",
+      "button": "Previsualitza",
+      "noText": "No hi ha text llegible en aquesta finestra.",
+      "skipped": {
+        "never_watch": "Aquesta aplicació és a la vostra llista de no observar mai, així que no s'ha llegit res.",
+        "no_permission": "Primer permeteu l'accés d'Accessibilitat.",
+        "unavailable": "No s'ha pogut llegir aquesta finestra.",
+        "sensitive": "Aquesta finestra mostra una frase de recuperació o una clau privada, així que no s'ha llegit res."
+      }
+    },
+    "neverWatch": {
+      "title": "No observar mai",
+      "description": "No es llegeixen mai, encara que tot estigui activat. També s'ometen els camps de contrasenya, les finestres privades, els moneders i les frases de recuperació.",
+      "this": "No observar mai aquesta aplicació",
+      "added": "{{app}} no es tornarà a llegir."
+    },
+    "stored": {
+      "title": "Què es desa",
+      "description": "Memòria de pantalla en aquest Mac. L'historial de dictats és a Historial.",
+      "summary_one": "{{count}} instantània des de {{since}}.",
+      "summary_many": "{{count}} instantànies des de {{since}}.",
+      "summary_other": "{{count}} instantànies des de {{since}}.",
+      "entries_one": "{{count}} instantània",
+      "entries_many": "{{count}} instantànies",
+      "entries_other": "{{count}} instantànies",
+      "deleteApp": "Suprimeix les instantànies d'aquesta aplicació",
+      "empty": "No hi ha res desat.",
+      "deleteAll": "Suprimeix-ho tot",
+      "deletedAll": "S'han suprimit la memòria de pantalla i el registre de peticions."
+    },
+    "ledger": {
+      "title": "Peticions que han sortit d'aquest Mac",
+      "description": "Cada petició i exactament què ha enviat. Es conserva 30 dies.",
+      "empty": "Encara no hi ha peticions.",
+      "bytes_one": "{{count}} byte",
+      "bytes_many": "{{count}} bytes",
+      "bytes_other": "{{count}} bytes",
+      "purpose": {
+        "polish": "Polit amb IA",
+        "answer": "Resposta",
+        "search": "Cerca web",
+        "suggestion": "Suggeriment",
+        "summary": "Resum de la reunió",
+        "act": "Acció",
+        "license": "Comprovació del compte",
+        "trial": "Prova"
+      }
+    },
+    "engine": {
+      "title": "Preferir la IA en aquest Mac",
+      "description": "Fa servir Apple Intelligence quan pot. Els resultats són menys polits, per això està desactivat per defecte.",
+      "unavailable": "Apple Intelligence no està disponible en aquest Mac, així que s'utilitzen els servidors del {{appName}}."
+    },
+    "suggestions": {
+      "title": "Suggeriments que rebeu",
+      "description": "Digueu «ara no», «no me'ls mostris» o «en aquesta aplicació no» quan n'aparegui un, i n'aprèn. Canvieu-ho aquí quan vulgueu.",
+      "mutedIn": "Desactivat a {{apps}}",
+      "kinds": {
+        "summarise_thread": "Resumir fils de correu llargs",
+        "draft_reply": "Redactar respostes",
+        "add_to_calendar": "Afegir dates al calendari",
+        "summarise_page": "Resumir pàgines llargues",
+        "explain_error": "Explicar errors i proves fallides",
+        "tighten_draft": "Polir esborranys llargs",
+        "price_check": "Comparar preus en altres llocs",
+        "answer_search": "Respondre cerques que reformuleu una vegada i una altra",
+        "fix_formula": "Corregir fórmules de fulls de càlcul",
+        "meeting_prep": "Posar-vos al dia abans de les reunions",
+        "review_code": "Revisar pull requests",
+        "commit_message": "Escriure missatges de commit",
+        "meeting_nudge": "Avisos durant les reunions"
+      }
+    },
+    "macOnly": "De moment, només al Mac",
+    "protections": {
+      "audio": "La vostra veu es transcriu en aquest Mac i mai no la guardem.",
+      "text": "Llegeix text, mai no fa captures de pantalla.",
+      "passwords": "Els camps de contrasenya, els gestors de contrasenyes i les finestres privades no es llegeixen mai.",
+      "wallets": "Moneders de criptomonedes, frases de recuperació i claus privades: s'aparta del tot.",
+      "secrets": "Els números de targeta, claus i codis s'eliminen abans d'enviar res.",
+      "suggestions": "Els suggeriments es decideixen en aquest Mac; no s'envia res si no ho accepteu.",
+      "stored": "El que conserva es queda en aquest Mac, xifrat, fins que ho suprimiu.",
+      "ledger": "Cada petició que surt apareix a sota, amb exactament el que s'ha enviat."
+    },
+    "days_many": "{{count}} dies"
+  },
+  "meetings": {
+    "title": "Reunions",
+    "intro": "Notes per a qualsevol trucada: vós i els altres, transcrits en aquest Mac. L'àudio no es desa mai.",
+    "idle": "Sense prendre notes",
+    "idleDetail": "Comenceu quan comenci una trucada o activeu els suggeriments de reunions a Privadesa.",
+    "live": "Prenent notes · {{time}}",
+    "capturingBoth": "Us sent a vós i la trucada.",
+    "capturingMic": "Només sent el vostre micròfon.",
+    "start": "Comença les notes",
+    "stop": "Atura i resumeix",
+    "listening": "Escoltant…",
+    "consent": "Aviseu tothom que esteu prenent notes.",
+    "copyConsent": "Copia un missatge",
+    "consentMessage": "Avís: faig servir el {{appName}} per prendre notes d'aquesta trucada.",
+    "openSettings": "Obre la configuració",
+    "notes": "Notes",
+    "transcript": "Transcripció",
+    "past": "Reunions anteriors",
+    "empty": "Encara no hi ha reunions.",
+    "untitled": "Reunió sense títol",
+    "unfinished": "Sense acabar",
+    "all": "Totes les reunions",
+    "summary": "Resum",
+    "decisions": "Decisions",
+    "actionItems": "Tasques pendents",
+    "questions": "Preguntes per a vós",
+    "noSummary": "No hi ha cap resum d'aquesta reunió.",
+    "copyMarkdown": "Copia com a Markdown",
+    "followUp": "Redacta un seguiment",
+    "followUpTitle": "Correu de seguiment",
+    "copy": "Copia",
+    "copied": "Copiat",
+    "delete": "Suprimeix la reunió",
+    "you": "Vós",
+    "them": "Ells",
+    "systemAudio": {
+      "noPermission": "Permeteu la gravació de pantalla perquè el {{appName}} pugui sentir la trucada. Només es fa servir l'àudio i no es desa res.",
+      "oldMacOS": "Per sentir la trucada cal macOS 13 o posterior. El micròfon es continua transcrivint.",
+      "failed": "No s'ha pogut capturar l'àudio de la trucada. El micròfon es continua transcrivint.",
+      "unsupported": "Sentir la trucada encara no està disponible en aquest sistema."
+    },
+    "error": {
+      "storage": "No s'ha pogut obrir l'emmagatzematge de reunions.",
+      "freeLimit": "El pla gratuït inclou 2 reunions al mes. Pro és il·limitat.",
+      "mic": "No s'ha pogut obrir el micròfon.",
+      "notActive": "No hi ha cap reunió en curs.",
+      "notFound": "Aquesta reunió ja no existeix.",
+      "followUp": "No s'ha pogut redactar el seguiment ara mateix."
+    },
+    "freeLeft": "Reunions gratuïtes restants aquest mes: {{left}} de {{limit}}. Pro és il·limitat."
+  },
+  "tour": {
+    "skip": "Omet",
+    "next": "Següent",
+    "done": "Fet",
+    "start": "Comenceu a fer servir el {{appName}}",
+    "meet": {
+      "title": "Coneixeu l'agent",
+      "description": "Manteniu premuda la drecera i parleu. El {{appName}} s'encarrega de la resta."
+    },
+    "modes": {
+      "write": {
+        "title": "Escriure",
+        "example": "Podem passar la reunió a dijous?"
+      },
+      "answer": {
+        "title": "Respondre",
+        "example": "Quin és el tipus de les plusvàlues al Regne Unit?"
+      },
+      "act": {
+        "title": "Actuar",
+        "example": "Recorda'm a les 5 que truqui a la Sam"
+      },
+      "recall": {
+        "title": "Recordar",
+        "example": "Què vaig dir ahir sobre els preus?"
+      }
+    },
+    "nothingToConnect": {
+      "title": "Res a connectar.",
+      "body": "Sense comptes, integracions ni bots. Funciona amb les aplicacions que ja feu servir."
+    },
+    "try": {
+      "title": "Proveu-ho ara",
+      "body": "Manteniu premut {{keys}} i pregunteu: «Quin temps farà demà a Lisboa?»",
+      "done": "Això és tot. Ja heu fet servir l'agent."
+    },
+    "choose": {
+      "title": "Trieu què pot fer el {{appName}}",
+      "description": "Tot desactivat fins que ho activeu. Canvieu-ho quan vulgueu a Privadesa.",
+      "footnote": "Les contrasenyes, els moneders i les finestres privades no es llegeixen mai.",
+      "proOnly": "Part de Pro. Milloreu el pla a Compte."
+    }
+  },
+  "getStarted": {
+    "title": "Primers passos",
+    "progress": "{{done}} de {{total}} fets",
+    "hide": "Amaga",
+    "whatToSay": "Què puc dir?",
+    "replayTour": "Torna a veure la visita",
+    "steps": {
+      "answer": "Feu una pregunta a l'agent",
+      "reminder": "Creeu un recordatori amb la veu",
+      "about_screen": "Resumiu alguna cosa de la pantalla",
+      "suggestion": "Accepteu un suggeriment",
+      "meeting": "Preneu notes en una reunió",
+      "privacy": "Mireu què pot llegir el {{appName}} i què no"
+    }
+  },
+  "trySaying": {
+    "title": "Què puc dir?",
+    "close": "Tanca",
+    "description": "Manteniu premut {{ask}} per parlar amb l'agent. {{dictate}} escriu, tret que demaneu alguna cosa.",
+    "footnote": "A ChatGPT o Claude, comenceu amb «Hola Ambient» per parlar amb l'agent.",
+    "groups": {
+      "answer": {
+        "title": "Preguntar",
+        "examples": [
+          "Quin és el tipus de les plusvàlues al Regne Unit?",
+          "Resumeix això.",
+          "Què vol dir aquest error?",
+          "Tradueix això a l'anglès."
+        ]
+      },
+      "act": {
+        "title": "Fer",
+        "examples": [
+          "Recorda'm a les 5 que truqui a la Sam.",
+          "Afegeix un dinar amb l'Ana divendres a la una.",
+          "Obre Linear.",
+          "Executa la meva drecera de la reunió diària."
+        ]
+      },
+      "recall": {
+        "title": "Recordar",
+        "examples": [
+          "Què vaig dir ahir sobre els preus?",
+          "Troba la presentació del T3."
+        ]
+      },
+      "suggestions": {
+        "title": "Quan apareix un suggeriment",
+        "examples": [
+          "«Sí» o «fes-ho» per acceptar-lo.",
+          "«Ara no» per descartar-lo.",
+          "«No me'ls mostris» per desactivar aquest tipus.",
+          "«Aquí no» per aturar-lo en aquesta aplicació."
+        ]
+      },
+      "meetings": {
+        "title": "A les reunions",
+        "examples": [
+          "Comenceu les notes des de Reunions, o digueu que sí quan l'Ambient ho ofereixi.",
+          "«Troba-ho» quan us demanin alguna cosa.",
+          "«Recorda-m'ho» quan prometeu fer alguna cosa."
+        ]
+      },
+      "talking": {
+        "title": "Parlar amb l'Ambient",
+        "examples": [
+          "Manteniu premut {{ask}} i parleu: sempre és per a l'Ambient.",
+          "O feu servir la tecla de dictat i comenceu amb «Hola Ambient, …». Si no, les paraules s'escriuen.",
+          "Mans lliures (activeu-ho a Privadesa): només cal dir «Hola Ambient, …»."
+        ]
+      }
+    }
+  },
+  "app": {
+    "starting": "S'està iniciant {{appName}}…"
+  }
+}

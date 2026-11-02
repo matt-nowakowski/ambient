@@ -1,0 +1,1514 @@
+{
+  "tray": {
+    "settings": "Nastavení...",
+    "checkUpdates": "Zkontrolovat aktualizace...",
+    "copyLastTranscript": "Zkopírovat poslední přepis",
+    "unloadModel": "Uvolnit model",
+    "model": "Model",
+    "quit": "Ukončit",
+    "cancel": "Zrušit",
+    "secureInputWarning": "⚠ Zkratky blokuje Secure Input"
+  },
+  "sidebar": {
+    "home": "Domů",
+    "general": "Obecné",
+    "account": "Účet",
+    "models": "Modely",
+    "advanced": "Pokročilé",
+    "postProcessing": "Následné zpracování",
+    "history": "Historie",
+    "debug": "Ladění",
+    "about": "O aplikaci",
+    "settings": "Nastavení",
+    "privacy": "Soukromí",
+    "meetings": "Schůzky"
+  },
+  "onboarding": {
+    "customModelDescription": "Oficiálně nepodporováno",
+    "migration": {
+      "title": "Vaše modely potřebují aktualizaci",
+      "description": "{{appName}} teď používá lepší model. Stáhněte ho, abyste mohli dál přepisovat.",
+      "replaces": "Nahrazuje {{name}}",
+      "oldFormat": "Starý formát",
+      "failed": "Stahování selhalo",
+      "retry": "Zkusit znovu",
+      "chooseAnother": "Vybrat jiný model",
+      "download": "Stáhnout modely ({{size}})",
+      "continue": "Pokračovat"
+    },
+    "errors": {
+      "selectModel": "Nepodařilo se vybrat model"
+    },
+    "permissions": {
+      "microphone": {
+        "name": "Mikrofon",
+        "why": "Aby vás {{appName}} slyšel. Váš hlas nikdy neopustí tento počítač."
+      },
+      "accessibility": {
+        "name": "Zpřístupnění",
+        "why": "Aby zkratka fungovala všude a text se objevil tam, kde píšete."
+      },
+      "errors": {
+        "checkFailed": "Nepodařilo se zkontrolovat oprávnění. Zkuste to prosím znovu.",
+        "requestFailed": "Nepodařilo se požádat o oprávnění. Zkuste to prosím znovu."
+      },
+      "titleMac": "Dvě oprávnění a máte hotovo",
+      "titleWindows": "Jedno oprávnění a máte hotovo",
+      "subtitleMac": "macOS se zeptá, než jakákoli aplikace smí poslouchat nebo psát.",
+      "subtitleWindows": "Windows se zeptá, než jakákoli aplikace smí poslouchat.",
+      "allow": "Povolit",
+      "openSettings": "Otevřít nastavení",
+      "allowed": "Povoleno",
+      "waiting": "Čeká se",
+      "turnOnMac": "Zapněte {{appName}} v Nastavení systému a pak se vraťte sem.",
+      "turnOnWindows": "Zapněte přístup k mikrofonu v Nastavení Windows a pak se vraťte sem.",
+      "hintBoth": "Pro pokračování povolte obojí",
+      "hintMicrophone": "Pro pokračování povolte mikrofon",
+      "welcomeBack": "Vítejte zpět. Pokračujeme tam, kde jste skončili.",
+      "relaunch": "Zkratka nefunguje? <relaunch>Spusťte {{appName}} znovu</relaunch>. Vrátíte se rovnou sem."
+    },
+    "shell": {
+      "back": "Zpět",
+      "continue": "Pokračovat",
+      "progress": "Krok {{step}} z {{count}}"
+    },
+    "welcome": {
+      "title": "Mluvte místo psaní, v jakékoli aplikaci",
+      "subtitle": "Vyberte jazyky, ve kterých budete diktovat",
+      "languagesLabel": "Jazyky",
+      "noMatch": "Pro „{{query}}“ nic nenalezeno. Další jazyky najdete v nastavení.",
+      "appLanguage": "Jazyk aplikace",
+      "menusIn": "Rozhraní v jazyce: <b>{{language}}</b>",
+      "chinese": {
+        "question": "Mluvíte jazykem: {{languages}}. Jaké znaky má {{appName}} psát?",
+        "label": "Čínské znaky",
+        "zh-Hans": "Zjednodušené",
+        "zh-Hant": "Tchaj-wan",
+        "zh-HK": "Hongkong"
+      },
+      "hint": {
+        "pickOne": "Vyberte alespoň jeden jazyk",
+        "weak_one": "{{languages}}: zatím ho žádný model dobře neslyší",
+        "weak_few": "{{languages}}: zatím je žádný model dobře neslyší",
+        "weak_many": "{{languages}}: zatím je žádný model dobře neslyší",
+        "weak_other": "{{languages}}: zatím je žádný model dobře neslyší"
+      }
+    },
+    "download": {
+      "checking": "Kontrola stahování…",
+      "ready": "{{name}} je připraven",
+      "failed": "Stahování se zastavilo",
+      "downloading": "Stahuje se {{name}}",
+      "progress": "{{done}} z {{total}}",
+      "progressLeft": "{{done}} z {{total}}, zbývá {{time}}",
+      "checkingName": "Kontrola: {{name}}",
+      "checkingDetail": "Ověřujeme, že je stahování kompletní",
+      "stopped": "Stahování {{name}} se zastavilo",
+      "retryDetail": "Další pokus naváže tam, kde stahování skončilo",
+      "retryDownload": "Zkusit stáhnout znovu",
+      "cardProgress": "Stahuje se {{percent}} %, {{done}} z {{total}}",
+      "timeLeft": "zbývá {{time}}",
+      "speedLeft": "{{speed}}, zbývá {{time}}"
+    },
+    "model": {
+      "title": "Vyberte model řeči",
+      "subtitle": "Převádí váš hlas na text, na tomto počítači",
+      "label": "Model řeči",
+      "lines": {
+        "recommended": "Nejlepší rychlost a přesnost pro vaše jazyky",
+        "faster": "Rychlejší, s několika chybami navíc",
+        "accurate": "Nejméně chyb, ale pomalejší"
+      },
+      "shorts": {
+        "recommended": "Nejlepší volba pro vás",
+        "faster": "Rychlejší, o něco více chyb",
+        "accurate": "Nejméně chyb, ale pomalejší"
+      },
+      "model": "Model",
+      "showAll": "Zobrazit všech {{count}} modelů",
+      "download": "Stáhnout {{size}}",
+      "downloadInstead": "Stáhnout raději {{size}}",
+      "pauses": "{{name}} se pozastaví na {{percent}} %",
+      "resumeLater": "Vyberte jej znovu a stahování naváže tam, kde skončilo",
+      "hint": "Stahuje se, zatímco dokončujete nastavení"
+    },
+    "demo": {
+      "title": "Mluvte v jakékoli aplikaci jedinou zkratkou",
+      "hold": "<0>Klikněte tam, kam byste psali.</0> <1>Podržte zkratku a mluvte.</1> <2>Pusťte ji a vaše slova se objeví.</2>",
+      "tap": "<0>Klikněte tam, kam byste psali.</0> <1>Klepněte na zkratku a mluvte.</1> <2>Klepněte znovu a vaše slova se objeví.</2>",
+      "apps": {
+        "messages": "Zprávy",
+        "notes": "Poznámky"
+      },
+      "chat": "Přijdeš dneska večer?",
+      "noteTitle": "Plány na víkend",
+      "screenLabel": "Notebook: někdo klikne do aplikace, stiskne zkratku a mluví a slova se objeví tam, kam kliknul.",
+      "change": "Změnit",
+      "yourShortcut": "Vaše zkratka je",
+      "pressKeys": "Stiskněte nové klávesy",
+      "addKey": "Teď přidejte klávesu",
+      "cancel": "Zrušit",
+      "tryIt": "Vyzkoušejte si to"
+    },
+    "try": {
+      "title": "Zkuste to!",
+      "subtitle": "{{appName}} je v rohu a provede vás tím",
+      "noteLabel": "Poznámka",
+      "placeholder": "Nová poznámka",
+      "hold": "Podržte <keys/> a mluvte.",
+      "tapNext": "Teď jednou klepněte na <keys/> a mluvte.",
+      "letGo": "Až domluvíte, pusťte <keys/>.",
+      "tapAgain": "Až domluvíte, klepněte na <keys/> znovu.",
+      "watch": "Sledujte poznámku.",
+      "changeKeys": "Změnit zkratku, {{keys}}",
+      "doneHold": "Plácnem si! Tohle bylo podržení.",
+      "doneHoldNext": "Teď to bez rukou.",
+      "doneTap": "Plácnem si! Tohle bylo klepnutí.",
+      "doneTapNext": "Teď to zkuste s podržením, zatímco mluvíte.",
+      "giveFive": "Povedlo se! Plácněte si",
+      "highFive": "Plácnout si",
+      "slowLine": "{{name}} to na tomto počítači trvalo {{wait}}. <faster>Zkuste rychlejší model</faster>",
+      "nothingTyped": "Hmm, nic se nenapsalo.",
+      "nothingTypedSub": "Nejdřív klikněte do poznámky a zkuste to znovu.",
+      "silent": "Nic jsem neslyšel.",
+      "silentSub": "Z tohoto mikrofonu nešel žádný zvuk. Zkuste jiný:",
+      "noWords": "Nezachytil jsem žádná slova.",
+      "noWordsSub": "Zkuste to znovu a řekněte celou větu.",
+      "finish": "Dokončit",
+      "skip": "Přeskočit",
+      "seconds": "{{value}} s"
+    },
+    "done": {
+      "title": "Hotovo",
+      "subMac": "{{appName}} najdete v řádku nabídek. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
+      "subTray": "{{appName}} najdete v oznamovací oblasti. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
+      "hint": "Tohle můžete později změnit v Nastavení",
+      "highFiveLabel": "Plácnout si",
+      "atLogin": "Spustit {{appName}} po přihlášení",
+      "finish": "Hotovo",
+      "panel": {
+        "name": "{{appName}}",
+        "ready": "Připraveno",
+        "languages": "Jazyky",
+        "model": "Model řeči",
+        "shortcut": "Zkratka",
+        "changeLanguages": "Změnit jazyky, {{languages}}",
+        "changeModel": "Změnit model řeči, {{model}}"
+      }
+    },
+    "linux": {
+      "tryIt": "Nefunguje to? <guide>Průvodce nastavením pro Linux</guide>",
+      "done": "Nefunguje to v jiných aplikacích? <guide>Průvodce nastavením pro Linux</guide>"
+    }
+  },
+  "modelTable": {
+    "tags": {
+      "preview": "Živý náhled",
+      "previewTitle": "Zobrazuje vaše slova v překryvu Živě, zatímco mluvíte, a po skončení je napíše",
+      "translate": "Překládá",
+      "translateTitle": "Umí změnit to, co řeknete, na anglický text. Zapnete to v nastavení"
+    },
+    "rubric": {
+      "gradeTitle": "Přesnost pro {{language}}: {{grade}}",
+      "accuracyTitle": "Přesnost pro {{language}}",
+      "overallTitle": "Přesnost ve vašich jazycích: {{grade}}",
+      "overall": "Přesnost ve vašich jazycích",
+      "meaning": {
+        "A": "Velmi málo chyb: vaše slova obvykle vyjdou tak, jak jste je řekli",
+        "B": "Několik chyb: občas budete muset opravit slovo",
+        "C": "Časté chyby: některé detaily se mohou ztratit",
+        "D": "Mnoho chyb: počítejte s tím, že napsaný text budete kontrolovat a opravovat",
+        "F": "Často nesrozumitelné: velká část toho, co řeknete, může vyjít špatně"
+      },
+      "unsupported": "Tento model nerozumí jazyku {{language}}, takže v něm nemůže psát",
+      "unrated": "Tento model rozumí jazyku {{language}}, ale zatím jsme neměřili, jak dobře",
+      "under": "pod {{max}} %",
+      "between": "{{min}} až {{max}} %",
+      "over": "{{min}} % nebo více",
+      "speedTitle": "Rychlost: {{speed}}",
+      "speedName": {
+        "0": "Velmi pomalý",
+        "1": "Pomalý",
+        "2": "Střední",
+        "3": "Rychlý",
+        "4": "Velmi rychlý"
+      },
+      "speedMeaning": {
+        "0": "Vaše slova se objeví po dlouhém čekání",
+        "1": "Vaše slova se objeví po chvíli čekání",
+        "2": "Vaše slova se objeví po krátkém čekání",
+        "3": "Vaše slova se objeví téměř okamžitě",
+        "4": "Vaše slova se objeví okamžitě"
+      },
+      "speedPreview": "{{meaning}}, s živým náhledem během mluvení",
+      "untimed": "Rychlost zatím nebyla změřena",
+      "underSeconds": "pod {{max}} s",
+      "betweenSeconds": "{{min}} až {{max}} s",
+      "overSeconds": "{{min}} s nebo více"
+    },
+    "roles": {
+      "recommended": "Doporučeno",
+      "faster": "Rychlejší",
+      "accurate": "Přesnější",
+      "fromAll": "Ze všech modelů"
+    },
+    "speed": "Rychlost",
+    "size": "Velikost",
+    "accuracy": "Přesnost",
+    "search": "Hledat modely",
+    "allLabel": "Modely řeči",
+    "noMatch": "Pro „{{query}}“ nic nenalezeno. Zkuste jazyk nebo rodinu modelů, například Whisper či Parakeet",
+    "noFilterMatch": "Těmto filtrům žádné modely neodpovídají",
+    "speedUntested": "Rychlost zatím nebyla změřena",
+    "speedWords": {
+      "0": "Velmi pomalý, slova se objeví po dlouhém čekání",
+      "1": "Pomalý, slova se objeví po chvíli čekání",
+      "2": "Střední, slova se objeví po krátkém čekání",
+      "3": "Rychlý, slova se objeví téměř okamžitě",
+      "4": "Velmi rychlý, slova se objeví okamžitě"
+    },
+    "speedWordsPreview": {
+      "0": "Velmi pomalý, s živým náhledem během mluvení",
+      "1": "Pomalý, s živým náhledem během mluvení",
+      "2": "Střední, s živým náhledem během mluvení",
+      "3": "Rychlý, s živým náhledem během mluvení",
+      "4": "Velmi rychlý, s živým náhledem během mluvení"
+    },
+    "missingLanguage": "Chybí jazyk",
+    "allLanguages": "Vše",
+    "downloadingLine": "Stahuje se {{percent}} % z {{total}}",
+    "customLine": "Přidáno z vaší složky modelů. Nehodnoceno."
+  },
+  "languagePicker": {
+    "search": "Hledat jazyky",
+    "addAnother": "Přidat další",
+    "remove": "Odebrat: {{language}}",
+    "alreadyAdded_one": "{{languages}} je již přidán.",
+    "alreadyAdded_few": "{{languages}} jsou již přidány.",
+    "alreadyAdded_many": "{{languages}} jsou již přidány.",
+    "alreadyAdded_other": "{{languages}} jsou již přidány."
+  },
+  "modelSelector": {
+    "custom": "Vlastní",
+    "streaming": "Streaming",
+    "active": "Aktivní",
+    "noModelsAvailable": "Nejsou dostupné žádné modely",
+    "verifying": "Ověřování {{modelName}}...",
+    "verifyingGeneric": "Ověřování...",
+    "downloading": "Stahování {{percentage}}%",
+    "downloadingMultiple": "Stahování {{count}} modelů...",
+    "modelReady": "Model připraven",
+    "loading": "Načítám {{modelName}}...",
+    "loadingGeneric": "Načítání...",
+    "modelError": "Chyba modelu",
+    "modelUnloaded": "Model uvolněn",
+    "noModelDownloadRequired": "Žádný model - je nutné stáhnout",
+    "downloadSpeed": "{{speed}} MB/s",
+    "lockedWhileTranscribing": "Model můžete změnit, až se dokončí přepis v Historii."
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "Nastavení {{model}}"
+    },
+    "general": {
+      "title": "Obecné",
+      "shortcut": {
+        "title": "Zkratky {{appName}}",
+        "description": "Nastavte klávesové zkratky pro spuštění nahrávání řeči na text",
+        "loading": "Načítám zkratky...",
+        "none": "Žádné zkratky nejsou nastavené",
+        "notFound": "Zkratka nenalezena",
+        "pressKeys": "Stiskněte klávesy...",
+        "bindings": {
+          "transcribe": {
+            "name": "Zkratka přepisu",
+            "description": "Klávesová zkratka pro nahrávání a přepis vašeho hlasu."
+          },
+          "cancel": {
+            "name": "Zkratka zrušení",
+            "description": "Klávesová zkratka pro zrušení aktuálního nahrávání."
+          },
+          "transcribe_with_post_process": {
+            "name": "Klávesa pro následné zpracování",
+            "description": "Volitelné: Vyhrazená klávesová zkratka, která vždy použije AI následné zpracování na váš přepis."
+          },
+          "ask_agent": {
+            "name": "Zkratka pro dotaz",
+            "description": "Vždy mluví s agentem: položte otázku nebo ho požádejte, ať něco udělá. Nikdy nepíše."
+          }
+        },
+        "errors": {
+          "set": "Nepodařilo se nastavit zkratku: {{error}}"
+        }
+      },
+      "language": {
+        "title": "Jazyk",
+        "description": "Vyberte jazyk rozpoznávání řeči. Auto jazyk určí automaticky, zatímco výběr konkrétního jazyka může zlepšit přesnost.",
+        "searchPlaceholder": "Hledat jazyky...",
+        "noResults": "Žádné jazyky nenalezeny",
+        "auto": "Automaticky",
+        "autoUnavailable": {
+          "title": "Automaticky je vypnuto",
+          "oneLanguage": "S tímto modelem funguje jen jeden z vašich jazyků",
+          "undetectable": "Není k dispozici pro {{languages}}",
+          "noMatch": "Žádný z vašich jazyků s tímto modelem nefunguje"
+        },
+        "detectorMissingTitle": "Automaticky vyžaduje samostatné stažení",
+        "detectorMissing": "Tento model nepozná, jakým jazykem mluvíte. Režim Automaticky potřebuje malý detektor jazyka, který to zjistí",
+        "stopDetectorDownload": "Zastavit stahování detektoru jazyka"
+      },
+      "preferredLanguages": {
+        "title": "Preferované jazyky",
+        "description": "Jazyky, kterými mluvíte. {{appName}} podle nich doporučuje modely.",
+        "noMatch": "Žádný jazyk neodpovídá „{{query}}“",
+        "weak": "Zatím žádný model dobře nerozpoznává: {{languages}}."
+      },
+      "shortcutActivation": {
+        "title": "Chování zkratky",
+        "description": "Zvolte, jak má zkratka přepisu spouštět a zastavovat nahrávání.",
+        "options": {
+          "holdOrToggle": "Automaticky",
+          "pushToTalk": "Podržet",
+          "toggle": "Přepínat"
+        },
+        "descriptions": {
+          "hold_or_toggle": "Podržte pro nahrávání nebo klepněte pro přepnutí",
+          "push_to_talk": "Nahrává, dokud držíte zkratku",
+          "toggle": "Klepněte na zkratku pro zahájení nahrávání, klepněte znovu pro zastavení"
+        }
+      }
+    },
+    "models": {
+      "title": "Modely",
+      "changeLanguages": "Změnit jazyky",
+      "sections": {
+        "yours": "V tomto počítači",
+        "fits": "Pro vaše jazyky",
+        "untested": "Netestováno"
+      },
+      "untestedNote": "Netestováno s {{appName}}. Mohou být pomalejší nebo dělat více chyb.",
+      "untestedHidden_one": "Další {{count}} model není vyladěn pro diktování. Najdete ho hledáním.",
+      "untestedHidden_few": "Další {{count}} modely nejsou vyladěny pro diktování. Najdete je hledáním.",
+      "untestedHidden_many": "Další modely nevyladěné pro diktování: {{count}}. Najdete je hledáním.",
+      "untestedHidden_other": "Dalších {{count}} modelů není vyladěno pro diktování. Najdete je hledáním.",
+      "emptyYours": "Zatím žádné modely. Vyberte některý níže: stáhne se a {{appName}} ho začne používat.",
+      "showMore": "Zobrazit další ({{count}})",
+      "showFewer": "Zobrazit méně",
+      "download": "Stáhnout a použít",
+      "downloadingThenUse": "{{percent}} % z {{total}}, poté se přepne",
+      "loading": "Načítání…",
+      "deleteAsk": "Smazat {{name}}? Uvolní se {{size}}.",
+      "deleteAskActive": "Smazat {{name}}? {{appName}} nebude moci přepisovat, dokud nevyberete jiný model.",
+      "cancel": "Zrušit",
+      "deleteModel": "Smazat {{name}}",
+      "cancelDownload": "Zastavit stahování {{name}}",
+      "legend": {
+        "open": "Jak se modely hodnotí",
+        "accuracyNote": "Pro každý z vašich jazyků: kolik slov model v našich testovacích nahrávkách napsal špatně.",
+        "speedNote": {
+          "accelerated": "Jak dlouho trvá napsat 30 sekund řeči na grafickém čipu našeho testovacího notebooku. Tento počítač se může lišit.",
+          "cpu": "Jak dlouho trvá napsat 30 sekund řeči na procesoru našeho testovacího notebooku. Tento počítač se může lišit."
+        },
+        "marks": "? zatím nebylo změřeno. — tomuto jazyku nerozumí."
+      },
+      "retiredNotice": {
+        "title": "Staré modely už s {{appName}} nefungují",
+        "description": "Zabírají {{size}} na vašem počítači.",
+        "delete": "Smazat modely",
+        "deleted": "Staré modely byly smazány",
+        "deleteFailed": "Některé staré modely se nepodařilo smazat. Podrobnosti najdete v protokolu."
+      },
+      "rescan": {
+        "label": "Znovu prohledat",
+        "tooltip": "Znovu prohledat modely přidané do složky modelů nebo mezipaměti Hugging Face mimo {{appName}}"
+      }
+    },
+    "languages": {
+      "title": "Jazyky"
+    },
+    "sound": {
+      "title": "Zvuk",
+      "microphone": {
+        "title": "Mikrofon",
+        "description": "Vyberte preferované zařízení mikrofonu",
+        "placeholder": "Vyberte mikrofon...",
+        "loading": "Načítání..."
+      },
+      "channel": {
+        "title": "Vstupní kanál",
+        "description": "Vyberte vstupní kanál, ze kterého se má nahrávat. Tuto možnost použijte, pokud má vaše zvukové rozhraní více vstupů.",
+        "average": "Průměr všech kanálů",
+        "channel": "Kanál {{n}}"
+      },
+      "audioFeedback": {
+        "label": "Zvuková odezva",
+        "description": "Přehrát zvuk při zahájení a ukončení nahrávání"
+      },
+      "outputDevice": {
+        "title": "Výstupní zařízení",
+        "description": "Vyberte preferované výstupní zařízení pro zvuky odezvy",
+        "placeholder": "Vyberte výstupní zařízení...",
+        "loading": "Načítání..."
+      },
+      "volume": {
+        "title": "Hlasitost",
+        "description": "Upravte hlasitost zvukové odezvy"
+      }
+    },
+    "advanced": {
+      "groups": {
+        "app": "Aplikace",
+        "output": "Výstup",
+        "transcription": "Přepis",
+        "history": "Historie",
+        "experimental": "Experimentální"
+      },
+      "experimentalToggle": {
+        "label": "Experimentální funkce",
+        "description": "Povolit experimentální funkce, které jsou stále ve vývoji."
+      },
+      "lazyStreamClose": {
+        "label": "Ponechat mikrofon zapnutý mezi přepisy",
+        "description": "Ponechá stream mikrofonu otevřený po dobu 30 sekund po zastavení nahrávání, čímž se sníží latence při opakovaném přepisu. Může zhoršit kvalitu zvuku Bluetooth."
+      },
+      "acceleration": {
+        "transcribe": {
+          "title": "Hardwarová akcelerace",
+          "description": "Vyberte hardware, který se použije pro přepis. Automatický režim používá GPU, pokud je k dispozici, jinak přejde na CPU."
+        },
+        "gpuDevice": {
+          "auto": "Automaticky"
+        }
+      },
+      "startHidden": {
+        "label": "Spouštět skrytě",
+        "description": "Spustit do systémové lišty bez otevření okna."
+      },
+      "autostart": {
+        "label": "Spouštět při startu",
+        "description": "Automaticky spustit {{appName}} po přihlášení do počítače."
+      },
+      "showTrayIcon": {
+        "label": "Zobrazit ikonu v systémové liště",
+        "description": "Zobrazit ikonu {{appName}} v systémové liště."
+      },
+      "overlay": {
+        "style": {
+          "title": "Překryv",
+          "description": "Vyberte překryv při nahrávání: „Žádné“ jej skryje, „Minimální“ zobrazí kompaktní indikátor, „Živě“ zobrazuje přepis v reálném čase, když mluvíte (pouze modely podporující streaming — hledejte odznak „Streaming“ ve výběru modelů). Na Linuxu se doporučuje „Žádné“.",
+          "options": {
+            "none": "Žádné",
+            "minimal": "Minimální",
+            "live": "Živě"
+          }
+        },
+        "position": {
+          "title": "Pozice překryvu",
+          "description": "Zobrazovat vizuální překryv během nahrávání a přepisu. Na Linuxu je doporučeno 'Žádné'.",
+          "options": {
+            "bottom": "Dole",
+            "top": "Nahoře"
+          }
+        }
+      },
+      "pasteMethod": {
+        "title": "Způsob vložení",
+        "description": "Vyberte, jak se text vkládá. Přímé: simuluje psaní přes systémový vstup. Žádné: přeskočí vložení a aktualizuje pouze historii/schránku.",
+        "options": {
+          "clipboard": "Schránka ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Schránka (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "Schránka (Shift+Insert)",
+          "direct": "Přímé",
+          "none": "Žádné",
+          "externalScript": "Externí skript"
+        },
+        "externalScriptPlaceholder": "/cesta/k/vasemu/skriptu.sh"
+      },
+      "typingTool": {
+        "title": "Nástroj pro psaní",
+        "description": "Vyberte, který linuxový nástroj pro psaní použít pro metodu přímého vložení. Auto automaticky zjistí a použije nejlepší dostupný nástroj pro váš systém.",
+        "options": {
+          "auto": "Auto (Doporučeno)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "Práce se schránkou",
+        "description": "'Neměnit schránku' zachová po přepisu aktuální obsah schránky. 'Kopírovat do schránky' ponechá po vložení výsledek přepisu ve schránce.",
+        "options": {
+          "dontModify": "Neměnit schránku",
+          "copyToClipboard": "Kopírovat do schránky"
+        }
+      },
+      "autoSubmit": {
+        "title": "Automatické odeslání",
+        "description": "Automaticky odešle vybranou kombinaci kláves po vložení textu. Cmd+Enter platí pro macOS, zatímco Windows/Linux používají Super+Enter.",
+        "options": {
+          "off": "Vypnuto",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "Překládat do angličtiny",
+        "description": "Během přepisu automaticky překládat řeč z jiných jazyků do angličtiny."
+      },
+      "modelUnload": {
+        "title": "Uvolnění modelu",
+        "description": "Automaticky uvolnit paměť GPU/CPU, když model nebyl použit po zadanou dobu",
+        "options": {
+          "never": "Nikdy",
+          "immediately": "Okamžitě",
+          "min2": "Po 2 minutách",
+          "min5": "Po 5 minutách",
+          "min10": "Po 10 minutách",
+          "min15": "Po 15 minutách",
+          "hour1": "Po 1 hodině",
+          "sec15": "Po 15 sekundách (Debug)"
+        }
+      },
+      "customWords": {
+        "title": "Vlastní slova",
+        "description": "Pomozte podporovaným modelům rozpoznávat jména a odborné termíny. Přibližné opravy jsou v současnosti omezeny na slova obsahující písmena A–Z a číslice.",
+        "placeholder": "Přidat slovo",
+        "add": "Přidat",
+        "remove": "Odebrat {{word}}",
+        "duplicate": "\"{{word}}\" již existuje"
+      },
+      "voiceActivityDetection": {
+        "title": "Detekce hlasové aktivity",
+        "description": "Odfiltruje ticho z nahrávek. Modely podporující streaming používají delší doběh VAD; vypnutí VAD nahrává surový zvuk."
+      },
+      "longFormChunking": {
+        "title": "Dělení dlouhého zvuku",
+        "description": "Před přepisem rozdělí dlouhé nahrávky v pauzách, což obvykle zlepšuje kvalitu přepisu. Přepisované soubory a dlouhé opakované přepisy se rozdělují vždy."
+      },
+      "languageDetection": {
+        "title": "Omezit Automaticky na mé jazyky",
+        "description": "Automaticky vybírá jen z vašich preferovaných jazyků pomocí malého detektoru jazyka. Zapněte to, pokud Automaticky stále volí jazyk, kterým nemluvíte",
+        "downloadHint": "Zapnutím se stáhne malý detektor jazyka",
+        "downloadingHint": "Stahuje se detektor jazyka. Vypnutím stahování zrušíte"
+      },
+      "vadBackend": {
+        "title": "Backend detekce hlasu",
+        "description": "Vyberte detektor používaný k filtrování ticha. Earshot je experimentální; pokud je řeč ořezávána nebo zůstává šum, přepněte zpět na Silero.",
+        "options": {
+          "silero": "Silero",
+          "earshot": "Earshot"
+        }
+      },
+      "fillerWordRemoval": {
+        "title": "Odstranit výplňová slova",
+        "description": "Odstraňuje běžná slova vyjadřující váhání z přepisů. Vypnutím je zachováte."
+      },
+      "chineseScript": {
+        "title": "Čínské písmo",
+        "description": "Přepisy v mandarínštině a kantonštině se píší zjednodušenými znaky nebo tradičními znaky, jak se píší na Tchaj-wanu či v Hongkongu. Ostatní jazyky zůstanou beze změny.",
+        "options": {
+          "asTranscribed": "Jak bylo přepsáno",
+          "simplified": "Zjednodušené",
+          "traditionalTw": "Tradiční (Tchaj-wan)",
+          "traditionalHk": "Tradiční (Hongkong)"
+        }
+      }
+    },
+    "postProcessing": {
+      "hotkey": {
+        "title": "Klávesová zkratka"
+      },
+      "prompts": {
+        "title": "Prompt",
+        "selectedPrompt": {
+          "title": "Vybraný prompt",
+          "description": "Vyberte šablonu pro zpřesnění přepisu nebo vytvořte novou. V textu promptu použijte ${output} pro vložení zachyceného přepisu."
+        },
+        "noPrompts": "Nejsou k dispozici žádné prompty",
+        "selectPrompt": "Vyberte prompt",
+        "createNew": "Vytvořit nový prompt",
+        "promptLabel": "Název promptu",
+        "promptLabelPlaceholder": "Zadejte název promptu",
+        "promptInstructions": "Instrukce promptu",
+        "promptInstructionsPlaceholder": "Napište instrukce, které se mají spustit po přepisu. Příklad: Zlepšete gramatiku a srozumitelnost následujícího textu: ${output}",
+        "promptTip": "Tip: Použijte <code>${output}</code> pro vložení přepsaného textu do promptu.",
+        "updatePrompt": "Aktualizovat prompt",
+        "deletePrompt": "Smazat prompt",
+        "createPrompt": "Vytvořit prompt",
+        "cancel": "Zrušit",
+        "selectToEdit": "Vyberte výše prompt, abyste zobrazili a upravili jeho podrobnosti.",
+        "createFirst": "Klikněte nahoře na 'Vytvořit nový prompt' a vytvořte svůj první prompt pro následné zpracování."
+      }
+    },
+    "history": {
+      "title": "Historie",
+      "openFolder": "Otevřít složku nahrávek",
+      "loading": "Načítám historii...",
+      "empty": "Zatím žádné přepisy. Začněte nahrávat a vytvořte si historii!",
+      "copyToClipboard": "Kopírovat přepis do schránky",
+      "copyError": "Přepis se nepodařilo zkopírovat do schránky.",
+      "save": "Uložit přepis",
+      "unsave": "Odebrat z uložených",
+      "delete": "Smazat záznam",
+      "deleteError": "Nepodařilo se smazat záznam. Zkuste to prosím znovu.",
+      "retranscribe": "Přepsat znovu",
+      "cancelTranscription": "Zrušit přepis",
+      "transcribing": "Přepisuji...",
+      "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování.",
+      "notTranscribed": "Nepřepsáno. Můžete to přepsat pomocí ikony opakování.",
+      "transcribeFile": "Přepsat soubor",
+      "mediaFiles": "Zvuk a video",
+      "fileUnsupported": "Ze souboru {{name}} se nepodařilo načíst zvuk.",
+      "readingFile": "Načítání {{name}}...",
+      "transcribeFailed": "Přepis se nezdařil. Zkuste to prosím znovu.",
+      "waiting": "Čeká na přepis",
+      "transcribingPercent": "Přepisuji, {{percent}} %",
+      "showMore": "Zobrazit více",
+      "showLess": "Zobrazit méně",
+      "dropTitle": "Pusťte pro přepis",
+      "dropDescription": "Zobrazí se v historii.",
+      "searchPlaceholder": "Hledat v historii",
+      "clearSearch": "Vymazat hledání",
+      "today": "Dnes",
+      "yesterday": "Včera",
+      "saved": "Uloženo",
+      "playRecording": "Přehrát nahrávku",
+      "hidePlayer": "Skrýt přehrávač",
+      "emptyTitle": "Zatím žádné diktáty",
+      "emptyDescription": "Vše, co {{appName}} přepíše, se zobrazí tady, nejnovější nahoře. Podržte zkratku v libovolné aplikaci a začněte mluvit.",
+      "noResultsTitle": "Žádné shody",
+      "noResultsDescription": "V historii nic neodpovídá „{{query}}“.",
+      "loadingMore": "Načítání dalších…",
+      "searchingOlder": "Prohledávání starších záznamů…"
+    },
+    "debug": {
+      "title": "Ladění",
+      "logDirectory": {
+        "title": "Složka protokolů",
+        "description": "Umístění, kde jsou uloženy soubory protokolu"
+      },
+      "logLevel": {
+        "title": "Úroveň logování",
+        "description": "Nastavte úroveň podrobnosti logování"
+      },
+      "liveLogs": {
+        "title": "Živé logy",
+        "description": "Sledujte logy aplikace v reálném čase a diagnostikujte problémy bez otevírání souboru logu. Zobrazují se pouze logy vytvořené, když je tento panel otevřený; respektuje nastavení Úroveň logování výše.",
+        "live": "Živě",
+        "paused": "Pozastaveno",
+        "pause": "Pozastavit",
+        "resume": "Pokračovat",
+        "copied": "Zkopírováno",
+        "lineCount": "Řádků: {{count}}",
+        "empty": "Čekání na logy… Záznamy se zde zobrazí, jakmile je aplikace vygeneruje."
+      },
+      "updateChecks": {
+        "label": "Kontrolovat aktualizace",
+        "description": "Automaticky kontrolovat nové verze {{appName}}",
+        "lockedDescription": "Zakázáno systémovou konfigurací (AMBIENT_DISABLE_UPDATER)"
+      },
+      "whatsNewPreview": {
+        "title": "Náhled novinek",
+        "description": "Otevřít nejnovější přibalené poznámky k vydání bez označení jako zobrazené",
+        "button": "Náhled",
+        "noNotes": "Nebyly nalezeny žádné přibalené poznámky k vydání",
+        "error": "Nepodařilo se zobrazit náhled poznámek k vydání"
+      },
+      "onboardingPreview": {
+        "title": "Náhled úvodního nastavení",
+        "description": "Prohlédněte si obrazovky úvodního nastavení beze změny oprávnění, modelů nebo stavu dokončení",
+        "exitButton": "Ukončit náhled",
+        "choose": "Vyberte obrazovku",
+        "screens": {
+          "welcome": "Vítejte",
+          "permissions": "Oprávnění",
+          "model": "Model",
+          "demo": "Ukázka",
+          "try": "Vyzkoušet",
+          "done": "Hotovo"
+        }
+      },
+      "onboardingRun": {
+        "title": "Spustit úvodní nastavení",
+        "description": "Projděte úvodním nastavením doopravdy od začátku: požádá o oprávnění, stáhne modely a uloží vaše volby",
+        "button": "Spustit"
+      },
+      "modelMigration": {
+        "title": "Migrace modelů",
+        "description": "Doopravdy otevře obrazovku aktualizace modelů starého formátu: stáhne náhrady, přepne modely a smaže staré soubory",
+        "button": "Otevřít",
+        "noRetired": "Na disku nejsou žádné modely starého formátu"
+      },
+      "soundTheme": {
+        "label": "Zvukový motiv",
+        "description": "Vyberte zvukový motiv pro odezvu při startu a ukončení nahrávání"
+      },
+      "wordCorrectionThreshold": {
+        "title": "Práh korekce slov",
+        "description": "Citlivost pro opravy vlastních slov"
+      },
+      "historyLimit": {
+        "title": "Limit historie",
+        "description": "Maximální počet záznamů historie k uchování",
+        "entries": "záznamů"
+      },
+      "recordingRetention": {
+        "title": "Automatické mazání nahrávek",
+        "description": "Automaticky mazat staré nahrávky pro úsporu místa",
+        "never": "Nikdy",
+        "preserveLimit": "Ponechat posledních {{count}}",
+        "days3": "Po 3 dnech",
+        "weeks2": "Po 2 týdnech",
+        "months3": "Po 3 měsících",
+        "placeholder": "Vyberte dobu uchování..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "Vždy zapnutý mikrofon",
+        "description": "Udržovat mikrofon aktivní pro rychlejší odezvu"
+      },
+      "clamshellMicrophone": {
+        "title": "Mikrofon při zavřeném víku",
+        "description": "Mikrofon, který se použije při zavřeném víku notebooku"
+      },
+      "postProcessingToggle": {
+        "label": "Následné zpracování",
+        "description": "Povolit AI vylepšení textu po přepisu"
+      },
+      "muteWhileRecording": {
+        "label": "Ztlumit při nahrávání",
+        "description": "Ztlumit systémový zvuk během nahrávání"
+      },
+      "appendTrailingSpace": {
+        "label": "Přidat koncovou mezeru",
+        "description": "Přidat mezeru po vloženém přepisu"
+      },
+      "keyboardImplementation": {
+        "title": "Implementace klávesnice",
+        "description": "Zvolte backend pro klávesové zkratky.",
+        "bindingsReset": "Klávesové zkratky byly nekompatibilní a byly obnoveny na výchozí hodnoty"
+      },
+      "pasteDelay": {
+        "title": "Zpoždění vložení (před)",
+        "description": "Zpoždění (v milisekundách) po zkopírování textu, před odesláním klávesy pro vložení. Zvyšte, pokud se nic nevloží."
+      },
+      "pasteDelayAfter": {
+        "title": "Zpoždění vložení (po)",
+        "description": "Zpoždění (v milisekundách) po klávese pro vložení, před obnovením předchozí schránky. Zvyšte, pokud se místo přepisu vkládá starý obsah schránky."
+      },
+      "holdThreshold": {
+        "title": "Práh podržení",
+        "description": "Pouze v automatickém režimu: jak dlouho (v milisekundách) musí být zkratka držena, aby se počítala jako podržení místo klepnutí. Snižte, pokud po krátkém podržení nahrávání zůstává zapnuté; zvyšte, pokud jsou záměrná klepnutí vyhodnocena jako podržení."
+      },
+      "reliablePaste": {
+        "title": "Spolehlivé vložení (Beta)",
+        "description": "Obnoví schránku teprve poté, co cílová aplikace skutečně přečte přepis, místo po pevně daném zpoždění. Má odstranit vkládání starého obsahu schránky při zatížení systému. Vyžaduje způsob vložení přes schránku; pouze macOS a Windows."
+      },
+      "recordingBuffer": {
+        "title": "Extra vyrovnávací paměť nahrávání",
+        "description": "Extra čas (v milisekundách) pro pokračování nahrávání po uvolnění klávesy, pro zachycení zbývajícího zvuku. 0 = žádná extra vyrovnávací paměť."
+      },
+      "languageDetectionWindow": {
+        "title": "Zvuk pro rozpoznání jazyka",
+        "description": "Kolik sekund řeči detektor jazyka slyší. Delší je přesnější, ale pomalejší."
+      },
+      "keyboardDiagnostic": {
+        "title": "Diagnostika klávesnice",
+        "description": "Ověří, zda události klávesnice dorazí do {{appName}}. Zaznamenává se pouze počet událostí — nikdy to, které klávesy stisknete.",
+        "run": "Spustit 10s diagnostiku",
+        "running": "Naslouchání… několikrát stiskněte svou zkratku (např. Option+Space)",
+        "secureInputLabel": "Secure Input",
+        "enabled": "zapnuto",
+        "disabled": "vypnuto",
+        "holder": "drží ji {{name}} (pid {{pid}})",
+        "holderUnknown": "žádný viditelný držitel",
+        "keyDown": "Stisk klávesy",
+        "keyUp": "Uvolnění klávesy",
+        "flagsChanged": "Modifikátory",
+        "mouse": "Myš",
+        "verdictBlocked": "Secure Input blokuje události kláves — zkratky obsahující běžnou klávesu nemohou fungovat, dokud se to nevyřeší.",
+        "verdictSuspicious": "Dorazily události modifikátorů, ale žádné události kláves — něco klávesy potlačuje, přestože Secure Input hlásí, že je vypnutý. Nahlaste to prosím na GitHubu.",
+        "verdictOk": "Události kláves dorazí do {{appName}} normálně.",
+        "verdictNoEvents": "Nebyly zachyceny žádné události — stiskli jste během testu nějaké klávesy?",
+        "failed": "Diagnostika selhala: {{error}}"
+      }
+    },
+    "about": {
+      "title": "O aplikaci",
+      "version": {
+        "title": "Verze",
+        "description": "Aktuální verze {{appName}}"
+      },
+      "whatsNewUpdates": {
+        "label": "Zobrazovat novinky",
+        "description": "Zobrazovat poznámky k vydání po aktualizacích {{appName}}"
+      },
+      "appDataDirectory": {
+        "title": "Adresář dat aplikace",
+        "description": "Umístění, kde {{appName}} ukládá data"
+      },
+      "sourceCode": {
+        "title": "Web",
+        "description": "Novinky, nápověda a tvůj účet",
+        "button": "Otevřít web"
+      },
+      "acknowledgments": {
+        "title": "Poděkování",
+        "ggml": {
+          "title": "ggml",
+          "description": "Vysoce výkonné inferenční zpracování modelu automatického rozpoznávání řeči Whisper od OpenAI",
+          "details": "{{appName}} používá ggml pro rychlé lokální zpracování řeči na text. Díky skvělé práci Georgiho Gerganova a přispěvatelů."
+        },
+        "licenses": {
+          "title": "Open-source licenses",
+          "description": "Notices for the open-source software {{appName}} includes",
+          "show": "Show licenses",
+          "hide": "Hide licenses"
+        }
+      },
+      "intro": {
+        "title": "Uvítací intro",
+        "description": "Animace, kterou {{appName}} přehraje při prvním spuštění.",
+        "button": "Přehrát intro"
+      }
+    },
+    "agent": {
+      "title": "Hlasový agent",
+      "description": "Položte otázku nebo ho požádejte, ať něco udělá, místo psaní.",
+      "routing": {
+        "label": "Rozpoznávat požadavky při diktování",
+        "description": "Požadavky se vyřídí; vše ostatní se napíše jako obvykle. Vypněte, chcete-li vždy psát."
+      },
+      "wake": {
+        "label": "Bez rukou: řekněte „Ahoj Ambient“",
+        "description": "Mluvte s {{appName}} bez klávesy: „Ahoj Ambient, co mám v kalendáři?“ Poslouchá na tomto Macu a ignoruje vše, co nezačíná jeho jménem. Dokud je to zapnuté, Mac zobrazuje indikátor mikrofonu."
+      }
+    }
+  },
+  "footer": {
+    "checkingUpdates": "Kontroluji aktualizace...",
+    "updateAvailableShort": "Dostupná aktualizace",
+    "upToDate": "Vše aktuální",
+    "updateCheckingDisabled": "Kontrola aktualizací vypnuta",
+    "downloading": "Stahování... {{progress}}%",
+    "installing": "Instalace...",
+    "preparing": "Příprava...",
+    "checkForUpdates": "Zkontrolovat aktualizace",
+    "portableUpdateTitle": "Vyžadována ruční aktualizace",
+    "portableUpdateMessage": "Přenosné instalace nelze aktualizovat automaticky. Níže stáhněte instalátor pro svůj systém, spusťte jej a nainstalujte do stejné složky — vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
+    "portableUpdateButton": "Stáhnout instalátor",
+    "portableUpdateBrowseMessage": "Přenosné instalace nelze aktualizovat automaticky. Stáhněte nejnovější verzi pro svůj systém z GitHub Releases a nainstalujte ji do stejné složky — vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
+    "portableUpdateBrowseButton": "Otevřít GitHub Releases"
+  },
+  "whatsNew": {
+    "title": "Novinky v {{appName}} v{{version}}"
+  },
+  "common": {
+    "loading": "Načítání...",
+    "delete": "Smazat",
+    "close": "Zavřít",
+    "open": "Otevřít",
+    "copy": "Kopírovat",
+    "clear": "Vymazat",
+    "noOptionsFound": "Nenalezeny žádné možnosti"
+  },
+  "errors": {
+    "loadDirectory": "Chyba při načítání adresáře: {{error}}",
+    "micPermissionDeniedTitle": "Přístup k mikrofonu byl odepřen",
+    "micPermissionDenied": {
+      "generic": "Přístup k mikrofonu byl odepřen operačním systémem. Povolte prosím přístup k mikrofonu v nastavení systému.",
+      "windows": "Povolte přístup k mikrofonu v Nastavení → Soukromí a zabezpečení → Mikrofon (včetně přístupu desktopových aplikací).",
+      "macos": "Povolte přístup k mikrofonu v Nastavení systému → Soukromí a zabezpečení → Mikrofon.",
+      "linux": "Povolte přístup k mikrofonu v nastavení zvuku nebo soukromí vašeho systému."
+    },
+    "noInputDeviceTitle": "Mikrofon nebyl nalezen",
+    "noInputDevice": "Nebylo detekováno žádné zvukové vstupní zařízení. Připojte mikrofon nebo sluchátka a zkuste to znovu.",
+    "recordingFailed": "Nepodařilo se spustit nahrávání: {{error}}",
+    "modelLoadFailed": "Nepodařilo se načíst model: {{model}}",
+    "modelLoadFailedUnknown": "neznámý model",
+    "pasteFailedTitle": "Vložení textu se nezdařilo",
+    "pasteFailed": "Text nebylo možné vložit do aktivní aplikace.",
+    "transcriptionFailedTitle": "Přepis selhal"
+  },
+  "appLanguage": {
+    "title": "Jazyk aplikace",
+    "description": "Změňte jazyk rozhraní {{appName}}"
+  },
+  "theme": {
+    "title": "Motiv aplikace",
+    "description": "Zvolte, zda má {{appName}} sledovat motiv systému, nebo zůstat světlý či tmavý",
+    "options": {
+      "system": "Systém",
+      "light": "Světlý",
+      "dark": "Tmavý"
+    }
+  },
+  "overlay": {
+    "transcribing": "Přepisuji...",
+    "processing": "Zpracovávám...",
+    "loadingModel": "Načítání modelu..."
+  },
+  "secureInput": {
+    "blockedWithCulprit_one": "{{name}} může blokovat {{count}} zkratku",
+    "blockedWithCulprit_few": "{{name}} může blokovat {{count}} zkratky",
+    "blockedWithCulprit_many": "{{name}} může blokovat {{count}} zkratky",
+    "blockedWithCulprit_other": "{{name}} může blokovat {{count}} zkratek",
+    "blockedNoCulprit_one": "macOS dočasně blokuje {{count}} zkratku",
+    "blockedNoCulprit_few": "macOS dočasně blokuje {{count}} zkratky",
+    "blockedNoCulprit_many": "macOS dočasně blokuje {{count}} zkratky",
+    "blockedNoCulprit_other": "macOS dočasně blokuje {{count}} zkratek",
+    "recorderBlockedWithCulprit": "{{name}} může blokovat změny zkratek",
+    "recorderBlockedNoCulprit": "macOS dočasně blokuje změny zkratek",
+    "learnMore": "Jak to vyřešit",
+    "recorderBlocked": "Zkratky teď nelze nahrát — Secure Input v macOS blokuje události kláves. Nejprve vyřešte upozornění na Secure Input.",
+    "dismiss": "Zavřít"
+  },
+  "account": {
+    "currentPlan": "Aktuální tarif",
+    "plans": {
+      "free": "Zdarma",
+      "pro": "Pro",
+      "team": "Team",
+      "trial": "Zkušební verze Pro"
+    },
+    "upgrade": "Upgradovat",
+    "upgradeTo": "Upgradovat na {{plan}}",
+    "manageBilling": "Spravovat fakturaci",
+    "usage": "{{used}} z {{limit}} slov tento týden",
+    "usageShort": "{{used}} / {{limit}} slov",
+    "resets": "Obnoví se {{date}}",
+    "limitReached": "Využil jsi bezplatná slova pro tento týden. Upgraduj pro neomezené diktování, nebo pokračuj po obnovení týdne.",
+    "limitToast": "Týdenní bezplatná slova vyčerpána",
+    "proFeatures": {
+      "polish": "AI vyladění každého diktování",
+      "onDevice": "Vyladění přímo v zařízení s Apple Intelligence",
+      "agent": "Agent ambient tak, jak se dodává",
+      "priority": "Prioritní podpora"
+    },
+    "card": {
+      "activate": "Aktivovat",
+      "active": "Aktivní tarif",
+      "remove": "Odebrat",
+      "activating": "Aktivace…",
+      "paste": "Vložit",
+      "pasteFailed": "Schránku se nepodařilo přečíst. Vložte místo toho pomocí ⌘V.",
+      "holder": "Přihlášeno jako",
+      "renewsLabel": "Obnovuje se",
+      "copied": "Zkopírováno",
+      "errors": {
+        "network": "Nepodařilo se spojit s {{appName}} kvůli aktivaci. Zkontrolujte připojení a zkuste to znovu.",
+        "inactive": "Předplatné tohoto kódu není aktivní. Obnovte ho, abyste odemkli svůj tarif.",
+        "rate_limited": "Příliš mnoho pokusů. Zkuste to znovu za 15 minut.",
+        "server": "Aktivace selhala na naší straně. Zkuste to za chvíli znovu."
+      }
+    },
+    "signIn": {
+      "sectionTitle": "Váš účet",
+      "cardLabel": "Účet",
+      "title": "Přihlaste se k Pro",
+      "description": "Použijte e-mail, kterým jste Pro koupili. Pošleme vám šestimístný kód.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vy@priklad.cz",
+      "continue": "Pokračovat",
+      "sending": "Odesílání…",
+      "codeTitle": "Zkontrolujte e-mail",
+      "codeDescription": "Zadejte šestimístný kód, který jsme poslali na {{email}}.",
+      "codeLabel": "Přihlašovací kód",
+      "digitLabel": "Číslice {{n}}",
+      "signedInShort": "Přihlášeno",
+      "resend": "Poslat kód znovu",
+      "resent": "Nový kód odeslán.",
+      "changeEmail": "Použít jiný e-mail",
+      "signedInTitle": "Přihlášeno",
+      "noPurchase": "{{email}} zatím nemá předplatné Pro. Kupte Pro a zapne se tady.",
+      "checkAgain": "Zkontrolovat znovu",
+      "signOut": "Odhlásit se",
+      "redeemLink": "Uplatnit kód",
+      "redeemTitle": "Uplatnit kód",
+      "redeemDescription": "Pro dárkové kódy a kódy od podpory.",
+      "redeemPlaceholder": "red-grizzly-4320",
+      "redeemDetected": "Vypadá to jako kód {{appName}}.",
+      "backToSignIn": "Zpět na přihlášení",
+      "gift": {
+        "code": "Kód",
+        "codeHidden": "Kód skrytý",
+        "showCode": "Zobrazit kód",
+        "hideCode": "Skrýt kód",
+        "copyCode": "Kopírovat kód"
+      },
+      "errors": {
+        "network": "Nelze se spojit s {{appName}}. Zkontrolujte připojení a zkuste to znovu.",
+        "invalid_email": "Zadejte platnou e-mailovou adresu.",
+        "rate_limited": "Příliš mnoho žádostí o kód. Zkuste to za chvíli.",
+        "invalid_code": "Kód není správný. Zkontrolujte e-mail a zkuste to znovu.",
+        "expired": "Platnost kódu vypršela. Požádejte o nový.",
+        "too_many_attempts": "Příliš mnoho pokusů. Požádejte o nový kód.",
+        "server": "Přihlášení selhalo na naší straně. Zkuste to za chvíli znovu.",
+        "redeem_invalid": "Kód nebyl rozpoznán. Zkontrolujte ho a zkuste to znovu."
+      }
+    },
+    "polish": {
+      "title": "AI vyladění",
+      "description": "Vyčistí každé diktování: interpunkci, vycpávková slova, seznamy i opravy jako „smaž to“. Odesílá se jen text, nikdy zvuk.",
+      "unlock": "Získej neomezené",
+      "onDevice": "Nech to na tomto Macu",
+      "onDeviceDescription": "Použij místo toho Apple Intelligence. Nic neopustí tvůj Mac.",
+      "freeLeft": "Zbývá {{left}} z {{limit}} bezplatných použití: AI vyladění tento týden"
+    },
+    "trial": {
+      "daysLeft_one": "Zbývá {{count}} den",
+      "daysLeft_few": "Zbývají {{count}} dny",
+      "daysLeft_many": "Zbývá {{count}} dne",
+      "daysLeft_other": "Zbývá {{count}} dní"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Dobré ráno",
+      "afternoon": "Dobré odpoledne",
+      "evening": "Dobrý večer",
+      "night": "Pracujete do noci"
+    },
+    "hold": "Podržte",
+    "anywhere": "v libovolné aplikaci a začněte mluvit.",
+    "noShortcut": "Nastavte si zkratku v Nastavení a začněte diktovat.",
+    "stats": {
+      "words": "Slova tento týden",
+      "wordsHint": "Nadiktováno v {{appName}}",
+      "saved": "Ušetřený čas",
+      "savedHint": "Mluvení {{speaking}} slov/min oproti psaní {{typing}}",
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_few": "{{count}} min",
+      "minutes_many": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} h",
+      "hours_few": "{{count}} h",
+      "hours_many": "{{count}} h",
+      "hours_other": "{{count}} h"
+    },
+    "recent": "Nedávné diktáty",
+    "viewAll": "Zobrazit vše",
+    "empty": {
+      "title": "Zatím tu nic není",
+      "description": "Stiskněte zkratku v libovolné aplikaci a mluvte. Vaše diktáty se zobrazí tady."
+    },
+    "tips": {
+      "holdOrTap": "Podržte zkratku a mluvte, nebo ji jednou stiskněte pro zahájení a znovu pro ukončení.",
+      "customWords": "Přidejte jména a odborné výrazy v Nastavení → Pokročilé → Vlastní slova pro vyšší přesnost.",
+      "dropFile": "Přetažením zvukového souboru do tohoto okna ho přepíšete.",
+      "languages": "Vyberte jazyky, kterými mluvíte, v Nastavení → Obecné, abyste získali lepší návrhy modelů."
+    },
+    "quickActions": {
+      "label": "Rychlé akce",
+      "transcribeFile": "Přepsat soubor",
+      "openHistory": "Otevřít historii"
+    },
+    "plan": {
+      "title": "Tvůj tarif",
+      "polishUnlimited": "AI vyladění je neomezené.",
+      "polishLeft": "Zbývá {{left}} z {{limit}} bezplatných použití (AI vyladění) tento týden · obnoví se {{day}}",
+      "polishFree": "Bezplatný tarif zahrnuje týdenní limit: AI vyladění.",
+      "usageToday": "Dnes: požadavky AI {{ai}} · hledání {{search}} · férové používání {{aiLimit}} denně",
+      "meetingsLeft": "Schůzky tento měsíc: {{used}} z {{limit}}"
+    },
+    "privacy": {
+      "title": "Soukromí",
+      "off": "Obrazovka se nečte.",
+      "on": "Povoleno: {{list}}",
+      "paused": "Pozastaveno. Nic se nečte."
+    }
+  },
+  "hud": {
+    "thinking": "Přemýšlím…",
+    "sources": "Zdroje",
+    "insert": "Vložit",
+    "copy": "Kopírovat",
+    "copied": "Zkopírováno",
+    "followUpHint": "Podržte zkratku a pokračujte dotazem",
+    "yes": "Ano",
+    "notNow": "Teď ne",
+    "stop": "Zastavit",
+    "status": {
+      "needScreenContext": "Chcete-li to použít, zapněte v Soukromí možnost „Číst to, na co se ptáte“.",
+      "onDeviceFailed": "Na tomto Macu teď nešlo odpovědět.",
+      "offline": "Nelze se spojit s {{appName}}. Zkontrolujte připojení.",
+      "weeklyLimit": "Bezplatná použití AI na tento týden jsou vyčerpána. Pro je neomezené.",
+      "account": "Váš přístup k Pro vyžaduje pozornost v sekci Účet.",
+      "failed": "To teď nešlo udělat.",
+      "interrupted": "Odpověď byla přerušena.",
+      "opened": "Otevřeno",
+      "searching": "Hledání v prohlížeči",
+      "reminderAdded": "Připomínka přidána",
+      "eventAdded": "Přidáno do kalendáře",
+      "shortcutRan": "Zkratka spuštěna",
+      "cantDoYet": "To zatím neumím. Ovládání počítače brzy přibude.",
+      "appNotFound": "Tuto aplikaci se nepodařilo najít.",
+      "shortcutNotFound": "Tuto zkratku se nepodařilo najít.",
+      "calendarPermission": "Nejdřív povolte přístup ke Kalendáři a Připomínkám v Nastavení systému.",
+      "undone": "Vráceno zpět",
+      "meetingStarted": "Dělám poznámky. Dejte ostatním vědět.",
+      "copied": "Zkopírováno",
+      "learned": "Rozumím. Můžete to změnit v Soukromí.",
+      "sensitivePaused": "Tady pozastaveno: toto okno zobrazuje frázi pro obnovení nebo soukromý klíč.",
+      "fairUse": "Dosáhli jste dnešního limitu férového používání. Obnoví se o půlnoci UTC.",
+      "slowDown": "To je mnoho požadavků najednou. Zkuste to znovu za minutu.",
+      "listening": "Poslouchám…"
+    },
+    "undo": "Zpět",
+    "close": "Zavřít",
+    "meetingOffer": "Dělat poznámky z tohoto hovoru?",
+    "takeNotes": "Dělat poznámky",
+    "suggest": {
+      "summariseThread": "Dlouhá konverzace. Shrnout ji?",
+      "draftReply": "Navrhnout odpověď?",
+      "addToCalendar": "Je tu datum. Přidat ho do kalendáře?",
+      "summarisePage": "Shrnout tuto stránku?",
+      "explainError": "Vysvětlit tuto chybu?",
+      "summarise": "Shrnout",
+      "draft": "Navrhnout",
+      "add": "Přidat",
+      "explain": "Vysvětlit",
+      "tightenDraft": "Zestručnit tento koncept?",
+      "priceCheck": "Ověřit, jestli to jinde není levnější?",
+      "answerSearch": "Mám to rovnou zodpovědět?",
+      "fixFormula": "Opravit tyto chyby ve vzorcích?",
+      "meetingPrep": "Blíží se schůzka. Připravit přehled?",
+      "tighten": "Zestručnit",
+      "check": "Ověřit",
+      "answer": "Odpovědět",
+      "fix": "Opravit",
+      "brief": "Připravit přehled",
+      "reviewCode": "Zkontrolovat tento pull request?",
+      "commitMessage": "Napsat k tomu zprávu commitu?",
+      "review": "Zkontrolovat",
+      "write": "Napsat"
+    },
+    "nudge": {
+      "findIt": "Najít",
+      "remindMe": "Připomenout",
+      "copy": "Kopírovat"
+    },
+    "chip": {
+      "searchInstead": "Napsáno. Místo toho to vyhledat?",
+      "search": "Hledat"
+    },
+    "suggestionTip": "Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“."
+  },
+  "privacy": {
+    "title": "Soukromí",
+    "promise": "Vypnuto, dokud to nezapnete. Uloženo zašifrované na tomto Macu. Každý odchozí požadavek je v seznamu.",
+    "state": {
+      "on": "Sleduje, jak jste povolili",
+      "onDetail": "Jen funkce, které jste zapnuli níže.",
+      "off": "Nesleduje",
+      "offDetail": "Diktování funguje jako obvykle. Nic na obrazovce se nečte.",
+      "paused": "Pozastaveno",
+      "pausedDetail": "Nic se nečte, dokud nebudete pokračovat.",
+      "pausedUntil": "Nic se nečte do {{time}}.",
+      "resume": "Pokračovat",
+      "pauseHour": "Pozastavit na 1 hodinu",
+      "pauseDay": "Do zítřka"
+    },
+    "accessibility": "{{appName}} potřebuje přístup ke Zpřístupnění, aby mohl číst text z jiných aplikací.",
+    "grant": "Povolit přístup",
+    "capabilities": {
+      "title": "Co smí {{appName}} dělat",
+      "description": "Každá funkce je vypnutá, dokud ji nezapnete.",
+      "screen_context": {
+        "title": "Číst to, na co se ptáte",
+        "reads": "Čte okno, na které se ptáte, a otevřená okna, když ho požádáte, ať něco najde.",
+        "leaves": "Jen to, co je potřeba k odpovědi, bez tajných údajů."
+      },
+      "screen_memory": {
+        "title": "Pamatovat si, co jste viděli",
+        "reads": "Pamatuje si okna, která jste používali, abyste se na ně mohli později zeptat.",
+        "leaves": "Zůstává zašifrované na tomto Macu."
+      },
+      "proactive": {
+        "title": "Nabízet návrhy",
+        "reads": "Ve správnou chvíli navrhne další krok: konverzace, koncepty, data, chyby, schůzky.",
+        "leaves": "Rozhoduje se na tomto Macu. Nic se neodešle, dokud nepřijmete, kromě připomínek na schůzkách."
+      },
+      "meetings": {
+        "title": "Poznámky ze schůzek",
+        "reads": "Slyší váš mikrofon a hovor, zatímco dělá poznámky.",
+        "leaves": "Zvuk zůstává tady. Odesílá se jen text, kvůli shrnutí."
+      },
+      "on_device_only": {
+        "title": "Vše jen na tomto Macu",
+        "reads": "Apple Intelligence na všechno a žádné hledání na webu.",
+        "leaves": "Nic se neodesílá."
+      },
+      "wake_word": {
+        "title": "Bez rukou: řekněte „Ahoj Ambient“",
+        "reads": "Na tomto Macu poslouchá „Ahoj Ambient“. Vše ostatní se průběžně zahazuje.",
+        "leaves": "Nic se nenahrává ani neodesílá, dokud to neřeknete."
+      }
+    },
+    "retention": "Uchovávat",
+    "days_one": "{{count}} den",
+    "days_other": "{{count}} dní",
+    "preview": {
+      "title": "Co vidí {{appName}}",
+      "description": "Přesně to, co by z okna přečetl, po začernění citlivých údajů.",
+      "hint": "Klikněte na Náhled a do 3 sekund přepněte do libovolného okna.",
+      "switchNow": "Teď přepněte do jiného okna…",
+      "button": "Náhled",
+      "noText": "V tomto okně není žádný čitelný text.",
+      "skipped": {
+        "never_watch": "Tato aplikace je na vašem seznamu nikdy nesledovaných, takže se nic nepřečetlo.",
+        "no_permission": "Nejdřív povolte přístup ke Zpřístupnění.",
+        "unavailable": "Toto okno se nepodařilo přečíst.",
+        "sensitive": "Toto okno zobrazuje frázi pro obnovení nebo soukromý klíč, takže se nic nepřečetlo."
+      }
+    },
+    "neverWatch": {
+      "title": "Nikdy nesledovat",
+      "description": "Nikdy se nečtou, ani když je vše zapnuté. Přeskakují se také pole pro hesla, anonymní okna, peněženky a fráze pro obnovení.",
+      "this": "Nikdy nesledovat tuto aplikaci",
+      "added": "{{app}} se už nebude číst."
+    },
+    "stored": {
+      "title": "Co je uloženo",
+      "description": "Paměť obrazovky na tomto Macu. Historie diktování je v sekci Historie.",
+      "summary_one": "{{count}} snímek od {{since}}.",
+      "summary_few": "{{count}} snímky od {{since}}.",
+      "summary_many": "{{count}} snímku od {{since}}.",
+      "summary_other": "{{count}} snímků od {{since}}.",
+      "entries_one": "{{count}} snímek",
+      "entries_few": "{{count}} snímky",
+      "entries_many": "{{count}} snímku",
+      "entries_other": "{{count}} snímků",
+      "deleteApp": "Smazat snímky této aplikace",
+      "empty": "Nic není uloženo.",
+      "deleteAll": "Smazat vše",
+      "deletedAll": "Paměť obrazovky a protokol požadavků jsou smazány."
+    },
+    "ledger": {
+      "title": "Požadavky, které opustily tento Mac",
+      "description": "Každý požadavek a přesně to, co odeslal. Uchovává se 30 dní.",
+      "empty": "Zatím žádné požadavky.",
+      "bytes_one": "{{count}} bajt",
+      "bytes_few": "{{count}} bajty",
+      "bytes_many": "{{count}} bajtu",
+      "bytes_other": "{{count}} bajtů",
+      "purpose": {
+        "polish": "AI vyladění",
+        "answer": "Odpověď",
+        "search": "Hledání na webu",
+        "suggestion": "Návrh",
+        "summary": "Shrnutí schůzky",
+        "act": "Akce",
+        "license": "Kontrola účtu",
+        "trial": "Zkušební verze"
+      }
+    },
+    "engine": {
+      "title": "Upřednostnit AI na tomto Macu",
+      "description": "Používá Apple Intelligence, kde to jde. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté.",
+      "unavailable": "Apple Intelligence na tomto Macu není k dispozici, proto se používají servery {{appName}}."
+    },
+    "suggestions": {
+      "title": "Návrhy, které dostáváte",
+      "description": "Když se nějaký objeví, řekněte „teď ne“, „tyhle mi neukazuj“ nebo „ne v této aplikaci“ a naučí se to. Změnit to můžete kdykoli tady.",
+      "mutedIn": "Vypnuto v: {{apps}}",
+      "kinds": {
+        "summarise_thread": "Shrnovat dlouhá e-mailová vlákna",
+        "draft_reply": "Navrhovat odpovědi",
+        "add_to_calendar": "Přidávat data do kalendáře",
+        "summarise_page": "Shrnovat dlouhé stránky",
+        "explain_error": "Vysvětlovat chyby a neúspěšné testy",
+        "tighten_draft": "Zestručňovat dlouhé koncepty",
+        "price_check": "Porovnávat ceny jinde",
+        "answer_search": "Odpovídat na hledání, která stále přeformulováváte",
+        "fix_formula": "Opravovat vzorce v tabulkách",
+        "meeting_prep": "Připravit vás před schůzkami",
+        "review_code": "Kontrolovat pull requesty",
+        "commit_message": "Psát zprávy commitů",
+        "meeting_nudge": "Připomínky během schůzek"
+      }
+    },
+    "macOnly": "Zatím jen pro Mac",
+    "protections": {
+      "audio": "Váš hlas se přepisuje na tomto Macu a nikdy ho neukládáme.",
+      "text": "Čte text, nikdy nepořizuje snímky obrazovky.",
+      "passwords": "Pole pro hesla, správci hesel a anonymní okna se nikdy nečtou.",
+      "wallets": "Kryptopeněženky, fráze pro obnovení a soukromé klíče: úplně se stáhne.",
+      "secrets": "Čísla karet, klíče a kódy se odstraní dřív, než se cokoli odešle.",
+      "suggestions": "O návrzích se rozhoduje na tomto Macu; nic se neodešle, dokud nepřijmete.",
+      "stored": "Co si ukládá, zůstává zašifrované na tomto Macu, dokud to nesmažete.",
+      "ledger": "Každý odchozí požadavek je uveden níže i s tím, co přesně se odeslalo."
+    },
+    "days_few": "{{count}} dny",
+    "days_many": "{{count}} dne"
+  },
+  "meetings": {
+    "title": "Schůzky",
+    "intro": "Poznámky z každého hovoru: vy a ostatní, přepsaní na tomto Macu. Zvuk se nikdy neukládá.",
+    "idle": "Poznámky se nedělají",
+    "idleDetail": "Spusťte, až hovor začne, nebo zapněte návrhy schůzek v Soukromí.",
+    "live": "Dělám poznámky · {{time}}",
+    "capturingBoth": "Slyší vás i hovor.",
+    "capturingMic": "Slyší jen váš mikrofon.",
+    "start": "Spustit poznámky",
+    "stop": "Zastavit a shrnout",
+    "listening": "Poslouchám…",
+    "consent": "Dejte všem vědět, že si děláte poznámky.",
+    "copyConsent": "Kopírovat zprávu",
+    "consentMessage": "Upozornění: k poznámkám z tohoto hovoru používám {{appName}}.",
+    "openSettings": "Otevřít nastavení",
+    "notes": "Poznámky",
+    "transcript": "Přepis",
+    "past": "Minulé schůzky",
+    "empty": "Zatím žádné schůzky.",
+    "untitled": "Schůzka bez názvu",
+    "unfinished": "Nedokončeno",
+    "all": "Všechny schůzky",
+    "summary": "Shrnutí",
+    "decisions": "Rozhodnutí",
+    "actionItems": "Úkoly",
+    "questions": "Otázky pro vás",
+    "noSummary": "K této schůzce není žádné shrnutí.",
+    "copyMarkdown": "Kopírovat jako Markdown",
+    "followUp": "Navrhnout navazující zprávu",
+    "followUpTitle": "Navazující e-mail",
+    "copy": "Kopírovat",
+    "copied": "Zkopírováno",
+    "delete": "Smazat schůzku",
+    "you": "Vy",
+    "them": "Ostatní",
+    "systemAudio": {
+      "noPermission": "Povolte nahrávání obrazovky, aby {{appName}} slyšel hovor. Používá se jen zvuk a nic se neukládá.",
+      "oldMacOS": "Slyšet hovor vyžaduje macOS 13 nebo novější. Váš mikrofon se nadále přepisuje.",
+      "failed": "Zvuk hovoru se nepodařilo zachytit. Váš mikrofon se nadále přepisuje.",
+      "unsupported": "Slyšet hovor zatím na tomto systému nejde."
+    },
+    "error": {
+      "storage": "Úložiště schůzek se nepodařilo otevřít.",
+      "freeLimit": "Bezplatný tarif zahrnuje 2 schůzky měsíčně. Pro je neomezené.",
+      "mic": "Mikrofon se nepodařilo otevřít.",
+      "notActive": "Neprobíhá žádná schůzka.",
+      "notFound": "Tato schůzka už neexistuje.",
+      "followUp": "Navazující zprávu teď nešlo navrhnout."
+    },
+    "freeLeft": "Zbývající bezplatné schůzky tento měsíc: {{left}} z {{limit}}. Pro je neomezené."
+  },
+  "tour": {
+    "skip": "Přeskočit",
+    "next": "Další",
+    "done": "Hotovo",
+    "start": "Začít používat {{appName}}",
+    "meet": {
+      "title": "Seznamte se s agentem",
+      "description": "Podržte zkratku a mluvte. {{appName}} zařídí zbytek."
+    },
+    "modes": {
+      "write": {
+        "title": "Psát",
+        "example": "Můžeme přesunout poradu na čtvrtek?"
+      },
+      "answer": {
+        "title": "Odpovídat",
+        "example": "Jaká je sazba daně z kapitálových zisků ve Spojeném království?"
+      },
+      "act": {
+        "title": "Jednat",
+        "example": "Připomeň mi v 5, ať zavolám Samovi"
+      },
+      "recall": {
+        "title": "Vybavit si",
+        "example": "Co jsem včera říkal o cenách?"
+      }
+    },
+    "nothingToConnect": {
+      "title": "Nic k propojení.",
+      "body": "Žádné účty, integrace ani boti. Funguje s aplikacemi, které už používáte."
+    },
+    "try": {
+      "title": "Vyzkoušejte to",
+      "body": "Podržte {{keys}} a zeptejte se: „Jaké bude zítra počasí v Lisabonu?“",
+      "done": "A je to. Použili jste agenta."
+    },
+    "choose": {
+      "title": "Vyberte, co smí {{appName}} dělat",
+      "description": "Vše vypnuto, dokud to nezapnete. Změnit to můžete kdykoli v Soukromí.",
+      "footnote": "Hesla, peněženky a anonymní okna se nikdy nečtou.",
+      "proOnly": "Součást Pro. Upgradujte v sekci Účet."
+    }
+  },
+  "getStarted": {
+    "title": "Začínáme",
+    "progress": "Hotovo {{done}} z {{total}}",
+    "hide": "Skrýt",
+    "whatToSay": "Co můžu říct?",
+    "replayTour": "Přehrát prohlídku znovu",
+    "steps": {
+      "answer": "Položte agentovi otázku",
+      "reminder": "Nastavte připomínku hlasem",
+      "about_screen": "Shrňte něco na obrazovce",
+      "suggestion": "Přijměte návrh",
+      "meeting": "Dělejte si poznámky na schůzce",
+      "privacy": "Podívejte se, co {{appName}} smí a nesmí číst"
+    }
+  },
+  "trySaying": {
+    "title": "Co můžu říct?",
+    "close": "Zavřít",
+    "description": "Podržte {{ask}} a mluvte s agentem. {{dictate}} píše, pokud o něco nežádáte.",
+    "footnote": "V ChatGPT nebo Claude začněte slovy „Ahoj Ambient“, abyste místo toho mluvili s agentem.",
+    "groups": {
+      "answer": {
+        "title": "Ptát se",
+        "examples": [
+          "Jaká je sazba daně z kapitálových zisků ve Spojeném království?",
+          "Shrň to.",
+          "Co znamená tahle chyba?",
+          "Přelož to do španělštiny."
+        ]
+      },
+      "act": {
+        "title": "Dělat",
+        "examples": [
+          "Připomeň mi v 5, ať zavolám Samovi.",
+          "Přidej oběd s Annou v pátek ve 13:00.",
+          "Otevři Linear.",
+          "Spusť moji zkratku na standup."
+        ]
+      },
+      "recall": {
+        "title": "Vybavit si",
+        "examples": [
+          "Co jsem včera říkal o cenách?",
+          "Najdi prezentaci za Q3."
+        ]
+      },
+      "suggestions": {
+        "title": "Když se objeví návrh",
+        "examples": [
+          "„Ano“ nebo „udělej to“ pro přijetí.",
+          "„Teď ne“ pro zavření.",
+          "„Tyhle mi neukazuj“ pro vypnutí tohoto druhu.",
+          "„Tady ne“ pro vypnutí v této aplikaci."
+        ]
+      },
+      "meetings": {
+        "title": "Na schůzkách",
+        "examples": [
+          "Spusťte poznámky v sekci Schůzky, nebo řekněte ano, když to Ambient nabídne.",
+          "„Najít“, když vás někdo o něco požádá.",
+          "„Připomenout“, když něco slíbíte."
+        ]
+      },
+      "talking": {
+        "title": "Mluvení s Ambient",
+        "examples": [
+          "Podržte {{ask}} a mluvte: vždy to jde do Ambient.",
+          "Nebo použijte klávesu diktování a začněte slovy „Ahoj Ambient, …“. Jinak se vaše slova napíšou.",
+          "Bez rukou (zapněte v Soukromí): stačí říct „Ahoj Ambient, …“."
+        ]
+      }
+    }
+  },
+  "app": {
+    "starting": "Spouštění {{appName}}…"
+  }
+}

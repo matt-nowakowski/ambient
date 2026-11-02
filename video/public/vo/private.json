@@ -1,0 +1,22 @@
+{
+ "id": "private",
+ "text": "Private by design.",
+ "duration": 2,
+ "words": [
+  {
+   "w": "Private",
+   "start": 0,
+   "end": 0.64
+  },
+  {
+   "w": "by",
+   "start": 0.88,
+   "end": 1.04
+  },
+  {
+   "w": "design.",
+   "start": 1.12,
+   "end": 2
+  }
+ ]
+}

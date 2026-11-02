@@ -1,0 +1,1490 @@
+{
+  "tray": {
+    "settings": "Settings...",
+    "checkUpdates": "Check for Updates...",
+    "copyLastTranscript": "Copy Last Transcript",
+    "unloadModel": "Unload Model",
+    "model": "Model",
+    "quit": "Quit",
+    "cancel": "Cancel",
+    "secureInputWarning": "⚠ Shortcuts blocked by Secure Input"
+  },
+  "sidebar": {
+    "home": "Home",
+    "general": "General",
+    "account": "Account",
+    "models": "Models",
+    "advanced": "Advanced",
+    "postProcessing": "Post Process",
+    "history": "History",
+    "debug": "Debug",
+    "about": "About",
+    "settings": "Settings",
+    "privacy": "Privacy",
+    "meetings": "Meetings"
+  },
+  "onboarding": {
+    "customModelDescription": "Not officially supported",
+    "migration": {
+      "title": "Your models need an update",
+      "description": "{{appName}} now uses a better model. Download it to keep transcribing.",
+      "replaces": "Replaces {{name}}",
+      "oldFormat": "Old format",
+      "failed": "Download failed",
+      "retry": "Try again",
+      "chooseAnother": "Choose a different model",
+      "download": "Download models ({{size}})",
+      "continue": "Continue"
+    },
+    "errors": {
+      "selectModel": "Failed to select model"
+    },
+    "permissions": {
+      "microphone": {
+        "name": "Microphone",
+        "why": "So {{appName}} can hear you. Your voice never leaves this computer."
+      },
+      "accessibility": {
+        "name": "Accessibility",
+        "why": "So your shortcut works everywhere, and text lands where you type."
+      },
+      "errors": {
+        "checkFailed": "Failed to check permissions. Please try again.",
+        "requestFailed": "Failed to request permission. Please try again."
+      },
+      "titleMac": "Two permissions, then you're set",
+      "titleWindows": "One permission, then you're set",
+      "subtitleMac": "macOS asks before any app can listen or type.",
+      "subtitleWindows": "Windows asks before any app can listen.",
+      "allow": "Allow",
+      "openSettings": "Open settings",
+      "allowed": "Allowed",
+      "waiting": "Waiting",
+      "turnOnMac": "Turn on {{appName}} in System Settings, then come back here.",
+      "turnOnWindows": "Turn on microphone access in Windows Settings, then come back here.",
+      "hintBoth": "Allow both to continue",
+      "hintMicrophone": "Allow the microphone to continue",
+      "welcomeBack": "Welcome back. Picking up where you left off.",
+      "relaunch": "Shortcut not working? <relaunch>Relaunch {{appName}}</relaunch>. You'll come right back here."
+    },
+    "shell": {
+      "back": "Back",
+      "continue": "Continue",
+      "progress": "Step {{step}} of {{count}}"
+    },
+    "welcome": {
+      "title": "Which languages do you speak?",
+      "subtitle": "Pick every one you'll use with {{appName}}. You can change this later.",
+      "languagesLabel": "Languages",
+      "noMatch": "No match for “{{query}}”. More languages are in settings.",
+      "appLanguage": "App language",
+      "menusIn": "Interface in <b>{{language}}</b>",
+      "chinese": {
+        "question": "You speak {{languages}}. Which characters should {{appName}} write?",
+        "label": "Chinese characters",
+        "zh-Hans": "Simplified",
+        "zh-Hant": "Taiwan",
+        "zh-HK": "Hong Kong"
+      },
+      "hint": {
+        "pickOne": "Pick at least one language",
+        "weak_one": "{{languages}}: no model hears it well yet",
+        "weak_other": "{{languages}}: no model hears these well yet"
+      }
+    },
+    "download": {
+      "checking": "Checking the download…",
+      "ready": "{{name}} is ready",
+      "failed": "Download stopped",
+      "downloading": "Downloading {{name}}",
+      "progress": "{{done}} of {{total}}",
+      "progressLeft": "{{done}} of {{total}}, {{time}} left",
+      "checkingName": "Checking {{name}}",
+      "checkingDetail": "Making sure the download is complete",
+      "stopped": "{{name}} stopped downloading",
+      "retryDetail": "Retry picks up where it stopped",
+      "retryDownload": "Retry download",
+      "cardProgress": "Downloading {{percent}}%, {{done}} of {{total}}",
+      "timeLeft": "{{time}} left",
+      "speedLeft": "{{speed}}, {{time}} left"
+    },
+    "model": {
+      "title": "Choose a speech model",
+      "subtitle": "Turns your voice into text, on this computer",
+      "label": "Speech model",
+      "lines": {
+        "recommended": "Best speed and accuracy for your languages",
+        "faster": "Quicker, with a few more mistakes",
+        "accurate": "Fewest mistakes, but slower"
+      },
+      "shorts": {
+        "recommended": "Best balance for you",
+        "faster": "Quicker, a few more mistakes",
+        "accurate": "Fewest mistakes, but slower"
+      },
+      "model": "Model",
+      "showAll": "Show all {{count}} models",
+      "download": "Download {{size}}",
+      "downloadInstead": "Download {{size}} instead",
+      "pauses": "{{name}} pauses at {{percent}}%",
+      "resumeLater": "Pick it again to pick up where it left off",
+      "hint": "Downloads while you finish setup"
+    },
+    "demo": {
+      "title": "Talk in any app, with one shortcut",
+      "hold": "<0>Click where you’d type.</0> <1>Hold your shortcut and talk.</1> <2>Let go, and your words appear.</2>",
+      "tap": "<0>Click where you’d type.</0> <1>Tap your shortcut and talk.</1> <2>Tap again, and your words appear.</2>",
+      "apps": {
+        "messages": "Messages",
+        "notes": "Notes"
+      },
+      "chat": "Are you still coming tonight?",
+      "noteTitle": "Weekend plans",
+      "screenLabel": "A laptop: someone clicks into an app, presses the shortcut and talks, and the words appear where they clicked.",
+      "change": "Change",
+      "yourShortcut": "Your shortcut is",
+      "pressKeys": "Press the new keys",
+      "addKey": "Now add a key",
+      "cancel": "Cancel",
+      "tryIt": "Try it yourself"
+    },
+    "try": {
+      "title": "Give it a try!",
+      "subtitle": "{{appName}}'s in the corner to help walk you through it",
+      "noteLabel": "Note",
+      "placeholder": "New note",
+      "hold": "Hold <keys/> and talk.",
+      "tapNext": "Now tap <keys/> once, then talk.",
+      "letGo": "Let go of <keys/> when you're done.",
+      "tapAgain": "Tap <keys/> again when you're done.",
+      "watch": "Watch the note.",
+      "changeKeys": "Change your shortcut, {{keys}}",
+      "doneHold": "High five! That's holding.",
+      "doneHoldNext": "Next, the hands-free way.",
+      "doneTap": "Up top! That's tapping.",
+      "doneTapNext": "Now try holding them while you talk.",
+      "giveFive": "You got it! Give me five",
+      "highFive": "High five",
+      "slowLine": "{{name}} took {{wait}} on this computer. <faster>Try a faster model</faster>",
+      "nothingTyped": "Hmm, nothing landed.",
+      "nothingTypedSub": "Click into the note first, then try again.",
+      "silent": "I didn't hear anything.",
+      "silentSub": "No sound came from this microphone. Try another:",
+      "noWords": "I didn't catch any words.",
+      "noWordsSub": "Try again, and say a whole sentence.",
+      "finish": "Finish",
+      "skip": "Skip",
+      "seconds": "{{value}}s"
+    },
+    "done": {
+      "title": "You're all set",
+      "subMac": "{{appName}} lives in your menu bar. Hold or tap <keys/> in any app to talk.",
+      "subTray": "{{appName}} lives in your system tray. Hold or tap <keys/> in any app to talk.",
+      "hint": "You can change these later in Settings",
+      "highFiveLabel": "High five",
+      "atLogin": "Start {{appName}} when I log in",
+      "finish": "Done",
+      "panel": {
+        "name": "{{appName}}",
+        "ready": "Ready",
+        "languages": "Languages",
+        "model": "Speech model",
+        "shortcut": "Shortcut",
+        "changeLanguages": "Change languages, {{languages}}",
+        "changeModel": "Change speech model, {{model}}"
+      }
+    },
+    "linux": {
+      "tryIt": "Not working? <guide>Linux setup guide</guide>",
+      "done": "Not working in other apps? <guide>Linux setup guide</guide>"
+    }
+  },
+  "modelTable": {
+    "tags": {
+      "preview": "Live preview",
+      "previewTitle": "Shows your words in the Live overlay while you talk, then types them when you stop",
+      "translate": "Translates",
+      "translateTitle": "Can turn what you say into English text. Turn it on in settings"
+    },
+    "rubric": {
+      "gradeTitle": "{{language}} accuracy: {{grade}}",
+      "accuracyTitle": "{{language}} accuracy",
+      "overallTitle": "Accuracy in your languages: {{grade}}",
+      "overall": "Accuracy in your languages",
+      "meaning": {
+        "A": "Very few mistakes: your words usually come out as you said them",
+        "B": "Some mistakes: expect to fix a word here and there",
+        "C": "Frequent mistakes: some details may get lost",
+        "D": "Many mistakes: expect to check and correct what it types",
+        "F": "Often unclear: much of what you say may come out wrong"
+      },
+      "unsupported": "This model doesn't understand {{language}}, so it can't type it",
+      "unrated": "This model understands {{language}}, but we haven't measured how well yet",
+      "under": "under {{max}}%",
+      "between": "{{min}} to {{max}}%",
+      "over": "{{min}}% or more",
+      "speedTitle": "Speed: {{speed}}",
+      "speedName": {
+        "0": "Very slow",
+        "1": "Slow",
+        "2": "Moderate",
+        "3": "Fast",
+        "4": "Very fast"
+      },
+      "speedMeaning": {
+        "0": "Your words appear after a long wait",
+        "1": "Your words appear after a wait",
+        "2": "Your words appear after a short wait",
+        "3": "Your words appear almost right away",
+        "4": "Your words appear right away"
+      },
+      "speedPreview": "{{meaning}}, with a live preview while you talk",
+      "untimed": "We haven't measured how fast it is yet",
+      "underSeconds": "under {{max}} s",
+      "betweenSeconds": "{{min}} to {{max}} s",
+      "overSeconds": "{{min}} s or more"
+    },
+    "roles": {
+      "recommended": "Recommended",
+      "faster": "Faster",
+      "accurate": "More accurate",
+      "fromAll": "From all models"
+    },
+    "speed": "Speed",
+    "size": "Size",
+    "accuracy": "Accuracy",
+    "search": "Search models",
+    "allLabel": "Speech models",
+    "noMatch": "Nothing matches “{{query}}”. Try a language, or a family like Whisper or Parakeet",
+    "noFilterMatch": "No models match these filters",
+    "speedUntested": "Speed not measured yet",
+    "speedWords": {
+      "0": "Very slow, words appear after a long wait",
+      "1": "Slow, words appear after a wait",
+      "2": "Moderate, words appear after a short wait",
+      "3": "Fast, words appear almost right away",
+      "4": "Very fast, words appear right away"
+    },
+    "speedWordsPreview": {
+      "0": "Very slow, with a live preview while you talk",
+      "1": "Slow, with a live preview while you talk",
+      "2": "Moderate, with a live preview while you talk",
+      "3": "Fast, with a live preview while you talk",
+      "4": "Very fast, with a live preview while you talk"
+    },
+    "missingLanguage": "Missing a language",
+    "allLanguages": "All",
+    "downloadingLine": "Downloading {{percent}}% of {{total}}",
+    "customLine": "Added from your models folder. Not graded."
+  },
+  "languagePicker": {
+    "search": "Search languages",
+    "addAnother": "Add another",
+    "remove": "Remove {{language}}",
+    "alreadyAdded_one": "{{languages}} is already added.",
+    "alreadyAdded_other": "{{languages}} are already added."
+  },
+  "modelSelector": {
+    "custom": "Custom",
+    "streaming": "Streaming",
+    "active": "Active",
+    "noModelsAvailable": "No models available",
+    "verifying": "Verifying {{modelName}}...",
+    "verifyingGeneric": "Verifying...",
+    "downloading": "Downloading {{percentage}}%",
+    "downloadingMultiple": "Downloading {{count}} models...",
+    "modelReady": "Model Ready",
+    "loading": "Loading {{modelName}}...",
+    "loadingGeneric": "Loading...",
+    "modelError": "Model Error",
+    "modelUnloaded": "Model Unloaded",
+    "noModelDownloadRequired": "No Model - Download Required",
+    "downloadSpeed": "{{speed}} MB/s",
+    "lockedWhileTranscribing": "You can switch models once History finishes transcribing."
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "{{model}} Settings"
+    },
+    "general": {
+      "title": "General",
+      "shortcut": {
+        "title": "{{appName}} Shortcuts",
+        "description": "Configure keyboard shortcuts to trigger speech-to-text recording",
+        "loading": "Loading shortcuts...",
+        "none": "No shortcuts configured",
+        "notFound": "Shortcut not found",
+        "pressKeys": "Press keys...",
+        "bindings": {
+          "transcribe": {
+            "name": "Transcribe Shortcut",
+            "description": "The keyboard shortcut to record and transcribe your voice."
+          },
+          "cancel": {
+            "name": "Cancel Shortcut",
+            "description": "The keyboard shortcut to cancel the current recording."
+          },
+          "transcribe_with_post_process": {
+            "name": "Post-Processing Hotkey",
+            "description": "Optional: A dedicated hotkey that always applies AI post-processing to your transcription."
+          },
+          "ask_agent": {
+            "name": "Ask shortcut",
+            "description": "Always talks to the agent: ask a question, or tell it to do something. Never types."
+          }
+        },
+        "errors": {
+          "set": "Failed to set shortcut: {{error}}"
+        }
+      },
+      "language": {
+        "title": "Language",
+        "description": "Select the language for speech recognition. Auto will automatically determine the language, while selecting a specific language can improve accuracy for that language.",
+        "searchPlaceholder": "Search languages...",
+        "noResults": "No languages found",
+        "auto": "Auto",
+        "autoUnavailable": {
+          "title": "Auto is disabled",
+          "oneLanguage": "Only one of your languages works with this model",
+          "undetectable": "Not available with {{languages}}",
+          "noMatch": "None of your languages work with this model"
+        },
+        "detectorMissingTitle": "Auto needs a separate download",
+        "detectorMissing": "This model can't tell which language you're speaking. Auto needs a small language detector to figure it out",
+        "stopDetectorDownload": "Stop downloading the language detector"
+      },
+      "preferredLanguages": {
+        "title": "Preferred Languages",
+        "description": "The languages you speak. {{appName}} uses them to recommend models.",
+        "noMatch": "No language matches “{{query}}”",
+        "weak": "No model recognizes {{languages}} well yet."
+      },
+      "shortcutActivation": {
+        "title": "Shortcut Behavior",
+        "description": "Choose how the transcribe shortcut starts and stops recording.",
+        "options": {
+          "holdOrToggle": "Auto",
+          "pushToTalk": "Hold",
+          "toggle": "Toggle"
+        },
+        "descriptions": {
+          "hold_or_toggle": "Hold to record or tap to toggle",
+          "push_to_talk": "Records while you hold the shortcut",
+          "toggle": "Tap the shortcut to start recording, tap again to stop"
+        }
+      }
+    },
+    "models": {
+      "title": "Models",
+      "changeLanguages": "Change languages",
+      "sections": {
+        "yours": "On this computer",
+        "fits": "For your languages",
+        "untested": "Untested"
+      },
+      "untestedNote": "Not tested with {{appName}}. They may be slower or make more mistakes.",
+      "untestedHidden_one": "{{count}} more model isn’t tuned for dictation. Search to find it.",
+      "untestedHidden_other": "{{count}} more models aren’t tuned for dictation. Search to find one.",
+      "emptyYours": "No models yet. Pick one below: it downloads, then {{appName}} uses it.",
+      "showMore": "Show {{count}} more",
+      "showFewer": "Show fewer",
+      "download": "Download and use",
+      "downloadingThenUse": "{{percent}}% of {{total}}, then switches",
+      "loading": "Loading…",
+      "deleteAsk": "Delete {{name}}? It frees {{size}}.",
+      "deleteAskActive": "Delete {{name}}? {{appName}} can’t transcribe until you pick another.",
+      "cancel": "Cancel",
+      "deleteModel": "Delete {{name}}",
+      "cancelDownload": "Stop downloading {{name}}",
+      "legend": {
+        "open": "How models are graded",
+        "accuracyNote": "For each of your languages: how many words a model got wrong in our test recordings.",
+        "speedNote": {
+          "accelerated": "How long 30 seconds of speech takes to type out on our test laptop’s graphics chip. This computer may differ.",
+          "cpu": "How long 30 seconds of speech takes to type out on our test laptop’s processor. This computer may differ."
+        },
+        "marks": "? hasn’t been measured yet. — doesn’t hear that language."
+      },
+      "retiredNotice": {
+        "title": "Old models no longer work with {{appName}}",
+        "description": "They're taking up {{size}} on your computer.",
+        "delete": "Delete models",
+        "deleted": "Deleted old models",
+        "deleteFailed": "Some old models couldn't be deleted. Check the log for details."
+      },
+      "rescan": {
+        "label": "Rescan",
+        "tooltip": "Rescan for models added to the models folder or Hugging Face cache outside {{appName}}"
+      }
+    },
+    "languages": {
+      "title": "Languages"
+    },
+    "sound": {
+      "title": "Sound",
+      "microphone": {
+        "title": "Microphone",
+        "description": "Select your preferred microphone device",
+        "placeholder": "Select microphone...",
+        "loading": "Loading..."
+      },
+      "channel": {
+        "title": "Input Channel",
+        "description": "Select which input channel to record from. Use this if your audio interface has multiple inputs.",
+        "average": "Average all channels",
+        "channel": "Channel {{n}}"
+      },
+      "audioFeedback": {
+        "label": "Audio Feedback",
+        "description": "Play sound when recording starts and stops"
+      },
+      "outputDevice": {
+        "title": "Output Device",
+        "description": "Select your preferred audio output device for feedback sounds",
+        "placeholder": "Select output device...",
+        "loading": "Loading..."
+      },
+      "volume": {
+        "title": "Volume",
+        "description": "Adjust the volume of audio feedback sounds"
+      }
+    },
+    "advanced": {
+      "groups": {
+        "app": "App",
+        "output": "Output",
+        "transcription": "Transcription",
+        "history": "History",
+        "experimental": "Experimental"
+      },
+      "experimentalToggle": {
+        "label": "Experimental Features",
+        "description": "Enable experimental features that are still in development."
+      },
+      "lazyStreamClose": {
+        "label": "Keep Mic Open Between Transcriptions",
+        "description": "Keeps the microphone stream open for 30 seconds after recording stops, reducing latency for back-to-back transcriptions. May degrade Bluetooth audio quality while active."
+      },
+      "acceleration": {
+        "transcribe": {
+          "title": "Hardware Acceleration",
+          "description": "Choose the hardware used for transcription. Auto uses the GPU when available and falls back to the CPU."
+        },
+        "gpuDevice": {
+          "auto": "Auto"
+        }
+      },
+      "startHidden": {
+        "label": "Start Hidden",
+        "description": "Launch to system tray without opening the window."
+      },
+      "autostart": {
+        "label": "Launch on Startup",
+        "description": "Automatically start {{appName}} when you log in to your computer."
+      },
+      "showTrayIcon": {
+        "label": "Show Tray Icon",
+        "description": "Display the {{appName}} icon in the system tray."
+      },
+      "overlay": {
+        "style": {
+          "title": "Overlay",
+          "description": "Choose the recording overlay: None hides it, Minimal shows a compact pill, Live shows transcription in real time as you speak (streaming-capable models only — look for the Streaming badge in the model picker). On Linux 'None' is recommended.",
+          "options": {
+            "none": "None",
+            "minimal": "Minimal",
+            "live": "Live"
+          }
+        },
+        "position": {
+          "title": "Overlay Position",
+          "description": "Where the overlay appears on screen during recording and transcription.",
+          "options": {
+            "bottom": "Bottom",
+            "top": "Top"
+          }
+        }
+      },
+      "pasteMethod": {
+        "title": "Paste Method",
+        "description": "Choose how text is inserted. Direct: simulates typing via system input. None: skips paste, only updates history/clipboard.",
+        "options": {
+          "clipboard": "Clipboard ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Clipboard (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "Clipboard (Shift+Insert)",
+          "direct": "Direct",
+          "none": "None",
+          "externalScript": "External Script"
+        },
+        "externalScriptPlaceholder": "/path/to/your/script.sh"
+      },
+      "typingTool": {
+        "title": "Typing Tool",
+        "description": "Choose which Linux typing tool to use for Direct paste method. Auto will automatically detect and use the best available tool for your system.",
+        "options": {
+          "auto": "Auto (Recommended)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "Clipboard Handling",
+        "description": "Don't Modify Clipboard preserves your current clipboard contents after transcription. Copy to Clipboard leaves the transcription result in your clipboard after pasting.",
+        "options": {
+          "dontModify": "Don't Modify Clipboard",
+          "copyToClipboard": "Copy to Clipboard"
+        }
+      },
+      "autoSubmit": {
+        "title": "Auto Submit",
+        "description": "Automatically send the selected key combination after text insertion. Cmd+Enter applies on macOS, while Windows/Linux use Super+Enter.",
+        "options": {
+          "off": "Off",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "Translate to English",
+        "description": "Automatically translate speech from other languages to English during transcription."
+      },
+      "modelUnload": {
+        "title": "Unload Model",
+        "description": "Automatically free GPU/CPU memory when the model hasn't been used for the specified time",
+        "options": {
+          "never": "Never",
+          "immediately": "Immediately",
+          "min2": "After 2 minutes",
+          "min5": "After 5 minutes",
+          "min10": "After 10 minutes",
+          "min15": "After 15 minutes",
+          "hour1": "After 1 hour",
+          "sec15": "After 15 seconds (Debug)"
+        }
+      },
+      "customWords": {
+        "title": "Custom Words",
+        "description": "Help supported models recognize names and specialized terms. Fuzzy correction is currently limited to words using A–Z and numbers.",
+        "placeholder": "Add a word",
+        "add": "Add",
+        "remove": "Remove {{word}}",
+        "duplicate": "\"{{word}}\" already exists"
+      },
+      "voiceActivityDetection": {
+        "title": "Voice Activity Detection",
+        "description": "Filter silence from recordings. Streaming-capable models use a longer VAD tail; disabling VAD records raw audio."
+      },
+      "longFormChunking": {
+        "title": "Long Audio Chunking",
+        "description": "Splits long recordings at pauses before transcribing, which typically improves transcription performance. Transcribed files and long re-transcriptions are always split."
+      },
+      "languageDetection": {
+        "title": "Limit Auto to My Languages",
+        "description": "Auto only picks from your preferred languages, using a small language detector. Turn this on if Auto keeps choosing a language you don't speak",
+        "downloadHint": "Turning this on downloads a small language detector",
+        "downloadingHint": "Downloading the language detector. Turn this off to cancel"
+      },
+      "vadBackend": {
+        "title": "Voice Activity Backend",
+        "description": "Choose the detector used to filter silence. Earshot is experimental; switch back to Silero if speech is clipped or noise is retained.",
+        "options": {
+          "silero": "Silero",
+          "earshot": "Earshot"
+        }
+      },
+      "fillerWordRemoval": {
+        "title": "Remove Filler Words",
+        "description": "Removes common hesitation words from transcriptions. Turn off to keep them."
+      },
+      "chineseScript": {
+        "title": "Chinese Script",
+        "description": "Writes Mandarin and Cantonese transcriptions in Simplified characters, or in Traditional characters as written in Taiwan or Hong Kong. Other languages are left unchanged.",
+        "options": {
+          "asTranscribed": "As Transcribed",
+          "simplified": "Simplified",
+          "traditionalTw": "Traditional (Taiwan)",
+          "traditionalHk": "Traditional (Hong Kong)"
+        }
+      }
+    },
+    "postProcessing": {
+      "hotkey": {
+        "title": "Hotkey"
+      },
+      "prompts": {
+        "title": "Prompt",
+        "selectedPrompt": {
+          "title": "Selected Prompt",
+          "description": "Select a template for refining transcriptions or create a new one. Use ${output} inside the prompt text to reference the captured transcript."
+        },
+        "noPrompts": "No prompts available",
+        "selectPrompt": "Select a prompt",
+        "createNew": "Create New Prompt",
+        "promptLabel": "Prompt Label",
+        "promptLabelPlaceholder": "Enter prompt name",
+        "promptInstructions": "Prompt Instructions",
+        "promptInstructionsPlaceholder": "Write the instructions to run after transcription. Example: Improve grammar and clarity for the following text: ${output}",
+        "promptTip": "Tip: Use <code>${output}</code> to insert the transcribed text in your prompt.",
+        "updatePrompt": "Update Prompt",
+        "deletePrompt": "Delete Prompt",
+        "createPrompt": "Create Prompt",
+        "cancel": "Cancel",
+        "selectToEdit": "Select a prompt above to view and edit its details.",
+        "createFirst": "Click 'Create New Prompt' above to create your first post-processing prompt."
+      }
+    },
+    "history": {
+      "title": "History",
+      "openFolder": "Open Recordings Folder",
+      "loading": "Loading history...",
+      "empty": "No transcriptions yet. Start recording to build your history!",
+      "copyToClipboard": "Copy transcription to clipboard",
+      "copyError": "Failed to copy transcription to clipboard.",
+      "save": "Save transcription",
+      "unsave": "Remove from saved",
+      "delete": "Delete entry",
+      "deleteError": "Failed to delete entry. Please try again.",
+      "retranscribe": "Re-transcribe",
+      "cancelTranscription": "Cancel transcription",
+      "transcribing": "Transcribing...",
+      "transcriptionFailed": "Transcription failed. You can re-transcribe using the retry icon.",
+      "notTranscribed": "Not transcribed. You can transcribe it using the retry icon.",
+      "transcribeFile": "Transcribe File",
+      "mediaFiles": "Audio and video",
+      "fileUnsupported": "Couldn't read audio from {{name}}.",
+      "readingFile": "Reading {{name}}...",
+      "transcribeFailed": "Transcription failed. Please try again.",
+      "waiting": "Waiting to transcribe",
+      "transcribingPercent": "Transcribing, {{percent}}%",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "dropTitle": "Drop to transcribe",
+      "dropDescription": "It'll show up in History.",
+      "searchPlaceholder": "Search history",
+      "clearSearch": "Clear search",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "saved": "Saved",
+      "playRecording": "Play recording",
+      "hidePlayer": "Hide player",
+      "emptyTitle": "No dictations yet",
+      "emptyDescription": "Everything {{appName}} transcribes shows up here, newest first. Hold your shortcut in any app and start talking.",
+      "noResultsTitle": "No matches",
+      "noResultsDescription": "Nothing in your history matches “{{query}}”.",
+      "loadingMore": "Loading more…",
+      "searchingOlder": "Searching older entries…"
+    },
+    "debug": {
+      "title": "Debug",
+      "logDirectory": {
+        "title": "Log Directory",
+        "description": "Location where log files are stored"
+      },
+      "logLevel": {
+        "title": "Log Level",
+        "description": "Set the verbosity of logging"
+      },
+      "liveLogs": {
+        "title": "Live Logs",
+        "description": "Stream application logs in real time to diagnose issues without opening the log file. Only logs emitted while this panel is open are shown; respects the Log Level setting above.",
+        "live": "Live",
+        "paused": "Paused",
+        "pause": "Pause",
+        "resume": "Resume",
+        "copied": "Copied",
+        "lineCount": "{{count}} lines",
+        "empty": "Waiting for logs… Entries appear here as the app emits them."
+      },
+      "updateChecks": {
+        "label": "Check for Updates",
+        "description": "Automatically check for new versions of {{appName}}",
+        "lockedDescription": "Disabled by system configuration (AMBIENT_DISABLE_UPDATER)"
+      },
+      "whatsNewPreview": {
+        "title": "Preview What's New",
+        "description": "Open the latest bundled release note without marking it as seen",
+        "button": "Preview",
+        "noNotes": "No bundled release notes found",
+        "error": "Failed to preview release notes"
+      },
+      "onboardingPreview": {
+        "title": "Preview Onboarding",
+        "description": "Preview onboarding screens without changing permissions, models, or completion state",
+        "exitButton": "Exit Preview",
+        "choose": "Choose a screen",
+        "screens": {
+          "welcome": "Welcome",
+          "permissions": "Permissions",
+          "model": "Model",
+          "demo": "Demo",
+          "try": "Try it",
+          "done": "All set"
+        }
+      },
+      "onboardingRun": {
+        "title": "Run Onboarding",
+        "description": "Go through onboarding for real from the start: it asks for permissions, downloads models and saves your choices",
+        "button": "Start"
+      },
+      "modelMigration": {
+        "title": "Model Migration",
+        "description": "Open the old-format model update screen for real: it downloads replacements, switches models and deletes old files",
+        "button": "Open",
+        "noRetired": "No old-format models on disk"
+      },
+      "soundTheme": {
+        "label": "Sound Theme",
+        "description": "Choose a sound theme for recording start and stop feedback"
+      },
+      "wordCorrectionThreshold": {
+        "title": "Word Correction Threshold",
+        "description": "Sensitivity for custom word corrections"
+      },
+      "historyLimit": {
+        "title": "History Limit",
+        "description": "Maximum number of history entries to keep",
+        "entries": "entries"
+      },
+      "recordingRetention": {
+        "title": "Auto-Delete Recordings",
+        "description": "Automatically delete old recordings to save space",
+        "never": "Never",
+        "preserveLimit": "Keep latest {{count}}",
+        "days3": "After 3 days",
+        "weeks2": "After 2 weeks",
+        "months3": "After 3 months",
+        "placeholder": "Select retention period..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "Always-On Microphone",
+        "description": "Keep microphone active for faster response"
+      },
+      "clamshellMicrophone": {
+        "title": "Clamshell Microphone",
+        "description": "Microphone to use when laptop lid is closed"
+      },
+      "postProcessingToggle": {
+        "label": "Post Processing",
+        "description": "Enable AI-powered text refinement after transcription"
+      },
+      "muteWhileRecording": {
+        "label": "Mute While Recording",
+        "description": "Mute system audio during recording"
+      },
+      "appendTrailingSpace": {
+        "label": "Append Trailing Space",
+        "description": "Add a space after pasted transcription"
+      },
+      "keyboardImplementation": {
+        "title": "Keyboard Implementation",
+        "description": "Choose the keyboard shortcut backend.",
+        "bindingsReset": "Keyboard shortcuts were incompatible and reset to defaults"
+      },
+      "pasteDelay": {
+        "title": "Paste Delay (Before)",
+        "description": "Delay (in milliseconds) after copying text, before sending the paste keystroke. Increase if nothing gets pasted."
+      },
+      "pasteDelayAfter": {
+        "title": "Paste Delay (After)",
+        "description": "Delay (in milliseconds) after the paste keystroke, before restoring your previous clipboard. Increase if your old clipboard content is being pasted instead of the transcription."
+      },
+      "holdThreshold": {
+        "title": "Hold Threshold",
+        "description": "Auto mode only: how long (in milliseconds) the shortcut must be held before it counts as a hold instead of a tap. Lower if short holds keep leaving recording on; raise if deliberate taps get treated as holds."
+      },
+      "reliablePaste": {
+        "title": "Reliable Paste (Beta)",
+        "description": "Restore the clipboard only after the target app actually reads the transcription, instead of after a fixed delay. Intended to fix old clipboard content being pasted under system load. Requires a clipboard paste method; macOS and Windows only."
+      },
+      "recordingBuffer": {
+        "title": "Extra Recording Buffer",
+        "description": "Extra time (in milliseconds) to keep recording after you release the key, to capture trailing audio. 0 = no extra buffer."
+      },
+      "languageDetectionWindow": {
+        "title": "Language Detection Audio",
+        "description": "Seconds of speech the language detector hears. Longer is more accurate but slower."
+      },
+      "keyboardDiagnostic": {
+        "title": "Keyboard Diagnostic",
+        "description": "Checks whether keyboard events reach {{appName}}. Only event counts are recorded — never which keys you press.",
+        "run": "Run 10s diagnostic",
+        "running": "Listening… press your shortcut a few times (e.g. Option+Space)",
+        "secureInputLabel": "Secure Input",
+        "enabled": "enabled",
+        "disabled": "disabled",
+        "holder": "held by {{name}} (pid {{pid}})",
+        "holderUnknown": "no visible holder",
+        "keyDown": "Key down",
+        "keyUp": "Key up",
+        "flagsChanged": "Modifiers",
+        "mouse": "Mouse",
+        "verdictBlocked": "Secure Input is blocking key events — keyed shortcuts cannot work until it is resolved.",
+        "verdictSuspicious": "Modifier events arrived but no key events — something is suppressing keys even though Secure Input reports disabled. Please report this on GitHub.",
+        "verdictOk": "Key events are reaching {{appName}} normally.",
+        "verdictNoEvents": "No events captured — did you press any keys during the test?",
+        "failed": "Diagnostic failed: {{error}}"
+      }
+    },
+    "about": {
+      "title": "About",
+      "version": {
+        "title": "Version",
+        "description": "Current version of {{appName}}"
+      },
+      "whatsNewUpdates": {
+        "label": "Show What's New",
+        "description": "Show release notes after {{appName}} updates"
+      },
+      "appDataDirectory": {
+        "title": "App Data Directory",
+        "description": "Location where {{appName}} stores its data"
+      },
+      "sourceCode": {
+        "title": "Website",
+        "description": "News, help and your account",
+        "button": "Open website"
+      },
+      "acknowledgments": {
+        "title": "Acknowledgments",
+        "ggml": {
+          "title": "ggml",
+          "description": "High-performance tensor library for on-device machine learning inference",
+          "details": "{{appName}}'s local speech-to-text is built on transcribe.cpp and ggml. Thanks to the amazing work by Georgi Gerganov and contributors."
+        },
+        "licenses": {
+          "title": "Open-source licenses",
+          "description": "Notices for the open-source software {{appName}} includes",
+          "show": "Show licenses",
+          "hide": "Hide licenses"
+        }
+      },
+      "intro": {
+        "title": "Welcome intro",
+        "description": "The animation {{appName}} plays the first time it opens.",
+        "button": "Play intro"
+      }
+    },
+    "agent": {
+      "title": "Voice agent",
+      "description": "Ask a question or tell it to do something, instead of typing.",
+      "routing": {
+        "label": "Understand requests while dictating",
+        "description": "Requests get handled; everything else types as usual. Turn off to always type."
+      },
+      "wake": {
+        "label": "Hands-free: say “Hey Ambient”",
+        "description": "Talk to {{appName}} without a key: “Hey Ambient, what's on my calendar?” It listens on this Mac and ignores everything that doesn't start with its name. Your Mac shows the mic indicator while it's on."
+      }
+    }
+  },
+  "footer": {
+    "checkingUpdates": "Checking for updates...",
+    "updateAvailableShort": "Update available",
+    "upToDate": "Up to date",
+    "updateCheckingDisabled": "Update Checking Disabled",
+    "downloading": "Downloading... {{progress}}%",
+    "installing": "Installing...",
+    "preparing": "Preparing...",
+    "checkForUpdates": "Check for updates",
+    "portableUpdateTitle": "Manual update required",
+    "portableUpdateMessage": "Portable installs cannot be updated automatically. Download the installer for your system below, run it, and install to the same folder — your Data/ folder (settings, models, recordings) is kept in place.",
+    "portableUpdateButton": "Download installer",
+    "portableUpdateBrowseMessage": "Portable installs cannot be updated automatically. Download the latest version for your system from GitHub Releases and install it to the same folder — your Data/ folder (settings, models, recordings) is kept in place.",
+    "portableUpdateBrowseButton": "Open GitHub Releases"
+  },
+  "whatsNew": {
+    "title": "New in {{appName}} v{{version}}"
+  },
+  "common": {
+    "loading": "Loading...",
+    "delete": "Delete",
+    "close": "Close",
+    "open": "Open",
+    "copy": "Copy",
+    "clear": "Clear",
+    "noOptionsFound": "No options found"
+  },
+  "errors": {
+    "loadDirectory": "Error loading directory: {{error}}",
+    "micPermissionDeniedTitle": "Microphone Access Denied",
+    "micPermissionDenied": {
+      "generic": "Microphone access was denied by the operating system. Please grant microphone permission in your system settings.",
+      "windows": "Enable microphone access in Settings → Privacy & security → Microphone (including desktop app access).",
+      "macos": "Grant microphone access in System Settings → Privacy & Security → Microphone.",
+      "linux": "Grant microphone access in your system's sound or privacy settings."
+    },
+    "noInputDeviceTitle": "No Microphone Found",
+    "noInputDevice": "No audio input device was detected. Please connect a microphone or headset and try again.",
+    "recordingFailed": "Failed to start recording: {{error}}",
+    "modelLoadFailed": "Failed to load model: {{model}}",
+    "modelLoadFailedUnknown": "unknown model",
+    "pasteFailedTitle": "Failed to Paste Text",
+    "pasteFailed": "Text could not be pasted into the active application.",
+    "transcriptionFailedTitle": "Transcription Failed"
+  },
+  "appLanguage": {
+    "title": "Application Language",
+    "description": "Change the language of the {{appName}} interface"
+  },
+  "theme": {
+    "title": "Application Theme",
+    "description": "Choose whether {{appName}} follows your system theme or stays light or dark",
+    "options": {
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
+  "overlay": {
+    "transcribing": "Transcribing...",
+    "processing": "Processing...",
+    "loadingModel": "Loading model..."
+  },
+  "secureInput": {
+    "blockedWithCulprit_one": "{{name}} may be blocking 1 shortcut",
+    "blockedWithCulprit_other": "{{name}} may be blocking {{count}} shortcuts",
+    "blockedNoCulprit_one": "macOS is temporarily blocking 1 shortcut",
+    "blockedNoCulprit_other": "macOS is temporarily blocking {{count}} shortcuts",
+    "recorderBlockedWithCulprit": "{{name}} may be blocking shortcut changes",
+    "recorderBlockedNoCulprit": "macOS is temporarily blocking shortcut changes",
+    "learnMore": "How to fix",
+    "recorderBlocked": "Can't record shortcuts right now — macOS Secure Input is blocking key events. Resolve the Secure Input warning first.",
+    "dismiss": "Dismiss"
+  },
+  "account": {
+    "currentPlan": "Current plan",
+    "plans": {
+      "free": "Free",
+      "pro": "Pro",
+      "team": "Team",
+      "trial": "Pro trial"
+    },
+    "upgrade": "Upgrade",
+    "upgradeTo": "Upgrade to {{plan}}",
+    "manageBilling": "Manage billing",
+    "usage": "{{used}} of {{limit}} words this week",
+    "usageShort": "{{used}} / {{limit}} words",
+    "resets": "Resets {{date}}",
+    "limitReached": "You've used this week's free words. Upgrade for unlimited dictation, or keep going when the week resets.",
+    "limitToast": "Weekly free words used up",
+    "proFeatures": {
+      "polish": "AI polish on every dictation",
+      "onDevice": "On-device polish with Apple Intelligence",
+      "agent": "The ambient agent as it ships",
+      "priority": "Priority support"
+    },
+    "card": {
+      "activate": "Activate",
+      "active": "Active plan",
+      "remove": "Remove",
+      "activating": "Activating…",
+      "paste": "Paste",
+      "pasteFailed": "Couldn't read the clipboard. Paste with ⌘V instead.",
+      "holder": "Signed in as",
+      "renewsLabel": "Renews",
+      "copied": "Copied",
+      "errors": {
+        "network": "Couldn't reach {{appName}} to activate. Check your connection and try again.",
+        "inactive": "The subscription for this code isn't active. Renew it to unlock your plan.",
+        "rate_limited": "Too many attempts. Try again in 15 minutes.",
+        "server": "Activation failed on our side. Try again in a moment."
+      }
+    },
+    "signIn": {
+      "sectionTitle": "Your account",
+      "cardLabel": "Account",
+      "title": "Sign in for Pro",
+      "description": "Use the email you bought Pro with. We'll email you a 6-digit code.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "continue": "Continue",
+      "sending": "Sending…",
+      "codeTitle": "Check your email",
+      "codeDescription": "Enter the 6-digit code we sent to {{email}}.",
+      "codeLabel": "Sign-in code",
+      "digitLabel": "Digit {{n}}",
+      "signedInShort": "Signed in",
+      "resend": "Resend code",
+      "resent": "New code sent.",
+      "changeEmail": "Use a different email",
+      "signedInTitle": "Signed in",
+      "noPurchase": "{{email}} has no Pro subscription yet. Buy Pro and it turns on here.",
+      "checkAgain": "Check again",
+      "signOut": "Sign out",
+      "redeemLink": "Redeem a code",
+      "redeemTitle": "Redeem a code",
+      "redeemDescription": "For gift and support codes.",
+      "redeemPlaceholder": "red-grizzly-4320",
+      "redeemDetected": "That looks like an {{appName}} code.",
+      "backToSignIn": "Back to sign in",
+      "gift": {
+        "code": "Code",
+        "codeHidden": "Code hidden",
+        "showCode": "Show code",
+        "hideCode": "Hide code",
+        "copyCode": "Copy code"
+      },
+      "errors": {
+        "network": "Couldn't reach {{appName}}. Check your connection and try again.",
+        "invalid_email": "Enter a valid email address.",
+        "rate_limited": "Too many codes requested. Try again in a little while.",
+        "invalid_code": "That code isn't right. Check the email and try again.",
+        "expired": "That code has expired. Send a new one.",
+        "too_many_attempts": "Too many tries. Send a new code.",
+        "server": "Sign-in failed on our side. Try again in a moment.",
+        "redeem_invalid": "That code wasn't recognised. Check it and try again."
+      }
+    },
+    "polish": {
+      "title": "AI polish",
+      "description": "Cleans up every dictation: punctuation, filler words, lists and “scratch that” corrections. Only the text is sent, never audio.",
+      "unlock": "Get unlimited",
+      "onDevice": "Keep it on this Mac",
+      "onDeviceDescription": "Use Apple Intelligence instead. Nothing leaves your Mac.",
+      "freeLeft": "{{left}} of {{limit}} free polishes left this week"
+    },
+    "trial": {
+      "daysLeft_one": "{{count}} day left",
+      "daysLeft_other": "{{count}} days left"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "night": "Working late"
+    },
+    "hold": "Hold",
+    "anywhere": "in any app and start talking.",
+    "noShortcut": "Set a shortcut in Settings to start dictating.",
+    "stats": {
+      "words": "Words this week",
+      "wordsHint": "Dictated with {{appName}}",
+      "saved": "Time saved",
+      "savedHint": "Speaking at {{speaking}} wpm vs typing at {{typing}}",
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} hr",
+      "hours_other": "{{count}} hrs"
+    },
+    "recent": "Recent dictations",
+    "viewAll": "View all",
+    "empty": {
+      "title": "Nothing here yet",
+      "description": "Press your shortcut in any app and talk. Your dictations will show up here."
+    },
+    "tips": {
+      "holdOrTap": "Hold the shortcut to talk, or tap it once to start and again to stop.",
+      "customWords": "Add names and jargon under Settings → Advanced → Custom Words for better accuracy.",
+      "dropFile": "Drop an audio file onto this window to transcribe it.",
+      "languages": "Pick the languages you speak in Settings → General for the best model suggestions."
+    },
+    "quickActions": {
+      "label": "Quick actions",
+      "transcribeFile": "Transcribe a file",
+      "openHistory": "Open history"
+    },
+    "plan": {
+      "title": "Your plan",
+      "polishUnlimited": "AI polish is unlimited.",
+      "polishLeft": "{{left}} of {{limit}} free AI polishes left this week · resets {{day}}",
+      "polishFree": "Free includes a weekly allowance of AI polish.",
+      "usageToday": "Today: {{ai}} AI requests · {{search}} searches · fair use {{aiLimit}} a day",
+      "meetingsLeft": "Meetings this month: {{used}} of {{limit}}"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "off": "Not reading your screen.",
+      "on": "Allowed: {{list}}",
+      "paused": "Paused. Nothing is being read."
+    }
+  },
+  "hud": {
+    "thinking": "Thinking…",
+    "sources": "Sources",
+    "insert": "Insert",
+    "copy": "Copy",
+    "copied": "Copied",
+    "followUpHint": "Hold your shortcut to follow up",
+    "yes": "Yes",
+    "notNow": "Not now",
+    "stop": "Stop",
+    "status": {
+      "needScreenContext": "Turn on “Read what you ask about” in Privacy to use this.",
+      "onDeviceFailed": "Couldn't answer on this Mac right now.",
+      "offline": "Couldn't reach {{appName}}. Check your connection.",
+      "weeklyLimit": "This week's free AI uses are spent. Pro is unlimited.",
+      "account": "Your Pro access needs attention in Account.",
+      "failed": "Couldn't do that right now.",
+      "interrupted": "The answer was interrupted.",
+      "opened": "Opened",
+      "searching": "Searching in your browser",
+      "reminderAdded": "Reminder added",
+      "eventAdded": "Added to your calendar",
+      "shortcutRan": "Shortcut ran",
+      "cantDoYet": "I can't do that yet. Computer use is coming soon.",
+      "appNotFound": "Couldn't find that app.",
+      "shortcutNotFound": "Couldn't find that Shortcut.",
+      "calendarPermission": "Allow Calendars and Reminders access in System Settings first.",
+      "undone": "Undone",
+      "meetingStarted": "Taking notes. Let people know.",
+      "copied": "Copied",
+      "learned": "Got it. You can change this in Privacy.",
+      "sensitivePaused": "Paused here: this window shows a recovery phrase or private key.",
+      "fairUse": "You've reached today's fair-use limit. It resets at midnight UTC.",
+      "slowDown": "That's a lot of requests at once. Try again in a minute.",
+      "listening": "Listening…"
+    },
+    "undo": "Undo",
+    "close": "Close",
+    "meetingOffer": "Take notes for this call?",
+    "takeNotes": "Take notes",
+    "suggest": {
+      "summariseThread": "Long thread. Summarise it?",
+      "draftReply": "Draft a reply to this?",
+      "addToCalendar": "There's a date in this. Add it to your calendar?",
+      "summarisePage": "Summarise this page?",
+      "explainError": "Explain this error?",
+      "summarise": "Summarise",
+      "draft": "Draft",
+      "add": "Add",
+      "explain": "Explain",
+      "tightenDraft": "Tighten this draft?",
+      "priceCheck": "Check if it's cheaper elsewhere?",
+      "answerSearch": "Want me to just answer that?",
+      "fixFormula": "Fix these formula errors?",
+      "meetingPrep": "Meeting coming up. Brief you?",
+      "tighten": "Tighten",
+      "check": "Check",
+      "answer": "Answer",
+      "fix": "Fix",
+      "brief": "Brief me",
+      "reviewCode": "Review this pull request?",
+      "commitMessage": "Write a commit message for this?",
+      "review": "Review",
+      "write": "Write"
+    },
+    "nudge": {
+      "findIt": "Find it",
+      "remindMe": "Remind me",
+      "copy": "Copy"
+    },
+    "chip": {
+      "searchInstead": "Typed it. Search this instead?",
+      "search": "Search"
+    },
+    "suggestionTip": "Say “yes”, “not now” or “don't show me these”."
+  },
+  "privacy": {
+    "title": "Privacy",
+    "promise": "Off until you turn it on. Kept on this Mac, encrypted. Every request that leaves is listed.",
+    "state": {
+      "on": "Watching, as you allowed",
+      "onDetail": "Only the capabilities you turned on below.",
+      "off": "Not watching",
+      "offDetail": "Dictation works as normal. Nothing on your screen is read.",
+      "paused": "Paused",
+      "pausedDetail": "Nothing is read until you resume.",
+      "pausedUntil": "Nothing is read until {{time}}.",
+      "resume": "Resume",
+      "pauseHour": "Pause for 1 hour",
+      "pauseDay": "Until tomorrow"
+    },
+    "accessibility": "{{appName}} needs Accessibility access to read text from other apps.",
+    "grant": "Allow access",
+    "capabilities": {
+      "title": "What {{appName}} may do",
+      "description": "Each is off until you turn it on.",
+      "screen_context": {
+        "title": "Read what you ask about",
+        "reads": "Reads the window you ask about, and your open windows when you ask it to find something.",
+        "leaves": "Only what's needed to answer, with secrets removed."
+      },
+      "screen_memory": {
+        "title": "Remember what you've seen",
+        "reads": "Remembers windows you've used, so you can ask about them later.",
+        "leaves": "Stays on this Mac, encrypted."
+      },
+      "proactive": {
+        "title": "Offer suggestions",
+        "reads": "Offers a next step at the right moment: threads, drafts, dates, errors, meetings.",
+        "leaves": "Decided on this Mac. Nothing is sent unless you accept, except meeting nudges."
+      },
+      "meetings": {
+        "title": "Meeting notes",
+        "reads": "Hears your mic and the call while it takes notes.",
+        "leaves": "Audio stays here. Only text is sent, to write the summary."
+      },
+      "on_device_only": {
+        "title": "Keep everything on this Mac",
+        "reads": "Apple Intelligence for everything, and no web search.",
+        "leaves": "Nothing is sent."
+      },
+      "wake_word": {
+        "title": "Hands-free: say “Hey Ambient”",
+        "reads": "Listens on this Mac for “Hey Ambient”. Everything else is dropped as you speak.",
+        "leaves": "Nothing is recorded or sent until you say it."
+      }
+    },
+    "retention": "Keep for",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "preview": {
+      "title": "What {{appName}} sees",
+      "description": "Exactly what it would read from a window, after redaction.",
+      "hint": "Click Preview, then switch to any window within 3 seconds.",
+      "switchNow": "Switch to another window now…",
+      "button": "Preview",
+      "noText": "No readable text in this window.",
+      "skipped": {
+        "never_watch": "That app is on your never-watch list, so nothing was read.",
+        "no_permission": "Allow Accessibility access first.",
+        "unavailable": "Couldn't read that window.",
+        "sensitive": "This window shows a recovery phrase or private key, so nothing was read."
+      }
+    },
+    "neverWatch": {
+      "title": "Never watch",
+      "description": "Never read, even with everything on. Password fields, private windows, wallets and recovery phrases are skipped too.",
+      "this": "Never watch this app",
+      "added": "{{app}} won't be read again."
+    },
+    "stored": {
+      "title": "What's stored",
+      "description": "Screen memory on this Mac. Dictation history lives in History.",
+      "summary_one": "{{count}} snapshot since {{since}}.",
+      "summary_other": "{{count}} snapshots since {{since}}.",
+      "entries_one": "{{count}} snapshot",
+      "entries_other": "{{count}} snapshots",
+      "deleteApp": "Delete this app's snapshots",
+      "empty": "Nothing stored.",
+      "deleteAll": "Delete everything",
+      "deletedAll": "Screen memory and the request log are deleted."
+    },
+    "ledger": {
+      "title": "Requests that left this Mac",
+      "description": "Every request and exactly what it sent. Kept 30 days.",
+      "empty": "No requests yet.",
+      "bytes_one": "{{count}} byte",
+      "bytes_other": "{{count}} bytes",
+      "purpose": {
+        "polish": "AI polish",
+        "answer": "Answer",
+        "search": "Web search",
+        "suggestion": "Suggestion",
+        "summary": "Meeting summary",
+        "act": "Action",
+        "license": "Account check",
+        "trial": "Trial"
+      }
+    },
+    "engine": {
+      "title": "Prefer AI on this Mac",
+      "description": "Uses Apple Intelligence where it can. Results are less polished, so it's off by default.",
+      "unavailable": "Apple Intelligence isn't available on this Mac, so {{appName}}'s servers are used."
+    },
+    "suggestions": {
+      "title": "Suggestions you get",
+      "description": "Say “not now”, “don't show me these” or “not in this app” when one appears, and it learns. Change it here any time.",
+      "mutedIn": "Off in {{apps}}",
+      "kinds": {
+        "summarise_thread": "Summarise long email threads",
+        "draft_reply": "Draft replies",
+        "add_to_calendar": "Add dates to your calendar",
+        "summarise_page": "Summarise long pages",
+        "explain_error": "Explain errors and failing tests",
+        "tighten_draft": "Tighten long drafts",
+        "price_check": "Check prices elsewhere",
+        "answer_search": "Answer searches you keep rephrasing",
+        "fix_formula": "Fix spreadsheet formulas",
+        "meeting_prep": "Brief you before meetings",
+        "review_code": "Review pull requests",
+        "commit_message": "Write commit messages",
+        "meeting_nudge": "Nudges during meetings"
+      }
+    },
+    "macOnly": "Mac only for now",
+    "protections": {
+      "audio": "Your voice is transcribed on this Mac and never stored by us.",
+      "text": "Reads text, never takes screenshots.",
+      "passwords": "Password fields, password managers and private windows are never read.",
+      "wallets": "Crypto wallets, recovery phrases and private keys: it steps back entirely.",
+      "secrets": "Card numbers, keys and codes are removed before anything is sent.",
+      "suggestions": "Suggestions are decided on this Mac; nothing is sent unless you accept.",
+      "stored": "What it keeps stays on this Mac, encrypted, until you delete it.",
+      "ledger": "Every request that leaves is listed below, with exactly what was sent."
+    }
+  },
+  "meetings": {
+    "title": "Meetings",
+    "intro": "Notes for any call: you and them, transcribed on this Mac. Audio is never saved.",
+    "idle": "Not taking notes",
+    "idleDetail": "Start when a call begins, or turn on meeting suggestions in Privacy.",
+    "live": "Taking notes · {{time}}",
+    "capturingBoth": "Hearing you and the call.",
+    "capturingMic": "Hearing your microphone only.",
+    "start": "Start notes",
+    "stop": "Stop and summarise",
+    "listening": "Listening…",
+    "consent": "Let everyone know you're taking notes.",
+    "copyConsent": "Copy a message",
+    "consentMessage": "Heads up: I'm using {{appName}} to take notes on this call.",
+    "openSettings": "Open settings",
+    "notes": "Notes",
+    "transcript": "Transcript",
+    "past": "Past meetings",
+    "empty": "No meetings yet.",
+    "untitled": "Untitled meeting",
+    "unfinished": "Unfinished",
+    "all": "All meetings",
+    "summary": "Summary",
+    "decisions": "Decisions",
+    "actionItems": "Action items",
+    "questions": "Questions for you",
+    "noSummary": "No summary for this meeting.",
+    "copyMarkdown": "Copy as Markdown",
+    "followUp": "Draft follow-up",
+    "followUpTitle": "Follow-up email",
+    "copy": "Copy",
+    "copied": "Copied",
+    "delete": "Delete meeting",
+    "you": "You",
+    "them": "Them",
+    "systemAudio": {
+      "noPermission": "Allow Screen Recording so {{appName}} can hear the call. Only audio is used, and nothing is saved.",
+      "oldMacOS": "Hearing the call needs macOS 13 or later. Your microphone is still being transcribed.",
+      "failed": "Couldn't capture the call audio. Your microphone is still being transcribed.",
+      "unsupported": "Hearing the call isn't available on this system yet."
+    },
+    "error": {
+      "storage": "Couldn't open meeting storage.",
+      "freeLimit": "Free includes 2 meetings a month. Pro is unlimited.",
+      "mic": "Couldn't open the microphone.",
+      "notActive": "No meeting in progress.",
+      "notFound": "That meeting no longer exists.",
+      "followUp": "Couldn't draft the follow-up right now."
+    },
+    "freeLeft": "{{left}} of {{limit}} free meetings left this month. Pro is unlimited."
+  },
+  "tour": {
+    "skip": "Skip",
+    "next": "Next",
+    "done": "Done",
+    "start": "Start using {{appName}}",
+    "meet": {
+      "title": "Meet the agent",
+      "description": "Hold your shortcut and talk. {{appName}} figures out the rest."
+    },
+    "modes": {
+      "write": {
+        "title": "Write",
+        "example": "Can we move the sync to Thursday?"
+      },
+      "answer": {
+        "title": "Answer",
+        "example": "What's the UK capital gains rate?"
+      },
+      "act": {
+        "title": "Act",
+        "example": "Remind me at 5 to call Sam"
+      },
+      "recall": {
+        "title": "Recall",
+        "example": "What did I say about pricing yesterday?"
+      }
+    },
+    "nothingToConnect": {
+      "title": "Nothing to connect.",
+      "body": "No accounts, integrations or bots. It works with the apps you already use."
+    },
+    "try": {
+      "title": "Try it now",
+      "body": "Hold {{keys}} and ask: “What's the weather in Lisbon tomorrow?”",
+      "done": "That's it. You've used the agent."
+    },
+    "choose": {
+      "title": "Choose what {{appName}} may do",
+      "description": "All off until you turn them on. Change them any time in Privacy.",
+      "footnote": "Passwords, wallets and private windows are never read.",
+      "proOnly": "Part of Pro. Upgrade in Account."
+    }
+  },
+  "getStarted": {
+    "title": "Get started",
+    "progress": "{{done}} of {{total}} done",
+    "hide": "Hide",
+    "whatToSay": "What can I say?",
+    "replayTour": "Replay the tour",
+    "steps": {
+      "answer": "Ask the agent a question",
+      "reminder": "Set a reminder by voice",
+      "about_screen": "Summarise something on your screen",
+      "suggestion": "Accept a suggestion",
+      "meeting": "Take notes in a meeting",
+      "privacy": "See what {{appName}} can and can't read"
+    }
+  },
+  "trySaying": {
+    "title": "What can I say?",
+    "close": "Close",
+    "description": "Hold {{ask}} to talk to the agent. {{dictate}} types, unless you ask for something.",
+    "footnote": "In ChatGPT or Claude, start with “Hey Ambient” to talk to the agent instead.",
+    "groups": {
+      "answer": {
+        "title": "Ask",
+        "examples": [
+          "What's the capital gains rate in the UK?",
+          "Summarise this.",
+          "What does this error mean?",
+          "Translate this into Spanish."
+        ]
+      },
+      "act": {
+        "title": "Do",
+        "examples": [
+          "Remind me at 5 to call Sam.",
+          "Add lunch with Ana on Friday at 1pm.",
+          "Open Linear.",
+          "Run my standup shortcut."
+        ]
+      },
+      "recall": {
+        "title": "Remember",
+        "examples": [
+          "What did I say about pricing yesterday?",
+          "Find the Q3 deck."
+        ]
+      },
+      "suggestions": {
+        "title": "When a suggestion appears",
+        "examples": [
+          "“Yes” or “do it” to accept.",
+          "“Not now” to dismiss.",
+          "“Don't show me these” to turn that kind off.",
+          "“Not here” to stop it in this app."
+        ]
+      },
+      "meetings": {
+        "title": "In meetings",
+        "examples": [
+          "Start notes from Meetings, or say yes when Ambient offers.",
+          "“Find it” when they ask you for something.",
+          "“Remind me” when you promise to do something."
+        ]
+      },
+      "talking": {
+        "title": "Talking to Ambient",
+        "examples": [
+          "Hold {{ask}} and talk: it's always for Ambient.",
+          "Or use your dictation key and start with “Hey Ambient, …”. Without it, your words are typed.",
+          "Hands-free (turn it on in Privacy): just say “Hey Ambient, …”."
+        ]
+      }
+    }
+  },
+  "app": {
+    "starting": "Starting {{appName}}…"
+  }
+}

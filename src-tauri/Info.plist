@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Ambient listens only while you hold your shortcut, and turns your speech into text on this Mac. Audio never leaves your device.</string>
+  <key>NSCalendarsFullAccessUsageDescription</key>
+  <string>Ambient adds events to your calendar when you ask it to, like “add lunch with Ana on Friday at 1”.</string>
+  <key>NSCalendarsUsageDescription</key>
+  <string>Ambient adds events to your calendar when you ask it to.</string>
+  <key>NSRemindersFullAccessUsageDescription</key>
+  <string>Ambient creates reminders when you ask it to, like “remind me at 5 to call Sam”.</string>
+  <key>NSRemindersUsageDescription</key>
+  <string>Ambient creates reminders when you ask it to.</string>
+</dict>
+</plist>

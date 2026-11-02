@@ -1,0 +1,17 @@
+{
+ "id": "meet",
+ "text": "Meet Ambient.",
+ "duration": 1.6,
+ "words": [
+  {
+   "w": "Meet",
+   "start": 0,
+   "end": 0.4
+  },
+  {
+   "w": "Ambient.",
+   "start": 0.64,
+   "end": 1.6
+  }
+ ]
+}

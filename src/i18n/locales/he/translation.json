@@ -1,0 +1,1502 @@
+{
+  "tray": {
+    "settings": "הגדרות...",
+    "checkUpdates": "בדוק עדכונים...",
+    "copyLastTranscript": "העתק את התמלול האחרון",
+    "unloadModel": "פרוק מודל",
+    "model": "מודל",
+    "quit": "יציאה",
+    "cancel": "ביטול",
+    "secureInputWarning": "⚠ קיצורי המקשים חסומים על ידי Secure Input"
+  },
+  "sidebar": {
+    "home": "בית",
+    "general": "כללי",
+    "account": "חשבון",
+    "models": "מודלים",
+    "advanced": "מתקדם",
+    "postProcessing": "עיבוד משלים",
+    "history": "היסטוריה",
+    "debug": "ניפוי שגיאות",
+    "about": "אודות",
+    "settings": "הגדרות",
+    "privacy": "פרטיות",
+    "meetings": "פגישות"
+  },
+  "onboarding": {
+    "customModelDescription": "לא נתמך באופן רשמי",
+    "migration": {
+      "title": "המודלים שלך צריכים עדכון",
+      "description": "{{appName}} משתמש עכשיו במודל טוב יותר. הורד אותו כדי להמשיך לתמלל.",
+      "replaces": "מחליף את {{name}}",
+      "oldFormat": "פורמט ישן",
+      "failed": "ההורדה נכשלה",
+      "retry": "ניסיון חוזר",
+      "chooseAnother": "בחירת מודל אחר",
+      "download": "הורדת מודלים ({{size}})",
+      "continue": "המשך"
+    },
+    "errors": {
+      "selectModel": "בחירת המודל נכשלה"
+    },
+    "permissions": {
+      "microphone": {
+        "name": "מיקרופון",
+        "why": "כדי ש-{{appName}} יוכל לשמוע אותך. הקול שלך אף פעם לא יוצא מהמחשב הזה."
+      },
+      "accessibility": {
+        "name": "נגישות",
+        "why": "כדי שהקיצור יעבוד בכל מקום והטקסט יגיע לאן שאתה מקליד."
+      },
+      "errors": {
+        "checkFailed": "בדיקת ההרשאות נכשלה. נסה שוב.",
+        "requestFailed": "בקשת ההרשאה נכשלה. נסה שוב."
+      },
+      "titleMac": "שתי הרשאות ואתה מוכן",
+      "titleWindows": "הרשאה אחת ואתה מוכן",
+      "subtitleMac": "macOS שואלת לפני שאפליקציה יכולה להאזין או להקליד.",
+      "subtitleWindows": "Windows שואלת לפני שאפליקציה יכולה להאזין.",
+      "allow": "אפשר",
+      "openSettings": "פתח הגדרות",
+      "allowed": "מאושר",
+      "waiting": "ממתין",
+      "turnOnMac": "הפעל את {{appName}} בהגדרות המערכת ואז חזור לכאן.",
+      "turnOnWindows": "הפעל גישה למיקרופון ב-הגדרות Windows ואז חזור לכאן.",
+      "hintBoth": "אשר את שתיהן כדי להמשיך",
+      "hintMicrophone": "אשר את המיקרופון כדי להמשיך",
+      "welcomeBack": "ברוך שובך. ממשיכים מהמקום שבו עצרת.",
+      "relaunch": "הקיצור לא עובד? <relaunch>הפעל מחדש את {{appName}}</relaunch>. תחזור ישר לכאן."
+    },
+    "shell": {
+      "back": "חזרה",
+      "continue": "המשך",
+      "progress": "שלב {{step}} מתוך {{count}}"
+    },
+    "welcome": {
+      "title": "דבר במקום להקליד, בכל אפליקציה",
+      "subtitle": "בחר את השפות שבהן תכתיב",
+      "languagesLabel": "שפות",
+      "noMatch": "אין תוצאות עבור „{{query}}”. שפות נוספות נמצאות בהגדרות.",
+      "appLanguage": "שפת האפליקציה",
+      "menusIn": "ממשק ב<b>{{language}}</b>",
+      "chinese": {
+        "question": "אתה מדבר {{languages}}. באילו תווים {{appName}} צריך לכתוב?",
+        "label": "תווים סיניים",
+        "zh-Hans": "מפושטת",
+        "zh-Hant": "טייוואן",
+        "zh-HK": "הונג קונג"
+      },
+      "hint": {
+        "pickOne": "בחר לפחות שפה אחת",
+        "weak_one": "{{languages}}: עדיין אין מודל ששומע אותה היטב",
+        "weak_two": "{{languages}}: עדיין אין מודל ששומע אותן היטב",
+        "weak_other": "{{languages}}: עדיין אין מודל ששומע אותן היטב"
+      }
+    },
+    "download": {
+      "checking": "בודק את ההורדה…",
+      "ready": "{{name}} מוכן",
+      "failed": "ההורדה נעצרה",
+      "downloading": "מוריד את {{name}}",
+      "progress": "{{done}} מתוך {{total}}",
+      "progressLeft": "{{done}} מתוך {{total}}, נותרו {{time}}",
+      "checkingName": "בודק את {{name}}",
+      "checkingDetail": "מוודא שההורדה הושלמה",
+      "stopped": "ההורדה של {{name}} נעצרה",
+      "retryDetail": "ניסיון חוזר ממשיך מהמקום שבו עצרנו",
+      "retryDownload": "נסה להוריד שוב",
+      "cardProgress": "מוריד {{percent}}%, {{done}} מתוך {{total}}",
+      "timeLeft": "נותרו {{time}}",
+      "speedLeft": "{{speed}}, נותרו {{time}}"
+    },
+    "model": {
+      "title": "בחר מודל דיבור",
+      "subtitle": "הופך את הקול שלך לטקסט, במחשב הזה",
+      "label": "מודל דיבור",
+      "lines": {
+        "recommended": "המהירות והדיוק הטובים ביותר לשפות שלך",
+        "faster": "מהיר יותר, עם קצת יותר טעויות",
+        "accurate": "הכי פחות טעויות, אבל איטי יותר"
+      },
+      "shorts": {
+        "recommended": "האיזון הטוב ביותר עבורך",
+        "faster": "מהיר, קצת יותר טעויות",
+        "accurate": "הכי פחות טעויות, אבל איטי יותר"
+      },
+      "model": "מודל",
+      "showAll": "הצג את כל {{count}} המודלים",
+      "download": "הורד {{size}}",
+      "downloadInstead": "הורד {{size}} במקום זאת",
+      "pauses": "{{name}} נעצר ב-{{percent}}%",
+      "resumeLater": "בחר בו שוב כדי להמשיך מהמקום שבו עצר",
+      "hint": "יורד בזמן שאתה מסיים את ההגדרה"
+    },
+    "demo": {
+      "title": "דבר בכל אפליקציה, עם קיצור מקשים אחד",
+      "hold": "<0>לחץ במקום שבו היית מקליד.</0> <1>החזק את קיצור המקשים ודבר.</1> <2>שחרר, והמילים שלך יופיעו.</2>",
+      "tap": "<0>לחץ במקום שבו היית מקליד.</0> <1>הקש על קיצור המקשים ודבר.</1> <2>הקש שוב, והמילים שלך יופיעו.</2>",
+      "apps": {
+        "messages": "הודעות",
+        "notes": "פתקים"
+      },
+      "chat": "אתה עדיין בא הערב?",
+      "noteTitle": "תוכניות לסוף השבוע",
+      "screenLabel": "מחשב נייד: מישהו לוחץ בתוך אפליקציה, מקיש על קיצור המקשים ומדבר, והמילים מופיעות במקום שבו לחץ.",
+      "change": "שינוי",
+      "yourShortcut": "קיצור המקשים שלך הוא",
+      "pressKeys": "לחץ על המקשים החדשים",
+      "addKey": "עכשיו הוסף מקש",
+      "cancel": "ביטול",
+      "tryIt": "נסה בעצמך"
+    },
+    "try": {
+      "title": "בוא ננסה!",
+      "subtitle": "{{appName}} בפינה, ילווה אותך בדרך",
+      "noteLabel": "פתק",
+      "placeholder": "פתק חדש",
+      "hold": "החזק את <keys/> ודבר.",
+      "tapNext": "עכשיו הקש פעם אחת על <keys/>, ואז דבר.",
+      "letGo": "שחרר את <keys/> כשתסיים.",
+      "tapAgain": "הקש שוב על <keys/> כשתסיים.",
+      "watch": "תסתכל על הפתק.",
+      "changeKeys": "שנה את קיצור המקשים, {{keys}}",
+      "doneHold": "כיף! ככה מחזיקים.",
+      "doneHoldNext": "הלאה, בלי ידיים.",
+      "doneTap": "תן כאן כיף! ככה מקישים.",
+      "doneTapNext": "עכשיו נסה להחזיק אותם בזמן שאתה מדבר.",
+      "giveFive": "הצלחת! תן כיף",
+      "highFive": "כיף",
+      "slowLine": "{{name}} לקח {{wait}} במחשב הזה. <faster>נסה מודל מהיר יותר</faster>",
+      "nothingTyped": "הממ, שום דבר לא נחת.",
+      "nothingTypedSub": "לחץ קודם בתוך הפתק, ואז נסה שוב.",
+      "silent": "לא שמעתי כלום.",
+      "silentSub": "לא הגיע צליל מהמיקרופון הזה. נסה אחר:",
+      "noWords": "לא קלטתי מילים.",
+      "noWordsSub": "נסה שוב, ואמור משפט שלם.",
+      "finish": "סיום",
+      "skip": "דלג",
+      "seconds": "{{value}} שנ׳"
+    },
+    "done": {
+      "title": "הכול מוכן",
+      "subMac": "{{appName}} נמצא בשורת התפריטים. החזק או הקש על <keys/> בכל אפליקציה כדי לדבר.",
+      "subTray": "{{appName}} נמצא במגש המערכת. החזק או הקש על <keys/> בכל אפליקציה כדי לדבר.",
+      "hint": "אפשר לשנות את אלה אחר כך בהגדרות",
+      "highFiveLabel": "כיף",
+      "atLogin": "הפעל את {{appName}} כשאני נכנס למערכת",
+      "finish": "סיום",
+      "panel": {
+        "name": "{{appName}}",
+        "ready": "מוכן",
+        "languages": "שפות",
+        "model": "מודל דיבור",
+        "shortcut": "קיצור מקשים",
+        "changeLanguages": "שנה שפות, {{languages}}",
+        "changeModel": "שנה מודל דיבור, {{model}}"
+      }
+    },
+    "linux": {
+      "tryIt": "לא עובד? <guide>מדריך ההתקנה ללינוקס</guide>",
+      "done": "לא עובד באפליקציות אחרות? <guide>מדריך ההתקנה ללינוקס</guide>"
+    }
+  },
+  "modelTable": {
+    "tags": {
+      "preview": "תצוגה חיה",
+      "previewTitle": "מציג את המילים שלך בשכבת התצוגה החיה בזמן שאתה מדבר, ומקליד אותן כשאתה מפסיק",
+      "translate": "מתרגם",
+      "translateTitle": "יכול להפוך את מה שאתה אומר לטקסט באנגלית. אפשר להפעיל בהגדרות"
+    },
+    "rubric": {
+      "gradeTitle": "דיוק ב{{language}}: {{grade}}",
+      "accuracyTitle": "דיוק ב{{language}}",
+      "overallTitle": "דיוק בשפות שלך: {{grade}}",
+      "overall": "דיוק בשפות שלך",
+      "meaning": {
+        "A": "טעויות מעטות מאוד: המילים שלך בדרך כלל יוצאות בדיוק כפי שאמרת אותן",
+        "B": "כמה טעויות: צפה לתקן מילה פה ושם",
+        "C": "טעויות תכופות: חלק מהפרטים עלולים ללכת לאיבוד",
+        "D": "הרבה טעויות: צפה לבדוק ולתקן את מה שהוא מקליד",
+        "F": "לעיתים קרובות לא ברור: הרבה ממה שתאמר עלול לצאת שגוי"
+      },
+      "unsupported": "המודל הזה לא מבין {{language}}, ולכן לא יכול להקליד בה",
+      "unrated": "המודל הזה מבין {{language}}, אבל עדיין לא מדדנו עד כמה טוב",
+      "under": "מתחת ל-{{max}}%",
+      "between": "{{min}} עד {{max}}%",
+      "over": "{{min}}% ומעלה",
+      "speedTitle": "מהירות: {{speed}}",
+      "speedName": {
+        "0": "איטי מאוד",
+        "1": "איטי",
+        "2": "בינוני",
+        "3": "מהיר",
+        "4": "מהיר מאוד"
+      },
+      "speedMeaning": {
+        "0": "המילים שלך מופיעות אחרי המתנה ארוכה",
+        "1": "המילים שלך מופיעות אחרי המתנה",
+        "2": "המילים שלך מופיעות אחרי המתנה קצרה",
+        "3": "המילים שלך מופיעות כמעט מיד",
+        "4": "המילים שלך מופיעות מיד"
+      },
+      "speedPreview": "{{meaning}}, עם תצוגה מקדימה חיה בזמן שאתה מדבר",
+      "untimed": "עדיין לא מדדנו כמה הוא מהיר",
+      "underSeconds": "מתחת ל-{{max}} שנ׳",
+      "betweenSeconds": "{{min}} עד {{max}} שנ׳",
+      "overSeconds": "{{min}} שנ׳ ומעלה"
+    },
+    "roles": {
+      "recommended": "מומלץ",
+      "faster": "מהיר יותר",
+      "accurate": "מדויק יותר",
+      "fromAll": "מכל המודלים"
+    },
+    "speed": "מהירות",
+    "size": "גודל",
+    "accuracy": "דיוק",
+    "search": "חיפוש מודלים",
+    "allLabel": "מודלי דיבור",
+    "noMatch": "אין תוצאות עבור „{{query}}”. נסה שפה, או משפחה כמו Whisper או Parakeet",
+    "noFilterMatch": "אין מודלים שמתאימים למסננים האלה",
+    "speedUntested": "המהירות עדיין לא נמדדה",
+    "speedWords": {
+      "0": "איטי מאוד, המילים מופיעות אחרי המתנה ארוכה",
+      "1": "איטי, המילים מופיעות אחרי המתנה",
+      "2": "בינוני, המילים מופיעות אחרי המתנה קצרה",
+      "3": "מהיר, המילים מופיעות כמעט מיד",
+      "4": "מהיר מאוד, המילים מופיעות מיד"
+    },
+    "speedWordsPreview": {
+      "0": "איטי מאוד, עם תצוגה מקדימה חיה בזמן שאתה מדבר",
+      "1": "איטי, עם תצוגה מקדימה חיה בזמן שאתה מדבר",
+      "2": "בינוני, עם תצוגה מקדימה חיה בזמן שאתה מדבר",
+      "3": "מהיר, עם תצוגה מקדימה חיה בזמן שאתה מדבר",
+      "4": "מהיר מאוד, עם תצוגה מקדימה חיה בזמן שאתה מדבר"
+    },
+    "missingLanguage": "חסרה שפה",
+    "allLanguages": "הכול",
+    "downloadingLine": "מוריד {{percent}}% מתוך {{total}}",
+    "customLine": "נוסף מתיקיית המודלים שלך. לא מדורג."
+  },
+  "languagePicker": {
+    "search": "חיפוש שפות",
+    "addAnother": "הוסף עוד",
+    "remove": "הסר את {{language}}",
+    "alreadyAdded_one": "{{languages}} כבר נוספה.",
+    "alreadyAdded_two": "{{languages}} כבר נוספו.",
+    "alreadyAdded_other": "{{languages}} כבר נוספו."
+  },
+  "modelSelector": {
+    "custom": "מותאם אישית",
+    "streaming": "סטרימינג",
+    "active": "פעיל",
+    "noModelsAvailable": "אין מודלים זמינים",
+    "verifying": "מאמת את {{modelName}}...",
+    "verifyingGeneric": "מאמת...",
+    "downloading": "מוריד {{percentage}}%",
+    "downloadingMultiple": "מוריד {{count}} מודלים...",
+    "modelReady": "המודל מוכן",
+    "loading": "טוען את {{modelName}}...",
+    "loadingGeneric": "טוען...",
+    "modelError": "שגיאת מודל",
+    "modelUnloaded": "המודל נפרק",
+    "noModelDownloadRequired": "אין מודל, נדרשת הורדה",
+    "downloadSpeed": "{{speed}} MB/s",
+    "lockedWhileTranscribing": "אפשר יהיה להחליף מודל אחרי שהתמלול בהיסטוריה יסתיים."
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "הגדרות עבור {{model}}"
+    },
+    "general": {
+      "title": "כללי",
+      "shortcut": {
+        "title": "קיצורי מקשים של {{appName}}",
+        "description": "הגדר קיצורי מקשים כדי להפעיל הקלטה ותמלול דיבור",
+        "loading": "טוען קיצורי מקשים...",
+        "none": "לא הוגדרו קיצורי מקשים",
+        "notFound": "קיצור הדרך לא נמצא",
+        "pressKeys": "לחץ על המקשים...",
+        "bindings": {
+          "transcribe": {
+            "name": "קיצור מקשים לתמלול",
+            "description": "קיצור המקלדת להקלטה ולתמלול הקול שלך."
+          },
+          "cancel": {
+            "name": "קיצור מקשים לביטול",
+            "description": "קיצור המקלדת לביטול ההקלטה הנוכחית."
+          },
+          "transcribe_with_post_process": {
+            "name": "קיצור לעיבוד משלים",
+            "description": "אופציונלי: קיצור מקשים ייעודי שתמיד מפעיל עיבוד AI על התמלול."
+          },
+          "ask_agent": {
+            "name": "קיצור לשאלה",
+            "description": "תמיד מדבר עם הסוכן: שאל שאלה או בקש ממנו לעשות משהו. אף פעם לא מקליד."
+          }
+        },
+        "errors": {
+          "set": "הגדרת קיצור הדרך נכשלה: {{error}}"
+        }
+      },
+      "language": {
+        "title": "שפה",
+        "description": "בחר את שפת זיהוי הדיבור. מצב אוטומטי יזהה את השפה לבד, בעוד שבחירת שפה מסוימת יכולה לשפר את הדיוק עבורה.",
+        "searchPlaceholder": "חפש שפות...",
+        "noResults": "לא נמצאו שפות",
+        "auto": "אוטומטי",
+        "autoUnavailable": {
+          "title": "אוטומטי מושבת",
+          "oneLanguage": "רק אחת מהשפות שלך עובדת עם המודל הזה",
+          "undetectable": "לא זמין עם {{languages}}",
+          "noMatch": "אף אחת מהשפות שלך לא עובדת עם המודל הזה"
+        },
+        "detectorMissingTitle": "אוטומטי דורש הורדה נפרדת",
+        "detectorMissing": "המודל הזה לא יכול לזהות באיזו שפה מדברים. אוטומטי צריך גלאי שפה קטן כדי לזהות אותה",
+        "stopDetectorDownload": "עצירת ההורדה של גלאי השפה"
+      },
+      "preferredLanguages": {
+        "title": "שפות מועדפות",
+        "description": "השפות שאתה מדבר. {{appName}} משתמש בהן כדי להמליץ על מודלים.",
+        "noMatch": "אין שפה שתואמת ל„{{query}}”",
+        "weak": "עדיין אין מודל שמזהה היטב את {{languages}}."
+      },
+      "shortcutActivation": {
+        "title": "התנהגות קיצור הדרך",
+        "description": "בחר כיצד קיצור התמלול מתחיל ומפסיק את ההקלטה.",
+        "options": {
+          "holdOrToggle": "אוטומטי",
+          "pushToTalk": "לחיצה ארוכה",
+          "toggle": "החלפת מצב"
+        },
+        "descriptions": {
+          "hold_or_toggle": "לחצו לחיצה ארוכה כדי להקליט או הקישו כדי להחליף מצב",
+          "push_to_talk": "מקליט כל עוד קיצור הדרך לחוץ",
+          "toggle": "הקישו על קיצור הדרך כדי להתחיל להקליט, והקישו שוב כדי לעצור"
+        }
+      }
+    },
+    "models": {
+      "title": "מודלים",
+      "changeLanguages": "שנה שפות",
+      "sections": {
+        "yours": "במחשב הזה",
+        "fits": "עבור השפות שלך",
+        "untested": "לא נבדקו"
+      },
+      "untestedNote": "לא נבדקו עם {{appName}}. ייתכן שהם איטיים יותר או שיעשו יותר טעויות.",
+      "untestedHidden_one": "עוד מודל אחד לא מותאם להכתבה. חפש כדי למצוא אותו.",
+      "untestedHidden_two": "עוד {{count}} מודלים לא מותאמים להכתבה. חפש כדי למצוא אותם.",
+      "untestedHidden_other": "עוד {{count}} מודלים לא מותאמים להכתבה. חפש כדי למצוא אותם.",
+      "emptyYours": "עדיין אין מודלים. בחר אחד למטה: הוא יורד, ואז {{appName}} משתמש בו.",
+      "showMore": "הצג עוד {{count}}",
+      "showFewer": "הצג פחות",
+      "download": "הורד והשתמש",
+      "downloadingThenUse": "{{percent}}% מתוך {{total}}, ואז עובר אליו",
+      "loading": "טוען…",
+      "deleteAsk": "למחוק את {{name}}? זה ישחרר {{size}}.",
+      "deleteAskActive": "למחוק את {{name}}? {{appName}} לא יוכל לתמלל עד שתבחר מודל אחר.",
+      "cancel": "ביטול",
+      "deleteModel": "מחק את {{name}}",
+      "cancelDownload": "הפסק להוריד את {{name}}",
+      "legend": {
+        "open": "איך המודלים מדורגים",
+        "accuracyNote": "לכל אחת מהשפות שלך: כמה מילים המודל שגה בהן בהקלטות הבדיקה שלנו.",
+        "speedNote": {
+          "accelerated": "כמה זמן לוקח להקליד 30 שניות של דיבור על שבב הגרפיקה של מחשב הבדיקה שלנו. במחשב הזה זה עשוי להיות שונה.",
+          "cpu": "כמה זמן לוקח להקליד 30 שניות של דיבור על המעבד של מחשב הבדיקה שלנו. במחשב הזה זה עשוי להיות שונה."
+        },
+        "marks": "? עדיין לא נמדד. — לא שומע את השפה הזו."
+      },
+      "retiredNotice": {
+        "title": "מודלים ישנים כבר לא עובדים עם {{appName}}",
+        "description": "הם תופסים {{size}} במחשב שלך.",
+        "delete": "מחיקת מודלים",
+        "deleted": "המודלים הישנים נמחקו",
+        "deleteFailed": "לא ניתן היה למחוק חלק מהמודלים הישנים. פרטים נוספים ביומן."
+      },
+      "rescan": {
+        "label": "סריקה מחדש",
+        "tooltip": "סריקה מחדש לאיתור מודלים שנוספו לתיקיית המודלים או למטמון של Hugging Face מחוץ ל-{{appName}}"
+      }
+    },
+    "languages": {
+      "title": "שפות"
+    },
+    "sound": {
+      "title": "שמע",
+      "microphone": {
+        "title": "מיקרופון",
+        "description": "בחר את המיקרופון המועדף עליך",
+        "placeholder": "בחר מיקרופון...",
+        "loading": "טוען..."
+      },
+      "channel": {
+        "title": "ערוץ קלט",
+        "description": "בחרו את ערוץ הקלט שממנו תתבצע ההקלטה. השתמשו באפשרות זו אם לממשק השמע שלכם יש מספר כניסות.",
+        "average": "ממוצע של כל הערוצים",
+        "channel": "ערוץ {{n}}"
+      },
+      "audioFeedback": {
+        "label": "משוב קולי",
+        "description": "נגן צליל כשההקלטה מתחילה ומסתיימת"
+      },
+      "outputDevice": {
+        "title": "התקן פלט",
+        "description": "בחר את התקן השמע המועדף עליך עבור צלילי המשוב",
+        "placeholder": "בחר התקן פלט...",
+        "loading": "טוען..."
+      },
+      "volume": {
+        "title": "עוצמת קול",
+        "description": "כוונן את עוצמת צלילי המשוב"
+      }
+    },
+    "advanced": {
+      "groups": {
+        "app": "אפליקציה",
+        "output": "פלט",
+        "transcription": "תמלול",
+        "history": "היסטוריה",
+        "experimental": "ניסיוני"
+      },
+      "experimentalToggle": {
+        "label": "תכונות ניסיוניות",
+        "description": "הפעל תכונות ניסיוניות שעדיין נמצאות בפיתוח."
+      },
+      "lazyStreamClose": {
+        "label": "השאר את המיקרופון פתוח בין תמלולים",
+        "description": "משאיר את זרם המיקרופון פתוח למשך 30 שניות אחרי סיום ההקלטה, וכך מפחית השהיה בתמלולים רצופים. עשוי לפגוע באיכות שמע Bluetooth בזמן שהאפשרות פעילה."
+      },
+      "acceleration": {
+        "transcribe": {
+          "title": "האצת חומרה",
+          "description": "בחר את החומרה שמשמשת לתמלול. מצב אוטומטי משתמש ב-GPU כשהוא זמין, ואחרת עובר ל-CPU."
+        },
+        "gpuDevice": {
+          "auto": "אוטומטי"
+        }
+      },
+      "startHidden": {
+        "label": "התחל מוסתר",
+        "description": "הפעל לתוך מגש המערכת בלי לפתוח את החלון."
+      },
+      "autostart": {
+        "label": "הפעל עם עליית המערכת",
+        "description": "הפעל את {{appName}} אוטומטית כשאתה מתחבר למחשב."
+      },
+      "showTrayIcon": {
+        "label": "הצג אייקון במגש",
+        "description": "הצג את האייקון של {{appName}} במגש המערכת."
+      },
+      "overlay": {
+        "style": {
+          "title": "שכבת-על",
+          "description": "בחר את שכבת-העל בהקלטה: 'ללא' מסתירה אותה, 'מינימלי' מציג סמן קומפקטי, 'בזמן אמת' מציג תמלול בזמן אמת בזמן הדיבור (מודלים התומכים בסטרימינג בלבד — חפש את התווית 'סטרימינג' בבורר המודלים). ב-Linux מומלץ לבחור 'ללא'.",
+          "options": {
+            "none": "ללא",
+            "minimal": "מינימלי",
+            "live": "בזמן אמת"
+          }
+        },
+        "position": {
+          "title": "מיקום שכבת המשוב",
+          "description": "הצג שכבת משוב חזותית בזמן הקלטה ותמלול. בלינוקס מומלץ לבחור 'ללא'.",
+          "options": {
+            "bottom": "למטה",
+            "top": "למעלה"
+          }
+        }
+      },
+      "pasteMethod": {
+        "title": "שיטת הדבקה",
+        "description": "בחר איך הטקסט יוכנס. ישיר: מדמה הקלדה דרך קלט המערכת. ללא: מדלג על הדבקה ומעדכן רק היסטוריה/לוח.",
+        "options": {
+          "clipboard": "לוח ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "לוח (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "לוח (Shift+Insert)",
+          "direct": "ישיר",
+          "none": "ללא",
+          "externalScript": "סקריפט חיצוני"
+        },
+        "externalScriptPlaceholder": "/path/to/your/script.sh"
+      },
+      "typingTool": {
+        "title": "כלי הקלדה",
+        "description": "בחר איזה כלי הקלדה בלינוקס ישמש עבור הדבקה ישירה. מצב אוטומטי יזהה וישתמש בכלי המתאים ביותר למערכת שלך.",
+        "options": {
+          "auto": "אוטומטי (מומלץ)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "התנהגות הלוח",
+        "description": "אל תשנה את הלוח ישמור על תוכן הלוח הנוכחי שלך אחרי התמלול. העתק ללוח ישאיר את תוצאת התמלול בלוח אחרי ההדבקה.",
+        "options": {
+          "dontModify": "אל תשנה את הלוח",
+          "copyToClipboard": "העתק ללוח"
+        }
+      },
+      "autoSubmit": {
+        "title": "שליחה אוטומטית",
+        "description": "שלח אוטומטית את צירוף המקשים שנבחר אחרי הכנסת הטקסט. ב-macOS יופעל Cmd+Enter, וב-Windows/Linux יופעל Super+Enter.",
+        "options": {
+          "off": "כבוי",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "תרגם לאנגלית",
+        "description": "תרגם אוטומטית דיבור משפות אחרות לאנגלית בזמן התמלול."
+      },
+      "modelUnload": {
+        "title": "פרוק מודל",
+        "description": "שחרר אוטומטית זיכרון GPU/CPU כשהמודל לא היה בשימוש במשך הזמן שנבחר",
+        "options": {
+          "never": "אף פעם",
+          "immediately": "מיידית",
+          "min2": "אחרי 2 דקות",
+          "min5": "אחרי 5 דקות",
+          "min10": "אחרי 10 דקות",
+          "min15": "אחרי 15 דקות",
+          "hour1": "אחרי שעה",
+          "sec15": "אחרי 15 שניות (דיבאג)"
+        }
+      },
+      "customWords": {
+        "title": "מילים מותאמות אישית",
+        "description": "עזרו למודלים נתמכים לזהות שמות ומונחים מקצועיים. תיקון בקירוב מוגבל כרגע למילים המשתמשות באותיות A–Z ובמספרים.",
+        "placeholder": "הוסף מילה",
+        "add": "הוסף",
+        "remove": "הסר את {{word}}",
+        "duplicate": "\"{{word}}\" כבר קיימת"
+      },
+      "voiceActivityDetection": {
+        "title": "זיהוי פעילות קולית",
+        "description": "סינון שקט מההקלטות. מודלים התומכים בסטרימינג משתמשים בזנב VAD ארוך יותר; ביטול VAD מקליט אודיו גולמי."
+      },
+      "longFormChunking": {
+        "title": "פיצול שמע ארוך",
+        "description": "מפצל הקלטות ארוכות בהפסקות לפני התמלול, מה שבדרך כלל משפר את איכות התמלול. קבצים מתומללים ותמלולים חוזרים ארוכים מפוצלים תמיד."
+      },
+      "languageDetection": {
+        "title": "הגבלת אוטומטי לשפות שלי",
+        "description": "אוטומטי בוחר רק מתוך השפות המועדפות שלך, בעזרת גלאי שפה קטן. כדאי להפעיל אם אוטומטי ממשיך לבחור שפה שאינך מדבר",
+        "downloadHint": "ההפעלה מורידה גלאי שפה קטן",
+        "downloadingHint": "גלאי השפה בהורדה. כבו כדי לבטל"
+      },
+      "vadBackend": {
+        "title": "מנוע זיהוי פעילות קולית",
+        "description": "בחרו את הגלאי המשמש לסינון שקט. Earshot ניסיוני; חזרו ל-Silero אם הדיבור נחתך או שרעש נשמר.",
+        "options": {
+          "silero": "Silero",
+          "earshot": "Earshot"
+        }
+      },
+      "fillerWordRemoval": {
+        "title": "הסרת מילות מילוי",
+        "description": "מסיר מילות היסוס נפוצות מתמלולים. השבת כדי להשאיר אותן."
+      },
+      "chineseScript": {
+        "title": "כתב סיני",
+        "description": "כותב תמלולים של מנדרינית וקנטונזית בתווים מפושטים, או בתווים מסורתיים כפי שכותבים בטייוואן או בהונג קונג. שפות אחרות נשארות ללא שינוי.",
+        "options": {
+          "asTranscribed": "כפי שתומלל",
+          "simplified": "מפושט",
+          "traditionalTw": "מסורתית (טייוואן)",
+          "traditionalHk": "מסורתית (הונג קונג)"
+        }
+      }
+    },
+    "postProcessing": {
+      "hotkey": {
+        "title": "קיצור מקשים"
+      },
+      "prompts": {
+        "title": "פרומפט",
+        "selectedPrompt": {
+          "title": "פרומפט נבחר",
+          "description": "בחר תבנית לשיפור התמלול או צור חדשה. השתמש ב-${output} בתוך טקסט הפרומפט כדי להפנות לתמלול שנקלט."
+        },
+        "noPrompts": "אין פרומפטים זמינים",
+        "selectPrompt": "בחר פרומפט",
+        "createNew": "צור פרומפט חדש",
+        "promptLabel": "שם הפרומפט",
+        "promptLabelPlaceholder": "הזן שם לפרומפט",
+        "promptInstructions": "הוראות לפרומפט",
+        "promptInstructionsPlaceholder": "כתוב את ההוראות שירוצו אחרי התמלול. לדוגמה: שפר דקדוק ובהירות עבור הטקסט הבא: ${output}",
+        "promptTip": "טיפ: השתמש ב-<code>${output}</code> כדי להכניס את הטקסט המתומלל לפרומפט שלך.",
+        "updatePrompt": "עדכן פרומפט",
+        "deletePrompt": "מחק פרומפט",
+        "createPrompt": "צור פרומפט",
+        "cancel": "ביטול",
+        "selectToEdit": "בחר פרומפט למעלה כדי לצפות בפרטים שלו ולערוך אותם.",
+        "createFirst": "לחץ על 'צור פרומפט חדש' למעלה כדי ליצור את פרומפט העיבוד הראשון שלך."
+      }
+    },
+    "history": {
+      "title": "היסטוריה",
+      "openFolder": "פתח את תיקיית ההקלטות",
+      "loading": "טוען היסטוריה...",
+      "empty": "עדיין אין תמלולים. התחל להקליט כדי לבנות את ההיסטוריה שלך!",
+      "copyToClipboard": "העתק תמלול ללוח",
+      "copyError": "לא ניתן להעתיק את התמלול ללוח.",
+      "save": "שמור תמלול",
+      "unsave": "הסר משמורים",
+      "delete": "מחק רשומה",
+      "deleteError": "מחיקת הרשומה נכשלה. נסה שוב.",
+      "retranscribe": "תמלל מחדש",
+      "cancelTranscription": "ביטול התמלול",
+      "transcribing": "מתמלל...",
+      "transcriptionFailed": "התמלול נכשל. אפשר לתמלל מחדש באמצעות אייקון הניסיון החוזר.",
+      "notTranscribed": "לא תומלל. אפשר לתמלל באמצעות אייקון הניסיון החוזר.",
+      "transcribeFile": "תמלול קובץ",
+      "mediaFiles": "שמע ווידאו",
+      "fileUnsupported": "לא ניתן לקרוא שמע מ-{{name}}.",
+      "readingFile": "קורא את {{name}}...",
+      "transcribeFailed": "התמלול נכשל. נסו שוב.",
+      "waiting": "ממתין לתמלול",
+      "transcribingPercent": "מתמלל, {{percent}}%",
+      "showMore": "הצג עוד",
+      "showLess": "הצג פחות",
+      "dropTitle": "שחררו כדי לתמלל",
+      "dropDescription": "הוא יופיע בהיסטוריה.",
+      "searchPlaceholder": "חפש בהיסטוריה",
+      "clearSearch": "נקה חיפוש",
+      "today": "היום",
+      "yesterday": "אתמול",
+      "saved": "נשמר",
+      "playRecording": "נגן הקלטה",
+      "hidePlayer": "הסתר נגן",
+      "emptyTitle": "אין הכתבות עדיין",
+      "emptyDescription": "כל מה ש-{{appName}} מתמלל מופיע כאן, מהחדש לישן. החזק את הקיצור שלך בכל אפליקציה והתחל לדבר.",
+      "noResultsTitle": "אין התאמות",
+      "noResultsDescription": "שום דבר בהיסטוריה שלך לא תואם ל-“{{query}}”.",
+      "loadingMore": "טוען עוד…",
+      "searchingOlder": "מחפש ברשומות ישנות יותר…"
+    },
+    "debug": {
+      "title": "ניפוי שגיאות",
+      "logDirectory": {
+        "title": "תיקיית לוגים",
+        "description": "המיקום שבו נשמרים קבצי הלוג"
+      },
+      "logLevel": {
+        "title": "רמת לוג",
+        "description": "הגדר את רמת הפירוט של הלוגים"
+      },
+      "liveLogs": {
+        "title": "לוגים בזמן אמת",
+        "description": "הצג את לוגי האפליקציה בזמן אמת כדי לאבחן בעיות בלי לפתוח את קובץ הלוג. מוצגים רק לוגים שנוצרו בזמן שחלונית זו פתוחה; מתחשב בהגדרת «רמת לוג» שלמעלה.",
+        "live": "בזמן אמת",
+        "paused": "מושהה",
+        "pause": "השהה",
+        "resume": "המשך",
+        "copied": "הועתק",
+        "lineCount": "{{count}} שורות",
+        "empty": "ממתין ללוגים… רשומות יופיעו כאן כשהאפליקציה תפיק אותן."
+      },
+      "updateChecks": {
+        "label": "בדוק עדכונים",
+        "description": "בדוק אוטומטית אם קיימות גרסאות חדשות של {{appName}}",
+        "lockedDescription": "מושבת על ידי תצורת המערכת (AMBIENT_DISABLE_UPDATER)"
+      },
+      "whatsNewPreview": {
+        "title": "תצוגה מקדימה של מה חדש",
+        "description": "פתח את הערת הגרסה המצורפת האחרונה בלי לסמן אותה כנצפתה",
+        "button": "תצוגה מקדימה",
+        "noNotes": "לא נמצאו הערות גרסה מצורפות",
+        "error": "הצגת התצוגה המקדימה של הערות הגרסה נכשלה"
+      },
+      "onboardingPreview": {
+        "title": "תצוגה מקדימה של ההגדרה הראשונית",
+        "description": "הצג את מסכי ההגדרה הראשונית בלי לשנות הרשאות, מודלים או את מצב ההשלמה",
+        "exitButton": "יציאה מהתצוגה המקדימה",
+        "choose": "בחר מסך",
+        "screens": {
+          "welcome": "ברוכים הבאים",
+          "permissions": "הרשאות",
+          "model": "מודל",
+          "demo": "הדגמה",
+          "try": "נסה",
+          "done": "הכול מוכן"
+        }
+      },
+      "onboardingRun": {
+        "title": "הרצת היכרות ראשונית",
+        "description": "עבור על תהליך ההיכרות באמת מההתחלה: הוא מבקש הרשאות, מוריד מודלים ושומר את הבחירות שלך",
+        "button": "התחל"
+      },
+      "modelMigration": {
+        "title": "העברת מודלים",
+        "description": "פתח באמת את מסך עדכון המודלים בפורמט הישן: הוא מוריד תחליפים, מחליף מודלים ומוחק קבצים ישנים",
+        "button": "פתח",
+        "noRetired": "אין מודלים בפורמט ישן בדיסק"
+      },
+      "soundTheme": {
+        "label": "ערכת צלילים",
+        "description": "בחר ערכת צלילים להתחלה ולסיום ההקלטה"
+      },
+      "wordCorrectionThreshold": {
+        "title": "סף תיקון מילים",
+        "description": "רגישות לתיקוני מילים מותאמות אישית"
+      },
+      "historyLimit": {
+        "title": "מגבלת היסטוריה",
+        "description": "המספר המרבי של רשומות היסטוריה לשמירה",
+        "entries": "רשומות"
+      },
+      "recordingRetention": {
+        "title": "מחיקה אוטומטית של הקלטות",
+        "description": "מחק הקלטות ישנות אוטומטית כדי לחסוך מקום",
+        "never": "אף פעם",
+        "preserveLimit": "שמור את {{count}} האחרונות",
+        "days3": "אחרי 3 ימים",
+        "weeks2": "אחרי שבועיים",
+        "months3": "אחרי 3 חודשים",
+        "placeholder": "בחר משך שמירה..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "מיקרופון תמיד פעיל",
+        "description": "השאר את המיקרופון פעיל לתגובה מהירה יותר"
+      },
+      "clamshellMicrophone": {
+        "title": "מיקרופון במצב clamshell",
+        "description": "המיקרופון שישמש כשהמחשב הנייד סגור"
+      },
+      "postProcessingToggle": {
+        "label": "עיבוד משלים",
+        "description": "הפעל שיפור טקסט מבוסס AI אחרי התמלול"
+      },
+      "muteWhileRecording": {
+        "label": "השתק בזמן הקלטה",
+        "description": "השתק את שמע המערכת בזמן הקלטה"
+      },
+      "appendTrailingSpace": {
+        "label": "הוסף רווח בסוף",
+        "description": "הוסף רווח אחרי התמלול המודבק"
+      },
+      "keyboardImplementation": {
+        "title": "מימוש מקלדת",
+        "description": "בחר את מנגנון קיצורי המקלדת.",
+        "bindingsReset": "קיצורי המקלדת לא היו תואמים ואופסו לברירות המחדל"
+      },
+      "pasteDelay": {
+        "title": "השהיית הדבקה (לפני)",
+        "description": "השהיה (במילישניות) לאחר העתקת הטקסט, לפני שליחת צירוף ההדבקה. הגדל אם דבר אינו מודבק."
+      },
+      "pasteDelayAfter": {
+        "title": "השהיית הדבקה (אחרי)",
+        "description": "השהיה (במילישניות) לאחר צירוף ההדבקה, לפני שחזור הלוח הקודם. הגדל אם התוכן הישן של הלוח מודבק במקום התמלול."
+      },
+      "holdThreshold": {
+        "title": "סף לחיצה ארוכה",
+        "description": "במצב אוטומטי בלבד: כמה זמן (במילישניות) יש להחזיק את קיצור הדרך כדי שייחשב ללחיצה ארוכה במקום להקשה. הנמיכו אם ההקלטה ממשיכה לרוץ אחרי לחיצות ארוכות קצרות; הגביהו אם הקשות מכוונות מתפרשות כלחיצה ארוכה."
+      },
+      "reliablePaste": {
+        "title": "הדבקה אמינה (Beta)",
+        "description": "שחזור הלוח רק אחרי שאפליקציית היעד קוראת בפועל את התמלול, במקום אחרי השהיה קבועה. נועד לתקן הדבקה של תוכן לוח ישן כשהמערכת עמוסה. דורש שיטת הדבקה דרך הלוח; ב-macOS וב-Windows בלבד."
+      },
+      "recordingBuffer": {
+        "title": "באפר הקלטה נוסף",
+        "description": "זמן נוסף (במילישניות) להמשך הקלטה אחרי שחרור המקש, כדי ללכוד סוף דיבור. 0 = בלי באפר נוסף."
+      },
+      "languageDetectionWindow": {
+        "title": "שמע לזיהוי שפה",
+        "description": "כמה שניות דיבור גלאי השפה שומע. ארוך יותר מדויק יותר אך איטי יותר."
+      },
+      "keyboardDiagnostic": {
+        "title": "אבחון מקלדת",
+        "description": "בודק אם אירועי מקלדת מגיעים ל-{{appName}}. נרשם רק מספר האירועים — לעולם לא אילו מקשים הקשת.",
+        "run": "הרצת אבחון של 10 שניות",
+        "running": "מאזין… הקש על קיצור המקשים שלך כמה פעמים (למשל Option+Space)",
+        "secureInputLabel": "Secure Input",
+        "enabled": "מופעל",
+        "disabled": "מושבת",
+        "holder": "מוחזק על ידי {{name}} (pid {{pid}})",
+        "holderUnknown": "אין מחזיק גלוי",
+        "keyDown": "לחיצת מקש",
+        "keyUp": "שחרור מקש",
+        "flagsChanged": "מקשי החלפה",
+        "mouse": "עכבר",
+        "verdictBlocked": "Secure Input חוסם אירועי מקשים — קיצורים הכוללים מקש רגיל לא יוכלו לפעול עד שהבעיה תיפתר.",
+        "verdictSuspicious": "הגיעו אירועים של מקשי החלפה אך לא אירועי מקשים — משהו מדכא מקשים למרות ש-Secure Input מדווח כמושבת. אנא דווח על כך ב-GitHub.",
+        "verdictOk": "אירועי מקשים מגיעים ל-{{appName}} כרגיל.",
+        "verdictNoEvents": "לא נקלטו אירועים — האם הקשת על מקשים במהלך הבדיקה?",
+        "failed": "האבחון נכשל: {{error}}"
+      }
+    },
+    "about": {
+      "title": "אודות",
+      "version": {
+        "title": "גרסה",
+        "description": "הגרסה הנוכחית של {{appName}}"
+      },
+      "whatsNewUpdates": {
+        "label": "הצג מה חדש",
+        "description": "הצג הערות גרסה לאחר עדכוני {{appName}}"
+      },
+      "appDataDirectory": {
+        "title": "תיקיית נתוני אפליקציה",
+        "description": "המיקום שבו {{appName}} שומר את הנתונים שלו"
+      },
+      "sourceCode": {
+        "title": "אתר",
+        "description": "חדשות, עזרה והחשבון שלך",
+        "button": "פתח את האתר"
+      },
+      "acknowledgments": {
+        "title": "תודות",
+        "ggml": {
+          "title": "ggml",
+          "description": "הסקה מהירה לביצועים גבוהים עבור מודל זיהוי הדיבור Whisper של OpenAI",
+          "details": "{{appName}} משתמש ב-ggml לתמלול מהיר ומקומי. תודה לעבודה המדהימה של Georgi Gerganov וכל התורמים."
+        },
+        "licenses": {
+          "title": "Open-source licenses",
+          "description": "Notices for the open-source software {{appName}} includes",
+          "show": "Show licenses",
+          "hide": "Hide licenses"
+        }
+      },
+      "intro": {
+        "title": "פתיח ברוכים הבאים",
+        "description": "האנימציה ש-{{appName}} מציג בפעם הראשונה שהוא נפתח.",
+        "button": "הצג פתיח"
+      }
+    },
+    "agent": {
+      "title": "סוכן קולי",
+      "description": "שאל שאלה או בקש ממנו לעשות משהו, במקום להקליד.",
+      "routing": {
+        "label": "זיהוי בקשות בזמן הכתבה",
+        "description": "בקשות מטופלות; כל השאר מוקלד כרגיל. כבה כדי תמיד להקליד."
+      },
+      "wake": {
+        "label": "בלי ידיים: אמור „היי Ambient”",
+        "description": "דבר עם {{appName}} בלי מקש: „היי Ambient, מה יש לי ביומן?” הוא מאזין ב-Mac הזה ומתעלם מכל מה שלא מתחיל בשמו. ה-Mac מציג את מחוון המיקרופון כל עוד זה פועל."
+      }
+    }
+  },
+  "footer": {
+    "checkingUpdates": "בודק עדכונים...",
+    "updateAvailableShort": "יש עדכון זמין",
+    "upToDate": "מעודכן",
+    "updateCheckingDisabled": "בדיקת העדכונים כבויה",
+    "downloading": "מוריד... {{progress}}%",
+    "installing": "מתקין...",
+    "preparing": "מכין...",
+    "checkForUpdates": "בדוק עדכונים",
+    "portableUpdateTitle": "נדרש עדכון ידני",
+    "portableUpdateMessage": "התקנות ניידות אינן מתעדכנות אוטומטית. הורד למטה את המתקין המתאים למערכת שלך, הפעל אותו והתקן לאותה תיקייה — תיקיית Data/ (הגדרות, מודלים, הקלטות) נשמרת במקומה.",
+    "portableUpdateButton": "הורדת המתקין",
+    "portableUpdateBrowseMessage": "התקנות ניידות אינן מתעדכנות אוטומטית. הורד את הגרסה האחרונה המתאימה למערכת שלך מ-GitHub Releases והתקן אותה לאותה תיקייה — תיקיית Data/ (הגדרות, מודלים, הקלטות) נשמרת במקומה.",
+    "portableUpdateBrowseButton": "פתח את GitHub Releases"
+  },
+  "whatsNew": {
+    "title": "חדש ב-{{appName}} v{{version}}"
+  },
+  "common": {
+    "loading": "טוען...",
+    "delete": "מחק",
+    "close": "סגור",
+    "open": "פתח",
+    "copy": "העתק",
+    "clear": "נקה",
+    "noOptionsFound": "לא נמצאו אפשרויות"
+  },
+  "errors": {
+    "loadDirectory": "שגיאה בטעינת תיקייה: {{error}}",
+    "micPermissionDeniedTitle": "הגישה למיקרופון נדחתה",
+    "micPermissionDenied": {
+      "generic": "מערכת ההפעלה חסמה את הגישה למיקרופון. תן הרשאת מיקרופון בהגדרות המערכת.",
+      "windows": "הפעל גישה למיקרופון ב-Settings > Privacy & security > Microphone, כולל גישה לאפליקציות שולחן עבודה.",
+      "macos": "תן גישה למיקרופון ב-System Settings > Privacy & Security > Microphone.",
+      "linux": "תן גישה למיקרופון דרך הגדרות השמע או הפרטיות במערכת שלך."
+    },
+    "noInputDeviceTitle": "לא נמצא מיקרופון",
+    "noInputDevice": "לא זוהה התקן קלט שמע. חבר מיקרופון או אוזנייה ונסה שוב.",
+    "recordingFailed": "הפעלת ההקלטה נכשלה: {{error}}",
+    "modelLoadFailed": "טעינת המודל נכשלה: {{model}}",
+    "modelLoadFailedUnknown": "מודל לא ידוע",
+    "pasteFailedTitle": "ההדבקה נכשלה",
+    "pasteFailed": "לא ניתן היה להדביק את הטקסט ביישום הפעיל.",
+    "transcriptionFailedTitle": "התמלול נכשל"
+  },
+  "appLanguage": {
+    "title": "שפת האפליקציה",
+    "description": "שנה את שפת הממשק של {{appName}}"
+  },
+  "theme": {
+    "title": "ערכת נושא של האפליקציה",
+    "description": "בחר אם {{appName}} יעקוב אחר ערכת הנושא של המערכת או יישאר בהיר או כהה",
+    "options": {
+      "system": "מערכת",
+      "light": "בהיר",
+      "dark": "כהה"
+    }
+  },
+  "overlay": {
+    "transcribing": "מתמלל...",
+    "processing": "מעבד...",
+    "loadingModel": "טוען מודל..."
+  },
+  "secureInput": {
+    "blockedWithCulprit_one": "ייתכן ש-{{name}} חוסם קיצור דרך אחד",
+    "blockedWithCulprit_two": "ייתכן ש-{{name}} חוסם {{count}} קיצורי דרך",
+    "blockedWithCulprit_other": "ייתכן ש-{{name}} חוסם {{count}} קיצורי דרך",
+    "blockedNoCulprit_one": "macOS חוסם זמנית קיצור דרך אחד",
+    "blockedNoCulprit_two": "macOS חוסם זמנית {{count}} קיצורי דרך",
+    "blockedNoCulprit_other": "macOS חוסם זמנית {{count}} קיצורי דרך",
+    "recorderBlockedWithCulprit": "ייתכן ש-{{name}} חוסם שינויים בקיצורי דרך",
+    "recorderBlockedNoCulprit": "macOS חוסם זמנית שינויים בקיצורי דרך",
+    "learnMore": "איך לתקן את זה",
+    "recorderBlocked": "לא ניתן להקליט קיצורים כרגע — Secure Input של macOS חוסם אירועי מקשים. פתור תחילה את אזהרת Secure Input.",
+    "dismiss": "התעלם"
+  },
+  "account": {
+    "currentPlan": "התוכנית הנוכחית",
+    "plans": {
+      "free": "חינם",
+      "pro": "Pro",
+      "team": "Team",
+      "trial": "תקופת ניסיון של Pro"
+    },
+    "upgrade": "שדרוג",
+    "upgradeTo": "שדרוג ל-{{plan}}",
+    "manageBilling": "ניהול חיוב",
+    "usage": "{{used}} מתוך {{limit}} מילים השבוע",
+    "usageShort": "{{used}} / {{limit}} מילים",
+    "resets": "מתאפס ב-{{date}}",
+    "limitReached": "השתמשת במילים החינמיות של השבוע. שדרג כדי להכתיב ללא הגבלה, או המשך כשהשבוע יתאפס.",
+    "limitToast": "המילים החינמיות השבועיות נגמרו",
+    "proFeatures": {
+      "polish": "ליטוש בינה מלאכותית לכל הכתבה",
+      "onDevice": "ליטוש במכשיר עם Apple Intelligence",
+      "agent": "סוכן ambient כפי שהוא נשלח",
+      "priority": "תמיכה בעדיפות"
+    },
+    "card": {
+      "activate": "הפעל",
+      "active": "תוכנית פעילה",
+      "remove": "הסר",
+      "activating": "מפעיל…",
+      "paste": "הדבק",
+      "pasteFailed": "לא ניתן לקרוא את הלוח. הדבק באמצעות ⌘V במקום.",
+      "holder": "מחובר בתור",
+      "renewsLabel": "מתחדש ב",
+      "copied": "הועתק",
+      "errors": {
+        "network": "לא ניתן להתחבר אל {{appName}} לצורך הפעלה. בדקו את החיבור ונסו שוב.",
+        "inactive": "המנוי של קוד זה אינו פעיל. חדשו אותו כדי לפתוח את התוכנית.",
+        "rate_limited": "יותר מדי ניסיונות. נסו שוב בעוד 15 דקות.",
+        "server": "ההפעלה נכשלה אצלנו. נסו שוב בעוד רגע."
+      }
+    },
+    "signIn": {
+      "sectionTitle": "החשבון שלך",
+      "cardLabel": "חשבון",
+      "title": "התחברות ל-Pro",
+      "description": "השתמשו באימייל שבו קניתם את Pro. נשלח אליכם קוד בן 6 ספרות.",
+      "emailLabel": "אימייל",
+      "emailPlaceholder": "you@example.com",
+      "continue": "המשך",
+      "sending": "שולח…",
+      "codeTitle": "בדקו את האימייל",
+      "codeDescription": "הזינו את הקוד בן 6 הספרות ששלחנו אל {{email}}.",
+      "codeLabel": "קוד התחברות",
+      "digitLabel": "ספרה {{n}}",
+      "signedInShort": "מחובר",
+      "resend": "שליחת הקוד שוב",
+      "resent": "נשלח קוד חדש.",
+      "changeEmail": "שימוש באימייל אחר",
+      "signedInTitle": "מחובר",
+      "noPurchase": "ל-{{email}} עדיין אין מינוי Pro. קנו Pro והוא יופעל כאן.",
+      "checkAgain": "בדיקה חוזרת",
+      "signOut": "התנתקות",
+      "redeemLink": "מימוש קוד",
+      "redeemTitle": "מימוש קוד",
+      "redeemDescription": "לקודי מתנה ולקודים מהתמיכה.",
+      "redeemPlaceholder": "red-grizzly-4320",
+      "redeemDetected": "זה נראה כמו קוד של {{appName}}.",
+      "backToSignIn": "חזרה להתחברות",
+      "gift": {
+        "code": "קוד",
+        "codeHidden": "הקוד מוסתר",
+        "showCode": "הצגת הקוד",
+        "hideCode": "הסתרת הקוד",
+        "copyCode": "העתקת הקוד"
+      },
+      "errors": {
+        "network": "לא ניתן להתחבר אל {{appName}}. בדקו את החיבור ונסו שוב.",
+        "invalid_email": "הזינו כתובת אימייל תקינה.",
+        "rate_limited": "התבקשו יותר מדי קודים. נסו שוב בעוד זמן מה.",
+        "invalid_code": "הקוד שגוי. בדקו את האימייל ונסו שוב.",
+        "expired": "תוקף הקוד פג. בקשו קוד חדש.",
+        "too_many_attempts": "יותר מדי ניסיונות. בקשו קוד חדש.",
+        "server": "ההתחברות נכשלה אצלנו. נסו שוב בעוד רגע.",
+        "redeem_invalid": "הקוד לא זוהה. בדקו אותו ונסו שוב."
+      }
+    },
+    "polish": {
+      "title": "ליטוש בינה מלאכותית",
+      "description": "מנקה כל הכתבה: פיסוק, מילות מילוי, רשימות ותיקונים כמו “תמחק את זה”. רק הטקסט נשלח, אף פעם לא האודיו.",
+      "unlock": "קבל ללא הגבלה",
+      "onDevice": "השאר את זה ב-Mac הזה",
+      "onDeviceDescription": "השתמש ב-Apple Intelligence במקום זאת. שום דבר לא עוזב את ה-Mac שלך.",
+      "freeLeft": "נותרו {{left}} מתוך {{limit}} שימושים חינמיים בליטוש בינה מלאכותית השבוע"
+    },
+    "trial": {
+      "daysLeft_one": "נותר יום אחד",
+      "daysLeft_two": "נותרו יומיים",
+      "daysLeft_other": "נותרו {{count}} ימים"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "בוקר טוב",
+      "afternoon": "צהריים טובים",
+      "evening": "ערב טוב",
+      "night": "עובדים עד מאוחר"
+    },
+    "hold": "החזק",
+    "anywhere": "בכל אפליקציה והתחל לדבר.",
+    "noShortcut": "הגדר קיצור דרך בהגדרות כדי להתחיל להכתיב.",
+    "stats": {
+      "words": "מילים השבוע",
+      "wordsHint": "הוכתבו עם {{appName}}",
+      "saved": "זמן שנחסך",
+      "savedHint": "דיבור ב-{{speaking}} מילים/דק׳ לעומת הקלדה ב-{{typing}}",
+      "lessThanMinute": "< 1 דק׳",
+      "minutes_one": "{{count}} דק׳",
+      "minutes_two": "{{count}} דק׳",
+      "minutes_other": "{{count}} דק׳",
+      "hours_one": "{{count}} שע׳",
+      "hours_two": "{{count}} שע׳",
+      "hours_other": "{{count}} שע׳"
+    },
+    "recent": "הכתבות אחרונות",
+    "viewAll": "הצג הכול",
+    "empty": {
+      "title": "אין כאן כלום עדיין",
+      "description": "לחץ על הקיצור שלך בכל אפליקציה ודבר. ההכתבות שלך יופיעו כאן."
+    },
+    "tips": {
+      "holdOrTap": "החזק את הקיצור כדי לדבר, או הקש עליו פעם אחת להתחלה ושוב לעצירה.",
+      "customWords": "הוסף שמות וז׳רגון תחת הגדרות ← מתקדם ← מילים מותאמות אישית לדיוק טוב יותר.",
+      "dropFile": "גרור קובץ שמע לחלון הזה כדי לתמלל אותו.",
+      "languages": "בחר את השפות שאתה דובר בהגדרות ← כללי לקבלת הצעות מודלים טובות יותר."
+    },
+    "quickActions": {
+      "label": "פעולות מהירות",
+      "transcribeFile": "תמלל קובץ",
+      "openHistory": "פתח היסטוריה"
+    },
+    "plan": {
+      "title": "התוכנית שלך",
+      "polishUnlimited": "ליטוש בינה מלאכותית ללא הגבלה.",
+      "polishLeft": "נותרו {{left}} מתוך {{limit}} שימושים חינמיים בליטוש בינה מלאכותית השבוע · מתאפס ב{{day}}",
+      "polishFree": "התוכנית החינמית כוללת מכסה שבועית של ליטוש בינה מלאכותית.",
+      "usageToday": "היום: בקשות בינה מלאכותית {{ai}} · חיפושים {{search}} · שימוש הוגן {{aiLimit}} ביום",
+      "meetingsLeft": "פגישות החודש: {{used}} מתוך {{limit}}"
+    },
+    "privacy": {
+      "title": "פרטיות",
+      "off": "המסך שלך לא נקרא.",
+      "on": "מותר: {{list}}",
+      "paused": "מושהה. שום דבר לא נקרא."
+    }
+  },
+  "hud": {
+    "thinking": "חושב…",
+    "sources": "מקורות",
+    "insert": "הכנס",
+    "copy": "העתק",
+    "copied": "הועתק",
+    "followUpHint": "החזק את הקיצור שלך כדי לשאול שאלת המשך",
+    "yes": "כן",
+    "notNow": "לא עכשיו",
+    "stop": "עצור",
+    "status": {
+      "needScreenContext": "הפעל את „קריאת מה שאתה שואל עליו” בפרטיות כדי להשתמש בזה.",
+      "onDeviceFailed": "לא ניתן היה לענות ב-Mac הזה כרגע.",
+      "offline": "לא ניתן להתחבר ל-{{appName}}. בדוק את החיבור שלך.",
+      "weeklyLimit": "השימושים החינמיים בבינה מלאכותית לשבוע זה נוצלו. Pro ללא הגבלה.",
+      "account": "הגישה שלך ל-Pro דורשת תשומת לב בחשבון.",
+      "failed": "לא ניתן היה לעשות זאת כרגע.",
+      "interrupted": "התשובה נקטעה.",
+      "opened": "נפתח",
+      "searching": "מחפש בדפדפן שלך",
+      "reminderAdded": "התזכורת נוספה",
+      "eventAdded": "נוסף ללוח השנה שלך",
+      "shortcutRan": "הקיצור הופעל",
+      "cantDoYet": "אני עוד לא יכול לעשות את זה. שליטה במחשב תגיע בקרוב.",
+      "appNotFound": "לא ניתן היה למצוא את האפליקציה הזו.",
+      "shortcutNotFound": "לא ניתן היה למצוא את הקיצור הזה.",
+      "calendarPermission": "תחילה אפשר גישה ללוח שנה ולתזכורות ב-System Settings.",
+      "undone": "בוטל",
+      "meetingStarted": "רושם הערות. עדכן את המשתתפים.",
+      "copied": "הועתק",
+      "learned": "הבנתי. אפשר לשנות זאת בפרטיות.",
+      "sensitivePaused": "מושהה כאן: החלון הזה מציג ביטוי שחזור או מפתח פרטי.",
+      "fairUse": "הגעת למגבלת השימוש ההוגן של היום. היא מתאפסת בחצות UTC.",
+      "slowDown": "אלה הרבה בקשות בבת אחת. נסה שוב בעוד דקה.",
+      "listening": "מקשיב…"
+    },
+    "undo": "בטל",
+    "close": "סגור",
+    "meetingOffer": "לרשום הערות לשיחה הזו?",
+    "takeNotes": "רשום הערות",
+    "suggest": {
+      "summariseThread": "שרשור ארוך. לסכם אותו?",
+      "draftReply": "לנסח תשובה לזה?",
+      "addToCalendar": "יש כאן תאריך. להוסיף אותו ללוח השנה?",
+      "summarisePage": "לסכם את הדף הזה?",
+      "explainError": "להסביר את השגיאה הזו?",
+      "summarise": "סכם",
+      "draft": "נסח",
+      "add": "הוסף",
+      "explain": "הסבר",
+      "tightenDraft": "לחדד את הטיוטה הזו?",
+      "priceCheck": "לבדוק אם זה זול יותר במקום אחר?",
+      "answerSearch": "שאענה על זה ישירות?",
+      "fixFormula": "לתקן את שגיאות הנוסחה האלה?",
+      "meetingPrep": "פגישה מתקרבת. לתדרך אותך?",
+      "tighten": "חדד",
+      "check": "בדוק",
+      "answer": "ענה",
+      "fix": "תקן",
+      "brief": "תדרך אותי",
+      "reviewCode": "לבדוק את בקשת המיזוג הזו?",
+      "commitMessage": "לכתוב לזה הודעת commit?",
+      "review": "בדוק",
+      "write": "כתוב"
+    },
+    "nudge": {
+      "findIt": "מצא",
+      "remindMe": "הזכר לי",
+      "copy": "העתק"
+    },
+    "chip": {
+      "searchInstead": "הוקלד. לחפש את זה במקום?",
+      "search": "חפש"
+    },
+    "suggestionTip": "אמור „כן”, „לא עכשיו” או „אל תציג לי כאלה”."
+  },
+  "privacy": {
+    "title": "פרטיות",
+    "promise": "כבוי עד שתפעיל. נשמר ב-Mac הזה, מוצפן. כל בקשה שיוצאת מופיעה ברשימה.",
+    "state": {
+      "on": "צופה, כפי שאישרת",
+      "onDetail": "רק היכולות שהפעלת למטה.",
+      "off": "לא צופה",
+      "offDetail": "ההכתבה עובדת כרגיל. שום דבר על המסך שלך לא נקרא.",
+      "paused": "מושהה",
+      "pausedDetail": "שום דבר לא נקרא עד שתמשיך.",
+      "pausedUntil": "שום דבר לא נקרא עד {{time}}.",
+      "resume": "המשך",
+      "pauseHour": "השהה לשעה",
+      "pauseDay": "עד מחר"
+    },
+    "accessibility": "{{appName}} צריך גישת נגישות כדי לקרוא טקסט מאפליקציות אחרות.",
+    "grant": "אפשר גישה",
+    "capabilities": {
+      "title": "מה {{appName}} רשאי לעשות",
+      "description": "כל אחת כבויה עד שתפעיל אותה.",
+      "screen_context": {
+        "title": "קריאת מה שאתה שואל עליו",
+        "reads": "קורא את החלון שאתה שואל עליו, ואת החלונות הפתוחים כשאתה מבקש למצוא משהו.",
+        "leaves": "רק מה שנדרש כדי לענות, ללא סודות."
+      },
+      "screen_memory": {
+        "title": "לזכור את מה שראית",
+        "reads": "זוכר חלונות שהשתמשת בהם, כדי שתוכל לשאול עליהם אחר כך.",
+        "leaves": "נשאר ב-Mac הזה, מוצפן."
+      },
+      "proactive": {
+        "title": "הצעות",
+        "reads": "מציע צעד הבא ברגע הנכון: שרשורים, טיוטות, תאריכים, שגיאות, פגישות.",
+        "leaves": "ההחלטה מתקבלת ב-Mac הזה. שום דבר לא נשלח בלי אישורך, חוץ מתזכורות בפגישות."
+      },
+      "meetings": {
+        "title": "סיכומי פגישות",
+        "reads": "שומע את המיקרופון ואת השיחה בזמן שהוא רושם הערות.",
+        "leaves": "השמע נשאר כאן. רק טקסט נשלח, לכתיבת הסיכום."
+      },
+      "on_device_only": {
+        "title": "להשאיר הכול ב-Mac הזה",
+        "reads": "Apple Intelligence לכל דבר, וללא חיפוש באינטרנט.",
+        "leaves": "שום דבר לא נשלח."
+      },
+      "wake_word": {
+        "title": "בלי ידיים: אמור „היי Ambient”",
+        "reads": "מאזין ב-Mac הזה ל-„היי Ambient”. כל השאר נזרק תוך כדי דיבור.",
+        "leaves": "שום דבר לא מוקלט או נשלח עד שתגיד את זה."
+      }
+    },
+    "retention": "שמירה למשך",
+    "days_one": "יום אחד",
+    "days_other": "{{count}} ימים",
+    "preview": {
+      "title": "מה {{appName}} רואה",
+      "description": "בדיוק מה שהוא היה קורא מחלון, אחרי השחרת מידע רגיש.",
+      "hint": "לחץ על תצוגה מקדימה, ואז עבור לחלון כלשהו בתוך 3 שניות.",
+      "switchNow": "עבור עכשיו לחלון אחר…",
+      "button": "תצוגה מקדימה",
+      "noText": "אין טקסט קריא בחלון הזה.",
+      "skipped": {
+        "never_watch": "האפליקציה הזו ברשימת „לעולם לא לצפות” שלך, ולכן שום דבר לא נקרא.",
+        "no_permission": "תחילה אפשר גישת נגישות.",
+        "unavailable": "לא ניתן היה לקרוא את החלון הזה.",
+        "sensitive": "החלון הזה מציג ביטוי שחזור או מפתח פרטי, ולכן שום דבר לא נקרא."
+      }
+    },
+    "neverWatch": {
+      "title": "לעולם לא לצפות",
+      "description": "לעולם לא נקראות, גם כשהכול מופעל. גם שדות סיסמה, חלונות פרטיים, ארנקים וביטויי שחזור מדולגים.",
+      "this": "לעולם לא לצפות באפליקציה הזו",
+      "added": "{{app}} לא תיקרא שוב."
+    },
+    "stored": {
+      "title": "מה שמור",
+      "description": "זיכרון מסך ב-Mac הזה. היסטוריית ההכתבה נמצאת בהיסטוריה.",
+      "summary_one": "צילום מצב אחד מאז {{since}}.",
+      "summary_two": "{{count}} צילומי מצב מאז {{since}}.",
+      "summary_other": "{{count}} צילומי מצב מאז {{since}}.",
+      "entries_one": "צילום מצב אחד",
+      "entries_two": "{{count}} צילומי מצב",
+      "entries_other": "{{count}} צילומי מצב",
+      "deleteApp": "מחק את צילומי המצב של האפליקציה הזו",
+      "empty": "שום דבר לא שמור.",
+      "deleteAll": "מחק הכול",
+      "deletedAll": "זיכרון המסך ויומן הבקשות נמחקו."
+    },
+    "ledger": {
+      "title": "בקשות שיצאו מה-Mac הזה",
+      "description": "כל בקשה ובדיוק מה שהיא שלחה. נשמר 30 יום.",
+      "empty": "עדיין אין בקשות.",
+      "bytes_one": "בייט אחד",
+      "bytes_two": "{{count}} בייטים",
+      "bytes_other": "{{count}} בייטים",
+      "purpose": {
+        "polish": "ליטוש בינה מלאכותית",
+        "answer": "תשובה",
+        "search": "חיפוש באינטרנט",
+        "suggestion": "הצעה",
+        "summary": "סיכום פגישה",
+        "act": "פעולה",
+        "license": "בדיקת חשבון",
+        "trial": "תקופת ניסיון"
+      }
+    },
+    "engine": {
+      "title": "העדפת בינה מלאכותית ב-Mac הזה",
+      "description": "משתמש ב-Apple Intelligence כשאפשר. התוצאות פחות מלוטשות, ולכן האפשרות כבויה כברירת מחדל.",
+      "unavailable": "Apple Intelligence לא זמין ב-Mac הזה, ולכן נעשה שימוש בשרתים של {{appName}}."
+    },
+    "suggestions": {
+      "title": "הצעות שאתה מקבל",
+      "description": "כשמופיעה הצעה, אמור „לא עכשיו”, „אל תציג לי כאלה” או „לא באפליקציה הזו”, והוא לומד. אפשר לשנות זאת כאן בכל עת.",
+      "mutedIn": "כבוי ב-{{apps}}",
+      "kinds": {
+        "summarise_thread": "סיכום שרשורי אימייל ארוכים",
+        "draft_reply": "ניסוח תשובות",
+        "add_to_calendar": "הוספת תאריכים ללוח השנה",
+        "summarise_page": "סיכום דפים ארוכים",
+        "explain_error": "הסבר שגיאות ובדיקות שנכשלו",
+        "tighten_draft": "חידוד טיוטות ארוכות",
+        "price_check": "השוואת מחירים במקומות אחרים",
+        "answer_search": "מענה לחיפושים שאתה מנסח שוב ושוב",
+        "fix_formula": "תיקון נוסחאות בגיליונות",
+        "meeting_prep": "תדריך לפני פגישות",
+        "review_code": "בדיקת בקשות מיזוג",
+        "commit_message": "כתיבת הודעות commit",
+        "meeting_nudge": "תזכורות במהלך פגישות"
+      }
+    },
+    "macOnly": "כרגע רק ב-Mac",
+    "protections": {
+      "audio": "הקול שלך מתומלל ב-Mac הזה ואף פעם לא נשמר אצלנו.",
+      "text": "קורא טקסט, אף פעם לא מצלם את המסך.",
+      "passwords": "שדות סיסמה, מנהלי סיסמאות וחלונות פרטיים לעולם לא נקראים.",
+      "wallets": "ארנקי קריפטו, ביטויי שחזור ומפתחות פרטיים: הוא מתרחק לגמרי.",
+      "secrets": "מספרי כרטיסים, מפתחות וקודים מוסרים לפני שמשהו נשלח.",
+      "suggestions": "ההחלטה על הצעות מתקבלת ב-Mac הזה; שום דבר לא נשלח אלא אם תאשר.",
+      "stored": "מה שהוא שומר נשאר ב-Mac הזה, מוצפן, עד שתמחק אותו.",
+      "ledger": "כל בקשה שיוצאת מופיעה למטה, עם בדיוק מה שנשלח."
+    },
+    "days_two": "יומיים"
+  },
+  "meetings": {
+    "title": "פגישות",
+    "intro": "הערות לכל שיחה: אתה והצד השני, מתומללים ב-Mac הזה. השמע אף פעם לא נשמר.",
+    "idle": "לא נרשמות הערות",
+    "idleDetail": "התחל כשמתחילה שיחה, או הפעל הצעות לפגישות בפרטיות.",
+    "live": "רושם הערות · {{time}}",
+    "capturingBoth": "שומע אותך ואת השיחה.",
+    "capturingMic": "שומע רק את המיקרופון שלך.",
+    "start": "התחל הערות",
+    "stop": "עצור וסכם",
+    "listening": "מקשיב…",
+    "consent": "עדכן את כולם שאתה רושם הערות.",
+    "copyConsent": "העתק הודעה",
+    "consentMessage": "לידיעתכם: אני משתמש ב-{{appName}} כדי לרשום הערות בשיחה הזו.",
+    "openSettings": "פתח הגדרות",
+    "notes": "הערות",
+    "transcript": "תמלול",
+    "past": "פגישות קודמות",
+    "empty": "עדיין אין פגישות.",
+    "untitled": "פגישה ללא שם",
+    "unfinished": "לא הושלמה",
+    "all": "כל הפגישות",
+    "summary": "סיכום",
+    "decisions": "החלטות",
+    "actionItems": "משימות",
+    "questions": "שאלות אליך",
+    "noSummary": "אין סיכום לפגישה הזו.",
+    "copyMarkdown": "העתק כ-Markdown",
+    "followUp": "נסח הודעת המשך",
+    "followUpTitle": "אימייל המשך",
+    "copy": "העתק",
+    "copied": "הועתק",
+    "delete": "מחק פגישה",
+    "you": "אתה",
+    "them": "הם",
+    "systemAudio": {
+      "noPermission": "אפשר הקלטת מסך כדי ש-{{appName}} יוכל לשמוע את השיחה. נעשה שימוש בשמע בלבד, ושום דבר לא נשמר.",
+      "oldMacOS": "כדי לשמוע את השיחה נדרש macOS 13 ומעלה. המיקרופון שלך עדיין מתומלל.",
+      "failed": "לא ניתן היה לקלוט את שמע השיחה. המיקרופון שלך עדיין מתומלל.",
+      "unsupported": "שמיעת השיחה עדיין לא זמינה במערכת הזו."
+    },
+    "error": {
+      "storage": "לא ניתן היה לפתוח את אחסון הפגישות.",
+      "freeLimit": "התוכנית החינמית כוללת 2 פגישות בחודש. Pro ללא הגבלה.",
+      "mic": "לא ניתן היה לפתוח את המיקרופון.",
+      "notActive": "אין פגישה פעילה.",
+      "notFound": "הפגישה הזו כבר לא קיימת.",
+      "followUp": "לא ניתן היה לנסח את הודעת ההמשך כרגע."
+    },
+    "freeLeft": "פגישות חינמיות שנותרו החודש: {{left}} מתוך {{limit}}. Pro ללא הגבלה."
+  },
+  "tour": {
+    "skip": "דלג",
+    "next": "הבא",
+    "done": "סיום",
+    "start": "התחל להשתמש ב-{{appName}}",
+    "meet": {
+      "title": "הכירו את הסוכן",
+      "description": "החזק את הקיצור שלך ודבר. {{appName}} מטפל בשאר."
+    },
+    "modes": {
+      "write": {
+        "title": "כתיבה",
+        "example": "אפשר להזיז את הפגישה ליום חמישי?"
+      },
+      "answer": {
+        "title": "תשובה",
+        "example": "מה שיעור מס רווחי הון בבריטניה?"
+      },
+      "act": {
+        "title": "פעולה",
+        "example": "תזכיר לי ב-5 להתקשר לסאם"
+      },
+      "recall": {
+        "title": "היזכרות",
+        "example": "מה אמרתי אתמול על התמחור?"
+      }
+    },
+    "nothingToConnect": {
+      "title": "אין מה לחבר.",
+      "body": "בלי חשבונות, אינטגרציות או בוטים. עובד עם האפליקציות שאתה כבר משתמש בהן."
+    },
+    "try": {
+      "title": "נסה עכשיו",
+      "body": "החזק את {{keys}} ושאל: „מה מזג האוויר מחר בליסבון?”",
+      "done": "זהו. השתמשת בסוכן."
+    },
+    "choose": {
+      "title": "בחר מה {{appName}} רשאי לעשות",
+      "description": "הכול כבוי עד שתפעיל. אפשר לשנות בכל עת בפרטיות.",
+      "footnote": "סיסמאות, ארנקים וחלונות פרטיים לעולם לא נקראים.",
+      "proOnly": "חלק מ-Pro. שדרג בחשבון."
+    }
+  },
+  "getStarted": {
+    "title": "תחילת העבודה",
+    "progress": "{{done}} מתוך {{total}} הושלמו",
+    "hide": "הסתר",
+    "whatToSay": "מה אפשר להגיד?",
+    "replayTour": "הצג את הסיור שוב",
+    "steps": {
+      "answer": "שאל את הסוכן שאלה",
+      "reminder": "קבע תזכורת בקול",
+      "about_screen": "סכם משהו על המסך",
+      "suggestion": "קבל הצעה",
+      "meeting": "רשום הערות בפגישה",
+      "privacy": "ראה מה {{appName}} יכול ולא יכול לקרוא"
+    }
+  },
+  "trySaying": {
+    "title": "מה אפשר להגיד?",
+    "close": "סגור",
+    "description": "החזק את {{ask}} כדי לדבר עם הסוכן. {{dictate}} מקליד, אלא אם אתה מבקש משהו.",
+    "footnote": "ב-ChatGPT או ב-Claude, התחל ב-„היי Ambient” כדי לדבר עם הסוכן במקום.",
+    "groups": {
+      "answer": {
+        "title": "שאל",
+        "examples": [
+          "מה שיעור מס רווחי הון בבריטניה?",
+          "תסכם את זה.",
+          "מה המשמעות של השגיאה הזו?",
+          "תתרגם את זה לספרדית."
+        ]
+      },
+      "act": {
+        "title": "עשה",
+        "examples": [
+          "תזכיר לי ב-5 להתקשר לסאם.",
+          "תוסיף ארוחת צהריים עם אנה ביום שישי ב-13:00.",
+          "תפתח את Linear.",
+          "תריץ את הקיצור של הסטנדאפ."
+        ]
+      },
+      "recall": {
+        "title": "היזכר",
+        "examples": [
+          "מה אמרתי אתמול על התמחור?",
+          "תמצא את המצגת של הרבעון השלישי."
+        ]
+      },
+      "suggestions": {
+        "title": "כשמופיעה הצעה",
+        "examples": [
+          "„כן” או „קדימה” כדי לקבל.",
+          "„לא עכשיו” כדי לסגור.",
+          "„אל תציג לי כאלה” כדי לכבות את הסוג הזה.",
+          "„לא כאן” כדי לעצור באפליקציה הזו."
+        ]
+      },
+      "meetings": {
+        "title": "בפגישות",
+        "examples": [
+          "התחל הערות מפגישות, או אמור כן כש-Ambient מציע.",
+          "„מצא” כשמבקשים ממך משהו.",
+          "„הזכר לי” כשאתה מבטיח לעשות משהו."
+        ]
+      },
+      "talking": {
+        "title": "לדבר עם Ambient",
+        "examples": [
+          "החזק את {{ask}} ודבר: זה תמיד בשביל Ambient.",
+          "או השתמש במקש ההכתבה ופתח ב-„היי Ambient, …”. אחרת המילים שלך מוקלדות.",
+          "בלי ידיים (מפעילים בפרטיות): פשוט אמור „היי Ambient, …”."
+        ]
+      }
+    }
+  },
+  "app": {
+    "starting": "מפעיל את {{appName}}…"
+  }
+}

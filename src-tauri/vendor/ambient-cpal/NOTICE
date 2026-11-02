@@ -1,0 +1,12 @@
+ambient-cpal
+
+A renamed, vendored copy of handy-cpal 0.18.2 from crates.io
+(upstream: https://github.com/handy-computer/cpal (a fork of RustAudio/cpal)), published by the Handy project
+(https://github.com/cjpais/Handy). Licensed under Apache-2.0; the full license
+text is in LICENSE in this directory.
+
+Ambient owns and maintains this copy. Changes from the published crate: the
+crate and library were renamed to ambient-cpal / ambient_cpal, references to the
+upstream project were reworded, registry metadata (.cargo_vcs_info.json,
+Cargo.toml.orig, Cargo.lock) and upstream CI/Docker files were removed, and
+crates in this directory depend on each other by path.

@@ -1,0 +1,709 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Tokens — monochrome, Apple-style glass. Mirrors the desktop app's
+   src/styles/glass.css so the site and app feel like one product.
+   The only colour is --rec (#ef4444), reserved for "live recording".
+   ========================================================================== */
+
+:root {
+  --background: #f5f5f7;
+  --foreground: #0a0a0a;
+  --muted: #666666;
+  --subtle: #8f8f8f;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.14);
+  --surface: rgba(0, 0, 0, 0.03);
+  --inverse: #0a0a0a;
+  --inverse-fg: #ffffff;
+  --rec: #ef4444;
+
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-strong: rgba(255, 255, 255, 0.88);
+  --glass-edge: rgba(0, 0, 0, 0.06);
+  --glass-rim: rgba(255, 255, 255, 0.95);
+  --glass-rim-mid: rgba(255, 255, 255, 0.35);
+  --glass-hover: rgba(0, 0, 0, 0.035);
+  --shadow-card: 0 0.5px 0 0 rgba(255, 255, 255, 0.9) inset, 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px -12px rgba(0, 0, 0, 0.1);
+  --shadow-pop: 0 0.5px 0 0 rgba(255, 255, 255, 0.9) inset, 0 12px 40px -12px rgba(0, 0, 0, 0.22),
+    0 2px 6px rgba(0, 0, 0, 0.05);
+  --ambient-a: rgba(186, 204, 236, 0.55);
+  --ambient-b: rgba(236, 214, 204, 0.45);
+  --glass-blur: blur(28px) saturate(180%);
+  --toggle-pill: #ffffff;
+
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* AICSS orb theme (moved here from Orb.module.css; see components/orb). */
+  --orb-fg: #1a1a1a;
+  --orb-pill-bg: #ffffff;
+  --orb-pill-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02);
+  --orb-label: #a1a1a1;
+  --orb-rest-ink: 0.14;
+  --orb-dim-ink: 0.07;
+  --orb-ring-rest-ink: 0.22;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b0b0d;
+    --foreground: #ededed;
+    --muted: #a1a1a1;
+    --subtle: #6f6f74;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --surface: rgba(255, 255, 255, 0.03);
+    --inverse: #f5f5f5;
+    --inverse-fg: #0a0a0a;
+
+    --glass: rgba(30, 30, 34, 0.55);
+    --glass-strong: rgba(36, 36, 40, 0.88);
+    --glass-edge: rgba(255, 255, 255, 0.08);
+    --glass-rim: rgba(255, 255, 255, 0.17);
+    --glass-rim-mid: rgba(255, 255, 255, 0.08);
+    --glass-hover: rgba(255, 255, 255, 0.05);
+    --shadow-card: 0 0.5px 0 0 rgba(255, 255, 255, 0.07) inset, 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+    --shadow-pop: 0 0.5px 0 0 rgba(255, 255, 255, 0.08) inset, 0 16px 48px -12px rgba(0, 0, 0, 0.75),
+      0 2px 6px rgba(0, 0, 0, 0.4);
+    --ambient-a: rgba(64, 84, 140, 0.32);
+    --ambient-b: rgba(120, 72, 64, 0.22);
+    --toggle-pill: #2c2c31;
+
+    --orb-fg: #f5f5f5;
+    --orb-pill-bg: #1a1a1a;
+    --orb-pill-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+    --orb-label: #a3a3a3;
+    --orb-rest-ink: 0.2;
+    --orb-dim-ink: 0.1;
+    --orb-ring-rest-ink: 0.3;
+
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-surface: var(--surface);
+  --color-inverse: var(--inverse);
+  --color-inverse-fg: var(--inverse-fg);
+  --color-rec: var(--rec);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-glass-hover: var(--glass-hover);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", var(--font-geist-sans),
+    "Helvetica Neue", system-ui, sans-serif;
+  /* No monospace on this site: "mono" maps to the sans stack on purpose. */
+  --: var(--font-sans);
+  --ease-spring: var(--spring);
+  --ease-soft: var(--ease-out-soft);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.006em;
+  }
+
+  /* No monospace anywhere, including browser defaults for code-ish elements. */
+  kbd,
+  code,
+  pre,
+  samp {
+    font-family: var(--font-sans);
+  }
+
+  /* No bold anywhere: the heaviest weight on the site is 500 for tiny labels. */
+  b,
+  strong,
+  th {
+    font-weight: 500;
+  }
+
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Short pages (404, error, checkout, contact): fill the first screen and
+   centre the content, so the footer sits below the fold, not under the card.
+   The offset matches <main>'s top padding (pt-20 / sm:pt-24). */
+.page-balanced {
+  min-height: calc(100dvh - 5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media (min-width: 640px) {
+  .page-balanced {
+    min-height: calc(100dvh - 6rem);
+  }
+}
+
+/* ==========================================================================
+   Ambient backdrop: two big, blurred, slowly drifting lights behind the glass.
+   ========================================================================== */
+.ambient-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--background);
+}
+.ambient-backdrop::before,
+.ambient-backdrop::after {
+  content: "";
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: ambient-drift 28s ease-in-out infinite alternate;
+}
+.ambient-backdrop::before {
+  top: -30vmax;
+  left: -10vmax;
+  background: radial-gradient(circle, var(--ambient-a), transparent 65%);
+}
+.ambient-backdrop::after {
+  bottom: -35vmax;
+  right: -20vmax;
+  background: radial-gradient(circle, var(--ambient-b), transparent 65%);
+  animation-delay: -14s;
+}
+@keyframes ambient-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vmax, 4vmax, 0) scale(1.12);
+  }
+}
+
+/* ==========================================================================
+   Frosted glass panels with a liquid-glass rim (hairline gradient, brighter
+   top-left and bottom-right). Implemented from scratch; idea after Pickle's
+   Glass UI.
+   ========================================================================== */
+@layer components {
+  .glass,
+  .glass-strong {
+    position: relative;
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 0.5px solid var(--glass-edge);
+  }
+  .glass {
+    background: var(--glass);
+    box-shadow: var(--shadow-card);
+  }
+  .glass-strong {
+    background: var(--glass-strong);
+    box-shadow: var(--shadow-pop);
+  }
+  .glass::after,
+  .glass-strong::after {
+    content: "";
+    position: absolute;
+    inset: -0.5px;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(169deg, var(--glass-rim) 0%, var(--glass-rim-mid) 50%, var(--glass-rim) 100%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Dark floating pill/panel (after Pickle's Glass; reimplemented). Same look
+     in light and dark mode: smoked glass with a 1px gradient rim. */
+  .glass-dark {
+    position: relative;
+    color: #f5f5f7;
+    background: rgba(22, 22, 26, 0.72);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    box-shadow:
+      0 10px 30px -12px rgba(0, 0, 0, 0.45),
+      0 2px 6px rgba(0, 0, 0, 0.12);
+  }
+  .glass-dark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      169deg,
+      rgba(255, 255, 255, 0.17) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.17) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Small sentence-case label. No all-caps anywhere on this site. */
+  .eyebrow {
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: -0.003em;
+    color: var(--muted);
+  }
+
+  .hairline {
+    border-width: 0.5px;
+  }
+}
+
+/* Recording pill waveform */
+@keyframes wave {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.wave-bar {
+  transform-origin: center;
+  animation: wave 0.9s ease-in-out infinite;
+}
+@keyframes rec-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.rec-dot {
+  animation: rec-pulse 1.4s ease-in-out infinite;
+}
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: caret 1s step-end infinite;
+}
+
+/* ==========================================================================
+   Transitions from transitions.dev — Copyright (c) 2026 Jakub Antalik /
+   Transitions.dev. Used under the Transitions.dev License (free for use in
+   products; https://transitions.dev/terms.html). Snippets: number pop-in,
+   tabs sliding, text states swap, texts reveal, shimmer text, accordion,
+   toast, success check.
+   ========================================================================== */
+:root {
+  --digit-dur: 500ms;
+  --digit-distance: 8px;
+  --digit-stagger: 70ms;
+  --digit-blur: 2px;
+  --digit-ease: cubic-bezier(0.34, 1.45, 0.64, 1);
+  --digit-dir-x: 0;
+  --digit-dir-y: 1;
+  --tabs-dur: 250ms;
+  --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --text-swap-dur: 150ms;
+  --text-swap-translate-y: 4px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-in-out;
+  --stagger-dur: 700ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 90ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --shimmer-dur: 2000ms;
+  --shimmer-base: var(--subtle);
+  --shimmer-highlight: var(--foreground);
+  --shimmer-band: 400%;
+  --shimmer-ease: linear;
+  --acc-expand: 250ms;
+  --acc-collapse: 250ms;
+  --acc-chevron: 250ms;
+  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --toast-open: 350ms;
+  --toast-close: 250ms;
+  --toast-distance: 16px;
+  --toast-blur: 2px;
+  --toast-scale: 0.97;
+  --toast-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-opacity-dur: 500ms;
+  --check-rotate-dur: 500ms;
+  --check-rotate-from: 80deg;
+  --check-bob-dur: 500ms;
+  --check-y-amount: 40px;
+  --check-blur-dur: 500ms;
+  --check-blur-from: 10px;
+  --check-path-dur: 500ms;
+  --check-path-delay: 80ms;
+  --check-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-opacity: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-rotate: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-bob: cubic-bezier(0.34, 1.35, 0.64, 1);
+  --check-ease-path: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Number pop-in */
+@keyframes t-digit-pop-in {
+  0% {
+    transform: translate(
+      calc(var(--digit-distance) * var(--digit-dir-x)),
+      calc(var(--digit-distance) * var(--digit-dir-y))
+    );
+    opacity: 0;
+    filter: blur(var(--digit-blur));
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.t-digit-group {
+  display: inline-flex;
+  align-items: baseline;
+}
+.t-digit {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+.t-digit-group.is-animating .t-digit {
+  animation: t-digit-pop-in var(--digit-dur) var(--digit-ease) both;
+}
+.t-digit-group.is-animating .t-digit[data-stagger="1"] {
+  animation-delay: var(--digit-stagger);
+}
+.t-digit-group.is-animating .t-digit[data-stagger="2"] {
+  animation-delay: calc(var(--digit-stagger) * 2);
+}
+
+/* Tabs sliding */
+.t-tabs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 48px;
+}
+.t-tab {
+  position: relative;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  height: 30px;
+  padding: 4px 14px;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 48px;
+  z-index: 1;
+  transition: color var(--tabs-dur) var(--tabs-ease);
+}
+.t-tab:not([aria-checked="true"]):hover,
+.t-tab[aria-checked="true"] {
+  color: var(--foreground);
+}
+
+/* Text states swap */
+.t-text-swap {
+  display: inline-block;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition:
+    transform var(--text-swap-dur) var(--text-swap-ease),
+    filter var(--text-swap-dur) var(--text-swap-ease),
+    opacity var(--text-swap-dur) var(--text-swap-ease);
+  will-change: transform, filter, opacity;
+}
+.t-text-swap.is-exit {
+  transform: translateY(calc(var(--text-swap-translate-y) * -1));
+  filter: blur(var(--text-swap-blur));
+  opacity: 0;
+}
+.t-text-swap.is-enter-start {
+  transform: translateY(var(--text-swap-translate-y));
+  filter: blur(var(--text-swap-blur));
+  opacity: 0;
+  transition: none;
+}
+
+/* Texts reveal */
+.t-stagger-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+.t-stagger-line--2 {
+  transition-delay: var(--stagger-stagger);
+}
+.t-stagger-line--3 {
+  transition-delay: calc(var(--stagger-stagger) * 2);
+}
+.t-stagger-line--4 {
+  transition-delay: calc(var(--stagger-stagger) * 3);
+}
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Shimmer text */
+.t-shimmer {
+  position: relative;
+  display: inline-block;
+  color: var(--shimmer-base);
+}
+.t-shimmer::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 40%,
+    var(--shimmer-highlight) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: var(--shimmer-band) 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
+}
+@keyframes t-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+/* Accordion */
+.t-acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--acc-expand) var(--acc-ease);
+}
+.t-acc-panel-inner {
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(2px);
+  transition:
+    opacity var(--acc-collapse) var(--acc-ease),
+    filter var(--acc-collapse) var(--acc-ease);
+}
+.t-acc[data-open="true"] .t-acc-panel-inner {
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--acc-expand) var(--acc-ease),
+    filter var(--acc-expand) var(--acc-ease);
+}
+.t-acc-chevron {
+  display: inline-flex;
+  transform: scaleY(1);
+  transform-origin: center;
+  transition: transform var(--acc-chevron) var(--acc-ease);
+}
+.t-acc-chevron path {
+  vector-effect: non-scaling-stroke;
+}
+.t-acc[data-open="true"] .t-acc-chevron {
+  transform: scaleY(-1);
+}
+
+/* Toast */
+.t-toast {
+  opacity: 0;
+  transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
+  filter: blur(var(--toast-blur));
+  will-change: transform, opacity, filter;
+  transition:
+    opacity var(--toast-close) var(--toast-ease),
+    transform var(--toast-close) var(--toast-ease),
+    filter var(--toast-close) var(--toast-ease);
+}
+.t-toast.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity var(--toast-open) var(--toast-ease),
+    transform var(--toast-open) var(--toast-ease),
+    filter var(--toast-open) var(--toast-ease);
+}
+
+/* Success check */
+.t-success-check {
+  display: inline-block;
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+.t-success-check svg {
+  display: block;
+  overflow: visible;
+}
+.t-success-check svg path {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+}
+.t-success-check[data-state="in"] {
+  animation:
+    t-check-fade var(--check-opacity-dur) var(--check-ease-opacity) forwards,
+    t-check-rotate var(--check-rotate-dur) var(--check-ease-rotate) forwards,
+    t-check-blur var(--check-blur-dur) var(--check-ease-out) forwards,
+    t-check-bob var(--check-bob-dur) var(--check-ease-bob) forwards;
+}
+.t-success-check[data-state="in"] svg path {
+  animation: t-check-draw var(--check-path-dur) var(--check-ease-path) var(--check-path-delay, 0ms) forwards;
+}
+@keyframes t-check-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes t-check-rotate {
+  from {
+    transform: rotate(var(--check-rotate-from));
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes t-check-blur {
+  from {
+    filter: blur(var(--check-blur-from));
+  }
+  to {
+    filter: blur(0);
+  }
+}
+@keyframes t-check-bob {
+  from {
+    translate: 0 var(--check-y-amount);
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes t-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Native <details> marker reset (legal pages) */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Reduced motion: every animation above is required to stop. */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-backdrop::before,
+  .ambient-backdrop::after,
+  .wave-bar,
+  .rec-dot,
+  .caret,
+  .t-shimmer::before {
+    animation: none !important;
+  }
+  .t-digit-group .t-digit {
+    animation: none !important;
+  }
+  .t-tab,
+  .t-text-swap,
+  .t-stagger-line,
+  .t-acc-panel,
+  .t-acc-panel-inner,
+  .t-acc-chevron,
+  .t-toast {
+    transition: none !important;
+  }
+  .t-success-check {
+    animation: none !important;
+    opacity: 1;
+  }
+  .t-success-check svg path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

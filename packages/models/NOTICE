@@ -1,0 +1,15 @@
+@ambient/models
+
+Derived from @handy-computer/models 0.2.3
+(https://github.com/handy-computer/models), published by the Handy project
+(https://github.com/cjpais/Handy) under the MIT License; see LICENSE. The
+model conversions listed in catalog.json were published by the same project
+and are redistributed from Ambient's Hugging Face account under each model's
+own license (the `license` field of each entry).
+
+Changes from the published package: renamed to @ambient/models; catalog.json
+points each model at Ambient's Hugging Face copy (same files and hashes, new
+repository and revision, previous revisions cleared) and drops the VAD and
+diarization models Ambient doesn't download; the README was rewritten and
+references to the upstream project were reworded. dist/ is otherwise the
+published build.

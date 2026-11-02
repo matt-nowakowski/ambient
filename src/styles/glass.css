@@ -1,0 +1,298 @@
+/* Glass surfaces, depth and motion tokens (Apple-style translucent UI).
+ * Panels are translucent and blur what's behind them; the window paints a soft
+ * ambient backdrop (`.app-backdrop`) so there is something to blur.
+ * Light/dark follow the same three selectors as theme.css. */
+
+:root {
+  --light-surface-app: #f5f5f7;
+  --light-glass: rgba(255, 255, 255, 0.66);
+  --light-glass-strong: rgba(255, 255, 255, 0.9);
+  --light-glass-sidebar: rgba(246, 246, 248, 0.6);
+  --light-glass-edge: rgba(0, 0, 0, 0.06);
+  --light-glass-highlight: rgba(255, 255, 255, 0.9);
+  --light-glass-hover: rgba(0, 0, 0, 0.04);
+  --light-glass-press: rgba(0, 0, 0, 0.07);
+  --light-shadow-card:
+    0 0.5px 0 0 rgba(255, 255, 255, 0.9) inset, 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px -12px rgba(0, 0, 0, 0.1);
+  --light-shadow-pop:
+    0 0.5px 0 0 rgba(255, 255, 255, 0.9) inset,
+    0 12px 40px -12px rgba(0, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.05);
+  --light-ambient-a: rgba(186, 204, 236, 0.55);
+  --light-ambient-b: rgba(236, 214, 204, 0.45);
+  --light-ambient-c: rgba(210, 210, 230, 0.4);
+  --light-glass-rim: rgba(255, 255, 255, 0.95);
+  --light-glass-rim-mid: rgba(255, 255, 255, 0.35);
+  --light-inset-surface: rgba(255, 255, 255, 0.5);
+  --light-card-glare: rgba(255, 255, 255, 0.55);
+  --light-card-foil-opacity: 0.14;
+  --light-skeleton: rgba(0, 0, 0, 0.06);
+  --light-skeleton-shine: rgba(255, 255, 255, 0.7);
+
+  --dark-surface-app: #0b0b0d;
+  --dark-glass: rgba(30, 30, 34, 0.55);
+  --dark-glass-strong: rgba(36, 36, 40, 0.92);
+  --dark-glass-sidebar: rgba(22, 22, 26, 0.55);
+  --dark-glass-edge: rgba(255, 255, 255, 0.08);
+  --dark-glass-highlight: rgba(255, 255, 255, 0.07);
+  --dark-glass-hover: rgba(255, 255, 255, 0.06);
+  --dark-glass-press: rgba(255, 255, 255, 0.1);
+  --dark-shadow-card:
+    0 0.5px 0 0 rgba(255, 255, 255, 0.07) inset,
+    0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --dark-shadow-pop:
+    0 0.5px 0 0 rgba(255, 255, 255, 0.08) inset,
+    0 16px 48px -12px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --dark-ambient-a: rgba(64, 84, 140, 0.32);
+  --dark-ambient-b: rgba(120, 72, 64, 0.22);
+  --dark-ambient-c: rgba(80, 70, 120, 0.2);
+  --dark-glass-rim: rgba(255, 255, 255, 0.17);
+  --dark-glass-rim-mid: rgba(255, 255, 255, 0.06);
+  --dark-inset-surface: rgba(24, 24, 28, 0.6);
+  --dark-card-glare: rgba(255, 255, 255, 0.12);
+  --dark-card-foil-opacity: 0.09;
+  --dark-skeleton: rgba(255, 255, 255, 0.06);
+  --dark-skeleton-shine: rgba(255, 255, 255, 0.1);
+
+  --surface-app: var(--light-surface-app);
+  --glass: var(--light-glass);
+  --glass-strong: var(--light-glass-strong);
+  --glass-sidebar: var(--light-glass-sidebar);
+  --glass-edge: var(--light-glass-edge);
+  --glass-highlight: var(--light-glass-highlight);
+  --glass-hover: var(--light-glass-hover);
+  --glass-press: var(--light-glass-press);
+  --shadow-card: var(--light-shadow-card);
+  --shadow-pop: var(--light-shadow-pop);
+  --ambient-a: var(--light-ambient-a);
+  --ambient-b: var(--light-ambient-b);
+  --ambient-c: var(--light-ambient-c);
+  --glass-rim: var(--light-glass-rim);
+  --glass-rim-mid: var(--light-glass-rim-mid);
+  --inset-surface: var(--light-inset-surface);
+  --card-glare: var(--light-card-glare);
+  --card-foil-opacity: var(--light-card-foil-opacity);
+  --skeleton: var(--light-skeleton);
+  --skeleton-shine: var(--light-skeleton-shine);
+
+  --glass-blur: blur(28px) saturate(180%);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-app: var(--dark-surface-app);
+    --glass: var(--dark-glass);
+    --glass-strong: var(--dark-glass-strong);
+    --glass-sidebar: var(--dark-glass-sidebar);
+    --glass-edge: var(--dark-glass-edge);
+    --glass-highlight: var(--dark-glass-highlight);
+    --glass-hover: var(--dark-glass-hover);
+    --glass-press: var(--dark-glass-press);
+    --shadow-card: var(--dark-shadow-card);
+    --shadow-pop: var(--dark-shadow-pop);
+    --ambient-a: var(--dark-ambient-a);
+    --ambient-b: var(--dark-ambient-b);
+    --ambient-c: var(--dark-ambient-c);
+    --glass-rim: var(--dark-glass-rim);
+    --glass-rim-mid: var(--dark-glass-rim-mid);
+    --glass-rim: var(--dark-glass-rim);
+    --glass-rim-mid: var(--dark-glass-rim-mid);
+    --inset-surface: var(--dark-inset-surface);
+    --card-glare: var(--dark-card-glare);
+    --card-foil-opacity: var(--dark-card-foil-opacity);
+    --skeleton: var(--dark-skeleton);
+    --skeleton-shine: var(--dark-skeleton-shine);
+  }
+}
+
+:root[data-theme="light"] {
+  --surface-app: var(--light-surface-app);
+  --glass: var(--light-glass);
+  --glass-strong: var(--light-glass-strong);
+  --glass-sidebar: var(--light-glass-sidebar);
+  --glass-edge: var(--light-glass-edge);
+  --glass-highlight: var(--light-glass-highlight);
+  --glass-hover: var(--light-glass-hover);
+  --glass-press: var(--light-glass-press);
+  --shadow-card: var(--light-shadow-card);
+  --shadow-pop: var(--light-shadow-pop);
+  --ambient-a: var(--light-ambient-a);
+  --ambient-b: var(--light-ambient-b);
+  --ambient-c: var(--light-ambient-c);
+  --glass-rim: var(--light-glass-rim);
+  --glass-rim-mid: var(--light-glass-rim-mid);
+  --inset-surface: var(--light-inset-surface);
+  --card-glare: var(--light-card-glare);
+  --card-foil-opacity: var(--light-card-foil-opacity);
+  --skeleton: var(--light-skeleton);
+  --skeleton-shine: var(--light-skeleton-shine);
+}
+
+:root[data-theme="dark"] {
+  --surface-app: var(--dark-surface-app);
+  --glass: var(--dark-glass);
+  --glass-strong: var(--dark-glass-strong);
+  --glass-sidebar: var(--dark-glass-sidebar);
+  --glass-edge: var(--dark-glass-edge);
+  --glass-highlight: var(--dark-glass-highlight);
+  --glass-hover: var(--dark-glass-hover);
+  --glass-press: var(--dark-glass-press);
+  --shadow-card: var(--dark-shadow-card);
+  --shadow-pop: var(--dark-shadow-pop);
+  --ambient-a: var(--dark-ambient-a);
+  --ambient-b: var(--dark-ambient-b);
+  --ambient-c: var(--dark-ambient-c);
+  --glass-rim: var(--dark-glass-rim);
+  --glass-rim-mid: var(--dark-glass-rim-mid);
+  --inset-surface: var(--dark-inset-surface);
+  --card-glare: var(--dark-card-glare);
+  --card-foil-opacity: var(--dark-card-foil-opacity);
+  --skeleton: var(--dark-skeleton);
+  --skeleton-shine: var(--dark-skeleton-shine);
+}
+
+/* The window's ambient backdrop: soft, slowly drifting light behind the glass. */
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--surface-app);
+  overflow: hidden;
+}
+.app-backdrop::before,
+.app-backdrop::after {
+  content: "";
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: ambient-drift 28s ease-in-out infinite alternate;
+}
+.app-backdrop::before {
+  top: -30vmax;
+  left: -10vmax;
+  background: radial-gradient(circle, var(--ambient-a), transparent 65%);
+}
+.app-backdrop::after {
+  bottom: -35vmax;
+  right: -20vmax;
+  background: radial-gradient(circle, var(--ambient-b), transparent 65%);
+  animation-delay: -14s;
+}
+@keyframes ambient-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vmax, 4vmax, 0) scale(1.12);
+  }
+}
+
+/* Frosted panels, with a "liquid glass" rim: a 1px gradient hairline that is
+ * brighter at the top-left and bottom-right edges. (Inspired by Pickle's
+ * Glass; implemented here from scratch.) In the components layer so Tailwind
+ * utilities such as `absolute` still override `position`. */
+@layer components {
+  .glass,
+  .glass-strong {
+    position: relative;
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 0.5px solid var(--glass-edge);
+  }
+  .glass {
+    background: var(--glass);
+    box-shadow: var(--shadow-card);
+  }
+  .glass-strong {
+    background: var(--glass-strong);
+    box-shadow: var(--shadow-pop);
+  }
+  .glass::after,
+  .glass-strong::after {
+    content: "";
+    position: absolute;
+    inset: -0.5px;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      169deg,
+      var(--glass-rim) 0%,
+      var(--glass-rim-mid) 50%,
+      var(--glass-rim) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+/* Iridescent foil for the account card: a slow-turning conic sheen. */
+.card-foil {
+  /* Fades the foil toward the bottom so text stays crisp. */
+  -webkit-mask-image: linear-gradient(160deg, #000 20%, transparent 85%);
+  mask-image: linear-gradient(160deg, #000 20%, transparent 85%);
+  background: conic-gradient(
+    from var(--foil-angle, 0deg) at 30% 20%,
+    #ff8fb1,
+    #ffd57a,
+    #8ff0c8,
+    #8fc7ff,
+    #c79bff,
+    #ff8fb1
+  );
+  opacity: var(--card-foil-opacity);
+  animation: foil-turn 14s linear infinite;
+}
+@property --foil-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes foil-turn {
+  to {
+    --foil-angle: 360deg;
+  }
+}
+
+/* Loading skeleton with a travelling sheen. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--skeleton);
+  border-radius: var(--radius-chip);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--skeleton-shine),
+    transparent
+  );
+  animation: skeleton-sheen 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-backdrop::before,
+  .app-backdrop::after,
+  .card-foil,
+  .skeleton::after {
+    animation: none;
+  }
+}

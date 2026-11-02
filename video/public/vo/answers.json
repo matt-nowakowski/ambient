@@ -1,0 +1,17 @@
+{
+ "id": "answers",
+ "text": "It answers.",
+ "duration": 1.12,
+ "words": [
+  {
+   "w": "It",
+   "start": 0,
+   "end": 0.16
+  },
+  {
+   "w": "answers.",
+   "start": 0.24,
+   "end": 1.12
+  }
+ ]
+}

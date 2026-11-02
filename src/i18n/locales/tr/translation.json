@@ -1,0 +1,1490 @@
+{
+  "tray": {
+    "settings": "Ayarlar...",
+    "checkUpdates": "Güncellemeleri Kontrol Et...",
+    "copyLastTranscript": "Son Transkripti Kopyala",
+    "unloadModel": "Modeli Boşalt",
+    "model": "Model",
+    "quit": "Çıkış",
+    "cancel": "İptal",
+    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor"
+  },
+  "sidebar": {
+    "home": "Ana Sayfa",
+    "general": "Genel",
+    "account": "Hesap",
+    "models": "Modeller",
+    "advanced": "Gelişmiş",
+    "postProcessing": "Son İşlem",
+    "history": "Geçmiş",
+    "debug": "Hata Ayıklama",
+    "about": "Hakkında",
+    "settings": "Ayarlar",
+    "privacy": "Gizlilik",
+    "meetings": "Toplantılar"
+  },
+  "onboarding": {
+    "customModelDescription": "Resmi olarak desteklenmiyor",
+    "migration": {
+      "title": "Modellerinizin güncellenmesi gerekiyor",
+      "description": "{{appName}} artık daha iyi bir model kullanıyor. Yazıya dökmeye devam etmek için indirin.",
+      "replaces": "{{name}} yerine geçer",
+      "oldFormat": "Eski format",
+      "failed": "İndirme başarısız oldu",
+      "retry": "Tekrar dene",
+      "chooseAnother": "Farklı bir model seçin",
+      "download": "Modelleri indir ({{size}})",
+      "continue": "Devam et"
+    },
+    "errors": {
+      "selectModel": "Model seçilemedi"
+    },
+    "permissions": {
+      "microphone": {
+        "name": "Mikrofon",
+        "why": "{{appName}} sizi duyabilsin diye. Sesiniz bu bilgisayardan asla çıkmaz."
+      },
+      "accessibility": {
+        "name": "Erişilebilirlik",
+        "why": "Kısayolunuz her yerde çalışsın ve metin yazdığınız yere gelsin diye."
+      },
+      "errors": {
+        "checkFailed": "İzinler kontrol edilemedi. Lütfen tekrar deneyin.",
+        "requestFailed": "İzin isteği başarısız oldu. Lütfen tekrar deneyin."
+      },
+      "titleMac": "İki izin, sonra hazırsınız",
+      "titleWindows": "Bir izin, sonra hazırsınız",
+      "subtitleMac": "macOS, bir uygulamanın dinlemesine veya yazmasına izin vermeden önce sorar.",
+      "subtitleWindows": "Windows, bir uygulamanın dinlemesine izin vermeden önce sorar.",
+      "allow": "İzin ver",
+      "openSettings": "Ayarları aç",
+      "allowed": "İzin verildi",
+      "waiting": "Bekleniyor",
+      "turnOnMac": "Sistem Ayarları'nda {{appName}}'yi açın, sonra buraya dönün.",
+      "turnOnWindows": "Windows Ayarları'nda mikrofon erişimini açın, sonra buraya dönün.",
+      "hintBoth": "Devam etmek için ikisine de izin verin",
+      "hintMicrophone": "Devam etmek için mikrofona izin verin",
+      "welcomeBack": "Tekrar hoş geldiniz. Kaldığınız yerden devam ediyoruz.",
+      "relaunch": "Kısayol çalışmıyor mu? <relaunch>{{appName}} uygulamasını yeniden başlatın</relaunch>. Doğrudan buraya döneceksiniz."
+    },
+    "shell": {
+      "back": "Geri",
+      "continue": "Devam",
+      "progress": "Adım {{step}} / {{count}}"
+    },
+    "welcome": {
+      "title": "Yazmak yerine konuşun, her uygulamada",
+      "subtitle": "Konuşacağınız dilleri seçin",
+      "languagesLabel": "Diller",
+      "noMatch": "“{{query}}” için sonuç yok. Daha fazla dil ayarlarda.",
+      "appLanguage": "Uygulama dili",
+      "menusIn": "Arayüz <b>{{language}}</b> dilinde",
+      "chinese": {
+        "question": "{{languages}} konuşuyorsunuz. {{appName}} hangi karakterleri yazsın?",
+        "label": "Çince karakterler",
+        "zh-Hans": "Basitleştirilmiş",
+        "zh-Hant": "Tayvan",
+        "zh-HK": "Hong Kong"
+      },
+      "hint": {
+        "pickOne": "En az bir dil seçin",
+        "weak_one": "{{languages}}: henüz hiçbir model bunu iyi anlamıyor",
+        "weak_other": "{{languages}}: henüz hiçbir model bunları iyi anlamıyor"
+      }
+    },
+    "download": {
+      "checking": "İndirme denetleniyor…",
+      "ready": "{{name}} hazır",
+      "failed": "İndirme durdu",
+      "downloading": "{{name}} indiriliyor",
+      "progress": "{{done}} / {{total}}",
+      "progressLeft": "{{done}} / {{total}}, {{time}} kaldı",
+      "checkingName": "{{name}} denetleniyor",
+      "checkingDetail": "İndirmenin eksiksiz olduğundan emin olunuyor",
+      "stopped": "{{name}} indirmesi durdu",
+      "retryDetail": "Yeniden deneme kaldığı yerden devam eder",
+      "retryDownload": "İndirmeyi yeniden dene",
+      "cardProgress": "%{{percent}} indiriliyor, {{done}} / {{total}}",
+      "timeLeft": "{{time}} kaldı",
+      "speedLeft": "{{speed}}, {{time}} kaldı"
+    },
+    "model": {
+      "title": "Bir konuşma modeli seçin",
+      "subtitle": "Sesinizi bu bilgisayarda metne dönüştürür",
+      "label": "Konuşma modeli",
+      "lines": {
+        "recommended": "Dilleriniz için en iyi hız ve doğruluk",
+        "faster": "Daha çabuk, birkaç hata daha fazla",
+        "accurate": "En az hata, ama daha yavaş"
+      },
+      "shorts": {
+        "recommended": "Sizin için en iyi denge",
+        "faster": "Çabuk, biraz daha fazla hata",
+        "accurate": "En az hata, ama yavaş"
+      },
+      "model": "Model",
+      "showAll": "{{count}} modelin tümünü göster",
+      "download": "{{size}} indir",
+      "downloadInstead": "Bunun yerine {{size}} indir",
+      "pauses": "{{name}} %{{percent}} noktasında duraklıyor",
+      "resumeLater": "Tekrar seçtiğinizde kaldığı yerden devam eder",
+      "hint": "Kurulumu bitirirken iner"
+    },
+    "demo": {
+      "title": "Tek kısayolla her uygulamada konuşun",
+      "hold": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuzu basılı tutup konuşun.</1> <2>Bırakın, sözcükleriniz belirsin.</2>",
+      "tap": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuza dokunup konuşun.</1> <2>Tekrar dokunun, sözcükleriniz belirsin.</2>",
+      "apps": {
+        "messages": "Mesajlar",
+        "notes": "Notlar"
+      },
+      "chat": "Bu akşam hâlâ geliyor musun?",
+      "noteTitle": "Hafta sonu planları",
+      "screenLabel": "Bir dizüstü bilgisayar: biri bir uygulamaya tıklıyor, kısayola basıp konuşuyor ve sözcükler tıkladığı yerde beliriyor.",
+      "change": "Değiştir",
+      "yourShortcut": "Kısayolunuz",
+      "pressKeys": "Yeni tuşlara basın",
+      "addKey": "Şimdi bir tuş ekleyin",
+      "cancel": "İptal",
+      "tryIt": "Kendiniz deneyin"
+    },
+    "try": {
+      "title": "Bir deneyin!",
+      "subtitle": "{{appName}} köşede, size yol göstermek için hazır",
+      "noteLabel": "Not",
+      "placeholder": "Yeni not",
+      "hold": "<keys/> tuşlarını basılı tutun ve konuşun.",
+      "tapNext": "Şimdi <keys/> tuşlarına bir kez dokunun, sonra konuşun.",
+      "letGo": "İşiniz bitince <keys/> tuşlarını bırakın.",
+      "tapAgain": "İşiniz bitince <keys/> tuşlarına tekrar dokunun.",
+      "watch": "Nota göz atın.",
+      "changeKeys": "Kısayolunuzu değiştirin, {{keys}}",
+      "doneHold": "Çak bir beşlik! Bu, basılı tutmaydı.",
+      "doneHoldNext": "Sıradaki: eller serbest yöntem.",
+      "doneTap": "Çak bir beşlik! Bu, dokunmaydı.",
+      "doneTapNext": "Şimdi konuşurken basılı tutmayı deneyin.",
+      "giveFive": "Tamamdır! Çak bir beşlik",
+      "highFive": "Çak bir beşlik",
+      "slowLine": "{{name}} bu bilgisayarda {{wait}} sürdü. <faster>Daha hızlı bir model deneyin</faster>",
+      "nothingTyped": "Hmm, hiçbir şey yazılmadı.",
+      "nothingTypedSub": "Önce nota tıklayın, sonra tekrar deneyin.",
+      "silent": "Hiçbir şey duymadım.",
+      "silentSub": "Bu mikrofondan ses gelmedi. Başka birini deneyin:",
+      "noWords": "Hiçbir sözcüğü anlayamadım.",
+      "noWordsSub": "Tekrar deneyin ve tam bir cümle söyleyin.",
+      "finish": "Bitir",
+      "skip": "Atla",
+      "seconds": "{{value}} sn"
+    },
+    "done": {
+      "title": "Hazırsınız",
+      "subMac": "{{appName}} menü çubuğunuzda yaşar. Konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
+      "subTray": "{{appName}} sistem tepsinizde yaşar. Konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
+      "hint": "Bunları daha sonra Ayarlar'dan değiştirebilirsiniz",
+      "highFiveLabel": "Çak bir beşlik",
+      "atLogin": "Oturum açtığımda {{appName}}'yi başlat",
+      "finish": "Bitti",
+      "panel": {
+        "name": "{{appName}}",
+        "ready": "Hazır",
+        "languages": "Diller",
+        "model": "Konuşma modeli",
+        "shortcut": "Kısayol",
+        "changeLanguages": "Dilleri değiştir, {{languages}}",
+        "changeModel": "Konuşma modelini değiştir, {{model}}"
+      }
+    },
+    "linux": {
+      "tryIt": "Çalışmıyor mu? <guide>Linux kurulum rehberi</guide>",
+      "done": "Diğer uygulamalarda çalışmıyor mu? <guide>Linux kurulum rehberi</guide>"
+    }
+  },
+  "modelTable": {
+    "tags": {
+      "preview": "Canlı önizleme",
+      "previewTitle": "Siz konuşurken sözcüklerinizi Canlı ekran katmanında gösterir, durduğunuzda yazar",
+      "translate": "Çeviri yapar",
+      "translateTitle": "Söylediklerinizi İngilizce metne çevirebilir. Ayarlardan açın"
+    },
+    "rubric": {
+      "gradeTitle": "{{language}} doğruluğu: {{grade}}",
+      "accuracyTitle": "{{language}} doğruluğu",
+      "overallTitle": "Dillerinizdeki doğruluk: {{grade}}",
+      "overall": "Dillerinizdeki doğruluk",
+      "meaning": {
+        "A": "Çok az hata: sözleriniz genellikle söylediğiniz gibi çıkar",
+        "B": "Bazı hatalar: arada bir sözcüğü düzeltmeniz gerekebilir",
+        "C": "Sık hatalar: bazı ayrıntılar kaybolabilir",
+        "D": "Çok hata: yazdığı metni kontrol edip düzeltmeniz gerekir",
+        "F": "Çoğu zaman belirsiz: söylediklerinizin büyük kısmı yanlış çıkabilir"
+      },
+      "unsupported": "Bu model {{language}} dilini anlamıyor, bu yüzden yazamaz",
+      "unrated": "Bu model {{language}} dilini anlıyor, ama ne kadar iyi anladığını henüz ölçmedik",
+      "under": "%{{max}} altı",
+      "between": "%{{min}} ile %{{max}} arası",
+      "over": "%{{min}} veya üzeri",
+      "speedTitle": "Hız: {{speed}}",
+      "speedName": {
+        "0": "Çok yavaş",
+        "1": "Yavaş",
+        "2": "Orta",
+        "3": "Hızlı",
+        "4": "Çok hızlı"
+      },
+      "speedMeaning": {
+        "0": "Sözcükleriniz uzun bir beklemeden sonra çıkar",
+        "1": "Sözcükleriniz biraz beklemeden sonra çıkar",
+        "2": "Sözcükleriniz kısa bir beklemeden sonra çıkar",
+        "3": "Sözcükleriniz neredeyse anında çıkar",
+        "4": "Sözcükleriniz anında çıkar"
+      },
+      "speedPreview": "{{meaning}}, siz konuşurken canlı önizleme ile",
+      "untimed": "Ne kadar hızlı olduğunu henüz ölçmedik",
+      "underSeconds": "{{max}} sn altı",
+      "betweenSeconds": "{{min}} ile {{max}} sn arası",
+      "overSeconds": "{{min}} sn veya üzeri"
+    },
+    "roles": {
+      "recommended": "Önerilen",
+      "faster": "Daha hızlı",
+      "accurate": "Daha doğru",
+      "fromAll": "Tüm modeller arasından"
+    },
+    "speed": "Hız",
+    "size": "Boyut",
+    "accuracy": "Doğruluk",
+    "search": "Model ara",
+    "allLabel": "Konuşma modelleri",
+    "noMatch": "“{{query}}” ile eşleşen bir şey yok. Bir dil veya Whisper ya da Parakeet gibi bir aile deneyin",
+    "noFilterMatch": "Bu filtrelerle eşleşen model yok",
+    "speedUntested": "Hız henüz ölçülmedi",
+    "speedWords": {
+      "0": "Çok yavaş, sözcükler uzun bir beklemeden sonra çıkar",
+      "1": "Yavaş, sözcükler biraz beklemeden sonra çıkar",
+      "2": "Orta, sözcükler kısa bir beklemeden sonra çıkar",
+      "3": "Hızlı, sözcükler neredeyse anında çıkar",
+      "4": "Çok hızlı, sözcükler anında çıkar"
+    },
+    "speedWordsPreview": {
+      "0": "Çok yavaş, siz konuşurken canlı önizleme ile",
+      "1": "Yavaş, siz konuşurken canlı önizleme ile",
+      "2": "Orta, siz konuşurken canlı önizleme ile",
+      "3": "Hızlı, siz konuşurken canlı önizleme ile",
+      "4": "Çok hızlı, siz konuşurken canlı önizleme ile"
+    },
+    "missingLanguage": "Eksik bir dil var",
+    "allLanguages": "Tümü",
+    "downloadingLine": "{{total}} içinden %{{percent}} indiriliyor",
+    "customLine": "Modeller klasörünüzden eklendi. Derecelendirilmedi."
+  },
+  "languagePicker": {
+    "search": "Dil ara",
+    "addAnother": "Başka ekle",
+    "remove": "{{language}} dilini kaldır",
+    "alreadyAdded_one": "{{languages}} zaten ekli.",
+    "alreadyAdded_other": "{{languages}} zaten ekli."
+  },
+  "modelSelector": {
+    "custom": "Özel",
+    "streaming": "Akış",
+    "active": "Aktif",
+    "noModelsAvailable": "Kullanılabilir model yok",
+    "verifying": "{{modelName}} doğrulanıyor...",
+    "verifyingGeneric": "Doğrulanıyor...",
+    "downloading": "%{{percentage}} indiriliyor",
+    "downloadingMultiple": "{{count}} model indiriliyor...",
+    "modelReady": "Model Hazır",
+    "loading": "{{modelName}} yükleniyor...",
+    "loadingGeneric": "Yükleniyor...",
+    "modelError": "Model Hatası",
+    "modelUnloaded": "Model Boşaltıldı",
+    "noModelDownloadRequired": "Model Yok – İndirme Gerekli",
+    "downloadSpeed": "{{speed}} MB/s",
+    "lockedWhileTranscribing": "Geçmiş'teki yazıya dökme bitince modeli değiştirebilirsiniz."
+  },
+  "settings": {
+    "modelSettings": {
+      "title": "{{model}} Ayarları"
+    },
+    "general": {
+      "title": "Genel",
+      "shortcut": {
+        "title": "{{appName}} Kısayolları",
+        "description": "Sesle yazma kaydını başlatmak için klavye kısayollarını yapılandırın",
+        "loading": "Kısayollar yükleniyor...",
+        "none": "Kısayol yapılandırılmadı",
+        "notFound": "Kısayol bulunamadı",
+        "pressKeys": "Tuşlara basın...",
+        "bindings": {
+          "transcribe": {
+            "name": "Transkripsiyon Kısayolu",
+            "description": "Sesinizi kaydetmek ve metne dönüştürmek için klavye kısayolu."
+          },
+          "cancel": {
+            "name": "İptal Kısayolu",
+            "description": "Mevcut kaydı iptal etmek için klavye kısayolu."
+          },
+          "transcribe_with_post_process": {
+            "name": "Son İşlem Kısayolu",
+            "description": "İsteğe bağlı: Transkripsiyonunuza her zaman yapay zekâ ile son işlem uygulayan özel bir kısayol tuşu."
+          },
+          "ask_agent": {
+            "name": "Soru Kısayolu",
+            "description": "Her zaman aracıyla konuşur: bir soru sorun veya ondan bir şey yapmasını isteyin. Asla yazmaz."
+          }
+        },
+        "errors": {
+          "set": "Kısayol ayarlanamadı: {{error}}"
+        }
+      },
+      "language": {
+        "title": "Dil",
+        "description": "Konuşma tanıma dilini seçin. 'Otomatik' seçeneği dili kendisi belirler, ancak belirli bir dil seçmek o dildeki doğruluğu artırabilir.",
+        "searchPlaceholder": "Dil ara...",
+        "noResults": "Dil bulunamadı",
+        "auto": "Otomatik",
+        "autoUnavailable": {
+          "title": "Otomatik devre dışı",
+          "oneLanguage": "Dillerinizden yalnızca biri bu modelle çalışıyor",
+          "undetectable": "{{languages}} ile kullanılamaz",
+          "noMatch": "Dillerinizden hiçbiri bu modelle çalışmıyor"
+        },
+        "detectorMissingTitle": "Otomatik için ayrı bir indirme gerekiyor",
+        "detectorMissing": "Bu model hangi dili konuştuğunuzu anlayamıyor. Otomatik'in bunu anlamak için küçük bir dil algılayıcıya ihtiyacı var",
+        "stopDetectorDownload": "Dil algılayıcının indirilmesini durdur"
+      },
+      "preferredLanguages": {
+        "title": "Tercih Edilen Diller",
+        "description": "Konuştuğunuz diller. {{appName}} bunları model önermek için kullanır.",
+        "noMatch": "“{{query}}” ile eşleşen dil yok",
+        "weak": "Henüz hiçbir model {{languages}} dilini iyi tanımıyor."
+      },
+      "shortcutActivation": {
+        "title": "Kısayol davranışı",
+        "description": "Transkripsiyon kısayolunun kaydı nasıl başlatıp durduracağını seçin.",
+        "options": {
+          "holdOrToggle": "Otomatik",
+          "pushToTalk": "Basılı tut",
+          "toggle": "Aç/Kapat"
+        },
+        "descriptions": {
+          "hold_or_toggle": "Kaydetmek için basılı tutun veya açıp kapatmak için dokunun",
+          "push_to_talk": "Kısayolu basılı tuttuğunuz sürece kaydeder",
+          "toggle": "Kaydı başlatmak için kısayola dokunun, durdurmak için tekrar dokunun"
+        }
+      }
+    },
+    "models": {
+      "title": "Modeller",
+      "changeLanguages": "Dilleri değiştir",
+      "sections": {
+        "yours": "Bu bilgisayarda",
+        "fits": "Dilleriniz için",
+        "untested": "Test edilmemiş"
+      },
+      "untestedNote": "{{appName}} ile test edilmedi. Daha yavaş olabilir veya daha fazla hata yapabilir.",
+      "untestedHidden_one": "{{count}} model daha yazdırma için ayarlanmamış. Bulmak için arama yapın.",
+      "untestedHidden_other": "{{count}} model daha yazdırma için ayarlanmamış. Bulmak için arama yapın.",
+      "emptyYours": "Henüz model yok. Aşağıdan birini seçin: iner, sonra {{appName}} onu kullanır.",
+      "showMore": "{{count}} tane daha göster",
+      "showFewer": "Daha az göster",
+      "download": "İndir ve kullan",
+      "downloadingThenUse": "{{total}} içinden %{{percent}}, sonra geçilir",
+      "loading": "Yükleniyor…",
+      "deleteAsk": "{{name}} silinsin mi? {{size}} yer açılır.",
+      "deleteAskActive": "{{name}} silinsin mi? Başka bir model seçene kadar {{appName}} transkripsiyon yapamaz.",
+      "cancel": "İptal",
+      "deleteModel": "{{name}} modelini sil",
+      "cancelDownload": "{{name}} indirmesini durdur",
+      "legend": {
+        "open": "Modeller nasıl derecelendirilir",
+        "accuracyNote": "Dillerinizin her biri için: bir modelin test kayıtlarımızda kaç sözcüğü yanlış anladığı.",
+        "speedNote": {
+          "accelerated": "30 saniyelik konuşmanın test dizüstü bilgisayarımızın grafik yongasında yazıya dökülmesinin ne kadar sürdüğü. Bu bilgisayarda farklı olabilir.",
+          "cpu": "30 saniyelik konuşmanın test dizüstü bilgisayarımızın işlemcisinde yazıya dökülmesinin ne kadar sürdüğü. Bu bilgisayarda farklı olabilir."
+        },
+        "marks": "? henüz ölçülmedi. — o dili duymaz."
+      },
+      "retiredNotice": {
+        "title": "Eski modeller artık {{appName}} ile çalışmıyor",
+        "description": "Bilgisayarınızda {{size}} yer kaplıyorlar.",
+        "delete": "Modelleri sil",
+        "deleted": "Eski modeller silindi",
+        "deleteFailed": "Bazı eski modeller silinemedi. Ayrıntılar için günlüğe bakın."
+      },
+      "rescan": {
+        "label": "Yeniden Tara",
+        "tooltip": "{{appName}} dışında modeller klasörüne veya Hugging Face önbelleğine eklenen modelleri yeniden tara"
+      }
+    },
+    "languages": {
+      "title": "Diller"
+    },
+    "sound": {
+      "title": "Ses",
+      "microphone": {
+        "title": "Mikrofon",
+        "description": "Tercih ettiğiniz mikrofon cihazını seçin",
+        "placeholder": "Mikrofon seçin...",
+        "loading": "Yükleniyor..."
+      },
+      "channel": {
+        "title": "Giriş Kanalı",
+        "description": "Kayıt yapılacak giriş kanalını seçin. Ses arabiriminizde birden fazla giriş varsa bu seçeneği kullanın.",
+        "average": "Tüm kanalların ortalaması",
+        "channel": "Kanal {{n}}"
+      },
+      "audioFeedback": {
+        "label": "Sesli Geri Bildirim",
+        "description": "Kayıt başladığında ve bittiğinde ses çalar"
+      },
+      "outputDevice": {
+        "title": "Çıkış Cihazı",
+        "description": "Geri bildirim sesleri için ses çıkış cihazını seçin",
+        "placeholder": "Çıkış cihazı seçin...",
+        "loading": "Yükleniyor..."
+      },
+      "volume": {
+        "title": "Ses Seviyesi",
+        "description": "Sesli geri bildirimlerin ses seviyesini ayarlayın"
+      }
+    },
+    "advanced": {
+      "groups": {
+        "app": "Uygulama",
+        "output": "Çıktı",
+        "transcription": "Transkripsiyon",
+        "history": "Geçmiş",
+        "experimental": "Deneysel"
+      },
+      "experimentalToggle": {
+        "label": "Deneysel Özellikler",
+        "description": "Hala geliştirme aşamasında olan deneysel özellikleri etkinleştir."
+      },
+      "lazyStreamClose": {
+        "label": "Transkripsiyonlar Arasında Mikrofonu Açık Tut",
+        "description": "Kayıt durdurulduktan sonra mikrofon akışını 30 saniye açık tutar, ardışık transkripsiyonlarda gecikmeyi azaltır. Etkinken Bluetooth ses kalitesini düşürebilir."
+      },
+      "acceleration": {
+        "transcribe": {
+          "title": "Donanım Hızlandırma",
+          "description": "Transkripsiyon için kullanılacak donanımı seçin. Otomatik mod, mevcutsa GPU'yu kullanır; değilse CPU'ya geçer."
+        },
+        "gpuDevice": {
+          "auto": "Otomatik"
+        }
+      },
+      "startHidden": {
+        "label": "Gizli Başlat",
+        "description": "Pencereyi açmadan sistem tepsisinde başlatır."
+      },
+      "autostart": {
+        "label": "Başlangıçta Çalıştır",
+        "description": "Bilgisayara giriş yaptığınızda {{appName}} otomatik olarak başlatılır."
+      },
+      "showTrayIcon": {
+        "label": "Tepsi Simgesini Göster",
+        "description": "{{appName}} simgesini sistem tepsisinde göster."
+      },
+      "overlay": {
+        "style": {
+          "title": "Ekran Katmanı",
+          "description": "Kayıt sırasında gösterilecek ekran katmanını seçin: 'Yok' katmanı gizler, 'Sade' küçük bir gösterge gösterir, 'Canlı' siz konuşurken transkripsiyonu gerçek zamanlı gösterir (yalnızca akış destekli modeller — model seçicide 'Akış' rozetini arayın). Linux'ta 'Yok' önerilir.",
+          "options": {
+            "none": "Yok",
+            "minimal": "Sade",
+            "live": "Canlı"
+          }
+        },
+        "position": {
+          "title": "Ekran Katmanı Konumu",
+          "description": "Ekran katmanının kayıt ve transkripsiyon sırasında nerede görüneceğini belirler.",
+          "options": {
+            "bottom": "Alt",
+            "top": "Üst"
+          }
+        }
+      },
+      "pasteMethod": {
+        "title": "Yapıştırma Yöntemi",
+        "description": "Metnin nasıl ekleneceğini seçin. Doğrudan: sistem girişiyle yazmayı simüle eder. Yok: yapıştırmayı atlar, sadece geçmişi/panoyu günceller.",
+        "options": {
+          "clipboard": "Pano ({{modifier}}+V)",
+          "clipboardCtrlShiftV": "Pano (Ctrl+Shift+V)",
+          "clipboardShiftInsert": "Pano (Shift+Insert)",
+          "direct": "Doğrudan",
+          "none": "Yok",
+          "externalScript": "Harici Betik"
+        },
+        "externalScriptPlaceholder": "/dosya/yolu/betik.sh"
+      },
+      "typingTool": {
+        "title": "Yazma Aracı",
+        "description": "Doğrudan yapıştırma yöntemi için hangi Linux yazma aracının kullanılacağını seçin. Otomatik seçeneği, sisteminiz için mevcut en iyi aracı algılar ve kullanır.",
+        "options": {
+          "auto": "Otomatik (Önerilen)"
+        }
+      },
+      "clipboardHandling": {
+        "title": "Pano Yönetimi",
+        "description": "Panoyu Değiştirme, transkripsiyon sonrası mevcut pano içeriğini korur. Panoya Kopyala ise yapıştırma işleminden sonra transkripsiyon sonucunu panoda bırakır.",
+        "options": {
+          "dontModify": "Panoyu Değiştirme",
+          "copyToClipboard": "Panoya Kopyala"
+        }
+      },
+      "autoSubmit": {
+        "title": "Otomatik Gönder",
+        "description": "Metin eklendikten sonra seçilen tuş kombinasyonunu otomatik olarak gönderir. macOS'ta Cmd+Enter, Windows/Linux'ta Super+Enter geçerlidir.",
+        "options": {
+          "off": "Kapalı",
+          "enter": "Enter",
+          "cmdEnter": "Cmd+Enter",
+          "superEnter": "Super+Enter",
+          "ctrlEnter": "Ctrl+Enter"
+        }
+      },
+      "translateToEnglish": {
+        "label": "İngilizce'ye Çevir",
+        "description": "Transkripsiyon sırasında diğer dillerden İngilizce'ye otomatik olarak çevirir."
+      },
+      "modelUnload": {
+        "title": "Modeli Boşalt",
+        "description": "Belirtilen süre boyunca kullanılmadığında modelin GPU/CPU belleğini otomatik olarak serbest bırakır.",
+        "options": {
+          "never": "Asla",
+          "immediately": "Hemen",
+          "min2": "2 dakika sonra",
+          "min5": "5 dakika sonra",
+          "min10": "10 dakika sonra",
+          "min15": "15 dakika sonra",
+          "hour1": "1 saat sonra",
+          "sec15": "15 saniye sonra (Debug)"
+        }
+      },
+      "customWords": {
+        "title": "Özel Kelimeler",
+        "description": "Desteklenen modellerin adları ve özel terimleri tanımasına yardımcı olun. Bulanık düzeltme şu anda A–Z harflerini ve rakamları kullanan sözcüklerle sınırlıdır.",
+        "placeholder": "Kelime ekle",
+        "add": "Ekle",
+        "remove": "{{word}} Kaldır",
+        "duplicate": "\"{{word}}\" zaten mevcut"
+      },
+      "voiceActivityDetection": {
+        "title": "Ses Etkinliği Algılama",
+        "description": "Kayıtlardaki sessizliği filtreler. Akış destekli modeller daha uzun bir VAD kuyruğu kullanır; VAD devre dışı bırakıldığında ham ses kaydedilir."
+      },
+      "longFormChunking": {
+        "title": "Uzun Sesi Bölme",
+        "description": "Uzun kayıtları yazıya dökmeden önce duraklamalardan böler; bu genellikle yazıya dökme performansını artırır. Yazıya dökülen dosyalar ve uzun yeniden transkripsiyonlar her zaman bölünür."
+      },
+      "languageDetection": {
+        "title": "Otomatik'i dillerimle sınırla",
+        "description": "Otomatik, küçük bir dil algılayıcı kullanarak yalnızca tercih ettiğiniz diller arasından seçer. Otomatik konuşmadığınız bir dili seçip duruyorsa bunu açın",
+        "downloadHint": "Bunu açmak küçük bir dil algılayıcı indirir",
+        "downloadingHint": "Dil algılayıcı indiriliyor. İptal etmek için kapatın"
+      },
+      "vadBackend": {
+        "title": "Ses Etkinliği Arka Ucu",
+        "description": "Sessizliği filtrelemek için kullanılan algılayıcıyı seçin. Earshot deneyseldir; konuşma kesiliyorsa veya gürültü korunuyorsa Silero'ya geri dönün.",
+        "options": {
+          "silero": "Silero",
+          "earshot": "Earshot"
+        }
+      },
+      "fillerWordRemoval": {
+        "title": "Dolgu Sözcüklerini Kaldır",
+        "description": "Transkripsiyonlardaki yaygın duraksama sözcüklerini kaldırır. Bunları korumak için kapatın."
+      },
+      "chineseScript": {
+        "title": "Çince yazı",
+        "description": "Mandarin ve Kantonca transkripsiyonları Basitleştirilmiş karakterlerle veya Tayvan ya da Hong Kong'da yazıldığı şekliyle Geleneksel karakterlerle yazar. Diğer diller değiştirilmez.",
+        "options": {
+          "asTranscribed": "Transkripsiyondaki gibi",
+          "simplified": "Basitleştirilmiş",
+          "traditionalTw": "Geleneksel (Tayvan)",
+          "traditionalHk": "Geleneksel (Hong Kong)"
+        }
+      }
+    },
+    "postProcessing": {
+      "hotkey": {
+        "title": "Kısayol Tuşu"
+      },
+      "prompts": {
+        "title": "Prompt",
+        "selectedPrompt": {
+          "title": "Seçili Prompt",
+          "description": "Transkripsiyonları iyileştirmek için bir şablon seçin veya yeni bir tane oluşturun. Yakalanan transkripte referans vermek için prompt metni içinde ${output} kullanın."
+        },
+        "noPrompts": "Kullanılabilir prompt yok",
+        "selectPrompt": "Prompt Seç",
+        "createNew": "Yeni Prompt Oluştur",
+        "promptLabel": "Prompt Etiketi",
+        "promptLabelPlaceholder": "Prompt adı girin",
+        "promptInstructions": "Prompt Talimatları",
+        "promptInstructionsPlaceholder": "Transkripsiyondan sonra çalıştırılacak talimatları yazın. Örnek: Aşağıdaki metnin dilbilgisini ve açıklığını iyileştir: ${output}",
+        "promptTip": "İpucu: Transkribe edilen metni promptunuza eklemek için <code>${output}</code> kullanın.",
+        "updatePrompt": "Promptu Güncelle",
+        "deletePrompt": "Promptu Sil",
+        "createPrompt": "Prompt Oluştur",
+        "cancel": "İptal",
+        "selectToEdit": "Ayrıntılarını görüntülemek ve düzenlemek için yukarıdan bir prompt seçin.",
+        "createFirst": "İlk son işlem promptunuzu oluşturmak için yukarıdaki “Yeni Prompt Oluştur” seçeneğine tıklayın."
+      }
+    },
+    "history": {
+      "title": "Geçmiş",
+      "openFolder": "Kayıtlar Klasörünü Aç",
+      "loading": "Geçmiş yükleniyor...",
+      "empty": "Henüz transkripsiyon yok. Geçmişinizi oluşturmak için kayda başlayın!",
+      "copyToClipboard": "Transkripsiyonu panoya kopyala",
+      "copyError": "Transkripsiyon panoya kopyalanamadı.",
+      "save": "Transkripsiyonu kaydet",
+      "unsave": "Kaydedilenlerden kaldır",
+      "delete": "Kaydı sil",
+      "deleteError": "Kayıt silinemedi. Lütfen tekrar deneyin.",
+      "retranscribe": "Yeniden transkribe et",
+      "cancelTranscription": "Transkripsiyonu iptal et",
+      "transcribing": "Transkribe ediliyor...",
+      "transcriptionFailed": "Transkripsiyon başarısız oldu. Yeniden deneme simgesini kullanarak tekrar transkribe edebilirsiniz.",
+      "notTranscribed": "Transkribe edilmedi. Yeniden deneme simgesini kullanarak transkribe edebilirsiniz.",
+      "transcribeFile": "Dosyayı Yazıya Dök",
+      "mediaFiles": "Ses ve video",
+      "fileUnsupported": "{{name}} dosyasından ses okunamadı.",
+      "readingFile": "{{name}} okunuyor...",
+      "transcribeFailed": "Yazıya dökme başarısız oldu. Lütfen tekrar deneyin.",
+      "waiting": "Yazıya dökülmeyi bekliyor",
+      "transcribingPercent": "Yazıya dökülüyor, %{{percent}}",
+      "showMore": "Daha fazla göster",
+      "showLess": "Daha az göster",
+      "dropTitle": "Yazıya dökmek için bırakın",
+      "dropDescription": "Geçmiş'te görünecek.",
+      "searchPlaceholder": "Geçmişte ara",
+      "clearSearch": "Aramayı temizle",
+      "today": "Bugün",
+      "yesterday": "Dün",
+      "saved": "Kaydedildi",
+      "playRecording": "Kaydı oynat",
+      "hidePlayer": "Oynatıcıyı gizle",
+      "emptyTitle": "Henüz dikte yok",
+      "emptyDescription": "{{appName}} tarafından yazıya dökülen her şey en yeniden eskiye doğru burada görünür. Herhangi bir uygulamada kısayolunuzu basılı tutarak konuşmaya başlayın.",
+      "noResultsTitle": "Eşleşme yok",
+      "noResultsDescription": "Geçmişinizde “{{query}}” ile eşleşen bir şey yok.",
+      "loadingMore": "Daha fazlası yükleniyor…",
+      "searchingOlder": "Eski kayıtlar aranıyor…"
+    },
+    "debug": {
+      "title": "Hata Ayıklama",
+      "logDirectory": {
+        "title": "Log Dizini",
+        "description": "Log dosyalarının saklandığı konum"
+      },
+      "logLevel": {
+        "title": "Log Seviyesi",
+        "description": "Loglamanın ayrıntı düzeyini ayarla"
+      },
+      "liveLogs": {
+        "title": "Canlı Loglar",
+        "description": "Sorunları log dosyasını açmadan teşhis etmek için uygulama loglarını gerçek zamanlı olarak akıtın. Yalnızca bu panel açıkken oluşturulan loglar gösterilir; yukarıdaki Log Seviyesi ayarına uyar.",
+        "live": "Canlı",
+        "paused": "Duraklatıldı",
+        "pause": "Duraklat",
+        "resume": "Sürdür",
+        "copied": "Kopyalandı",
+        "lineCount": "{{count}} satır",
+        "empty": "Loglar bekleniyor… Uygulama logları ürettikçe girişler burada görünür."
+      },
+      "updateChecks": {
+        "label": "Güncellemeleri Kontrol Et",
+        "description": "{{appName}} için yeni sürümleri otomatik olarak kontrol eder",
+        "lockedDescription": "Sistem yapılandırması tarafından devre dışı bırakıldı (AMBIENT_DISABLE_UPDATER)"
+      },
+      "whatsNewPreview": {
+        "title": "Yenilikleri Önizle",
+        "description": "En son paketlenmiş sürüm notunu görüldü olarak işaretlemeden aç",
+        "button": "Önizle",
+        "noNotes": "Paketlenmiş sürüm notu bulunamadı",
+        "error": "Sürüm notları önizlenemedi"
+      },
+      "onboardingPreview": {
+        "title": "İlk kurulum önizlemesi",
+        "description": "İzinleri, modelleri veya tamamlanma durumunu değiştirmeden ilk kurulum ekranlarını önizleyin",
+        "exitButton": "Önizlemeden çık",
+        "choose": "Bir ekran seçin",
+        "screens": {
+          "welcome": "Hoş geldiniz",
+          "permissions": "İzinler",
+          "model": "Model",
+          "demo": "Demo",
+          "try": "Deneyin",
+          "done": "Hazır"
+        }
+      },
+      "onboardingRun": {
+        "title": "İlk Kurulumu Çalıştır",
+        "description": "İlk kurulumu baştan gerçekten uygulayın: izin ister, modelleri indirir ve seçimlerinizi kaydeder",
+        "button": "Başlat"
+      },
+      "modelMigration": {
+        "title": "Model Geçişi",
+        "description": "Eski biçimli model güncelleme ekranını gerçekten açın: yedekleri indirir, modelleri değiştirir ve eski dosyaları siler",
+        "button": "Aç",
+        "noRetired": "Diskte eski biçimli model yok"
+      },
+      "soundTheme": {
+        "label": "Ses Teması",
+        "description": "Kayıt başlangıç ve bitişi için sesli geri bildirim temasını seçin"
+      },
+      "wordCorrectionThreshold": {
+        "title": "Kelime Düzeltme Eşiği",
+        "description": "Özel kelime düzeltmeleri için hassasiyet"
+      },
+      "historyLimit": {
+        "title": "Geçmiş Limiti",
+        "description": "Saklanacak maksimum geçmiş kaydı sayısı",
+        "entries": "kayıt"
+      },
+      "recordingRetention": {
+        "title": "Kayıtları Otomatik Sil",
+        "description": "Alan tasarrufu için eski kayıtları otomatik olarak siler",
+        "never": "Asla",
+        "preserveLimit": "Son {{count}} kaydı tut",
+        "days3": "3 gün sonra",
+        "weeks2": "2 hafta sonra",
+        "months3": "3 ay sonra",
+        "placeholder": "Saklama süresi seçin..."
+      },
+      "alwaysOnMicrophone": {
+        "label": "Mikrofon Her Zaman Açık",
+        "description": "Daha hızlı yanıt için mikrofonu aktif tutar"
+      },
+      "clamshellMicrophone": {
+        "title": "Kapalı Kapak Mikrofonu",
+        "description": "Dizüstü bilgisayar kapağı kapalıyken kullanılacak mikrofon"
+      },
+      "postProcessingToggle": {
+        "label": "Son İşlem",
+        "description": "Transkripsiyon sonrası yapay zekâ destekli metin iyileştirmeyi etkinleştirir"
+      },
+      "muteWhileRecording": {
+        "label": "Kayıt Sırasında Sessize Al",
+        "description": "Kayıt sırasında sistem sesini kapatır"
+      },
+      "appendTrailingSpace": {
+        "label": "Sonuna Boşluk Ekle",
+        "description": "Yapıştırılan transkripsiyondan sonra boşluk ekler"
+      },
+      "keyboardImplementation": {
+        "title": "Klavye Uygulaması",
+        "description": "Klavye kısayolları için kullanılacak altyapıyı seçin.",
+        "bindingsReset": "Klavye kısayolları uyumsuzdu ve varsayılan ayarlara sıfırlandı"
+      },
+      "pasteDelay": {
+        "title": "Yapıştırma Gecikmesi (Önce)",
+        "description": "Metin kopyalandıktan sonra, yapıştırma tuşu gönderilmeden önceki gecikme (milisaniye cinsinden). Hiçbir şey yapıştırılmıyorsa artırın."
+      },
+      "pasteDelayAfter": {
+        "title": "Yapıştırma Gecikmesi (Sonra)",
+        "description": "Yapıştırma tuşundan sonra, önceki panonuz geri yüklenmeden önceki gecikme (milisaniye cinsinden). Transkripsiyon yerine eski pano içeriği yapıştırılıyorsa artırın."
+      },
+      "holdThreshold": {
+        "title": "Basılı tutma eşiği",
+        "description": "Yalnızca Otomatik modda: kısayolun dokunma yerine basılı tutma sayılması için ne kadar süre (milisaniye) basılı tutulması gerektiği. Kısa basılı tutmalardan sonra kayıt açık kalmaya devam ediyorsa azaltın; bilinçli dokunmalar basılı tutma olarak algılanıyorsa artırın."
+      },
+      "reliablePaste": {
+        "title": "Güvenilir Yapıştırma (Beta)",
+        "description": "Panoyu sabit bir gecikmenin ardından değil, hedef uygulama transkripsiyonu gerçekten okuduktan sonra geri yükler. Sistem yükü altında eski pano içeriğinin yapıştırılması sorununu gidermeyi amaçlar. Pano üzerinden çalışan bir yapıştırma yöntemi gerektirir; yalnızca macOS ve Windows."
+      },
+      "recordingBuffer": {
+        "title": "Ekstra Kayıt Tamponu",
+        "description": "Tuşu bıraktıktan sonra arka plandaki sesi yakalamak için kaydı sürdürme süresi (milisaniye). 0 = ekstra tampon yok."
+      },
+      "languageDetectionWindow": {
+        "title": "Dil Algılama Sesi",
+        "description": "Dil algılayıcının duyduğu konuşma saniyesi. Daha uzun daha doğru ama daha yavaştır."
+      },
+      "keyboardDiagnostic": {
+        "title": "Klavye Tanılaması",
+        "description": "Klavye olaylarının {{appName}}'ye ulaşıp ulaşmadığını denetler. Yalnızca olay sayıları kaydedilir — hangi tuşlara bastığınız asla kaydedilmez.",
+        "run": "10 sn'lik tanılamayı çalıştır",
+        "running": "Dinleniyor… kısayolunuza birkaç kez basın (ör. Option+Space)",
+        "secureInputLabel": "Secure Input",
+        "enabled": "etkin",
+        "disabled": "devre dışı",
+        "holder": "{{name}} tarafından tutuluyor (pid {{pid}})",
+        "holderUnknown": "görünür bir sahip yok",
+        "keyDown": "Tuş basma",
+        "keyUp": "Tuş bırakma",
+        "flagsChanged": "Değiştiriciler",
+        "mouse": "Fare",
+        "verdictBlocked": "Secure Input tuş olaylarını engelliyor — normal tuş içeren kısayollar bu sorun çözülene kadar çalışamaz.",
+        "verdictSuspicious": "Değiştirici olayları geldi ancak hiç tuş olayı gelmedi — Secure Input devre dışı görünmesine rağmen bir şey tuşları bastırıyor. Lütfen bunu GitHub'da bildirin.",
+        "verdictOk": "Tuş olayları {{appName}}'ye normal şekilde ulaşıyor.",
+        "verdictNoEvents": "Hiç olay yakalanmadı — test sırasında herhangi bir tuşa bastınız mı?",
+        "failed": "Tanılama başarısız: {{error}}"
+      }
+    },
+    "about": {
+      "title": "Hakkında",
+      "version": {
+        "title": "Sürüm",
+        "description": "{{appName}}'nin mevcut sürümü"
+      },
+      "whatsNewUpdates": {
+        "label": "Yenilikleri Göster",
+        "description": "{{appName}} güncellemelerinden sonra sürüm notlarını göster"
+      },
+      "appDataDirectory": {
+        "title": "Uygulama Veri Dizini",
+        "description": "{{appName}}'nin verilerini sakladığı konum"
+      },
+      "sourceCode": {
+        "title": "Web sitesi",
+        "description": "Haberler, yardım ve hesabınız",
+        "button": "Web sitesini aç"
+      },
+      "acknowledgments": {
+        "title": "Teşekkürler",
+        "ggml": {
+          "title": "ggml",
+          "description": "Cihaz üzerinde makine öğrenmesi çıkarımı için yüksek performanslı tensör kütüphanesi",
+          "details": "{{appName}}'nin yerel konuşmadan metne dönüştürme özelliği transcribe.cpp ve ggml üzerine kuruludur. Georgi Gerganov'a ve katkıda bulunanlara harika çalışmaları için teşekkür ederiz."
+        },
+        "licenses": {
+          "title": "Open-source licenses",
+          "description": "Notices for the open-source software {{appName}} includes",
+          "show": "Show licenses",
+          "hide": "Hide licenses"
+        }
+      },
+      "intro": {
+        "title": "Karşılama tanıtımı",
+        "description": "{{appName}} ilk açıldığında oynatılan animasyon.",
+        "button": "Tanıtımı oynat"
+      }
+    },
+    "agent": {
+      "title": "Sesli aracı",
+      "description": "Yazmak yerine bir soru sorun veya bir şey yapmasını isteyin.",
+      "routing": {
+        "label": "Dikte sırasında istekleri anla",
+        "description": "İstekler yerine getirilir; geri kalan her şey her zamanki gibi yazılır. Her zaman yazmak için kapatın."
+      },
+      "wake": {
+        "label": "Eller serbest: “Merhaba Ambient” deyin",
+        "description": "{{appName}} ile tuşa basmadan konuşun: “Merhaba Ambient, takvimimde ne var?” Bu Mac’te dinler ve adıyla başlamayan her şeyi yok sayar. Açıkken Mac’iniz mikrofon göstergesini gösterir."
+      }
+    }
+  },
+  "footer": {
+    "checkingUpdates": "Güncellemeler kontrol ediliyor...",
+    "updateAvailableShort": "Güncelleme mevcut",
+    "upToDate": "Güncel",
+    "updateCheckingDisabled": "Güncelleme Kontrolü Devre Dışı",
+    "downloading": "İndiriliyor... %{{progress}}",
+    "installing": "Yükleniyor...",
+    "preparing": "Hazırlanıyor...",
+    "checkForUpdates": "Güncellemeleri kontrol et",
+    "portableUpdateTitle": "Manuel güncelleme gerekli",
+    "portableUpdateMessage": "Taşınabilir kurulumlar otomatik olarak güncellenemez. Aşağıdan sisteminize uygun yükleyiciyi indirin, çalıştırın ve aynı klasöre kurun — Data/ klasörünüz (ayarlar, modeller, kayıtlar) yerinde kalır.",
+    "portableUpdateButton": "Yükleyiciyi indir",
+    "portableUpdateBrowseMessage": "Taşınabilir kurulumlar otomatik olarak güncellenemez. Sisteminize uygun en son sürümü GitHub Releases’ten indirin ve aynı klasöre kurun — Data/ klasörünüz (ayarlar, modeller, kayıtlar) yerinde kalır.",
+    "portableUpdateBrowseButton": "GitHub Releases’i aç"
+  },
+  "whatsNew": {
+    "title": "{{appName}} v{{version}} yenilikleri"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "delete": "Sil",
+    "close": "Kapat",
+    "open": "Aç",
+    "copy": "Kopyala",
+    "clear": "Temizle",
+    "noOptionsFound": "Seçenek bulunamadı"
+  },
+  "errors": {
+    "loadDirectory": "Dizin yüklenirken hata oluştu: {{error}}",
+    "micPermissionDeniedTitle": "Mikrofon erişimi reddedildi",
+    "micPermissionDenied": {
+      "generic": "Mikrofon erişimi işletim sistemi tarafından reddedildi. Lütfen sistem ayarlarından mikrofon iznini verin.",
+      "windows": "Ayarlar → Gizlilik ve güvenlik → Mikrofon (masaüstü uygulama erişimi dahil) bölümünden mikrofon erişimini etkinleştirin.",
+      "macos": "Sistem Ayarları → Gizlilik ve Güvenlik → Mikrofon bölümünden mikrofon erişimini verin.",
+      "linux": "Sisteminizin ses veya gizlilik ayarlarından mikrofon erişimini verin."
+    },
+    "noInputDeviceTitle": "Mikrofon bulunamadı",
+    "noInputDevice": "Ses giriş aygıtı algılanamadı. Lütfen bir mikrofon veya kulaklık bağlayın ve tekrar deneyin.",
+    "recordingFailed": "Kayıt başlatılamadı: {{error}}",
+    "modelLoadFailed": "Model yüklenemedi: {{model}}",
+    "modelLoadFailedUnknown": "bilinmeyen model",
+    "pasteFailedTitle": "Metin yapıştırılamadı",
+    "pasteFailed": "Metin etkin uygulamaya yapıştırılamadı.",
+    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu"
+  },
+  "appLanguage": {
+    "title": "Uygulama Dili",
+    "description": "{{appName}} arayüzünün dilini değiştirin"
+  },
+  "theme": {
+    "title": "Uygulama Teması",
+    "description": "{{appName}}'nin sistem temasını izlemesini ya da açık veya koyu kalmasını seçin",
+    "options": {
+      "system": "Sistem",
+      "light": "Açık",
+      "dark": "Koyu"
+    }
+  },
+  "overlay": {
+    "transcribing": "Transkribe ediliyor...",
+    "processing": "İşleniyor...",
+    "loadingModel": "Model yükleniyor..."
+  },
+  "secureInput": {
+    "blockedWithCulprit_one": "{{name}} 1 kısayolu engelliyor olabilir",
+    "blockedWithCulprit_other": "{{name}} {{count}} kısayolu engelliyor olabilir",
+    "blockedNoCulprit_one": "macOS geçici olarak 1 kısayolu engelliyor",
+    "blockedNoCulprit_other": "macOS geçici olarak {{count}} kısayolu engelliyor",
+    "recorderBlockedWithCulprit": "{{name}} kısayol değişikliklerini engelliyor olabilir",
+    "recorderBlockedNoCulprit": "macOS geçici olarak kısayol değişikliklerini engelliyor",
+    "learnMore": "Bu nasıl düzeltilir",
+    "recorderBlocked": "Şu anda kısayol kaydedilemiyor — macOS Secure Input tuş olaylarını engelliyor. Önce Secure Input uyarısını giderin.",
+    "dismiss": "Kapat"
+  },
+  "account": {
+    "currentPlan": "Mevcut plan",
+    "plans": {
+      "free": "Ücretsiz",
+      "pro": "Pro",
+      "team": "Team",
+      "trial": "Pro deneme sürümü"
+    },
+    "upgrade": "Yükselt",
+    "upgradeTo": "{{plan}} planına yükselt",
+    "manageBilling": "Faturalandırmayı yönet",
+    "usage": "Bu hafta {{limit}} kelimenin {{used}} kadarı kullanıldı",
+    "usageShort": "{{used}} / {{limit}} kelime",
+    "resets": "{{date}} tarihinde sıfırlanır",
+    "limitReached": "Bu haftaki ücretsiz kelimelerinizi kullandınız. Sınırsız dikte için yükseltin veya hafta sıfırlandığında devam edin.",
+    "limitToast": "Haftalık ücretsiz kelimeler bitti",
+    "proFeatures": {
+      "polish": "Her dikteye yapay zekâ cilası",
+      "onDevice": "Apple Intelligence ile cihazda cila",
+      "agent": "Gönderildiği haliyle ambient aracısı",
+      "priority": "Öncelikli destek"
+    },
+    "card": {
+      "activate": "Etkinleştir",
+      "active": "Etkin plan",
+      "remove": "Kaldır",
+      "activating": "Etkinleştiriliyor…",
+      "paste": "Yapıştır",
+      "pasteFailed": "Pano okunamadı. Bunun yerine ⌘V ile yapıştırın.",
+      "holder": "Giriş yapılan hesap",
+      "renewsLabel": "Yenilenme",
+      "copied": "Kopyalandı",
+      "errors": {
+        "network": "Etkinleştirmek için {{appName}} sunucusuna ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.",
+        "inactive": "Bu kodun aboneliği etkin değil. Planınızın kilidini açmak için yenileyin.",
+        "rate_limited": "Çok fazla deneme. 15 dakika sonra tekrar deneyin.",
+        "server": "Etkinleştirme bizim tarafımızda başarısız oldu. Birazdan tekrar deneyin."
+      }
+    },
+    "signIn": {
+      "sectionTitle": "Hesabın",
+      "cardLabel": "Hesap",
+      "title": "Pro için giriş yap",
+      "description": "Pro'yu satın aldığın e-postayı kullan. Sana 6 haneli bir kod göndereceğiz.",
+      "emailLabel": "E-posta",
+      "emailPlaceholder": "sen@ornek.com",
+      "continue": "Devam",
+      "sending": "Gönderiliyor…",
+      "codeTitle": "E-postanı kontrol et",
+      "codeDescription": "{{email}} adresine gönderdiğimiz 6 haneli kodu gir.",
+      "codeLabel": "Giriş kodu",
+      "digitLabel": "Hane {{n}}",
+      "signedInShort": "Giriş yapıldı",
+      "resend": "Kodu yeniden gönder",
+      "resent": "Yeni kod gönderildi.",
+      "changeEmail": "Başka bir e-posta kullan",
+      "signedInTitle": "Giriş yapıldı",
+      "noPurchase": "{{email}} için henüz Pro aboneliği yok. Pro satın al, burada açılsın.",
+      "checkAgain": "Tekrar kontrol et",
+      "signOut": "Çıkış yap",
+      "redeemLink": "Kod kullan",
+      "redeemTitle": "Kod kullan",
+      "redeemDescription": "Hediye ve destek kodları için.",
+      "redeemPlaceholder": "red-grizzly-4320",
+      "redeemDetected": "Bu bir {{appName}} koduna benziyor.",
+      "backToSignIn": "Girişe dön",
+      "gift": {
+        "code": "Kod",
+        "codeHidden": "Kod gizli",
+        "showCode": "Kodu göster",
+        "hideCode": "Kodu gizle",
+        "copyCode": "Kodu kopyala"
+      },
+      "errors": {
+        "network": "{{appName}} ile bağlantı kurulamadı. Bağlantını kontrol edip tekrar dene.",
+        "invalid_email": "Geçerli bir e-posta adresi gir.",
+        "rate_limited": "Çok fazla kod istendi. Biraz sonra tekrar dene.",
+        "invalid_code": "Kod doğru değil. E-postayı kontrol edip tekrar dene.",
+        "expired": "Kodun süresi doldu. Yeni bir kod iste.",
+        "too_many_attempts": "Çok fazla deneme. Yeni bir kod iste.",
+        "server": "Giriş bizim tarafımızda başarısız oldu. Birazdan tekrar dene.",
+        "redeem_invalid": "Kod tanınmadı. Kontrol edip tekrar dene."
+      }
+    },
+    "polish": {
+      "title": "Yapay zekâ cilası",
+      "description": "Her dikteyi düzeltir: noktalama, dolgu sözcükleri, listeler ve “onu sil” gibi düzeltmeler. Yalnızca metin gönderilir, ses asla gönderilmez.",
+      "unlock": "Sınırsıza geç",
+      "onDevice": "Bu Mac'te tutun",
+      "onDeviceDescription": "Bunun yerine Apple Intelligence kullanın. Hiçbir şey Mac'inizden çıkmaz.",
+      "freeLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı"
+    },
+    "trial": {
+      "daysLeft_one": "{{count}} gün kaldı",
+      "daysLeft_other": "{{count}} gün kaldı"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Günaydın",
+      "afternoon": "İyi öğleden sonralar",
+      "evening": "İyi akşamlar",
+      "night": "Geç saatlere kadar çalışıyorsunuz"
+    },
+    "hold": "Herhangi bir uygulamada",
+    "anywhere": "tuşlarını basılı tutarak konuşmaya başlayın.",
+    "noShortcut": "Dikte etmeye başlamak için Ayarlar’dan bir kısayol belirleyin.",
+    "stats": {
+      "words": "Bu haftaki kelimeler",
+      "wordsHint": "{{appName}} ile dikte edildi",
+      "saved": "Kazanılan süre",
+      "savedHint": "Konuşma {{speaking}} kelime/dk, yazma {{typing}}",
+      "lessThanMinute": "< 1 dk",
+      "minutes_one": "{{count}} dk",
+      "minutes_other": "{{count}} dk",
+      "hours_one": "{{count}} sa",
+      "hours_other": "{{count}} sa"
+    },
+    "recent": "Son dikteler",
+    "viewAll": "Tümünü gör",
+    "empty": {
+      "title": "Henüz burada bir şey yok",
+      "description": "Herhangi bir uygulamada kısayolunuza basın ve konuşun. Dikteleriniz burada görünecek."
+    },
+    "tips": {
+      "holdOrTap": "Konuşmak için kısayolu basılı tutun ya da başlatmak için bir kez, durdurmak için tekrar basın.",
+      "customWords": "Daha iyi doğruluk için Ayarlar → Gelişmiş → Özel Kelimeler bölümüne isimler ve terimler ekleyin.",
+      "dropFile": "Yazıya dökmek için bir ses dosyasını bu pencereye bırakın.",
+      "languages": "Daha iyi model önerileri için Ayarlar → Genel bölümünde konuştuğunuz dilleri seçin."
+    },
+    "quickActions": {
+      "label": "Hızlı işlemler",
+      "transcribeFile": "Bir dosyayı yazıya dök",
+      "openHistory": "Geçmişi aç"
+    },
+    "plan": {
+      "title": "Planınız",
+      "polishUnlimited": "Yapay zekâ cilası sınırsızdır.",
+      "polishLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı · {{day}} sıfırlanır",
+      "polishFree": "Ücretsiz plan haftalık yapay zekâ cilası hakkı içerir.",
+      "usageToday": "Bugün: yapay zekâ istekleri {{ai}} · aramalar {{search}} · adil kullanım günde {{aiLimit}}",
+      "meetingsLeft": "Bu ayki toplantılar: {{used}}/{{limit}}"
+    },
+    "privacy": {
+      "title": "Gizlilik",
+      "off": "Ekranınız okunmuyor.",
+      "on": "İzin verilenler: {{list}}",
+      "paused": "Duraklatıldı. Hiçbir şey okunmuyor."
+    }
+  },
+  "hud": {
+    "thinking": "Düşünüyor…",
+    "sources": "Kaynaklar",
+    "insert": "Ekle",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "followUpHint": "Devam sorusu için kısayolunuzu basılı tutun",
+    "yes": "Evet",
+    "notNow": "Şimdi değil",
+    "stop": "Durdur",
+    "status": {
+      "needScreenContext": "Bunu kullanmak için Gizlilik bölümünde “Sorduğunuzu oku” seçeneğini açın.",
+      "onDeviceFailed": "Şu anda bu Mac’te yanıt verilemedi.",
+      "offline": "{{appName}} sunucusuna ulaşılamadı. Bağlantınızı kontrol edin.",
+      "weeklyLimit": "Bu haftaki ücretsiz yapay zekâ kullanımlarınız bitti. Pro sınırsızdır.",
+      "account": "Pro erişiminiz Hesap bölümünde ilgi bekliyor.",
+      "failed": "Şu anda bu yapılamadı.",
+      "interrupted": "Yanıt kesildi.",
+      "opened": "Açıldı",
+      "searching": "Tarayıcınızda aranıyor",
+      "reminderAdded": "Anımsatıcı eklendi",
+      "eventAdded": "Takviminize eklendi",
+      "shortcutRan": "Kestirme çalıştırıldı",
+      "cantDoYet": "Bunu henüz yapamıyorum. Bilgisayar kullanımı yakında geliyor.",
+      "appNotFound": "Bu uygulama bulunamadı.",
+      "shortcutNotFound": "Bu kestirme bulunamadı.",
+      "calendarPermission": "Önce Sistem Ayarları’nda Takvimler ve Anımsatıcılar erişimine izin verin.",
+      "undone": "Geri alındı",
+      "meetingStarted": "Not alınıyor. Katılımcılara haber verin.",
+      "copied": "Kopyalandı",
+      "learned": "Anlaşıldı. Bunu Gizlilik bölümünden değiştirebilirsiniz.",
+      "sensitivePaused": "Burada duraklatıldı: bu pencerede bir kurtarma ifadesi veya özel anahtar görünüyor.",
+      "fairUse": "Bugünkü adil kullanım sınırına ulaştınız. Gece yarısı UTC’de sıfırlanır.",
+      "slowDown": "Aynı anda çok fazla istek var. Bir dakika sonra tekrar deneyin.",
+      "listening": "Dinliyor…"
+    },
+    "undo": "Geri al",
+    "close": "Kapat",
+    "meetingOffer": "Bu görüşme için not alınsın mı?",
+    "takeNotes": "Not al",
+    "suggest": {
+      "summariseThread": "Uzun yazışma. Özetlensin mi?",
+      "draftReply": "Buna bir yanıt taslağı yazılsın mı?",
+      "addToCalendar": "Burada bir tarih var. Takviminize eklensin mi?",
+      "summarisePage": "Bu sayfa özetlensin mi?",
+      "explainError": "Bu hata açıklansın mı?",
+      "summarise": "Özetle",
+      "draft": "Taslak yaz",
+      "add": "Ekle",
+      "explain": "Açıkla",
+      "tightenDraft": "Bu taslak sıkılaştırılsın mı?",
+      "priceCheck": "Başka yerde daha ucuz mu diye bakılsın mı?",
+      "answerSearch": "Bunu doğrudan yanıtlayayım mı?",
+      "fixFormula": "Bu formül hataları düzeltilsin mi?",
+      "meetingPrep": "Yaklaşan bir toplantı var. Özet hazırlansın mı?",
+      "tighten": "Sıkılaştır",
+      "check": "Kontrol et",
+      "answer": "Yanıtla",
+      "fix": "Düzelt",
+      "brief": "Özetle",
+      "reviewCode": "Bu pull request incelensin mi?",
+      "commitMessage": "Bunun için bir commit mesajı yazılsın mı?",
+      "review": "İncele",
+      "write": "Yaz"
+    },
+    "nudge": {
+      "findIt": "Bul",
+      "remindMe": "Hatırlat",
+      "copy": "Kopyala"
+    },
+    "chip": {
+      "searchInstead": "Yazıldı. Bunun yerine bunu aratayım mı?",
+      "search": "Ara"
+    },
+    "suggestionTip": "“Evet”, “şimdi değil” veya “bunları gösterme” deyin."
+  },
+  "privacy": {
+    "title": "Gizlilik",
+    "promise": "Siz açana kadar kapalı. Bu Mac’te şifreli olarak saklanır. Dışarı giden her istek listelenir.",
+    "state": {
+      "on": "İzin verdiğiniz şekilde izliyor",
+      "onDetail": "Yalnızca aşağıda açtığınız özellikler.",
+      "off": "İzlemiyor",
+      "offDetail": "Dikte her zamanki gibi çalışır. Ekranınızdaki hiçbir şey okunmaz.",
+      "paused": "Duraklatıldı",
+      "pausedDetail": "Siz devam ettirene kadar hiçbir şey okunmaz.",
+      "pausedUntil": "{{time}} saatine kadar hiçbir şey okunmaz.",
+      "resume": "Sürdür",
+      "pauseHour": "1 saat duraklat",
+      "pauseDay": "Yarına kadar"
+    },
+    "accessibility": "{{appName}}, diğer uygulamalardaki metni okumak için Erişilebilirlik erişimine ihtiyaç duyar.",
+    "grant": "Erişime izin ver",
+    "capabilities": {
+      "title": "{{appName}} neler yapabilir",
+      "description": "Her biri siz açana kadar kapalıdır.",
+      "screen_context": {
+        "title": "Sorduğunuzu oku",
+        "reads": "Sorduğunuz pencereyi ve bir şey bulmasını istediğinizde açık pencerelerinizi okur.",
+        "leaves": "Yalnızca yanıt için gereken, gizli bilgiler çıkarılarak."
+      },
+      "screen_memory": {
+        "title": "Gördüklerini hatırla",
+        "reads": "Kullandığınız pencereleri hatırlar, böylece daha sonra onlar hakkında soru sorabilirsiniz.",
+        "leaves": "Şifreli olarak bu Mac’te kalır."
+      },
+      "proactive": {
+        "title": "Öneriler sun",
+        "reads": "Doğru anda bir sonraki adımı önerir: yazışmalar, taslaklar, tarihler, hatalar, toplantılar.",
+        "leaves": "Bu Mac’te karar verilir. Toplantı hatırlatmaları dışında, siz kabul etmedikçe hiçbir şey gönderilmez."
+      },
+      "meetings": {
+        "title": "Toplantı notları",
+        "reads": "Not alırken mikrofonunuzu ve görüşmeyi duyar.",
+        "leaves": "Ses burada kalır. Özeti yazmak için yalnızca metin gönderilir."
+      },
+      "on_device_only": {
+        "title": "Her şeyi bu Mac’te tut",
+        "reads": "Her şey için Apple Intelligence, web araması yok.",
+        "leaves": "Hiçbir şey gönderilmez."
+      },
+      "wake_word": {
+        "title": "Eller serbest: “Merhaba Ambient” deyin",
+        "reads": "Bu Mac’te “Merhaba Ambient” ifadesini dinler. Geri kalan her şey siz konuşurken atılır.",
+        "leaves": "Siz söyleyene kadar hiçbir şey kaydedilmez veya gönderilmez."
+      }
+    },
+    "retention": "Saklama süresi",
+    "days_one": "{{count}} gün",
+    "days_other": "{{count}} gün",
+    "preview": {
+      "title": "{{appName}} neyi görüyor",
+      "description": "Gizlenmesi gerekenler gizlendikten sonra bir pencereden tam olarak ne okuyacağı.",
+      "hint": "Önizle’ye tıklayın, ardından 3 saniye içinde herhangi bir pencereye geçin.",
+      "switchNow": "Şimdi başka bir pencereye geçin…",
+      "button": "Önizle",
+      "noText": "Bu pencerede okunabilir metin yok.",
+      "skipped": {
+        "never_watch": "Bu uygulama asla izlenmeyecekler listenizde, bu yüzden hiçbir şey okunmadı.",
+        "no_permission": "Önce Erişilebilirlik erişimine izin verin.",
+        "unavailable": "Bu pencere okunamadı.",
+        "sensitive": "Bu pencerede bir kurtarma ifadesi veya özel anahtar görünüyor, bu yüzden hiçbir şey okunmadı."
+      }
+    },
+    "neverWatch": {
+      "title": "Asla izleme",
+      "description": "Her şey açık olsa bile asla okunmaz. Parola alanları, gizli pencereler, cüzdanlar ve kurtarma ifadeleri de atlanır.",
+      "this": "Bu uygulamayı asla izleme",
+      "added": "{{app}} artık okunmayacak."
+    },
+    "stored": {
+      "title": "Neler saklanıyor",
+      "description": "Bu Mac’teki ekran belleği. Dikte geçmişi Geçmiş bölümünde.",
+      "summary_one": "{{since}} tarihinden beri {{count}} anlık görüntü.",
+      "summary_other": "{{since}} tarihinden beri {{count}} anlık görüntü.",
+      "entries_one": "{{count}} anlık görüntü",
+      "entries_other": "{{count}} anlık görüntü",
+      "deleteApp": "Bu uygulamanın anlık görüntülerini sil",
+      "empty": "Saklanan bir şey yok.",
+      "deleteAll": "Her şeyi sil",
+      "deletedAll": "Ekran belleği ve istek günlüğü silindi."
+    },
+    "ledger": {
+      "title": "Bu Mac’ten çıkan istekler",
+      "description": "Her istek ve tam olarak ne gönderdiği. 30 gün saklanır.",
+      "empty": "Henüz istek yok.",
+      "bytes_one": "{{count}} bayt",
+      "bytes_other": "{{count}} bayt",
+      "purpose": {
+        "polish": "Yapay zekâ cilası",
+        "answer": "Yanıt",
+        "search": "Web araması",
+        "suggestion": "Öneri",
+        "summary": "Toplantı özeti",
+        "act": "Eylem",
+        "license": "Hesap kontrolü",
+        "trial": "Deneme"
+      }
+    },
+    "engine": {
+      "title": "Bu Mac’teki yapay zekâyı tercih et",
+      "description": "Mümkün olduğunda Apple Intelligence kullanır. Sonuçlar daha az özenli olduğundan varsayılan olarak kapalıdır.",
+      "unavailable": "Bu Mac’te Apple Intelligence kullanılamıyor, bu yüzden {{appName}} sunucuları kullanılıyor."
+    },
+    "suggestions": {
+      "title": "Aldığınız öneriler",
+      "description": "Bir öneri çıktığında “şimdi değil”, “bunları gösterme” veya “bu uygulamada değil” deyin, o da öğrenir. Bunu buradan istediğiniz zaman değiştirin.",
+      "mutedIn": "{{apps}} içinde kapalı",
+      "kinds": {
+        "summarise_thread": "Uzun e-posta yazışmalarını özetle",
+        "draft_reply": "Yanıt taslakları yaz",
+        "add_to_calendar": "Tarihleri takviminize ekle",
+        "summarise_page": "Uzun sayfaları özetle",
+        "explain_error": "Hataları ve başarısız testleri açıkla",
+        "tighten_draft": "Uzun taslakları sıkılaştır",
+        "price_check": "Fiyatları başka yerlerde karşılaştır",
+        "answer_search": "Tekrar tekrar yeniden yazdığınız aramaları yanıtla",
+        "fix_formula": "Tablo formüllerini düzelt",
+        "meeting_prep": "Toplantılardan önce özet sun",
+        "review_code": "Pull request’leri incele",
+        "commit_message": "Commit mesajları yaz",
+        "meeting_nudge": "Toplantı sırasında hatırlatmalar"
+      }
+    },
+    "macOnly": "Şimdilik yalnızca Mac’te",
+    "protections": {
+      "audio": "Sesiniz bu Mac’te yazıya dökülür ve tarafımızca asla saklanmaz.",
+      "text": "Metni okur, asla ekran görüntüsü almaz.",
+      "passwords": "Parola alanları, parola yöneticileri ve gizli pencereler asla okunmaz.",
+      "wallets": "Kripto cüzdanları, kurtarma ifadeleri ve özel anahtarlar: tamamen geri çekilir.",
+      "secrets": "Kart numaraları, anahtarlar ve kodlar herhangi bir şey gönderilmeden önce kaldırılır.",
+      "suggestions": "Öneriler bu Mac’te belirlenir; siz kabul etmedikçe hiçbir şey gönderilmez.",
+      "stored": "Sakladıkları siz silene kadar şifreli olarak bu Mac’te kalır.",
+      "ledger": "Dışarı giden her istek, tam olarak ne gönderildiğiyle birlikte aşağıda listelenir."
+    }
+  },
+  "meetings": {
+    "title": "Toplantılar",
+    "intro": "Her görüşme için notlar: siz ve karşı taraf, bu Mac’te yazıya dökülür. Ses asla kaydedilmez.",
+    "idle": "Not alınmıyor",
+    "idleDetail": "Bir görüşme başladığında başlatın veya Gizlilik bölümünde toplantı önerilerini açın.",
+    "live": "Not alınıyor · {{time}}",
+    "capturingBoth": "Sizi ve görüşmeyi duyuyor.",
+    "capturingMic": "Yalnızca mikrofonunuzu duyuyor.",
+    "start": "Not almaya başla",
+    "stop": "Durdur ve özetle",
+    "listening": "Dinliyor…",
+    "consent": "Herkese not aldığınızı bildirin.",
+    "copyConsent": "Bir mesaj kopyala",
+    "consentMessage": "Bilginize: Bu görüşmede not almak için {{appName}} kullanıyorum.",
+    "openSettings": "Ayarları aç",
+    "notes": "Notlar",
+    "transcript": "Transkript",
+    "past": "Geçmiş toplantılar",
+    "empty": "Henüz toplantı yok.",
+    "untitled": "Adsız toplantı",
+    "unfinished": "Tamamlanmadı",
+    "all": "Tüm toplantılar",
+    "summary": "Özet",
+    "decisions": "Kararlar",
+    "actionItems": "Yapılacaklar",
+    "questions": "Size sorular",
+    "noSummary": "Bu toplantı için özet yok.",
+    "copyMarkdown": "Markdown olarak kopyala",
+    "followUp": "Takip e-postası taslağı yaz",
+    "followUpTitle": "Takip e-postası",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "delete": "Toplantıyı sil",
+    "you": "Siz",
+    "them": "Karşı taraf",
+    "systemAudio": {
+      "noPermission": "{{appName}} görüşmeyi duyabilsin diye Ekran Kaydı’na izin verin. Yalnızca ses kullanılır ve hiçbir şey kaydedilmez.",
+      "oldMacOS": "Görüşmeyi duymak için macOS 13 veya üstü gerekir. Mikrofonunuz yazıya dökülmeye devam ediyor.",
+      "failed": "Görüşme sesi alınamadı. Mikrofonunuz yazıya dökülmeye devam ediyor.",
+      "unsupported": "Görüşmeyi duymak bu sistemde henüz kullanılamıyor."
+    },
+    "error": {
+      "storage": "Toplantı depolaması açılamadı.",
+      "freeLimit": "Ücretsiz plan ayda 2 toplantı içerir. Pro sınırsızdır.",
+      "mic": "Mikrofon açılamadı.",
+      "notActive": "Devam eden toplantı yok.",
+      "notFound": "Bu toplantı artık mevcut değil.",
+      "followUp": "Takip e-postası şu anda hazırlanamadı."
+    },
+    "freeLeft": "Bu ay kalan ücretsiz toplantılar: {{left}}/{{limit}}. Pro sınırsızdır."
+  },
+  "tour": {
+    "skip": "Atla",
+    "next": "İleri",
+    "done": "Bitti",
+    "start": "{{appName}} kullanmaya başla",
+    "meet": {
+      "title": "Aracıyla tanışın",
+      "description": "Kısayolunuzu basılı tutun ve konuşun. Gerisini {{appName}} halleder."
+    },
+    "modes": {
+      "write": {
+        "title": "Yaz",
+        "example": "Toplantıyı perşembeye alabilir miyiz?"
+      },
+      "answer": {
+        "title": "Yanıtla",
+        "example": "Birleşik Krallık’ta sermaye kazancı vergisi oranı ne?"
+      },
+      "act": {
+        "title": "Yap",
+        "example": "Bana saat 5’te Sam’i aramayı hatırlat"
+      },
+      "recall": {
+        "title": "Hatırla",
+        "example": "Dün fiyatlandırma hakkında ne demiştim?"
+      }
+    },
+    "nothingToConnect": {
+      "title": "Bağlanacak bir şey yok.",
+      "body": "Hesap, entegrasyon veya bot yok. Zaten kullandığınız uygulamalarla çalışır."
+    },
+    "try": {
+      "title": "Şimdi deneyin",
+      "body": "{{keys}} tuşunu basılı tutun ve sorun: “Yarın Lizbon’da hava nasıl olacak?”",
+      "done": "Bu kadar. Aracıyı kullandınız."
+    },
+    "choose": {
+      "title": "{{appName}} neler yapabilir, seçin",
+      "description": "Siz açana kadar hepsi kapalı. Gizlilik bölümünden istediğiniz zaman değiştirin.",
+      "footnote": "Parolalar, cüzdanlar ve gizli pencereler asla okunmaz.",
+      "proOnly": "Pro’ya dahildir. Hesap bölümünden yükseltin."
+    }
+  },
+  "getStarted": {
+    "title": "Başlarken",
+    "progress": "{{done}}/{{total}} tamamlandı",
+    "hide": "Gizle",
+    "whatToSay": "Ne söyleyebilirim?",
+    "replayTour": "Turu yeniden izle",
+    "steps": {
+      "answer": "Aracıya bir soru sorun",
+      "reminder": "Sesle bir anımsatıcı kurun",
+      "about_screen": "Ekranınızdaki bir şeyi özetletin",
+      "suggestion": "Bir öneriyi kabul edin",
+      "meeting": "Bir toplantıda not alın",
+      "privacy": "{{appName}} neyi okuyabilir, neyi okuyamaz, görün"
+    }
+  },
+  "trySaying": {
+    "title": "Ne söyleyebilirim?",
+    "close": "Kapat",
+    "description": "Aracıyla konuşmak için {{ask}} tuşunu basılı tutun. {{dictate}}, bir şey istemediğiniz sürece yazar.",
+    "footnote": "ChatGPT veya Claude’da aracıyla konuşmak için “Merhaba Ambient” diye başlayın.",
+    "groups": {
+      "answer": {
+        "title": "Sor",
+        "examples": [
+          "Birleşik Krallık’ta sermaye kazancı vergisi oranı ne?",
+          "Bunu özetle.",
+          "Bu hata ne anlama geliyor?",
+          "Bunu İspanyolcaya çevir."
+        ]
+      },
+      "act": {
+        "title": "Yap",
+        "examples": [
+          "Bana saat 5’te Sam’i aramayı hatırlat.",
+          "Cuma saat 13’te Ana ile öğle yemeği ekle.",
+          "Linear’ı aç.",
+          "Standup kestirmemi çalıştır."
+        ]
+      },
+      "recall": {
+        "title": "Hatırla",
+        "examples": [
+          "Dün fiyatlandırma hakkında ne demiştim?",
+          "3. çeyrek sunumunu bul."
+        ]
+      },
+      "suggestions": {
+        "title": "Bir öneri çıktığında",
+        "examples": [
+          "Kabul etmek için “evet” veya “yap”.",
+          "Kapatmak için “şimdi değil”.",
+          "O türü kapatmak için “bunları gösterme”.",
+          "Bu uygulamada durdurmak için “burada değil”."
+        ]
+      },
+      "meetings": {
+        "title": "Toplantılarda",
+        "examples": [
+          "Notları Toplantılar’dan başlatın veya Ambient önerdiğinde evet deyin.",
+          "Sizden bir şey istendiğinde “Bul”.",
+          "Bir şey yapmaya söz verdiğinizde “Hatırlat”."
+        ]
+      },
+      "talking": {
+        "title": "Ambient ile konuşmak",
+        "examples": [
+          "{{ask}} tuşunu basılı tutup konuşun: her zaman Ambient içindir.",
+          "Ya da dikte tuşunuzu kullanıp “Merhaba Ambient, …” ile başlayın. Aksi halde sözleriniz yazılır.",
+          "Eller serbest (Gizlilik bölümünden açın): sadece “Merhaba Ambient, …” deyin."
+        ]
+      }
+    }
+  },
+  "app": {
+    "starting": "{{appName}} başlatılıyor…"
+  }
+}

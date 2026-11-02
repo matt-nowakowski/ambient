@@ -1,0 +1,22 @@
+{
+ "id": "anyapp",
+ "text": "In any app.",
+ "duration": 1.36,
+ "words": [
+  {
+   "w": "In",
+   "start": 0,
+   "end": 0.24
+  },
+  {
+   "w": "any",
+   "start": 0.4,
+   "end": 0.56
+  },
+  {
+   "w": "app.",
+   "start": 0.72,
+   "end": 1.36
+  }
+ ]
+}

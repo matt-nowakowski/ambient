@@ -1,0 +1,270 @@
+@import "../styles/theme.css";
+
+/* The HUD shares the recording pill's material: a fixed dark glass card that
+   stays legible over any app, in either theme. */
+:root {
+  --h-font:
+    "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --h-ink: #fafafa;
+  --h-muted: rgba(255, 255, 255, 0.64);
+  --h-faint: rgba(255, 255, 255, 0.42);
+  --h-surface: rgba(18, 18, 22, 0.74);
+  --h-raise: rgba(255, 255, 255, 0.08);
+  --h-raise-hover: rgba(255, 255, 255, 0.14);
+  --h-hair: rgba(255, 255, 255, 0.1);
+  --h-success: #4ade80;
+  --h-error: #f87171;
+  --h-radius: 14px;
+}
+
+.hud-stage {
+  position: fixed;
+  inset: 0;
+  padding: 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  font-family: var(--h-font);
+  color: var(--h-ink);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+.hud-card {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: var(--h-radius);
+  background: var(--h-surface);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.hud-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hud-question {
+  font-size: 12px;
+  font-weight: 450;
+  color: var(--h-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hud-answer {
+  margin-top: 8px;
+  max-height: 340px;
+  overflow-y: auto;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 380;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.hud-faint {
+  color: var(--h-faint);
+}
+
+.hud-sources {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hud-sources button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 190px;
+  padding: 3px 8px 3px 4px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--h-raise);
+  color: var(--h-muted);
+  font: inherit;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.hud-sources button:hover {
+  background: var(--h-raise-hover);
+  color: var(--h-ink);
+}
+
+.hud-source-n {
+  display: inline-grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  background: var(--h-hair);
+  font-size: 10px;
+}
+
+.hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--h-hair);
+}
+
+.hud-card button {
+  font-family: inherit;
+}
+
+.hud-actions button,
+.hud-suggestion button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--h-raise);
+  color: var(--h-ink);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.hud-actions button:hover,
+.hud-suggestion button:hover {
+  background: var(--h-raise-hover);
+}
+
+.hud-card .hud-primary {
+  background: var(--h-ink);
+  color: #111;
+}
+
+.hud-card .hud-primary:hover {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.hud-card kbd {
+  font-family: inherit;
+  font-size: 10px;
+  opacity: 0.55;
+}
+
+.hud-hint {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--h-faint);
+}
+
+.hud-suggestion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-tip {
+  flex-basis: 100%;
+  padding-left: 26px;
+  font-size: 11px;
+  color: var(--h-faint);
+}
+
+.hud-suggestion-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud-timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.35);
+  transform-origin: left;
+}
+
+.hud-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.hud-status[data-tone="success"] span {
+  color: var(--h-success);
+}
+
+.hud-status[data-tone="error"] span {
+  color: var(--h-error);
+}
+
+.hud-steps {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--h-muted);
+}
+
+.hud-steps li[data-current] {
+  color: var(--h-ink);
+}
+
+.hud-close {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--h-faint);
+  cursor: pointer;
+}
+
+.hud-close:hover {
+  background: var(--h-raise);
+  color: var(--h-ink);
+}
+
+.hud-undo {
+  margin-left: auto;
+  height: 24px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--h-raise);
+  color: var(--h-ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.hud-undo:hover {
+  background: var(--h-raise-hover);
+}
