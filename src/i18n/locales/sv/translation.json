@@ -1185,7 +1185,13 @@
       "reviewCode": "Granska den här pull requesten?",
       "commitMessage": "Skriva ett commit-meddelande för det här?",
       "review": "Granska",
-      "write": "Skriv"
+      "write": "Skriv",
+      "fillForm": "Fyller du i ett formulär? Jag kan hjälpa till.",
+      "fill": "Hjälp",
+      "translatePage": "Översätta sidan?",
+      "translate": "Översätt",
+      "helpHere": "Kan jag hjälpa till med något här?",
+      "help": "Hjälp"
     },
     "nudge": {
       "findIt": "Hitta",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "Ge dig en genomgång före möten",
         "review_code": "Granska pull requests",
         "commit_message": "Skriva commit-meddelanden",
+        "fill_form": "Hjälp att fylla i formulär",
+        "translate_page": "Översätt sidor på andra språk",
+        "help_here": "Annan hjälp, bedömd på den här Macen",
         "meeting_nudge": "Påminnelser under möten"
       }
     },

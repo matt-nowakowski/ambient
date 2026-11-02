@@ -1185,7 +1185,13 @@
       "reviewCode": "Review this pull request?",
       "commitMessage": "Write a commit message for this?",
       "review": "Review",
-      "write": "Write"
+      "write": "Write",
+      "fillForm": "Filling in a form? I can help.",
+      "fill": "Help",
+      "translatePage": "Translate this page?",
+      "translate": "Translate",
+      "helpHere": "Anything I can help with here?",
+      "help": "Help"
     },
     "nudge": {
       "findIt": "Find it",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "Brief you before meetings",
         "review_code": "Review pull requests",
         "commit_message": "Write commit messages",
+        "fill_form": "Help fill in forms",
+        "translate_page": "Translate pages in other languages",
+        "help_here": "Other help, judged on this Mac",
         "meeting_nudge": "Nudges during meetings"
       }
     },

@@ -1193,7 +1193,13 @@
       "reviewCode": "לבדוק את בקשת המיזוג הזו?",
       "commitMessage": "לכתוב לזה הודעת commit?",
       "review": "בדוק",
-      "write": "כתוב"
+      "write": "כתוב",
+      "fillForm": "ממלאים טופס? אפשר לעזור.",
+      "fill": "עזרה",
+      "translatePage": "לתרגם את הדף?",
+      "translate": "תרגום",
+      "helpHere": "אפשר לעזור במשהו כאן?",
+      "help": "עזרה"
     },
     "nudge": {
       "findIt": "מצא",
@@ -1357,6 +1363,9 @@
         "meeting_prep": "תדריך לפני פגישות",
         "review_code": "בדיקת בקשות מיזוג",
         "commit_message": "כתיבת הודעות commit",
+        "fill_form": "עזרה במילוי טפסים",
+        "translate_page": "תרגום דפים בשפות אחרות",
+        "help_here": "עזרה נוספת, נשקלת ב-Mac הזה",
         "meeting_nudge": "תזכורות במהלך פגישות"
       }
     },

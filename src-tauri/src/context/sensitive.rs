@@ -274,8 +274,18 @@ pub fn sensitive_place(
     titles: &[&str],
     urls: &[&str],
 ) -> Option<SensitivePlace> {
+    sensitive_place_why(app_name, bundle_id, titles, urls).map(|(place, _)| place)
+}
+
+/// Which rule matched (for logs: a fixed name, never the matched text).
+pub fn sensitive_place_why(
+    app_name: &str,
+    bundle_id: &str,
+    titles: &[&str],
+    urls: &[&str],
+) -> Option<(SensitivePlace, &'static str)> {
     if let Some(place) = sensitive_app(app_name, bundle_id) {
-        return Some(place);
+        return Some((place, "app"));
     }
     let extension = |ids: &[&str]| {
         urls.iter().any(|u| {
@@ -284,34 +294,71 @@ pub fn sensitive_place(
                 && ids.iter().any(|id| u.contains(id))
         })
     };
-    if extension(WALLET_EXTENSION_IDS)
-        || WALLET_MARKERS
-            .iter()
-            .any(|m| titles.iter().chain(urls).any(|s| s.contains(m)))
-    {
-        return Some(SensitivePlace::Wallet);
+    if extension(WALLET_EXTENSION_IDS) {
+        return Some((SensitivePlace::Wallet, "wallet_extension_id"));
     }
-    if extension(PASSWORD_EXTENSION_IDS)
-        || urls.iter().any(|u| {
-            let u = u.to_ascii_lowercase();
-            PASSWORD_URL_MARKERS.iter().any(|m| u.contains(m))
-        })
+    if WALLET_MARKERS
+        .iter()
+        .any(|m| urls.iter().any(|s| s.contains(m)))
     {
-        return Some(SensitivePlace::PasswordManager);
+        return Some((SensitivePlace::Wallet, "wallet_url"));
+    }
+    if WALLET_MARKERS
+        .iter()
+        .any(|m| titles.iter().any(|s| s.contains(m)))
+    {
+        return Some((SensitivePlace::Wallet, "wallet_title"));
+    }
+    if extension(PASSWORD_EXTENSION_IDS) {
+        return Some((SensitivePlace::PasswordManager, "password_extension_id"));
+    }
+    if urls.iter().any(|u| {
+        let u = u.to_ascii_lowercase();
+        PASSWORD_URL_MARKERS.iter().any(|m| u.contains(m))
+    }) {
+        return Some((SensitivePlace::PasswordManager, "password_url"));
     }
     let bank_host = urls.iter().filter_map(|u| host_of(u)).any(|host| {
         BANKING_DOMAINS
             .iter()
             .any(|domain| on_domain(&host, domain))
     });
-    if bank_host
-        || BANKING_TITLE_MARKERS
-            .iter()
-            .any(|m| titles.iter().any(|t| t.contains(m)))
+    if bank_host {
+        return Some((SensitivePlace::Banking, "bank_host"));
+    }
+    if BANKING_TITLE_MARKERS
+        .iter()
+        .any(|m| titles.iter().any(|t| t.contains(m)))
     {
-        return Some(SensitivePlace::Banking);
+        return Some((SensitivePlace::Banking, "bank_title"));
     }
     None
+}
+
+/// The extension ids in a set of frame URLs (`chrome-extension://<id>/…`),
+/// for logs: they say which extension a side panel or popup belongs to.
+pub fn extension_ids<'a>(urls: impl IntoIterator<Item = &'a str>) -> Vec<String> {
+    let mut ids: Vec<String> = urls
+        .into_iter()
+        .filter_map(|u| {
+            let rest = u
+                .strip_prefix("chrome-extension://")
+                .or_else(|| u.strip_prefix("extension://"))?;
+            let id = rest.split('/').next()?;
+            (!id.is_empty()).then(|| id.to_ascii_lowercase())
+        })
+        .collect();
+    ids.sort();
+    ids.dedup();
+    ids
+}
+
+/// Host names only, for logs (never paths or queries).
+pub fn hosts<'a>(urls: impl IntoIterator<Item = &'a str>) -> Vec<String> {
+    let mut out: Vec<String> = urls.into_iter().filter_map(host_of).collect();
+    out.sort();
+    out.dedup();
+    out
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -544,6 +591,33 @@ mod tests {
                 "{title} {url}"
             );
         }
+    }
+
+    #[test]
+    fn spots_a_wallet_from_the_browser_ui_alone() {
+        // Chrome with no page content exposed: only the side panel's header
+        // ("MetaMask") among the browser UI labels.
+        assert_eq!(
+            sensitive_place_why(
+                "Google Chrome",
+                "com.google.Chrome",
+                &["Hacker News", "MetaMask", "Close"],
+                &[],
+            ),
+            Some((Wallet, "wallet_title"))
+        );
+        assert_eq!(
+            extension_ids([
+                "chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/sidepanel.html#/home",
+                "https://news.ycombinator.com/item?id=1",
+                "chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/popup.html",
+            ]),
+            vec!["nkbihfbeogaeaoehlefnkodbefgpgknn".to_string()]
+        );
+        assert_eq!(
+            hosts(["https://mail.google.com/mail/u/0/#inbox/x", "about:blank"]),
+            vec!["mail.google.com".to_string()]
+        );
     }
 
     #[test]

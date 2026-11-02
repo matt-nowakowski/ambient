@@ -1185,7 +1185,13 @@
       "reviewCode": "Gennemgå denne pull request?",
       "commitMessage": "Skriv en commit-besked til dette?",
       "review": "Gennemgå",
-      "write": "Skriv"
+      "write": "Skriv",
+      "fillForm": "Udfylder du en formular? Jeg kan hjælpe.",
+      "fill": "Hjælp",
+      "translatePage": "Skal jeg oversætte siden?",
+      "translate": "Oversæt",
+      "helpHere": "Kan jeg hjælpe med noget her?",
+      "help": "Hjælp"
     },
     "nudge": {
       "findIt": "Find det",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "Brief dig før møder",
         "review_code": "Gennemgå pull requests",
         "commit_message": "Skriv commit-beskeder",
+        "fill_form": "Hjælp til at udfylde formularer",
+        "translate_page": "Oversæt sider på andre sprog",
+        "help_here": "Anden hjælp, vurderet på denne Mac",
         "meeting_nudge": "Påmindelser under møder"
       }
     },

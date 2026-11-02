@@ -563,12 +563,24 @@ pub(crate) async fn process_transcription_output(
     let follow_up = mode == OutputMode::Dictation && crate::hud::showing_answer();
     let help = crate::agent::router::is_help_request(transcription);
     let compose = crate::agent::router::compose_request(transcription);
+    let compose_maybe = compose.is_none() && crate::agent::router::compose_maybe(transcription);
+    if compose.is_some() || compose_maybe {
+        debug!(
+            "compose first pass: {}",
+            if compose.is_some() {
+                "yes"
+            } else {
+                "maybe (router decides)"
+            }
+        );
+    }
     let routable = ask
         || (mode == OutputMode::Dictation
             && settings.agent.routing
             && (crate::agent::router::looks_like_request(transcription)
                 || help
                 || compose.is_some()
+                || compose_maybe
                 || follow_up
                 || (!cues && post_process)));
     let place = if routable {
@@ -1086,7 +1098,7 @@ impl ShortcutAction for TranscribeAction {
                                     sample_count,
                                     stop_time,
                                 );
-                            } else if processed.final_text.is_empty() {
+                            } else if !crate::clipboard::is_pasteable(&processed.final_text) {
                                 utils::hide_recording_overlay(&ah);
                                 set_tray_state(&ah, TrayIconState::Idle);
                                 emit_transcription_complete(

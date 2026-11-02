@@ -74,18 +74,77 @@ private let textRoles: Set<String> = ["AXStaticText", "AXTextArea", "AXTextField
 // Containers whose subtrees never hold readable content worth the AX calls.
 private let skipRoles: Set<String> = ["AXMenuBar", "AXMenu", "AXToolbar", "AXScrollBar", "AXImage", "AXSecureTextField"]
 
+/// Chromium browsers. Google Chrome (and Brave, Edge, Vivaldi, Opera) only
+/// build a page's accessibility tree for an assistive app that sets
+/// AXEnhancedUserInterface on the application element:
+/// `BrowserCrApplication accessibilitySetValue:forAttribute:` in
+/// chrome/browser/chrome_browser_application_mac.mm handles only that
+/// attribute, and turns on complete accessibility (web contents included)
+/// about 2 s later. It ignores AXManualAccessibility, which only Electron
+/// honours, and plain queries (macOS 14+) wake only the browser's own UI:
+/// the toolbar and tabs, with an empty content area.
+private let chromiumBrowsers: Set<String> = [
+    "com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.dev", "com.google.Chrome.canary",
+    "org.chromium.Chromium", "com.brave.Browser", "com.brave.Browser.beta", "com.microsoft.edgemac",
+    "com.microsoft.edgemac.Beta", "com.vivaldi.Vivaldi", "com.operasoftware.Opera",
+]
+
+/// Pids asked for complete accessibility, and when (Chrome applies it ~2 s later).
+private var enhancedAsked: [pid_t: Date] = [:]
+private let enhancedLock = NSLock()
+
+private func boolAttr(_ el: AXUIElement, _ name: String) -> Bool? {
+    if let n = attr(el, name) as? NSNumber { return n.boolValue }
+    return nil
+}
+
 /// Chromium and Electron apps only build their accessibility tree when asked.
-/// AXManualAccessibility asks without the side effects of AXEnhancedUserInterface.
-private func wakeAccessibility(_ app: AXUIElement) {
+/// AXManualAccessibility asks Electron apps without the side effects of
+/// AXEnhancedUserInterface. Chromium browsers need AXEnhancedUserInterface
+/// itself (see `chromiumBrowsers`); it's set once per process and read back
+/// rather than trusted (Chrome can return an error even when it took). Its
+/// known side effect: window managers that animate windows (Rectangle,
+/// Magnet) move that browser's windows less smoothly.
+/// Returns whether the browser reports it on (nil when not asked).
+@discardableResult
+private func wakeAccessibility(_ app: AXUIElement, pid: pid_t) -> Bool? {
     AXUIElementSetAttributeValue(app, "AXManualAccessibility" as CFString, kCFBooleanTrue)
+    let bundle = NSRunningApplication(processIdentifier: pid)?.bundleIdentifier ?? ""
+    guard chromiumBrowsers.contains(bundle) else { return nil }
+    let on = boolAttr(app, "AXEnhancedUserInterface") ?? false
+    if !on {
+        enhancedLock.lock()
+        let last = enhancedAsked[pid]
+        // Ask again at most every 10 s if it didn't stick (VoiceOver toggling
+        // or another tool may turn it off).
+        if last == nil || Date().timeIntervalSince(last!) > 10 {
+            enhancedAsked[pid] = Date()
+            enhancedLock.unlock()
+            AXUIElementSetAttributeValue(app, "AXEnhancedUserInterface" as CFString, kCFBooleanTrue)
+            return boolAttr(app, "AXEnhancedUserInterface") ?? false
+        }
+        enhancedLock.unlock()
+    }
+    return on
+}
+
+/// Seconds since complete accessibility was asked of this pid (nil if never).
+private func secondsSinceEnhanced(_ pid: pid_t) -> Double? {
+    enhancedLock.lock()
+    defer { enhancedLock.unlock() }
+    return enhancedAsked[pid].map { Date().timeIntervalSince($0) }
 }
 
 /// Breadth-first walk collecting visible text, bounded by characters, nodes and time.
 private func collectText(_ root: AXUIElement, maxChars: Int, deadline: Date) -> String {
+    var visited = 0
+    return collectText(root, maxChars: maxChars, deadline: deadline, visited: &visited)
+}
+
+private func collectText(_ root: AXUIElement, maxChars: Int, deadline: Date, visited: inout Int) -> String {
     var out = ""
     var seen = Set<String>()
     var queue: [AXUIElement] = [root]
-    var visited = 0
     while !queue.isEmpty, out.count < maxChars, visited < 4000, Date() < deadline {
         let el = queue.removeFirst()
         visited += 1
@@ -136,24 +195,86 @@ private func findMain(_ root: AXUIElement, deadline: Date) -> AXUIElement? {
 /// URLs and titles of the web frames in a window: a browser's page, its side
 /// panel (where wallet extensions such as MetaMask live) and extension popups.
 /// Walks the browser chrome only (never into a page), bounded by nodes and time.
-private func webFrames(_ window: AXUIElement, deadline: Date) -> (urls: [String], titles: [String]) {
+private struct Frames {
     var urls: [String] = []
     var titles: [String] = []
-    var queue: [(AXUIElement, Int)] = [(window, 0)]
+    /// Short labels of the browser's own UI (tab titles, a side panel's
+    /// header, a popup's title), never the toolbar's (a pinned extension
+    /// button is always there) and never page content. Used only to spot
+    /// private places when the browser exposes no page content.
+    var labels: [String] = []
+    var webAreas = 0
+    /// Children of the first web area: 0 means the browser built no tree for it.
+    var webAreaChildren = -1
     var visited = 0
-    while !queue.isEmpty, visited < 600, Date() < deadline {
+}
+
+private let labelRoles: Set<String> = ["AXStaticText", "AXRadioButton", "AXTab", "AXPopUpButton", "AXButton", "AXHeading"]
+// The toolbar (pinned extensions, bookmarks) and menus are always there, so
+// they say nothing about what's open.
+private let chromeSkipRoles: Set<String> = ["AXToolbar", "AXMenuBar", "AXMenu", "AXScrollBar", "AXImage"]
+
+private func shortLabel(_ el: AXUIElement) -> String? {
+    for name in [kAXTitleAttribute, kAXDescriptionAttribute, kAXValueAttribute] {
+        if let s = stringAttr(el, name)?.trimmingCharacters(in: .whitespacesAndNewlines),
+           s.count > 1, s.count <= 120 {
+            return s
+        }
+    }
+    return nil
+}
+
+private func webFrames(_ window: AXUIElement, deadline: Date, labels wantLabels: Bool = false) -> Frames {
+    var f = Frames()
+    var queue: [(AXUIElement, Int)] = [(window, 0)]
+    while !queue.isEmpty, f.visited < 800, Date() < deadline {
         let (el, depth) = queue.removeFirst()
-        visited += 1
-        if stringAttr(el, kAXRoleAttribute) == "AXWebArea" {
-            if let url = stringAttr(el, "AXURL"), !url.isEmpty { urls.append(url) }
-            if let title = stringAttr(el, kAXTitleAttribute), !title.isEmpty { titles.append(title) }
+        f.visited += 1
+        let role = stringAttr(el, kAXRoleAttribute) ?? ""
+        if role == "AXWebArea" {
+            f.webAreas += 1
+            if f.webAreaChildren < 0 {
+                f.webAreaChildren = (attr(el, kAXChildrenAttribute) as? [AXUIElement])?.count ?? 0
+            }
+            if let url = stringAttr(el, "AXURL"), !url.isEmpty { f.urls.append(url) }
+            if let title = stringAttr(el, kAXTitleAttribute), !title.isEmpty { f.titles.append(title) }
             continue // the page's own content is not walked
+        }
+        if chromeSkipRoles.contains(role) { continue }
+        // Tabs count only when selected: a wallet in a background tab
+        // shouldn't blind the agent to the page in front.
+        let isTab = role == "AXRadioButton" || role == "AXTab"
+        let selected = !isTab || (attr(el, kAXValueAttribute) as? NSNumber)?.boolValue == true
+            || boolAttr(el, kAXSelectedAttribute) == true
+        if wantLabels, selected, labelRoles.contains(role), f.labels.count < 60, let label = shortLabel(el) {
+            f.labels.append(label)
         }
         if depth < 14, let children = attr(el, kAXChildrenAttribute) as? [AXUIElement] {
             queue.append(contentsOf: children.map { ($0, depth + 1) })
         }
     }
-    return (urls, titles)
+    return f
+}
+
+/// The app's other windows that aren't ordinary windows: extension popups
+/// (MetaMask's is its own window), bubbles and panels. Their titles and web
+/// frames, never their content.
+private func popupWindows(_ app: AXUIElement, besides focused: AXUIElement?, deadline: Date, labels wantLabels: Bool) -> (count: Int, frames: Frames) {
+    var out = Frames()
+    var count = 0
+    guard let windows = attr(app, kAXWindowsAttribute) as? [AXUIElement] else { return (0, out) }
+    for w in windows.prefix(12) {
+        if let focused = focused, CFEqual(w, focused) { continue }
+        let subrole = stringAttr(w, kAXSubroleAttribute) ?? ""
+        if subrole == "AXStandardWindow" { continue }
+        count += 1
+        if let t = stringAttr(w, kAXTitleAttribute), !t.isEmpty { out.titles.append(t) }
+        let f = webFrames(w, deadline: deadline, labels: wantLabels)
+        out.urls += f.urls
+        out.titles += f.titles
+        out.labels += f.labels.prefix(20)
+    }
+    return (count, out)
 }
 
 /// The web frame holding the focused element, if any (walks up its parents).
@@ -167,27 +288,57 @@ private func enclosingWebArea(_ el: AXUIElement) -> AXUIElement? {
     return nil
 }
 
+/// Browsers, whose own UI (tabs, side panel header, popups) is read for
+/// labels when looking for private places.
+private let browserBundles: Set<String> = chromiumBrowsers.union([
+    "company.thebrowser.Browser", "com.apple.Safari", "org.mozilla.firefox",
+])
+
 /// Snapshot of the given app's focused window as JSON:
 /// {"window_title", "url", "focused_role", "editable", "secure", "selection", "text",
-///  "frame_urls", "frame_titles"}.
+///  "frame_urls", "frame_titles", "ui_labels", "diag"}.
 /// `maxChars` <= 0 skips the text walk and the selection (metadata only).
+/// "diag" holds counts only (for logs): web areas found, children of the
+/// first, nodes visited, popup windows, whether a Chromium browser reports
+/// complete accessibility on and for how long it's been asked.
 @_cdecl("ambient_context_snapshot")
 public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeMutablePointer<CChar>? {
     guard AXIsProcessTrusted() else { return nil }
     let app = AXUIElementCreateApplication(pid_t(pid))
     AXUIElementSetMessagingTimeout(app, 0.25)
-    wakeAccessibility(app)
+    let enhanced = wakeAccessibility(app, pid: pid_t(pid))
+    let bundle = NSRunningApplication(processIdentifier: pid_t(pid))?.bundleIdentifier ?? ""
+    let isBrowser = browserBundles.contains(bundle)
 
     var result: [String: Any] = [:]
+    var diag: [String: Any] = [:]
+    if let on = enhanced {
+        diag["enhanced_ui"] = on
+        if let s = secondsSinceEnhanced(pid_t(pid)) { diag["enhanced_age_s"] = Int(s) }
+    }
     let window = attr(app, kAXFocusedWindowAttribute).map { $0 as! AXUIElement }
     var frameUrls: [String] = []
     var frameTitles: [String] = []
+    var uiLabels: [String] = []
     if let window = window {
         result["window_title"] = stringAttr(window, kAXTitleAttribute) ?? ""
         if let doc = stringAttr(window, kAXDocumentAttribute) { result["url"] = doc }
-        let frames = webFrames(window, deadline: Date().addingTimeInterval(0.15))
+        let deadline = Date().addingTimeInterval(0.15)
+        let frames = webFrames(window, deadline: deadline, labels: isBrowser)
         frameUrls = frames.urls
         frameTitles = frames.titles
+        uiLabels = frames.labels
+        diag["web_areas"] = frames.webAreas
+        diag["web_area_children"] = frames.webAreaChildren
+        diag["chrome_nodes"] = frames.visited
+    }
+    // Extension popups and other non-standard windows of a browser.
+    if isBrowser {
+        let popups = popupWindows(app, besides: window, deadline: Date().addingTimeInterval(0.1), labels: true)
+        diag["popup_windows"] = popups.count
+        frameUrls += popups.frames.urls
+        frameTitles += popups.frames.titles
+        uiLabels += popups.frames.labels
     }
 
     if let focusedObj = attr(app, kAXFocusedUIElementAttribute) {
@@ -217,12 +368,70 @@ public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeM
         if let url = stringAttr(root, "AXURL") { result["url"] = url }
         // Web apps like Gmail spend the node and time budget on navigation
         // before reaching the content; start at the page's main region.
-        let content = findMain(root, deadline: Date().addingTimeInterval(0.2)) ?? root
-        result["text"] = collectText(content, maxChars: Int(maxChars), deadline: deadline)
+        let main = findMain(root, deadline: Date().addingTimeInterval(0.2))
+        let content = main ?? root
+        var visited = 0
+        result["text"] = collectText(content, maxChars: Int(maxChars), deadline: deadline, visited: &visited)
+        diag["text_nodes"] = visited
+        diag["found_web_area"] = stringAttr(root, kAXRoleAttribute) == "AXWebArea"
+        diag["found_main"] = main != nil
     }
     result["frame_urls"] = frameUrls
     result["frame_titles"] = frameTitles
+    result["ui_labels"] = uiLabels
+    result["diag"] = diag
     return json(result)
+}
+
+// MARK: - Pressing a button (opening a reply)
+
+/// The accessible name of a button or link: its title, description, help, or
+/// (links) the text inside it.
+private func controlNames(_ el: AXUIElement) -> [String] {
+    var names = [kAXTitleAttribute, kAXDescriptionAttribute, kAXHelpAttribute]
+        .compactMap { stringAttr(el, $0) }
+    if let children = attr(el, kAXChildrenAttribute) as? [AXUIElement] {
+        for c in children.prefix(3) where stringAttr(c, kAXRoleAttribute) == "AXStaticText" {
+            if let v = stringAttr(c, kAXValueAttribute) { names.append(v) }
+        }
+    }
+    return names.map { $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }.filter { !$0.isEmpty }
+}
+
+/// Press the button or link named one of `labels` (newline-separated, any
+/// case) in the app's focused window, page content included (Gmail's Reply).
+/// Links win over buttons, and the last match over earlier ones: in a Gmail
+/// thread the "Reply" link under the newest message, else the newest
+/// message's Reply button. Bounded by nodes and time.
+/// Returns 0 pressed, 1 not found, 2 the press failed, 3 no permission or window.
+@_cdecl("ambient_press_labeled")
+public func ambient_press_labeled(_ pid: Int32, _ labels: UnsafePointer<CChar>) -> Int32 {
+    guard AXIsProcessTrusted() else { return 3 }
+    let wanted = Set(String(cString: labels).split(separator: "\n").map { $0.lowercased() })
+    let app = AXUIElementCreateApplication(pid_t(pid))
+    AXUIElementSetMessagingTimeout(app, 0.3)
+    guard let window = attr(app, kAXFocusedWindowAttribute).map({ $0 as! AXUIElement }) else { return 3 }
+    let deadline = Date().addingTimeInterval(1.5)
+    var links: [AXUIElement] = []
+    var buttons: [AXUIElement] = []
+    var queue: [AXUIElement] = [window]
+    var visited = 0
+    while !queue.isEmpty, visited < 8000, Date() < deadline {
+        let el = queue.removeFirst()
+        visited += 1
+        let role = stringAttr(el, kAXRoleAttribute) ?? ""
+        if role == "AXButton" || role == "AXLink" || role == "AXMenuButton" {
+            if controlNames(el).contains(where: { wanted.contains($0) }) {
+                if role == "AXLink" { links.append(el) } else { buttons.append(el) }
+            }
+        }
+        if role == "AXMenuBar" || role == "AXScrollBar" || role == "AXImage" || role == "AXStaticText" { continue }
+        if let children = attr(el, kAXChildrenAttribute) as? [AXUIElement] {
+            queue.append(contentsOf: children)
+        }
+    }
+    guard let target = links.last ?? buttons.last else { return 1 }
+    return AXUIElementPerformAction(target, kAXPressAction as CFString) == .success ? 0 : 2
 }
 
 // MARK: - Keychain
@@ -508,7 +717,7 @@ public func ambient_open_windows(_ skip: UnsafePointer<CChar>, _ maxCharsPerWind
         if app.processIdentifier == ownPid || skipped.contains(bundle) { continue }
         let axApp = AXUIElementCreateApplication(app.processIdentifier)
         AXUIElementSetMessagingTimeout(axApp, 0.2)
-        wakeAccessibility(axApp)
+        wakeAccessibility(axApp, pid: app.processIdentifier)
         guard let windows = attr(axApp, kAXWindowsAttribute) as? [AXUIElement] else { continue }
         for window in windows.prefix(4) {
             if Date() > overall { break }

@@ -1185,7 +1185,13 @@
       "reviewCode": "Xem xét pull request này?",
       "commitMessage": "Viết thông điệp commit cho nội dung này?",
       "review": "Xem xét",
-      "write": "Viết"
+      "write": "Viết",
+      "fillForm": "Đang điền biểu mẫu? Tôi có thể giúp.",
+      "fill": "Giúp",
+      "translatePage": "Dịch trang này?",
+      "translate": "Dịch",
+      "helpHere": "Tôi có thể giúp gì ở đây không?",
+      "help": "Giúp"
     },
     "nudge": {
       "findIt": "Tìm",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "Tóm tắt cho bạn trước cuộc họp",
         "review_code": "Xem xét pull request",
         "commit_message": "Viết thông điệp commit",
+        "fill_form": "Giúp điền biểu mẫu",
+        "translate_page": "Dịch trang bằng ngôn ngữ khác",
+        "help_here": "Trợ giúp khác, đánh giá trên máy Mac này",
         "meeting_nudge": "Nhắc nhở trong cuộc họp"
       }
     },
@@ -1517,7 +1526,10 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
+        "examples": [
+          "Hôm qua tôi đã nói gì về giá?",
+          "Tìm bản trình bày Q3."
+        ],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

@@ -1193,7 +1193,13 @@
       "reviewCode": "Voleu revisar aquesta pull request?",
       "commitMessage": "Voleu escriure un missatge de commit per a això?",
       "review": "Revisa",
-      "write": "Escriu"
+      "write": "Escriu",
+      "fillForm": "Omples un formulari? Et puc ajudar.",
+      "fill": "Ajuda'm",
+      "translatePage": "Tradueixo aquesta pàgina?",
+      "translate": "Tradueix",
+      "helpHere": "Et puc ajudar amb alguna cosa aquí?",
+      "help": "Ajuda'm"
     },
     "nudge": {
       "findIt": "Troba-ho",
@@ -1357,6 +1363,9 @@
         "meeting_prep": "Posar-vos al dia abans de les reunions",
         "review_code": "Revisar pull requests",
         "commit_message": "Escriure missatges de commit",
+        "fill_form": "Ajudar a omplir formularis",
+        "translate_page": "Traduir pàgines en altres idiomes",
+        "help_here": "Altres ajudes, decidides en aquest Mac",
         "meeting_nudge": "Avisos durant les reunions"
       }
     },

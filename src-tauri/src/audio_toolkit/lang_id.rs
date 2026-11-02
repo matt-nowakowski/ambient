@@ -84,6 +84,18 @@ pub fn detect_output_language(text: &str, supported_languages: &[String]) -> Opt
     iso639_1_for_whatlang(info.lang()).map(str::to_string)
 }
 
+/// The language a longer text (a web page) is written in, as ISO 639-1,
+/// only when the detection is reliable and confident. Unconstrained.
+pub fn detect_text_language(text: &str) -> Option<String> {
+    // A few thousand characters decide it; more only costs time.
+    let sample: String = text.chars().take(4000).collect();
+    let info = Detector::new().detect(&sample)?;
+    if !info.is_reliable() || info.confidence() < MIN_CONFIDENCE {
+        return None;
+    }
+    iso639_1_for_whatlang(info.lang()).map(str::to_string)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

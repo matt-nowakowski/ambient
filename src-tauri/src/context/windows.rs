@@ -33,7 +33,7 @@ use ::windows::Win32::UI::WindowsAndMessaging::{
     GWL_EXSTYLE, GW_OWNER, WS_EX_TOOLWINDOW,
 };
 
-use super::{ContextSnapshot, FrontmostApp, OpenWindow};
+use super::{ContextSnapshot, FrontmostApp, OpenWindow, RawSnapshot, SnapshotDiag};
 use crate::win::rules::{self, control, AddressCandidate};
 
 /// `UIA_MainLandmarkTypeId`: a page's `role="main"` region.
@@ -423,7 +423,11 @@ struct Chrome {
     frame_urls: Vec<String>,
     frame_titles: Vec<String>,
     addresses: Vec<AddressCandidate>,
+    /// Tab titles (a wallet's or password manager's tab, for the private
+    /// place checks only).
+    labels: Vec<String>,
     private: bool,
+    nodes: u32,
 }
 
 fn read_chrome(
@@ -439,6 +443,7 @@ fn read_chrome(
             break;
         }
         visited += 1;
+        chrome.nodes = visited;
         let ct = control_type(&el);
         match ct {
             control::DOCUMENT => {
@@ -465,6 +470,12 @@ fn read_chrome(
             control::BUTTON | control::TEXT | control::MENU_ITEM | control::SPLIT_BUTTON => {
                 if rules::is_private_marker(&name(&el)) {
                     chrome.private = true;
+                }
+            }
+            control::TAB_ITEM => {
+                let label = name(&el);
+                if !label.is_empty() && chrome.labels.len() < 64 {
+                    chrome.labels.push(label);
                 }
             }
             _ => {}
@@ -535,7 +546,7 @@ fn window_text(
 
 /// Snapshot of the foreground window of `pid`. `max_chars == 0` reads
 /// metadata only (titles, URLs, focus; no text, no selection).
-pub fn window_snapshot(pid: i32, max_chars: usize) -> Option<ContextSnapshot> {
+pub fn window_snapshot(pid: i32, max_chars: usize) -> Option<RawSnapshot> {
     let (hwnd, front_pid) = foreground()?;
     // Never Ambient's own windows (it's on the never-watch list anyway, and
     // UI Automation into our own UI thread could deadlock).
@@ -609,7 +620,16 @@ pub fn window_snapshot(pid: i32, max_chars: usize) -> Option<ContextSnapshot> {
             Duration::from_millis(600),
         ));
     }
-    Some(snap)
+    Some(RawSnapshot {
+        snap,
+        ui_labels: chrome.labels,
+        diag: SnapshotDiag {
+            web_areas: Some(chrome.documents.len() as u32),
+            chrome_nodes: Some(chrome.nodes),
+            found_web_area: Some(!chrome.documents.is_empty()),
+            ..Default::default()
+        },
+    })
 }
 
 // ── Every open window ───────────────────────────────────────────────────

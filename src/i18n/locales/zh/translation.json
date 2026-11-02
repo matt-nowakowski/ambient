@@ -1185,7 +1185,13 @@
       "reviewCode": "要审查这个拉取请求吗？",
       "commitMessage": "要为此写一条提交信息吗？",
       "review": "审查",
-      "write": "撰写"
+      "write": "撰写",
+      "fillForm": "在填写表单？我可以帮忙。",
+      "fill": "帮我",
+      "translatePage": "翻译此页面？",
+      "translate": "翻译",
+      "helpHere": "这里有什么需要帮忙的吗？",
+      "help": "帮我"
     },
     "nudge": {
       "findIt": "查找",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "会前为你简要介绍",
         "review_code": "审查拉取请求",
         "commit_message": "撰写提交信息",
+        "fill_form": "帮助填写表单",
+        "translate_page": "翻译其他语言的页面",
+        "help_here": "其他帮助（在这台 Mac 上判断）",
         "meeting_nudge": "会议期间的提示"
       }
     },
@@ -1517,7 +1526,10 @@
       },
       "recall": {
         "title": "回忆",
-        "examples": ["我昨天关于定价说了什么？", "找到第三季度的演示文稿。"],
+        "examples": [
+          "我昨天关于定价说了什么？",
+          "找到第三季度的演示文稿。"
+        ],
         "hint": "你说过、看过或做过的事。"
       },
       "suggestions": {

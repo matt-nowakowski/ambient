@@ -1185,7 +1185,13 @@
       "reviewCode": "このプルリクエストをレビューしますか？",
       "commitMessage": "これのコミットメッセージを書きますか？",
       "review": "レビュー",
-      "write": "作成"
+      "write": "作成",
+      "fillForm": "フォームの入力中ですか？お手伝いできます。",
+      "fill": "手伝う",
+      "translatePage": "このページを翻訳しますか？",
+      "translate": "翻訳",
+      "helpHere": "ここで何かお手伝いしましょうか？",
+      "help": "手伝う"
     },
     "nudge": {
       "findIt": "探す",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "会議前に要点をまとめる",
         "review_code": "プルリクエストをレビュー",
         "commit_message": "コミットメッセージを作成",
+        "fill_form": "フォーム入力の手伝い",
+        "translate_page": "他の言語のページを翻訳",
+        "help_here": "その他の手伝い（このMacで判断）",
         "meeting_nudge": "会議中のヒント"
       }
     },

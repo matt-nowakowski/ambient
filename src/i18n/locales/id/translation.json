@@ -1185,7 +1185,13 @@
       "reviewCode": "Tinjau pull request ini?",
       "commitMessage": "Tulis pesan commit untuk ini?",
       "review": "Tinjau",
-      "write": "Tulis"
+      "write": "Tulis",
+      "fillForm": "Sedang mengisi formulir? Saya bisa bantu.",
+      "fill": "Bantu",
+      "translatePage": "Terjemahkan halaman ini?",
+      "translate": "Terjemahkan",
+      "helpHere": "Ada yang bisa saya bantu di sini?",
+      "help": "Bantu"
     },
     "nudge": {
       "findIt": "Temukan",
@@ -1346,6 +1352,9 @@
         "meeting_prep": "Beri ringkasan sebelum rapat",
         "review_code": "Tinjau pull request",
         "commit_message": "Tulis pesan commit",
+        "fill_form": "Bantu mengisi formulir",
+        "translate_page": "Terjemahkan halaman dalam bahasa lain",
+        "help_here": "Bantuan lain, dinilai di Mac ini",
         "meeting_nudge": "Pengingat selama rapat"
       }
     },

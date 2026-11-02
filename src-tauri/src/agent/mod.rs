@@ -4,6 +4,8 @@
 
 pub mod act;
 pub mod answer;
+pub mod compose;
+pub mod judge;
 pub mod llm;
 pub mod personal;
 pub mod proactive;
@@ -191,6 +193,8 @@ fn run(app: AppHandle) {
     let mut last_prep: Option<Instant> = None;
     let mut notified_sensitive: Option<String> = None;
     let mut considered: Option<(i32, String)> = None;
+    // The last skip reason logged at debug, so it's logged once per window.
+    let mut last_skip: Option<String> = None;
 
     loop {
         std::thread::sleep(TICK);
@@ -205,6 +209,7 @@ fn run(app: AppHandle) {
 
         let switched = current.map_or(true, |(pid, _)| pid != front.pid);
         if switched {
+            log::trace!("agent loop: {} came to front", front.bundle_id);
             current = Some((front.pid, Instant::now()));
             last_capture = None;
             continue;
@@ -232,6 +237,12 @@ fn run(app: AppHandle) {
         if let Some(found) = context::recent_sensitive() {
             let key = format!("{}|{}", found.bundle_id, found.title);
             if watching && notified_sensitive.as_deref() != Some(&key) {
+                log::debug!(
+                    "agent loop: stepped back from {} title[{}] ({:?}); telling the user",
+                    found.bundle_id,
+                    context::title_tag(&found.title),
+                    found.reason
+                );
                 notified_sensitive = Some(key);
                 crate::hud::show(
                     &app,
@@ -278,31 +289,80 @@ fn run(app: AppHandle) {
         }
         // Proactive: once per visit, after DWELL, never over a recording, a
         // meeting or another HUD card. Decided on device; nothing is sent.
-        if agent.proactive && !agent.is_paused() && crate::plan::is_paid(&app) {
-            // Metadata only (title), taken above.
-            if let Ok(meta) = &meta {
-                let key = (front.pid, meta.window_title.clone());
-                if window
-                    .as_ref()
-                    .map_or(true, |(p, t, _)| (p, t) != (&key.0, &key.1))
-                {
-                    window = Some((key.0, key.1.clone(), Instant::now()));
-                }
-                let dwelled = window
-                    .as_ref()
-                    .is_some_and(|(_, _, at)| at.elapsed() >= DWELL);
-                if dwelled
-                    && considered.as_ref() != Some(&key)
-                    && !crate::hud::is_visible()
-                    && !crate::meeting::is_active()
-                    && !is_recording(&app)
-                {
-                    considered = Some(key);
-                    if let Ok(snap) = context::snapshot(proactive::text_chars(), &agent.never_watch)
+        // Why a window got no suggestion is logged once per window at debug
+        // (privacy-safe: bundle id and a title tag only), per tick at trace.
+        let skip = if !agent.proactive {
+            Some("proactive off".to_string())
+        } else if agent.is_paused() {
+            Some("paused".into())
+        } else if !crate::plan::is_paid(&app) {
+            Some("not paid".into())
+        } else {
+            match &meta {
+                Err(reason) => Some(format!("no snapshot ({reason:?})")),
+                Ok(meta) => {
+                    let key = (front.pid, meta.window_title.clone());
+                    if window
+                        .as_ref()
+                        .map_or(true, |(p, t, _)| (p, t) != (&key.0, &key.1))
                     {
-                        proactive::consider(&app, snap, agent.suggestions_per_hour);
+                        window = Some((key.0, key.1.clone(), Instant::now()));
+                    }
+                    let dwelled = window
+                        .as_ref()
+                        .is_some_and(|(_, _, at)| at.elapsed() >= DWELL);
+                    if !dwelled {
+                        log::trace!("proactive: not dwelled yet on {}", front.bundle_id);
+                        None
+                    } else if considered.as_ref() == Some(&key) {
+                        log::trace!("proactive: already considered this window");
+                        None
+                    } else if crate::hud::is_visible() {
+                        Some("HUD visible".into())
+                    } else if crate::meeting::is_active() {
+                        Some("meeting active".into())
+                    } else if is_recording(&app) {
+                        Some("recording".into())
+                    } else if proactive::busy() {
+                        Some("still judging the previous window".into())
+                    } else {
+                        considered = Some(key);
+                        match context::snapshot(proactive::text_chars(), &agent.never_watch) {
+                            Ok(snap) => {
+                                log::debug!(
+                                    "proactive: considering {} title[{}] after {}s dwell",
+                                    front.bundle_id,
+                                    context::title_tag(&snap.window_title),
+                                    DWELL.as_secs()
+                                );
+                                proactive::consider_in_background(
+                                    &app,
+                                    snap,
+                                    agent.suggestions_per_hour,
+                                );
+                                None
+                            }
+                            Err(reason) => Some(format!("no text snapshot ({reason:?})")),
+                        }
                     }
                 }
+            }
+        };
+        if let Some(reason) = skip {
+            let tag = meta
+                .as_ref()
+                .map(|m| context::title_tag(&m.window_title))
+                .unwrap_or_default();
+            let line = format!(
+                "proactive: skipped {} title[{tag}]: {reason}",
+                front.bundle_id
+            );
+            let key = format!("{}|{tag}|{reason}", front.pid);
+            if last_skip.as_deref() != Some(&key) {
+                log::debug!("{line}");
+                last_skip = Some(key);
+            } else {
+                log::trace!("{line}");
             }
         }
 
@@ -725,54 +785,160 @@ fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) {
     );
 }
 
-/// A finished draft the user asked for by voice: typed where the cursor is,
-/// or offered as a card (Copy, and Insert once they click into a field).
+/// A finished draft the user asked for by voice: typed where the cursor is;
+/// with no reply box open in Mail or Gmail, one is opened first; otherwise
+/// it's offered as a card (Copy, and Insert once they click into a field).
 pub fn deliver_draft(app: &AppHandle, text: String, can_insert: bool) {
-    if can_insert {
-        crate::hud::hide(app);
-        let handle = app.clone();
-        std::thread::spawn(move || {
-            std::thread::sleep(Duration::from_millis(150));
-            if let Err(e) = crate::clipboard::paste(text, handle) {
+    crate::hud::hide(app);
+    let handle = app.clone();
+    std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(150));
+        if can_insert {
+            log::debug!("compose: a text field has focus; inserting the draft");
+            if let Err(e) = crate::clipboard::paste(text.clone(), handle.clone()) {
                 log::warn!("inserting the draft failed: {e}");
+                show_draft(&handle, "hud.draft.composed", text, false);
             }
-        });
-    } else {
-        show_draft(app, "hud.draft.composed", text, false);
+            return;
+        }
+        reply_then_paste(&handle, text);
+    });
+}
+
+/// Open a reply to the message in front and paste the draft into it; show
+/// the draft card if no reply box could be opened. Call off the main thread.
+fn reply_then_paste(app: &AppHandle, text: String) {
+    match open_reply_box(app) {
+        Ok(how) => {
+            log::debug!("compose: reply box open ({how}); pasting the draft");
+            if let Err(e) = crate::clipboard::paste(text.clone(), app.clone()) {
+                log::warn!("pasting the reply failed: {e}");
+                show_draft(app, "hud.draft.composed", text, false);
+            }
+        }
+        Err(why) => {
+            log::debug!("compose: no reply box ({why}); showing the draft");
+            show_draft(app, "hud.draft.composed", text, false);
+        }
     }
 }
 
-/// Mail: open a reply to the selected message (Cmd+R) and paste the draft
-/// into it.
+/// Gmail's Reply, as the button or link is named in its main languages.
+const REPLY_LABELS: &[&str] = &[
+    "Reply",
+    "Responder",
+    "Antworten",
+    "Répondre",
+    "Rispondi",
+    "Odpowiedz",
+    "Ответить",
+    "Відповісти",
+    "Beantwoorden",
+    "Svara",
+    "Svar",
+    "Odpovědět",
+    "Yanıtla",
+    "Balas",
+    "Trả lời",
+    "返信",
+    "回复",
+    "回覆",
+    "답장",
+    "השב",
+    "رد",
+    "जवाब दें",
+];
+
+/// Webmail in a browser, from the URL or the window title. Google Workspace
+/// titles end with the organisation's "… Mail", not "Gmail":
+/// "Subject - sam@acme.com - Acme Mail".
+pub fn is_webmail_window(url: &str, title: &str) -> bool {
+    url.contains("mail.google.com")
+        || title.ends_with(" - Gmail")
+        || (title.ends_with(" Mail") && title.contains('@') && title.contains(" - "))
+}
+
+/// Send ⌘R (Ctrl+R elsewhere) or a bare key to the app in front.
+fn send_key(app: &AppHandle, key: char, command: bool) -> bool {
+    app.try_state::<crate::input::EnigoState>()
+        .and_then(|state| {
+            let mut enigo = state.0.lock().ok()?;
+            use enigo::{Direction, Key, Keyboard};
+            #[cfg(target_os = "macos")]
+            let modifier = Key::Meta;
+            #[cfg(not(target_os = "macos"))]
+            let modifier = Key::Control;
+            if command {
+                enigo.key(modifier, Direction::Press).ok()?;
+            }
+            let clicked = enigo.key(Key::Unicode(key), Direction::Click);
+            std::thread::sleep(Duration::from_millis(30));
+            if command {
+                let _ = enigo.key(modifier, Direction::Release);
+            }
+            clicked.ok()
+        })
+        .is_some()
+}
+
+/// Wait for a text field to take focus (the reply body), up to `timeout`.
+fn wait_for_field(timeout: Duration) -> Option<bool> {
+    let start = Instant::now();
+    let mut last = None;
+    while start.elapsed() < timeout {
+        std::thread::sleep(Duration::from_millis(120));
+        last = field_state().0;
+        if last == Some(true) {
+            return last;
+        }
+    }
+    last
+}
+
+/// Open a reply box: Mail with ⌘R; Gmail in a browser by pressing its Reply
+/// button through accessibility (works whether or not Gmail's keyboard
+/// shortcuts are on), else its "r" shortcut. Ok once a text field has focus.
+fn open_reply_box(app: &AppHandle) -> Result<&'static str, &'static str> {
+    let place = router::place();
+    if place.bundle_id == "com.apple.mail" {
+        if !send_key(app, 'r', true) {
+            return Err("mail: couldn't send cmd-r");
+        }
+        // Mail's compose body doesn't always report itself as a text field;
+        // ⌘R reliably opens and focuses it, so paste unless focus is
+        // certainly elsewhere.
+        return match wait_for_field(Duration::from_millis(1500)) {
+            Some(false) => Err("mail: cmd-r opened no reply"),
+            _ => Ok("mail cmd-r"),
+        };
+    }
+    if BROWSERS.contains(&place.bundle_id.as_str()) && is_webmail_window(&place.url, &place.title) {
+        let pressed = context::press_labeled(REPLY_LABELS);
+        log::debug!(
+            "compose: gmail reply button press result {pressed} (0 pressed, 1 not found, 2 failed, 3 unavailable)"
+        );
+        if pressed == 0 && wait_for_field(Duration::from_millis(2500)) == Some(true) {
+            return Ok("gmail reply button");
+        }
+        // Gmail's own shortcut, which only works with keyboard shortcuts on
+        // and focus on the thread. Never typed into a field: focus isn't one.
+        if field_state().0 == Some(false)
+            && send_key(app, 'r', false)
+            && wait_for_field(Duration::from_millis(2000)) == Some(true)
+        {
+            return Ok("gmail r shortcut");
+        }
+        return Err("gmail: no reply field took focus");
+    }
+    Err("not mail or gmail")
+}
+
+/// The HUD's "Reply" on a drafted answer: open a reply and paste the draft.
 pub fn reply_with(app: &AppHandle, text: String) {
     let handle = app.clone();
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_millis(150));
-        let opened = handle
-            .try_state::<crate::input::EnigoState>()
-            .and_then(|state| {
-                let mut enigo = state.0.lock().ok()?;
-                use enigo::{Direction, Key, Keyboard};
-                #[cfg(target_os = "macos")]
-                let modifier = Key::Meta;
-                #[cfg(not(target_os = "macos"))]
-                let modifier = Key::Control;
-                enigo.key(modifier, Direction::Press).ok()?;
-                let clicked = enigo.key(Key::Unicode('r'), Direction::Click);
-                std::thread::sleep(Duration::from_millis(30));
-                let _ = enigo.key(modifier, Direction::Release);
-                clicked.ok()
-            })
-            .is_some();
-        if !opened {
-            show_draft(&handle, "hud.draft.composed", text, false);
-            return;
-        }
-        // The reply window needs a moment to open and focus its body.
-        std::thread::sleep(Duration::from_millis(700));
-        if let Err(e) = crate::clipboard::paste(text, handle) {
-            log::warn!("pasting the reply failed: {e}");
-        }
+        reply_then_paste(&handle, text);
     });
 }
 
