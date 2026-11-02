@@ -3,7 +3,17 @@ import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { toast } from "sonner";
-import { ArrowLeft, Copy, Mail, Square, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Copy,
+  FileText,
+  Mail,
+  MessageCircle,
+  Square,
+  Trash2,
+  Video,
+} from "lucide-react";
+import { type as osType } from "@tauri-apps/plugin-os";
 import { AnimatePresence, motion } from "motion/react";
 import {
   commands,
@@ -17,6 +27,17 @@ import { BRAND } from "@/lib/brand";
 import { Orb } from "../orb/Orb";
 import { Button } from "../ui/Button";
 import { SettingsGroup } from "../ui/SettingsGroup";
+import { useSettings } from "../../hooks/useSettings";
+import { isPaid, usePlan } from "../account/usePlan";
+
+const IS_MAC = osType() === "macos";
+
+/** How the automatic flow goes, shown while idle. */
+const AUTO_STEPS = [
+  { key: "join", icon: Video },
+  { key: "accept", icon: MessageCircle },
+  { key: "summary", icon: FileText },
+] as const;
 
 const SCREEN_RECORDING_SETTINGS =
   "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture";
@@ -66,6 +87,9 @@ export const MeetingsPage: React.FC = () => {
   const [followUp, setFollowUp] = useState<string | null>(null);
   const [usage, setUsage] = useState<UsageToday | null>(null);
   const transcriptEnd = useRef<HTMLDivElement>(null);
+  const { getSetting, refreshSettings } = useSettings();
+  const { status: plan } = usePlan();
+  const agent = getSetting("agent");
 
   const when = (secs: number) =>
     new Date(secs * 1000).toLocaleString(i18n.language, {
@@ -142,6 +166,18 @@ export const MeetingsPage: React.FC = () => {
     setBusy(false);
     if (r.status === "error")
       toast.error(t(r.error, { defaultValue: r.error }));
+  };
+
+  // Call detection is the meetings capability (Privacy): with it on,
+  // the agent offers to take notes when a call app is in front and the
+  // mic is in use. Turning it on here is the same switch.
+  const turnOnDetection = async () => {
+    if (!agent) return;
+    setBusy(true);
+    const r = await commands.setAgentSettings({ ...agent, meetings: true });
+    setBusy(false);
+    if (r.status === "error") toast.error(r.error);
+    await refreshSettings();
   };
 
   const openMeeting = async (id: number) => {
@@ -297,6 +333,16 @@ export const MeetingsPage: React.FC = () => {
 
   // ── list + live ──
   const elapsed = state.started ? now - state.started * 1000 : 0;
+  const paid = plan ? isPaid(plan) : false;
+  const autoState: Detection = !IS_MAC
+    ? "unsupported"
+    : agent?.meetings
+      ? agent.paused_until && agent.paused_until * 1000 > now
+        ? "paused"
+        : "on"
+      : paid
+        ? "off"
+        : "pro";
   return (
     <div className="max-w-3xl w-full mx-auto">
       <header className="mb-section">
@@ -306,88 +352,81 @@ export const MeetingsPage: React.FC = () => {
         </p>
       </header>
       <div className="space-y-section">
-        <div className="glass rounded-panel p-card">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="relative grid size-8 place-items-center">
-                <Orb variant={state.active ? "C2" : "B1"} size={22} />
-                {state.active && (
+        {state.active ? (
+          <div className="glass rounded-panel p-card">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="relative grid size-8 shrink-0 place-items-center">
+                  <Orb variant="C2" size={22} />
                   <span className="absolute end-0 top-0 size-2 rounded-full bg-[#ef4444]" />
-                )}
-              </span>
-              <div>
-                <p className="text-ui font-medium">
-                  {state.active
-                    ? t("meetings.live", { time: clock(elapsed) })
-                    : t("meetings.idle")}
-                </p>
-                <p className="text-small text-ink-2">
-                  {state.active
-                    ? state.system_audio
+                </span>
+                <div className="min-w-0">
+                  <p className="text-ui font-medium">
+                    {t("meetings.live", { time: clock(elapsed) })}
+                  </p>
+                  <p className="text-small text-ink-2">
+                    {state.system_audio
                       ? t("meetings.capturingBoth")
-                      : t("meetings.capturingMic")
-                    : usage?.meetings_limit != null
-                      ? t("meetings.freeLeft", {
-                          left: Math.max(
-                            0,
-                            usage.meetings_limit - usage.meetings,
-                          ),
-                          limit: usage.meetings_limit,
-                        })
-                      : t("meetings.idleDetail")}
-                </p>
+                      : t("meetings.capturingMic")}
+                  </p>
+                </div>
               </div>
-            </div>
-            {state.active ? (
               <Button
                 variant="primary"
                 size="sm"
+                className="shrink-0 whitespace-nowrap"
                 disabled={busy}
                 onClick={stop}
               >
                 <Square width={11} height={11} />
                 {t("meetings.stop")}
               </Button>
-            ) : (
-              <Button
-                variant="primary"
-                size="sm"
-                disabled={busy}
-                onClick={start}
-              >
-                {t("meetings.start")}
-              </Button>
+            </div>
+            {state.active && state.warning && (
+              <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
+                <p className="text-small text-ink-2">{t(state.warning)}</p>
+                {state.warning === "meetings.systemAudio.noPermission" && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => openUrl(SCREEN_RECORDING_SETTINGS)}
+                  >
+                    {t("meetings.openSettings")}
+                  </Button>
+                )}
+              </div>
+            )}
+            {state.active && (
+              <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
+                <p className="text-small text-ink-2">{t("meetings.consent")}</p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() =>
+                    copy(t("meetings.consentMessage", { appName: BRAND.name }))
+                  }
+                >
+                  {t("meetings.copyConsent")}
+                </Button>
+              </div>
             )}
           </div>
-          {state.active && state.warning && (
-            <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-              <p className="text-small text-ink-2">{t(state.warning)}</p>
-              {state.warning === "meetings.systemAudio.noPermission" && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => openUrl(SCREEN_RECORDING_SETTINGS)}
-                >
-                  {t("meetings.openSettings")}
-                </Button>
-              )}
-            </div>
-          )}
-          {state.active && (
-            <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-              <p className="text-small text-ink-2">{t("meetings.consent")}</p>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() =>
-                  copy(t("meetings.consentMessage", { appName: BRAND.name }))
-                }
-              >
-                {t("meetings.copyConsent")}
-              </Button>
-            </div>
-          )}
-        </div>
+        ) : (
+          <IdleCard
+            detection={autoState}
+            busy={busy}
+            freeLeft={
+              usage?.meetings_limit != null
+                ? t("meetings.freeLeft", {
+                    left: Math.max(0, usage.meetings_limit - usage.meetings),
+                    limit: usage.meetings_limit,
+                  })
+                : null
+            }
+            onTurnOn={turnOnDetection}
+            onStart={start}
+          />
+        )}
 
         {state.active && live && (
           <>
@@ -465,6 +504,87 @@ const Transcript: React.FC<{ segments: Segment[] }> = ({ segments }) => {
           <span className="min-w-0">{s.text}</span>
         </div>
       ))}
+    </div>
+  );
+};
+
+type Detection = "on" | "off" | "paused" | "pro" | "unsupported";
+
+/**
+ * Idle: notes start themselves. While a call app is in front and the mic is
+ * in use, the agent offers to take notes; this card says so, and keeps a
+ * manual start as the secondary way in.
+ */
+const IdleCard: React.FC<{
+  detection: Detection;
+  busy: boolean;
+  freeLeft: string | null;
+  onTurnOn: () => void;
+  onStart: () => void;
+}> = ({ detection, busy, freeLeft, onTurnOn, onStart }) => {
+  const { t } = useTranslation();
+  const auto = detection === "on";
+  return (
+    <div className="glass rounded-panel p-card">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="relative grid size-8 shrink-0 place-items-center">
+            <Orb variant="B1" size={22} />
+            {auto && (
+              <span className="absolute end-0 top-0 size-2 rounded-full bg-[#22c55e]" />
+            )}
+          </span>
+          <div className="min-w-0">
+            <p className="text-ui font-medium">
+              {t(`meetings.auto.${detection}`)}
+            </p>
+            <p className="mt-0.5 text-small text-ink-2">
+              {t(`meetings.auto.${detection}Detail`)}
+            </p>
+            {freeLeft && (
+              <p className="mt-0.5 text-small text-ink-3">{freeLeft}</p>
+            )}
+          </div>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {detection === "off" && (
+            <Button
+              variant="primary"
+              size="sm"
+              className="whitespace-nowrap"
+              disabled={busy}
+              onClick={onTurnOn}
+            >
+              {t("meetings.auto.turnOn")}
+            </Button>
+          )}
+          <Button
+            variant={detection === "off" ? "ghost" : "secondary"}
+            size="sm"
+            className="whitespace-nowrap"
+            disabled={busy}
+            onClick={onStart}
+            title={t("meetings.startNowHint")}
+          >
+            {t("meetings.startNow")}
+          </Button>
+        </div>
+      </div>
+      {detection !== "unsupported" && (
+        <ol className="mt-4 grid grid-cols-3 gap-2 border-t-[0.5px] border-glass-edge pt-4">
+          {AUTO_STEPS.map(({ key, icon: Icon }) => (
+            <li
+              key={key}
+              className={`flex items-center gap-2.5 text-small ${auto ? "text-ink-2" : "text-ink-3"}`}
+            >
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+                <Icon width={13} height={13} strokeWidth={1.75} />
+              </span>
+              <span className="min-w-0">{t(`meetings.steps.${key}`)}</span>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 };
