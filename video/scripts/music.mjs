@@ -1,8 +1,11 @@
 // Music bed (ElevenLabs music, composition plan so each section lands on a known second).
 //   node scripts/music.mjs  -> public/music/bed.mp3
-// v2: serene and airy, 80 BPM (a beat is 0.75 s, a bar 3 s). Section edges match
-// the cut in src/beats.ts: breakdown at 24 s (Hey Ambient), lift from 30 s, swell
-// into the logo at 54 s, a resolving chord, then a ringing tail to 64.5 s.
+// v3: between v1 (EDM, 120) and v2 (zen, 80): a tight, warm modern tech-launch
+// groove at 100 BPM (a beat is 0.6 s, a bar 2.4 s). Section edges match the cut
+// in src/beats.ts (in beats): intro 0-8, groove 8-36, breakdown 36-42 (Hey
+// Ambient), fuller groove 42-82, a riser 82-88 under the end of privacy, the lift on the logo
+// 88-104, a lighter bar, then a final warm hit at beat 110 and a clean tail.
+// (v1: bed-v1.mp3, v2: bed-v2.mp3 are kept.)
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -11,27 +14,29 @@ const root = path.dirname(path.dirname(new URL(import.meta.url).pathname));
 const key = (process.env.ELEVENLABS_API_KEY || fs.readFileSync(path.join(os.homedir(), ".ambient/elevenlabs.key"), "utf8")).trim();
 
 const g = [
-  "serene ambient electronica",
-  "80 BPM",
-  "soft warm analog pads",
-  "gentle felt piano",
-  "delicate plucked arpeggios on the beat",
-  "airy, spacious, calm, hopeful",
-  "warm and intimate",
-  "modern premium product film",
+  "modern tech product launch music",
+  "100 BPM",
+  "tight warm groove",
+  "punchy but soft kick and crisp claps",
+  "warm round bass",
+  "plucked synth arpeggios",
+  "lush warm pads",
+  "confident, optimistic, calm and premium",
   "instrumental",
 ];
+const B = 600; // one beat in ms
 const plan = {
   positive_global_styles: g,
-  negative_global_styles: ["vocals", "lyrics", "EDM", "four-on-the-floor", "drops", "big drums", "claps", "dubstep", "aggressive", "distorted", "trap hi-hats", "orchestral hits"],
+  negative_global_styles: ["vocals", "lyrics", "EDM", "big room", "dubstep", "aggressive", "harsh bright hi-hats", "distorted", "trap", "lo-fi", "orchestral"],
   sections: [
-    { section_name: "Dawn", positive_local_styles: ["warm pad swells in from silence", "a single soft piano note on the downbeat", "airy shimmer"], negative_local_styles: ["drums"], duration_ms: 6000, lines: [] },
-    { section_name: "Flow", positive_local_styles: ["gentle plucked arpeggio pulse on every beat", "soft felt piano melody", "light brushed shaker", "slowly building warmth"], negative_local_styles: ["kick drum", "loud"], duration_ms: 18000, lines: [] },
-    { section_name: "Breath", positive_local_styles: ["breakdown", "everything falls away to a sustained pad", "sparse high piano notes", "intimate and quiet"], negative_local_styles: ["percussion", "pulse"], duration_ms: 6000, lines: [] },
-    { section_name: "Lift", positive_local_styles: ["the pulse returns fuller", "soft muted kick on beats one and three", "warm bass", "piano chords", "gentle uplifting motion"], negative_local_styles: ["aggressive", "loud drums"], duration_ms: 18000, lines: [] },
-    { section_name: "Swell", positive_local_styles: ["gentle rising swell", "pads open up", "soft reverse cymbal into the next section", "anticipation"], negative_local_styles: ["snare roll", "white noise riser"], duration_ms: 6000, lines: [] },
-    { section_name: "Resolve", positive_local_styles: ["a warm resolving major chord on the first beat", "piano and pads together", "glowing, complete"], negative_local_styles: ["drop", "new melody"], duration_ms: 6000, lines: [] },
-    { section_name: "Tail", positive_local_styles: ["the final chord rings out", "soft reverb tail", "fades to silence"], negative_local_styles: ["new notes", "percussion"], duration_ms: 4500, lines: [] },
+    { section_name: "Intro", positive_local_styles: ["filtered plucks on every beat", "soft kick enters on the fifth beat", "building"], negative_local_styles: ["full groove"], duration_ms: 8 * B, lines: [] },
+    { section_name: "Groove", positive_local_styles: ["tight warm groove", "kick and soft claps on two and four", "warm bass", "plucked arpeggio", "steady drive"], negative_local_styles: ["breakdown"], duration_ms: 28 * B, lines: [] },
+    { section_name: "Breakdown", positive_local_styles: ["drums drop out", "warm pad and a single pluck motif", "intimate, a held breath"], negative_local_styles: ["kick"], duration_ms: 6 * B, lines: [] },
+    { section_name: "Groove 2", positive_local_styles: ["groove returns fuller", "kick, claps, shaker", "warm bass line", "pads widen", "uplifting drive"], negative_local_styles: ["breakdown", "harsh"], duration_ms: 40 * B, lines: [] },
+    { section_name: "Riser", positive_local_styles: ["drums stop", "soft filtered riser", "tension before the lift"], negative_local_styles: ["kick"], duration_ms: 6 * B, lines: [] },
+    { section_name: "Lift", positive_local_styles: ["the lift lands on the first beat with a warm bright chord", "full groove", "anthemic but tasteful", "big warm pads"], negative_local_styles: ["quiet", "EDM drop"], duration_ms: 16 * B, lines: [] },
+    { section_name: "Settle", positive_local_styles: ["groove thins to kick and plucks", "warm"], negative_local_styles: ["new melody"], duration_ms: 6 * B, lines: [] },
+    { section_name: "Button", positive_local_styles: ["one final warm chord hit on the first beat", "then a short clean reverb tail", "ends cleanly"], negative_local_styles: ["fade in", "new melody", "drums after the hit"], duration_ms: 6 * B, lines: [] },
   ],
 };
 

@@ -52,18 +52,72 @@ export const C = {
   bDark: "rgba(120,72,64,0.22)",
 };
 
+// Stageshow's two curves (v1): travel, and arrival from nowhere.
 export const TRAVEL = Easing.bezier(0.45, 0, 0.1, 1);
-export const ARRIVE = Easing.bezier(0.22, 1, 0.36, 1);
+export const ARRIVE = Easing.bezier(0.25, 0.8, 0.25, 1);
 export const SOFT = Easing.bezier(0.4, 0, 0.2, 1);
 
 /** Clamped interpolate with an easing. */
-export function ease(f: number, [a, b]: [number, number], [from, to]: [number, number], e = SOFT) {
+export function ease(f: number, [a, b]: [number, number], [from, to]: [number, number], e = TRAVEL) {
   return interpolate(f, [a, b], [from, to], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: e });
 }
 
-/** A gentle 0→1 spring (no overshoot to speak of). */
+/** 0→1 spring starting at frame `at` (v1's snappy default). */
 export function springAt(f: number, fps: number, at: number, cfg: { damping?: number; stiffness?: number; mass?: number } = {}) {
-  return spring({ frame: f - at, fps, config: { damping: 30, stiffness: 120, mass: 1, ...cfg } });
+  return spring({ frame: f - at, fps, config: { damping: 22, stiffness: 170, mass: 1, ...cfg } });
+}
+
+// ---------------------------------------------------------------- stage + camera
+/**
+ * A 960×540 logical stage drawn at 2× (UI is built at real app sizes, then
+ * scaled), with a camera: zoom about (cx, cy) in stage px, centred in the frame
+ * (works for both 16:9 and 9:16).
+ */
+export const Stage: React.FC<{ children: ReactNode; zoom?: number; cx?: number; cy?: number; style?: CSSProperties }> = ({
+  children,
+  zoom = 1,
+  cx = 480,
+  cy = 270,
+  style,
+}) => {
+  const { width, height } = useVideoConfig();
+  const s = 2 * zoom;
+  const tx = width / 2 - cx * s;
+  const ty = height / 2 - cy * s;
+  return (
+    <AbsoluteFill style={{ overflow: "hidden" }}>
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: 960,
+          height: 540,
+          transformOrigin: "0 0",
+          transform: `translate(${tx}px, ${ty}px) scale(${s})`,
+          fontFamily: FONT,
+          ...style,
+        }}
+      >
+        {children}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/** Camera keyframes: [frame, zoom, cx, cy][]; eased with TRAVEL between them. */
+export function camera(f: number, keys: [number, number, number, number][]) {
+  if (f <= keys[0][0]) return { zoom: keys[0][1], cx: keys[0][2], cy: keys[0][3] };
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [a, za, xa, ya] = keys[i];
+    const [b, zb, xb, yb] = keys[i + 1];
+    if (f <= b) {
+      const t = ease(f, [a, b], [0, 1], TRAVEL);
+      return { zoom: za + (zb - za) * t, cx: xa + (xb - xa) * t, cy: ya + (yb - ya) * t };
+    }
+  }
+  const k = keys[keys.length - 1];
+  return { zoom: k[1], cx: k[2], cy: k[3] };
 }
 
 // ---------------------------------------------------------------- shot clock

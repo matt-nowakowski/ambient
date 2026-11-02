@@ -1,52 +1,57 @@
-# Ambient launch spot: script and cut (v2)
+# Ambient launch spot: script and cut (v3)
 
-A calm, music-led launch film, 63 s, 30 fps, in two compositions from one
-component (`src/Ad.tsx`): `Launch` (1920 × 1080) and `LaunchVertical`
-(1080 × 1920, re-laid out, not cropped). The voice (ElevenLabs, Lily,
-`VOICE_ID` in `scripts/voice.mjs`) says short fragments, unchanged from v1.
+v3 is v1's music-led cut (kinetic type, real screens, camera moves, whips)
+slowed down about 1.4×, with v2's polish on top. It runs 69 s at 30 fps in two
+compositions from one component (`src/Ad.tsx`): `Launch` (1920 × 1080) and
+`LaunchVertical` (1080 × 1920, re-laid out with its own captions and camera
+moves, not cropped). The voice is unchanged from v1: ElevenLabs Lily, short
+fragments, `VOICE_ID` in `scripts/voice.mjs`.
 
-**Music** (`npm run music`, ElevenLabs music, `scripts/music.mjs`): serene
-ambient electronica, 80 BPM: soft pads, felt piano, plucked arpeggios. Its
-first 1.5 s are silent and skipped (`MUSIC_TRIM`); after that the first beat is
-at 0.023 s, a beat is 0.75 s, a bar 3 s, phrase onsets every 6 s, the resolving
-chord at 54 s (the logo), tail out by 63 s. Measure a new take with
-`scripts/beats.mjs` (edit its BPM list) and update `src/beats.ts`.
+**Music** (`npm run music`, ElevenLabs music, `scripts/music.mjs`): a tight,
+warm, modern tech-launch groove at 100 BPM, between v1 (EDM, 120) and v2 (zen,
+80). Its energy target was Matt's reference, `eleven labs promo video.mov`:
+- no steady percussive pulse (it seems voice-led);
+- bass-weighted and dark on top;
+- about 4 onsets per second.
 
-**Sound** (`npm run sfx`, ElevenLabs sound generation, `public/sfx/`): taps
-when a pill opens, clicks on accept, soft typing as the email line writes,
-pops and swishes as cards land, a whoosh under each crossfade, a chime when the
-orb wakes, a sonic logo at the lockup. Mixed under the VO and music in
-`sfxList()`.
+Three takes were generated; take B (`bed-v3b.mp3`, installed as `bed.mp3`) was
+chosen. It locks to 100 BPM with its first beat at 0.032 s and builds from about
+−19 to −12 dB through the cut, with a final warm hit at beat ~110. v1 and v2's
+beds are kept as `bed-v1.mp3` and `bed-v2.mp3`.
 
-**Look:** the site's/app's `.app-backdrop` exactly (two blurred drifting lights:
-blue top-left, rust bottom-right; light `#f5f5f7` or dark `#0b0b0d`), Geist at
-300 for display and 400–500 for UI, the intro's lockup (Geist 300, -0.04em,
-orb 17px dots / 14 gap, 18px gap) at 72 px (64 px vertical). Shots crossfade
-over 20 frames with a soft blur and a 1–1.5 % scale; nothing whips.
+**Timing** (`src/beats.ts`): a beat is 0.6 s (18 frames). Each shot keeps v1's
+internal beat numbers, so v1's moves play 1.2× slower, and each shot gets
+extra beats to hold. The music sits a little lower than in v1 (0.72) and ducks
+to 0.36 under the voice.
 
-| Beat | Time | Shot | On screen | Voice |
+**Kept from v2:**
+- the app's `.app-backdrop` (light and dark), with no violet anywhere;
+- the launch-screen lockup (Geist 300, orb 17/14, 18px gap) at 72 px, 64 px vertical;
+- Geist at 300 for display and 400–500 for UI;
+- content-sized labels and pills (nothing truncates);
+- product captions that never overlap the UI;
+- sound effects (`npm run sfx`, `public/sfx/`), re-timed to this cut.
+
+| Beat | Time | Shot | v1 beat | Voice |
 |---|---|---|---|---|
-| 0 | 0:00 | open (dark) | The orb assembles from blur, chime | — |
-| 4 | 0:03 | speak | "Speak." and the recording pill | Speak. |
-| 8 | 0:06 | writes | Mail window; Live pill streams "um so can we uh…", fillers struck, swaps to "Can we move the sync to 3:30 on Thursday?", which types into the email | It writes. |
-| 16 | 0:12 | answers | Request pill, answer card, sources, Insert / Copy | It answers. |
-| 23 | 0:17.3 | acts | "Remind me at 5 to call Sam", "Reminder added", the reminder | It acts. |
-| 28 | 0:21 | remembers | Recall card citing a dictation and a meeting | It remembers. |
-| 34 | 0:25.5 | hey (dark) | "Or just say" → the orb wakes on "Hey Ambient"; "Optional. No key at all." | Or just say: Hey Ambient. |
-| 40 | 0:30 | meeting | Call window, "Take notes for this call?" accepted, live You/Them notes | Notes for every call. |
-| 46 | 0:34.5 | nobot (dark) | "No bot. Nothing joins your call." | No bot. |
-| 50 | 0:37.5 | suggest | Chat with a date; suggestion accepted; "Added to Calendar" | — |
-| 57 | 0:42.8 | apps | "In any app." with ten app chips → "Nothing to connect." | In any app. / Nothing to connect. |
-| 64 | 0:48 | private | Never-watched list, recovery phrase blurred to "Paused here", a key removed before sending | Private by design. |
-| 72 | 0:54 | logo (dark) | The lockup assembles as in the app's intro; tryambient.ai; "Free for Mac, Windows and Linux. Agent on Mac." | Meet Ambient. / Free, at try ambient dot A I. |
-
-Dropped from v1: the Write/Answer/Act/Recall flash cards, the gather break and
-the tagline (too fast); the four quick suggestions became one readable one.
-
-Captions on product shots (left column in 16:9, above the UI in 9:16, never
-overlapping it): "It writes." · "It answers." · "It acts." · "It remembers." ·
-"Notes for every call." · "It notices." · "Private by design.", each with one
-short supporting line.
+| 0 | 0:00 | open: the orb punches in on each beat, rings | 0 | — |
+| 4 | 0:02.4 | speak: "Speak." and the recording pill | 4 | Speak. |
+| 8 | 0:04.8 | writes: Live pill, fillers struck, "3:30", the line flies into the email | 7 | It writes. |
+| 15 | 0:09 | answers: request, answer card, sources, Insert / Copy | 12 | It answers. |
+| 21 | 0:12.6 | acts: "Reminder added", 4:59 rolls to 5:00 | 16 | It acts. |
+| 26 | 0:15.6 | remembers: recall card citing a dictation and a meeting | 20 | It remembers. |
+| 32 | 0:19.2 | modes: Write. Answer. Act. Recall. on light and dark | 24 | — |
+| 36 | 0:21.6 | hey (dark): the orb wakes on "Hey Ambient" | 28 | Or just say: Hey Ambient. |
+| 42 | 0:25.2 | meeting: "Take notes for this call?", live You/Them notes | 32 | Notes for every call. |
+| 48 | 0:28.8 | nobot: the nudge, the summary, "No bot." | 36 | No bot. |
+| 53 | 0:31.8 | suggest: four suggestions, three beats each | 40 | — |
+| 65 | 0:39 | apps: "In any app." and ten app names, half a beat each | 48 | In any app. |
+| 73 | 0:43.8 | connect: "Nothing to connect." | 54 | Nothing to connect. |
+| 77 | 0:46.2 | private: never watched, "Paused here", key removed | 57 | Private by design. |
+| 84 | 0:50.4 | gather: the break, everything pulled into the orb | 62 | — |
+| 88 | 0:52.8 | reveal (dark): the lockup assembles, as in the app's intro | 64 | Meet Ambient. |
+| 96 | 0:57.6 | tagline: Speak. It's written. Answered. Done. | 72 | — |
+| 104 | 1:02.4 | endcard: lockup, tryambient.ai, "Free for Mac, Windows and Linux. Agent on Mac."; final hit at beat 110 | 80 | Free, at try ambient dot A I. |
 
 ## Facts each moment rests on
 
@@ -70,14 +75,10 @@ short supporting line.
 
 Set `REMOTION_CHROME` to a local headless Chrome (for example Playwright's
 `chrome-headless-shell`) so Remotion doesn't download its own. Then
-`npm run render`, `npm run render:vertical`; rehearse with `npm run sheet` /
-`npm run sheet:vertical` (contact sheets in `out/rehearse/`).
+`npm run render` and `npm run render:vertical`. Rehearse with `npm run sheet`
+and `npm run sheet:vertical` (contact sheets in `out/rehearse/`).
 
-Posters (`npm run poster`): the end-card lockup on the light or dark backdrop,
-for both formats, so the embed matches the page's theme:
-`out/ambient-launch-v2.jpg`, `out/ambient-launch-v2-dark.jpg`,
-`out/ambient-launch-v2-vertical.jpg`, `out/ambient-launch-v2-vertical-dark.jpg`.
-
-The vertical cut is laid out for a phone-width embed: in 9:16 the wide product
-shots (mail, call, chat) use narrower windows so UI text stays legible at about
-390 CSS px wide, and the chat suggestion uses a shorter line.
+Posters (`npm run poster`) put the lockup on the light or dark backdrop for
+both formats, so the embed matches the page's theme. The lockup sits in the
+upper third and the URL in the lower third, which keeps the centre clear for
+the player's play button.
