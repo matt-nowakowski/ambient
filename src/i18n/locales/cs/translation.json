@@ -401,6 +401,15 @@
           "push_to_talk": "Nahrává, dokud držíte zkratku",
           "toggle": "Klepněte na zkratku pro zahájení nahrávání, klepněte znovu pro zastavení"
         }
+      },
+      "autoStop": {
+        "label": "Zastavit po pauze",
+        "description": "Když nahrávání spustíte klepnutím, diktování se také samo zastaví, jakmile po mluvení uděláte pauzu. Krátké pauzy uprostřed věty se nepočítají a nikdy se nezastaví dřív, než něco řeknete.",
+        "delay": {
+          "label": "Pauza před zastavením",
+          "description": "Jak dlouho po mluvení mlčet, než se diktování zastaví.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1174,6 +1183,7 @@
       "copied": "Zkopírováno",
       "learned": "Rozumím. Můžete to změnit v Soukromí.",
       "sensitivePaused": "Tady pozastaveno: toto okno zobrazuje frázi pro obnovení nebo soukromý klíč.",
+      "steppingBack": "Ustupuji stranou: vypadá to soukromě, takže to {{appName}} nečte.",
       "fairUse": "Dosáhli jste dnešního limitu férového používání. Obnoví se o půlnoci UTC.",
       "slowDown": "To je mnoho požadavků najednou. Zkuste to znovu za minutu.",
       "listening": "Poslouchám…"
@@ -1324,7 +1334,8 @@
         "summary": "Shrnutí schůzky",
         "act": "Akce",
         "license": "Kontrola účtu",
-        "trial": "Zkušební verze"
+        "trial": "Zkušební verze",
+        "warmup": "Příprava připojení (nic se neodesílá)"
       }
     },
     "engine": {

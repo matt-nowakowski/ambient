@@ -88,6 +88,10 @@ const settingUpdaters: {
     commands.changeShortcutActivationSetting(value as ShortcutActivation),
   hold_threshold_ms: (value) =>
     commands.changeHoldThresholdMsSetting(value as number),
+  auto_stop_on_pause: (value) =>
+    commands.changeAutoStopOnPauseSetting(value as boolean),
+  auto_stop_pause_ms: (value) =>
+    commands.changeAutoStopPauseMsSetting(value as number),
   selected_microphone: (value) =>
     commands.setSelectedMicrophone(
       (value as string) === "Default" || value === null

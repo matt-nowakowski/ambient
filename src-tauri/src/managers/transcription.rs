@@ -1207,14 +1207,7 @@ fn finish_text(outcome: RunOutcome, settings: &AppSettings) -> String {
     } = outcome;
     let output_language = setup.output_language(settings, model_detected_language);
     debug!("Output language evidence: {:?}", output_language);
-    // Skip fuzzy correction if the model already got the custom words.
-    post_process_transcription_text(
-        text,
-        settings,
-        setup.custom_words_prompted(),
-        &output_language,
-        &setup.languages,
-    )
+    post_process_transcription_text(text, settings, &output_language, &setup.languages)
 }
 
 /// How every run of one transcription (each chunk, or a whole clip) is
@@ -1229,11 +1222,6 @@ struct RunSetup {
 }
 
 impl RunSetup {
-    /// Custom words went to the model as vocabulary; skip fuzzy correction.
-    fn custom_words_prompted(&self) -> bool {
-        !self.run_options.vocabulary.is_empty()
-    }
-
     /// The language the runs were in. When the model decided, the language
     /// it reported (if any).
     fn spoken_language(&self, model_detected_language: Option<&str>) -> LanguageDecision {
@@ -1551,8 +1539,8 @@ fn with_model_detected_language(
 }
 
 /// Custom words for transcribe-cpp's `vocabulary` slot, in priority order.
-/// Empty for models without Feature::Vocabulary, which would warn on every run
-/// and rely on fuzzy correction instead.
+/// Empty for models without Feature::Vocabulary, which would warn on every run.
+/// Every model's output also gets the fuzzy post-pass.
 fn vocabulary_for_model(supports_vocabulary: bool, custom_words: &[String]) -> Vec<String> {
     if supports_vocabulary {
         custom_words.to_vec()
@@ -1600,7 +1588,6 @@ fn transcribe_cpp_run_plan(
 fn post_process_transcription_text(
     raw: String,
     settings: &AppSettings,
-    custom_words_already_prompted: bool,
     output_language: &OutputLanguageEvidence,
     supported_languages: &[String],
 ) -> String {
@@ -1640,7 +1627,9 @@ fn post_process_transcription_text(
             _ => raw,
         };
 
-        let corrected = if !settings.custom_words.is_empty() && !custom_words_already_prompted {
+        // Always, even when the model got the words as vocabulary: that only
+        // biases decoding, and a near miss ("pairo" for "payro") still lands.
+        let corrected = if !settings.custom_words.is_empty() {
             apply_custom_words(
                 &raw,
                 &settings.custom_words,
@@ -2020,7 +2009,6 @@ mod tests {
             let result = post_process_transcription_text(
                 "学校に行きます".to_string(),
                 &settings,
-                false,
                 &evidence,
                 &languages(&["zh", "ja", "en"]),
             );
@@ -2039,7 +2027,6 @@ mod tests {
         let result = post_process_transcription_text(
             "我們今天下午一起去學校圖書館看書，然後再去吃晚飯。".to_string(),
             &settings,
-            false,
             &OutputLanguageEvidence::Unknown,
             &languages(&["zh", "en", "ja"]),
         );
@@ -2061,7 +2048,6 @@ mod tests {
         let result = post_process_transcription_text(
             "eu vi um carro".to_string(),
             &settings,
-            false,
             &evidence,
             &supported,
         );
@@ -2113,7 +2099,6 @@ mod tests {
         let result = post_process_transcription_text(
             "um uhm ok".to_string(),
             &settings,
-            false,
             &evidence,
             &languages(&["en", "pt"]),
         );
@@ -2133,7 +2118,6 @@ mod tests {
             "um so the weather forecast said it would probably rain throughout the whole weekend"
                 .to_string(),
             &settings,
-            false,
             &OutputLanguageEvidence::Unknown,
             &languages(&["en", "pt", "es", "de"]),
         );
@@ -2154,7 +2138,6 @@ mod tests {
         let result = post_process_transcription_text(
             "eu vi um carro na rua ontem de manhã quando fui ao mercado".to_string(),
             &settings,
-            false,
             &OutputLanguageEvidence::Unknown,
             &languages(&["en", "pt", "es", "de"]),
         );
@@ -2241,7 +2224,6 @@ mod tests {
         let result = post_process_transcription_text(
             "eu vi um carro".to_string(),
             &settings,
-            false,
             &evidence,
             &supported,
         );
@@ -2315,35 +2297,25 @@ mod tests {
         assert_eq!(plan.target_language, None);
     }
 
+    /// Vocabulary only biases the model; it can still mishear a custom word,
+    /// so the post-pass always runs (the tester's "matias pairo").
     #[test]
-    fn fuzzy_correction_is_skipped_exactly_when_vocabulary_was_sent() {
+    fn custom_words_are_corrected_after_every_run() {
         let settings = AppSettings {
             selected_language: "en".to_string(),
-            custom_words: vec!["Ambient".to_string()],
+            custom_words: vec!["Ambient".to_string(), "matias payro".to_string()],
             ..Default::default()
         };
         let evidence = OutputLanguageEvidence::UserSelected("en".to_string());
         let supported = languages(&["en"]);
 
-        // The model was already prompted with the term: leave its output alone.
-        let prompted = post_process_transcription_text(
-            "i use ambient every day".to_string(),
-            &settings,
-            true,
-            &evidence,
-            &supported,
-        );
-        assert_eq!(prompted, "i use ambient every day");
-
-        // No vocabulary sent: the fuzzy post-correction fixes the casing.
         let corrected = post_process_transcription_text(
-            "i use ambient every day".to_string(),
+            "i use ambient every day with matias pairo".to_string(),
             &settings,
-            false,
             &evidence,
             &supported,
         );
-        assert_eq!(corrected, "i use Ambient every day");
+        assert_eq!(corrected, "i use Ambient every day with matias payro");
     }
 }
 

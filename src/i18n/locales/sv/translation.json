@@ -397,6 +397,15 @@
           "push_to_talk": "Spelar in så länge du håller genvägen nedtryckt",
           "toggle": "Tryck på genvägen för att starta inspelningen, tryck igen för att stoppa"
         }
+      },
+      "autoStop": {
+        "label": "Stoppa efter en paus",
+        "description": "När du startar med ett tryck slutar dikteringen också av sig själv när du pausar efter att ha pratat. Korta pauser mitt i en mening räknas inte, och den slutar aldrig innan du har sagt något.",
+        "delay": {
+          "label": "Paus innan stopp",
+          "description": "Hur länge du ska vara tyst efter att ha pratat innan dikteringen slutar.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Kopierad",
       "learned": "Uppfattat. Du kan ändra det under Integritet.",
       "sensitivePaused": "Pausad här: fönstret visar en återställningsfras eller privat nyckel.",
+      "steppingBack": "Tar ett steg tillbaka: det här ser privat ut, så {{appName}} läser det inte.",
       "fairUse": "Du har nått dagens gräns för skälig användning. Den återställs vid midnatt UTC.",
       "slowDown": "Det är många förfrågningar på en gång. Försök igen om en minut.",
       "listening": "Lyssnar…"
@@ -1302,7 +1312,8 @@
         "summary": "Mötessammanfattning",
         "act": "Åtgärd",
         "license": "Kontokontroll",
-        "trial": "Provperiod"
+        "trial": "Provperiod",
+        "warmup": "Förbereder anslutning (inget skickat)"
       }
     },
     "engine": {

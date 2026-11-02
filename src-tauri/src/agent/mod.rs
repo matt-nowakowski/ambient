@@ -199,19 +199,29 @@ fn run(app: AppHandle) {
             continue;
         }
 
-        // Stepped back from a window showing a recovery phrase or key: say so
-        // once per window, if anything is watching.
-        if let Some((bundle, title)) = context::recent_sensitive() {
-            let key = format!("{bundle}|{title}");
-            let a = settings::get_settings(&app).agent;
-            if (a.screen_context || a.screen_memory || a.proactive)
-                && notified_sensitive.as_deref() != Some(&key)
-            {
+        // Whenever anything watches the screen, the front window's metadata
+        // (app, titles, frame URLs; no text) is checked every tick, so a
+        // wallet, password manager or bank is noticed the moment it opens
+        // (a MetaMask side panel included), not only when a secret shows.
+        let agent = settings::get_settings(&app).agent;
+        let watching =
+            (agent.screen_context || agent.screen_memory || agent.proactive) && !agent.is_paused();
+        let meta = if watching {
+            context::snapshot(0, &agent.never_watch)
+        } else {
+            Err(context::Skipped::Unavailable)
+        };
+
+        // Stepped back from a private place, or a window showing a recovery
+        // phrase or key: say so once per window.
+        if let Some(found) = context::recent_sensitive() {
+            let key = format!("{}|{}", found.bundle_id, found.title);
+            if watching && notified_sensitive.as_deref() != Some(&key) {
                 notified_sensitive = Some(key);
                 crate::hud::show(
                     &app,
                     crate::hud::HudContent::Status {
-                        text: "hud.status.sensitivePaused".into(),
+                        text: found.reason.status_key().into(),
                         tone: crate::hud::HudTone::Neutral,
                         undo: false,
                     },
@@ -232,7 +242,6 @@ fn run(app: AppHandle) {
         }
 
         // Meeting offer: a call app in front and someone else using the mic.
-        let agent = settings::get_settings(&app).agent;
         if agent.meetings
             && !agent.is_paused()
             && !crate::meeting::is_active()
@@ -255,9 +264,9 @@ fn run(app: AppHandle) {
         // Proactive: once per visit, after DWELL, never over a recording, a
         // meeting or another HUD card. Decided on device; nothing is sent.
         if agent.proactive && !agent.is_paused() && crate::plan::is_paid(&app) {
-            // Metadata only (title), cheap enough for every tick.
-            if let Ok(meta) = context::snapshot(0, &agent.never_watch) {
-                let key = (front.pid, meta.window_title);
+            // Metadata only (title), taken above.
+            if let Ok(meta) = &meta {
+                let key = (front.pid, meta.window_title.clone());
                 if window
                     .as_ref()
                     .map_or(true, |(p, t, _)| (p, t) != (&key.0, &key.1))

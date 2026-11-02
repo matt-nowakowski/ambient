@@ -4,7 +4,8 @@ use crate::audio_toolkit::{
         frames_for_duration_ms, EarshotVad, SmoothedVad, VAD_OFFLINE_HANGOVER_MS, VAD_ONSET_MS,
         VAD_PREFILL_MS, VAD_STREAMING_HANGOVER_MS,
     },
-    CaptureSink, CaptureVad, SileroVad, SpeechScorer, VadPolicy, VoiceActivityDetector,
+    CaptureSink, CaptureVad, SileroVad, SpeechActivity, SpeechScorer, VadPolicy,
+    VoiceActivityDetector,
 };
 use crate::helpers::clamshell;
 use crate::managers::transcription::StreamRouter;
@@ -497,6 +498,9 @@ pub struct AudioRecordingManager {
     cached_device: Arc<Mutex<Option<(String, String)>>>,
     /// The last recording was all-zero samples, not just audio without speech.
     last_input_silent: Arc<AtomicBool>,
+    /// Speech and pauses in the current recording (auto-stop on a long
+    /// pause). `None` when the recording runs without VAD.
+    speech_activity: Arc<Mutex<Option<Arc<SpeechActivity>>>>,
 }
 
 impl AudioRecordingManager {
@@ -538,6 +542,7 @@ impl AudioRecordingManager {
             capture_generation: Arc::new(AtomicU64::new(0)),
             cached_device: Arc::new(Mutex::new(None)),
             last_input_silent: Arc::new(AtomicBool::new(false)),
+            speech_activity: Arc::new(Mutex::new(None)),
         };
 
         // Always-on?  Open immediately.
@@ -1038,13 +1043,14 @@ impl AudioRecordingManager {
             }
 
             let (ready_tx, receiver) = mpsc::channel();
-            let sink = CaptureSink::new(
+            let mut sink = CaptureSink::new(
                 self.lend_vad()?,
                 vad_policy,
                 Arc::clone(&self.on_levels),
                 Arc::clone(&self.on_audio),
                 ready_tx,
             );
+            *self.speech_activity.lock().unwrap() = sink.track_speech();
 
             let recorder = self.recorder.lock().unwrap();
             let Some(microphone) = recorder.as_ref() else {
@@ -1265,6 +1271,20 @@ impl AudioRecordingManager {
             _ => None,
         }
     }
+    /// How long the speaker has been quiet after speaking in the current
+    /// recording. `None` when not recording, before any speech, while they
+    /// speak, or without VAD.
+    pub fn silence_after_speech(&self) -> Option<Duration> {
+        if !self.is_recording() {
+            return None;
+        }
+        self.speech_activity
+            .lock()
+            .ok()?
+            .as_ref()
+            .and_then(|a| a.silence_after_speech())
+    }
+
     pub fn is_recording(&self) -> bool {
         // Lock-free: mirrors the `state` {Recording, Stopping} membership via
         // an atomic maintained by `set_state()`. Polled from the webview/main

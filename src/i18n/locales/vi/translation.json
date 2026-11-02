@@ -397,6 +397,15 @@
           "push_to_talk": "Ghi âm trong lúc bạn giữ phím tắt",
           "toggle": "Nhấn phím tắt để bắt đầu ghi âm, nhấn lại để dừng"
         }
+      },
+      "autoStop": {
+        "label": "Dừng sau khi ngừng nói",
+        "description": "Khi bạn bắt đầu bằng một lần chạm, chế độ đọc chính tả cũng tự dừng khi bạn ngừng nói một lúc. Những quãng nghỉ ngắn giữa câu không được tính, và nó không bao giờ dừng trước khi bạn nói gì.",
+        "delay": {
+          "label": "Khoảng lặng trước khi dừng",
+          "description": "Cần im lặng bao lâu sau khi nói để chế độ đọc chính tả dừng.",
+          "seconds": "{{seconds}} giây"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Đã sao chép",
       "learned": "Đã hiểu. Bạn có thể thay đổi trong Quyền riêng tư.",
       "sensitivePaused": "Đã tạm dừng tại đây: cửa sổ này hiển thị cụm từ khôi phục hoặc khóa riêng tư.",
+      "steppingBack": "Lùi lại: nội dung này có vẻ riêng tư nên {{appName}} không đọc.",
       "fairUse": "Bạn đã đạt giới hạn sử dụng hợp lý của hôm nay. Giới hạn được đặt lại vào nửa đêm UTC.",
       "slowDown": "Có quá nhiều yêu cầu cùng lúc. Hãy thử lại sau một phút.",
       "listening": "Đang nghe…"
@@ -1302,7 +1312,8 @@
         "summary": "Tóm tắt cuộc họp",
         "act": "Hành động",
         "license": "Kiểm tra tài khoản",
-        "trial": "Dùng thử"
+        "trial": "Dùng thử",
+        "warmup": "Chuẩn bị kết nối (không gửi gì)"
       }
     },
     "engine": {

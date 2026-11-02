@@ -399,6 +399,15 @@
           "push_to_talk": "Registra finché tieni premuta la scorciatoia",
           "toggle": "Tocca la scorciatoia per avviare la registrazione, tocca di nuovo per fermarla"
         }
+      },
+      "autoStop": {
+        "label": "Interrompi dopo una pausa",
+        "description": "Quando avvii con un tocco, la dettatura si ferma anche da sola appena fai una pausa dopo aver parlato. Le brevi pause a metà frase non contano e non si ferma mai prima che tu abbia detto qualcosa.",
+        "delay": {
+          "label": "Pausa prima dell'arresto",
+          "description": "Quanto restare in silenzio dopo aver parlato prima che la dettatura si fermi.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1166,6 +1175,7 @@
       "copied": "Copiato",
       "learned": "Capito. Puoi cambiarlo in Privacy.",
       "sensitivePaused": "In pausa qui: questa finestra mostra una frase di recupero o una chiave privata.",
+      "steppingBack": "Mi faccio da parte: sembra privato, quindi {{appName}} non lo legge.",
       "fairUse": "Hai raggiunto il limite di utilizzo equo di oggi. Si azzera a mezzanotte UTC.",
       "slowDown": "Sono troppe richieste tutte insieme. Riprova tra un minuto.",
       "listening": "In ascolto…"
@@ -1313,7 +1323,8 @@
         "summary": "Riepilogo riunione",
         "act": "Azione",
         "license": "Verifica account",
-        "trial": "Prova"
+        "trial": "Prova",
+        "warmup": "Preparazione della connessione (nulla inviato)"
       }
     },
     "engine": {

@@ -116,9 +116,44 @@ private func findWebArea(_ root: AXUIElement, depth: Int = 0) -> AXUIElement? {
     return nil
 }
 
+/// URLs and titles of the web frames in a window: a browser's page, its side
+/// panel (where wallet extensions such as MetaMask live) and extension popups.
+/// Walks the browser chrome only (never into a page), bounded by nodes and time.
+private func webFrames(_ window: AXUIElement, deadline: Date) -> (urls: [String], titles: [String]) {
+    var urls: [String] = []
+    var titles: [String] = []
+    var queue: [(AXUIElement, Int)] = [(window, 0)]
+    var visited = 0
+    while !queue.isEmpty, visited < 600, Date() < deadline {
+        let (el, depth) = queue.removeFirst()
+        visited += 1
+        if stringAttr(el, kAXRoleAttribute) == "AXWebArea" {
+            if let url = stringAttr(el, "AXURL"), !url.isEmpty { urls.append(url) }
+            if let title = stringAttr(el, kAXTitleAttribute), !title.isEmpty { titles.append(title) }
+            continue // the page's own content is not walked
+        }
+        if depth < 14, let children = attr(el, kAXChildrenAttribute) as? [AXUIElement] {
+            queue.append(contentsOf: children.map { ($0, depth + 1) })
+        }
+    }
+    return (urls, titles)
+}
+
+/// The web frame holding the focused element, if any (walks up its parents).
+private func enclosingWebArea(_ el: AXUIElement) -> AXUIElement? {
+    var current: AXUIElement? = el
+    for _ in 0..<48 {
+        guard let node = current else { return nil }
+        if stringAttr(node, kAXRoleAttribute) == "AXWebArea" { return node }
+        current = attr(node, kAXParentAttribute).map { $0 as! AXUIElement }
+    }
+    return nil
+}
+
 /// Snapshot of the given app's focused window as JSON:
-/// {"window_title", "url", "focused_role", "editable", "secure", "selection", "text"}.
-/// `maxChars` <= 0 skips the text walk (metadata only).
+/// {"window_title", "url", "focused_role", "editable", "secure", "selection", "text",
+///  "frame_urls", "frame_titles"}.
+/// `maxChars` <= 0 skips the text walk and the selection (metadata only).
 @_cdecl("ambient_context_snapshot")
 public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeMutablePointer<CChar>? {
     guard AXIsProcessTrusted() else { return nil }
@@ -128,9 +163,14 @@ public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeM
 
     var result: [String: Any] = [:]
     let window = attr(app, kAXFocusedWindowAttribute).map { $0 as! AXUIElement }
+    var frameUrls: [String] = []
+    var frameTitles: [String] = []
     if let window = window {
         result["window_title"] = stringAttr(window, kAXTitleAttribute) ?? ""
         if let doc = stringAttr(window, kAXDocumentAttribute) { result["url"] = doc }
+        let frames = webFrames(window, deadline: Date().addingTimeInterval(0.15))
+        frameUrls = frames.urls
+        frameTitles = frames.titles
     }
 
     if let focusedObj = attr(app, kAXFocusedUIElementAttribute) {
@@ -139,7 +179,11 @@ public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeM
         result["focused_role"] = role
         result["secure"] = role == "AXSecureTextField"
         result["editable"] = editableRoles.contains(role) || isSettable(focused, kAXValueAttribute)
-        if role != "AXSecureTextField", let sel = stringAttr(focused, kAXSelectedTextAttribute), !sel.isEmpty {
+        if let area = enclosingWebArea(focused) {
+            if let url = stringAttr(area, "AXURL"), !url.isEmpty { frameUrls.append(url) }
+            if let title = stringAttr(area, kAXTitleAttribute), !title.isEmpty { frameTitles.append(title) }
+        }
+        if maxChars > 0, role != "AXSecureTextField", let sel = stringAttr(focused, kAXSelectedTextAttribute), !sel.isEmpty {
             result["selection"] = String(sel.prefix(8000))
         }
         // What the user is writing (draft suggestions). Never for password fields.
@@ -156,6 +200,8 @@ public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeM
         if let url = stringAttr(root, "AXURL") { result["url"] = url }
         result["text"] = collectText(root, maxChars: Int(maxChars), deadline: deadline)
     }
+    result["frame_urls"] = frameUrls
+    result["frame_titles"] = frameTitles
     return json(result)
 }
 

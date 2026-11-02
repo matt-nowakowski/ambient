@@ -397,6 +397,15 @@
           "push_to_talk": "Optager, mens du holder genvejen nede",
           "toggle": "Tryk på genvejen for at starte optagelsen, tryk igen for at stoppe"
         }
+      },
+      "autoStop": {
+        "label": "Stop efter en pause",
+        "description": "Når du starter med et tryk, stopper diktering også af sig selv, når du holder en pause efter at have talt. Korte pauser midt i en sætning tæller ikke, og den stopper aldrig, før du har sagt noget.",
+        "delay": {
+          "label": "Pause før stop",
+          "description": "Hvor længe du skal være stille efter at have talt, før dikteringen stopper.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Kopieret",
       "learned": "Forstået. Du kan ændre det under Privatliv.",
       "sensitivePaused": "Sat på pause her: vinduet viser en gendannelsessætning eller privat nøgle.",
+      "steppingBack": "Træder et skridt tilbage: det her ser privat ud, så {{appName}} læser det ikke.",
       "fairUse": "Du har nået dagens grænse for rimelig brug. Den nulstilles ved midnat UTC.",
       "slowDown": "Det er mange anmodninger på én gang. Prøv igen om et minut.",
       "listening": "Lytter…"
@@ -1302,7 +1312,8 @@
         "summary": "Mødeopsummering",
         "act": "Handling",
         "license": "Kontotjek",
-        "trial": "Prøveperiode"
+        "trial": "Prøveperiode",
+        "warmup": "Opvarmning af forbindelse (intet sendt)"
       }
     },
     "engine": {

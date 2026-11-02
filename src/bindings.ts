@@ -37,6 +37,22 @@ async changeHoldThresholdMsSetting(ms: number) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async changeAutoStopOnPauseSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_auto_stop_on_pause_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async changeAutoStopPauseMsSetting(ms: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_auto_stop_pause_ms_setting", { ms }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async changeAudioFeedbackSetting(enabled: boolean) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_audio_feedback_setting", { enabled }) };
@@ -1405,7 +1421,17 @@ shortcut_activation?: ShortcutActivation;
  * Hold-or-toggle only: a press held at least this long is push-to-talk,
  * anything shorter is a tap that locks recording on.
  */
-hold_threshold_ms?: number; audio_feedback?: boolean; audio_feedback_volume?: number; sound_theme?: SoundTheme; start_hidden?: boolean; autostart_enabled?: boolean; update_checks_enabled?: boolean; show_whats_new_on_update?: boolean; 
+hold_threshold_ms?: number;
+/**
+ * Tap/toggle recordings also stop on their own after a long pause that
+ * follows speech. Push-to-talk (a held key) never does. Stores from
+ * before this key get the default (on) through serde; no rewrite needed.
+ */
+auto_stop_on_pause?: boolean;
+/**
+ * That pause, in milliseconds (clamped to `AUTO_STOP_PAUSE_MS_RANGE`).
+ */
+auto_stop_pause_ms?: number; audio_feedback?: boolean; audio_feedback_volume?: number; sound_theme?: SoundTheme; start_hidden?: boolean; autostart_enabled?: boolean; update_checks_enabled?: boolean; show_whats_new_on_update?: boolean; 
 /**
  * The app version whose What's New the user has already seen. Fresh installs
  * default to the current version (nothing is "new" to them). Existing users
@@ -1529,7 +1555,17 @@ focused_text?: string | null; text?: string | null;
 /**
  * Unix seconds.
  */
-ts?: number }
+ts?: number;
+/**
+ * URLs of the window's web frames (a browser's page, side panel,
+ * extension popup), used only to spot private places; cleared before a
+ * snapshot is handed out.
+ */
+frame_urls?: string[];
+/**
+ * Those frames' titles, likewise.
+ */
+frame_titles?: string[] }
 export type CustomSounds = { start: boolean; stop: boolean }
 export type FrontmostApp = { pid: number; bundle_id: string; name: string }
 export type GpuDeviceOption = { id: string; name: string; total_vram_mb: number }
@@ -1858,8 +1894,9 @@ export type Skipped =
  */
 "unavailable" | 
 /**
- * The window shows a recovery phrase or a private key, or is a wallet:
- * dropped entirely, and the agent shows that it stepped back.
+ * The window shows a recovery phrase or a private key, or is a private
+ * place (a wallet, a password manager, a bank): dropped entirely, and the
+ * agent shows that it stepped back.
  */
 "sensitive"
 export type SoundTheme = "marimba" | "pop" | "custom"

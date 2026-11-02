@@ -401,6 +401,15 @@
           "push_to_talk": "Nagrywa, dopóki trzymasz skrót",
           "toggle": "Dotknij skrótu, aby rozpocząć nagrywanie, dotknij ponownie, aby zatrzymać"
         }
+      },
+      "autoStop": {
+        "label": "Zatrzymaj po pauzie",
+        "description": "Gdy zaczynasz stuknięciem, dyktowanie zatrzymuje się też samo, gdy po mówieniu zrobisz pauzę. Krótkie pauzy w środku zdania się nie liczą i nigdy nie zatrzyma się, zanim coś powiesz.",
+        "delay": {
+          "label": "Pauza przed zatrzymaniem",
+          "description": "Jak długo milczeć po mówieniu, zanim dyktowanie się zatrzyma.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1174,6 +1183,7 @@
       "copied": "Skopiowano",
       "learned": "Rozumiem. Możesz to zmienić w sekcji Prywatność.",
       "sensitivePaused": "Wstrzymano tutaj: to okno pokazuje frazę odzyskiwania lub klucz prywatny.",
+      "steppingBack": "Wycofuję się: to wygląda na prywatne, więc {{appName}} tego nie czyta.",
       "fairUse": "Osiągnięto dzisiejszy limit uczciwego użytkowania. Zostanie zresetowany o północy UTC.",
       "slowDown": "To dużo żądań naraz. Spróbuj ponownie za minutę.",
       "listening": "Słucham…"
@@ -1324,7 +1334,8 @@
         "summary": "Podsumowanie spotkania",
         "act": "Działanie",
         "license": "Sprawdzenie konta",
-        "trial": "Wersja próbna"
+        "trial": "Wersja próbna",
+        "warmup": "Przygotowanie połączenia (nic nie wysłano)"
       }
     },
     "engine": {

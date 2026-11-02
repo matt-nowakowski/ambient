@@ -55,6 +55,49 @@ fn build_custom_word_match_keys(word: &str, word_index: usize) -> Vec<CustomWord
     keys
 }
 
+/// Fuzzy (non-exact) matches need keys at least this long on both sides:
+/// short words are close to too many others ("as" ~ "is").
+const MIN_FUZZY_KEY_CHARS: usize = 4;
+
+/// The Soundex boost only applies to spellings this close (normalized edit
+/// distance). Soundex alone groups many unrelated words ("Notion" and
+/// "nation" share N350), so it may tip a near miss over the line, never
+/// decide on its own.
+const MAX_PHONETIC_EDIT_RATIO: f64 = 0.34;
+
+/// Everyday English words that a lone transcribed word is never "corrected"
+/// away from (unless it is exactly a custom word, case aside): with "Notion"
+/// as a custom word, "nation" stays "nation". The BIP-39 list is 2,048
+/// common English words; `EXTRA` adds frequent words it lacks.
+static COMMON_WORDS: Lazy<std::collections::HashSet<&'static str>> = Lazy::new(|| {
+    const EXTRA: &str = "about above after again against also always among another \
+        anything around away back because been before being below between both bring \
+        came come could does doing done down during each else even ever every from \
+        gave give goes going gone good great have having here hers herself himself \
+        however into itself just keep know known last later least less like line \
+        linen little look made make many maybe mean more most much must myself need \
+        never next nice none nothing notion once only other ours ourselves over part \
+        place please pretty quite rather really right said same saying says seem seen \
+        send sent should show since some something still such sure take tell than \
+        thank thanks that their theirs them themselves then there these they thing \
+        things think this those though through thus till time today told took toward \
+        under until upon very want wanted well went were what when where whether \
+        which while whom whose will with within without would year years your yours \
+        yourself meeting meetings payroll pairing parent email emails call calls \
+        tomorrow yesterday week weeks month months okay yeah sounds linear matter \
+        metal pair pairs paper";
+    include_str!("../context/data/bip39_english.txt")
+        .lines()
+        .chain(EXTRA.split_whitespace())
+        .map(str::trim)
+        .filter(|w| !w.is_empty())
+        .collect()
+});
+
+fn is_common_word(key: &str) -> bool {
+    COMMON_WORDS.contains(key)
+}
+
 fn is_supported_fuzzy_key(key: &str) -> bool {
     !key.is_empty() && key.chars().all(|c| c.is_ascii_alphanumeric())
 }
@@ -73,6 +116,7 @@ fn supports_soundex(key: &str) -> bool {
 /// * `custom_words` - Original custom words (for returning the replacement)
 /// * `custom_word_match_keys` - Normalized custom-word keys for comparison
 /// * `threshold` - Maximum similarity score to accept
+/// * `lone_word` - The candidate is a single transcribed word (not an n-gram)
 ///
 /// # Returns
 /// The best matching custom word and its score, if any match was found
@@ -81,8 +125,19 @@ fn find_best_match<'a>(
     custom_words: &'a [String],
     custom_word_match_keys: &[CustomWordMatchKey],
     threshold: f64,
+    lone_word: bool,
 ) -> Option<(&'a String, f64)> {
     if !is_supported_fuzzy_key(candidate) || candidate.chars().count() > 50 {
+        return None;
+    }
+
+    // Exact, case and spacing aside: always the custom spelling.
+    if let Some(exact) = custom_word_match_keys.iter().find(|k| k.key == candidate) {
+        return Some((&custom_words[exact.word_index], 0.0));
+    }
+    // Fuzzy matching stays conservative: a short candidate, or a lone
+    // everyday word, is left as transcribed.
+    if candidate.chars().count() < MIN_FUZZY_KEY_CHARS || (lone_word && is_common_word(candidate)) {
         return None;
     }
 
@@ -90,6 +145,9 @@ fn find_best_match<'a>(
     let mut best_score = f64::MAX;
 
     for custom_word_key in custom_word_match_keys {
+        if custom_word_key.key.chars().count() < MIN_FUZZY_KEY_CHARS {
+            continue;
+        }
         // Skip if lengths are too different (optimization + prevents over-matching)
         // Use percentage-based check: max 25% length difference (prevents n-grams from
         // matching significantly shorter custom words, e.g., "openaigpt" vs "openai")
@@ -112,7 +170,8 @@ fn find_best_match<'a>(
 
         // Soundex is an English/ASCII phonetic algorithm. Numeric terms can
         // still use edit distance, but must not receive a phonetic boost.
-        let phonetic_match = supports_soundex(candidate)
+        let phonetic_match = levenshtein_score <= MAX_PHONETIC_EDIT_RATIO
+            && supports_soundex(candidate)
             && supports_soundex(&custom_word_key.key)
             && soundex(candidate, &custom_word_key.key);
 
@@ -187,12 +246,18 @@ pub fn apply_custom_words(text: &str, custom_words: &[String], threshold: f64) -
             }
             let ngram = build_ngram(ngram_words);
 
-            if let Some((replacement, score)) =
-                find_best_match(&ngram, custom_words, &custom_word_match_keys, threshold)
-            {
+            if let Some((replacement, score)) = find_best_match(
+                &ngram,
+                custom_words,
+                &custom_word_match_keys,
+                threshold,
+                n == 1,
+            ) {
                 let is_better = best_match
                     .as_ref()
-                    .is_none_or(|(_, _, best_score)| score < *best_score);
+                    // On a tie the shorter n-gram wins, so an ordinary
+                    // trailing word ("CHARGE B is") is never swallowed.
+                    .is_none_or(|(_, _, best_score)| score <= *best_score);
                 if is_better {
                     best_match = Some((n, replacement, score));
                 }
@@ -205,8 +270,7 @@ pub fn apply_custom_words(text: &str, custom_words: &[String], threshold: f64) -
             let (prefix, _) = extract_punctuation(ngram_words[0]);
             let (_, suffix) = extract_punctuation(ngram_words[n - 1]);
 
-            // Preserve case from first word.
-            let corrected = preserve_case_pattern(ngram_words[0], replacement);
+            let corrected = cased_replacement(ngram_words, replacement);
 
             result.push(format!("{}{}{}", prefix, corrected, suffix));
             i += n;
@@ -217,6 +281,34 @@ pub fn apply_custom_words(text: &str, custom_words: &[String], threshold: f64) -
     }
 
     result.join(" ")
+}
+
+/// The custom word, cased for where it lands. Shouting stays shouting; a
+/// custom word the user cased themselves ("ChargeBee", "R&D") is used exactly
+/// as written; an all-lowercase one ("matias payro") follows the transcript's
+/// capitals, word by word when the word counts line up.
+fn cased_replacement(original_words: &[&str], replacement: &str) -> String {
+    let letters: Vec<char> = original_words
+        .iter()
+        .flat_map(|w| w.chars())
+        .filter(|c| c.is_alphabetic())
+        .collect();
+    if letters.len() >= 2 && letters.iter().all(|c| c.is_uppercase()) {
+        return replacement.to_uppercase();
+    }
+    if replacement.chars().any(char::is_uppercase) {
+        return replacement.to_string();
+    }
+    let replacement_words: Vec<&str> = replacement.split(' ').collect();
+    if replacement_words.len() == original_words.len() {
+        return original_words
+            .iter()
+            .zip(replacement_words)
+            .map(|(original, word)| preserve_case_pattern(original, word))
+            .collect::<Vec<_>>()
+            .join(" ");
+    }
+    preserve_case_pattern(original_words[0], replacement)
 }
 
 /// Preserves the case pattern of the original word when applying a replacement
@@ -818,7 +910,7 @@ mod tests {
         let text = "CHARGE B is great";
         let custom_words = vec!["ChargeBee".to_string()];
         let result = apply_custom_words(text, &custom_words, 0.5);
-        assert!(result.contains("CHARGEBEE"));
+        assert_eq!(result, "CHARGEBEE is great");
     }
 
     #[test]
@@ -875,6 +967,47 @@ mod tests {
         let custom_words = vec!["Ambient".to_string()];
         let result = apply_custom_words(text, &custom_words, 0.5);
         assert_eq!(result, "「Ambient。」");
+    }
+
+    /// The tester's case: a two-word name the recogniser heard as "pairo".
+    #[test]
+    fn test_apply_custom_words_fixes_misheard_name() {
+        let custom_words = vec!["matias payro".to_string()];
+        assert_eq!(
+            apply_custom_words("I talked to matias pairo today.", &custom_words, 0.18),
+            "I talked to matias payro today."
+        );
+        assert_eq!(
+            apply_custom_words("Matias Pairo, can you call me?", &custom_words, 0.18),
+            "Matias Payro, can you call me?"
+        );
+        // Exact, but cased differently: the custom spelling wins.
+        let custom_words = vec!["ChargeBee".to_string()];
+        assert_eq!(
+            apply_custom_words("we use chargebee now", &custom_words, 0.18),
+            "we use ChargeBee now"
+        );
+    }
+
+    #[test]
+    fn test_apply_custom_words_leaves_common_words_alone() {
+        let custom_words = vec![
+            "Notion".to_string(),
+            "Linear".to_string(),
+            "Ambient".to_string(),
+            "Payro".to_string(),
+            "Tauri".to_string(),
+            "Kat".to_string(),
+        ];
+        for text in [
+            "the nation voted on the matter today",
+            "put the linen in the line by the window",
+            "the ambulance came to the meeting",
+            "a pair of shoes and the payroll is done",
+            "the story was told to the cat at the cafe",
+        ] {
+            assert_eq!(apply_custom_words(text, &custom_words, 0.18), text);
+        }
     }
 
     #[test]

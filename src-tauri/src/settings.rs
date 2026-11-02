@@ -394,6 +394,14 @@ pub struct AppSettings {
     /// anything shorter is a tap that locks recording on.
     #[serde(default = "default_hold_threshold_ms")]
     pub hold_threshold_ms: u64,
+    /// Tap/toggle recordings also stop on their own after a long pause that
+    /// follows speech. Push-to-talk (a held key) never does. Stores from
+    /// before this key get the default (on) through serde; no rewrite needed.
+    #[serde(default = "default_auto_stop_on_pause")]
+    pub auto_stop_on_pause: bool,
+    /// That pause, in milliseconds (clamped to `AUTO_STOP_PAUSE_MS_RANGE`).
+    #[serde(default = "default_auto_stop_pause_ms")]
+    pub auto_stop_pause_ms: u64,
     #[serde(default)]
     pub audio_feedback: bool,
     #[serde(default = "default_audio_feedback_volume")]
@@ -641,6 +649,18 @@ fn default_hold_threshold_ms() -> u64 {
     300
 }
 
+/// Shortest and longest pause the auto-stop setting accepts: shorter cuts
+/// people off mid-thought, longer is no longer "a pause".
+pub const AUTO_STOP_PAUSE_MS_RANGE: std::ops::RangeInclusive<u64> = 1_500..=6_000;
+
+fn default_auto_stop_on_pause() -> bool {
+    true
+}
+
+fn default_auto_stop_pause_ms() -> u64 {
+    2_500
+}
+
 fn default_always_on_microphone() -> bool {
     false
 }
@@ -883,6 +903,8 @@ pub fn get_default_settings() -> AppSettings {
         bindings,
         shortcut_activation: ShortcutActivation::default(),
         hold_threshold_ms: default_hold_threshold_ms(),
+        auto_stop_on_pause: default_auto_stop_on_pause(),
+        auto_stop_pause_ms: default_auto_stop_pause_ms(),
         audio_feedback: false,
         audio_feedback_volume: default_audio_feedback_volume(),
         sound_theme: default_sound_theme(),
@@ -1349,6 +1371,8 @@ mod tests {
             ShortcutActivation::HoldOrToggle
         );
         assert_eq!(settings.hold_threshold_ms, default_hold_threshold_ms());
+        assert!(settings.auto_stop_on_pause);
+        assert_eq!(settings.auto_stop_pause_ms, 2_500);
         assert!(!settings.audio_feedback);
         assert!(settings.filler_word_removal_enabled);
         // Bindings default to empty; the load path merges the real defaults in.

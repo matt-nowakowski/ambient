@@ -397,6 +397,15 @@
           "push_to_talk": "Merekam selama Anda menahan pintasan",
           "toggle": "Ketuk pintasan untuk mulai merekam, lalu ketuk lagi untuk berhenti"
         }
+      },
+      "autoStop": {
+        "label": "Berhenti setelah jeda",
+        "description": "Saat Anda mulai dengan ketukan, dikte juga berhenti sendiri begitu Anda berhenti bicara sejenak. Jeda singkat di tengah kalimat tidak dihitung, dan dikte tidak pernah berhenti sebelum Anda mengatakan sesuatu.",
+        "delay": {
+          "label": "Jeda sebelum berhenti",
+          "description": "Berapa lama diam setelah bicara sebelum dikte berhenti.",
+          "seconds": "{{seconds}} dtk"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Disalin",
       "learned": "Mengerti. Anda dapat mengubahnya di Privasi.",
       "sensitivePaused": "Dijeda di sini: jendela ini menampilkan frasa pemulihan atau kunci pribadi.",
+      "steppingBack": "Mundur sejenak: ini tampak pribadi, jadi {{appName}} tidak membacanya.",
       "fairUse": "Anda telah mencapai batas penggunaan wajar hari ini. Batas direset pada tengah malam UTC.",
       "slowDown": "Terlalu banyak permintaan sekaligus. Coba lagi dalam semenit.",
       "listening": "Mendengarkan…"
@@ -1302,7 +1312,8 @@
         "summary": "Ringkasan rapat",
         "act": "Tindakan",
         "license": "Pemeriksaan akun",
-        "trial": "Uji coba"
+        "trial": "Uji coba",
+        "warmup": "Pemanasan koneksi (tidak ada yang dikirim)"
       }
     },
     "engine": {

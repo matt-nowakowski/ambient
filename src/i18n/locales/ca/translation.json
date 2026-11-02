@@ -399,6 +399,15 @@
           "push_to_talk": "Enregistreu mentre manteniu premuda la drecera",
           "toggle": "Premeu la drecera per iniciar l'enregistrament i torneu-la a prémer per aturar-lo"
         }
+      },
+      "autoStop": {
+        "label": "Atura després d'una pausa",
+        "description": "Quan comences amb un toc, el dictat també s'atura sol quan fas una pausa després de parlar. Les pauses curtes a mitja frase no compten i mai s'atura abans que hagis dit res.",
+        "delay": {
+          "label": "Pausa abans d'aturar",
+          "description": "Quanta estona has d'estar en silenci després de parlar perquè el dictat s'aturi.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1166,6 +1175,7 @@
       "copied": "Copiat",
       "learned": "Entesos. Podeu canviar-ho a Privadesa.",
       "sensitivePaused": "En pausa aquí: aquesta finestra mostra una frase de recuperació o una clau privada.",
+      "steppingBack": "Em faig enrere: això sembla privat, així que {{appName}} no ho llegeix.",
       "fairUse": "Heu arribat al límit d'ús raonable d'avui. Es reinicia a mitjanit UTC.",
       "slowDown": "Són moltes peticions alhora. Torneu-ho a provar d'aquí a un minut.",
       "listening": "Escoltant…"
@@ -1313,7 +1323,8 @@
         "summary": "Resum de la reunió",
         "act": "Acció",
         "license": "Comprovació del compte",
-        "trial": "Prova"
+        "trial": "Prova",
+        "warmup": "Preparació de la connexió (no s'envia res)"
       }
     },
     "engine": {

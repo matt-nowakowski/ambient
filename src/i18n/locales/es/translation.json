@@ -399,6 +399,15 @@
           "push_to_talk": "Graba mientras mantienes pulsado el atajo",
           "toggle": "Toca el atajo para empezar a grabar, tócalo de nuevo para detener"
         }
+      },
+      "autoStop": {
+        "label": "Detener tras una pausa",
+        "description": "Si empiezas con un toque, el dictado también se detiene solo cuando haces una pausa después de hablar. Las pausas cortas a mitad de frase no cuentan y nunca se detiene antes de que digas algo.",
+        "delay": {
+          "label": "Pausa antes de detener",
+          "description": "Cuánto tiempo debes quedarte en silencio después de hablar para que el dictado se detenga.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1166,6 +1175,7 @@
       "copied": "Copiado",
       "learned": "Entendido. Puedes cambiarlo en Privacidad.",
       "sensitivePaused": "En pausa aquí: esta ventana muestra una frase de recuperación o una clave privada.",
+      "steppingBack": "Me hago a un lado: esto parece privado, así que {{appName}} no lo lee.",
       "fairUse": "Has alcanzado el límite de uso razonable de hoy. Se restablece a medianoche UTC.",
       "slowDown": "Son muchas peticiones a la vez. Vuelve a intentarlo en un minuto.",
       "listening": "Escuchando…"
@@ -1313,7 +1323,8 @@
         "summary": "Resumen de reunión",
         "act": "Acción",
         "license": "Comprobación de cuenta",
-        "trial": "Prueba"
+        "trial": "Prueba",
+        "warmup": "Preparación de la conexión (no se envía nada)"
       }
     },
     "engine": {

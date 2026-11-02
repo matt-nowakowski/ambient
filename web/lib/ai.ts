@@ -116,6 +116,19 @@ export function isConfigured() {
   return Boolean(process.env.BASETEN_API_KEY);
 }
 
+/**
+ * Time limits for one completion (both attempts together, and each attempt).
+ * Short replies (polish asks for a few hundred tokens at most) get the tight
+ * pair, inside the app's 10 s polish deadline; long ones (summaries) keep
+ * room to finish.
+ */
+export function completionBudget(maxTokens: number) {
+  return maxTokens <= SHORT_REPLY_TOKENS
+    ? { totalMs: 9_000, attemptMs: 6_000 }
+    : { totalMs: 16_000, attemptMs: 8_000 };
+}
+const SHORT_REPLY_TOKENS = 600;
+
 /** Calls the model with thinking off; returns an OpenAI-style completion. */
 export async function complete(messages: Message[], body: Record<string, unknown>) {
   const requested = Number(body.max_tokens ?? body.max_completion_tokens);
@@ -133,10 +146,16 @@ export async function complete(messages: Message[], body: Record<string, unknown
     chat_template_kwargs: { thinking: false },
   });
   // Fail fast: when polish fails the app pastes the raw transcript, which
-  // beats making someone wait. One retry covers an occasional slow replica.
+  // beats making someone wait. One retry covers an occasional slow replica,
+  // within one overall budget the app's own 10 s deadline can outlast (two
+  // full 8 s attempts used to run past it, so the app gave up first).
+  const budget = completionBudget(maxTokens);
+  const deadline = Date.now() + budget.totalMs;
   let upstream: Response | null = null;
   let lastError: unknown;
   for (let attempt = 0; attempt < 2 && !upstream; attempt++) {
+    const remaining = deadline - Date.now();
+    if (remaining < 1_000) break;
     try {
       const res = await fetch(BASETEN_URL, {
         method: "POST",
@@ -145,7 +164,7 @@ export async function complete(messages: Message[], body: Record<string, unknown
           "Content-Type": "application/json",
         },
         body: request,
-        signal: AbortSignal.timeout(8_000),
+        signal: AbortSignal.timeout(Math.min(budget.attemptMs, remaining)),
       });
       if (res.ok) upstream = res;
       else if (res.status < 500) throw new Error(`upstream ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -155,7 +174,7 @@ export async function complete(messages: Message[], body: Record<string, unknown
       lastError = err;
     }
   }
-  if (!upstream) throw lastError;
+  if (!upstream) throw lastError ?? new Error("upstream timed out");
   const data = await upstream.json();
   // Present our own model id and drop provider-specific fields.
   for (const choice of data.choices ?? []) delete choice.message?.reasoning_content;

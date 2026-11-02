@@ -397,6 +397,15 @@
           "push_to_talk": "Neemt op zolang je de sneltoets ingedrukt houdt",
           "toggle": "Tik op de sneltoets om de opname te starten, tik opnieuw om te stoppen"
         }
+      },
+      "autoStop": {
+        "label": "Stoppen na een pauze",
+        "description": "Als je met een tik start, stopt dicteren ook vanzelf zodra je na het praten even stil bent. Korte pauzes midden in een zin tellen niet mee, en het stopt nooit voordat je iets hebt gezegd.",
+        "delay": {
+          "label": "Pauze voor het stoppen",
+          "description": "Hoe lang je na het praten stil moet zijn voordat dicteren stopt.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Gekopieerd",
       "learned": "Begrepen. Je kunt dit wijzigen in Privacy.",
       "sensitivePaused": "Hier gepauzeerd: dit venster toont een herstelzin of privésleutel.",
+      "steppingBack": "Ik doe een stap terug: dit lijkt privé, dus {{appName}} leest het niet.",
       "fairUse": "Je hebt de fair-uselimiet van vandaag bereikt. Die wordt om middernacht UTC gereset.",
       "slowDown": "Dat zijn veel verzoeken tegelijk. Probeer het over een minuut opnieuw.",
       "listening": "Luistert…"
@@ -1302,7 +1312,8 @@
         "summary": "Samenvatting van vergadering",
         "act": "Actie",
         "license": "Accountcontrole",
-        "trial": "Proefperiode"
+        "trial": "Proefperiode",
+        "warmup": "Verbinding opwarmen (niets verzonden)"
       }
     },
     "engine": {

@@ -397,6 +397,15 @@
           "push_to_talk": "Records while you hold the shortcut",
           "toggle": "Tap the shortcut to start recording, tap again to stop"
         }
+      },
+      "autoStop": {
+        "label": "Stop after a pause",
+        "description": "When you tap to start, dictation also stops on its own once you pause after speaking. Short pauses mid-sentence don't count, and it never stops before you've said anything.",
+        "delay": {
+          "label": "Pause before stopping",
+          "description": "How long to stay quiet after speaking before dictation stops.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Copied",
       "learned": "Got it. You can change this in Privacy.",
       "sensitivePaused": "Paused here: this window shows a recovery phrase or private key.",
+      "steppingBack": "Stepping back: this looks private, so {{appName}} isn't reading it.",
       "fairUse": "You've reached today's fair-use limit. It resets at midnight UTC.",
       "slowDown": "That's a lot of requests at once. Try again in a minute.",
       "listening": "Listening…"
@@ -1302,7 +1312,8 @@
         "summary": "Meeting summary",
         "act": "Action",
         "license": "Account check",
-        "trial": "Trial"
+        "trial": "Trial",
+        "warmup": "Connection warm-up (nothing sent)"
       }
     },
     "engine": {

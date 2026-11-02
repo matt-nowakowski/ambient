@@ -397,6 +397,15 @@
           "push_to_talk": "Nimmt auf, solange die Tastenkombination gedrückt bleibt",
           "toggle": "Tastenkombination antippen, um die Aufnahme zu starten, erneut antippen zum Stoppen"
         }
+      },
+      "autoStop": {
+        "label": "Nach einer Pause stoppen",
+        "description": "Wenn du per Tippen startest, stoppt das Diktat auch von selbst, sobald du nach dem Sprechen eine Pause machst. Kurze Pausen mitten im Satz zählen nicht, und es stoppt nie, bevor du etwas gesagt hast.",
+        "delay": {
+          "label": "Pause bis zum Stopp",
+          "description": "Wie lange du nach dem Sprechen still sein musst, bis das Diktat stoppt.",
+          "seconds": "{{seconds}} s"
+        }
       }
     },
     "models": {
@@ -1158,6 +1167,7 @@
       "copied": "Kopiert",
       "learned": "Verstanden. Du kannst das unter Datenschutz ändern.",
       "sensitivePaused": "Hier pausiert: Dieses Fenster zeigt eine Wiederherstellungsphrase oder einen privaten Schlüssel.",
+      "steppingBack": "Ich halte mich raus: Das wirkt privat, daher liest {{appName}} es nicht.",
       "fairUse": "Du hast das heutige Fair-Use-Limit erreicht. Es wird um Mitternacht UTC zurückgesetzt.",
       "slowDown": "Das sind sehr viele Anfragen auf einmal. Versuch es in einer Minute noch einmal.",
       "listening": "Hört zu…"
@@ -1302,7 +1312,8 @@
         "summary": "Meeting-Zusammenfassung",
         "act": "Aktion",
         "license": "Kontoprüfung",
-        "trial": "Testversion"
+        "trial": "Testversion",
+        "warmup": "Verbindungsaufbau (nichts gesendet)"
       }
     },
     "engine": {
