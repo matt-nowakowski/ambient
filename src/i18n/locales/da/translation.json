@@ -1142,6 +1142,7 @@
       "copied": "Kopieret",
       "learned": "Forstået. Du kan ændre det under Privatliv.",
       "sensitivePaused": "Sat på pause her: vinduet viser en gendannelsessætning eller privat nøgle.",
+      "steppingBack": "Træder et skridt tilbage: det her ser privat ud, så {{appName}} læser det ikke.",
       "fairUse": "Du har nået dagens grænse for rimelig brug. Den nulstilles ved midnat UTC.",
       "slowDown": "Det er mange anmodninger på én gang. Prøv igen om et minut.",
       "listening": "Lytter…"

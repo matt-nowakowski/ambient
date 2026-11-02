@@ -1158,6 +1158,7 @@
       "copied": "Zkopírováno",
       "learned": "Rozumím. Můžete to změnit v Soukromí.",
       "sensitivePaused": "Tady pozastaveno: toto okno zobrazuje frázi pro obnovení nebo soukromý klíč.",
+      "steppingBack": "Ustupuji stranou: vypadá to soukromě, takže to {{appName}} nečte.",
       "fairUse": "Dosáhli jste dnešního limitu férového používání. Obnoví se o půlnoci UTC.",
       "slowDown": "To je mnoho požadavků najednou. Zkuste to znovu za minutu.",
       "listening": "Poslouchám…"

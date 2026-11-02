@@ -1142,6 +1142,7 @@
       "copied": "已複製",
       "learned": "知道了。你可以在「隱私」中更改。",
       "sensitivePaused": "已在此暫停：此視窗顯示了助記詞或私密金鑰。",
+      "steppingBack": "已迴避：這裡看起來是隱私內容，{{appName}} 不會讀取。",
       "fairUse": "你已達到今天的合理使用上限。上限將在 UTC 午夜重設。",
       "slowDown": "同時送出的請求太多。請一分鐘後再試。",
       "listening": "正在聆聽…"

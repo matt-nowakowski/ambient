@@ -1158,6 +1158,7 @@
       "copied": "Skopiowano",
       "learned": "Rozumiem. Możesz to zmienić w sekcji Prywatność.",
       "sensitivePaused": "Wstrzymano tutaj: to okno pokazuje frazę odzyskiwania lub klucz prywatny.",
+      "steppingBack": "Wycofuję się: to wygląda na prywatne, więc {{appName}} tego nie czyta.",
       "fairUse": "Osiągnięto dzisiejszy limit uczciwego użytkowania. Zostanie zresetowany o północy UTC.",
       "slowDown": "To dużo żądań naraz. Spróbuj ponownie za minutę.",
       "listening": "Słucham…"

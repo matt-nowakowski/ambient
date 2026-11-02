@@ -1142,6 +1142,7 @@
       "copied": "Disalin",
       "learned": "Mengerti. Anda dapat mengubahnya di Privasi.",
       "sensitivePaused": "Dijeda di sini: jendela ini menampilkan frasa pemulihan atau kunci pribadi.",
+      "steppingBack": "Mundur sejenak: ini tampak pribadi, jadi {{appName}} tidak membacanya.",
       "fairUse": "Anda telah mencapai batas penggunaan wajar hari ini. Batas direset pada tengah malam UTC.",
       "slowDown": "Terlalu banyak permintaan sekaligus. Coba lagi dalam semenit.",
       "listening": "Mendengarkan…"

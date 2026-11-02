@@ -1142,6 +1142,7 @@
       "copied": "Đã sao chép",
       "learned": "Đã hiểu. Bạn có thể thay đổi trong Quyền riêng tư.",
       "sensitivePaused": "Đã tạm dừng tại đây: cửa sổ này hiển thị cụm từ khôi phục hoặc khóa riêng tư.",
+      "steppingBack": "Lùi lại: nội dung này có vẻ riêng tư nên {{appName}} không đọc.",
       "fairUse": "Bạn đã đạt giới hạn sử dụng hợp lý của hôm nay. Giới hạn được đặt lại vào nửa đêm UTC.",
       "slowDown": "Có quá nhiều yêu cầu cùng lúc. Hãy thử lại sau một phút.",
       "listening": "Đang nghe…"

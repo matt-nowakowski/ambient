@@ -1150,6 +1150,7 @@
       "copied": "Copié",
       "learned": "Compris. Vous pouvez modifier cela dans Confidentialité.",
       "sensitivePaused": "En pause ici : cette fenêtre affiche une phrase de récupération ou une clé privée.",
+      "steppingBack": "Je me retire : cela semble privé, donc {{appName}} ne le lit pas.",
       "fairUse": "Vous avez atteint la limite d'utilisation raisonnable du jour. Elle est réinitialisée à minuit UTC.",
       "slowDown": "Cela fait beaucoup de requêtes à la fois. Réessayez dans une minute.",
       "listening": "Écoute…"

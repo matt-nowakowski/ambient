@@ -1150,6 +1150,7 @@
       "copied": "Copiat",
       "learned": "Entesos. Podeu canviar-ho a Privadesa.",
       "sensitivePaused": "En pausa aquí: aquesta finestra mostra una frase de recuperació o una clau privada.",
+      "steppingBack": "Em faig enrere: això sembla privat, així que {{appName}} no ho llegeix.",
       "fairUse": "Heu arribat al límit d'ús raonable d'avui. Es reinicia a mitjanit UTC.",
       "slowDown": "Són moltes peticions alhora. Torneu-ho a provar d'aquí a un minut.",
       "listening": "Escoltant…"

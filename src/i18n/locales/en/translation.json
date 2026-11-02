@@ -1142,6 +1142,7 @@
       "copied": "Copied",
       "learned": "Got it. You can change this in Privacy.",
       "sensitivePaused": "Paused here: this window shows a recovery phrase or private key.",
+      "steppingBack": "Stepping back: this looks private, so {{appName}} isn't reading it.",
       "fairUse": "You've reached today's fair-use limit. It resets at midnight UTC.",
       "slowDown": "That's a lot of requests at once. Try again in a minute.",
       "listening": "Listening…"

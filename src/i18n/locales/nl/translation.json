@@ -1142,6 +1142,7 @@
       "copied": "Gekopieerd",
       "learned": "Begrepen. Je kunt dit wijzigen in Privacy.",
       "sensitivePaused": "Hier gepauzeerd: dit venster toont een herstelzin of privésleutel.",
+      "steppingBack": "Ik doe een stap terug: dit lijkt privé, dus {{appName}} leest het niet.",
       "fairUse": "Je hebt de fair-uselimiet van vandaag bereikt. Die wordt om middernacht UTC gereset.",
       "slowDown": "Dat zijn veel verzoeken tegelijk. Probeer het over een minuut opnieuw.",
       "listening": "Luistert…"

@@ -1540,7 +1540,17 @@ focused_text?: string | null; text?: string | null;
 /**
  * Unix seconds.
  */
-ts?: number }
+ts?: number;
+/**
+ * URLs of the window's web frames (a browser's page, side panel,
+ * extension popup), used only to spot private places; cleared before a
+ * snapshot is handed out.
+ */
+frame_urls?: string[];
+/**
+ * Those frames' titles, likewise.
+ */
+frame_titles?: string[] }
 export type CustomSounds = { start: boolean; stop: boolean }
 export type FrontmostApp = { pid: number; bundle_id: string; name: string }
 export type GpuDeviceOption = { id: string; name: string; total_vram_mb: number }
@@ -1869,8 +1879,9 @@ export type Skipped =
  */
 "unavailable" | 
 /**
- * The window shows a recovery phrase or a private key, or is a wallet:
- * dropped entirely, and the agent shows that it stepped back.
+ * The window shows a recovery phrase or a private key, or is a private
+ * place (a wallet, a password manager, a bank): dropped entirely, and the
+ * agent shows that it stepped back.
  */
 "sensitive"
 export type SoundTheme = "marimba" | "pop" | "custom"

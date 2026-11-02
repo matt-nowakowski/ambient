@@ -1142,6 +1142,7 @@
       "copied": "已复制",
       "learned": "知道了。你可以在隐私中更改此设置。",
       "sensitivePaused": "已在此暂停：此窗口显示了助记词或私钥。",
+      "steppingBack": "已回避：这里看起来是隐私内容，{{appName}} 不会读取。",
       "fairUse": "你已达到今天的合理使用上限。上限将在 UTC 午夜重置。",
       "slowDown": "同时发出的请求太多。请一分钟后再试。",
       "listening": "正在聆听…"
