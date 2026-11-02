@@ -1,4 +1,4 @@
-import { Callout, DocHeader, DocRows, DocSection, GuideNext, TrySaying } from "@/components/docs";
+import { C, Callout, DocHeader, DocRows, DocSection, GuideNext, TrySaying } from "@/components/docs";
 import { brand, freeMeetingsPerMonth } from "@/lib/brand";
 import { guideMetadata, guidePage, trySaying } from "@/lib/guide";
 
@@ -63,8 +63,9 @@ export default function MeetingsPage() {
           stay on your Mac until you delete them.
         </p>
         <p>
-          Hearing the call needs macOS 13 or later and the Screen Recording permission. Only audio is used. On Windows and
-          Linux, only your microphone is transcribed for now.
+          Hearing the call needs macOS 13 or later and the Screen Recording permission. Only audio is used. On Linux it
+          records what your computer plays through PipeWire or PulseAudio (needs <C>pulseaudio-utils</C>). On
+          Windows, only your microphone is transcribed for now.
         </p>
         <p>
           Free includes {freeMeetingsPerMonth} meetings a month. Pro is unlimited.
