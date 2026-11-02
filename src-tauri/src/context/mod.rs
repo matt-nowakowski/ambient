@@ -59,18 +59,73 @@ pub struct ContextSnapshot {
 }
 
 impl ContextSnapshot {
-    /// What kind of private place this window is, if any, from its app,
-    /// titles and URLs (never its text).
+    /// What kind of private place this window is, if any, and which rule
+    /// said so, from its app, titles, URLs and the browser UI's labels
+    /// (`ui_labels`: tab, side panel and popup titles), never its text.
     #[cfg_attr(not(target_os = "macos"), allow(dead_code))]
-    fn sensitive_place(&self, app: &FrontmostApp) -> Option<sensitive::SensitivePlace> {
+    fn sensitive_place(
+        &self,
+        app: &FrontmostApp,
+        ui_labels: &[String],
+    ) -> Option<(sensitive::SensitivePlace, &'static str)> {
         let mut titles: Vec<&str> = vec![self.window_title.as_str()];
         titles.extend(self.frame_titles.iter().map(String::as_str));
+        titles.extend(ui_labels.iter().map(String::as_str));
         let mut urls: Vec<&str> = self.frame_urls.iter().map(String::as_str).collect();
         if let Some(url) = &self.url {
             urls.push(url);
         }
-        sensitive::sensitive_place(&app.name, &app.bundle_id, &titles, &urls)
+        sensitive::sensitive_place_why(&app.name, &app.bundle_id, &titles, &urls)
     }
+}
+
+/// Counts the native side reports with each snapshot, for logs only.
+#[derive(Deserialize, Debug, Default, Clone)]
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+pub struct SnapshotDiag {
+    /// Web areas in the window's browser UI walk (page, side panel…).
+    #[serde(default)]
+    pub web_areas: Option<u32>,
+    /// Children of the first web area; 0 means no tree was built for it.
+    #[serde(default)]
+    pub web_area_children: Option<i64>,
+    #[serde(default)]
+    pub chrome_nodes: Option<u32>,
+    /// Extension popups and other non-standard windows (browsers).
+    #[serde(default)]
+    pub popup_windows: Option<u32>,
+    /// Nodes visited reading the text.
+    #[serde(default)]
+    pub text_nodes: Option<u32>,
+    #[serde(default)]
+    pub found_web_area: Option<bool>,
+    #[serde(default)]
+    pub found_main: Option<bool>,
+    /// Chromium browsers: AXEnhancedUserInterface reads back as on.
+    #[serde(default)]
+    pub enhanced_ui: Option<bool>,
+    /// Seconds since it was asked for (Chrome applies it ~2 s later).
+    #[serde(default)]
+    pub enhanced_age_s: Option<u32>,
+}
+
+/// A window title for logs: its length and a short hash, so the same window
+/// can be followed across lines without writing its title.
+pub fn title_tag(title: &str) -> String {
+    // FNV-1a: stable across runs, unlike the std hasher.
+    let mut h: u32 = 0x811c_9dc5;
+    for b in title.bytes() {
+        h ^= u32::from(b);
+        h = h.wrapping_mul(0x0100_0193);
+    }
+    format!("len={} #{:06x}", title.chars().count(), h & 0xff_ffff)
+}
+
+/// A URL for logs: its host only.
+pub fn url_host(url: Option<&str>) -> String {
+    url.map(|u| sensitive::hosts([u]).join(","))
+        .filter(|h| !h.is_empty())
+        .unwrap_or_else(|| "-".into())
 }
 
 /// A window of any open app, read on demand to find the user's own things.
@@ -188,7 +243,7 @@ static SENSITIVE: std::sync::Mutex<Option<(SensitiveWindow, std::time::Instant)>
     std::sync::Mutex::new(None);
 
 fn mark_sensitive(app: &FrontmostApp, title: &str, reason: SensitiveReason) {
-    log::debug!("stepping back from a sensitive window ({reason:?})");
+    log::trace!("stepping back from a sensitive window ({reason:?})");
     if let Ok(mut g) = SENSITIVE.lock() {
         *g = Some((
             SensitiveWindow {
@@ -247,20 +302,82 @@ pub fn frontmost_app() -> Option<FrontmostApp> {
     }
 }
 
+/// The last sensitive-check outcome per window, so a decision is logged at
+/// debug once when it changes, and every tick only at trace.
+#[cfg(target_os = "macos")]
+static LAST_CHECK: std::sync::Mutex<Option<(String, String)>> = std::sync::Mutex::new(None);
+
 /// A private browsing window, or a private place.
 #[cfg(target_os = "macos")]
-fn check_place(app: &FrontmostApp, snap: &ContextSnapshot) -> Result<(), Skipped> {
+fn check_place(app: &FrontmostApp, raw: &macos::RawSnapshot) -> Result<(), Skipped> {
+    let snap = &raw.snap;
     if PRIVATE_TITLE_MARKERS
         .iter()
         .any(|m| snap.window_title.contains(m))
     {
         return Err(Skipped::NeverWatch);
     }
-    if let Some(place) = snap.sensitive_place(app) {
+    let found = snap.sensitive_place(app, &raw.ui_labels);
+    // Privacy-safe: bundle, a title tag, counts, hosts and extension ids only.
+    let outcome = match found {
+        Some((place, rule)) => format!("match {place:?} (rule {rule})"),
+        None => "no match".into(),
+    };
+    let urls = snap
+        .frame_urls
+        .iter()
+        .map(String::as_str)
+        .chain(snap.url.as_deref());
+    let ext = sensitive::extension_ids(urls.clone());
+    let line = format!(
+        "sensitive check {} title[{}]: {outcome}; frames={} hosts={:?} extensions={:?} ui_labels={} popups={} web_areas={} web_area_children={}",
+        app.bundle_id,
+        title_tag(&snap.window_title),
+        snap.frame_urls.len(),
+        sensitive::hosts(urls),
+        ext,
+        raw.ui_labels.len(),
+        raw.diag.popup_windows.unwrap_or(0),
+        raw.diag.web_areas.unwrap_or(0),
+        raw.diag.web_area_children.unwrap_or(-1),
+    );
+    let key = format!("{}|{}", app.pid, snap.window_title);
+    let changed = LAST_CHECK
+        .lock()
+        .map(|mut g| {
+            let changed = g.as_ref() != Some(&(key.clone(), outcome.clone()));
+            *g = Some((key, outcome));
+            changed
+        })
+        .unwrap_or(true);
+    if changed {
+        log::debug!("{line}");
+    } else {
+        log::trace!("{line}");
+    }
+    if let Some((place, _)) = found {
         mark_sensitive(app, &snap.window_title, SensitiveReason::Place(place));
         return Err(Skipped::Sensitive);
     }
     Ok(())
+}
+
+/// Press the button or link with one of these names in the front window
+/// (e.g. Gmail's "Reply"). 0 pressed, 1 not found, 2 the press failed,
+/// 3 unavailable.
+pub fn press_labeled(labels: &[&str]) -> i32 {
+    #[cfg(target_os = "macos")]
+    {
+        match frontmost_app() {
+            Some(app) if accessibility_trusted() => macos::press_labeled(app.pid, labels),
+            _ => 3,
+        }
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        let _ = labels;
+        3
+    }
 }
 
 /// Read the frontmost window. `max_chars == 0` reads metadata only (app,
@@ -290,12 +407,27 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
         let meta = macos::window_snapshot(app.pid, 0).ok_or(Skipped::Unavailable)?;
         check_place(&app, &meta)?;
         let mut snap = if max_chars == 0 {
-            meta
+            meta.snap
         } else {
             let full = macos::window_snapshot(app.pid, max_chars).ok_or(Skipped::Unavailable)?;
             // The window may have changed in between.
             check_place(&app, &full)?;
-            full
+            let d = &full.diag;
+            log::debug!(
+                "snapshot {} title[{}] host={} text_chars={} text_nodes={} web_area={} main={} web_area_children={} chrome_nodes={} enhanced_ui={:?} enhanced_age_s={:?}",
+                app.bundle_id,
+                title_tag(&full.snap.window_title),
+                url_host(full.snap.url.as_deref()),
+                full.snap.text.as_deref().map_or(0, |t| t.chars().count()),
+                d.text_nodes.unwrap_or(0),
+                d.found_web_area.unwrap_or(false),
+                d.found_main.unwrap_or(false),
+                d.web_area_children.unwrap_or(-1),
+                d.chrome_nodes.unwrap_or(0),
+                d.enhanced_ui,
+                d.enhanced_age_s,
+            );
+            full.snap
         };
         snap.frame_urls.clear();
         snap.frame_titles.clear();
@@ -308,6 +440,11 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
             .iter()
             .any(|t| t.as_deref().is_some_and(|t| sensitive::detect(t).is_some()));
         if shows_secret {
+            log::debug!(
+                "sensitive check {} title[{}]: shows a recovery phrase or key; dropped",
+                app.bundle_id,
+                title_tag(&snap.window_title)
+            );
             mark_sensitive(&app, &snap.window_title, SensitiveReason::Secret);
             return Err(Skipped::Sensitive);
         }

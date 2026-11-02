@@ -2,7 +2,9 @@
 
 use std::ffi::{c_char, CStr};
 
-use super::{ContextSnapshot, FrontmostApp};
+use serde::Deserialize;
+
+use super::{ContextSnapshot, FrontmostApp, SnapshotDiag};
 
 extern "C" {
     fn ambient_free(ptr: *mut c_char);
@@ -10,6 +12,19 @@ extern "C" {
     fn ambient_frontmost_app() -> *mut c_char;
     fn ambient_context_snapshot(pid: i32, max_chars: i32) -> *mut c_char;
     fn ambient_open_windows(skip: *const c_char, max_chars: i32) -> *mut c_char;
+    fn ambient_press_labeled(pid: i32, labels: *const c_char) -> i32;
+}
+
+/// A snapshot as the native side reports it: the snapshot, plus the browser
+/// UI's labels (for spotting private places only) and counts for logs.
+#[derive(Deserialize, Debug, Default)]
+pub struct RawSnapshot {
+    #[serde(flatten)]
+    pub snap: ContextSnapshot,
+    #[serde(default)]
+    pub ui_labels: Vec<String>,
+    #[serde(default)]
+    pub diag: SnapshotDiag,
 }
 
 /// Take ownership of a Swift-allocated JSON string and parse it.
@@ -34,7 +49,7 @@ pub fn frontmost_app() -> Option<FrontmostApp> {
     take_json(unsafe { ambient_frontmost_app() })
 }
 
-pub fn window_snapshot(pid: i32, max_chars: usize) -> Option<ContextSnapshot> {
+pub fn window_snapshot(pid: i32, max_chars: usize) -> Option<RawSnapshot> {
     let max = i32::try_from(max_chars).unwrap_or(i32::MAX);
     take_json(unsafe { ambient_context_snapshot(pid, max) })
 }
@@ -43,4 +58,12 @@ pub fn open_windows(skip: &[String], max_chars: usize) -> Vec<super::OpenWindow>
     let skip = std::ffi::CString::new(skip.join("\n")).unwrap_or_default();
     let max = i32::try_from(max_chars).unwrap_or(i32::MAX);
     take_json(unsafe { ambient_open_windows(skip.as_ptr(), max) }).unwrap_or_default()
+}
+
+/// 0 pressed, 1 not found, 2 press failed, 3 no permission or window.
+pub fn press_labeled(pid: i32, labels: &[&str]) -> i32 {
+    let Ok(labels) = std::ffi::CString::new(labels.join("\n")) else {
+        return 1;
+    };
+    unsafe { ambient_press_labeled(pid, labels.as_ptr()) }
 }
