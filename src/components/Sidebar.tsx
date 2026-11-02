@@ -120,7 +120,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         size={20}
         className={`${platform() === "macos" ? "mt-[46px]" : "mt-5"} mb-7 ps-[13px] text-[16px]`}
       />
-      {/* The active pill is liquid: it trails between items (liquid-gooey move). */}
+      {/* The active pill is liquid: it stretches as it flows between items. */}
       <LiquidIndicatorGroup
         role="navigation"
         className="flex w-full flex-col gap-[6px]"
