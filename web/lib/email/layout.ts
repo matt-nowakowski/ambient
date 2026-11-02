@@ -132,13 +132,16 @@ const P = `margin:0 0 16px;font-family:${FONT};font-size:15px;line-height:1.625;
 const sectionTitle = (t?: string) =>
   t ? `<p class="ink" style="margin:10px 0 14px;font-family:${DISPLAY};font-size:22px;line-height:1.25;font-weight:300;letter-spacing:-0.03em;color:${C.ink};">${esc(t)}</p>` : "";
 
-const iconImg = (ctx: Ctx, name: IconName, size = 40) =>
-  swap(ctx, `icon-${name}`, size, "", Math.round(size * 0.26));
+/** One icon style everywhere: a 34px quiet glass tile with a lucide glyph (scripts/email-icons.mjs). */
+const ICON = 34;
+const iconImg = (ctx: Ctx, name: IconName) => swap(ctx, `icon-${name}`, ICON, "", 9, "", false);
 
 /** A light-scheme image with its dark twin, swapped by prefers-color-scheme (as the heroes are). */
-const swap = (ctx: Ctx, base: string, size: number, alt: string, radius: number, extra = "") => {
+const swap = (ctx: Ctx, base: string, size: number, alt: string, radius: number, extra = "", solid = true) => {
+  // Solid tiles (the mark) get a matching background so nothing flashes while
+  // images load; the icon tiles are near-transparent glass and must not.
   const img = (cls: string, file: string, bg: string) =>
-    `<img${cls ? ` class="${cls}"` : ""} src="${ctx.asset}/email/${file}.png" width="${size}" height="${size}" alt="${esc(alt)}" style="display:block;width:${size}px;height:${size}px;border:0;border-radius:${radius}px;background:${bg};${extra}">`;
+    `<img${cls ? ` class="${cls}"` : ""} src="${ctx.asset}/email/${file}.png" width="${size}" height="${size}" alt="${esc(alt)}" style="display:block;width:${size}px;height:${size}px;border:0;border-radius:${radius}px;${solid ? `background:${bg};` : ""}${extra}">`;
   return `${img("orb-light", base, C.well)}<div class="orb-dark">${img("", `${base}-dark`, C.night)}</div>`;
 };
 
@@ -193,7 +196,7 @@ ${b.renews ? `<td valign="bottom" align="right">${meta("Renews")}<div class="ink
       return `${sectionTitle(b.title)}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 20px;">${b.items
         .map(
           (it) => `<tr>
-<td valign="top" style="width:56px;padding:0 0 22px;">${iconImg(ctx, it.icon)}</td>
+<td valign="top" style="width:50px;padding:0 0 22px;">${iconImg(ctx, it.icon)}</td>
 <td valign="top" style="padding:0 0 22px;">
 <div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.35;font-weight:400;letter-spacing:-0.01em;color:${C.ink};margin:1px 0 3px;">${esc(it.k)}</div>
 <div class="muted" style="font-family:${FONT};font-size:14px;line-height:1.625;color:${C.muted};">${richHtml(it.v)}</div>
@@ -212,7 +215,7 @@ ${b.renews ? `<td valign="bottom" align="right">${meta("Renews")}<div class="ink
     case "callout":
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 26px;"><tr><td class="well" bgcolor="${C.accentWash}" style="background:${C.accentWash};border-radius:16px;padding:18px 20px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-${b.icon ? `<td valign="top" style="width:48px;">${iconImg(ctx, b.icon, 34)}</td>` : ""}
+${b.icon ? `<td valign="top" style="width:50px;">${iconImg(ctx, b.icon)}</td>` : ""}
 <td valign="top">
 <div class="ink" style="font-family:${FONT};font-size:15px;line-height:1.4;font-weight:400;letter-spacing:-0.01em;color:${C.ink};margin:0 0 4px;">${esc(b.k)}</div>
 <div class="muted" style="font-family:${FONT};font-size:15px;line-height:1.6;color:${C.muted};">${richHtml(b.v)}</div>

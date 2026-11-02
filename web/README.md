@@ -140,8 +140,10 @@ Each email opens with the app's lockup (the intro's four-dot orb, `public/email/
 plus the wordmark at weight 300) and a hero that is a slice of the app window's backdrop, the two
 lights exactly as `.app-backdrop` paints them, in light and dark (`public/email/hero-*.jpg` /
 `hero-*-dark.jpg`, 1200×480), then an accent eyebrow, a light headline,
-icon feature rows (`icon-*.png`, 2x), the app-style sign-in card and one pill button. Regenerate
-the artwork with `python3 web/scripts/email-art.py` (Pillow + numpy). Everything no-ops with a
+icon feature rows, the app-style sign-in card and one pill button. The icons are the app's own
+lucide glyphs (stroke 1.75, round caps) on a quiet 34px glass tile, light and dark
+(`icon-*.png`, 2x): `node web/scripts/email-icons.mjs` from the repo root. Regenerate the rest
+of the artwork with `python3 web/scripts/email-art.py` (Pillow + numpy). Everything no-ops with a
 log line when `RESEND_API_KEY` is unset.
 
 Polar (merchant of record) already emails customers receipts, invoices, renewals, payment failed

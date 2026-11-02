@@ -14,9 +14,7 @@ peach) bottom-right, on the page background. Nothing else, no violet.
 - card.jpg / card-dark.jpg   the license card face: the app's frosted
   glass-strong surface with its faint iridescent foil and glare
   (src/components/account/LicenseCard.tsx, src/styles/glass.css).
-- icon-<name>.png / icon-<name>-dark.png   96x96 (2x of 48): line glyphs on a
-  rounded tile. Light: ink on near-white lit by the light-mode lights, hairline
-  rim. Dark: white on ink lit by the dark-mode lights. Swapped like the heroes.
+- (feature icons: see scripts/email-icons.mjs, lucide glyphs as the app uses)
 - mark.png / mark-dark.png   64x64 (2x of 32): the intro's dots on the same tiles.
 """
 import math
@@ -400,8 +398,6 @@ if __name__ == "__main__":
             print(f"{p.name}: {p.stat().st_size // 1024} KB")
     for p in card():
         print(f"{p.name}: {p.stat().st_size // 1024} KB")
-    for n, fn in ICONS.items():
-        icon(n, fn)
+    # Feature icons are lucide glyphs rendered by scripts/email-icons.mjs.
     mark()
-    total = sum(f.stat().st_size for f in OUT.glob("icon-*.png"))  # both variants
-    print(f"{len(ICONS)} icons, {total // 1024} KB total; mark.png")
+    print("mark.png, mark-dark.png")
