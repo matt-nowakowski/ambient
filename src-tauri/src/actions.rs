@@ -240,25 +240,10 @@ async fn post_process_transcription(
     // The hosted endpoint picks the real model; Apple Intelligence has one.
     let model = AMBIENT_AI_DEFAULT_MODEL_ID;
 
-    let selected_prompt_id = match &settings.post_process_selected_prompt_id {
-        Some(id) => id.clone(),
-        None => {
-            debug!("Post-processing skipped because no prompt is selected");
-            return None;
-        }
-    };
-
-    let prompt = match settings
-        .post_process_prompts
-        .iter()
-        .find(|prompt| prompt.id == selected_prompt_id)
-    {
+    let prompt = match settings.active_post_process_prompt() {
         Some(prompt) => prompt.prompt.clone(),
         None => {
-            debug!(
-                "Post-processing skipped because prompt '{}' was not found",
-                selected_prompt_id
-            );
+            debug!("Post-processing skipped because there is no prompt");
             return None;
         }
     };
@@ -464,13 +449,10 @@ pub(crate) struct ProcessedTranscription {
     pub offer_search: Option<String>,
 }
 
-/// The user's selected polish prompt, if polish is on.
+/// The polish prompt in use: the selected one, else the built-in default.
 fn selected_polish_prompt(settings: &AppSettings) -> Option<String> {
-    let id = settings.post_process_selected_prompt_id.as_ref()?;
     settings
-        .post_process_prompts
-        .iter()
-        .find(|p| &p.id == id)
+        .active_post_process_prompt()
         .map(|p| p.prompt.clone())
 }
 
@@ -580,15 +562,7 @@ pub(crate) async fn process_transcription_output(
             post_processed_text = Some(processed_text.clone());
             final_text = processed_text;
 
-            if let Some(prompt_id) = &settings.post_process_selected_prompt_id {
-                if let Some(prompt) = settings
-                    .post_process_prompts
-                    .iter()
-                    .find(|prompt| &prompt.id == prompt_id)
-                {
-                    post_process_prompt = Some(prompt.prompt.clone());
-                }
-            }
+            post_process_prompt = selected_polish_prompt(&settings);
         }
     }
 
