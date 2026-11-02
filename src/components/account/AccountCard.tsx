@@ -7,15 +7,26 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  type MotionValue,
 } from "motion/react";
 import { readText, writeText } from "@tauri-apps/plugin-clipboard-manager";
-import { Check, ClipboardPaste, Copy, Eye, EyeOff } from "lucide-react";
+import {
+  Check,
+  ClipboardPaste,
+  Copy,
+  CreditCard,
+  Eye,
+  EyeOff,
+  LogOut,
+  Trash2,
+} from "lucide-react";
 import { commands, type PlanStatus } from "@/bindings";
 import { BRAND } from "@/lib/brand";
 import { prefersReducedMotion } from "@/lib/utils/motion";
 import { Orb } from "../orb/Orb";
 import { Button } from "../ui/Button";
 import { TextLink } from "../ui/TextLink";
+import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SuccessCheck, TextSwap } from "../ui/Transitions";
 import { spring } from "../ui/Motion";
 import { openUpgrade } from "./usePlan";
@@ -116,6 +127,19 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   const rotateY = useSpring(useTransform(px, [0, 1], [-4, 4]), spring);
   const glareX = useTransform(px, (v) => `${v * 100}%`);
   const glareY = useTransform(py, (v) => `${v * 100}%`);
+  // The turn is a motion value so each face can hide itself once it faces
+  // away: backface-visibility alone is not honoured under backdrop-filter in
+  // WebKit, which let the back face show through mirrored.
+  const turn = useSpring(flipped ? 180 : 0, { stiffness: 120, damping: 18 });
+  useEffect(() => {
+    turn.set(flipped ? 180 : 0);
+  }, [flipped, turn]);
+  const frontVisibility = useTransform(turn, (v): string =>
+    v < 90 ? "visible" : "hidden",
+  );
+  const backVisibility = useTransform(turn, (v): string =>
+    v >= 90 ? "visible" : "hidden",
+  );
   const glare = useMotionTemplate`radial-gradient(420px circle at ${glareX} ${glareY}, var(--card-glare), transparent 45%)`;
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -238,6 +262,41 @@ export const AccountCard: React.FC<AccountCardProps> = ({
         { month: "long", day: "numeric", year: "numeric" },
       )
     : null;
+
+  const menuItems: MoreMenuItem[] = [
+    ...(flipped
+      ? [
+          {
+            key: "billing",
+            label: t("account.manageBilling"),
+            icon: <CreditCard width={14} height={14} strokeWidth={1.75} />,
+            onSelect: onManageBilling,
+            disabled: billingBusy,
+          },
+        ]
+      : []),
+    ...(signedIn
+      ? [
+          {
+            key: "signout",
+            label: t("account.signIn.signOut"),
+            icon: <LogOut width={14} height={14} strokeWidth={1.75} />,
+            onSelect: signOut,
+            danger: true,
+          },
+        ]
+      : flipped
+        ? [
+            {
+              key: "remove",
+              label: t("account.card.remove"),
+              icon: <Trash2 width={14} height={14} strokeWidth={1.75} />,
+              onSelect: remove,
+              danger: true,
+            },
+          ]
+        : []),
+  ];
 
   const fieldClass = (ready: boolean) =>
     `flex h-10 items-center gap-1 rounded-full border-[0.5px] bg-glass-strong ps-4 pe-1 transition-[border-color,box-shadow] ${
@@ -446,12 +505,13 @@ export const AccountCard: React.FC<AccountCardProps> = ({
         >
           <motion.div
             className="absolute inset-0 [transform-style:preserve-3d]"
-            animate={{ rotateY: flipped ? 180 : 0 }}
-            transition={{ type: "spring", stiffness: 120, damping: 18 }}
+            style={{ rotateY: turn }}
           >
             {/* Front: sign in (or a gift code). */}
-            <Face glare={glare}>
-              <div className="flex items-start justify-between">
+            <Face glare={glare} visibility={frontVisibility}>
+              <div
+                className={`flex items-start justify-between ${menuItems.length > 0 ? "pe-10" : ""}`}
+              >
                 <Brand busy={phase === "busy"} />
                 <span className="text-meta text-ink-3">
                   {t("account.signIn.cardLabel")}
@@ -522,8 +582,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({
             </Face>
 
             {/* Back: the paid card. */}
-            <Face glare={glare} back>
-              <div className="flex items-start justify-between">
+            <Face glare={glare} visibility={backVisibility} back>
+              <div className="flex items-start justify-between pe-10">
                 <Brand />
                 <div className="flex items-center gap-2">
                   {celebrate && <SuccessCheck show className="text-text" />}
@@ -564,47 +624,19 @@ export const AccountCard: React.FC<AccountCardProps> = ({
             </Face>
           </motion.div>
         </motion.div>
+
+        {/* Account actions live in a ⋯ menu on the card. It sits over the
+            card rather than inside a face, so the face's clip can't cut the
+            menu off. */}
+        {menuItems.length > 0 && (
+          <div className="absolute end-[16px] top-[17px] z-30">
+            <MoreMenu label={t("account.card.menu")} items={menuItems} />
+          </div>
+        )}
       </div>
 
       <AnimatePresence mode="wait" initial={false}>
-        {flipped ? (
-          <motion.div
-            key="paid"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ delay: 0.35 }}
-            className="flex items-center gap-2"
-          >
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={billingBusy}
-              onClick={onManageBilling}
-            >
-              {t("account.manageBilling")}
-            </Button>
-            {signedIn ? (
-              <Button variant="danger-ghost" size="sm" onClick={signOut}>
-                {t("account.signIn.signOut")}
-              </Button>
-            ) : (
-              <Button variant="danger-ghost" size="sm" onClick={remove}>
-                {t("account.card.remove")}
-              </Button>
-            )}
-          </motion.div>
-        ) : signedIn ? (
-          <motion.div
-            key="signed-in"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="px-hero"
-          >
-            <TextLink onClick={signOut}>{t("account.signIn.signOut")}</TextLink>
-          </motion.div>
-        ) : (
+        {!signedIn && !flipped && (
           <motion.div
             key="signed-out"
             initial={{ opacity: 0 }}
@@ -787,25 +819,31 @@ const GiftCode: React.FC<{ code: string }> = ({ code }) => {
 /** One face of the card: frosted, iridescent foil, glare, rim. */
 const Face: React.FC<{
   glare: ReturnType<typeof useMotionTemplate>;
+  visibility: MotionValue<string>;
   back?: boolean;
   children: React.ReactNode;
-}> = ({ glare, back = false, children }) => (
-  <div
-    className="glass-strong absolute inset-0 flex flex-col justify-between overflow-hidden rounded-panel p-hero [backface-visibility:hidden]"
-    style={back ? { transform: "rotateY(180deg)" } : undefined}
+}> = ({ glare, visibility, back = false, children }) => (
+  <motion.div
+    className="glass-strong absolute inset-0 flex flex-col justify-between overflow-hidden rounded-panel p-hero [-webkit-backface-visibility:hidden] [backface-visibility:hidden]"
+    style={{ visibility, ...(back ? { rotateY: 180 } : {}) }}
   >
-    {/* Iridescent foil, very faint: the only colour in the UI besides "live". */}
+    {/* The foil and glare get their own clip with the card's radius: inside
+        a 3D context WebKit ignores a parent's rounded overflow clip for
+        composited children, so the square gradient poked out at the
+        corners. The mask forces the rounded clip. */}
     <div
       aria-hidden="true"
-      className="card-foil pointer-events-none absolute inset-0"
-    />
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0"
-      style={{ background: glare }}
-    />
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] [mask-image:linear-gradient(#000,#000)]"
+    >
+      {/* Iridescent foil, very faint: the only colour in the UI besides "live". */}
+      <div className="card-foil absolute inset-0 rounded-[inherit]" />
+      <motion.div
+        className="absolute inset-0 rounded-[inherit]"
+        style={{ background: glare }}
+      />
+    </div>
     <div className="relative flex h-full flex-col justify-between">
       {children}
     </div>
-  </div>
+  </motion.div>
 );
