@@ -180,9 +180,11 @@ jobs:
       # built there and no Vulkan SDK, headers, or glslc are needed.
       - name: Install Vulkan SDK (Windows x64)
         if: contains(inputs.platform, 'windows') && !contains(inputs.target, 'aarch64')
-        uses: humbletim/install-vulkan-sdk@30ba978f977e81b72d091fc8888feb1fb26f9aff # v1.2
+        # Same installer as Ubuntu ARM64: humbletim's composite action calls
+        # actions/cache by tag, which the repo's SHA-pinning rule rejects.
+        uses: jakoch/install-vulkan-sdk-action@d17de7e2f5e50efb5d2123efed18497d3c58c533 # v1
         with:
-          version: 1.4.309.0
+          vulkan_version: 1.4.309.0
           cache: true
 
       - name: Cache trusted-signing-cli
