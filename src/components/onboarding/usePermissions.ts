@@ -62,7 +62,8 @@ const currentPlatform = (): PermissionPlatform => {
 /**
  * Microphone (macOS, Windows) and Accessibility (macOS) permissions: check,
  * request, then poll until granted. Granting Accessibility initializes input
- * so no relaunch is needed.
+ * so no relaunch is needed. Once a permission is granted, the window comes
+ * back to the front (System Settings and the prompts leave it buried).
  */
 export const usePermissions = (preview: boolean): Permissions => {
   const { t } = useTranslation();
@@ -74,6 +75,8 @@ export const usePermissions = (preview: boolean): Permissions => {
     useState<PermissionStatus>("checking");
   const [needed, setNeeded] = useState(false);
   const [microphoneAsked, setMicrophoneAsked] = useState(false);
+  // Above other windows while the microphone prompt is up.
+  const [floating, setFloating] = useState(false);
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const errorCountRef = useRef(0);
 
@@ -222,6 +225,36 @@ export const usePermissions = (preview: boolean): Permissions => {
     }
   }, [hasWindowsMicrophoneAccess, isMacOS, isWindows]);
 
+  // The microphone prompt is a small alert: keep the window up behind it so
+  // the row's answer is in view. Not for System Settings (Accessibility, or
+  // asking again), which the window would cover.
+  useEffect(() => {
+    if (!floating) return;
+    const win = getCurrentWindow();
+    win.setAlwaysOnTop(true).catch(warn);
+    return () => {
+      win.setAlwaysOnTop(false).catch(warn);
+    };
+  }, [floating]);
+
+  // An answer came in: stop floating, and on a yes bring the window back to
+  // the front and focus it, so the granted row is the next thing seen.
+  const was = useRef({ microphone, accessibility });
+  useEffect(() => {
+    const before = was.current;
+    was.current = { microphone, accessibility };
+    if (before.microphone === "waiting" && microphone !== "waiting")
+      setFloating(false);
+    const granted = (from: PermissionStatus, to: PermissionStatus) =>
+      from === "waiting" && to === "granted";
+    if (
+      !preview &&
+      (granted(before.microphone, microphone) ||
+        granted(before.accessibility, accessibility))
+    )
+      commands.showMainWindowCommand().catch(warn);
+  }, [microphone, accessibility, preview]);
+
   const waiting = microphone === "waiting" || accessibility === "waiting";
   useEffect(() => {
     if (preview || !waiting) return;
@@ -257,6 +290,7 @@ export const usePermissions = (preview: boolean): Permissions => {
       if (isWindows || microphoneAsked)
         await commands.openMicrophonePrivacySettings();
       else {
+        setFloating(true);
         await requestMicrophonePermission();
         // A prompt takes focus from Ambient; still in front a moment later
         // means there was none (denied before), so go back to asking.
@@ -268,6 +302,7 @@ export const usePermissions = (preview: boolean): Permissions => {
       setMicrophone("waiting");
       startPolling();
     } catch (error) {
+      setFloating(false);
       console.error("Failed to request microphone permission:", error);
       toast.error(t("onboarding.permissions.errors.requestFailed"));
     }

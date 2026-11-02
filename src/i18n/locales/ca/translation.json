@@ -147,7 +147,29 @@
       "pressKeys": "Premeu les tecles noves",
       "addKey": "Ara afegiu-hi una tecla",
       "cancel": "Cancel·la",
-      "tryIt": "Proveu-ho vosaltres mateixos"
+      "tryIt": "Proveu-ho vosaltres mateixos",
+      "addModifier": "Sola, escriuria. Afegiu-hi un modificador.",
+      "lines": {
+        "hold": "Sí! Arribo deu minuts tard, guarda'm un lloc.",
+        "tap": "Pícnic al parc dissabte i després sopar al Rosa's. Portar la manta blava i l'altaveu bo."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Pregunteu el que vulgueu.</0> <1>Manteniu premuda la drecera i pregunteu.</1> <2>Apareix la resposta.</2>",
+          "said": "Quin temps farà demà a Lisboa?",
+          "reply": "Sol i 24°, amb una brisa suau."
+        },
+        "act": {
+          "sentence": "<0>Cal fer alguna cosa?</0> <1>Manteniu premuda la drecera i digueu-ho.</1> <2>Fet.</2>",
+          "said": "Recorda'm a les 5 que truqui a la Sam",
+          "reply": "Recordatori a les 17:00: trucar a la Sam."
+        },
+        "recall": {
+          "sentence": "<0>Us heu oblidat d'alguna cosa?</0> <1>Manteniu premuda la drecera i pregunteu.</1> <2>Se'n recorda.</2>",
+          "said": "Què va dir l'Ana del lloc?",
+          "reply": "Va reservar al Rosa's per dissabte a les 20:00."
+        }
+      }
     },
     "try": {
       "title": "Proveu-ho!",
@@ -175,7 +197,10 @@
       "noWordsSub": "Torneu-ho a provar i digueu una frase sencera.",
       "finish": "Acaba",
       "skip": "Omet",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Això era mantenir premut. Ara, la manera sense mans.",
+      "heardTap": "Això era prémer una vegada. Ara proveu de mantenir-les premudes mentre parleu.",
+      "gotIt": "He captat cada paraula: «{{quote}}»"
     },
     "done": {
       "title": "Tot a punt",
@@ -1392,11 +1417,11 @@
     "modes": {
       "write": {
         "title": "Escriure",
-        "example": "Podem passar la reunió a dijous?"
+        "example": "Podem fer-ho dijous?"
       },
       "answer": {
         "title": "Respondre",
-        "example": "Quin és el tipus de les plusvàlues al Regne Unit?"
+        "example": "Quant és el 15% de 240?"
       },
       "act": {
         "title": "Actuar",
@@ -1404,7 +1429,7 @@
       },
       "recall": {
         "title": "Recordar",
-        "example": "Què vaig dir ahir sobre els preus?"
+        "example": "Què vaig dir dels preus?"
       }
     },
     "nothingToConnect": {
@@ -1418,9 +1443,16 @@
     },
     "choose": {
       "title": "Trieu què pot fer el {{appName}}",
-      "description": "Tot desactivat fins que ho activeu. Canvieu-ho quan vulgueu a Privadesa.",
+      "description": "Tot és opcional. Canvieu-ho quan vulgueu a Privadesa.",
       "footnote": "Les contrasenyes, els moneders i les finestres privades no es llegeixen mai.",
-      "proOnly": "Part de Pro. Milloreu el pla a Compte."
+      "proOnly": "Part de Pro. Milloreu el pla a Compte.",
+      "caps": {
+        "screen_context": "Només la finestra que pregunteu",
+        "proactive": "Es decideix en aquest Mac",
+        "meetings": "L'àudio es queda en aquest Mac",
+        "wake_word": "Només escolta en aquest Mac",
+        "screen_memory": "Es queda en aquest Mac, xifrat"
+      }
     }
   },
   "getStarted": {

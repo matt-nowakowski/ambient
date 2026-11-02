@@ -146,7 +146,29 @@
       "pressKeys": "Yeni tuşlara basın",
       "addKey": "Şimdi bir tuş ekleyin",
       "cancel": "İptal",
-      "tryIt": "Kendiniz deneyin"
+      "tryIt": "Kendiniz deneyin",
+      "addModifier": "Tek tuş yazı yazar. Bir değiştirici tuş ekleyin.",
+      "lines": {
+        "hold": "Evet! On dakika gecikiyorum, bana bir yer ayır.",
+        "tap": "Cumartesi parkta piknik, sonra Rosa's’ta akşam yemeği. Mavi battaniyeyi ve iyi hoparlörü getir."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Ne isterseniz sorun.</0> <1>Kısayolunuzu basılı tutup sorun.</1> <2>Yanıt belirir.</2>",
+          "said": "Yarın Lizbon’da hava nasıl olacak?",
+          "reply": "Güneşli ve 24°, hafif bir esinti var."
+        },
+        "act": {
+          "sentence": "<0>Bir şey mi yapılacak?</0> <1>Kısayolunuzu basılı tutup söyleyin.</1> <2>Tamamdır.</2>",
+          "said": "Bana saat 5’te Sam’i aramayı hatırlat",
+          "reply": "Anımsatıcı 17.00’de: Sam’i ara."
+        },
+        "recall": {
+          "sentence": "<0>Bir şey mi unuttunuz?</0> <1>Kısayolunuzu basılı tutup sorun.</1> <2>O hatırlar.</2>",
+          "said": "Ana mekân hakkında ne dedi?",
+          "reply": "Cumartesi 20.00 için Rosa's’ta yer ayırttı."
+        }
+      }
     },
     "try": {
       "title": "Bir deneyin!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Tekrar deneyin ve tam bir cümle söyleyin.",
       "finish": "Bitir",
       "skip": "Atla",
-      "seconds": "{{value}} sn"
+      "seconds": "{{value}} sn",
+      "heardHold": "Bu, basılı tutmaydı. Sıradaki: eller serbest yöntem.",
+      "heardTap": "Bu, dokunmaydı. Şimdi konuşurken basılı tutmayı deneyin.",
+      "gotIt": "Her sözcük alındı: “{{quote}}”"
     },
     "done": {
       "title": "Hazırsınız",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Yaz",
-        "example": "Toplantıyı perşembeye alabilir miyiz?"
+        "example": "Perşembe olur mu?"
       },
       "answer": {
         "title": "Yanıtla",
-        "example": "Birleşik Krallık’ta sermaye kazancı vergisi oranı ne?"
+        "example": "240’ın %15’i kaç?"
       },
       "act": {
         "title": "Yap",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Hatırla",
-        "example": "Dün fiyatlandırma hakkında ne demiştim?"
+        "example": "Fiyatlar hakkında ne demiştim?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "{{appName}} neler yapabilir, seçin",
-      "description": "Siz açana kadar hepsi kapalı. Gizlilik bölümünden istediğiniz zaman değiştirin.",
+      "description": "Hepsi isteğe bağlı. Gizlilik bölümünden istediğiniz zaman değiştirin.",
       "footnote": "Parolalar, cüzdanlar ve gizli pencereler asla okunmaz.",
-      "proOnly": "Pro’ya dahildir. Hesap bölümünden yükseltin."
+      "proOnly": "Pro’ya dahildir. Hesap bölümünden yükseltin.",
+      "caps": {
+        "screen_context": "Yalnızca sorduğunuz pencere",
+        "proactive": "Bu Mac’te karar verilir",
+        "meetings": "Ses bu Mac’te kalır",
+        "wake_word": "Yalnızca bu Mac’te dinler",
+        "screen_memory": "Bu Mac’te şifreli kalır"
+      }
     }
   },
   "getStarted": {

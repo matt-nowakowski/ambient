@@ -12,15 +12,27 @@ import { useShortcutCapture } from "@/hooks/useShortcutCapture";
 import { type OSType, spaceDoesNotClick } from "@/lib/utils/keyboard";
 import { prefersReducedMotion } from "@/lib/utils/motion";
 import { cjkSubsetFont } from "@/lib/utils/cjkFont";
+import { Orb, type OrbVariant } from "../../orb/Orb";
 import { Button } from "../../ui/Button";
 import { CapturedKeys, captureHintKey, Keycaps } from "../../shared/Keycaps";
 import { WindowBar } from "../WindowBar";
 import { OnboardingShell, ScreenHeader, ScreenMain } from "../OnboardingShell";
 import { useOnboardingStore } from "../onboardingStore";
-import { demoLine } from "../data/samples";
 import "./demo.css";
 
-type Mode = "hold" | "tap";
+/** Dictation two ways, then the agent: asked, acting, remembering. */
+type AgentMode = "ask" | "act" | "recall";
+type Mode = "hold" | "tap" | AgentMode;
+const ORDER: Mode[] = ["hold", "tap", "ask", "act", "recall"];
+const isAgent = (m: Mode): m is AgentMode =>
+  m === "ask" || m === "act" || m === "recall";
+
+/** Each agent chapter's card: titled and marked like the tour's cards. */
+const CARDS: Record<AgentMode, { title: string; orb: OrbVariant }> = {
+  ask: { title: "answer", orb: "S1" },
+  act: { title: "act", orb: "C2" },
+  recall: { title: "recall", orb: "G5" },
+};
 type PillState = "hidden" | "rec" | "work";
 /** The pointer on the drawn screen: off to the side, on the field, gone. */
 type Pointer = "rest" | "field" | "gone";
@@ -30,8 +42,9 @@ type Phrase = 0 | 1 | 2;
 type Beat = "reset" | "point" | "click" | "press" | "lift" | "release" | "land";
 
 /**
- * Each way's beats, in ms from its start. `ms` is its full length (then the
- * other way plays); `still` is the moment shown under reduced motion.
+ * Each chapter's beats, in ms from its start. `ms` is its full length (then
+ * the next plays); `still` is the moment shown under reduced motion. The
+ * agent works wherever you are, so its chapters skip the click.
  */
 const CHAPTERS: Record<
   Mode,
@@ -63,6 +76,24 @@ const CHAPTERS: Record<
     ms: 8180,
     still: 4000,
   },
+  ...(Object.fromEntries(
+    (["ask", "act", "recall"] as const).map((m) => [
+      m,
+      {
+        script: [
+          [0, "reset"],
+          [700, "press"], //   held while asking: 2.2s
+          [2900, "release"],
+          [3700, "land"], //   the card stays 2.6s
+        ] as [number, Beat][],
+        ms: 6300,
+        still: 4000,
+      },
+    ]),
+  ) as Record<
+    AgentMode,
+    { script: [number, Beat][]; ms: number; still: number }
+  >),
 };
 
 /** Under reduced motion: each way's still picture, in turn. */
@@ -146,6 +177,37 @@ const DemoPill: React.FC<{ state: PillState; still: boolean }> = ({
   );
 };
 
+/* ---------------- the agent's card ---------------- */
+
+/** The HUD, drawn: what was asked and the answer, top right like the real one. */
+const DemoCard: React.FC<{
+  mode: AgentMode;
+  shown: boolean;
+  still: boolean;
+}> = ({ mode, shown, still }) => {
+  const { t } = useTranslation();
+  const card = CARDS[mode];
+  return (
+    <div
+      className="demo-card"
+      data-shown={shown || undefined}
+      data-still={still || undefined}
+      aria-hidden="true"
+    >
+      <p className="demo-card-head">
+        <Orb variant={card.orb} size={12} />
+        {t(`tour.modes.${card.title}.title`)}
+      </p>
+      <p className="demo-card-said">
+        “{t(`onboarding.demo.agent.${mode}.said`)}”
+      </p>
+      <p className="demo-card-reply">
+        {t(`onboarding.demo.agent.${mode}.reply`)}
+      </p>
+    </div>
+  );
+};
+
 /* ---------------- the drawn screen ---------------- */
 
 const DemoLaptop: React.FC<{
@@ -165,6 +227,9 @@ const DemoLaptop: React.FC<{
   clickKey: number;
   /** The field has the caret: it's been clicked, or you pressed the keys. */
   focused: boolean;
+  /** The last agent chapter's card, and whether it's up. */
+  card: AgentMode;
+  cardShown: boolean;
 }> = ({
   os,
   shortcut,
@@ -180,12 +245,16 @@ const DemoLaptop: React.FC<{
   pointer,
   clickKey,
   focused,
+  card,
+  cardShown,
 }) => {
   const { t } = useTranslation();
+  // The agent's chapters happen in the note: no Messages, no click.
+  const app = mode === "hold" ? "hold" : "tap";
   // On Linux the pointer stays put and only clicks: WebKitGTK renders the
   // glide and fade unevenly. It sits at the field's end, clear of the text.
   const settled = os === "linux";
-  const place: Pointer = settled ? "field" : pointer;
+  const place: Pointer = isAgent(mode) ? "gone" : settled ? "field" : pointer;
   // Measured: the field's position varies by app and OS.
   const screenRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -218,19 +287,19 @@ const DemoLaptop: React.FC<{
       >
         <div
           className="demo-app"
-          data-mode={mode}
+          data-mode={app}
           data-focused={focused || undefined}
         >
           <WindowBar
             size="sm"
             title={t(
-              mode === "hold"
+              app === "hold"
                 ? "onboarding.demo.apps.messages"
                 : "onboarding.demo.apps.notes",
             )}
           />
           <div className="demo-app-body">
-            {mode === "hold" ? (
+            {app === "hold" ? (
               <p className="demo-them">{t("onboarding.demo.chat")}</p>
             ) : (
               <p className="demo-note-title">
@@ -250,6 +319,7 @@ const DemoLaptop: React.FC<{
             </div>
           </div>
         </div>
+        <DemoCard mode={card} shown={cardShown} still={still} />
         <div className="demo-pill-wrap">
           <DemoPill state={pill} still={still} />
         </div>
@@ -305,7 +375,7 @@ const DemoSentence: React.FC<{
   const cell = "col-start-1 row-start-1";
   return (
     <>
-      {(["hold", "tap"] as const).map((m) => {
+      {ORDER.map((m) => {
         const on = !say && m === mode;
         return (
           <span
@@ -314,7 +384,11 @@ const DemoSentence: React.FC<{
             className={`${cell} ${on ? "demo-swap" : "invisible"}`}
           >
             <Trans
-              i18nKey={`onboarding.demo.${m}`}
+              i18nKey={
+                isAgent(m)
+                  ? `onboarding.demo.agent.${m}.sentence`
+                  : `onboarding.demo.${m}`
+              }
               components={[0, 1, 2].map((i) => (
                 <Lit key={i} on={on && phrase === i} />
               ))}
@@ -322,13 +396,15 @@ const DemoSentence: React.FC<{
           </span>
         );
       })}
-      {[t("onboarding.demo.pressKeys"), t("onboarding.demo.addKey")].map(
-        (line) => (
-          <span key={line} aria-hidden="true" className={`${cell} invisible`}>
-            {line}
-          </span>
-        ),
-      )}
+      {[
+        t("onboarding.demo.pressKeys"),
+        t("onboarding.demo.addKey"),
+        t("onboarding.demo.addModifier"),
+      ].map((line) => (
+        <span key={line} aria-hidden="true" className={`${cell} invisible`}>
+          {line}
+        </span>
+      ))}
       {say && (
         <span role="status" className={`${cell} font-medium text-text`}>
           {say}
@@ -352,7 +428,11 @@ interface DemoProps {
   onContinue: () => void;
 }
 
-/** Screen 4: an animated demo of hold and tap while the model downloads. */
+/**
+ * Screen 4, while the model downloads: an animated demo of dictation (hold,
+ * then tap), then the agent answering, acting and remembering. Its words are
+ * in the interface language: it shows the app, not the user's speech.
+ */
 export const Demo: React.FC<DemoProps> = ({
   progress,
   os,
@@ -363,9 +443,9 @@ export const Demo: React.FC<DemoProps> = ({
   onBack,
   onContinue,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { getSetting } = useSettings();
-  const { languages, script, preview } = useOnboardingStore();
+  const { preview } = useOnboardingStore();
   const binding = getSetting("bindings")?.transcribe;
   const shortcut = binding?.current_binding ?? "";
   const [still] = useState(prefersReducedMotion);
@@ -377,6 +457,10 @@ export const Demo: React.FC<DemoProps> = ({
   const [focused, setFocused] = useState(false);
   const [keyDown, setKeyDown] = useState(false);
   const [pillState, setPillState] = useState<PillState>("hidden");
+  const [card, setCard] = useState<{ mode: AgentMode; shown: boolean }>({
+    mode: "ask",
+    shown: false,
+  });
   const [text, setText] = useState({
     value: "",
     lang: "en",
@@ -400,7 +484,14 @@ export const Demo: React.FC<DemoProps> = ({
       if (beat === "reset") {
         setChapter(mode);
         setPhrase(0);
-        setText((x) => ({ ...x, value: "", landed: false }));
+        // The agent's chapters open on the note the tap chapter wrote.
+        setText((x) => ({
+          ...x,
+          value: isAgent(mode) ? t("onboarding.demo.lines.tap") : "",
+          lang: i18n.language,
+          landed: false,
+        }));
+        setCard((c) => ({ mode: isAgent(mode) ? mode : c.mode, shown: false }));
         setPillState("hidden");
         setKeyDown(false);
         setPointer("rest");
@@ -423,24 +514,26 @@ export const Demo: React.FC<DemoProps> = ({
         setKeyDown(false);
         setPillState("work");
         setPhrase(2);
+      } else if (isAgent(mode)) {
+        setPillState("hidden");
+        setCard({ mode, shown: true });
       } else {
-        const line = demoLine(languages, script, mode);
         setPillState("hidden");
         setText((x) => ({
-          value: line.text,
-          lang: line.language,
+          value: t(`onboarding.demo.lines.${mode}`),
+          lang: i18n.language,
           landed: animate,
           key: x.key + 1,
         }));
       }
     },
-    [languages, script],
+    [t, i18n.language],
   );
 
   const play = useCallback(
     (mode: Mode = nextMode.current) => {
       clear();
-      nextMode.current = mode === "hold" ? "tap" : "hold";
+      nextMode.current = ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length];
       const { script: beats, ms, still: at } = CHAPTERS[mode];
       if (still) {
         for (const [time, beat] of beats)
@@ -482,7 +575,9 @@ export const Demo: React.FC<DemoProps> = ({
     capture.start().then((began) => began || play(chapter));
   };
 
-  const say = capture.capturing ? t(captureHintKey(capture.partial)) : null;
+  const say = capture.capturing
+    ? t(captureHintKey(capture.partial, capture.refused))
+    : null;
 
   // Try it turning on mid-screen (the download finished): it glows once.
   const [wasReady] = useState(ready);
@@ -536,6 +631,8 @@ export const Demo: React.FC<DemoProps> = ({
           pointer={pointer}
           clickKey={clickKey}
           focused={focused}
+          card={card.mode}
+          cardShown={card.shown}
         />
         {/* The shortcut and Change as one button; capture happens in place. */}
         <button

@@ -665,6 +665,21 @@ async previewContext(delayMs: number) : Promise<Result<ContextSnapshot, Skipped>
 }
 },
 /**
+ * The agent tour shows (or hides) "Try it now": while it's up, anything said
+ * with Ambient in front goes to the agent.
+ */
+async setAgentTourTry(active: boolean) : Promise<void> {
+    await TAURI_INVOKE("set_agent_tour_try", { active });
+},
+/**
+ * Onboarding's Try it: a short, friendly reply to what the user just said,
+ * in `language` (a BCP 47 tag). None when no model is available or it fails;
+ * the screen then uses its own line.
+ */
+async onboardingReply(text: string, language: string) : Promise<string | null> {
+    return await TAURI_INVOKE("onboarding_reply", { text, language });
+},
+/**
  * The HUD reports its content height so the panel hugs the card.
  */
 async hudResize(height: number) : Promise<void> {

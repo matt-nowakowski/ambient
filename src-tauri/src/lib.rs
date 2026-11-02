@@ -761,6 +761,8 @@ pub fn run(cli_args: CliArgs) {
             commands::agent::delete_screen_memory_app,
             commands::agent::delete_all_agent_data,
             commands::agent::preview_context,
+            commands::agent::set_agent_tour_try,
+            commands::agent::onboarding_reply,
             hud::hud_resize,
             hud::hud_hide,
             hud::hud_action,

@@ -54,6 +54,22 @@ pub fn last_user_app() -> Option<FrontmostApp> {
     LAST_USER_APP.lock().ok().and_then(|g| g.clone())
 }
 
+/// Set while the agent tour's "Try it now" is on screen.
+static TOUR_TRY: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+pub fn set_tour_try(on: bool) {
+    TOUR_TRY.store(on, std::sync::atomic::Ordering::SeqCst);
+}
+
+/// The tour asks the user to try the agent and Ambient's own window is in
+/// front. There is no field there to type into, so whatever is said, with
+/// either shortcut, is a request: the dictation shortcut would otherwise type
+/// it into nothing (or route it as dictation), and the try did nothing.
+pub fn trying_from_tour() -> bool {
+    TOUR_TRY.load(std::sync::atomic::Ordering::SeqCst)
+        && context::frontmost_app().is_some_and(|f| f.bundle_id == env!("BRAND_IDENTIFIER"))
+}
+
 /// Apps whose being in front, while another app uses the mic, means a call.
 const CALL_APPS: &[&str] = &[
     "us.zoom.xos",

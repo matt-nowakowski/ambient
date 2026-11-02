@@ -146,7 +146,29 @@
       "pressKeys": "Tryk på de nye taster",
       "addKey": "Tilføj nu en tast",
       "cancel": "Annuller",
-      "tryIt": "Prøv selv"
+      "tryIt": "Prøv selv",
+      "addModifier": "En enkelt tast skriver. Tilføj en ændringstast.",
+      "lines": {
+        "hold": "Ja! Jeg er ti minutter forsinket, hold en plads til mig.",
+        "tap": "Picnic i parken lørdag, og bagefter middag på Rosa's. Tag det blå tæppe og den gode højttaler med."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Spørg om hvad som helst.</0> <1>Hold din genvej nede, og spørg.</1> <2>Svaret dukker op.</2>",
+          "said": "Hvordan bliver vejret i Lissabon i morgen?",
+          "reply": "Sol og 24°, med en let brise."
+        },
+        "act": {
+          "sentence": "<0>Skal noget ordnes?</0> <1>Hold din genvej nede, og sig det.</1> <2>Så er det gjort.</2>",
+          "said": "Mind mig om at ringe til Sam kl. 5",
+          "reply": "Påmindelse kl. 17.00: ring til Sam."
+        },
+        "recall": {
+          "sentence": "<0>Glemt noget?</0> <1>Hold din genvej nede, og spørg.</1> <2>Den husker det.</2>",
+          "said": "Hvad sagde Ana om stedet?",
+          "reply": "Hun har booket Rosa's lørdag kl. 20."
+        }
+      }
     },
     "try": {
       "title": "Giv det et forsøg!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Prøv igen, og sig en hel sætning.",
       "finish": "Afslut",
       "skip": "Spring over",
-      "seconds": "{{value}} sek."
+      "seconds": "{{value}} sek.",
+      "heardHold": "Det var at holde nede. Nu til den håndfri måde.",
+      "heardTap": "Det var at trykke. Prøv nu at holde dem nede, mens du taler.",
+      "gotIt": "Fik hvert et ord: »{{quote}}«"
     },
     "done": {
       "title": "Så er du klar",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Skriv",
-        "example": "Kan vi rykke statusmødet til torsdag?"
+        "example": "Kan vi tage torsdag i stedet?"
       },
       "answer": {
         "title": "Svar",
-        "example": "Hvad er skattesatsen for kapitalgevinster i Storbritannien?"
+        "example": "Hvad er 15 % af 240?"
       },
       "act": {
         "title": "Handl",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Husk",
-        "example": "Hvad sagde jeg om priserne i går?"
+        "example": "Hvad sagde jeg om priserne?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Vælg, hvad {{appName}} må",
-      "description": "Alt er slået fra, indtil du slår det til. Skift når som helst under Privatliv.",
+      "description": "Alt er valgfrit. Skift når som helst under Privatliv.",
       "footnote": "Adgangskoder, tegnebøger og private vinduer læses aldrig.",
-      "proOnly": "En del af Pro. Opgrader under Konto."
+      "proOnly": "En del af Pro. Opgrader under Konto.",
+      "caps": {
+        "screen_context": "Kun det vindue, du spørger om",
+        "proactive": "Afgøres på denne Mac",
+        "meetings": "Lyd bliver på denne Mac",
+        "wake_word": "Lytter kun på denne Mac",
+        "screen_memory": "Bliver krypteret på denne Mac"
+      }
     }
   },
   "getStarted": {

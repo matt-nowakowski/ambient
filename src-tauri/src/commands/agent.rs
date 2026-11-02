@@ -135,3 +135,40 @@ pub async fn preview_context(app: AppHandle, delay_ms: u32) -> Result<ContextSna
     snap.focused_text = snap.focused_text.map(|t| redact(&t).0);
     Ok(snap)
 }
+
+/// The agent tour shows (or hides) "Try it now": while it's up, anything said
+/// with Ambient in front goes to the agent.
+#[tauri::command]
+#[specta::specta]
+pub fn set_agent_tour_try(active: bool) {
+    crate::agent::set_tour_try(active);
+}
+
+/// Onboarding's Try it: a short, friendly reply to what the user just said,
+/// in `language` (a BCP 47 tag). None when no model is available or it fails;
+/// the screen then uses its own line.
+#[tauri::command]
+#[specta::specta]
+pub async fn onboarding_reply(app: AppHandle, text: String, language: String) -> Option<String> {
+    let text: String = text.trim().chars().take(400).collect();
+    if text.is_empty() {
+        return None;
+    }
+    let system = format!(
+        "The user is trying voice dictation for the first time; these are the words they \
+         dictated into a note. Reply like a friend reading over their shoulder: one short, \
+         warm sentence (at most 10 words) that responds to what they actually said. No \
+         quotes, no emoji, no mention of dictation or transcription. Write in the language \
+         with this BCP 47 tag: {language}."
+    );
+    let reply = tokio::time::timeout(
+        Duration::from_secs(4),
+        crate::agent::llm::complete(&app, "onboarding_reply", &system, &text),
+    )
+    .await
+    .ok()
+    .flatten()?;
+    let reply = reply.trim().trim_matches(['"', '“', '”', '«', '»']).trim();
+    // A runaway or empty reply isn't worth showing.
+    (!reply.is_empty() && reply.chars().count() <= 90).then(|| reply.to_string())
+}

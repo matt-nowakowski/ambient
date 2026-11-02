@@ -146,7 +146,29 @@
       "pressKeys": "Press the new keys",
       "addKey": "Now add a key",
       "cancel": "Cancel",
-      "tryIt": "Try it yourself"
+      "tryIt": "Try it yourself",
+      "addModifier": "A key alone would type. Add a modifier.",
+      "lines": {
+        "hold": "Yes! Running ten minutes late, save me a seat.",
+        "tap": "Picnic in the park on Saturday, then dinner at Rosa's. Bring the blue blanket and the good speaker."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Ask anything.</0> <1>Hold your shortcut and ask.</1> <2>The answer appears.</2>",
+          "said": "What's the weather in Lisbon tomorrow?",
+          "reply": "Sunny and 24°, with a light breeze."
+        },
+        "act": {
+          "sentence": "<0>Need something done?</0> <1>Hold your shortcut and say it.</1> <2>It's done.</2>",
+          "said": "Remind me at 5 to call Sam",
+          "reply": "Reminder set for 5 PM: call Sam."
+        },
+        "recall": {
+          "sentence": "<0>Forgot something?</0> <1>Hold your shortcut and ask.</1> <2>It remembers.</2>",
+          "said": "What did Ana say about the venue?",
+          "reply": "She booked Rosa's for Saturday at 8."
+        }
+      }
     },
     "try": {
       "title": "Give it a try!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Try again, and say a whole sentence.",
       "finish": "Finish",
       "skip": "Skip",
-      "seconds": "{{value}}s"
+      "seconds": "{{value}}s",
+      "heardHold": "That's holding. Next, the hands-free way.",
+      "heardTap": "That's tapping. Now try holding them while you talk.",
+      "gotIt": "Got every word: “{{quote}}”"
     },
     "done": {
       "title": "You're all set",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Write",
-        "example": "Can we move the sync to Thursday?"
+        "example": "Can we do Thursday instead?"
       },
       "answer": {
         "title": "Answer",
-        "example": "What's the UK capital gains rate?"
+        "example": "What's 15% of 240?"
       },
       "act": {
         "title": "Act",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Recall",
-        "example": "What did I say about pricing yesterday?"
+        "example": "What did I say about pricing?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Choose what {{appName}} may do",
-      "description": "All off until you turn them on. Change them any time in Privacy.",
+      "description": "All optional. Change them any time in Privacy.",
       "footnote": "Passwords, wallets and private windows are never read.",
-      "proOnly": "Part of Pro. Upgrade in Account."
+      "proOnly": "Part of Pro. Upgrade in Account.",
+      "caps": {
+        "screen_context": "Only the window you ask about",
+        "proactive": "Decided on this Mac",
+        "meetings": "Audio stays on this Mac",
+        "wake_word": "Listens on this Mac only",
+        "screen_memory": "Stays on this Mac, encrypted"
+      }
     }
   },
   "getStarted": {

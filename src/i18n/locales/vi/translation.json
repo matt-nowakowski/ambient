@@ -146,7 +146,29 @@
       "pressKeys": "Nhấn các phím mới",
       "addKey": "Giờ thêm một phím",
       "cancel": "Hủy",
-      "tryIt": "Tự thử xem"
+      "tryIt": "Tự thử xem",
+      "addModifier": "Một phím riêng sẽ gõ chữ. Thêm phím bổ trợ.",
+      "lines": {
+        "hold": "Có chứ! Mình trễ mười phút, giữ giúp mình một chỗ nhé.",
+        "tap": "Thứ Bảy đi dã ngoại ở công viên, rồi ăn tối ở Rosa's. Mang theo chăn xanh và cái loa xịn."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Hỏi gì cũng được.</0> <1>Giữ phím tắt và hỏi.</1> <2>Câu trả lời hiện lên.</2>",
+          "said": "Ngày mai thời tiết ở Lisbon thế nào?",
+          "reply": "Nắng, 24°, có gió nhẹ."
+        },
+        "act": {
+          "sentence": "<0>Cần làm gì đó?</0> <1>Giữ phím tắt và nói ra.</1> <2>Xong ngay.</2>",
+          "said": "Nhắc tôi lúc 5 giờ gọi cho Sam",
+          "reply": "Đã đặt nhắc lúc 17:00: gọi cho Sam."
+        },
+        "recall": {
+          "sentence": "<0>Quên điều gì?</0> <1>Giữ phím tắt và hỏi.</1> <2>Nó nhớ hết.</2>",
+          "said": "Ana nói gì về địa điểm?",
+          "reply": "Cô ấy đã đặt Rosa's lúc 20:00 thứ Bảy."
+        }
+      }
     },
     "try": {
       "title": "Thử xem nào!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Thử lại nhé, và nói cả một câu.",
       "finish": "Hoàn tất",
       "skip": "Bỏ qua",
-      "seconds": "{{value}} giây"
+      "seconds": "{{value}} giây",
+      "heardHold": "Đó là cách giữ phím. Tiếp theo, cách rảnh tay.",
+      "heardTap": "Đó là cách nhấn phím. Giờ thử giữ phím trong lúc nói nhé.",
+      "gotIt": "Nghe rõ từng chữ: “{{quote}}”"
     },
     "done": {
       "title": "Mọi thứ đã sẵn sàng",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Viết",
-        "example": "Mình dời buổi họp sang thứ Năm được không?"
+        "example": "Đổi sang thứ Năm được không?"
       },
       "answer": {
         "title": "Trả lời",
-        "example": "Thuế suất lãi vốn ở Anh là bao nhiêu?"
+        "example": "15% của 240 là bao nhiêu?"
       },
       "act": {
         "title": "Hành động",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Nhớ lại",
-        "example": "Hôm qua tôi đã nói gì về giá?"
+        "example": "Tôi đã nói gì về giá?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Chọn những gì {{appName}} được làm",
-      "description": "Tất cả đều tắt cho đến khi bạn bật. Thay đổi bất cứ lúc nào trong Quyền riêng tư.",
+      "description": "Tất cả đều tùy chọn. Thay đổi bất cứ lúc nào trong Quyền riêng tư.",
       "footnote": "Mật khẩu, ví và cửa sổ riêng tư không bao giờ được đọc.",
-      "proOnly": "Thuộc gói Pro. Nâng cấp trong Tài khoản."
+      "proOnly": "Thuộc gói Pro. Nâng cấp trong Tài khoản.",
+      "caps": {
+        "screen_context": "Chỉ cửa sổ bạn hỏi đến",
+        "proactive": "Quyết định ngay trên Mac này",
+        "meetings": "Âm thanh ở lại trên Mac này",
+        "wake_word": "Chỉ nghe trên Mac này",
+        "screen_memory": "Mã hóa, chỉ trên Mac này"
+      }
     }
   },
   "getStarted": {

@@ -146,7 +146,29 @@
       "pressKeys": "Tryck de nya tangenterna",
       "addKey": "Lägg nu till en tangent",
       "cancel": "Avbryt",
-      "tryIt": "Prova själv"
+      "tryIt": "Prova själv",
+      "addModifier": "Ensam tangent skriver. Lägg till en modifierare.",
+      "lines": {
+        "hold": "Ja! Blir tio minuter sen, håll en plats åt mig.",
+        "tap": "Picknick i parken på lördag, sedan middag på Rosa's. Ta med den blå filten och den bra högtalaren."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Fråga vad som helst.</0> <1>Håll in genvägen och fråga.</1> <2>Svaret dyker upp.</2>",
+          "said": "Hur blir vädret i Lissabon i morgon?",
+          "reply": "Sol och 24°, med en lätt bris."
+        },
+        "act": {
+          "sentence": "<0>Behöver något göras?</0> <1>Håll in genvägen och säg det.</1> <2>Klart.</2>",
+          "said": "Påminn mig klockan 5 att ringa Sam",
+          "reply": "Påminnelse kl. 17.00: ring Sam."
+        },
+        "recall": {
+          "sentence": "<0>Glömt något?</0> <1>Håll in genvägen och fråga.</1> <2>Den minns.</2>",
+          "said": "Vad sa Ana om lokalen?",
+          "reply": "Hon bokade Rosa's på lördag kl. 20."
+        }
+      }
     },
     "try": {
       "title": "Testa nu!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Försök igen och säg en hel mening.",
       "finish": "Slutför",
       "skip": "Hoppa över",
-      "seconds": "{{value}} s"
+      "seconds": "{{value}} s",
+      "heardHold": "Så fungerar det att hålla in. Nu till det handsfree-sättet.",
+      "heardTap": "Så fungerar det att trycka. Prova nu att hålla in dem medan du talar.",
+      "gotIt": "Fick med varje ord: ”{{quote}}”"
     },
     "done": {
       "title": "Nu är allt klart",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Skriva",
-        "example": "Kan vi flytta avstämningen till torsdag?"
+        "example": "Kan vi ta torsdag i stället?"
       },
       "answer": {
         "title": "Svara",
-        "example": "Vad är skattesatsen på kapitalvinst i Storbritannien?"
+        "example": "Vad är 15 % av 240?"
       },
       "act": {
         "title": "Agera",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Minnas",
-        "example": "Vad sa jag om prissättningen i går?"
+        "example": "Vad sa jag om priset?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Välj vad {{appName}} får göra",
-      "description": "Allt är av tills du slår på det. Ändra när som helst under Integritet.",
+      "description": "Allt är valfritt. Ändra när som helst under Integritet.",
       "footnote": "Lösenord, plånböcker och privata fönster läses aldrig.",
-      "proOnly": "Ingår i Pro. Uppgradera under Konto."
+      "proOnly": "Ingår i Pro. Uppgradera under Konto.",
+      "caps": {
+        "screen_context": "Bara fönstret du frågar om",
+        "proactive": "Avgörs på den här Macen",
+        "meetings": "Ljudet stannar på den här Macen",
+        "wake_word": "Lyssnar bara på den här Macen",
+        "screen_memory": "Krypterat, kvar på den här Macen"
+      }
     }
   },
   "getStarted": {

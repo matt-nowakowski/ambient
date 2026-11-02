@@ -223,6 +223,7 @@ pub fn change_binding(
 
     // Validate the new shortcut for the current keyboard implementation
     if let Err(e) = validate_shortcut_for_implementation(&binding, settings.keyboard_implementation)
+        .and_then(|()| reject_typing_key(&binding))
     {
         warn!("change_binding validation error: {}", e);
         restore_registration(&app, &binding_to_modify);
@@ -442,6 +443,66 @@ fn validate_shortcut_for_implementation(
         KeyboardImplementation::Tauri => tauri_impl::validate_shortcut(raw),
         KeyboardImplementation::AmbientKeys => ambient_keys::validate_shortcut(raw),
     }
+}
+
+/// Keys that type or move the caret. Mirrors `typesText` in src/lib/utils/keyboard.ts.
+const TYPING_KEYS: &[&str] = &[
+    "space",
+    "enter",
+    "return",
+    "tab",
+    "backspace",
+    "delete",
+    "escape",
+    "esc",
+    "up",
+    "down",
+    "left",
+    "right",
+    "home",
+    "end",
+    "pageup",
+    "pagedown",
+];
+const MODIFIER_KEYS: &[&str] = &[
+    "ctrl", "control", "shift", "alt", "option", "meta", "command", "cmd", "super", "win",
+    "windows", "fn",
+];
+
+/// A key that types, alone or with only Shift ("d", "shift+d", "space"): as a
+/// global shortcut it would fire in every text field. F-keys and
+/// modifier-only combos are fine.
+fn types_text(raw: &str) -> bool {
+    let parts: Vec<String> = raw
+        .split('+')
+        .map(|p| p.trim().to_lowercase())
+        .filter(|p| !p.is_empty())
+        .map(|p| {
+            p.trim_end_matches("_left")
+                .trim_end_matches("_right")
+                .to_string()
+        })
+        .collect();
+    let is_modifier = |p: &String| MODIFIER_KEYS.contains(&p.as_str());
+    let keys: Vec<&String> = parts.iter().filter(|p| !is_modifier(p)).collect();
+    if keys.len() != 1 || parts.iter().any(|p| is_modifier(p) && p != "shift") {
+        return false;
+    }
+    let key = keys[0].as_str();
+    key.chars().count() == 1
+        || TYPING_KEYS.contains(&key)
+        || key.starts_with("numpad")
+        || key.starts_with("keypad")
+}
+
+/// Refuse a new binding that would type (the recorder refuses these too).
+fn reject_typing_key(raw: &str) -> Result<(), String> {
+    if types_text(raw) {
+        return Err(format!(
+            "'{raw}' types text on its own; add a modifier such as Option, Control or Command"
+        ));
+    }
+    Ok(())
 }
 
 /// Parse a keyboard implementation string into the enum
@@ -1396,6 +1457,33 @@ pub async fn get_available_accelerators(
 mod tests {
     use ambient_keys::Hotkey;
     use tauri_plugin_global_shortcut::Shortcut;
+
+    #[test]
+    fn typing_keys_alone_are_not_shortcuts() {
+        for raw in [
+            "d",
+            "shift+d",
+            "space",
+            "5",
+            "shift_left+up",
+            "escape",
+            "numpad5",
+        ] {
+            assert!(super::types_text(raw), "{raw} should be refused");
+        }
+        for raw in [
+            "option+space",
+            "command+d",
+            "ctrl+option+space",
+            "option_left+shift+space",
+            "f5",
+            "fn",
+            "option",
+            "command+shift",
+        ] {
+            assert!(!super::types_text(raw), "{raw} should be allowed");
+        }
+    }
 
     #[test]
     fn compound_shortcut_keys_parse_on_both_backends() {

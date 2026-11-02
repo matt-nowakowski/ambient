@@ -827,7 +827,8 @@ impl ShortcutAction for TranscribeAction {
                                                  // Pro's AI polish applies to every dictation, not just the
                                                  // post-process shortcut.
         let post_process = self.post_process || crate::plan::polish_every_dictation(app);
-        let output_mode = if self.ask {
+        // In the agent tour's Try it, either shortcut asks the agent.
+        let output_mode = if self.ask || crate::agent::trying_from_tour() {
             OutputMode::Ask
         } else {
             OutputMode::Dictation

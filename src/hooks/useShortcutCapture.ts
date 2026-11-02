@@ -7,23 +7,21 @@ import { commands } from "@/bindings";
 import { SECURE_INPUT_HELP_URL } from "@/components/SecureInputWarning";
 import { useSettings } from "@/hooks/useSettings";
 import {
+  ChordRecorder,
   getKeyName,
   MODIFIERS,
   normalizeKey,
   type OSType,
+  type RecordedKeyEvent,
+  typesText,
 } from "@/lib/utils/keyboard";
-
-interface AmbientKeysEvent {
-  modifiers: string[];
-  key: string | null;
-  is_key_down: boolean;
-  hotkey_string: string;
-}
 
 /**
  * Records a new binding via ambient-keys events, or this window's key events
- * with all bindings suspended. `inert` records without saving;
- * `escapeCancels` makes Escape exit instead of recording.
+ * with all bindings suspended: every key held together, saved once all are
+ * released. A key that types on its own ("d") is refused and capture goes on
+ * (`refused`), except for Cancel, whose default is Escape. `inert` records
+ * without saving; `escapeCancels` makes Escape exit instead of recording.
  */
 export const useShortcutCapture = (
   bindingId: string,
@@ -40,6 +38,8 @@ export const useShortcutCapture = (
     !inert && getSetting("keyboard_implementation") === "ambient_keys";
   const [capturing, setCapturing] = useState(false);
   const [partial, setPartial] = useState("");
+  // The last combo was a lone typing key; the hint asks for a modifier.
+  const [refused, setRefused] = useState(false);
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
 
@@ -63,12 +63,19 @@ export const useShortcutCapture = (
   const finish = useCallback(async () => {
     setCapturing(false);
     setPartial("");
+    setRefused(false);
     await release();
     onDoneRef.current?.();
   }, [release]);
 
+  /** Saves the combo, or refuses it and keeps listening. Resolves to whether capture ended. */
   const commit = useCallback(
     async (binding: string) => {
+      if (bindingId !== "cancel" && typesText(binding)) {
+        setRefused(true);
+        setPartial("");
+        return false;
+      }
       try {
         if (!inert) await updateBinding(bindingId, binding);
       } catch (error) {
@@ -78,6 +85,7 @@ export const useShortcutCapture = (
         );
       }
       await finish();
+      return true;
     },
     [bindingId, finish, inert, t, updateBinding],
   );
@@ -112,6 +120,7 @@ export const useShortcutCapture = (
       held.current = "bindings";
     }
     setPartial("");
+    setRefused(false);
     setCapturing(true);
     return true;
   }, [bindingId, ambientKeys, inert, t]);
@@ -135,29 +144,22 @@ export const useShortcutCapture = (
   // ambient-keys: the backend reports keys while recording.
   useEffect(() => {
     if (!capturing || !ambientKeys) return;
-    let keyed = "";
-    let modifierOnly = "";
+    const chord = new ChordRecorder();
     let stopped = false;
-    const pending = listen<AmbientKeysEvent>("ambient-keys-event", (event) => {
+    const pending = listen<RecordedKeyEvent>("ambient-keys-event", (event) => {
       if (stopped) return;
-      const { hotkey_string, is_key_down, key, modifiers } = event.payload;
-      if (is_key_down && hotkey_string) {
-        if (key) keyed = hotkey_string;
-        else modifierOnly = hotkey_string;
-        setPartial(hotkey_string);
-      } else if (!is_key_down && key) {
-        // Commit the keyed combo, never bare modifiers (that overwrote bindings).
-        const binding = keyed || hotkey_string;
-        if (binding) {
-          stopped = true;
-          commit(binding);
+      const { partial: held, done } = chord.feed(event.payload);
+      if (!done) {
+        if (held) {
+          setRefused(false);
+          setPartial(held);
         }
-      } else if (!is_key_down && !key && !modifiers.length && !keyed) {
-        if (modifierOnly) {
-          stopped = true;
-          commit(modifierOnly);
-        }
+        return;
       }
+      stopped = true;
+      commit(done).then((ended) => {
+        stopped = ended;
+      });
     });
     return () => {
       stopped = true;
@@ -169,22 +171,29 @@ export const useShortcutCapture = (
   useEffect(() => {
     if (!capturing || ambientKeys) return;
     const pressed = new Set<string>();
-    const recorded: string[] = [];
+    let recorded: string[] = [];
+    const isModifier = (k: string) => MODIFIERS.includes(k);
     const onDown = (e: KeyboardEvent) => {
       if (escapeCancels && e.key === "Escape") return;
       e.preventDefault();
       const key = normalizeKey(getKeyName(e, osType));
       pressed.add(key);
       if (!recorded.includes(key)) recorded.push(key);
+      setRefused(false);
       setPartial(recorded.join("+"));
     };
     const onUp = (e: KeyboardEvent) => {
       e.preventDefault();
-      pressed.delete(normalizeKey(getKeyName(e, osType)));
+      const key = normalizeKey(getKeyName(e, osType));
+      pressed.delete(key);
+      // WebKit drops a key's keyup while ⌘ is held: the last modifier going
+      // up releases the rest.
+      if (isModifier(key) && ![...pressed].some(isModifier)) pressed.clear();
       if (pressed.size || !recorded.length) return;
       const sorted = [...recorded].sort(
-        (a, b) => +!MODIFIERS.includes(a) - +!MODIFIERS.includes(b),
+        (a, b) => +!isModifier(a) - +!isModifier(b),
       );
+      recorded = [];
       commit(sorted.join("+"));
     };
     window.addEventListener("keydown", onDown);
@@ -195,5 +204,5 @@ export const useShortcutCapture = (
     };
   }, [capturing, ambientKeys, commit, escapeCancels, osType]);
 
-  return { capturing, partial, start, cancel };
+  return { capturing, partial, refused, start, cancel };
 };

@@ -1,5 +1,6 @@
 /** Try it's state: recording events mapped to phase, hold vs tap, and each take's result. */
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { commands, events } from "@/bindings";
 import { useSettings } from "@/hooks/useSettings";
 import { useShortcutCapture } from "@/hooks/useShortcutCapture";
@@ -11,8 +12,10 @@ type Mode = "hold" | "tap";
 type Phase = "idle" | "listening" | "typing";
 type TakeResult =
   | { kind: "none" }
-  /** First time for this way; the other is still to do. */
-  | { kind: "done"; way: Mode }
+  /** First time for this way; the other is still to do. `said` is what landed. */
+  | { kind: "done"; way: Mode; said: string }
+  /** A way already learned, done again: just a reply to what was said. */
+  | { kind: "heard"; said: string }
   /** Both ways done. */
   | { kind: "finale" }
   /** It transcribed, but the cursor wasn't in the note. */
@@ -26,6 +29,8 @@ type TakeResult =
 const WAYS: Mode[] = ["hold", "tap"];
 
 const ADVANCE_MS = 2000;
+/** Once a reply arrives, it stays this long before the next instruction. */
+const READ_MS = 2800;
 const NO_WORDS_MS = 5000;
 
 /**
@@ -39,7 +44,12 @@ const WAIT_AFTER_MS = 400;
 /** Minimum time the wait message stays up, so it never just flashes. */
 const WAIT_SHOWN_MS = 500;
 
+/** What a take added to the note: its new text, if the note only grew. */
+const typedSince = (before: string, after: string) =>
+  (after.startsWith(before) ? after.slice(before.length) : after).trim();
+
 export const useTryEngine = ({ os }: { os: OSType }) => {
+  const { i18n } = useTranslation();
   const { getSetting } = useSettings();
   const { preview, lessons, setLessons } = useOnboardingStore();
   const shortcut = getSetting("bindings")?.transcribe?.current_binding ?? "";
@@ -56,6 +66,15 @@ export const useTryEngine = ({ os }: { os: OSType }) => {
   /** Wait of the last take that was too slow for this model. */
   const [slowWait, setSlowWait] = useState<number | null>(null);
   const [waiting, setWaiting] = useState(false);
+  /** A short reply to the last take's words, once the model has one. */
+  const [reply, setReply] = useState<{ said: string; text: string } | null>(
+    null,
+  );
+  /** The note's text when the take began, to tell what it added. */
+  const noteBefore = useRef("");
+  const lastSaid = useRef("");
+  const language = useRef(i18n.language);
+  language.current = i18n.language;
 
   const field = useRef<HTMLTextAreaElement>(null);
   const takeRef = useRef<Mode | null>(null);
@@ -120,6 +139,7 @@ export const useTryEngine = ({ os }: { os: OSType }) => {
         flushSettle();
         // The last result stays up until this take's way is known.
         clearTimeout(resultTimer.current);
+        noteBefore.current = field.current?.value ?? "";
         lockedRef.current = false;
         setRecordDown(true);
         setPhase("listening");
@@ -194,8 +214,41 @@ export const useTryEngine = ({ os }: { os: OSType }) => {
         // Slow still counts; Try it suggests a faster model.
         if (isTooSlow(payload.audio_seconds, payload.wait_seconds))
           setSlowWait(payload.wait_seconds);
+        // Answer what was actually said: the model's reply when it comes,
+        // the words themselves until then.
+        const said = typedSince(noteBefore.current, field.current?.value ?? "");
+        lastSaid.current = said;
+        setReply(null);
+        if (said)
+          commands
+            .onboardingReply(said, language.current)
+            .then((text) => {
+              if (!text || lastSaid.current !== said) return;
+              setReply({ said, text });
+              // Give the reply its time, unless the bubble has moved on.
+              clearTimeout(resultTimer.current);
+              resultTimer.current = setTimeout(
+                () =>
+                  setResult((r) =>
+                    r.kind === "done" || r.kind === "heard"
+                      ? { kind: "none" }
+                      : r,
+                  ),
+                READ_MS,
+              );
+            })
+            .catch(console.error);
         if (!fresh) {
-          setResult({ kind: "none" });
+          if (!said) {
+            setResult({ kind: "none" });
+            return;
+          }
+          setResult({ kind: "heard", said });
+          clearTimeout(resultTimer.current);
+          resultTimer.current = setTimeout(
+            () => setResult((r) => (r.kind === "heard" ? { kind: "none" } : r)),
+            READ_MS,
+          );
           return;
         }
         // The finale does its own high five, so no fives++ here.
@@ -204,10 +257,10 @@ export const useTryEngine = ({ os }: { os: OSType }) => {
           return;
         }
         setFives((n) => n + 1);
-        setResult({ kind: "done", way });
+        setResult({ kind: "done", way, said });
         resultTimer.current = setTimeout(
           () => setResult({ kind: "none" }),
-          ADVANCE_MS,
+          said ? READ_MS : ADVANCE_MS,
         );
       };
       // If the wait message is up, keep it for WAIT_SHOWN_MS before settling.
@@ -248,6 +301,8 @@ export const useTryEngine = ({ os }: { os: OSType }) => {
     waiting,
     keysDown: recordDown,
     result,
+    /** The model's reply to `said`, when it's for the current result. */
+    replyTo: (said: string) => (reply?.said === said ? reply.text : null),
     dismiss: () => setResult({ kind: "none" }),
     slowWait,
     fives,

@@ -146,7 +146,29 @@
       "pressKeys": "Tekan tombol baru",
       "addKey": "Sekarang tambahkan satu tombol",
       "cancel": "Batal",
-      "tryIt": "Coba sendiri"
+      "tryIt": "Coba sendiri",
+      "addModifier": "Tombol tunggal mengetik. Tambah tombol pengubah.",
+      "lines": {
+        "hold": "Jadi! Telat sepuluh menit, tolong simpan satu kursi.",
+        "tap": "Piknik di taman hari Sabtu, lalu makan malam di Rosa's. Bawa selimut biru dan speaker yang bagus."
+      },
+      "agent": {
+        "ask": {
+          "sentence": "<0>Tanyakan apa saja.</0> <1>Tahan pintasan Anda dan bertanya.</1> <2>Jawabannya muncul.</2>",
+          "said": "Bagaimana cuaca di Lisbon besok?",
+          "reply": "Cerah, 24°, dengan angin sepoi-sepoi."
+        },
+        "act": {
+          "sentence": "<0>Perlu sesuatu dikerjakan?</0> <1>Tahan pintasan Anda dan ucapkan.</1> <2>Beres.</2>",
+          "said": "Ingatkan saya jam 5 untuk menelepon Sam",
+          "reply": "Pengingat pukul 17.00: telepon Sam."
+        },
+        "recall": {
+          "sentence": "<0>Lupa sesuatu?</0> <1>Tahan pintasan Anda dan bertanya.</1> <2>Ia ingat.</2>",
+          "said": "Ana bilang apa soal tempatnya?",
+          "reply": "Dia memesan Rosa's untuk Sabtu pukul 20.00."
+        }
+      }
     },
     "try": {
       "title": "Coba sekarang!",
@@ -174,7 +196,10 @@
       "noWordsSub": "Coba lagi, dan ucapkan satu kalimat utuh.",
       "finish": "Selesai",
       "skip": "Lewati",
-      "seconds": "{{value}} dtk"
+      "seconds": "{{value}} dtk",
+      "heardHold": "Itu cara menahan. Selanjutnya, cara tanpa tangan.",
+      "heardTap": "Itu cara mengetuk. Sekarang coba tahan tombolnya sambil bicara.",
+      "gotIt": "Setiap kata tertangkap: “{{quote}}”"
     },
     "done": {
       "title": "Semua siap",
@@ -1380,11 +1405,11 @@
     "modes": {
       "write": {
         "title": "Tulis",
-        "example": "Bisa kita pindahkan rapat sinkronisasinya ke Kamis?"
+        "example": "Bisa diganti hari Kamis?"
       },
       "answer": {
         "title": "Jawab",
-        "example": "Berapa tarif pajak keuntungan modal di Inggris?"
+        "example": "Berapa 15% dari 240?"
       },
       "act": {
         "title": "Lakukan",
@@ -1392,7 +1417,7 @@
       },
       "recall": {
         "title": "Ingat",
-        "example": "Apa yang saya katakan soal harga kemarin?"
+        "example": "Apa kata saya soal harga?"
       }
     },
     "nothingToConnect": {
@@ -1406,9 +1431,16 @@
     },
     "choose": {
       "title": "Pilih yang boleh dilakukan {{appName}}",
-      "description": "Semua nonaktif sampai Anda mengaktifkannya. Ubah kapan saja di Privasi.",
+      "description": "Semuanya opsional. Ubah kapan saja di Privasi.",
       "footnote": "Kata sandi, dompet, dan jendela pribadi tidak pernah dibaca.",
-      "proOnly": "Bagian dari Pro. Upgrade di Akun."
+      "proOnly": "Bagian dari Pro. Upgrade di Akun.",
+      "caps": {
+        "screen_context": "Hanya jendela yang Anda tanyakan",
+        "proactive": "Diputuskan di Mac ini",
+        "meetings": "Audio tetap di Mac ini",
+        "wake_word": "Hanya mendengarkan di Mac ini",
+        "screen_memory": "Tetap di Mac ini, terenkripsi"
+      }
     }
   },
   "getStarted": {
