@@ -1246,6 +1246,11 @@
     },
     "accessibility": "{{appName}} ha bisogno dell'accesso ad Accessibilità per leggere il testo da altre app.",
     "grant": "Consenti accesso",
+    "accessibilityLinux": "Attiva l'accessibilità perché {{appName}} possa leggere la finestra in cui ti trovi. Esegui questo comando, poi esci e rientra.",
+    "accessibilityLinuxChrome": "Le app Chrome, Chromium ed Electron richiedono anche --force-renderer-accessibility.",
+    "copyCommand": "Copia comando",
+    "commandCopied": "Comando copiato",
+    "commandCopyFailed": "Impossibile copiare il comando",
     "capabilities": {
       "title": "Cosa può fare {{appName}}",
       "description": "Ognuna resta disattivata finché non la attivi.",
@@ -1414,7 +1419,8 @@
       "noPermission": "Consenti la registrazione dello schermo perché {{appName}} possa sentire la chiamata. Viene usato solo l'audio e non viene salvato nulla.",
       "oldMacOS": "Per sentire la chiamata serve macOS 13 o versioni successive. Il microfono viene comunque trascritto.",
       "failed": "Impossibile acquisire l'audio della chiamata. Il microfono viene comunque trascritto.",
-      "unsupported": "Sentire la chiamata non è ancora disponibile su questo sistema."
+      "unsupported": "Sentire la chiamata non è ancora disponibile su questo sistema.",
+      "linuxNoParec": "Per sentire la chiamata serve parec (installa pulseaudio-utils). Il microfono continua a essere trascritto."
     },
     "error": {
       "storage": "Impossibile aprire l'archivio delle riunioni.",

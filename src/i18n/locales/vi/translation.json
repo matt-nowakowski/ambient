@@ -1238,6 +1238,11 @@
     },
     "accessibility": "{{appName}} cần quyền Trợ năng để đọc văn bản từ các ứng dụng khác.",
     "grant": "Cho phép truy cập",
+    "accessibilityLinux": "Bật trợ năng để {{appName}} có thể đọc cửa sổ bạn đang dùng. Chạy lệnh này, rồi đăng xuất và đăng nhập lại.",
+    "accessibilityLinuxChrome": "Ứng dụng Chrome, Chromium và Electron cũng cần --force-renderer-accessibility.",
+    "copyCommand": "Sao chép lệnh",
+    "commandCopied": "Đã sao chép lệnh",
+    "commandCopyFailed": "Không thể sao chép lệnh",
     "capabilities": {
       "title": "Những gì {{appName}} được làm",
       "description": "Mỗi mục đều tắt cho đến khi bạn bật.",
@@ -1402,7 +1407,8 @@
       "noPermission": "Cho phép Ghi màn hình để {{appName}} có thể nghe cuộc gọi. Chỉ dùng âm thanh và không lưu gì cả.",
       "oldMacOS": "Nghe cuộc gọi cần macOS 13 trở lên. Micrô của bạn vẫn đang được chép lời.",
       "failed": "Không thể thu âm thanh cuộc gọi. Micrô của bạn vẫn đang được chép lời.",
-      "unsupported": "Tính năng nghe cuộc gọi chưa có trên hệ thống này."
+      "unsupported": "Tính năng nghe cuộc gọi chưa có trên hệ thống này.",
+      "linuxNoParec": "Để nghe cuộc gọi cần parec (cài pulseaudio-utils). Micrô của bạn vẫn đang được chép lời."
     },
     "error": {
       "storage": "Không thể mở bộ nhớ cuộc họp.",

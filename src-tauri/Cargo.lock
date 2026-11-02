@@ -160,6 +160,8 @@ dependencies = [
  "whatlang",
  "windows 0.61.3",
  "winreg 0.55.0",
+ "x11rb",
+ "zbus",
 ]
 
 [[package]]

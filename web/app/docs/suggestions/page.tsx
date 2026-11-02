@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DocHeader, DocRows, DocSection, GuideNext, TrySaying } from "@/components/docs";
 import { brand } from "@/lib/brand";
 import { guideMetadata, guidePage, suggestionMoments, trySaying } from "@/lib/guide";
@@ -35,8 +36,12 @@ export default function SuggestionsPage() {
 
       <DocSection id="turn-it-on" title="Turn it on">
         <p>
-          Turn on <strong>Offer suggestions</strong> in {brand.name} → Privacy. It is decided on your Mac from the
-          window’s text. No model is called and nothing is sent until you accept. Mac only for now.
+          Turn on <strong>Offer suggestions</strong> in {brand.name} → Privacy. It is decided on your computer from the
+          window’s text. No model is called and nothing is sent until you accept. On Mac and Linux (with{" "}
+          <Link href="/docs/linux#accessibility" className="text-foreground underline underline-offset-4">
+            accessibility on
+          </Link>
+          ).
         </p>
       </DocSection>
 

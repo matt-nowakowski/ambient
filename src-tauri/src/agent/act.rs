@@ -34,6 +34,7 @@ fn created(app: &AppHandle, id: String) -> Result<(), String> {
 static LAST_CREATED: Mutex<Option<String>> = Mutex::new(None);
 
 #[derive(Deserialize)]
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
 struct NativeResult {
     ok: bool,
     detail: String,
@@ -210,7 +211,14 @@ fn run_shortcut(name: &str) -> Result<(), String> {
     crate::win::shortcuts::run(name)
 }
 
-#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+/// Linux: the user's script in `~/.local/share/<slug>/actions/`, or an
+/// installed app of that name.
+#[cfg(target_os = "linux")]
+fn run_shortcut(name: &str) -> Result<(), String> {
+    super::linux::shortcut::run(name)
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 fn run_shortcut(_name: &str) -> Result<(), String> {
     Err("hud.status.cantDoYet".into())
 }

@@ -1238,6 +1238,11 @@
     },
     "accessibility": "{{appName}} behöver åtkomst till Hjälpmedel för att läsa text från andra appar.",
     "grant": "Tillåt åtkomst",
+    "accessibilityLinux": "Slå på hjälpmedel så att {{appName}} kan läsa fönstret du är i. Kör detta och logga sedan ut och in igen.",
+    "accessibilityLinuxChrome": "Chrome-, Chromium- och Electron-appar behöver också --force-renderer-accessibility.",
+    "copyCommand": "Kopiera kommando",
+    "commandCopied": "Kommandot kopierat",
+    "commandCopyFailed": "Kunde inte kopiera kommandot",
     "capabilities": {
       "title": "Vad {{appName}} får göra",
       "description": "Allt är avstängt tills du slår på det.",
@@ -1402,7 +1407,8 @@
       "noPermission": "Tillåt Skärminspelning så att {{appName}} kan höra samtalet. Bara ljud används, och inget sparas.",
       "oldMacOS": "För att höra samtalet krävs macOS 13 eller senare. Din mikrofon transkriberas fortfarande.",
       "failed": "Kunde inte fånga samtalsljudet. Din mikrofon transkriberas fortfarande.",
-      "unsupported": "Att höra samtalet är inte tillgängligt på det här systemet än."
+      "unsupported": "Att höra samtalet är inte tillgängligt på det här systemet än.",
+      "linuxNoParec": "För att höra samtalet krävs parec (installera pulseaudio-utils). Din mikrofon transkriberas fortfarande."
     },
     "error": {
       "storage": "Kunde inte öppna möteslagringen.",

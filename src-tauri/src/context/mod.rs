@@ -9,15 +9,19 @@
 pub mod redact;
 pub mod sensitive;
 
+#[cfg(any(target_os = "linux", test))]
+pub(crate) mod linux;
 #[cfg(target_os = "macos")]
 mod macos;
 #[cfg(target_os = "windows")]
 mod windows;
 
+// The platform's screen reader, with the same functions everywhere: macOS
+// Accessibility, Windows UI Automation, Linux AT-SPI.
 #[cfg(target_os = "windows")]
 use self::windows as platform;
-/// The platform's screen reader: the same functions on macOS (Accessibility)
-/// and Windows (UI Automation).
+#[cfg(target_os = "linux")]
+use linux as platform;
 #[cfg(target_os = "macos")]
 use macos as platform;
 
@@ -75,7 +79,10 @@ impl ContextSnapshot {
     /// What kind of private place this window is, if any, and which rule
     /// said so, from its app, titles, URLs and the browser UI's labels
     /// (`ui_labels`: tab, side panel and popup titles), never its text.
-    #[cfg_attr(not(any(target_os = "macos", target_os = "windows")), allow(dead_code))]
+    #[cfg_attr(
+        not(any(target_os = "macos", target_os = "windows", target_os = "linux")),
+        allow(dead_code)
+    )]
     fn sensitive_place(
         &self,
         app: &FrontmostApp,
@@ -95,7 +102,10 @@ impl ContextSnapshot {
 /// A snapshot as the platform reports it: the snapshot, plus the browser
 /// UI's labels (for spotting private places only) and counts for logs.
 #[derive(Deserialize, Debug, Default)]
-#[cfg_attr(not(any(target_os = "macos", target_os = "windows")), allow(dead_code))]
+#[cfg_attr(
+    not(any(target_os = "macos", target_os = "windows", target_os = "linux")),
+    allow(dead_code)
+)]
 pub struct RawSnapshot {
     #[serde(flatten)]
     pub snap: ContextSnapshot,
@@ -107,7 +117,10 @@ pub struct RawSnapshot {
 
 /// Counts the native side reports with each snapshot, for logs only.
 #[derive(Deserialize, Debug, Default, Clone)]
-#[cfg_attr(not(any(target_os = "macos", target_os = "windows")), allow(dead_code))]
+#[cfg_attr(
+    not(any(target_os = "macos", target_os = "windows", target_os = "linux")),
+    allow(dead_code)
+)]
 pub struct SnapshotDiag {
     /// Web areas in the window's browser UI walk (page, side panel…).
     #[serde(default)]
@@ -173,34 +186,33 @@ pub struct OpenWindow {
 /// the never-watch list and private windows, redacted. Only called while
 /// answering something the user asked or accepted.
 pub fn open_windows(never_watch: &[String], max_chars: usize) -> Vec<OpenWindow> {
-    #[cfg(any(target_os = "macos", target_os = "windows"))]
-    {
-        let mut skip: Vec<String> = DEFAULT_NEVER_WATCH.iter().map(|s| s.to_string()).collect();
-        skip.extend(never_watch.iter().cloned());
-        platform::open_windows(&skip, max_chars)
-            .into_iter()
-            .filter(|w| !PRIVATE_TITLE_MARKERS.iter().any(|m| w.title.contains(m)))
-            .filter(|w| {
-                sensitive::sensitive_place(
-                    &w.name,
-                    &w.bundle_id,
-                    &[&w.title],
-                    &[w.url.as_deref().unwrap_or("")],
-                )
-                .is_none()
-            })
-            .filter(|w| sensitive::detect(&w.text).is_none())
-            .map(|mut w| {
-                w.text = redact::redact(&w.text).0;
-                w
-            })
-            .collect()
-    }
-    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
-    {
-        let _ = (never_watch, max_chars);
+    let mut skip: Vec<String> = default_never_watch().map(str::to_string).collect();
+    skip.extend(never_watch.iter().cloned());
+    #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+    let windows = platform::open_windows(&skip, max_chars);
+    #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
+    let windows: Vec<OpenWindow> = {
+        let _ = (&skip, max_chars);
         Vec::new()
-    }
+    };
+    windows
+        .into_iter()
+        .filter(|w| !PRIVATE_TITLE_MARKERS.iter().any(|m| w.title.contains(m)))
+        .filter(|w| {
+            sensitive::sensitive_place(
+                &w.name,
+                &w.bundle_id,
+                &[&w.title],
+                &[w.url.as_deref().unwrap_or("")],
+            )
+            .is_none()
+        })
+        .filter(|w| sensitive::detect(&w.text).is_none())
+        .map(|mut w| {
+            w.text = redact::redact(&w.text).0;
+            w
+        })
+        .collect()
 }
 
 /// Why no snapshot was taken.
@@ -255,6 +267,47 @@ pub const DEFAULT_NEVER_WATCH: &[&str] = &[
     "consent.exe",
     env!("BRAND_IDENTIFIER"),
 ];
+
+/// Never-watch ids for this platform beside the shared list (Linux app ids).
+#[cfg(target_os = "linux")]
+const PLATFORM_NEVER_WATCH: &[&str] = linux::NEVER_WATCH;
+#[cfg(not(target_os = "linux"))]
+const PLATFORM_NEVER_WATCH: &[&str] = &[];
+
+/// The built-in never-watch list on this platform.
+pub fn default_never_watch() -> impl Iterator<Item = &'static str> {
+    DEFAULT_NEVER_WATCH
+        .iter()
+        .chain(PLATFORM_NEVER_WATCH)
+        .copied()
+}
+
+/// An app that means a call when it's in front while another app holds the
+/// mic, for platforms whose app ids aren't macOS bundle ids.
+pub fn is_platform_call_app(bundle_id: &str) -> bool {
+    #[cfg(target_os = "linux")]
+    {
+        linux::is_call_app(bundle_id)
+    }
+    #[cfg(not(target_os = "linux"))]
+    {
+        let _ = bundle_id;
+        false
+    }
+}
+
+/// A browser, for platforms whose app ids aren't macOS bundle ids.
+pub fn is_platform_browser(bundle_id: &str) -> bool {
+    #[cfg(target_os = "linux")]
+    {
+        linux::is_browser(bundle_id)
+    }
+    #[cfg(not(target_os = "linux"))]
+    {
+        let _ = bundle_id;
+        false
+    }
+}
 
 /// Why a window was dropped as sensitive.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -322,28 +375,28 @@ const PRIVATE_TITLE_MARKERS: &[&str] = &[
 ];
 
 pub fn is_never_watch(bundle_id: &str, extra: &[String]) -> bool {
-    DEFAULT_NEVER_WATCH.contains(&bundle_id) || extra.iter().any(|b| b == bundle_id)
+    default_never_watch().any(|b| b == bundle_id) || extra.iter().any(|b| b == bundle_id)
 }
 
 /// Whether the screen can be read: Accessibility permission on macOS;
 /// Windows' UI Automation needs none.
 pub fn accessibility_trusted() -> bool {
-    #[cfg(any(target_os = "macos", target_os = "windows"))]
+    #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         platform::ax_trusted()
     }
-    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
     {
         false
     }
 }
 
 pub fn frontmost_app() -> Option<FrontmostApp> {
-    #[cfg(any(target_os = "macos", target_os = "windows"))]
+    #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         platform::frontmost_app()
     }
-    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
     {
         None
     }
@@ -357,11 +410,28 @@ pub fn is_mail_app(bundle_id: &str) -> bool {
 
 /// The last sensitive-check outcome per window, so a decision is logged at
 /// debug once when it changes, and every tick only at trace.
-#[cfg(any(target_os = "macos", target_os = "windows"))]
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 static LAST_CHECK: std::sync::Mutex<Option<(String, String)>> = std::sync::Mutex::new(None);
 
+/// The front window as the platform reports it. Linux's AT-SPI reader has
+/// no browser UI labels or counts, so its snapshot is wrapped as is.
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+fn raw_snapshot(pid: i32, max_chars: usize) -> Option<RawSnapshot> {
+    #[cfg(target_os = "linux")]
+    {
+        platform::window_snapshot(pid, max_chars).map(|snap| RawSnapshot {
+            snap,
+            ..Default::default()
+        })
+    }
+    #[cfg(not(target_os = "linux"))]
+    {
+        platform::window_snapshot(pid, max_chars)
+    }
+}
+
 /// A private browsing window, or a private place.
-#[cfg(any(target_os = "macos", target_os = "windows"))]
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 fn check_place(app: &FrontmostApp, raw: &RawSnapshot) -> Result<(), Skipped> {
     let snap = &raw.snap;
     if snap.private_window
@@ -442,7 +512,14 @@ pub fn press_labeled(labels: &[&str]) -> i32 {
 /// windows showing a recovery phrase or key come back as
 /// [`Skipped::Sensitive`].
 pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnapshot, Skipped> {
-    let app = frontmost_app().ok_or(Skipped::Unavailable)?;
+    let Some(app) = frontmost_app() else {
+        // On Wayland the window in front is only known through AT-SPI.
+        return Err(if accessibility_trusted() {
+            Skipped::Unavailable
+        } else {
+            Skipped::NoPermission
+        });
+    };
     // From the app's identity alone, before anything is read.
     if let Some(place) = sensitive::sensitive_app(&app.name, &app.bundle_id) {
         mark_sensitive(&app, &app.name, SensitiveReason::Place(place));
@@ -454,16 +531,16 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
     if !accessibility_trusted() {
         return Err(Skipped::NoPermission);
     }
-    #[cfg(any(target_os = "macos", target_os = "windows"))]
+    #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         // Metadata first (titles, URLs; no text), so a private place is
         // dropped before any of its text is read.
-        let meta = platform::window_snapshot(app.pid, 0).ok_or(Skipped::Unavailable)?;
+        let meta = raw_snapshot(app.pid, 0).ok_or(Skipped::Unavailable)?;
         check_place(&app, &meta)?;
         let mut snap = if max_chars == 0 {
             meta.snap
         } else {
-            let full = platform::window_snapshot(app.pid, max_chars).ok_or(Skipped::Unavailable)?;
+            let full = raw_snapshot(app.pid, max_chars).ok_or(Skipped::Unavailable)?;
             // The window may have changed in between.
             check_place(&app, &full)?;
             let d = &full.diag;
@@ -506,7 +583,7 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
         snap.ts = chrono::Utc::now().timestamp();
         Ok(snap)
     }
-    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+    #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
     {
         let _ = (app, max_chars);
         Err(Skipped::Unavailable)

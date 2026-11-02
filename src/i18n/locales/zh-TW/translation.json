@@ -1238,6 +1238,11 @@
     },
     "accessibility": "{{appName}} 需要輔助使用權限，才能讀取其他應用程式中的文字。",
     "grant": "允許取用",
+    "accessibilityLinux": "開啟輔助使用，讓 {{appName}} 能讀取你所在的視窗。執行此命令，然後登出再重新登入。",
+    "accessibilityLinuxChrome": "Chrome、Chromium 和 Electron 應用程式還需要 --force-renderer-accessibility。",
+    "copyCommand": "複製命令",
+    "commandCopied": "已複製命令",
+    "commandCopyFailed": "無法複製命令",
     "capabilities": {
       "title": "{{appName}} 可以做什麼",
       "description": "每項功能在你開啟之前都維持關閉。",
@@ -1402,7 +1407,8 @@
       "noPermission": "請允許螢幕錄製，讓 {{appName}} 能聆聽通話。僅使用音訊，不會儲存任何內容。",
       "oldMacOS": "聆聽通話需要 macOS 13 或以上版本。你的麥克風仍在轉錄。",
       "failed": "無法擷取通話音訊。你的麥克風仍在轉錄。",
-      "unsupported": "此系統尚不支援聆聽通話。"
+      "unsupported": "此系統尚不支援聆聽通話。",
+      "linuxNoParec": "聽到通話需要 parec（安裝 pulseaudio-utils）。你的麥克風仍在轉寫。"
     },
     "error": {
       "storage": "無法開啟會議儲存空間。",

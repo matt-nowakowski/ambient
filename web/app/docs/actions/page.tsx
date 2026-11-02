@@ -1,4 +1,5 @@
-import { Callout, DocHeader, DocRows, DocSection, GuideNext, TrySaying } from "@/components/docs";
+import Link from "next/link";
+import { C, Callout, DocHeader, DocRows, DocSection, GuideNext, TrySaying } from "@/components/docs";
 import { brand } from "@/lib/brand";
 import { guideMetadata, guidePage, trySaying } from "@/lib/guide";
 
@@ -42,7 +43,12 @@ export default function ActionsPage() {
         </p>
         <Callout title="On Windows and Linux">
           Apps, links and browser searches work. Reminders and events open as an .ics file in your calendar app, so
-          there is no Undo. Shortcuts are Mac only.
+          there is no Undo. On Linux, “run my … shortcut” runs your own script from{" "}
+          <C>{`~/.local/share/${brand.slug}/actions/`}</C> or opens an app of that name (see{" "}
+          <Link href="/docs/linux#files-calendar-actions" className="text-foreground underline underline-offset-4">
+            Linux setup
+          </Link>
+          ). Shortcuts on Windows aren’t available yet.
         </Callout>
       </DocSection>
 

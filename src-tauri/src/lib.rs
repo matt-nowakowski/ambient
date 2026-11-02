@@ -14,6 +14,8 @@ mod context;
 pub mod engine_supervisor;
 mod helpers;
 mod hud;
+#[cfg(target_os = "linux")]
+mod hud_linux;
 mod input;
 mod intro;
 mod language_detection;

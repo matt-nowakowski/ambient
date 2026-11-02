@@ -1238,6 +1238,11 @@
     },
     "accessibility": "{{appName}} 需要辅助功能权限才能读取其他应用中的文字。",
     "grant": "允许访问",
+    "accessibilityLinux": "开启辅助功能，让 {{appName}} 能读取你所在的窗口。运行此命令，然后注销并重新登录。",
+    "accessibilityLinuxChrome": "Chrome、Chromium 和 Electron 应用还需要 --force-renderer-accessibility。",
+    "copyCommand": "复制命令",
+    "commandCopied": "已复制命令",
+    "commandCopyFailed": "无法复制命令",
     "capabilities": {
       "title": "{{appName}} 可以做什么",
       "description": "每项功能在你打开之前都处于关闭状态。",
@@ -1402,7 +1407,8 @@
       "noPermission": "请允许录屏，以便 {{appName}} 听取通话。仅使用音频，不保存任何内容。",
       "oldMacOS": "听取通话需要 macOS 13 或更高版本。你的麦克风仍在转录。",
       "failed": "无法捕获通话音频。你的麦克风仍在转录。",
-      "unsupported": "此系统暂不支持听取通话。"
+      "unsupported": "此系统暂不支持听取通话。",
+      "linuxNoParec": "听到通话需要 parec（安装 pulseaudio-utils）。你的麦克风仍在转写。"
     },
     "error": {
       "storage": "无法打开会议存储。",

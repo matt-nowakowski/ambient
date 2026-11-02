@@ -1246,6 +1246,11 @@
     },
     "accessibility": "{{appName}} a besoin de l'accès Accessibilité pour lire le texte des autres apps.",
     "grant": "Autoriser l'accès",
+    "accessibilityLinux": "Activez l'accessibilité pour que {{appName}} puisse lire la fenêtre où vous êtes. Lancez ceci, puis déconnectez-vous et reconnectez-vous.",
+    "accessibilityLinuxChrome": "Les apps Chrome, Chromium et Electron ont aussi besoin de --force-renderer-accessibility.",
+    "copyCommand": "Copier la commande",
+    "commandCopied": "Commande copiée",
+    "commandCopyFailed": "Impossible de copier la commande",
     "capabilities": {
       "title": "Ce que {{appName}} peut faire",
       "description": "Chaque option reste désactivée jusqu'à ce que vous l'activiez.",
@@ -1414,7 +1419,8 @@
       "noPermission": "Autorisez l'enregistrement de l'écran pour que {{appName}} puisse entendre l'appel. Seul l'audio est utilisé, et rien n'est conservé.",
       "oldMacOS": "Entendre l'appel nécessite macOS 13 ou une version ultérieure. Votre micro est toujours transcrit.",
       "failed": "Impossible de capter l'audio de l'appel. Votre micro est toujours transcrit.",
-      "unsupported": "Entendre l'appel n'est pas encore disponible sur ce système."
+      "unsupported": "Entendre l'appel n'est pas encore disponible sur ce système.",
+      "linuxNoParec": "Pour entendre l'appel, parec est nécessaire (installez pulseaudio-utils). Votre micro est toujours transcrit."
     },
     "error": {
       "storage": "Impossible d'ouvrir le stockage des réunions.",

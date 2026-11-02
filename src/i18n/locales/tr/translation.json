@@ -1238,6 +1238,11 @@
     },
     "accessibility": "{{appName}}, diğer uygulamalardaki metni okumak için Erişilebilirlik erişimine ihtiyaç duyar.",
     "grant": "Erişime izin ver",
+    "accessibilityLinux": "{{appName}} bulunduğunuz pencereyi okuyabilsin diye erişilebilirliği açın. Bunu çalıştırın, ardından oturumu kapatıp yeniden açın.",
+    "accessibilityLinuxChrome": "Chrome, Chromium ve Electron uygulamaları ayrıca --force-renderer-accessibility gerektirir.",
+    "copyCommand": "Komutu kopyala",
+    "commandCopied": "Komut kopyalandı",
+    "commandCopyFailed": "Komut kopyalanamadı",
     "capabilities": {
       "title": "{{appName}} neler yapabilir",
       "description": "Her biri siz açana kadar kapalıdır.",
@@ -1402,7 +1407,8 @@
       "noPermission": "{{appName}} görüşmeyi duyabilsin diye Ekran Kaydı’na izin verin. Yalnızca ses kullanılır ve hiçbir şey kaydedilmez.",
       "oldMacOS": "Görüşmeyi duymak için macOS 13 veya üstü gerekir. Mikrofonunuz yazıya dökülmeye devam ediyor.",
       "failed": "Görüşme sesi alınamadı. Mikrofonunuz yazıya dökülmeye devam ediyor.",
-      "unsupported": "Görüşmeyi duymak bu sistemde henüz kullanılamıyor."
+      "unsupported": "Görüşmeyi duymak bu sistemde henüz kullanılamıyor.",
+      "linuxNoParec": "Aramayı duymak için parec gerekir (pulseaudio-utils yükleyin). Mikrofonunuz yazıya dökülmeye devam ediyor."
     },
     "error": {
       "storage": "Toplantı depolaması açılamadı.",

@@ -1254,6 +1254,11 @@
     },
     "accessibility": "{{appName}} potrzebuje dostępu do funkcji Dostępność, aby odczytywać tekst z innych aplikacji.",
     "grant": "Zezwól na dostęp",
+    "accessibilityLinux": "Włącz ułatwienia dostępu, aby {{appName}} mógł czytać okno, w którym jesteś. Uruchom to polecenie, a potem wyloguj się i zaloguj ponownie.",
+    "accessibilityLinuxChrome": "Aplikacje Chrome, Chromium i Electron potrzebują też --force-renderer-accessibility.",
+    "copyCommand": "Kopiuj polecenie",
+    "commandCopied": "Skopiowano polecenie",
+    "commandCopyFailed": "Nie udało się skopiować polecenia",
     "capabilities": {
       "title": "Co może robić {{appName}}",
       "description": "Każda funkcja jest wyłączona, dopóki jej nie włączysz.",
@@ -1426,7 +1431,8 @@
       "noPermission": "Zezwól na nagrywanie ekranu, aby {{appName}} słyszał rozmowę. Używany jest tylko dźwięk i nic nie jest zapisywane.",
       "oldMacOS": "Słyszenie rozmowy wymaga systemu macOS 13 lub nowszego. Twój mikrofon jest nadal transkrybowany.",
       "failed": "Nie udało się przechwycić dźwięku rozmowy. Twój mikrofon jest nadal transkrybowany.",
-      "unsupported": "Słyszenie rozmowy nie jest jeszcze dostępne w tym systemie."
+      "unsupported": "Słyszenie rozmowy nie jest jeszcze dostępne w tym systemie.",
+      "linuxNoParec": "Do słyszenia rozmowy potrzebny jest parec (zainstaluj pulseaudio-utils). Twój mikrofon jest nadal transkrybowany."
     },
     "error": {
       "storage": "Nie udało się otworzyć magazynu spotkań.",

@@ -405,7 +405,13 @@ fn spotlight(query: &str) -> Vec<(String, String)> {
         .collect()
 }
 
-#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+/// Linux: Tracker, then `locate`, then a bounded walk of the user's folders.
+#[cfg(target_os = "linux")]
+fn spotlight(query: &str) -> Vec<(String, String)> {
+    super::linux::files::search(query, MAX_FILES)
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 fn spotlight(_query: &str) -> Vec<(String, String)> {
     Vec::new()
 }

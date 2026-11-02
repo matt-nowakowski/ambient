@@ -7,7 +7,7 @@ import { releases } from "@/lib/releases";
 
 export const metadata: Metadata = pageMetadata({
   title: "Linux setup",
-  description: `Install and set up ${brand.name} on Linux: packages, Wayland shortcuts, paste tools and the recording overlay.`,
+  description: `Install and set up ${brand.name} on Linux: packages, Wayland shortcuts, paste tools, accessibility for the agent, meeting audio and the recording overlay.`,
   path: "/docs/linux",
 });
 
@@ -94,11 +94,79 @@ export default function LinuxPage() {
         </p>
       </DocSection>
 
-      <DocSection id="overlay" title="Recording overlay">
+      <DocSection id="accessibility" title="Screen context: turn on accessibility">
         <p>
-          The recording indicator is drawn with <strong>gtk-layer-shell</strong>, so it can float above other windows on
-          Wayland compositors that support the layer-shell protocol. If the overlay misbehaves on your compositor,
-          disable it with:
+          The agent reads the text of the window you&rsquo;re in (to summarise it, answer about it or suggest
+          something) through <strong>AT-SPI</strong>, the Linux accessibility bus. It&rsquo;s the same thing screen
+          readers use, and apps only share their text when it&rsquo;s on. Text only, never pixels; password fields are
+          never read, and private windows and the apps on the never-watch list are skipped.
+        </p>
+        <p>
+          <strong>GNOME</strong> (and most GTK desktops):
+        </p>
+        <Cmd>{`gsettings set org.gnome.desktop.interface toolkit-accessibility true`}</Cmd>
+        <p>
+          <strong>KDE Plasma:</strong> System Settings &rarr; Accessibility, or run the command above too (Qt apps
+          follow the same accessibility bus). Log out and back in so every app picks it up.
+        </p>
+        <p>
+          <strong>Chrome, Chromium, Edge and Electron apps</strong> (Slack, Discord, VS Code) build their
+          accessibility tree only when asked. Start them with:
+        </p>
+        <Cmd>{`google-chrome --force-renderer-accessibility`}</Cmd>
+        <p>
+          Firefox follows the desktop setting. On <strong>Wayland</strong> there is no other way for an app to know
+          which window is in front, so the agent needs accessibility on to see anything; on <strong>X11</strong> it
+          knows the app in front either way, and needs accessibility only for the text.
+        </p>
+      </DocSection>
+
+      <DocSection id="meetings" title="Meeting notes and call audio">
+        <p>
+          {brand.name} hears the call by recording what your computer plays (the default output&rsquo;s
+          &ldquo;monitor&rdquo;) through PipeWire or PulseAudio, and notices a call when another app is using the
+          microphone. Both use the PulseAudio tools, which PipeWire systems support too:
+        </p>
+        <Cmd>{`# Debian / Ubuntu
+sudo apt install pulseaudio-utils
+
+# Fedora
+sudo dnf install pulseaudio-utils`}</Cmd>
+        <p>
+          Without them, meeting notes still transcribe your microphone. Audio is never saved. Calls are recognised in
+          Zoom, Teams, Slack, Discord and Webex, and in a browser on Google Meet, Teams or Zoom on the web.
+        </p>
+      </DocSection>
+
+      <DocSection id="files-calendar-actions" title="Files, calendar and your own actions">
+        <ul>
+          <li>
+            <strong>Finding your files</strong> uses GNOME&rsquo;s Tracker index when it&rsquo;s there, then{" "}
+            <C>plocate</C> / <C>locate</C>, and otherwise looks through Desktop, Documents, Downloads and your recent
+            files.
+          </li>
+          <li>
+            <strong>Meeting prep</strong> reads upcoming events from Evolution Data Server, the calendar store behind
+            GNOME Calendar, Evolution and GNOME Online Accounts, when it&rsquo;s running.
+          </li>
+          <li>
+            <strong>&ldquo;Run my &hellip; shortcut&rdquo;</strong> runs your own script from{" "}
+            <C>{`~/.local/share/${bin}/actions/`}</C>: the name lowercased with spaces as dashes, so &ldquo;run my
+            focus mode shortcut&rdquo; runs <C>focus-mode.sh</C> (with <C>sh</C>). If there&rsquo;s no script, it
+            opens an installed app of that name.
+          </li>
+        </ul>
+        <Cmd>{`mkdir -p ~/.local/share/${bin}/actions
+printf 'notify-send "Focus mode on"\n' > ~/.local/share/${bin}/actions/focus-mode.sh`}</Cmd>
+      </DocSection>
+
+      <DocSection id="overlay" title="Recording overlay and agent panel">
+        <p>
+          The recording indicator and the agent&rsquo;s panel are drawn with <strong>gtk-layer-shell</strong>, so they
+          float above other windows without taking focus on Wayland compositors that support the layer-shell protocol
+          (KDE Plasma, Sway, Hyprland). On X11 they are always-on-top windows that never take focus. GNOME on Wayland
+          has no layer shell, so there the panel is an ordinary window that GNOME may place and raise as it likes. If
+          the overlay misbehaves on your compositor, disable layer shell with:
         </p>
         <Cmd>{`${ENV_PREFIX}_NO_GTK_LAYER_SHELL=1 ${bin}`}</Cmd>
       </DocSection>

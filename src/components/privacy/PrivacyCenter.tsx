@@ -58,8 +58,10 @@ type Capability =
   | "wake_word"
   | "on_device_only";
 const IS_MAC = osType() === "macos";
-/** Reading other apps' windows needs macOS Accessibility or Windows UI
- * Automation; on-device AI (Apple Intelligence) is macOS only. */
+const IS_LINUX = osType() === "linux";
+/** Reading other apps' windows needs macOS Accessibility, Windows UI
+ * Automation or Linux AT-SPI; on-device AI (Apple Intelligence) is macOS
+ * only. */
 const SCREEN_AGENT = hasScreenAgent(osType());
 const UNSUPPORTED: Capability[] = [
   ...(SCREEN_AGENT
@@ -67,6 +69,9 @@ const UNSUPPORTED: Capability[] = [
     : (["screen_context", "screen_memory", "proactive"] as Capability[])),
   ...(IS_MAC ? [] : (["on_device_only"] as Capability[])),
 ];
+/** The command that turns on AT-SPI for GNOME (and most GTK desktops). */
+const LINUX_A11Y_COMMAND =
+  "gsettings set org.gnome.desktop.interface toolkit-accessibility true";
 /** Capabilities grouped by what they touch, each with its icon. */
 const CAPABILITY_GROUPS: {
   key: "screen" | "listening" | "local";
@@ -254,7 +259,35 @@ export const PrivacyCenter: React.FC = () => {
                 />
               ))}
           </div>
-          {!status.accessibility && (
+          {!status.accessibility && IS_LINUX && (
+            <div className="mt-3 space-y-2 border-t-[0.5px] border-glass-edge pt-3">
+              <p className="text-small text-ink-2">
+                {t("privacy.accessibilityLinux")}
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <code className="min-w-0 truncate rounded-md bg-glass-press px-2 py-1 font-mono text-meta text-ink-2">
+                  {LINUX_A11Y_COMMAND}
+                </code>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="shrink-0 whitespace-nowrap"
+                  onClick={() =>
+                    navigator.clipboard
+                      .writeText(LINUX_A11Y_COMMAND)
+                      .then(() => toast.success(t("privacy.commandCopied")))
+                      .catch(() => toast.error(t("privacy.commandCopyFailed")))
+                  }
+                >
+                  {t("privacy.copyCommand")}
+                </Button>
+              </div>
+              <p className="text-meta text-ink-3">
+                {t("privacy.accessibilityLinuxChrome")}
+              </p>
+            </div>
+          )}
+          {!status.accessibility && !IS_LINUX && (
             <div className="mt-3 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-3">
               <p className="min-w-0 text-small text-ink-2">
                 {t("privacy.accessibility")}

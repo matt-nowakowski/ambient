@@ -31,7 +31,7 @@ import { SettingsGroup } from "../ui/SettingsGroup";
 import { useSettings } from "../../hooks/useSettings";
 import { isPaid, usePlan } from "../account/usePlan";
 
-/** Call detection and call audio: macOS and Windows. */
+/** Call detection and call audio: macOS, Windows and Linux. */
 const AUTO_DETECTS = hasScreenAgent(osType());
 
 /** How the automatic flow goes, shown while idle. */

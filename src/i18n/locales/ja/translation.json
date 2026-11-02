@@ -1238,6 +1238,11 @@
     },
     "accessibility": "ほかのアプリのテキストを読み取るには、{{appName}}にアクセシビリティへのアクセスが必要です。",
     "grant": "アクセスを許可",
+    "accessibilityLinux": "{{appName}} が今いるウィンドウを読めるよう、アクセシビリティをオンにしてください。これを実行してから、ログアウトしてログインし直してください。",
+    "accessibilityLinuxChrome": "Chrome、Chromium、Electron アプリには --force-renderer-accessibility も必要です。",
+    "copyCommand": "コマンドをコピー",
+    "commandCopied": "コマンドをコピーしました",
+    "commandCopyFailed": "コマンドをコピーできませんでした",
     "capabilities": {
       "title": "{{appName}}に許可すること",
       "description": "どれも、オンにするまではオフのままです。",
@@ -1402,7 +1407,8 @@
       "noPermission": "{{appName}} が通話を聞き取れるよう、画面収録を許可してください。使うのは音声だけで、何も保存しません。",
       "oldMacOS": "通話を聞き取るにはmacOS 13以降が必要です。マイクの文字起こしは続いています。",
       "failed": "通話の音声を取得できませんでした。マイクの文字起こしは続いています。",
-      "unsupported": "このシステムでは、まだ通話の聞き取りを利用できません。"
+      "unsupported": "このシステムでは、まだ通話の聞き取りを利用できません。",
+      "linuxNoParec": "通話を聞くには parec が必要です（pulseaudio-utils をインストール）。マイクの文字起こしは続いています。"
     },
     "error": {
       "storage": "会議の保存先を開けませんでした。",

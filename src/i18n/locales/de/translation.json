@@ -1238,6 +1238,11 @@
     },
     "accessibility": "{{appName}} benötigt Zugriff auf Bedienungshilfen, um Text aus anderen Apps zu lesen.",
     "grant": "Zugriff erlauben",
+    "accessibilityLinux": "Schalte die Barrierefreiheit ein, damit {{appName}} das Fenster lesen kann, in dem du bist. Führe dies aus, melde dich dann ab und wieder an.",
+    "accessibilityLinuxChrome": "Chrome-, Chromium- und Electron-Apps brauchen zusätzlich --force-renderer-accessibility.",
+    "copyCommand": "Befehl kopieren",
+    "commandCopied": "Befehl kopiert",
+    "commandCopyFailed": "Befehl konnte nicht kopiert werden",
     "capabilities": {
       "title": "Was {{appName}} darf",
       "description": "Alles bleibt aus, bis du es einschaltest.",
@@ -1402,7 +1407,8 @@
       "noPermission": "Erlaube die Bildschirmaufnahme, damit {{appName}} den Anruf hören kann. Es wird nur Audio verwendet, und nichts wird gespeichert.",
       "oldMacOS": "Um den Anruf zu hören, ist macOS 13 oder neuer nötig. Dein Mikrofon wird weiterhin transkribiert.",
       "failed": "Das Audio des Anrufs konnte nicht erfasst werden. Dein Mikrofon wird weiterhin transkribiert.",
-      "unsupported": "Den Anruf zu hören ist auf diesem System noch nicht verfügbar."
+      "unsupported": "Den Anruf zu hören ist auf diesem System noch nicht verfügbar.",
+      "linuxNoParec": "Um den Anruf zu hören, wird parec benötigt (installiere pulseaudio-utils). Dein Mikrofon wird weiter transkribiert."
     },
     "error": {
       "storage": "Der Meeting-Speicher konnte nicht geöffnet werden.",

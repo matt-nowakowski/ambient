@@ -1246,6 +1246,11 @@
     },
     "accessibility": "El {{appName}} necessita accés d'Accessibilitat per llegir text d'altres aplicacions.",
     "grant": "Permet l'accés",
+    "accessibilityLinux": "Activa l'accessibilitat perquè {{appName}} pugui llegir la finestra on ets. Executa això i després tanca la sessió i torna a entrar.",
+    "accessibilityLinuxChrome": "Les apps de Chrome, Chromium i Electron també necessiten --force-renderer-accessibility.",
+    "copyCommand": "Copia l'ordre",
+    "commandCopied": "Ordre copiada",
+    "commandCopyFailed": "No s'ha pogut copiar l'ordre",
     "capabilities": {
       "title": "Què pot fer el {{appName}}",
       "description": "Cadascuna està desactivada fins que l'activeu.",
@@ -1414,7 +1419,8 @@
       "noPermission": "Permeteu la gravació de pantalla perquè el {{appName}} pugui sentir la trucada. Només es fa servir l'àudio i no es desa res.",
       "oldMacOS": "Per sentir la trucada cal macOS 13 o posterior. El micròfon es continua transcrivint.",
       "failed": "No s'ha pogut capturar l'àudio de la trucada. El micròfon es continua transcrivint.",
-      "unsupported": "Sentir la trucada encara no està disponible en aquest sistema."
+      "unsupported": "Sentir la trucada encara no està disponible en aquest sistema.",
+      "linuxNoParec": "Per sentir la trucada cal parec (instal·la pulseaudio-utils). El micròfon es continua transcrivint."
     },
     "error": {
       "storage": "No s'ha pogut obrir l'emmagatzematge de reunions.",

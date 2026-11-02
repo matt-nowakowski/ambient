@@ -212,7 +212,11 @@ pub fn create(app: &AppHandle) {
         match built {
             #[cfg(target_os = "windows")]
             Ok(w) => make_non_activating(&w),
-            #[cfg(not(target_os = "windows"))]
+            // Linux: no focus, no taskbar, and a layer surface where the
+            // compositor has one (see hud_linux.rs).
+            #[cfg(target_os = "linux")]
+            Ok(window) => crate::hud_linux::configure(&window),
+            #[cfg(not(any(target_os = "windows", target_os = "linux")))]
             Ok(_) => {}
             Err(e) => log::error!("Failed to create agent HUD: {e}"),
         }
@@ -246,6 +250,11 @@ fn place(app: &AppHandle, height: f64) {
         return;
     };
     let height = height.clamp(MIN_HEIGHT, MAX_HEIGHT);
+    // A layer surface is placed by its margins, on the output in focus.
+    #[cfg(target_os = "linux")]
+    if crate::hud_linux::place(&window, WIDTH, height, 38.0, MARGIN) {
+        return;
+    }
     let _ = window.set_size(tauri::Size::Logical(tauri::LogicalSize {
         width: WIDTH,
         height,
@@ -482,19 +491,14 @@ fn presses() -> u32 {
     }
 }
 
-/// Windows: presses counted from the button state, polled by the watcher
-/// (no hook). A press shorter than the poll can be missed; clicks last
-/// longer than 40 ms.
-#[cfg(target_os = "windows")]
+/// Windows and Linux X11: presses counted from the polled button state
+/// (no hook). The watcher polls every 40 ms, shorter than a click.
+#[cfg(any(target_os = "windows", target_os = "linux"))]
 fn presses() -> u32 {
     use std::sync::atomic::AtomicU32;
-    use windows::Win32::UI::Input::KeyboardAndMouse::{
-        GetAsyncKeyState, VIRTUAL_KEY, VK_LBUTTON, VK_MBUTTON, VK_RBUTTON,
-    };
     static COUNT: AtomicU32 = AtomicU32::new(0);
     static WAS_DOWN: AtomicBool = AtomicBool::new(false);
-    let down = |vk: VIRTUAL_KEY| unsafe { GetAsyncKeyState(i32::from(vk.0)) as u16 & 0x8000 != 0 };
-    let now = down(VK_LBUTTON) || down(VK_RBUTTON) || down(VK_MBUTTON);
+    let now = mouse_down();
     if now && !WAS_DOWN.swap(true, Ordering::SeqCst) {
         COUNT.fetch_add(1, Ordering::SeqCst);
     } else if !now {
@@ -503,7 +507,23 @@ fn presses() -> u32 {
     COUNT.load(Ordering::SeqCst)
 }
 
-#[cfg(not(any(target_os = "macos", target_os = "windows")))]
+/// Windows: the physical button state.
+#[cfg(target_os = "windows")]
+fn mouse_down() -> bool {
+    use windows::Win32::UI::Input::KeyboardAndMouse::{
+        GetAsyncKeyState, VIRTUAL_KEY, VK_LBUTTON, VK_MBUTTON, VK_RBUTTON,
+    };
+    let down = |vk: VIRTUAL_KEY| unsafe { GetAsyncKeyState(i32::from(vk.0)) as u16 & 0x8000 != 0 };
+    down(VK_LBUTTON) || down(VK_RBUTTON) || down(VK_MBUTTON)
+}
+
+/// Linux: the pointer's buttons on X11 (Wayland doesn't expose them).
+#[cfg(target_os = "linux")]
+fn mouse_down() -> bool {
+    crate::hud_linux::mouse_down()
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 fn presses() -> u32 {
     0
 }

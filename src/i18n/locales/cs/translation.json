@@ -1254,6 +1254,11 @@
     },
     "accessibility": "{{appName}} potřebuje přístup ke Zpřístupnění, aby mohl číst text z jiných aplikací.",
     "grant": "Povolit přístup",
+    "accessibilityLinux": "Zapněte přístupnost, aby {{appName}} mohl číst okno, ve kterém jste. Spusťte tento příkaz a pak se odhlaste a znovu přihlaste.",
+    "accessibilityLinuxChrome": "Aplikace Chrome, Chromium a Electron potřebují také --force-renderer-accessibility.",
+    "copyCommand": "Kopírovat příkaz",
+    "commandCopied": "Příkaz zkopírován",
+    "commandCopyFailed": "Příkaz se nepodařilo zkopírovat",
     "capabilities": {
       "title": "Co smí {{appName}} dělat",
       "description": "Každá funkce je vypnutá, dokud ji nezapnete.",
@@ -1426,7 +1431,8 @@
       "noPermission": "Povolte nahrávání obrazovky, aby {{appName}} slyšel hovor. Používá se jen zvuk a nic se neukládá.",
       "oldMacOS": "Slyšet hovor vyžaduje macOS 13 nebo novější. Váš mikrofon se nadále přepisuje.",
       "failed": "Zvuk hovoru se nepodařilo zachytit. Váš mikrofon se nadále přepisuje.",
-      "unsupported": "Slyšet hovor zatím na tomto systému nejde."
+      "unsupported": "Slyšet hovor zatím na tomto systému nejde.",
+      "linuxNoParec": "Pro poslech hovoru je potřeba parec (nainstalujte pulseaudio-utils). Váš mikrofon se dál přepisuje."
     },
     "error": {
       "storage": "Úložiště schůzek se nepodařilo otevřít.",
