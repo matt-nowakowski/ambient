@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Handsfree: säg ”Hej Ambient”",
-        "description": "Prata med {{appName}} utan tangent: ”Hej Ambient, vad står i min kalender?” Den lyssnar på den här Macen och ignorerar allt som inte börjar med dess namn. Din Mac visar mikrofonindikatorn medan det är på."
+        "description": "Prata med {{appName}} utan tangent: ”Hej Ambient, vad står i min kalender?” Den lyssnar på den här datorn och ignorerar allt som inte börjar med dess namn. Din dator visar mikrofonindikatorn medan det är på."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Stoppa",
     "status": {
       "needScreenContext": "Slå på ”Läs det du frågar om” under Integritet för att använda detta.",
-      "onDeviceFailed": "Kunde inte svara på den här Macen just nu.",
+      "onDeviceFailed": "Kunde inte svara på den här datorn just nu.",
       "offline": "Kunde inte nå {{appName}}. Kontrollera anslutningen.",
       "weeklyLimit": "Veckans gratis AI-användningar är slut. Pro är obegränsat.",
       "account": "Din Pro-åtkomst behöver åtgärdas under Konto.",
@@ -1156,7 +1156,9 @@
       "listening": "Lyssnar…",
       "heardNothing": "Jag hörde dig, men uppfattade ingen begäran.",
       "noWebResults": "Kunde inte söka på webben just nu, så det här är vad jag vet.",
-      "timeout": "Det tog för lång tid. Försök igen."
+      "timeout": "Det tog för lång tid. Försök igen.",
+      "needsCloud": "Det här kräver molnet, och Intelligence är inställt på ”Bara på den här datorn”. Ändra det under Integritet.",
+      "cloudOfferOn": "Förslag från molnet är på. Ändra det under Integritet."
     },
     "undo": "Ångra",
     "close": "Stäng",
@@ -1218,11 +1220,12 @@
     "source": {
       "searchDrive": "Sök i Google Drive",
       "searchGmail": "Sök i Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} kan föreslå hjälp på den här datorn genom att skicka ett maskerat utdrag av fönstret till sina servrar. Slå på?"
   },
   "privacy": {
     "title": "Integritet",
-    "promise": "Vad {{appName}} kan läsa, vad som lämnar den här Macen och vad som sparas.",
+    "promise": "Vad {{appName}} kan läsa, vad som lämnar den här datorn och vad som sparas.",
     "state": {
       "on": "Tittar, som du tillät",
       "onDetail": "Bara de funktioner du har slagit på nedan.",
@@ -1254,32 +1257,26 @@
       "screen_memory": {
         "title": "Kom ihåg det du har sett",
         "reads": "Kommer ihåg fönster du har använt, så att du kan fråga om dem senare.",
-        "leaves": "Stannar krypterat på den här Macen."
+        "leaves": "Stannar krypterat på den här datorn."
       },
       "proactive": {
         "title": "Ge förslag",
         "reads": "Föreslår ett nästa steg i rätt ögonblick: trådar, utkast, datum, fel, möten.",
-        "leaves": "Avgörs på den här Macen. Inget skickas om du inte godkänner, utom påminnelser under möten."
+        "leaves": "Avgörs på den här datorn, eller i molnet om du väljer det nedan. Inget annat skickas om du inte godkänner, utom påminnelser under möten."
       },
       "meetings": {
         "title": "Mötesanteckningar",
         "reads": "Hör din mikrofon och samtalet medan den antecknar.",
         "leaves": "Ljudet stannar här. Bara text skickas, för att skriva sammanfattningen."
       },
-      "on_device_only": {
-        "title": "Behåll allt på den här Macen",
-        "reads": "Apple Intelligence för allt, och ingen webbsökning.",
-        "leaves": "Inget skickas."
-      },
       "wake_word": {
         "title": "Handsfree: säg ”Hej Ambient”",
-        "reads": "Lyssnar efter ”Hej Ambient” på den här Macen. Allt annat kastas medan du pratar.",
+        "reads": "Lyssnar efter ”Hej Ambient” på den här datorn. Allt annat kastas medan du pratar.",
         "leaves": "Inget spelas in eller skickas förrän du säger det."
       },
       "groups": {
         "screen": "Din skärm",
-        "listening": "Lyssnar",
-        "local": "På den här Macen"
+        "listening": "Lyssnar"
       }
     },
     "retention": "Behåll i",
@@ -1307,7 +1304,7 @@
     },
     "stored": {
       "title": "Vad som sparas",
-      "description": "Skärmminne på den här Macen. Dikteringshistoriken finns under Historik.",
+      "description": "Skärmminne på den här datorn. Dikteringshistoriken finns under Historik.",
       "summary_one": "{{count}} ögonblicksbild sedan {{since}}.",
       "summary_other": "{{count}} ögonblicksbilder sedan {{since}}.",
       "entries_one": "{{count}} ögonblicksbild",
@@ -1318,7 +1315,7 @@
       "deletedAll": "Skärmminnet och förfrågningsloggen har raderats."
     },
     "ledger": {
-      "title": "Förfrågningar som lämnat den här Macen",
+      "title": "Förfrågningar som lämnat den här datorn",
       "description": "Varje förfrågan och exakt vad den skickade. Sparas i 30 dagar.",
       "empty": "Inga förfrågningar än.",
       "bytes_one": "{{count}} byte",
@@ -1332,13 +1329,13 @@
         "act": "Åtgärd",
         "license": "Kontokontroll",
         "trial": "Provperiod",
-        "warmup": "Förbereder anslutning (inget skickat)"
+        "warmup": "Förbereder anslutning (inget skickat)",
+        "suggest": "Förslagskontroll"
       }
     },
     "engine": {
-      "title": "Föredra AI på den här Macen",
-      "description": "Använder Apple Intelligence där det går. Resultaten är mindre finslipade, därför är det avstängt som standard.",
-      "unavailable": "Apple Intelligence är inte tillgängligt på den här Macen, så {{appName}}s servrar används."
+      "title": "Använd Apple Intelligence för svar också",
+      "description": "Svar och finslipning körs på den här datorn när de passar. Resultaten är mindre finslipade, därför är det avstängt som standard."
     },
     "suggestions": {
       "title": "Förslag du får",
@@ -1359,21 +1356,47 @@
         "commit_message": "Skriva commit-meddelanden",
         "fill_form": "Hjälp att fylla i formulär",
         "translate_page": "Översätt sidor på andra språk",
-        "help_here": "Annan hjälp, bedömd på den här Macen",
+        "help_here": "Annan hjälp som den tror att du vill ha",
         "meeting_nudge": "Påminnelser under möten"
       }
     },
     "macOnly": "Endast på Mac än så länge",
     "promises": {
-      "voice": "Din röst stannar på den här Macen",
+      "voice": "Din röst stannar på den här datorn",
       "text": "Läser text, aldrig skärmbilder",
       "sensitive": "Hoppar över lösenord, plånböcker och privata fönster",
       "ledger": "Varje förfrågan som lämnar Macen listas nedan"
+    },
+    "intelligence": {
+      "title": "Där intelligensen körs",
+      "description": "Vad som avgör förslag och skriver svar. Alla funktioner fungerar med varje val.",
+      "capability": {
+        "apple": "Apple Intelligence finns på den här datorn",
+        "none": "Ingen modell på enheten på den här datorn"
+      },
+      "options": {
+        "auto": {
+          "title": "Automatiskt",
+          "description": "På den här datorn när det går. Frågar en gång innan molnet används för förslag."
+        },
+        "device": {
+          "title": "Bara på den här datorn",
+          "description": "Inget skickas för att avgöra eller svara. Funktioner som behöver en modell faller tillbaka på enkla regler eller säger att de inte kan."
+        },
+        "cloud": {
+          "title": "Molnet",
+          "description": "Bästa resultat. Maskerad text skickas till {{appName}}s servrar."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Förslag från molnet",
+        "description": "Skickar ett maskerat utdrag av ett fönster du stannat kvar i för att avgöra om hjälp ska erbjudas. Varje förfrågan listas nedan."
+      }
     }
   },
   "meetings": {
     "title": "Möten",
-    "intro": "Anteckningar för alla samtal: du och de andra, transkriberade på den här Macen. Ljud sparas aldrig.",
+    "intro": "Anteckningar för alla samtal: du och de andra, transkriberade på den här datorn. Ljud sparas aldrig.",
     "live": "Antecknar · {{time}}",
     "capturingBoth": "Hör dig och samtalet.",
     "capturingMic": "Hör bara din mikrofon.",
@@ -1483,10 +1506,10 @@
       "proOnly": "Ingår i Pro. Uppgradera under Konto.",
       "caps": {
         "screen_context": "Bara fönstret du frågar om",
-        "proactive": "Avgörs på den här Macen",
-        "meetings": "Ljudet stannar på den här Macen",
-        "wake_word": "Lyssnar bara på den här Macen",
-        "screen_memory": "Krypterat, kvar på den här Macen"
+        "proactive": "Avgörs på den här datorn",
+        "meetings": "Ljudet stannar på den här datorn",
+        "wake_word": "Lyssnar bara på den här datorn",
+        "screen_memory": "Krypterat, kvar på den här datorn"
       }
     }
   },

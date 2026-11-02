@@ -5,6 +5,8 @@ import {
   ArrowUpRight,
   AudioLines,
   ChevronDown,
+  Cloud,
+  Cpu,
   Eye,
   History,
   KeyRound,
@@ -28,9 +30,11 @@ import {
   type AgentSettings,
   type AgentStatus,
   type ContextSnapshot,
+  type Intelligence,
   type LedgerEntry,
 } from "@/bindings";
 import { Button } from "../ui/Button";
+import { Radio } from "../ui/Radio";
 import { Switch } from "../ui/Switch";
 import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SettingsGroup } from "../ui/SettingsGroup";
@@ -55,26 +59,26 @@ type Capability =
   | "screen_memory"
   | "proactive"
   | "meetings"
-  | "wake_word"
-  | "on_device_only";
-const IS_MAC = osType() === "macos";
+  | "wake_word";
 const IS_LINUX = osType() === "linux";
 /** Reading other apps' windows needs macOS Accessibility, Windows UI
- * Automation or Linux AT-SPI; on-device AI (Apple Intelligence) is macOS
- * only. */
+ * Automation or Linux AT-SPI. */
 const SCREEN_AGENT = hasScreenAgent(osType());
-const UNSUPPORTED: Capability[] = [
-  ...(SCREEN_AGENT
-    ? []
-    : (["screen_context", "screen_memory", "proactive"] as Capability[])),
-  ...(IS_MAC ? [] : (["on_device_only"] as Capability[])),
-];
+const UNSUPPORTED: Capability[] = SCREEN_AGENT
+  ? []
+  : ["screen_context", "screen_memory", "proactive"];
 /** The command that turns on AT-SPI for GNOME (and most GTK desktops). */
 const LINUX_A11Y_COMMAND =
   "gsettings set org.gnome.desktop.interface toolkit-accessibility true";
+/** Where the intelligence runs, in display order. */
+const INTELLIGENCE: { key: Intelligence; icon: LucideIcon }[] = [
+  { key: "auto", icon: Sparkles },
+  { key: "device", icon: Laptop },
+  { key: "cloud", icon: Cloud },
+];
 /** Capabilities grouped by what they touch, each with its icon. */
 const CAPABILITY_GROUPS: {
-  key: "screen" | "listening" | "local";
+  key: "screen" | "listening";
   caps: { cap: Capability; icon: LucideIcon }[];
 }[] = [
   {
@@ -92,7 +96,6 @@ const CAPABILITY_GROUPS: {
       { cap: "wake_word", icon: AudioLines },
     ],
   },
-  { key: "local", caps: [{ cap: "on_device_only", icon: Laptop }] },
 ];
 
 export const PrivacyCenter: React.FC = () => {
@@ -322,9 +325,8 @@ export const PrivacyCenter: React.FC = () => {
               </p>
               <div className="divide-y divide-glass-edge">
                 {group.caps.map(({ cap, icon: Icon }) => {
-                  const proOnly = cap !== "on_device_only";
                   const unsupported = UNSUPPORTED.includes(cap);
-                  const locked = (proOnly && !paid) || unsupported;
+                  const locked = !paid || unsupported;
                   return (
                     <div
                       key={cap}
@@ -401,24 +403,97 @@ export const PrivacyCenter: React.FC = () => {
           ))}
         </div>
 
-        {/* Where AI runs (Apple Intelligence: Mac only) */}
-        {IS_MAC && (
-          <SettingsGroup title={t("privacy.engine.title")}>
+        {/* Where the intelligence runs: every platform, three choices. */}
+        <SettingsGroup
+          title={t("privacy.intelligence.title")}
+          description={t("privacy.intelligence.description")}
+        >
+          <div className="flex items-center gap-2 px-row-x pt-3 pb-1 text-meta text-ink-3">
+            <Cpu width={12} height={12} strokeWidth={1.75} aria-hidden="true" />
+            {status.on_device_ready
+              ? t("privacy.intelligence.capability.apple")
+              : t("privacy.intelligence.capability.none")}
+          </div>
+          <div
+            role="radiogroup"
+            aria-label={t("privacy.intelligence.title")}
+            className="divide-y divide-glass-edge"
+          >
+            {INTELLIGENCE.map(({ key, icon: Icon }) => {
+              const picked = s.intelligence === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  role="radio"
+                  aria-checked={picked}
+                  data-search-row
+                  onClick={() => save({ ...s, intelligence: key })}
+                  className="flex w-full items-start gap-3 px-row-x py-row-y text-start"
+                >
+                  <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+                    <Icon width={14} height={14} strokeWidth={1.75} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-ui">
+                      {t(`privacy.intelligence.options.${key}.title`)}
+                    </span>
+                    <span className="mt-0.5 block text-small text-ink-2">
+                      {t(`privacy.intelligence.options.${key}.description`)}
+                    </span>
+                  </span>
+                  <Radio checked={picked} className="mt-1.5" />
+                </button>
+              );
+            })}
+          </div>
+          {/* Automatic, with Apple Intelligence: also use it for answers? */}
+          {s.intelligence === "auto" && status.on_device_ready && (
             <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
-              <p className="max-w-lg text-small text-ink-2">
-                {status.on_device_ready
-                  ? t("privacy.engine.description")
-                  : t("privacy.engine.unavailable")}
-              </p>
+              <div className="min-w-0">
+                <p className="text-ui">{t("privacy.engine.title")}</p>
+                <p className="mt-0.5 max-w-lg text-small text-ink-2">
+                  {t("privacy.engine.description")}
+                </p>
+              </div>
               <Switch
-                checked={s.on_device_when_possible && status.on_device_ready}
-                disabled={!status.on_device_ready}
+                checked={s.on_device_when_possible}
                 ariaLabel={t("privacy.engine.title")}
                 onChange={(on) => save({ ...s, on_device_when_possible: on })}
               />
             </div>
-          </SettingsGroup>
-        )}
+          )}
+          {/* Automatic, no on-device model: the one-time cloud offer's answer. */}
+          {s.intelligence === "auto" && !status.on_device_ready && (
+            <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
+              <div className="min-w-0">
+                <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
+                  {t("privacy.intelligence.cloudSuggestions.title")}
+                  {!paid && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                      <Lock width={10} height={10} />
+                      {t("account.plans.pro")}
+                    </span>
+                  )}
+                </p>
+                <p className="mt-0.5 max-w-lg text-small text-ink-2">
+                  {t("privacy.intelligence.cloudSuggestions.description")}
+                </p>
+              </div>
+              <Switch
+                checked={paid && s.cloud_suggestions === "accepted"}
+                disabled={!paid}
+                ariaLabel={t("privacy.intelligence.cloudSuggestions.title")}
+                onChange={(on) =>
+                  save({
+                    ...s,
+                    cloud_suggestions: on ? "accepted" : "declined",
+                  })
+                }
+              />
+            </div>
+          )}
+        </SettingsGroup>
 
         {/* Suggestions: what it has learned */}
         {s.proactive && (

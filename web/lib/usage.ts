@@ -27,6 +27,8 @@ export type UsageKind =
   | "ai_answer"
   /** /api/agent/answer, write mode. */
   | "ai_write"
+  /** /api/agent/suggest: "is there something here I can help with?" */
+  | "ai_suggest"
   /** A web search an answer asked for (served from cache or Tavily). */
   | "search"
   /** A search that reached Tavily (cache miss): the billed ones. */

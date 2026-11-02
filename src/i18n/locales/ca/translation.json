@@ -889,7 +889,7 @@
       },
       "wake": {
         "label": "Mans lliures: digueu «Hola Ambient»",
-        "description": "Parleu amb el {{appName}} sense tecles: «Hola Ambient, què tinc al calendari?». Escolta en aquest Mac i ignora tot el que no comenci pel seu nom. El Mac mostra l'indicador del micròfon mentre està activat."
+        "description": "Parleu amb el {{appName}} sense tecles: «Hola Ambient, què tinc al calendari?». Escolta en aquest ordinador i ignora tot el que no comenci pel seu nom. L'ordinador mostra l'indicador del micròfon mentre està activat."
       }
     }
   },
@@ -1137,7 +1137,7 @@
     "stop": "Atura",
     "status": {
       "needScreenContext": "Activeu «Llegir el que pregunteu» a Privadesa per fer servir això.",
-      "onDeviceFailed": "No s'ha pogut respondre en aquest Mac ara mateix.",
+      "onDeviceFailed": "No s'ha pogut respondre en aquest ordinador ara mateix.",
       "offline": "No s'ha pogut connectar amb el {{appName}}. Comproveu la connexió.",
       "weeklyLimit": "S'han esgotat els usos gratuïts d'IA d'aquesta setmana. Pro és il·limitat.",
       "account": "El vostre accés a Pro requereix atenció a Compte.",
@@ -1164,7 +1164,9 @@
       "listening": "Escoltant…",
       "heardNothing": "T'he sentit, però no he entès la petició.",
       "noWebResults": "Ara no he pogut cercar al web, així que això és el que sé.",
-      "timeout": "Ha trigat massa. Torna-ho a provar."
+      "timeout": "Ha trigat massa. Torna-ho a provar.",
+      "needsCloud": "Això necessita el núvol, i la Intel·ligència està configurada a «Només en aquest ordinador». Canvieu-ho a Privadesa.",
+      "cloudOfferOn": "Els suggeriments des del núvol estan activats. Canvieu-ho a Privadesa."
     },
     "undo": "Desfés",
     "close": "Tanca",
@@ -1226,11 +1228,12 @@
     "source": {
       "searchDrive": "Cerca a Google Drive",
       "searchGmail": "Cerca a Gmail"
-    }
+    },
+    "cloudOffer": "El {{appName}} pot suggerir ajuda en aquest ordinador enviant als seus servidors un fragment censurat de la finestra. Voleu activar-ho?"
   },
   "privacy": {
     "title": "Privadesa",
-    "promise": "Què pot llegir el {{appName}}, què surt d'aquest Mac i què conserva.",
+    "promise": "Què pot llegir el {{appName}}, què surt d'aquest ordinador i què conserva.",
     "state": {
       "on": "Observant, tal com heu permès",
       "onDetail": "Només les funcions que heu activat a sota.",
@@ -1262,32 +1265,26 @@
       "screen_memory": {
         "title": "Recordar el que heu vist",
         "reads": "Recorda les finestres que heu fet servir, perquè hi pugueu preguntar més tard.",
-        "leaves": "Es queda en aquest Mac, xifrat."
+        "leaves": "Es queda en aquest ordinador, xifrat."
       },
       "proactive": {
         "title": "Oferir suggeriments",
         "reads": "Proposa un pas següent en el moment just: fils, esborranys, dates, errors, reunions.",
-        "leaves": "Es decideix en aquest Mac. No s'envia res si no ho accepteu, excepte els avisos de les reunions."
+        "leaves": "Es decideix en aquest ordinador, o al núvol si ho trieu a sota. No s'envia res més si no ho accepteu, excepte els avisos de les reunions."
       },
       "meetings": {
         "title": "Notes de reunions",
         "reads": "Escolta el micròfon i la trucada mentre pren notes.",
         "leaves": "L'àudio es queda aquí. Només s'envia text, per redactar el resum."
       },
-      "on_device_only": {
-        "title": "Mantenir-ho tot en aquest Mac",
-        "reads": "Apple Intelligence per a tot, i sense cerca web.",
-        "leaves": "No s'envia res."
-      },
       "wake_word": {
         "title": "Mans lliures: digueu «Hola Ambient»",
-        "reads": "Escolta «Hola Ambient» en aquest Mac. Tota la resta es descarta mentre parleu.",
+        "reads": "Escolta «Hola Ambient» en aquest ordinador. Tota la resta es descarta mentre parleu.",
         "leaves": "No es grava ni s'envia res fins que ho dieu."
       },
       "groups": {
         "screen": "La vostra pantalla",
-        "listening": "Escolta",
-        "local": "En aquest Mac"
+        "listening": "Escolta"
       }
     },
     "retention": "Conserva durant",
@@ -1315,7 +1312,7 @@
     },
     "stored": {
       "title": "Què es desa",
-      "description": "Memòria de pantalla en aquest Mac. L'historial de dictats és a Historial.",
+      "description": "Memòria de pantalla en aquest ordinador. L'historial de dictats és a Historial.",
       "summary_one": "{{count}} instantània des de {{since}}.",
       "summary_many": "{{count}} instantànies des de {{since}}.",
       "summary_other": "{{count}} instantànies des de {{since}}.",
@@ -1328,7 +1325,7 @@
       "deletedAll": "S'han suprimit la memòria de pantalla i el registre de peticions."
     },
     "ledger": {
-      "title": "Peticions que han sortit d'aquest Mac",
+      "title": "Peticions que han sortit d'aquest ordinador",
       "description": "Cada petició i exactament què ha enviat. Es conserva 30 dies.",
       "empty": "Encara no hi ha peticions.",
       "bytes_one": "{{count}} byte",
@@ -1343,13 +1340,13 @@
         "act": "Acció",
         "license": "Comprovació del compte",
         "trial": "Prova",
-        "warmup": "Preparació de la connexió (no s'envia res)"
+        "warmup": "Preparació de la connexió (no s'envia res)",
+        "suggest": "Comprovació de suggeriment"
       }
     },
     "engine": {
-      "title": "Preferir la IA en aquest Mac",
-      "description": "Fa servir Apple Intelligence quan pot. Els resultats són menys polits, per això està desactivat per defecte.",
-      "unavailable": "Apple Intelligence no està disponible en aquest Mac, així que s'utilitzen els servidors del {{appName}}."
+      "title": "Fer servir Apple Intelligence també per a les respostes",
+      "description": "Les respostes i el polit del text s'executen en aquest ordinador quan és possible. Els resultats són menys polits, per això està desactivat per defecte."
     },
     "suggestions": {
       "title": "Suggeriments que rebeu",
@@ -1370,22 +1367,48 @@
         "commit_message": "Escriure missatges de commit",
         "fill_form": "Ajudar a omplir formularis",
         "translate_page": "Traduir pàgines en altres idiomes",
-        "help_here": "Altres ajudes, decidides en aquest Mac",
+        "help_here": "Altres ajudes que creu que voldríeu",
         "meeting_nudge": "Avisos durant les reunions"
       }
     },
     "macOnly": "De moment, només al Mac",
     "days_many": "{{count}} dies",
     "promises": {
-      "voice": "La vostra veu es queda en aquest Mac",
+      "voice": "La vostra veu es queda en aquest ordinador",
       "text": "Llegeix text, mai captures de pantalla",
       "sensitive": "Ignora contrasenyes, carteres i finestres privades",
       "ledger": "Cada sol·licitud que surt apareix a sota"
+    },
+    "intelligence": {
+      "title": "On s'executa la intel·ligència",
+      "description": "Què decideix els suggeriments i escriu les respostes. Totes les funcions van bé amb qualsevol opció.",
+      "capability": {
+        "apple": "Apple Intelligence disponible en aquest ordinador",
+        "none": "Cap model al dispositiu en aquest ordinador"
+      },
+      "options": {
+        "auto": {
+          "title": "Automàtic",
+          "description": "En aquest ordinador quan es pot. Pregunta una vegada abans d'usar el núvol per als suggeriments."
+        },
+        "device": {
+          "title": "Només en aquest ordinador",
+          "description": "No s'envia res per decidir ni respondre. Les funcions que necessiten un model passen a regles simples, o diuen que no poden."
+        },
+        "cloud": {
+          "title": "Núvol",
+          "description": "Els millors resultats. El text censurat s'envia als servidors del {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Suggeriments des del núvol",
+        "description": "Envia un fragment censurat d'una finestra on us heu quedat per decidir si ofereix ajuda. Cada petició apareix a sota."
+      }
     }
   },
   "meetings": {
     "title": "Reunions",
-    "intro": "Notes per a qualsevol trucada: vós i els altres, transcrits en aquest Mac. L'àudio no es desa mai.",
+    "intro": "Notes per a qualsevol trucada: vós i els altres, transcrits en aquest ordinador. L'àudio no es desa mai.",
     "live": "Prenent notes · {{time}}",
     "capturingBoth": "Us sent a vós i la trucada.",
     "capturingMic": "Només sent el vostre micròfon.",
@@ -1495,10 +1518,10 @@
       "proOnly": "Part de Pro. Milloreu el pla a Compte.",
       "caps": {
         "screen_context": "Només la finestra que pregunteu",
-        "proactive": "Es decideix en aquest Mac",
-        "meetings": "L'àudio es queda en aquest Mac",
-        "wake_word": "Només escolta en aquest Mac",
-        "screen_memory": "Es queda en aquest Mac, xifrat"
+        "proactive": "Es decideix en aquest ordinador",
+        "meetings": "L'àudio es queda en aquest ordinador",
+        "wake_word": "Només escolta en aquest ordinador",
+        "screen_memory": "Es queda en aquest ordinador, xifrat"
       }
     }
   },

@@ -6,8 +6,8 @@
 use tauri::AppHandle;
 
 use crate::settings::{
-    ai_provider, get_settings, AiProvider, AMBIENT_AI_DEFAULT_MODEL_ID, AMBIENT_AI_PROVIDER_ID,
-    APPLE_INTELLIGENCE_PROVIDER_ID,
+    ai_provider, get_settings, AiProvider, Intelligence, AMBIENT_AI_DEFAULT_MODEL_ID,
+    AMBIENT_AI_PROVIDER_ID, APPLE_INTELLIGENCE_PROVIDER_ID,
 };
 
 pub struct Target {
@@ -35,13 +35,15 @@ pub fn server_token(app: &AppHandle) -> String {
     }
 }
 
-/// The provider to use. On-device-only mode forces Apple Intelligence.
+/// The provider to use, by the Intelligence setting: "On this computer only"
+/// forces Apple Intelligence, "Cloud" our hosted model, and Automatic follows
+/// the polish provider (as before the setting existed).
 pub fn target(app: &AppHandle) -> Option<Target> {
     let settings = get_settings(app);
-    let provider = if settings.agent.on_device_only {
-        ai_provider(APPLE_INTELLIGENCE_PROVIDER_ID)?
-    } else {
-        settings.active_post_process_provider()?
+    let provider = match settings.agent.intelligence {
+        Intelligence::Device => ai_provider(APPLE_INTELLIGENCE_PROVIDER_ID)?,
+        Intelligence::Cloud => ai_provider(AMBIENT_AI_PROVIDER_ID)?,
+        Intelligence::Auto => settings.active_post_process_provider()?,
     };
     if provider.id == APPLE_INTELLIGENCE_PROVIDER_ID && !crate::plan::is_paid(app) {
         return None;
@@ -82,13 +84,30 @@ pub fn on_device_ready() -> bool {
     }
 }
 
-/// Whether this task should run on the Mac: the user prefers it (default),
+/// Whether the Intelligence setting wants this task on this computer:
+/// always in "On this computer only", never in "Cloud", and in Automatic when
+/// the user prefers Apple Intelligence for answers and polish.
+pub fn prefers_on_device(intelligence: Intelligence, on_device_when_possible: bool) -> bool {
+    match intelligence {
+        Intelligence::Device => true,
+        Intelligence::Cloud => false,
+        Intelligence::Auto => on_device_when_possible,
+    }
+}
+
+/// Whether this task should run on this computer: the setting wants it,
 /// Apple Intelligence is ready, and the text fits its window.
 pub fn use_on_device(app: &AppHandle, chars: usize) -> bool {
     let agent = get_settings(app).agent;
-    (agent.on_device_only || agent.on_device_when_possible)
+    prefers_on_device(agent.intelligence, agent.on_device_when_possible)
         && chars <= ON_DEVICE_MAX_CHARS
         && on_device_ready()
+}
+
+/// "On this computer only" on a machine without an on-device model: model
+/// tasks can't run at all, and callers say so instead of failing quietly.
+pub fn needs_cloud(app: &AppHandle) -> bool {
+    get_settings(app).agent.device_only() && !on_device_ready()
 }
 
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
@@ -111,7 +130,7 @@ pub async fn complete_hosted(
     system: &str,
     user: &str,
 ) -> Option<String> {
-    if get_settings(app).agent.on_device_only {
+    if get_settings(app).agent.device_only() {
         return complete(app, purpose, system, user).await;
     }
     complete_inner(app, purpose, system, user, false).await
@@ -143,7 +162,7 @@ async fn complete_inner(
             .await
             .ok()
             .flatten();
-        if out.is_some() || get_settings(app).agent.on_device_only {
+        if out.is_some() || get_settings(app).agent.device_only() {
             return out;
         }
     }
@@ -184,5 +203,21 @@ async fn complete_inner(
             log::warn!("agent {purpose} call failed: {e}");
             None
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn answers_follow_the_intelligence_setting() {
+        // On this computer only: always on device, whatever the old switch says.
+        assert!(prefers_on_device(Intelligence::Device, false));
+        // Cloud: always hosted.
+        assert!(!prefers_on_device(Intelligence::Cloud, true));
+        // Automatic: as before the setting existed.
+        assert!(prefers_on_device(Intelligence::Auto, true));
+        assert!(!prefers_on_device(Intelligence::Auto, false));
     }
 }

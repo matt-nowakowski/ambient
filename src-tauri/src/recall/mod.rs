@@ -22,8 +22,10 @@ use crypto::Sealer;
 
 pub const DEFAULT_RETENTION_DAYS: i64 = 7;
 const LEDGER_RETENTION_DAYS: i64 = 30;
-/// Ledger previews are capped so the ledger can't become a second copy of everything.
-const LEDGER_PREVIEW_CHARS: usize = 2000;
+/// Ledger previews are capped so the ledger can't become a second copy of
+/// everything, but a whole cloud suggestion check (≤ 3500 chars of window
+/// text plus its JSON) fits, so it's shown exactly as sent.
+const LEDGER_PREVIEW_CHARS: usize = 4500;
 
 /// The sealed part of a screen snapshot.
 #[derive(Serialize, Deserialize, Debug, Clone, Type)]

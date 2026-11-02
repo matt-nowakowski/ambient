@@ -889,7 +889,7 @@
       },
       "wake": {
         "label": "Manos libres: di «Hola Ambient»",
-        "description": "Habla con {{appName}} sin pulsar teclas: «Hola Ambient, ¿qué tengo en el calendario?». Escucha en este Mac e ignora todo lo que no empiece por su nombre. Tu Mac muestra el indicador del micrófono mientras está activado."
+        "description": "Habla con {{appName}} sin pulsar teclas: «Hola Ambient, ¿qué tengo en el calendario?». Escucha en este equipo e ignora todo lo que no empiece por su nombre. Tu equipo muestra el indicador del micrófono mientras está activado."
       }
     }
   },
@@ -1137,7 +1137,7 @@
     "stop": "Detener",
     "status": {
       "needScreenContext": "Activa «Leer lo que preguntas» en Privacidad para usar esto.",
-      "onDeviceFailed": "No se pudo responder en este Mac ahora mismo.",
+      "onDeviceFailed": "No se pudo responder en este equipo ahora mismo.",
       "offline": "No se pudo conectar con {{appName}}. Revisa tu conexión.",
       "weeklyLimit": "Se han agotado los usos gratuitos de IA de esta semana. Pro es ilimitado.",
       "account": "Tu acceso a Pro requiere atención en Cuenta.",
@@ -1164,7 +1164,9 @@
       "listening": "Escuchando…",
       "heardNothing": "Te he oído, pero no he entendido la petición.",
       "noWebResults": "Ahora no pude buscar en la web, así que esto es lo que sé.",
-      "timeout": "Ha tardado demasiado. Inténtalo de nuevo."
+      "timeout": "Ha tardado demasiado. Inténtalo de nuevo.",
+      "needsCloud": "Esto necesita la nube, y la inteligencia está en «Solo en este equipo». Cámbialo en Privacidad.",
+      "cloudOfferOn": "Las sugerencias desde la nube están activadas. Cámbialo en Privacidad."
     },
     "undo": "Deshacer",
     "close": "Cerrar",
@@ -1226,11 +1228,12 @@
     "source": {
       "searchDrive": "Buscar en Google Drive",
       "searchGmail": "Buscar en Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} puede sugerir ayuda en este equipo enviando a sus servidores un fragmento redactado de la ventana. ¿Activarlo?"
   },
   "privacy": {
     "title": "Privacidad",
-    "promise": "Lo que {{appName}} puede leer, lo que sale de este Mac y lo que conserva.",
+    "promise": "Lo que {{appName}} puede leer, lo que sale de este equipo y lo que conserva.",
     "state": {
       "on": "Observando, como permitiste",
       "onDetail": "Solo las funciones que activaste abajo.",
@@ -1262,32 +1265,26 @@
       "screen_memory": {
         "title": "Recordar lo que has visto",
         "reads": "Recuerda las ventanas que has usado, para que puedas preguntar por ellas más tarde.",
-        "leaves": "Se queda en este Mac, cifrado."
+        "leaves": "Se queda en este equipo, cifrado."
       },
       "proactive": {
         "title": "Ofrecer sugerencias",
         "reads": "Sugiere un siguiente paso en el momento justo: hilos, borradores, fechas, errores, reuniones.",
-        "leaves": "Se decide en este Mac. No se envía nada a menos que aceptes, salvo los avisos en reuniones."
+        "leaves": "Se decide en este equipo, o en la nube si la eliges abajo. No se envía nada más a menos que aceptes, salvo los avisos en reuniones."
       },
       "meetings": {
         "title": "Notas de reuniones",
         "reads": "Escucha tu micrófono y la llamada mientras toma notas.",
         "leaves": "El audio se queda aquí. Solo se envía texto, para redactar el resumen."
       },
-      "on_device_only": {
-        "title": "Mantener todo en este Mac",
-        "reads": "Apple Intelligence para todo, y sin búsqueda web.",
-        "leaves": "No se envía nada."
-      },
       "wake_word": {
         "title": "Manos libres: di «Hola Ambient»",
-        "reads": "Escucha «Hola Ambient» en este Mac. Todo lo demás se descarta mientras hablas.",
+        "reads": "Escucha «Hola Ambient» en este equipo. Todo lo demás se descarta mientras hablas.",
         "leaves": "No se graba ni se envía nada hasta que lo dices."
       },
       "groups": {
         "screen": "Tu pantalla",
-        "listening": "Escucha",
-        "local": "En este Mac"
+        "listening": "Escucha"
       }
     },
     "retention": "Conservar durante",
@@ -1315,7 +1312,7 @@
     },
     "stored": {
       "title": "Qué se guarda",
-      "description": "Memoria de pantalla en este Mac. El historial de dictado está en Historial.",
+      "description": "Memoria de pantalla en este equipo. El historial de dictado está en Historial.",
       "summary_one": "{{count}} captura desde {{since}}.",
       "summary_many": "{{count}} capturas desde {{since}}.",
       "summary_other": "{{count}} capturas desde {{since}}.",
@@ -1328,7 +1325,7 @@
       "deletedAll": "Se eliminaron la memoria de pantalla y el registro de peticiones."
     },
     "ledger": {
-      "title": "Peticiones que salieron de este Mac",
+      "title": "Peticiones que salieron de este equipo",
       "description": "Cada petición y exactamente lo que envió. Se conserva 30 días.",
       "empty": "Aún no hay peticiones.",
       "bytes_one": "{{count}} byte",
@@ -1343,13 +1340,13 @@
         "act": "Acción",
         "license": "Comprobación de cuenta",
         "trial": "Prueba",
-        "warmup": "Preparación de la conexión (no se envía nada)"
+        "warmup": "Preparación de la conexión (no se envía nada)",
+        "suggest": "Comprobación de sugerencia"
       }
     },
     "engine": {
-      "title": "Preferir la IA en este Mac",
-      "description": "Usa Apple Intelligence siempre que puede. Los resultados son menos pulidos, por eso está desactivado de forma predeterminada.",
-      "unavailable": "Apple Intelligence no está disponible en este Mac, así que se usan los servidores de {{appName}}."
+      "title": "Usar Apple Intelligence también para las respuestas",
+      "description": "Las respuestas y el pulido se ejecutan en este Mac cuando es posible. Los resultados son menos pulidos, por eso está desactivado de forma predeterminada."
     },
     "suggestions": {
       "title": "Sugerencias que recibes",
@@ -1370,22 +1367,48 @@
         "commit_message": "Escribir mensajes de commit",
         "fill_form": "Ayudar a rellenar formularios",
         "translate_page": "Traducir páginas en otros idiomas",
-        "help_here": "Otras ayudas, decididas en este Mac",
+        "help_here": "Otras ayudas que crea que querrás",
         "meeting_nudge": "Avisos durante reuniones"
       }
     },
     "macOnly": "Solo en Mac por ahora",
     "days_many": "{{count}} días",
     "promises": {
-      "voice": "Tu voz se queda en este Mac",
+      "voice": "Tu voz se queda en este equipo",
       "text": "Lee texto, nunca capturas de pantalla",
       "sensitive": "Omite contraseñas, carteras y ventanas privadas",
       "ledger": "Cada solicitud que sale aparece en la lista de abajo"
+    },
+    "intelligence": {
+      "title": "Dónde se ejecuta la inteligencia",
+      "description": "Lo que decide las sugerencias y escribe las respuestas. Todas las funciones van con cualquier opción.",
+      "capability": {
+        "apple": "Apple Intelligence disponible en este equipo",
+        "none": "Sin modelo local en este equipo"
+      },
+      "options": {
+        "auto": {
+          "title": "Automático",
+          "description": "En este equipo cuando puede. Pregunta una vez antes de usar la nube para sugerencias."
+        },
+        "device": {
+          "title": "Solo en este equipo",
+          "description": "No se envía nada para decidir ni responder. Las funciones que necesitan un modelo usan reglas simples o avisan de que no pueden."
+        },
+        "cloud": {
+          "title": "Nube",
+          "description": "Los mejores resultados. El texto redactado se envía a los servidores de {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Sugerencias desde la nube",
+        "description": "Envía un fragmento redactado de una ventana en la que te has quedado para decidir si ofrecer ayuda. Cada petición aparece en la lista de abajo."
+      }
     }
   },
   "meetings": {
     "title": "Reuniones",
-    "intro": "Notas para cualquier llamada: tú y los demás, transcritos en este Mac. El audio nunca se guarda.",
+    "intro": "Notas para cualquier llamada: tú y los demás, transcritos en este equipo. El audio nunca se guarda.",
     "live": "Tomando notas · {{time}}",
     "capturingBoth": "Te oye a ti y la llamada.",
     "capturingMic": "Solo oye tu micrófono.",
@@ -1495,10 +1518,10 @@
       "proOnly": "Parte de Pro. Mejora tu plan en Cuenta.",
       "caps": {
         "screen_context": "Solo la ventana que preguntes",
-        "proactive": "Se decide en este Mac",
-        "meetings": "El audio no sale de este Mac",
-        "wake_word": "Solo escucha en este Mac",
-        "screen_memory": "Se queda en este Mac, cifrado"
+        "proactive": "Se decide en este equipo",
+        "meetings": "El audio no sale de este equipo",
+        "wake_word": "Solo escucha en este equipo",
+        "screen_memory": "Se queda en este equipo, cifrado"
       }
     }
   },

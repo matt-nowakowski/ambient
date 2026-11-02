@@ -2,8 +2,11 @@
 //! that mentions a date, a long article or an error on screen, and offers one
 //! next step in the HUD.
 //!
-//! Every decision here is made on this Mac from the window's text with plain
-//! heuristics: nothing is sent anywhere until the user accepts a suggestion.
+//! Decisions are made on this computer from the window's text, with plain
+//! heuristics or Apple Intelligence. Only when the Intelligence setting
+//! allows it ("Cloud", or Automatic after the user said yes to the one-time
+//! offer) does a redacted snippet go to our server to judge, and every such
+//! request is in the ledger. Nothing else is sent until the user accepts.
 //! Accepting runs the step through the same answer/act paths as the voice
 //! agent. Rate-limited, backs off on dismissals, and never interrupts a
 //! recording, a meeting or another HUD card.
@@ -710,7 +713,8 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         return;
     }
 
-    // 2. The on-device judge, where Apple Intelligence runs.
+    // 2. The judge: on this computer, or in the cloud when the Intelligence
+    //    setting allows it (see `judge::route`).
     let settings = crate::settings::get_settings(app);
     if text_len < 200 {
         log::debug!(
@@ -718,21 +722,69 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         );
         return;
     }
-    if !super::judge::available() {
-        log::debug!("proactive: judge unavailable (no Apple Intelligence); using broader rules");
+    let on_device = super::judge::available();
+    let mut route = super::judge::route(
+        settings.agent.intelligence,
+        on_device,
+        settings.agent.cloud_suggestions,
+        crate::plan::is_paid(app),
+    );
+    if route == super::judge::Route::Cloud && super::judge::cloud_paused() {
+        route = if on_device {
+            super::judge::Route::OnDevice
+        } else {
+            super::judge::Route::Rules
+        };
+    }
+    if route == super::judge::Route::Rules {
+        log::debug!(
+            "proactive: judge unavailable here ({:?}, on-device model: {on_device}); using broader rules",
+            settings.agent.intelligence
+        );
     } else if let Some(why) = blocked(app, Kind::Help, &bundle, &key, per_hour) {
         // Nothing could be shown anyway: don't spend the judgement.
         log::debug!("proactive: {bundle} title[{tag}] judge skipped: {why}");
         return;
+    } else if route == super::judge::Route::Offer {
+        offer_cloud(app, key);
+        return;
     } else {
         let started = Instant::now();
         let text = redact(text_raw).0;
-        match super::judge::judge(
-            &snap.app.name,
-            &snap.window_title,
-            &text,
-            &settings.app_language,
-        ) {
+        let verdict = if route == super::judge::Route::Cloud {
+            let kinds = allowed_judge_kinds(app, &bundle);
+            let title = redact(&snap.window_title).0;
+            match super::judge::judge_cloud(
+                app,
+                &snap.app.name,
+                &title,
+                &text,
+                &kinds,
+                &settings.app_language,
+            ) {
+                // Network trouble: Apple Intelligence can still judge here.
+                Err(
+                    e @ (super::judge::JudgeError::Offline | super::judge::JudgeError::TimedOut),
+                ) if on_device => {
+                    log::debug!("proactive: cloud judge failed ({e:?}); judging on device");
+                    super::judge::judge(
+                        &snap.app.name,
+                        &snap.window_title,
+                        &text,
+                        &settings.app_language,
+                    )
+                }
+                other => other,
+            }
+        } else {
+            super::judge::judge(
+                &snap.app.name,
+                &snap.window_title,
+                &text,
+                &settings.app_language,
+            )
+        };
+        match verdict {
             Ok(v) => {
                 let worth = super::judge::worth_offering(&v);
                 log::debug!(
@@ -783,6 +835,77 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
 /// The user is still on the window that was judged, and nothing else is up.
 fn still_there(snap: &ContextSnapshot) -> bool {
     crate::context::frontmost_app().is_some_and(|f| f.pid == snap.app.pid) && !hud::is_visible()
+}
+
+/// The judge's kinds the user hasn't turned off here (sent to the cloud
+/// judge, so it never offers one of them).
+fn allowed_judge_kinds(app: &AppHandle, bundle: &str) -> Vec<&'static str> {
+    super::judge::JUDGE_KINDS
+        .iter()
+        .copied()
+        .filter(|name| {
+            let kind = if *name == "other" {
+                Some(Kind::Help)
+            } else {
+                Kind::from_name(name)
+            };
+            kind.is_none_or(|k| !muted(app, k, bundle))
+        })
+        .collect()
+}
+
+/// HUD id of the one-time "suggest help using the cloud?" card.
+pub const CLOUD_OFFER_ID: &str = "cloud-suggestions-offer";
+
+/// Automatic mode on a computer without an on-device model: the first time a
+/// suggestion would have been judged, ask once whether the cloud may judge
+/// instead. Shown once, ever: it's recorded as declined the moment it shows,
+/// and only "Yes" turns it on (also in Privacy, any time).
+fn offer_cloud(app: &AppHandle, key: String) {
+    if hud::is_visible() {
+        return;
+    }
+    let mut s = crate::settings::get_settings(app);
+    if s.agent.cloud_suggestions != crate::settings::CloudSuggestions::Unasked {
+        return;
+    }
+    s.agent.cloud_suggestions = crate::settings::CloudSuggestions::Declined;
+    crate::settings::write_settings(app, s);
+    STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .seen
+        .insert(key, Instant::now());
+    log::info!("proactive: offering cloud suggestions (once)");
+    hud::show(
+        app,
+        HudContent::Suggestion {
+            id: CLOUD_OFFER_ID.into(),
+            title: "hud.cloudOffer".into(),
+            // Empty: the card's plain "Yes".
+            accept_label: String::new(),
+        },
+    );
+}
+
+/// The answer to the one-time cloud offer.
+pub fn on_cloud_offer(app: &AppHandle, action: &str) {
+    hud::hide(app);
+    if action != "accept" {
+        return;
+    }
+    let mut s = crate::settings::get_settings(app);
+    s.agent.cloud_suggestions = crate::settings::CloudSuggestions::Accepted;
+    crate::settings::write_settings(app, s);
+    log::info!("proactive: cloud suggestions turned on from the offer");
+    hud::show(
+        app,
+        HudContent::Status {
+            text: "hud.status.cloudOfferOn".into(),
+            tone: hud::HudTone::Success,
+            undo: false,
+        },
+    );
 }
 
 /// Offer `kind` for this window, with what accepting it needs.

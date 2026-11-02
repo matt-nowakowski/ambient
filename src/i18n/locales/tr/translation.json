@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Eller serbest: “Merhaba Ambient” deyin",
-        "description": "{{appName}} ile tuşa basmadan konuşun: “Merhaba Ambient, takvimimde ne var?” Bu Mac’te dinler ve adıyla başlamayan her şeyi yok sayar. Açıkken Mac’iniz mikrofon göstergesini gösterir."
+        "description": "{{appName}} ile tuşa basmadan konuşun: “Merhaba Ambient, takvimimde ne var?” Bu bilgisayarda dinler ve adıyla başlamayan her şeyi yok sayar. Açıkken bilgisayarınız mikrofon göstergesini gösterir."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Durdur",
     "status": {
       "needScreenContext": "Bunu kullanmak için Gizlilik bölümünde “Sorduğunuzu oku” seçeneğini açın.",
-      "onDeviceFailed": "Şu anda bu Mac’te yanıt verilemedi.",
+      "onDeviceFailed": "Şu anda bu bilgisayarda yanıt verilemedi.",
       "offline": "{{appName}} sunucusuna ulaşılamadı. Bağlantınızı kontrol edin.",
       "weeklyLimit": "Bu haftaki ücretsiz yapay zekâ kullanımlarınız bitti. Pro sınırsızdır.",
       "account": "Pro erişiminiz Hesap bölümünde ilgi bekliyor.",
@@ -1156,7 +1156,9 @@
       "listening": "Dinliyor…",
       "heardNothing": "Duydum ama bir istek anlayamadım.",
       "noWebResults": "Şu an web'de arama yapılamadı, bu yüzden bildiklerimle yanıtlıyorum.",
-      "timeout": "Çok uzun sürdü. Tekrar deneyin."
+      "timeout": "Çok uzun sürdü. Tekrar deneyin.",
+      "needsCloud": "Bu işlem için bulut gerekiyor, ancak Zekâ “Yalnızca bu bilgisayarda” olarak ayarlı. Bunu Gizlilik’ten değiştirin.",
+      "cloudOfferOn": "Buluttan öneriler açık. Bunu Gizlilik’ten değiştirin."
     },
     "undo": "Geri al",
     "close": "Kapat",
@@ -1218,11 +1220,12 @@
     "source": {
       "searchDrive": "Google Drive'da ara",
       "searchGmail": "Gmail'de ara"
-    }
+    },
+    "cloudOffer": "{{appName}}, pencerenin kişisel verilerden arındırılmış bir parçasını sunucularına göndererek bu bilgisayarda yardım önerebilir. Açılsın mı?"
   },
   "privacy": {
     "title": "Gizlilik",
-    "promise": "{{appName}} neyi okuyabilir, neyi bu Mac’ten dışarı çıkar, neyi saklar.",
+    "promise": "{{appName}} neyi okuyabilir, neyi bu bilgisayardan dışarı çıkar, neyi saklar.",
     "state": {
       "on": "İzin verdiğiniz şekilde izliyor",
       "onDetail": "Yalnızca aşağıda açtığınız özellikler.",
@@ -1254,32 +1257,26 @@
       "screen_memory": {
         "title": "Gördüklerini hatırla",
         "reads": "Kullandığınız pencereleri hatırlar, böylece daha sonra onlar hakkında soru sorabilirsiniz.",
-        "leaves": "Şifreli olarak bu Mac’te kalır."
+        "leaves": "Şifreli olarak bu bilgisayarda kalır."
       },
       "proactive": {
         "title": "Öneriler sun",
         "reads": "Doğru anda bir sonraki adımı önerir: yazışmalar, taslaklar, tarihler, hatalar, toplantılar.",
-        "leaves": "Bu Mac’te karar verilir. Toplantı hatırlatmaları dışında, siz kabul etmedikçe hiçbir şey gönderilmez."
+        "leaves": "Bu bilgisayarda ya da aşağıda seçerseniz bulutta karar verilir. Toplantı hatırlatmaları dışında, siz kabul etmedikçe başka hiçbir şey gönderilmez."
       },
       "meetings": {
         "title": "Toplantı notları",
         "reads": "Not alırken mikrofonunuzu ve görüşmeyi duyar.",
         "leaves": "Ses burada kalır. Özeti yazmak için yalnızca metin gönderilir."
       },
-      "on_device_only": {
-        "title": "Her şeyi bu Mac’te tut",
-        "reads": "Her şey için Apple Intelligence, web araması yok.",
-        "leaves": "Hiçbir şey gönderilmez."
-      },
       "wake_word": {
         "title": "Eller serbest: “Merhaba Ambient” deyin",
-        "reads": "Bu Mac’te “Merhaba Ambient” ifadesini dinler. Geri kalan her şey siz konuşurken atılır.",
+        "reads": "Bu bilgisayarda “Merhaba Ambient” ifadesini dinler. Geri kalan her şey siz konuşurken atılır.",
         "leaves": "Siz söyleyene kadar hiçbir şey kaydedilmez veya gönderilmez."
       },
       "groups": {
         "screen": "Ekranınız",
-        "listening": "Dinleme",
-        "local": "Bu Mac’te"
+        "listening": "Dinleme"
       }
     },
     "retention": "Saklama süresi",
@@ -1307,7 +1304,7 @@
     },
     "stored": {
       "title": "Neler saklanıyor",
-      "description": "Bu Mac’teki ekran belleği. Dikte geçmişi Geçmiş bölümünde.",
+      "description": "Bu bilgisayardaki ekran belleği. Dikte geçmişi Geçmiş bölümünde.",
       "summary_one": "{{since}} tarihinden beri {{count}} anlık görüntü.",
       "summary_other": "{{since}} tarihinden beri {{count}} anlık görüntü.",
       "entries_one": "{{count}} anlık görüntü",
@@ -1318,7 +1315,7 @@
       "deletedAll": "Ekran belleği ve istek günlüğü silindi."
     },
     "ledger": {
-      "title": "Bu Mac’ten çıkan istekler",
+      "title": "Bu bilgisayardan çıkan istekler",
       "description": "Her istek ve tam olarak ne gönderdiği. 30 gün saklanır.",
       "empty": "Henüz istek yok.",
       "bytes_one": "{{count}} bayt",
@@ -1332,13 +1329,13 @@
         "act": "Eylem",
         "license": "Hesap kontrolü",
         "trial": "Deneme",
-        "warmup": "Bağlantı hazırlığı (hiçbir şey gönderilmedi)"
+        "warmup": "Bağlantı hazırlığı (hiçbir şey gönderilmedi)",
+        "suggest": "Öneri kontrolü"
       }
     },
     "engine": {
-      "title": "Bu Mac’teki yapay zekâyı tercih et",
-      "description": "Mümkün olduğunda Apple Intelligence kullanır. Sonuçlar daha az özenli olduğundan varsayılan olarak kapalıdır.",
-      "unavailable": "Bu Mac’te Apple Intelligence kullanılamıyor, bu yüzden {{appName}} sunucuları kullanılıyor."
+      "title": "Yanıtlar için de Apple Intelligence kullan",
+      "description": "Yanıtlar ve metin cilalama, uygun olduğunda bu bilgisayarda çalışır. Sonuçlar daha az özenli olduğundan varsayılan olarak kapalıdır."
     },
     "suggestions": {
       "title": "Aldığınız öneriler",
@@ -1359,21 +1356,47 @@
         "commit_message": "Commit mesajları yaz",
         "fill_form": "Form doldurmaya yardım",
         "translate_page": "Başka dillerdeki sayfaları çevir",
-        "help_here": "Diğer yardımlar, bu Mac'te değerlendirilir",
+        "help_here": "İstediğinizi düşündüğü diğer yardımlar",
         "meeting_nudge": "Toplantı sırasında hatırlatmalar"
       }
     },
     "macOnly": "Şimdilik yalnızca Mac’te",
     "promises": {
-      "voice": "Sesiniz bu Mac’te kalır",
+      "voice": "Sesiniz bu bilgisayarda kalır",
       "text": "Metni okur, ekran görüntüsünü asla",
       "sensitive": "Parolaları, cüzdanları ve gizli pencereleri atlar",
       "ledger": "Dışarı çıkan her istek aşağıda listelenir"
+    },
+    "intelligence": {
+      "title": "Zekânın çalıştığı yer",
+      "description": "Önerilere karar veren ve yanıtları yazan şey. Her seçimde tüm özellikler çalışır.",
+      "capability": {
+        "apple": "Apple Intelligence bu bilgisayarda kullanılabilir",
+        "none": "Bu bilgisayarda cihaz içi model yok"
+      },
+      "options": {
+        "auto": {
+          "title": "Otomatik",
+          "description": "Mümkünse bu bilgisayarda. Öneriler için bulutu kullanmadan önce bir kez sorar."
+        },
+        "device": {
+          "title": "Yalnızca bu bilgisayarda",
+          "description": "Karar vermek veya yanıtlamak için hiçbir şey gönderilmez. Model gerektiren özellikler basit kurallara geçer ya da yapamayacaklarını söyler."
+        },
+        "cloud": {
+          "title": "Bulut",
+          "description": "En iyi sonuçlar. Kişisel verilerden arındırılmış metin {{appName}} sunucularına gönderilir."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Buluttan öneriler",
+        "description": "Yardım önerip önermeyeceğine karar vermek için üzerinde durduğunuz bir pencerenin kişisel verilerden arındırılmış bir parçasını gönderir. Her istek aşağıda listelenir."
+      }
     }
   },
   "meetings": {
     "title": "Toplantılar",
-    "intro": "Her görüşme için notlar: siz ve karşı taraf, bu Mac’te yazıya dökülür. Ses asla kaydedilmez.",
+    "intro": "Her görüşme için notlar: siz ve karşı taraf, bu bilgisayarda yazıya dökülür. Ses asla kaydedilmez.",
     "live": "Not alınıyor · {{time}}",
     "capturingBoth": "Sizi ve görüşmeyi duyuyor.",
     "capturingMic": "Yalnızca mikrofonunuzu duyuyor.",
@@ -1483,10 +1506,10 @@
       "proOnly": "Pro’ya dahildir. Hesap bölümünden yükseltin.",
       "caps": {
         "screen_context": "Yalnızca sorduğunuz pencere",
-        "proactive": "Bu Mac’te karar verilir",
-        "meetings": "Ses bu Mac’te kalır",
-        "wake_word": "Yalnızca bu Mac’te dinler",
-        "screen_memory": "Bu Mac’te şifreli kalır"
+        "proactive": "Bu bilgisayarda karar verilir",
+        "meetings": "Ses bu bilgisayarda kalır",
+        "wake_word": "Yalnızca bu bilgisayarda dinler",
+        "screen_memory": "Bu bilgisayarda şifreli kalır"
       }
     }
   },

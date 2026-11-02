@@ -129,8 +129,16 @@ export function completionBudget(maxTokens: number) {
 }
 const SHORT_REPLY_TOKENS = 600;
 
-/** Calls the model with thinking off; returns an OpenAI-style completion. */
-export async function complete(messages: Message[], body: Record<string, unknown>) {
+/**
+ * Calls the model with thinking off; returns an OpenAI-style completion.
+ * `budget` overrides the time limits (e.g. the suggestion judge, which is
+ * only worth anything within a few seconds).
+ */
+export async function complete(
+  messages: Message[],
+  body: Record<string, unknown>,
+  budgetOverride?: { totalMs: number; attemptMs: number },
+) {
   const requested = Number(body.max_tokens ?? body.max_completion_tokens);
   const maxTokens = Number.isFinite(requested) && requested > 0
     ? Math.min(requested, LIMITS.maxOutputTokens)
@@ -149,7 +157,7 @@ export async function complete(messages: Message[], body: Record<string, unknown
   // beats making someone wait. One retry covers an occasional slow replica,
   // within one overall budget the app's own 10 s deadline can outlast (two
   // full 8 s attempts used to run past it, so the app gave up first).
-  const budget = completionBudget(maxTokens);
+  const budget = budgetOverride ?? completionBudget(maxTokens);
   const deadline = Date.now() + budget.totalMs;
   let upstream: Response | null = null;
   let lastError: unknown;
@@ -274,8 +282,11 @@ export function completionKind(messages: Message[]): UsageKind {
 export const FAIR_USE = {
   ai: 1_500, // requests a day: a very heavy dictation day is a few hundred
   search: 100, // web searches a day: the costliest call
+  // Cloud suggestion judgements a day (/api/agent/suggest). The app asks at
+  // most once per window the user stays on, a few times an hour.
+  suggest: 150,
 } as const;
-const FAIR_USE_SOFT = { ai: 200, search: 25 } as const;
+const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40 } as const;
 
 type FairKind = keyof typeof FAIR_USE;
 const local = new Map<string, { day: string; count: number; synced: number }>();

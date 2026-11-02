@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "免持：說「嘿 Ambient」",
-        "description": "無須按鍵即可與 {{appName}} 對話：「嘿 Ambient，我的行事曆上有什麼？」它在這台 Mac 上聆聽，並忽略所有不以它名字開頭的內容。開啟期間，Mac 會顯示麥克風指示燈。"
+        "description": "無須按鍵即可與 {{appName}} 對話：「嘿 Ambient，我的行事曆上有什麼？」它在這台電腦上聆聽，並忽略所有不以它名字開頭的內容。開啟期間，電腦會顯示麥克風指示燈。"
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "停止",
     "status": {
       "needScreenContext": "請在「隱私」中開啟「讀取你詢問的內容」後再使用。",
-      "onDeviceFailed": "目前無法在這台 Mac 上回答。",
+      "onDeviceFailed": "目前無法在這台電腦上回答。",
       "offline": "無法連線至 {{appName}}。請檢查網路連線。",
       "weeklyLimit": "本週的免費 AI 次數已用完。Pro 不限次數。",
       "account": "你的 Pro 存取權需要在「帳戶」中處理。",
@@ -1156,7 +1156,9 @@
       "listening": "正在聆聽…",
       "heardNothing": "聽到了，但沒聽出具體要求。",
       "noWebResults": "暫時無法上網搜尋，以下內容根據我已知的資訊。",
-      "timeout": "花太久了，請再試一次。"
+      "timeout": "花太久了，請再試一次。",
+      "needsCloud": "這需要雲端，但智慧功能已設為「僅在這台電腦上」。請在隱私中變更。",
+      "cloudOfferOn": "雲端建議已開啟。請在隱私中變更。"
     },
     "undo": "還原",
     "close": "關閉",
@@ -1218,11 +1220,12 @@
     "source": {
       "searchDrive": "在 Google 雲端硬碟中搜尋",
       "searchGmail": "在 Gmail 中搜尋"
-    }
+    },
+    "cloudOffer": "{{appName}} 可以將視窗內容的遮蔽片段傳送到其伺服器，藉此在這台電腦上建議提供協助。要開啟嗎？"
   },
   "privacy": {
     "title": "隱私",
-    "promise": "{{appName}} 能讀取什麼、什麼會離開這台 Mac，以及保留什麼。",
+    "promise": "{{appName}} 能讀取什麼、什麼會離開這台電腦，以及保留什麼。",
     "state": {
       "on": "正依你的允許查看中",
       "onDetail": "僅限你在下方開啟的功能。",
@@ -1254,32 +1257,26 @@
       "screen_memory": {
         "title": "記住你看過的內容",
         "reads": "記住你用過的視窗，方便你日後詢問。",
-        "leaves": "加密保存在這台 Mac 上。"
+        "leaves": "加密保存在這台電腦上。"
       },
       "proactive": {
         "title": "提供建議",
         "reads": "在適當時機建議下一步：對話、草稿、日期、錯誤、會議。",
-        "leaves": "在這台 Mac 上決定。除會議提示外，除非你接受，否則不會傳送任何內容。"
+        "leaves": "在這台電腦上決定，或依你在下方的選擇在雲端決定。除會議提示外，除非你接受，否則不會傳送任何內容。"
       },
       "meetings": {
         "title": "會議筆記",
         "reads": "記錄時會聆聽你的麥克風和通話。",
         "leaves": "音訊留在這裡。只傳送文字，用於撰寫摘要。"
       },
-      "on_device_only": {
-        "title": "所有內容都留在這台 Mac 上",
-        "reads": "一切都用 Apple Intelligence，且不進行網頁搜尋。",
-        "leaves": "不會傳送任何內容。"
-      },
       "wake_word": {
         "title": "免持：說「嘿 Ambient」",
-        "reads": "在這台 Mac 上聆聽「嘿 Ambient」。其他內容會在你說話時直接捨棄。",
+        "reads": "在這台電腦上聆聽「嘿 Ambient」。其他內容會在你說話時直接捨棄。",
         "leaves": "在你說出之前，不會錄製或傳送任何內容。"
       },
       "groups": {
         "screen": "你的螢幕",
-        "listening": "聆聽",
-        "local": "在這台 Mac 上"
+        "listening": "聆聽"
       }
     },
     "retention": "保留時間",
@@ -1307,7 +1304,7 @@
     },
     "stored": {
       "title": "已儲存的內容",
-      "description": "這台 Mac 上的螢幕記憶。聽寫紀錄在「歷史紀錄」中。",
+      "description": "這台電腦上的螢幕記憶。聽寫紀錄在「歷史紀錄」中。",
       "summary_one": "自 {{since}} 以來共 {{count}} 個快照。",
       "summary_other": "自 {{since}} 以來共 {{count}} 個快照。",
       "entries_one": "{{count}} 個快照",
@@ -1318,7 +1315,7 @@
       "deletedAll": "螢幕記憶和請求紀錄已刪除。"
     },
     "ledger": {
-      "title": "離開這台 Mac 的請求",
+      "title": "離開這台電腦的請求",
       "description": "每個請求及其傳送的確切內容。保留 30 天。",
       "empty": "尚無請求。",
       "bytes_one": "{{count}} 位元組",
@@ -1332,13 +1329,13 @@
         "act": "動作",
         "license": "帳戶驗證",
         "trial": "試用",
-        "warmup": "預熱連線（未傳送任何內容）"
+        "warmup": "預熱連線（未傳送任何內容）",
+        "suggest": "建議檢查"
       }
     },
     "engine": {
-      "title": "優先在這台 Mac 上執行 AI",
-      "description": "盡可能使用 Apple Intelligence。效果不夠精緻，因此預設為關閉。",
-      "unavailable": "這台 Mac 無法使用 Apple Intelligence，因此會使用 {{appName}} 的伺服器。"
+      "title": "回答也使用 Apple Intelligence",
+      "description": "條件允許時，回答和潤飾會在這台電腦上執行。效果不夠精緻，因此預設為關閉。"
     },
     "suggestions": {
       "title": "你收到的建議",
@@ -1359,21 +1356,47 @@
         "commit_message": "撰寫提交訊息",
         "fill_form": "協助填寫表單",
         "translate_page": "翻譯其他語言的頁面",
-        "help_here": "其他協助（在這台 Mac 上判斷）",
+        "help_here": "其他你可能需要的協助",
         "meeting_nudge": "會議期間的提示"
       }
     },
     "macOnly": "目前僅限 Mac",
     "promises": {
-      "voice": "你的聲音只留在這台 Mac 上",
+      "voice": "你的聲音只留在這台電腦上",
       "text": "只讀取文字，絕不截圖",
       "sensitive": "略過密碼、錢包和隱私視窗",
       "ledger": "每個送出的請求都列在下方"
+    },
+    "intelligence": {
+      "title": "智慧功能在哪裡執行",
+      "description": "決定何時給出建議並撰寫回答。無論怎麼選，所有功能都可使用。",
+      "capability": {
+        "apple": "這台電腦上可使用 Apple Intelligence",
+        "none": "這台電腦上沒有裝置端模型"
+      },
+      "options": {
+        "auto": {
+          "title": "自動",
+          "description": "盡可能在這台電腦上處理。使用雲端提供建議前會先詢問一次。"
+        },
+        "device": {
+          "title": "僅在這台電腦上",
+          "description": "不會傳送任何內容來做決定或回答。需要模型的功能會退回到簡單規則，或告知無法完成。"
+        },
+        "cloud": {
+          "title": "雲端",
+          "description": "效果最佳。遮蔽後的文字會傳送到 {{appName}} 的伺服器。"
+        }
+      },
+      "cloudSuggestions": {
+        "title": "雲端建議",
+        "description": "傳送你停留過的視窗的遮蔽片段，以判斷是否提供協助。每筆請求都會列在下方。"
+      }
     }
   },
   "meetings": {
     "title": "會議",
-    "intro": "任何通話都能做筆記：你和對方，在這台 Mac 上轉錄。音訊絕不儲存。",
+    "intro": "任何通話都能做筆記：你和對方，在這台電腦上轉錄。音訊絕不儲存。",
     "live": "正在記錄 · {{time}}",
     "capturingBoth": "正在聆聽你和通話。",
     "capturingMic": "僅聆聽你的麥克風。",
@@ -1483,10 +1506,10 @@
       "proOnly": "Pro 功能。在「帳戶」中升級。",
       "caps": {
         "screen_context": "只看你問到的視窗",
-        "proactive": "在這台 Mac 上決定",
-        "meetings": "音訊留在這台 Mac 上",
-        "wake_word": "只在這台 Mac 上聆聽",
-        "screen_memory": "加密儲存在這台 Mac 上"
+        "proactive": "在這台電腦上決定",
+        "meetings": "音訊留在這台電腦上",
+        "wake_word": "只在這台電腦上聆聽",
+        "screen_memory": "加密儲存在這台電腦上"
       }
     }
   },

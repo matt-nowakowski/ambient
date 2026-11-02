@@ -886,7 +886,7 @@
       },
       "wake": {
         "label": "Rảnh tay: nói “Xin chào Ambient”",
-        "description": "Nói chuyện với {{appName}} không cần phím: “Xin chào Ambient, lịch của tôi có gì?” Nó lắng nghe trên máy Mac này và bỏ qua mọi thứ không bắt đầu bằng tên của nó. Máy Mac hiển thị đèn báo micrô khi tính năng này bật."
+        "description": "Nói chuyện với {{appName}} không cần phím: “Xin chào Ambient, lịch của tôi có gì?” Nó lắng nghe trên máy tính này và bỏ qua mọi thứ không bắt đầu bằng tên của nó. Máy tính hiển thị đèn báo micrô khi tính năng này bật."
       }
     }
   },
@@ -1129,7 +1129,7 @@
     "stop": "Dừng",
     "status": {
       "needScreenContext": "Bật “Đọc những gì bạn hỏi” trong Quyền riêng tư để dùng tính năng này.",
-      "onDeviceFailed": "Hiện không thể trả lời trên máy Mac này.",
+      "onDeviceFailed": "Hiện không thể trả lời trên máy tính này.",
       "offline": "Không thể kết nối với {{appName}}. Hãy kiểm tra kết nối của bạn.",
       "weeklyLimit": "Đã hết lượt dùng AI miễn phí của tuần này. Gói Pro không giới hạn.",
       "account": "Quyền truy cập Pro của bạn cần được xem lại trong Tài khoản.",
@@ -1156,7 +1156,9 @@
       "listening": "Đang nghe…",
       "heardNothing": "Đã nghe, nhưng chưa nhận ra yêu cầu.",
       "noWebResults": "Hiện không tìm được trên web, nên đây là từ những gì tôi biết.",
-      "timeout": "Mất quá lâu. Hãy thử lại."
+      "timeout": "Mất quá lâu. Hãy thử lại.",
+      "needsCloud": "Việc này cần đám mây, và Trí tuệ đang được đặt ở “Chỉ trên máy tính này”. Hãy đổi trong Quyền riêng tư.",
+      "cloudOfferOn": "Gợi ý từ đám mây đang bật. Hãy đổi trong Quyền riêng tư."
     },
     "undo": "Hoàn tác",
     "close": "Đóng",
@@ -1218,11 +1220,12 @@
     "source": {
       "searchDrive": "Tìm trong Google Drive",
       "searchGmail": "Tìm trong Gmail"
-    }
+    },
+    "cloudOffer": "{{appName}} có thể gợi ý trợ giúp trên máy tính này bằng cách gửi một đoạn đã ẩn thông tin của cửa sổ đến máy chủ của mình. Bật chứ?"
   },
   "privacy": {
     "title": "Quyền riêng tư",
-    "promise": "{{appName}} có thể đọc gì, gì rời khỏi Mac này và gì được giữ lại.",
+    "promise": "{{appName}} có thể đọc gì, gì rời khỏi máy tính này và gì được giữ lại.",
     "state": {
       "on": "Đang quan sát, theo cho phép của bạn",
       "onDetail": "Chỉ những khả năng bạn đã bật bên dưới.",
@@ -1254,32 +1257,26 @@
       "screen_memory": {
         "title": "Ghi nhớ những gì bạn đã xem",
         "reads": "Ghi nhớ các cửa sổ bạn đã dùng để bạn có thể hỏi lại sau.",
-        "leaves": "Ở lại trên máy Mac này, đã mã hóa."
+        "leaves": "Ở lại trên máy tính này, đã mã hóa."
       },
       "proactive": {
         "title": "Đưa ra gợi ý",
         "reads": "Gợi ý bước tiếp theo đúng lúc: chuỗi tin nhắn, bản nháp, ngày tháng, lỗi, cuộc họp.",
-        "leaves": "Được quyết định trên máy Mac này. Không gửi gì trừ khi bạn chấp nhận, ngoại trừ nhắc nhở trong cuộc họp."
+        "leaves": "Được quyết định trên máy tính này, hoặc trên đám mây nếu bạn chọn bên dưới. Không gửi gì khác trừ khi bạn chấp nhận, ngoại trừ nhắc nhở trong cuộc họp."
       },
       "meetings": {
         "title": "Ghi chú cuộc họp",
         "reads": "Nghe micrô và cuộc gọi trong khi ghi chú.",
         "leaves": "Âm thanh ở lại đây. Chỉ văn bản được gửi đi để viết bản tóm tắt."
       },
-      "on_device_only": {
-        "title": "Giữ mọi thứ trên máy Mac này",
-        "reads": "Apple Intelligence cho mọi thứ, và không tìm kiếm web.",
-        "leaves": "Không gửi gì cả."
-      },
       "wake_word": {
         "title": "Rảnh tay: nói “Xin chào Ambient”",
-        "reads": "Lắng nghe “Xin chào Ambient” trên máy Mac này. Mọi thứ khác bị loại bỏ ngay khi bạn nói.",
+        "reads": "Lắng nghe “Xin chào Ambient” trên máy tính này. Mọi thứ khác bị loại bỏ ngay khi bạn nói.",
         "leaves": "Không ghi âm hay gửi gì cho đến khi bạn nói câu đó."
       },
       "groups": {
         "screen": "Màn hình của bạn",
-        "listening": "Lắng nghe",
-        "local": "Trên Mac này"
+        "listening": "Lắng nghe"
       }
     },
     "retention": "Lưu trong",
@@ -1307,7 +1304,7 @@
     },
     "stored": {
       "title": "Những gì được lưu",
-      "description": "Bộ nhớ màn hình trên máy Mac này. Lịch sử đọc chính tả nằm trong Lịch sử.",
+      "description": "Bộ nhớ màn hình trên máy tính này. Lịch sử đọc chính tả nằm trong Lịch sử.",
       "summary_one": "{{count}} ảnh chụp nhanh kể từ {{since}}.",
       "summary_other": "{{count}} ảnh chụp nhanh kể từ {{since}}.",
       "entries_one": "{{count}} ảnh chụp nhanh",
@@ -1318,7 +1315,7 @@
       "deletedAll": "Đã xóa bộ nhớ màn hình và nhật ký yêu cầu."
     },
     "ledger": {
-      "title": "Các yêu cầu đã rời khỏi máy Mac này",
+      "title": "Các yêu cầu đã rời khỏi máy tính này",
       "description": "Mọi yêu cầu và chính xác nội dung đã gửi. Lưu trong 30 ngày.",
       "empty": "Chưa có yêu cầu nào.",
       "bytes_one": "{{count}} byte",
@@ -1332,13 +1329,13 @@
         "act": "Hành động",
         "license": "Kiểm tra tài khoản",
         "trial": "Dùng thử",
-        "warmup": "Chuẩn bị kết nối (không gửi gì)"
+        "warmup": "Chuẩn bị kết nối (không gửi gì)",
+        "suggest": "Kiểm tra gợi ý"
       }
     },
     "engine": {
-      "title": "Ưu tiên AI trên máy Mac này",
-      "description": "Dùng Apple Intelligence khi có thể. Kết quả kém trau chuốt hơn, nên tính năng này tắt theo mặc định.",
-      "unavailable": "Apple Intelligence không có trên máy Mac này, nên máy chủ của {{appName}} được sử dụng."
+      "title": "Dùng Apple Intelligence cho cả câu trả lời",
+      "description": "Câu trả lời và bước trau chuốt chạy trên máy tính này khi phù hợp. Kết quả kém trau chuốt hơn, nên tính năng này tắt theo mặc định."
     },
     "suggestions": {
       "title": "Gợi ý bạn nhận được",
@@ -1359,21 +1356,47 @@
         "commit_message": "Viết thông điệp commit",
         "fill_form": "Giúp điền biểu mẫu",
         "translate_page": "Dịch trang bằng ngôn ngữ khác",
-        "help_here": "Trợ giúp khác, đánh giá trên máy Mac này",
+        "help_here": "Trợ giúp khác mà nó cho là bạn cần",
         "meeting_nudge": "Nhắc nhở trong cuộc họp"
       }
     },
     "macOnly": "Hiện chỉ có trên Mac",
     "promises": {
-      "voice": "Giọng nói của bạn ở lại trên Mac này",
+      "voice": "Giọng nói của bạn ở lại trên máy tính này",
       "text": "Đọc văn bản, không bao giờ chụp màn hình",
       "sensitive": "Bỏ qua mật khẩu, ví và cửa sổ riêng tư",
       "ledger": "Mọi yêu cầu rời khỏi máy đều được liệt kê bên dưới"
+    },
+    "intelligence": {
+      "title": "Nơi Trí tuệ chạy",
+      "description": "Quyết định gợi ý và viết câu trả lời. Mọi tính năng đều hoạt động với mỗi lựa chọn.",
+      "capability": {
+        "apple": "Apple Intelligence khả dụng trên máy tính này",
+        "none": "Không có mô hình trên thiết bị trên máy tính này"
+      },
+      "options": {
+        "auto": {
+          "title": "Tự động",
+          "description": "Trên máy tính này khi có thể. Hỏi một lần trước khi dùng đám mây cho gợi ý."
+        },
+        "device": {
+          "title": "Chỉ trên máy tính này",
+          "description": "Không gửi gì để quyết định hay trả lời. Các tính năng cần mô hình sẽ dùng quy tắc đơn giản, hoặc báo là không làm được."
+        },
+        "cloud": {
+          "title": "Đám mây",
+          "description": "Kết quả tốt nhất. Văn bản đã ẩn thông tin được gửi đến máy chủ của {{appName}}."
+        }
+      },
+      "cloudSuggestions": {
+        "title": "Gợi ý từ đám mây",
+        "description": "Gửi một đoạn đã ẩn thông tin của cửa sổ bạn dừng lại để quyết định có nên đề nghị trợ giúp. Mọi yêu cầu đều được liệt kê bên dưới."
+      }
     }
   },
   "meetings": {
     "title": "Cuộc họp",
-    "intro": "Ghi chú cho mọi cuộc gọi: bạn và người khác, được chép lời trên máy Mac này. Âm thanh không bao giờ được lưu.",
+    "intro": "Ghi chú cho mọi cuộc gọi: bạn và người khác, được chép lời trên máy tính này. Âm thanh không bao giờ được lưu.",
     "live": "Đang ghi chú · {{time}}",
     "capturingBoth": "Đang nghe bạn và cuộc gọi.",
     "capturingMic": "Chỉ nghe micrô của bạn.",
@@ -1483,10 +1506,10 @@
       "proOnly": "Thuộc gói Pro. Nâng cấp trong Tài khoản.",
       "caps": {
         "screen_context": "Chỉ cửa sổ bạn hỏi đến",
-        "proactive": "Quyết định ngay trên Mac này",
-        "meetings": "Âm thanh ở lại trên Mac này",
-        "wake_word": "Chỉ nghe trên Mac này",
-        "screen_memory": "Mã hóa, chỉ trên Mac này"
+        "proactive": "Quyết định trên máy tính này",
+        "meetings": "Âm thanh ở lại trên máy tính này",
+        "wake_word": "Chỉ nghe trên máy tính này",
+        "screen_memory": "Mã hóa, chỉ trên máy tính này"
       }
     }
   },

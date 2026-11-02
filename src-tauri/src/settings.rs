@@ -582,13 +582,22 @@ pub struct AgentSettings {
     pub retention_days: u32,
     /// Bundle ids never read, on top of the built-in list.
     pub never_watch: Vec<String>,
-    /// Route every model call to Apple Intelligence and disable web search.
+    /// Where the intelligence runs: on this computer, in the cloud, or
+    /// chosen automatically. Absorbs `on_device_only` (see
+    /// `apply_settings_migrations`).
+    pub intelligence: Intelligence,
+    /// The one-time offer (Automatic, no on-device model) to judge
+    /// suggestions in the cloud, and the answer.
+    pub cloud_suggestions: CloudSuggestions,
+    /// Legacy mirror of `intelligence == Device`, kept in sync so older
+    /// builds reading this store still behave. Read `device_only()` instead.
     pub on_device_only: bool,
-    /// Use Apple Intelligence on this Mac whenever a task fits it, and our
-    /// hosted model only when it doesn't. Off by default: measured against
-    /// the hosted model, Apple's on-device model polished noticeably worse
-    /// (numbers, punctuation, once echoing its instructions) and routed 29/33
-    /// vs 33/33. Quality first; users can still choose privacy over quality.
+    /// In Automatic: use Apple Intelligence on this Mac whenever a task fits
+    /// it, and our hosted model only when it doesn't. Off by default:
+    /// measured against the hosted model, Apple's on-device model polished
+    /// noticeably worse (numbers, punctuation, once echoing its instructions)
+    /// and routed 29/33 vs 33/33. Quality first; users can still choose
+    /// privacy over quality. Ignored in the other two modes.
     pub on_device_when_possible: bool,
     /// Unix seconds until which all watching is paused.
     pub paused_until: Option<i64>,
@@ -598,6 +607,30 @@ pub struct AgentSettings {
     /// "meeting_nudge", …), off entirely or muted in some apps. Learned when
     /// they say "don't show me these" and editable in the Privacy Center.
     pub suggestion_prefs: std::collections::BTreeMap<String, SuggestionPref>,
+}
+
+/// Where the agent's intelligence runs.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
+#[serde(rename_all = "lowercase")]
+pub enum Intelligence {
+    /// On this computer when it can (Apple Intelligence); otherwise rules,
+    /// plus a one-time offer to judge suggestions in the cloud.
+    #[default]
+    Auto,
+    /// Never send anything to decide or answer: on-device model or rules.
+    Device,
+    /// Our hosted model: the best results; redacted text is sent.
+    Cloud,
+}
+
+/// The one-time cloud suggestions offer and its answer.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum CloudSuggestions {
+    #[default]
+    Unasked,
+    Accepted,
+    Declined,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default, Type)]
@@ -619,6 +652,8 @@ impl Default for AgentSettings {
             wake_word: false,
             retention_days: 7,
             never_watch: Vec::new(),
+            intelligence: Intelligence::Auto,
+            cloud_suggestions: CloudSuggestions::Unasked,
             on_device_only: false,
             on_device_when_possible: false,
             paused_until: None,
@@ -632,6 +667,16 @@ impl AgentSettings {
     pub fn is_paused(&self) -> bool {
         self.paused_until
             .is_some_and(|t| t > chrono::Utc::now().timestamp())
+    }
+
+    /// "On this computer only": nothing is sent to decide or answer.
+    pub fn device_only(&self) -> bool {
+        self.intelligence == Intelligence::Device
+    }
+
+    /// Keep the legacy flag mirroring the setting (older builds read it).
+    pub fn sync_legacy(&mut self) {
+        self.on_device_only = self.device_only();
     }
 }
 
@@ -1222,6 +1267,24 @@ fn apply_settings_migrations(
         updated = true;
     }
 
+    // One-time Intelligence migration (only while the new key is absent):
+    // "Keep everything on this Mac" becomes "On this computer only"; everyone
+    // else gets Automatic, which behaves exactly as before (Apple
+    // Intelligence where it runs, `on_device_when_possible` still choosing
+    // it for answers). The legacy flag stays readable and in sync.
+    if settings_value
+        .get("agent")
+        .and_then(|a| a.get("intelligence"))
+        .is_none()
+    {
+        settings.agent.intelligence = if settings.agent.on_device_only {
+            Intelligence::Device
+        } else {
+            Intelligence::Auto
+        };
+        updated = true;
+    }
+
     let stored_schema_version = settings_value
         .get("settings_schema_version")
         .and_then(|v| v.as_u64())
@@ -1793,6 +1856,65 @@ mod tests {
     }
 
     #[test]
+    fn intelligence_migration_maps_legacy_flags() {
+        // "Keep everything on this Mac" → On this computer only.
+        let raw = serde_json::json!({
+            "agent": { "on_device_only": true, "on_device_when_possible": true }
+        });
+        let mut settings = get_default_settings();
+        settings.agent = serde_json::from_value(raw["agent"].clone()).expect("old agent parses");
+        assert_eq!(
+            settings.agent.intelligence,
+            Intelligence::Auto,
+            "serde default"
+        );
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert_eq!(settings.agent.intelligence, Intelligence::Device);
+        assert!(settings.agent.device_only());
+        assert!(settings.agent.on_device_only, "legacy flag stays readable");
+
+        // Anyone else: Automatic, keeping their answers preference.
+        let raw = serde_json::json!({
+            "agent": { "on_device_only": false, "on_device_when_possible": true }
+        });
+        let mut settings = get_default_settings();
+        settings.agent = serde_json::from_value(raw["agent"].clone()).expect("old agent parses");
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert_eq!(settings.agent.intelligence, Intelligence::Auto);
+        assert!(settings.agent.on_device_when_possible);
+        assert_eq!(settings.agent.cloud_suggestions, CloudSuggestions::Unasked);
+
+        // No agent block at all: Automatic.
+        let mut settings = get_default_settings();
+        apply_settings_migrations(&mut settings, &serde_json::json!({}));
+        assert_eq!(settings.agent.intelligence, Intelligence::Auto);
+    }
+
+    #[test]
+    fn intelligence_migration_respects_explicit_choice() {
+        let raw = serde_json::json!({
+            "agent": {
+                "on_device_only": false,
+                "intelligence": "cloud",
+                "cloud_suggestions": "declined"
+            }
+        });
+        let mut settings = get_default_settings();
+        settings.agent = serde_json::from_value(raw["agent"].clone()).expect("agent parses");
+        apply_settings_migrations(&mut settings, &raw);
+        assert_eq!(settings.agent.intelligence, Intelligence::Cloud);
+        assert_eq!(settings.agent.cloud_suggestions, CloudSuggestions::Declined);
+
+        let mut agent = settings.agent.clone();
+        agent.intelligence = Intelligence::Device;
+        agent.sync_legacy();
+        assert!(agent.on_device_only);
+        let json = serde_json::to_value(&agent).expect("serializes");
+        assert_eq!(json["intelligence"], "device");
+        assert_eq!(json["cloud_suggestions"], "declined");
+    }
+
+    #[test]
     fn shortcut_activation_migration_maps_push_to_talk_true() {
         let mut settings = get_default_settings();
         let raw = serde_json::json!({
@@ -1919,6 +2041,7 @@ mod tests {
             "whats_new_last_seen_version": default_whats_new_last_seen_version(),
             "overlay_style": "live",
             "chinese_script": "as_transcribed",
+            "agent": { "intelligence": "auto" },
             "transcribe_accelerator": "gpu",
             "transcribe_gpu_device": settings.transcribe_gpu_device
         });
