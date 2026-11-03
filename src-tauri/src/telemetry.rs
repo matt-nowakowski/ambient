@@ -3,7 +3,7 @@
 //! Off by default (`settings.telemetry`). While it's off nothing is queued and
 //! nothing is sent. While it's on, events are counted in memory (identical
 //! events are merged into one row with a count), and the batch is sent at most
-//! every ten minutes and once, best-effort, on quit, to `/api/telemetry`.
+//! every six hours and once, best-effort, on quit, to `/api/telemetry`.
 //! Every upload is written to the Privacy Center's request ledger first, with
 //! exactly the body that is sent.
 //!
@@ -28,7 +28,9 @@ use tauri_plugin_store::StoreExt;
 
 /// The allowlist, shared with the server.
 const SCHEMA_JSON: &str = include_str!("../../web/lib/agent/telemetry-schema.json");
-const SEND_EVERY: Duration = Duration::from_secs(10 * 60);
+// Tuning works on daily totals, so a few uploads a day is plenty, and keeps
+// serverless invocations per opted-in install to about four a day.
+const SEND_EVERY: Duration = Duration::from_secs(6 * 3600);
 const TICK: Duration = Duration::from_secs(60);
 const QUIT_TIMEOUT: Duration = Duration::from_secs(2);
 const SEND_TIMEOUT: Duration = Duration::from_secs(15);

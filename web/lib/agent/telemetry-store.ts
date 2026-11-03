@@ -15,7 +15,8 @@ import { propsKey, type TelemetryBatch } from "./telemetry";
  * plus a per-day hash of each install id for "opted-in installs per day".
  * Recording never throws.
  */
-export const FLUSH_INTERVAL_MS = 10 * 60_000;
+// 30 minutes: fewer Neon wake-ups; the daily tuning job doesn't need fresher counts.
+export const FLUSH_INTERVAL_MS = 30 * 60_000;
 const FLUSH_AT_EVENTS = 5_000;
 const MAX_KEYS = 20_000;
 const MAX_INSTALLS = 50_000;

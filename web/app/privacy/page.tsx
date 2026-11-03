@@ -249,7 +249,7 @@ export default function PrivacyPage() {
                 our server rejects anything else.
               </p>
               <p>
-                The app sends these counts in batches, at most every 10 minutes and when you quit. Our server does not
+                The app sends these counts in batches, a few times a day and when you quit. Our server does not
                 keep the individual events: it adds them to daily totals, and uses a one-way hash of the random install ID,
                 changed every day, only to count how many installs shared data that day. Daily totals are kept for 180
                 days and then deleted. Every upload appears in the Privacy Center’s list of requests that left your
