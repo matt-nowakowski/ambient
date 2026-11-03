@@ -127,6 +127,8 @@ windows = { version = "0.61.3", features = [
   "Win32_Foundation",
   "Win32_Graphics_Dwm",
   "Win32_Graphics_Gdi",
+  # The screen-memory key, sealed for the current user (DPAPI).
+  "Win32_Security_Cryptography",
   "Win32_Storage_FileSystem",
   # The voice agent: reading windows (UI Automation), the HUD's mouse watch,
   # Start menu shortcuts and known folders (Shell).
