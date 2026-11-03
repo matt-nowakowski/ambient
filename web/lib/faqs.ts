@@ -10,7 +10,7 @@ const plans: FaqItem = {
   q: "What’s free, and what does Pro cost?",
   a: brand.enforceFreeWordLimit
     ? `Free includes ${freeWordsLabel} of dictation, and every install gets ${brand.trialDays} days of everything, no card. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually, and removes the limits. Cancel anytime.`
-    : `Dictation is free and unlimited, forever. Every install gets ${brand.trialDays} days of everything, no card. After that, Free includes ${brand.freePolishPerWeek} AI uses a week and ${freeMeetingsPerMonth} meetings a month. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually, and removes both limits. Cancel anytime.`,
+    : `Free gets the whole colleague, with weekly limits: unlimited dictation, ${brand.freePolishPerWeek} AI uses a week and ${freeMeetingsPerMonth} meetings a month. Pro removes the limits for $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually. Every install starts with ${brand.trialDays} days of Pro, no card. Cancel anytime.`,
 };
 
 /** The full general FAQ, on /pricing and in llms-full.txt. */
@@ -51,8 +51,8 @@ export const homeFaqs: FaqItem[] = [
   {
     q: "What’s free, and what does Pro cost?",
     a: brand.enforceFreeWordLimit
-      ? `Free includes ${freeWordsLabel} of dictation and ${brand.trialDays} days of everything, no card. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually.`
-      : `Dictation is free and unlimited, forever, with ${brand.trialDays} days of everything, no card. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually.`,
+      ? `Free gets the whole colleague, with weekly limits. Pro removes them: $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually. Try Pro free for ${brand.trialDays} days, no card.`
+      : `Free gets the whole colleague, with weekly limits, and unlimited dictation. Pro removes the limits: $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually. Try Pro free for ${brand.trialDays} days, no card.`,
   },
   {
     q: "Which platforms does it run on?",

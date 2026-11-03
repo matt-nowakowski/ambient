@@ -145,7 +145,7 @@ export function AgentDemo() {
           <span className="size-[11px] rounded-full bg-foreground/10" />
           <span className="eyebrow ml-3 truncate">{windows[m.k]}</span>
         </div>
-        <div className="relative h-[340px] px-5 py-5">
+        <div className="relative h-[310px] px-5 py-5">
           <Backdrop />
           <AnimatePresence mode="wait">{s === "show" ? <Result key={m.k} mode={m.k} /> : null}</AnimatePresence>
 

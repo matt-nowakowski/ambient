@@ -6,8 +6,8 @@ export const description = `${brand.name} is a live agent on your desktop, like 
 /** The hero eyebrow pill. */
 export const heroEyebrow = "A live agent on your desktop";
 
-/** The hero headline, split where it breaks. The launch video opens with the same line. */
-export const heroTitle = ["Your desktop just", "got a colleague."] as const;
+/** The hero headline, one line at desktop widths. */
+export const heroTitle = ["Your desktop colleague."] as const;
 
 export const heroSub = "You talk, it writes, answers and acts. And when it can help, it nudges you.";
 
@@ -26,7 +26,7 @@ export const features = [
   { title: "Any app", body: "Push-to-talk or toggle with one global shortcut. Text lands where your cursor is.", orb: "C2" },
   { title: "99 languages", body: "Dictate in your language with Whisper models, or translate any of them to English.", orb: "G2" },
   { title: "Custom words", body: "Add names, jargon and product terms so they come out spelled your way.", orb: "S2" },
-  { title: "AI polish", body: "With Pro: punctuation, no filler words, “scratch that” applied. No API key.", orb: "S1" },
+  { title: "AI polish", body: "Punctuation, no filler words, “scratch that” applied. No API key.", orb: "S1" },
   { title: "Every desktop", body: "macOS, Windows and Linux. Including the one other dictation tools forget.", orb: "M1" },
   { title: "Open-source core", body: "The transcription engine is MIT-licensed. Read the code that hears you.", orb: "C3" },
 ] as const;
@@ -290,11 +290,16 @@ export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
 export const tiers = {
   free: {
     name: "Free",
-    tagline: "Dictation, free forever",
+    tagline: "The whole colleague, with weekly limits",
     price: 0,
     note: "No account needed.",
     /** The landing page's short list. */
-    key: [freeWordsFeature, "On your computer, works offline", "macOS, Windows and Linux", `${brand.trialDays} days of the agent, no card`],
+    key: [
+      freeWordsFeature,
+      `${brand.freePolishPerWeek} AI uses a week`,
+      "Suggestions, screen reading, hands-free",
+      `${freeMeetingsPerMonth} meetings a month`,
+    ],
     features: [
       freeWordsFeature,
       "On-device speech recognition, works offline",
@@ -306,9 +311,9 @@ export const tiers = {
   },
   pro: {
     name: "Pro",
-    tagline: "The agent",
+    tagline: "No limits",
     /** The landing page's short list. */
-    key: ["Talk to it: write, answer, act, recall", "Nudges when it can help", "Meeting notes with live nudges", "Unlimited AI and meetings (fair use)", "Everything in Free"],
+    key: ["No limits on AI or meetings (fair use)", "Cloud suggestions, if you choose", "Longer recall", "Everything in Free"],
     monthly: brand.pricing.proMonthly,
     yearlyPerMonth: brand.pricing.proYearlyPerMonth,
     yearlyTotal: brand.pricing.proYearlyTotal,
@@ -396,7 +401,7 @@ export const featureGroups: FeatureGroup[] = [
   },
   {
     id: "dictation",
-    heading: "Dictation, free forever",
+    heading: "Dictation, unlimited and free",
     intro: "Unlimited, on every platform, transcribed on your computer.",
     items: [
       { title: "On-device transcription", body: "Speech-to-text runs locally with open models (Whisper, Parakeet, Moonshine, SenseVoice and more) with GPU acceleration where available. Your audio never leaves your computer.", orb: "B1" },
@@ -407,7 +412,7 @@ export const featureGroups: FeatureGroup[] = [
       { title: "Push-to-talk or toggle", body: "Hold the shortcut while you speak, or tap once to start and again to stop. The shortcut is yours to choose.", orb: "C1" },
       { title: "Custom words", body: "Add names, jargon and product terms so they come out spelled your way.", orb: "S4" },
       { title: "History and files", body: "Every transcription is kept on your device: search it, play it back, re-transcribe it. Drop in an audio file to get the text.", orb: "C3" },
-      { title: "AI polish (Pro)", body: "Punctuation, no filler words, lists formatted, “scratch that” applied. Hosted with nothing to set up, or on your Mac with Apple Intelligence. Only text is sent, never audio.", orb: "S1" },
+      { title: "AI polish", body: "Punctuation, no filler words, lists formatted, “scratch that” applied. Hosted with nothing to set up, or on your Mac with Apple Intelligence. Only text is sent, never audio.", orb: "S1" },
       { title: "macOS, Windows, Linux", body: "Native builds for all three, plus command-line flags for scripting and Wayland shortcuts.", orb: "M1" },
     ],
   },

@@ -6,15 +6,14 @@ import { RevealLines } from "@/components/hero-copy";
 import { Reveal } from "@/components/motion";
 import { Pricing } from "@/components/pricing";
 import { Container, Eyebrow } from "@/components/ui";
-import { brand, emails, fairUseNote, freeMeetingsPerMonth, mailto } from "@/lib/brand";
-import { macFirst } from "@/lib/content";
+import { brand, emails, fairUseNote, mailto } from "@/lib/brand";
 import { billingFaqs, faqs } from "@/lib/faqs";
 import { faqPageLd, productLd } from "@/lib/structured-data";
 import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = pageMetadata({
   title: "Pricing",
-  description: `Dictation is free and unlimited. ${brand.name} Pro adds the voice agent, meeting notes and suggestions for $${brand.pricing.proYearlyPerMonth}/mo billed annually or $${brand.pricing.proMonthly} monthly. ${brand.trialDays}-day trial, no card.`,
+  description: `${brand.name} Free gets the whole colleague, with weekly limits and unlimited dictation. Pro removes the limits for $${brand.pricing.proYearlyPerMonth}/mo billed annually or $${brand.pricing.proMonthly} monthly. Try Pro free for ${brand.trialDays} days, no card.`,
   path: "/pricing",
 });
 
@@ -34,8 +33,8 @@ export default function PricingPage() {
           </h1>
           <Reveal delay={0.15}>
             <p className="mx-auto mt-6 max-w-md text-pretty text-[15px] leading-relaxed text-muted">
-              Dictation is free, forever. Pro is the agent. Every install gets {brand.trialDays} days of everything, no
-              card.
+              Free gets the whole colleague, with weekly limits. Pro removes them. Try Pro free for {brand.trialDays}{" "}
+              days, no card.
             </p>
           </Reveal>
         </div>
@@ -43,8 +42,8 @@ export default function PricingPage() {
           <Pricing headingLevel="h2" />
         </div>
         <p className="mx-auto mt-8 max-w-2xl text-center text-[13px] leading-relaxed text-subtle">
-          After the trial, Free includes {brand.freePolishPerWeek} AI uses a week, shared across polish, answers,
-          actions, Ask and meeting summaries, and {freeMeetingsPerMonth} meetings a month. {fairUseNote} {macFirst}
+          Free’s {brand.freePolishPerWeek} AI uses a week are shared across polish, writing, answers, actions and
+          meeting summaries. {fairUseNote}
         </p>
         <p className="mt-3 text-center text-[13px] text-subtle">
           Prices in USD. Taxes calculated at checkout. Need an invoice or a larger plan?{" "}

@@ -15,7 +15,7 @@ export const changelog: Release[] = [
     date: "2026-11-03",
     title: "A colleague, not a command line",
     summary:
-      "Ask anything and Ambient answers, does it, or tells you why not and what it can do instead. It also offers help more often, in better moments, and learns what you want.",
+      "Ask anything and Ambient answers, does it, or tells you why not and what it can do instead. It also speaks up more, in better moments, and learns what you want.",
     sections: [
       {
         heading: "The agent",

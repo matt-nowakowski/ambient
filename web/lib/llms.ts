@@ -46,12 +46,12 @@ function facts() {
     `- Platforms: ${platforms.join(", ")}. Current version ${RELEASE_VERSION}.`,
     `- Privacy: speech-to-text runs on the user's device with local models; audio is never uploaded. Dictation works offline.`,
     `- ${macFirst}`,
-    `- Free plan: $0. Dictation ${freeWordsLabel.toLowerCase()}. ${brand.trialDays}-day trial of everything, no card. Then ${brand.freePolishPerWeek} AI uses a week shared across polish, answers, actions, Ask and meeting summaries, and ${freeMeetingsPerMonth} meetings a month.`,
+    `- Free plan: $0, the whole colleague with weekly limits. Dictation ${freeWordsLabel.toLowerCase()}; ${brand.freePolishPerWeek} AI uses a week shared across polish, writing, answers, actions, Ask and meeting summaries; ${freeMeetingsPerMonth} meetings a month. Every install starts with a ${brand.trialDays}-day trial of Pro, no card.`,
     `- Pro: $${tiers.pro.monthly}/month, or $${tiers.pro.yearlyPerMonth}/month billed annually ($${tiers.pro.yearlyTotal}/year). ${tiers.pro.features.join("; ")}.`,
     `- Team: custom pricing for 5+ people, via sales (${emails.sales}).`,
     `- Licensing: Pro is unlocked by signing in to the app with the purchase email and a 6-digit emailed code (Account → Sign in); Free and the trial need no account.`,
     `- Built on ${upstream.name} by ${upstream.author} (${upstream.license}), an open-source dictation app.`,
-    `- Pro adds the ambient agent: a voice agent that decides from what you say whether to write, answer (with sources, web search only when needed), act (Calendar, Reminders, open apps and links, run Shortcuts) or recall; meeting notes for any call with no bot; suggestions decided on the Mac; and recall from local sources with nothing to connect.`,
+    `- Pro removes the weekly limits (fair use). The agent, on Free and Pro: it decides from what you say whether to write, answer (with sources, web search only when needed), act (Calendar, Reminders, open apps and links, run Shortcuts) or recall; meeting notes for any call with no bot; suggestions decided on the Mac; and recall from local sources with nothing to connect.`,
     `- Talking to ${brand.name}: hold the Ask shortcut; or start with “Hey ${brand.name}” on the dictation key (works in AI chat apps and messaging apps, where plain dictation is typed); or, optionally, turn on hands-free and just say “Hey ${brand.name}, …” with no key. Hands-free is off by default, listens on the Mac, checks only the first couple of seconds of speech for the phrase and drops everything else; nothing is recorded or sent until the phrase is said.`,
     `- No bots, no accounts, no integrations to connect. ${nothingToConnect.lead} Everything that reads the screen is off until the user turns it on.`,
     `- Coming soon (not shipped): computer use, operating apps on screen like a person.`,
@@ -106,7 +106,7 @@ export function llmsFullTxt() {
     `### ${suggestions.eyebrow}: ${suggestions.title}\n\n${suggestions.body}\n\n${suggestions.examples.map((e) => `- ${e}`).join("\n")}\n\n${suggestions.promise}\n`,
   );
   s.push(`### ${trust.eyebrow}: ${trust.title}\n\n${trust.body}\n\n${[...trust.highlights, ...trust.points].map((p) => `- ${p.k}: ${p.v}`).join("\n")}\n`);
-  s.push(`### Dictation, free forever\n\n${features.map((f) => `- ${f.title}: ${f.body}`).join("\n")}\n`);
+  s.push(`### Dictation, unlimited and free\n\n${features.map((f) => `- ${f.title}: ${f.body}`).join("\n")}\n`);
   s.push(
     `### ${brand.name} compared\n\n| | ${brand.name} | ${competitors.join(" | ")} |\n|---|---|${competitors.map(() => "---|").join("")}\n${compareRows
       .map((r) => `| ${r.label} | ${cell(r.us)} | ${r.them.map(cell).join(" | ")} |`)
@@ -136,7 +136,7 @@ export function llmsFullTxt() {
 
   s.push(
     `## Features (${url("/features")})\n\n${featureGroups
-      .map((g) => `### ${g.heading}${g.pro ? " (Pro)" : ""}\n\n${g.intro ? `${g.intro}\n\n` : ""}${g.items.map((i) => `- ${i.title}: ${i.body}`).join("\n")}`)
+      .map((g) => `### ${g.heading}\n\n${g.intro ? `${g.intro}\n\n` : ""}${g.items.map((i) => `- ${i.title}: ${i.body}`).join("\n")}`)
       .join("\n\n")}\n\n### ${comingSoon.label}\n\n${comingSoon.body}\n\n${comingSoon.examples.map((e) => `- “${e}”`).join("\n")}\n\n${comingSoon.points.map((p) => `- ${p.k}: ${p.v}`).join("\n")}\n\n${macFirst}\n`,
   );
   s.push(

@@ -40,7 +40,7 @@ import { faqPageLd, softwareApplicationLd } from "@/lib/structured-data";
 export const metadata: Metadata = pageMetadata({ description, path: "/" });
 
 /** Space above each section. */
-const pad = "pt-20 sm:pt-24";
+const pad = "pt-20 sm:pt-20";
 /** A small glass chip: a capability in two to four words. */
 const chip = "glass inline-flex h-8 items-center rounded-full px-3.5 text-[12.5px] text-muted";
 
@@ -52,7 +52,7 @@ export default function Home() {
       <JsonLd data={faqPageLd(homeFaqs)} />
       {/* Hero: a live agent you talk to, that nudges you */}
       <section>
-        <Container className="pb-16 pt-14 sm:pb-24 sm:pt-20">
+        <Container className="pb-20 pt-14 sm:pb-28 sm:pt-20">
           <div className="mx-auto max-w-3xl text-center">
             <Reveal className="flex justify-center">
               <span className="glass inline-flex h-7 items-center gap-2 rounded-full pl-2 pr-3.5">
@@ -73,11 +73,11 @@ export default function Home() {
                   {video ? "Learn more" : "See pricing"}
                 </ButtonLink>
               </div>
-              <p className="eyebrow mt-6">macOS, Windows and Linux · Agent in beta on Windows and Linux</p>
+              <p className="eyebrow mt-6 text-balance">macOS, Windows and Linux · Agent in beta on Windows and Linux</p>
             </Reveal>
           </div>
 
-          <Reveal delay={0.35} className="mx-auto mt-14 max-w-[640px] sm:mt-16">
+          <Reveal delay={0.35} className="mx-auto mt-16 max-w-[640px] sm:mt-20">
             <HeroAgent />
           </Reveal>
         </Container>
@@ -255,7 +255,7 @@ export default function Home() {
             <SectionHeading
               id="pricing-heading"
               eyebrow="Pricing"
-              title="Dictation is free. The agent is Pro."
+              title="Free gets the colleague. Pro removes the limits."
               className="mx-auto text-center"
             />
           </Reveal>
@@ -297,16 +297,16 @@ export default function Home() {
       {/* Final CTA */}
       <section aria-labelledby="cta-heading">
         <Container className={pad}>
-          <Reveal className="glass flex flex-col items-center rounded-[28px] px-6 py-12 text-center sm:py-14">
+          <Reveal className="glass flex flex-col items-center rounded-[28px] px-6 py-10 text-center sm:py-12">
             <Mark size={44} />
             <h2
               id="cta-heading"
               className="mt-6 max-w-xl text-balance text-[38px] font-extralight leading-[1.05] tracking-[-0.045em] sm:text-[56px]"
             >
-              Start talking to your computer.
+              Meet your new colleague.
             </h2>
             <p className="mt-5 max-w-md text-balance text-[15px] text-muted">
-              Try the agent free for {brand.trialDays} days, no card. Dictation stays free.
+              Free to start. Try Pro free for {brand.trialDays} days, no card.
             </p>
             <ButtonLink href="/download" size="lg" className="mt-9">
               Download {brand.name} <Arrow />

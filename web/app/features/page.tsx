@@ -33,7 +33,7 @@ function Group({ g }: { g: FeatureGroup }) {
       <Container className="pt-20 sm:pt-28">
         <div className={demo ? "grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16" : ""}>
           <Reveal className="max-w-xl">
-            <Eyebrow>{g.pro ? "Pro" : "Free"}</Eyebrow>
+            <Eyebrow>{g.pro ? "Free with limits · unlimited with Pro" : "Free, unlimited"}</Eyebrow>
             <h2 id={`fg-${g.id}`} className="mt-3 text-[26px] font-light tracking-[-0.03em] sm:text-[30px]">
               {g.heading}
             </h2>

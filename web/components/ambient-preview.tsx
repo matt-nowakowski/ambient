@@ -62,7 +62,7 @@ export function AmbientPreview({ preset, loop = false }: { preset: "meeting" | "
         <span className="size-[11px] rounded-full bg-foreground/10" />
         <span className="eyebrow ml-3 truncate">{title}</span>
       </div>
-      <div className="relative h-[370px] px-6 py-6 text-[14px] font-light leading-[1.7] text-muted sm:h-[330px]">
+      <div className="relative h-[370px] px-6 py-6 text-[14px] font-light leading-[1.7] text-muted sm:h-[310px]">
         <p className="text-foreground">{heading}</p>
         <ul className="mt-3 space-y-1">
           {lines.map((l, i) => (
