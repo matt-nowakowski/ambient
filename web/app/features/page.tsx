@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { AgentDemo } from "@/components/agent-demo";
 import { AmbientPreview } from "@/components/ambient-preview";
-import { HeroDemo } from "@/components/hero-demo";
 import { LiftCard, Reveal, Stagger } from "@/components/motion";
 import type { OrbVariant } from "@/components/orb/Orb";
 import { OrbIcon } from "@/components/orb-icon";
 import { PageHeader } from "@/components/page-header";
 import { TrustHighlights, TrustList } from "@/components/trust";
 import { ButtonLink, Container, Eyebrow, SectionHeading } from "@/components/ui";
+import { WriteDemo } from "@/components/write-demo";
 import { brand } from "@/lib/brand";
 import { comingSoon, featureGroups, macFirst, trust, type FeatureGroup } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Features",
-  description: `Everything ${brand.name} does: a live agent on your desktop that answers, acts and recalls, nudges you when it can help, and takes meeting notes with no bot. Plus free on-device dictation that polishes your words or writes the message for you.`,
+  description: `Everything ${brand.name} does: your desktop colleague answers, acts and recalls, nudges you when it can help, and takes meeting notes with no bot. Plus free, unlimited dictation that knows when to type, polish or write it for you.`,
   path: "/features",
 });
 
@@ -23,7 +23,7 @@ const demos: Partial<Record<string, { node: ReactNode; caption: string }>> = {
   agent: { node: <AgentDemo />, caption: "One key, four outcomes" },
   meetings: { node: <AmbientPreview preset="meeting" />, caption: "A live nudge during a call" },
   suggestions: { node: <AmbientPreview preset="suggestion" loop />, caption: "A suggestion from an email thread" },
-  dictation: { node: <HeroDemo />, caption: "Shown with optional AI polish" },
+  dictation: { node: <WriteDemo />, caption: "Polished, or written for you. “Use my words” takes it back." },
 };
 
 function Group({ g }: { g: FeatureGroup }) {
@@ -71,7 +71,7 @@ export default function FeaturesPage() {
         <PageHeader
           eyebrow="Features"
           title="A live agent on your desktop."
-          intro={`Talk to it and it answers, acts or recalls. It nudges you when it can help. Dictation is free. ${macFirst}`}
+          intro={`Talk to it and it writes, answers, acts or recalls. It nudges you when it can help. Free gets all of it, with weekly limits. ${macFirst}`}
         />
       </Container>
 
