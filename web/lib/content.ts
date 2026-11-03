@@ -3,7 +3,7 @@ import { brand, freeMeetingsPerMonth, freeWordsFeature, freeWordsLabel } from ".
 
 export const description = `${brand.name} is a private voice agent. Speak and it writes, answers or acts. Free dictation, and meeting notes with no bot. Speech recognition runs on your computer, and what’s on your screen stays on your Mac.`;
 
-export const heroSub = `Free dictation that runs on your computer, plus an agent that answers and acts.`;
+export const heroSub = `Free dictation that runs on your computer, plus an agent that answers, acts, and speaks up when it can help.`;
 
 /** The hero headline. The last word cycles through what one key can do. */
 export const heroLead = "Speak.";
@@ -73,19 +73,18 @@ export const meetings = {
 
 export const suggestions = {
   eyebrow: "Suggestions",
-  title: "The next step, at the right moment.",
-  body: "Turn it on and it offers one next step. Enter to accept, Esc to dismiss.",
+  title: "It speaks up, like a colleague.",
+  body: "You don't have to ask. When it notices a moment it can help, it offers once. Say “yes”, “not now”, or ignore it, and it learns what you want.",
   examples: [
-    "A long email thread: summarise it, or draft the reply",
-    "A date in an email or Slack: add it to your calendar",
+    "A long email thread: “Want me to summarise these 40 messages?”",
+    "Someone waiting on you: “Reply to Ana?”, then just say what to say",
+    "A failing test or a stack trace: the likely fix",
+    "A page in another language: translate it",
+    "A date in an email or chat: add it to your calendar",
     "A long draft: tighten it",
-    "A long page: summarise it",
-    "A product page: check the price elsewhere",
-    "Rephrasing a search: just answer it",
-    "A formula error, a stack trace or a failing test: explain it",
     "A meeting in a few minutes: prep notes",
   ],
-  promise: "Decided on your Mac. Nothing is sent unless you accept.",
+  promise: "Off until you turn it on. Decided on your computer, or by the cloud only if you choose. Nothing is sent unless you accept.",
 };
 
 /** Where Recall looks. Nothing to connect. */
@@ -146,7 +145,7 @@ export const trust = {
       k: "Hands-free is opt-in",
       v: `Off by default. It listens on your Mac, and nothing is recorded or sent until you say “Hey ${brand.name}”.`,
     },
-    { k: "Suggestions stay local", v: "Suggestions are decided on your Mac. Nothing is sent unless you accept one." },
+    { k: "Suggestions stay local", v: "Suggestions are decided on your computer unless you choose Cloud. Nothing is sent unless you accept one." },
     {
       k: "Stored on your computer, encrypted",
       v: "Screen memory is kept 7 days by default, meetings until you delete them. Delete everything with one click.",
@@ -227,7 +226,7 @@ export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
   },
   {
     label: "Proactive suggestions",
-    us: "Decided on your Mac",
+    us: "Decided on your computer",
     // wisprflow.ai/post/wispr-flow-notetaker: "Briefs you before each meeting". support.cluely.com: suggestions when you click.
     them: ["Meeting briefs", "On request, in calls"],
   },
@@ -335,7 +334,7 @@ export const featureGroups: FeatureGroup[] = [
     id: "suggestions",
     heading: "Suggestions",
     pro: true,
-    intro: "Switch it on and it offers one next step at the right moment. It is decided on your Mac, and nothing is sent unless you accept. During a meeting, nudges use only the recent transcript text.",
+    intro: "Switch it on and it speaks up when it can help, offering one next step at the right moment. Say “yes” or “not now”, and it learns. It is decided on your computer (or by the cloud only if you choose Cloud in Intelligence), and nothing is sent unless you accept. During a meeting, nudges use only the recent transcript text.",
     items: [
       { title: "Email", body: "Long threads: summarise them. Replies: dictate the gist, get the email. A date in an email or Slack message: add it to your calendar.", orb: "B4" },
       { title: "Writing", body: "A long draft: tighten it.", orb: "S4" },

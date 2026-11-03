@@ -14,7 +14,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Features",
-  description: `Everything ${brand.name} does: free on-device dictation, and with Pro a voice agent that writes, answers and acts, meeting notes with no bot, suggestions decided on your Mac, and recall with nothing to connect.`,
+  description: `Everything ${brand.name} does: free on-device dictation, and with Pro a voice agent that writes, answers and acts, meeting notes with no bot, suggestions that speak up when they can help, and recall with nothing to connect.`,
   path: "/features",
 });
 
