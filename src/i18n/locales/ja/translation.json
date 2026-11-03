@@ -7,7 +7,16 @@
     "model": "モデル",
     "quit": "終了",
     "cancel": "キャンセル",
-    "secureInputWarning": "⚠ Secure Input でショートカットがブロック中"
+    "secureInputWarning": "⚠ Secure Input でショートカットがブロック中",
+    "installerTrashTitle": "{{appName}}のインストーラをゴミ箱に入れますか？",
+    "installerTrashBody": "{{appName}}はインストール済みなので、{{file}}はもう必要ありません。",
+    "installerTrashConfirm": "ゴミ箱に入れる",
+    "installerKeep": "残す",
+    "moveToAppsTitle": "{{appName}}を「アプリケーション」に移動しますか？",
+    "moveToAppsBody": "{{appName}}はディスクイメージから実行されています。インストールされた状態を保ち、自動でアップデートされるよう「アプリケーション」フォルダに移動してください。",
+    "moveToAppsConfirm": "「アプリケーション」に移動",
+    "moveToAppsLater": "後で",
+    "moveToAppsFailed": "{{appName}}を「アプリケーション」に移動できませんでした。「アプリケーション」フォルダにドラッグしてください。"
   },
   "sidebar": {
     "home": "ホーム",
@@ -128,7 +137,8 @@
       "downloadInstead": "代わりに {{size}} をダウンロード",
       "pauses": "{{name}} は {{percent}}% で一時停止中",
       "resumeLater": "もう一度選ぶと、続きからダウンロードします",
-      "hint": "セットアップを進めている間にダウンロードします"
+      "hint": "セットアップを進めている間にダウンロードします",
+      "onDisk": "このコンピュータにあります"
     },
     "demo": {
       "title": "ショートカット1つで、どのアプリでも話して入力",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "不明なモデル",
     "pasteFailedTitle": "テキストの貼り付けに失敗しました",
     "pasteFailed": "アクティブなアプリにテキストを貼り付けられませんでした。",
-    "transcriptionFailedTitle": "文字起こしに失敗しました"
+    "transcriptionFailedTitle": "文字起こしに失敗しました",
+    "actions": {
+      "retry": "再試行",
+      "openSettings": "設定を開く"
+    },
+    "titles": {
+      "download": "ダウンロードに失敗しました",
+      "signIn": "サインインできませんでした",
+      "billing": "請求ページを開けませんでした",
+      "update": "{{appName}}をアップデートできませんでした",
+      "transcription": "文字起こしに失敗しました",
+      "recording": "録音を開始できませんでした",
+      "model": "モデルを読み込めませんでした",
+      "meeting": "会議メモが停止しました",
+      "file": "ファイルを文字起こしできませんでした",
+      "settings": "設定を保存できませんでした",
+      "shortcut": "ショートカットを設定できませんでした",
+      "generic": "問題が発生しました"
+    },
+    "friendly": {
+      "offline": "{{appName}}のサーバーに接続できませんでした。接続を確認して、もう一度お試しください。",
+      "offlineDownload": "ダウンロードサーバーに接続できませんでした。接続を確認して、もう一度お試しください。",
+      "timeout": "サーバーの応答に時間がかかりすぎました。少ししてからもう一度お試しください。",
+      "notFound": "このファイルは現在利用できません。後でもう一度お試しください。",
+      "diskFull": "このコンピュータの空き容量が足りません。空きを作ってから、もう一度お試しください。",
+      "checksum": "ダウンロードしたファイルが破損していました。もう一度お試しください。",
+      "permission": "{{appName}}にはその操作の許可がありません。システム設定で権限を確認してください。",
+      "server": "サーバーで問題が発生しました。少ししてからもう一度お試しください。",
+      "unknown": "問題が発生しました。もう一度お試しください。"
+    }
   },
   "appLanguage": {
     "title": "アプリの言語",
@@ -1467,7 +1506,7 @@
     "skip": "スキップ",
     "next": "次へ",
     "done": "完了",
-    "start": "{{appName}}を使い始める",
+    "start": "はじめる",
     "meet": {
       "title": "エージェントの紹介",
       "description": "ショートカットを押したまま話すだけ。あとは{{appName}}にお任せください。"

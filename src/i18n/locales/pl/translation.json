@@ -7,7 +7,16 @@
     "model": "Model",
     "quit": "Zamknij",
     "cancel": "Anuluj",
-    "secureInputWarning": "⚠ Skróty zablokowane przez Secure Input"
+    "secureInputWarning": "⚠ Skróty zablokowane przez Secure Input",
+    "installerTrashTitle": "Przenieść instalator {{appName}} do Kosza?",
+    "installerTrashBody": "{{appName}} jest zainstalowany, więc {{file}} nie będzie już potrzebny.",
+    "installerTrashConfirm": "Przenieś do Kosza",
+    "installerKeep": "Zachowaj",
+    "moveToAppsTitle": "Przenieść {{appName}} do Aplikacji?",
+    "moveToAppsBody": "{{appName}} działa z obrazu dysku. Przenieś go do folderu Aplikacje, aby pozostał zainstalowany i sam się aktualizował.",
+    "moveToAppsConfirm": "Przenieś do Aplikacji",
+    "moveToAppsLater": "Nie teraz",
+    "moveToAppsFailed": "Nie udało się przenieść {{appName}} do Aplikacji. Przeciągnij go do folderu Aplikacje."
   },
   "sidebar": {
     "home": "Start",
@@ -130,7 +139,8 @@
       "downloadInstead": "Pobierz zamiast tego ({{size}})",
       "pauses": "{{name}} zatrzymuje się na {{percent}}%",
       "resumeLater": "Wybierz go ponownie, aby wznowić od miejsca zatrzymania",
-      "hint": "Pobiera się, gdy kończysz konfigurację"
+      "hint": "Pobiera się, gdy kończysz konfigurację",
+      "onDisk": "Już na tym komputerze"
     },
     "demo": {
       "title": "Mów w dowolnej aplikacji, jednym skrótem",
@@ -939,7 +949,36 @@
     "modelLoadFailedUnknown": "nieznany model",
     "pasteFailedTitle": "Nie udało się wkleić tekstu",
     "pasteFailed": "Nie można było wkleić tekstu do aktywnej aplikacji.",
-    "transcriptionFailedTitle": "Transkrypcja nie powiodła się"
+    "transcriptionFailedTitle": "Transkrypcja nie powiodła się",
+    "actions": {
+      "retry": "Spróbuj ponownie",
+      "openSettings": "Otwórz ustawienia"
+    },
+    "titles": {
+      "download": "Pobieranie nie powiodło się",
+      "signIn": "Nie udało się zalogować",
+      "billing": "Nie udało się otworzyć płatności",
+      "update": "Nie udało się zaktualizować {{appName}}",
+      "transcription": "Transkrypcja nie powiodła się",
+      "recording": "Nie udało się rozpocząć nagrywania",
+      "model": "Nie udało się wczytać modelu",
+      "meeting": "Notatki ze spotkania zatrzymane",
+      "file": "Nie udało się przetranskrybować pliku",
+      "settings": "Nie udało się zapisać ustawienia",
+      "shortcut": "Nie udało się ustawić skrótu",
+      "generic": "Coś poszło nie tak"
+    },
+    "friendly": {
+      "offline": "Nie można połączyć się z serwerami {{appName}}. Sprawdź połączenie i spróbuj ponownie.",
+      "offlineDownload": "Nie można połączyć się z serwerem pobierania. Sprawdź połączenie i spróbuj ponownie.",
+      "timeout": "Serwer odpowiadał zbyt długo. Spróbuj ponownie za chwilę.",
+      "notFound": "Ten plik jest teraz niedostępny. Spróbuj później.",
+      "diskFull": "Na tym komputerze brakuje wolnego miejsca. Zwolnij trochę i spróbuj ponownie.",
+      "checksum": "Pobrany plik jest uszkodzony. Spróbuj ponownie.",
+      "permission": "{{appName}} nie ma na to pozwolenia. Sprawdź uprawnienia w ustawieniach systemu.",
+      "server": "Serwer napotkał problem. Spróbuj ponownie za chwilę.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   },
   "appLanguage": {
     "title": "Język aplikacji",
@@ -1491,7 +1530,7 @@
     "skip": "Pomiń",
     "next": "Dalej",
     "done": "Gotowe",
-    "start": "Zacznij korzystać z {{appName}}",
+    "start": "Zaczynamy",
     "meet": {
       "title": "Poznaj agenta",
       "description": "Przytrzymaj skrót i mów. {{appName}} zajmie się resztą."

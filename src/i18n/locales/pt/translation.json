@@ -7,7 +7,16 @@
     "model": "Modelo",
     "quit": "Sair",
     "cancel": "Cancelar",
-    "secureInputWarning": "⚠ Atalhos bloqueados pelo Secure Input"
+    "secureInputWarning": "⚠ Atalhos bloqueados pelo Secure Input",
+    "installerTrashTitle": "Mover o instalador do {{appName}} para a Lixeira?",
+    "installerTrashBody": "O {{appName}} já está instalado, então você não vai precisar mais de {{file}}.",
+    "installerTrashConfirm": "Mover para a Lixeira",
+    "installerKeep": "Manter",
+    "moveToAppsTitle": "Mover o {{appName}} para Aplicativos?",
+    "moveToAppsBody": "O {{appName}} está rodando da imagem de disco. Mova-o para a pasta Aplicativos para que continue instalado e se atualize sozinho.",
+    "moveToAppsConfirm": "Mover para Aplicativos",
+    "moveToAppsLater": "Agora não",
+    "moveToAppsFailed": "Não foi possível mover o {{appName}} para Aplicativos. Arraste-o para a pasta Aplicativos."
   },
   "sidebar": {
     "home": "Início",
@@ -129,7 +138,8 @@
       "downloadInstead": "Baixar {{size}} em vez disso",
       "pauses": "{{name}} pausa em {{percent}}%",
       "resumeLater": "Escolha-o de novo para continuar de onde parou",
-      "hint": "Baixa enquanto você termina a configuração"
+      "hint": "Baixa enquanto você termina a configuração",
+      "onDisk": "Já está neste computador"
     },
     "demo": {
       "title": "Fale em qualquer app, com um único atalho",
@@ -936,7 +946,36 @@
     "modelLoadFailedUnknown": "modelo desconhecido",
     "pasteFailedTitle": "Falha ao colar o texto",
     "pasteFailed": "Não foi possível colar o texto no aplicativo ativo.",
-    "transcriptionFailedTitle": "Falha na transcrição"
+    "transcriptionFailedTitle": "Falha na transcrição",
+    "actions": {
+      "retry": "Tentar novamente",
+      "openSettings": "Abrir ajustes"
+    },
+    "titles": {
+      "download": "Falha no download",
+      "signIn": "Não foi possível entrar",
+      "billing": "Não foi possível abrir o faturamento",
+      "update": "Não foi possível atualizar o {{appName}}",
+      "transcription": "Falha na transcrição",
+      "recording": "Não foi possível começar a gravar",
+      "model": "Não foi possível carregar o modelo",
+      "meeting": "As notas da reunião pararam",
+      "file": "Não foi possível transcrever o arquivo",
+      "settings": "Não foi possível salvar o ajuste",
+      "shortcut": "Não foi possível definir o atalho",
+      "generic": "Algo deu errado"
+    },
+    "friendly": {
+      "offline": "Não foi possível acessar os servidores do {{appName}}. Verifique sua conexão e tente novamente.",
+      "offlineDownload": "Não foi possível acessar o servidor de download. Verifique sua conexão e tente novamente.",
+      "timeout": "O servidor demorou demais para responder. Tente novamente em instantes.",
+      "notFound": "Esse arquivo não está disponível agora. Tente mais tarde.",
+      "diskFull": "Não há espaço livre suficiente neste computador. Libere espaço e tente novamente.",
+      "checksum": "O download chegou corrompido. Tente novamente.",
+      "permission": "O {{appName}} não tem permissão para fazer isso. Verifique as permissões nos ajustes do sistema.",
+      "server": "O servidor teve um problema. Tente novamente em instantes.",
+      "unknown": "Algo deu errado. Tente novamente."
+    }
   },
   "appLanguage": {
     "title": "Idioma da Aplicação",
@@ -1479,7 +1518,7 @@
     "skip": "Pular",
     "next": "Avançar",
     "done": "Concluir",
-    "start": "Começar a usar o {{appName}}",
+    "start": "Começar",
     "meet": {
       "title": "Conheça o agente",
       "description": "Mantenha seu atalho pressionado e fale. O {{appName}} cuida do resto."

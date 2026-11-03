@@ -11,7 +11,7 @@ import type {
   LanguageDetectionMode,
 } from "@/bindings";
 import { commands } from "@/bindings";
-import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 
 interface SettingsStore {
   settings: Settings | null;
@@ -168,7 +168,7 @@ const settingUpdaters: {
     if (result.status === "error") {
       // Rejected switches (e.g. mid-recording) roll the dropdown back via the
       // throw below; the toast tells the user why.
-      toast.error(result.error);
+      showError("settings", result.error);
       throw new Error(result.error);
     }
   },

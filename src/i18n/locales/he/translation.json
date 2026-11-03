@@ -7,7 +7,16 @@
     "model": "מודל",
     "quit": "יציאה",
     "cancel": "ביטול",
-    "secureInputWarning": "⚠ קיצורי המקשים חסומים על ידי Secure Input"
+    "secureInputWarning": "⚠ קיצורי המקשים חסומים על ידי Secure Input",
+    "installerTrashTitle": "להעביר את תוכנית ההתקנה של {{appName}} לפח?",
+    "installerTrashBody": "{{appName}} מותקן, כך שלא תצטרכו יותר את {{file}}.",
+    "installerTrashConfirm": "העבר לפח",
+    "installerKeep": "השאר",
+    "moveToAppsTitle": "להעביר את {{appName}} ליישומים?",
+    "moveToAppsBody": "{{appName}} פועל מתוך תמונת הדיסק. העבירו אותו לתיקיית היישומים כדי שיישאר מותקן ויתעדכן מעצמו.",
+    "moveToAppsConfirm": "העבר ליישומים",
+    "moveToAppsLater": "לא עכשיו",
+    "moveToAppsFailed": "לא ניתן להעביר את {{appName}} ליישומים. גררו אותו לתיקיית היישומים."
   },
   "sidebar": {
     "home": "בית",
@@ -129,7 +138,8 @@
       "downloadInstead": "הורד {{size}} במקום זאת",
       "pauses": "{{name}} נעצר ב-{{percent}}%",
       "resumeLater": "בחר בו שוב כדי להמשיך מהמקום שבו עצר",
-      "hint": "יורד בזמן שאתה מסיים את ההגדרה"
+      "hint": "יורד בזמן שאתה מסיים את ההגדרה",
+      "onDisk": "כבר נמצא במחשב הזה"
     },
     "demo": {
       "title": "דבר בכל אפליקציה, עם קיצור מקשים אחד",
@@ -936,7 +946,36 @@
     "modelLoadFailedUnknown": "מודל לא ידוע",
     "pasteFailedTitle": "ההדבקה נכשלה",
     "pasteFailed": "לא ניתן היה להדביק את הטקסט ביישום הפעיל.",
-    "transcriptionFailedTitle": "התמלול נכשל"
+    "transcriptionFailedTitle": "התמלול נכשל",
+    "actions": {
+      "retry": "ניסיון חוזר",
+      "openSettings": "פתח הגדרות"
+    },
+    "titles": {
+      "download": "ההורדה נכשלה",
+      "signIn": "לא ניתן להתחבר",
+      "billing": "לא ניתן לפתוח את החיוב",
+      "update": "לא ניתן לעדכן את {{appName}}",
+      "transcription": "התמלול נכשל",
+      "recording": "לא ניתן להתחיל הקלטה",
+      "model": "לא ניתן לטעון את המודל",
+      "meeting": "רישום הפגישה נעצר",
+      "file": "לא ניתן לתמלל את הקובץ",
+      "settings": "לא ניתן לשמור את ההגדרה",
+      "shortcut": "לא ניתן להגדיר את קיצור המקשים",
+      "generic": "משהו השתבש"
+    },
+    "friendly": {
+      "offline": "לא ניתן להגיע לשרתים של {{appName}}. בדקו את החיבור ונסו שוב.",
+      "offlineDownload": "לא ניתן להגיע לשרת ההורדות. בדקו את החיבור ונסו שוב.",
+      "timeout": "השרת התעכב יותר מדי בתגובה. נסו שוב בעוד רגע.",
+      "notFound": "הקובץ לא זמין כרגע. נסו שוב מאוחר יותר.",
+      "diskFull": "אין מספיק מקום פנוי במחשב. פנו מקום ונסו שוב.",
+      "checksum": "ההורדה הגיעה פגומה. נסו שוב.",
+      "permission": "ל-{{appName}} אין הרשאה לעשות זאת. בדקו את ההרשאות בהגדרות המערכת.",
+      "server": "בשרת אירעה בעיה. נסו שוב בעוד רגע.",
+      "unknown": "משהו השתבש. נסו שוב."
+    }
   },
   "appLanguage": {
     "title": "שפת האפליקציה",
@@ -1479,7 +1518,7 @@
     "skip": "דלג",
     "next": "הבא",
     "done": "סיום",
-    "start": "התחל להשתמש ב-{{appName}}",
+    "start": "בואו נתחיל",
     "meet": {
       "title": "הכירו את הסוכן",
       "description": "החזק את הקיצור שלך ודבר. {{appName}} מטפל בשאר."

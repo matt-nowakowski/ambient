@@ -7,7 +7,16 @@
     "model": "Model",
     "quit": "Çıkış",
     "cancel": "İptal",
-    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor"
+    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor",
+    "installerTrashTitle": "{{appName}} yükleyicisi Çöp Sepeti'ne taşınsın mı?",
+    "installerTrashBody": "{{appName}} yüklendi, artık {{file}} dosyasına ihtiyacınız yok.",
+    "installerTrashConfirm": "Çöp Sepeti'ne taşı",
+    "installerKeep": "Sakla",
+    "moveToAppsTitle": "{{appName}} Uygulamalar'a taşınsın mı?",
+    "moveToAppsBody": "{{appName}} disk görüntüsünden çalışıyor. Yüklü kalması ve kendini güncellemesi için Uygulamalar klasörüne taşıyın.",
+    "moveToAppsConfirm": "Uygulamalar'a taşı",
+    "moveToAppsLater": "Şimdi değil",
+    "moveToAppsFailed": "{{appName}} Uygulamalar'a taşınamadı. Bunun yerine Uygulamalar klasörüne sürükleyin."
   },
   "sidebar": {
     "home": "Ana Sayfa",
@@ -128,7 +137,8 @@
       "downloadInstead": "Bunun yerine {{size}} indir",
       "pauses": "{{name}} %{{percent}} noktasında duraklıyor",
       "resumeLater": "Tekrar seçtiğinizde kaldığı yerden devam eder",
-      "hint": "Kurulumu bitirirken iner"
+      "hint": "Kurulumu bitirirken iner",
+      "onDisk": "Bu bilgisayarda zaten var"
     },
     "demo": {
       "title": "Tek kısayolla her uygulamada konuşun",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "bilinmeyen model",
     "pasteFailedTitle": "Metin yapıştırılamadı",
     "pasteFailed": "Metin etkin uygulamaya yapıştırılamadı.",
-    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu"
+    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu",
+    "actions": {
+      "retry": "Tekrar dene",
+      "openSettings": "Ayarları aç"
+    },
+    "titles": {
+      "download": "İndirme başarısız oldu",
+      "signIn": "Giriş yapılamadı",
+      "billing": "Faturalandırma açılamadı",
+      "update": "{{appName}} güncellenemedi",
+      "transcription": "Yazıya dökme başarısız oldu",
+      "recording": "Kayıt başlatılamadı",
+      "model": "Model yüklenemedi",
+      "meeting": "Toplantı notları durdu",
+      "file": "Dosya yazıya dökülemedi",
+      "settings": "Ayar kaydedilemedi",
+      "shortcut": "Kısayol ayarlanamadı",
+      "generic": "Bir şeyler ters gitti"
+    },
+    "friendly": {
+      "offline": "{{appName}} sunucularına ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.",
+      "offlineDownload": "İndirme sunucusuna ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.",
+      "timeout": "Sunucu çok geç yanıt verdi. Birazdan tekrar deneyin.",
+      "notFound": "Bu dosya şu anda kullanılamıyor. Daha sonra tekrar deneyin.",
+      "diskFull": "Bu bilgisayarda yeterli boş alan yok. Biraz yer açıp tekrar deneyin.",
+      "checksum": "İndirilen dosya bozuk geldi. Tekrar deneyin.",
+      "permission": "{{appName}} bunu yapma iznine sahip değil. Sistem ayarlarından izinlerini kontrol edin.",
+      "server": "Sunucuda bir sorun oluştu. Birazdan tekrar deneyin.",
+      "unknown": "Bir şeyler ters gitti. Tekrar deneyin."
+    }
   },
   "appLanguage": {
     "title": "Uygulama Dili",
@@ -1467,7 +1506,7 @@
     "skip": "Atla",
     "next": "İleri",
     "done": "Bitti",
-    "start": "{{appName}} kullanmaya başla",
+    "start": "Başlayın",
     "meet": {
       "title": "Aracıyla tanışın",
       "description": "Kısayolunuzu basılı tutun ve konuşun. Gerisini {{appName}} halleder."

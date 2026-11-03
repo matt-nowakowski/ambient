@@ -7,7 +7,16 @@
     "model": "Modello",
     "quit": "Esci",
     "cancel": "Annulla",
-    "secureInputWarning": "⚠ Scorciatoie bloccate da Secure Input"
+    "secureInputWarning": "⚠ Scorciatoie bloccate da Secure Input",
+    "installerTrashTitle": "Spostare il programma di installazione di {{appName}} nel Cestino?",
+    "installerTrashBody": "{{appName}} è installato, quindi {{file}} non ti servirà più.",
+    "installerTrashConfirm": "Sposta nel Cestino",
+    "installerKeep": "Tieni",
+    "moveToAppsTitle": "Spostare {{appName}} in Applicazioni?",
+    "moveToAppsBody": "{{appName}} è in esecuzione dalla sua immagine disco. Spostalo nella cartella Applicazioni perché resti installato e si aggiorni da solo.",
+    "moveToAppsConfirm": "Sposta in Applicazioni",
+    "moveToAppsLater": "Non ora",
+    "moveToAppsFailed": "Impossibile spostare {{appName}} in Applicazioni. Trascinalo nella cartella Applicazioni."
   },
   "sidebar": {
     "home": "Home",
@@ -129,7 +138,8 @@
       "downloadInstead": "Scarica invece {{size}}",
       "pauses": "{{name}} si ferma al {{percent}}%",
       "resumeLater": "Sceglilo di nuovo per riprendere da dove si era fermato",
-      "hint": "Si scarica mentre completi la configurazione"
+      "hint": "Si scarica mentre completi la configurazione",
+      "onDisk": "Già su questo computer"
     },
     "demo": {
       "title": "Parla in qualsiasi app, con una sola scorciatoia",
@@ -936,7 +946,36 @@
     "modelLoadFailedUnknown": "modello sconosciuto",
     "pasteFailedTitle": "Impossibile incollare il testo",
     "pasteFailed": "Non è stato possibile incollare il testo nell'applicazione attiva.",
-    "transcriptionFailedTitle": "Trascrizione non riuscita"
+    "transcriptionFailedTitle": "Trascrizione non riuscita",
+    "actions": {
+      "retry": "Riprova",
+      "openSettings": "Apri le impostazioni"
+    },
+    "titles": {
+      "download": "Download non riuscito",
+      "signIn": "Accesso non riuscito",
+      "billing": "Impossibile aprire la fatturazione",
+      "update": "Impossibile aggiornare {{appName}}",
+      "transcription": "Trascrizione non riuscita",
+      "recording": "Impossibile avviare la registrazione",
+      "model": "Impossibile caricare il modello",
+      "meeting": "Note della riunione interrotte",
+      "file": "Impossibile trascrivere il file",
+      "settings": "Impossibile salvare l'impostazione",
+      "shortcut": "Impossibile impostare la scorciatoia",
+      "generic": "Qualcosa è andato storto"
+    },
+    "friendly": {
+      "offline": "Impossibile raggiungere i server di {{appName}}. Controlla la connessione e riprova.",
+      "offlineDownload": "Impossibile raggiungere il server di download. Controlla la connessione e riprova.",
+      "timeout": "Il server ha impiegato troppo a rispondere. Riprova tra poco.",
+      "notFound": "Il file non è disponibile al momento. Riprova più tardi.",
+      "diskFull": "Non c'è abbastanza spazio libero su questo computer. Liberane un po' e riprova.",
+      "checksum": "Il download è arrivato danneggiato. Riprova.",
+      "permission": "{{appName}} non ha il permesso di farlo. Controlla i permessi nelle impostazioni di sistema.",
+      "server": "Il server ha avuto un problema. Riprova tra poco.",
+      "unknown": "Qualcosa è andato storto. Riprova."
+    }
   },
   "appLanguage": {
     "title": "Lingua Applicazione",
@@ -1479,7 +1518,7 @@
     "skip": "Salta",
     "next": "Avanti",
     "done": "Fine",
-    "start": "Inizia a usare {{appName}}",
+    "start": "Inizia",
     "meet": {
       "title": "Ecco l'agente",
       "description": "Tieni premuta la scorciatoia e parla. {{appName}} pensa al resto."

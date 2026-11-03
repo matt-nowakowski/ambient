@@ -7,7 +7,16 @@
     "model": "Modell",
     "quit": "Avsluta",
     "cancel": "Avbryt",
-    "secureInputWarning": "⚠ Kortkommandon blockeras av Secure Input"
+    "secureInputWarning": "⚠ Kortkommandon blockeras av Secure Input",
+    "installerTrashTitle": "Flytta installationsprogrammet för {{appName}} till papperskorgen?",
+    "installerTrashBody": "{{appName}} är installerat, så du behöver inte {{file}} längre.",
+    "installerTrashConfirm": "Flytta till papperskorgen",
+    "installerKeep": "Behåll",
+    "moveToAppsTitle": "Flytta {{appName}} till Program?",
+    "moveToAppsBody": "{{appName}} körs från skivavbilden. Flytta det till mappen Program så att det förblir installerat och uppdaterar sig självt.",
+    "moveToAppsConfirm": "Flytta till Program",
+    "moveToAppsLater": "Inte nu",
+    "moveToAppsFailed": "Kunde inte flytta {{appName}} till Program. Dra det till mappen Program i stället."
   },
   "sidebar": {
     "home": "Hem",
@@ -128,7 +137,8 @@
       "downloadInstead": "Ladda ner {{size}} i stället",
       "pauses": "{{name}} pausas vid {{percent}} %",
       "resumeLater": "Välj den igen för att fortsätta där den slutade",
-      "hint": "Laddas ner medan du slutför installationen"
+      "hint": "Laddas ner medan du slutför installationen",
+      "onDisk": "Finns redan på datorn"
     },
     "demo": {
       "title": "Tala i vilken app som helst, med en enda genväg",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "okänd modell",
     "pasteFailedTitle": "Det gick inte att klistra in texten",
     "pasteFailed": "Texten kunde inte klistras in i det aktiva programmet.",
-    "transcriptionFailedTitle": "Transkriptionen misslyckades"
+    "transcriptionFailedTitle": "Transkriptionen misslyckades",
+    "actions": {
+      "retry": "Försök igen",
+      "openSettings": "Öppna inställningar"
+    },
+    "titles": {
+      "download": "Nedladdningen misslyckades",
+      "signIn": "Kunde inte logga in",
+      "billing": "Kunde inte öppna fakturering",
+      "update": "Kunde inte uppdatera {{appName}}",
+      "transcription": "Transkriberingen misslyckades",
+      "recording": "Kunde inte börja spela in",
+      "model": "Kunde inte läsa in modellen",
+      "meeting": "Mötesanteckningarna stoppades",
+      "file": "Kunde inte transkribera filen",
+      "settings": "Kunde inte spara inställningen",
+      "shortcut": "Kunde inte ställa in kortkommandot",
+      "generic": "Något gick fel"
+    },
+    "friendly": {
+      "offline": "Kunde inte nå {{appName}}s servrar. Kontrollera anslutningen och försök igen.",
+      "offlineDownload": "Kunde inte nå nedladdningsservern. Kontrollera anslutningen och försök igen.",
+      "timeout": "Servern tog för lång tid på sig. Försök igen om en stund.",
+      "notFound": "Filen är inte tillgänglig just nu. Försök igen senare.",
+      "diskFull": "Det finns inte tillräckligt med ledigt utrymme på datorn. Frigör utrymme och försök igen.",
+      "checksum": "Nedladdningen kom fram skadad. Försök igen.",
+      "permission": "{{appName}} har inte behörighet att göra det. Kontrollera behörigheterna i systeminställningarna.",
+      "server": "Servern stötte på ett problem. Försök igen om en stund.",
+      "unknown": "Något gick fel. Försök igen."
+    }
   },
   "appLanguage": {
     "title": "Applikationsspråk",
@@ -1467,7 +1506,7 @@
     "skip": "Hoppa över",
     "next": "Nästa",
     "done": "Klar",
-    "start": "Börja använda {{appName}}",
+    "start": "Kom igång",
     "meet": {
       "title": "Möt agenten",
       "description": "Håll ned kortkommandot och prata. {{appName}} sköter resten."

@@ -7,7 +7,16 @@
     "model": "模型",
     "quit": "結束",
     "cancel": "取消",
-    "secureInputWarning": "⚠ 快捷鍵被 Secure Input 阻擋"
+    "secureInputWarning": "⚠ 快捷鍵被 Secure Input 阻擋",
+    "installerTrashTitle": "要將 {{appName}} 安裝程式移到垃圾桶嗎？",
+    "installerTrashBody": "{{appName}} 已安裝，你不再需要 {{file}}。",
+    "installerTrashConfirm": "移到垃圾桶",
+    "installerKeep": "保留",
+    "moveToAppsTitle": "要將 {{appName}} 移到「應用程式」嗎？",
+    "moveToAppsBody": "{{appName}} 正從磁碟映像檔執行。請將它移到「應用程式」檔案夾，以保持安裝並自動更新。",
+    "moveToAppsConfirm": "移到「應用程式」",
+    "moveToAppsLater": "稍後再說",
+    "moveToAppsFailed": "無法將 {{appName}} 移到「應用程式」。請手動將它拖到「應用程式」檔案夾。"
   },
   "sidebar": {
     "home": "首頁",
@@ -128,7 +137,8 @@
       "downloadInstead": "改為下載 {{size}}",
       "pauses": "{{name}} 會在 {{percent}}% 暫停",
       "resumeLater": "再次選擇它即可從中斷處繼續",
-      "hint": "會在您完成設定的同時下載"
+      "hint": "會在您完成設定的同時下載",
+      "onDisk": "已在這台電腦上"
     },
     "demo": {
       "title": "一個快捷鍵，在任何應用程式中開口說話",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "未知模型",
     "pasteFailedTitle": "貼上文字失敗",
     "pasteFailed": "無法將文字貼上至目前作用中的應用程式。",
-    "transcriptionFailedTitle": "轉錄失敗"
+    "transcriptionFailedTitle": "轉錄失敗",
+    "actions": {
+      "retry": "重試",
+      "openSettings": "開啟設定"
+    },
+    "titles": {
+      "download": "下載失敗",
+      "signIn": "無法登入",
+      "billing": "無法開啟帳單",
+      "update": "無法更新 {{appName}}",
+      "transcription": "轉寫失敗",
+      "recording": "無法開始錄音",
+      "model": "無法載入模型",
+      "meeting": "會議筆記已停止",
+      "file": "無法轉寫該檔案",
+      "settings": "無法儲存該設定",
+      "shortcut": "無法設定快速鍵",
+      "generic": "發生問題"
+    },
+    "friendly": {
+      "offline": "無法連線到 {{appName}} 的伺服器。請檢查網路連線後再試一次。",
+      "offlineDownload": "無法連線到下載伺服器。請檢查網路連線後再試一次。",
+      "timeout": "伺服器回應時間過長。請稍後再試一次。",
+      "notFound": "該檔案目前無法使用。請稍後再試。",
+      "diskFull": "這台電腦的可用空間不足。請釋放一些空間後再試一次。",
+      "checksum": "下載的檔案已損毀。請再試一次。",
+      "permission": "{{appName}} 沒有執行此操作的權限。請在系統設定中檢查其權限。",
+      "server": "伺服器發生問題。請稍後再試一次。",
+      "unknown": "發生問題。請再試一次。"
+    }
   },
   "appLanguage": {
     "title": "應用程式語言",
@@ -1467,7 +1506,7 @@
     "skip": "略過",
     "next": "下一步",
     "done": "完成",
-    "start": "開始使用 {{appName}}",
+    "start": "開始使用",
     "meet": {
       "title": "認識智慧代理",
       "description": "按住快捷鍵說話。其餘交給 {{appName}}。"
@@ -1555,10 +1594,7 @@
       },
       "recall": {
         "title": "回想",
-        "examples": [
-          "我昨天說了什麼關於定價的事？",
-          "找出第三季的簡報。"
-        ],
+        "examples": ["我昨天說了什麼關於定價的事？", "找出第三季的簡報。"],
         "hint": "你說過、看過或做過的事。"
       },
       "suggestions": {

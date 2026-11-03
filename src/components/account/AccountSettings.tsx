@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 import { Check } from "lucide-react";
 import { commands } from "@/bindings";
 import { Button } from "../ui/Button";
@@ -34,7 +34,7 @@ export const AccountSettings: React.FC = () => {
     const result = await commands.billingPortalUrl();
     setBusy(false);
     if (result.status === "ok") openUrl(result.data);
-    else toast.error(result.error);
+    else showError("billing", result.error, { retry: manageBilling });
   };
 
   return (

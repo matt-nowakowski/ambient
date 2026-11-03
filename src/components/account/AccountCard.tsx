@@ -30,6 +30,7 @@ import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SuccessCheck, TextSwap } from "../ui/Transitions";
 import { spring } from "../ui/Motion";
 import { openUpgrade } from "./usePlan";
+import { friendlyMessage, logError } from "@/lib/errors";
 
 const BURST = 18;
 const CODE_LENGTH = 6;
@@ -166,7 +167,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           : t(`account.card.errors.${kind}`),
       );
     } else {
-      setError(raw);
+      logError("signIn", raw);
+      setError(friendlyMessage(raw, "signIn"));
     }
   };
 

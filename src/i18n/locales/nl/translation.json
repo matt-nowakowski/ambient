@@ -7,7 +7,16 @@
     "model": "Model",
     "quit": "Afsluiten",
     "cancel": "Annuleren",
-    "secureInputWarning": "⚠ Sneltoetsen geblokkeerd door Secure Input"
+    "secureInputWarning": "⚠ Sneltoetsen geblokkeerd door Secure Input",
+    "installerTrashTitle": "Het installatieprogramma van {{appName}} naar de prullenmand verplaatsen?",
+    "installerTrashBody": "{{appName}} is geïnstalleerd, dus je hebt {{file}} niet meer nodig.",
+    "installerTrashConfirm": "Naar prullenmand",
+    "installerKeep": "Bewaren",
+    "moveToAppsTitle": "{{appName}} naar Apps verplaatsen?",
+    "moveToAppsBody": "{{appName}} draait vanaf de schijfkopie. Verplaats het naar je map Apps zodat het geïnstalleerd blijft en zichzelf bijwerkt.",
+    "moveToAppsConfirm": "Naar Apps verplaatsen",
+    "moveToAppsLater": "Niet nu",
+    "moveToAppsFailed": "Kan {{appName}} niet naar Apps verplaatsen. Sleep het in plaats daarvan naar de map Apps."
   },
   "sidebar": {
     "home": "Home",
@@ -128,7 +137,8 @@
       "downloadInstead": "In plaats daarvan {{size}} downloaden",
       "pauses": "{{name}} pauzeert bij {{percent}}%",
       "resumeLater": "Kies het opnieuw om verder te gaan waar je was gebleven",
-      "hint": "Wordt gedownload terwijl je de installatie afrondt"
+      "hint": "Wordt gedownload terwijl je de installatie afrondt",
+      "onDisk": "Al op deze computer"
     },
     "demo": {
       "title": "Praat in elke app, met één sneltoets",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "onbekend model",
     "pasteFailedTitle": "Tekst plakken mislukt",
     "pasteFailed": "Tekst kon niet worden geplakt in de actieve applicatie.",
-    "transcriptionFailedTitle": "Transcriptie mislukt"
+    "transcriptionFailedTitle": "Transcriptie mislukt",
+    "actions": {
+      "retry": "Opnieuw proberen",
+      "openSettings": "Instellingen openen"
+    },
+    "titles": {
+      "download": "Downloaden mislukt",
+      "signIn": "Inloggen mislukt",
+      "billing": "Facturering kon niet worden geopend",
+      "update": "{{appName}} kon niet worden bijgewerkt",
+      "transcription": "Transcriptie mislukt",
+      "recording": "Opnemen kon niet starten",
+      "model": "Model kon niet worden geladen",
+      "meeting": "Vergadernotities gestopt",
+      "file": "Bestand kon niet worden getranscribeerd",
+      "settings": "Instelling kon niet worden bewaard",
+      "shortcut": "Sneltoets kon niet worden ingesteld",
+      "generic": "Er ging iets mis"
+    },
+    "friendly": {
+      "offline": "Kan de servers van {{appName}} niet bereiken. Controleer je verbinding en probeer het opnieuw.",
+      "offlineDownload": "Kan de downloadserver niet bereiken. Controleer je verbinding en probeer het opnieuw.",
+      "timeout": "De server deed er te lang over. Probeer het zo opnieuw.",
+      "notFound": "Dat bestand is nu niet beschikbaar. Probeer het later opnieuw.",
+      "diskFull": "Er is niet genoeg vrije ruimte op deze computer. Maak ruimte vrij en probeer het opnieuw.",
+      "checksum": "De download is beschadigd aangekomen. Probeer het opnieuw.",
+      "permission": "{{appName}} mag dat niet doen. Controleer de toestemmingen in je systeeminstellingen.",
+      "server": "De server had een probleem. Probeer het zo opnieuw.",
+      "unknown": "Er ging iets mis. Probeer het opnieuw."
+    }
   },
   "appLanguage": {
     "title": "Interfacetaal",
@@ -1467,7 +1506,7 @@
     "skip": "Overslaan",
     "next": "Volgende",
     "done": "Klaar",
-    "start": "Aan de slag met {{appName}}",
+    "start": "Aan de slag",
     "meet": {
       "title": "Maak kennis met de agent",
       "description": "Houd je sneltoets ingedrukt en praat. {{appName}} doet de rest."

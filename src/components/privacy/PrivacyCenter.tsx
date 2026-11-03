@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 import {
   ArrowUpRight,
   AudioLines,
@@ -128,7 +129,7 @@ export const PrivacyCenter: React.FC = () => {
   const save = async (next: AgentSettings) => {
     setStatus({ ...status, settings: next });
     const r = await commands.setAgentSettings(next);
-    if (r.status === "error") toast.error(r.error);
+    if (r.status === "error") showError("settings", r.error);
     refresh();
   };
 
@@ -163,7 +164,7 @@ export const PrivacyCenter: React.FC = () => {
   const deleteAll = async () => {
     const r = await commands.deleteAllAgentData();
     if (r.status === "ok") toast.success(t("privacy.stored.deletedAll"));
-    else toast.error(r.error);
+    else showError("settings", r.error, { retry: deleteAll });
     refresh();
   };
 

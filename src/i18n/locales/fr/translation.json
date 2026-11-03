@@ -7,7 +7,16 @@
     "model": "Modèle",
     "quit": "Quitter",
     "cancel": "Annuler",
-    "secureInputWarning": "⚠ Raccourcis bloqués par Secure Input"
+    "secureInputWarning": "⚠ Raccourcis bloqués par Secure Input",
+    "installerTrashTitle": "Mettre le programme d'installation de {{appName}} à la Corbeille ?",
+    "installerTrashBody": "{{appName}} est installé : vous n'aurez plus besoin de {{file}}.",
+    "installerTrashConfirm": "Mettre à la Corbeille",
+    "installerKeep": "Conserver",
+    "moveToAppsTitle": "Déplacer {{appName}} dans Applications ?",
+    "moveToAppsBody": "{{appName}} s'exécute depuis son image disque. Déplacez-le dans votre dossier Applications pour qu'il reste installé et se mette à jour tout seul.",
+    "moveToAppsConfirm": "Déplacer dans Applications",
+    "moveToAppsLater": "Plus tard",
+    "moveToAppsFailed": "Impossible de déplacer {{appName}} dans Applications. Faites-le glisser dans le dossier Applications."
   },
   "sidebar": {
     "home": "Accueil",
@@ -129,7 +138,8 @@
       "downloadInstead": "Télécharger {{size}} à la place",
       "pauses": "{{name}} se met en pause à {{percent}} %",
       "resumeLater": "Sélectionnez-le à nouveau pour reprendre là où il s'était arrêté",
-      "hint": "Se télécharge pendant que vous terminez la configuration"
+      "hint": "Se télécharge pendant que vous terminez la configuration",
+      "onDisk": "Déjà sur cet ordinateur"
     },
     "demo": {
       "title": "Parlez dans n'importe quelle app, avec un seul raccourci",
@@ -936,7 +946,36 @@
     "modelLoadFailedUnknown": "modèle inconnu",
     "pasteFailedTitle": "Échec du collage du texte",
     "pasteFailed": "Le texte n'a pas pu être collé dans l'application active.",
-    "transcriptionFailedTitle": "Échec de la transcription"
+    "transcriptionFailedTitle": "Échec de la transcription",
+    "actions": {
+      "retry": "Réessayer",
+      "openSettings": "Ouvrir les réglages"
+    },
+    "titles": {
+      "download": "Échec du téléchargement",
+      "signIn": "Connexion impossible",
+      "billing": "Impossible d'ouvrir la facturation",
+      "update": "Impossible de mettre à jour {{appName}}",
+      "transcription": "Échec de la transcription",
+      "recording": "Impossible de lancer l'enregistrement",
+      "model": "Impossible de charger le modèle",
+      "meeting": "Notes de réunion interrompues",
+      "file": "Impossible de transcrire le fichier",
+      "settings": "Impossible d'enregistrer ce réglage",
+      "shortcut": "Impossible de définir le raccourci",
+      "generic": "Un problème est survenu"
+    },
+    "friendly": {
+      "offline": "Impossible de joindre les serveurs de {{appName}}. Vérifiez votre connexion et réessayez.",
+      "offlineDownload": "Impossible de joindre le serveur de téléchargement. Vérifiez votre connexion et réessayez.",
+      "timeout": "Le serveur a mis trop de temps à répondre. Réessayez dans un instant.",
+      "notFound": "Ce fichier n'est pas disponible pour le moment. Réessayez plus tard.",
+      "diskFull": "L'espace libre est insuffisant sur cet ordinateur. Libérez-en et réessayez.",
+      "checksum": "Le téléchargement est arrivé endommagé. Réessayez.",
+      "permission": "{{appName}} n'a pas l'autorisation de faire cela. Vérifiez ses autorisations dans les réglages du système.",
+      "server": "Le serveur a rencontré un problème. Réessayez dans un instant.",
+      "unknown": "Un problème est survenu. Réessayez."
+    }
   },
   "appLanguage": {
     "title": "Langue de l'application",
@@ -1479,7 +1518,7 @@
     "skip": "Passer",
     "next": "Suivant",
     "done": "Terminé",
-    "start": "Commencer à utiliser {{appName}}",
+    "start": "C'est parti",
     "meet": {
       "title": "Découvrez l'agent",
       "description": "Maintenez votre raccourci et parlez. {{appName}} s'occupe du reste."

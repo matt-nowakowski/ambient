@@ -7,7 +7,16 @@
     "model": "Model",
     "quit": "Ukončit",
     "cancel": "Zrušit",
-    "secureInputWarning": "⚠ Zkratky blokuje Secure Input"
+    "secureInputWarning": "⚠ Zkratky blokuje Secure Input",
+    "installerTrashTitle": "Přesunout instalátor {{appName}} do koše?",
+    "installerTrashBody": "{{appName}} je nainstalovaný, takže {{file}} už nebudete potřebovat.",
+    "installerTrashConfirm": "Přesunout do koše",
+    "installerKeep": "Ponechat",
+    "moveToAppsTitle": "Přesunout {{appName}} do Aplikací?",
+    "moveToAppsBody": "{{appName}} běží z obrazu disku. Přesuňte ho do složky Aplikace, aby zůstal nainstalovaný a sám se aktualizoval.",
+    "moveToAppsConfirm": "Přesunout do Aplikací",
+    "moveToAppsLater": "Teď ne",
+    "moveToAppsFailed": "{{appName}} se nepodařilo přesunout do Aplikací. Přetáhněte ho do složky Aplikace."
   },
   "sidebar": {
     "home": "Domů",
@@ -130,7 +139,8 @@
       "downloadInstead": "Stáhnout raději {{size}}",
       "pauses": "{{name}} se pozastaví na {{percent}} %",
       "resumeLater": "Vyberte jej znovu a stahování naváže tam, kde skončilo",
-      "hint": "Stahuje se, zatímco dokončujete nastavení"
+      "hint": "Stahuje se, zatímco dokončujete nastavení",
+      "onDisk": "Už je v tomto počítači"
     },
     "demo": {
       "title": "Mluvte v jakékoli aplikaci jedinou zkratkou",
@@ -939,7 +949,36 @@
     "modelLoadFailedUnknown": "neznámý model",
     "pasteFailedTitle": "Vložení textu se nezdařilo",
     "pasteFailed": "Text nebylo možné vložit do aktivní aplikace.",
-    "transcriptionFailedTitle": "Přepis selhal"
+    "transcriptionFailedTitle": "Přepis selhal",
+    "actions": {
+      "retry": "Zkusit znovu",
+      "openSettings": "Otevřít nastavení"
+    },
+    "titles": {
+      "download": "Stahování selhalo",
+      "signIn": "Přihlášení se nezdařilo",
+      "billing": "Fakturaci se nepodařilo otevřít",
+      "update": "{{appName}} se nepodařilo aktualizovat",
+      "transcription": "Přepis selhal",
+      "recording": "Nahrávání se nepodařilo spustit",
+      "model": "Model se nepodařilo načíst",
+      "meeting": "Poznámky ze schůzky se zastavily",
+      "file": "Soubor se nepodařilo přepsat",
+      "settings": "Nastavení se nepodařilo uložit",
+      "shortcut": "Zkratku se nepodařilo nastavit",
+      "generic": "Něco se pokazilo"
+    },
+    "friendly": {
+      "offline": "Nepodařilo se spojit se servery {{appName}}. Zkontrolujte připojení a zkuste to znovu.",
+      "offlineDownload": "Nepodařilo se spojit se serverem pro stahování. Zkontrolujte připojení a zkuste to znovu.",
+      "timeout": "Server odpovídal příliš dlouho. Zkuste to za chvíli znovu.",
+      "notFound": "Soubor teď není k dispozici. Zkuste to později.",
+      "diskFull": "V počítači není dost volného místa. Uvolněte trochu a zkuste to znovu.",
+      "checksum": "Stažený soubor je poškozený. Zkuste to znovu.",
+      "permission": "{{appName}} k tomu nemá oprávnění. Zkontrolujte oprávnění v nastavení systému.",
+      "server": "Na serveru nastal problém. Zkuste to za chvíli znovu.",
+      "unknown": "Něco se pokazilo. Zkuste to znovu."
+    }
   },
   "appLanguage": {
     "title": "Jazyk aplikace",
@@ -1491,7 +1530,7 @@
     "skip": "Přeskočit",
     "next": "Další",
     "done": "Hotovo",
-    "start": "Začít používat {{appName}}",
+    "start": "Začít",
     "meet": {
       "title": "Seznamte se s agentem",
       "description": "Podržte zkratku a mluvte. {{appName}} zařídí zbytek."

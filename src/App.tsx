@@ -15,6 +15,7 @@ import {
   checkMicrophonePermission,
 } from "tauri-plugin-macos-permissions-api";
 import { ModelStateEvent, RecordingErrorEvent } from "./lib/types/events";
+import { showError } from "./lib/errors";
 import "./App.css";
 import SecureInputWarning from "./components/SecureInputWarning";
 import Footer from "./components/footer";
@@ -208,9 +209,7 @@ function App() {
           description: t("errors.noInputDevice"),
         });
       } else {
-        toast.error(
-          t("errors.recordingFailed", { error: detail ?? "Unknown error" }),
-        );
+        showError("recording", detail ?? error_type);
       }
     });
     return () => {
@@ -248,11 +247,12 @@ function App() {
   }, [t]);
 
   // Listen for transcription failures and show a toast.
-  // The payload is the backend error message (also logged to ambient.log).
+  // The payload is the backend error message (also logged to ambient.log);
+  // the toast says it in plain words.
   useEffect(() => {
     const unlisten = listen<string>("transcription-error", (event) => {
-      toast.error(t("errors.transcriptionFailedTitle"), {
-        description: event.payload,
+      showError("transcription", event.payload, {
+        title: t("errors.transcriptionFailedTitle"),
       });
     });
     return () => {
@@ -264,15 +264,12 @@ function App() {
   useEffect(() => {
     const unlisten = listen<ModelStateEvent>("model-state-changed", (event) => {
       if (event.payload.event_type === "loading_failed") {
-        toast.error(
-          t("errors.modelLoadFailed", {
+        showError("model", event.payload.error, {
+          title: t("errors.modelLoadFailed", {
             model:
               event.payload.model_name || t("errors.modelLoadFailedUnknown"),
           }),
-          {
-            description: event.payload.error,
-          },
-        );
+        });
       }
     });
     return () => {

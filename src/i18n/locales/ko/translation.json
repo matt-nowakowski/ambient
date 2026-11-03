@@ -7,7 +7,16 @@
     "model": "모델",
     "quit": "종료",
     "cancel": "취소",
-    "secureInputWarning": "⚠ Secure Input으로 단축키가 차단됨"
+    "secureInputWarning": "⚠ Secure Input으로 단축키가 차단됨",
+    "installerTrashTitle": "{{appName}} 설치 프로그램을 휴지통으로 옮길까요?",
+    "installerTrashBody": "{{appName}}이(가) 설치되었으므로 {{file}}은(는) 더 이상 필요하지 않습니다.",
+    "installerTrashConfirm": "휴지통으로 이동",
+    "installerKeep": "유지",
+    "moveToAppsTitle": "{{appName}}을(를) 응용 프로그램으로 옮길까요?",
+    "moveToAppsBody": "{{appName}}이(가) 디스크 이미지에서 실행 중입니다. 설치 상태를 유지하고 자동으로 업데이트되도록 응용 프로그램 폴더로 옮기세요.",
+    "moveToAppsConfirm": "응용 프로그램으로 이동",
+    "moveToAppsLater": "나중에",
+    "moveToAppsFailed": "{{appName}}을(를) 응용 프로그램으로 옮길 수 없습니다. 응용 프로그램 폴더로 직접 드래그하세요."
   },
   "sidebar": {
     "home": "홈",
@@ -128,7 +137,8 @@
       "downloadInstead": "대신 {{size}} 다운로드",
       "pauses": "{{name}}은(는) {{percent}}%에서 일시 중지됩니다",
       "resumeLater": "다시 선택하면 중단된 곳에서 이어받습니다",
-      "hint": "설정을 마치는 동안 다운로드됩니다"
+      "hint": "설정을 마치는 동안 다운로드됩니다",
+      "onDisk": "이미 이 컴퓨터에 있음"
     },
     "demo": {
       "title": "단축키 하나로 어떤 앱에서든 말하세요",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "알 수 없는 모델",
     "pasteFailedTitle": "텍스트 붙여넣기 실패",
     "pasteFailed": "활성 애플리케이션에 텍스트를 붙여넣을 수 없습니다.",
-    "transcriptionFailedTitle": "음성 인식 실패"
+    "transcriptionFailedTitle": "음성 인식 실패",
+    "actions": {
+      "retry": "다시 시도",
+      "openSettings": "설정 열기"
+    },
+    "titles": {
+      "download": "다운로드 실패",
+      "signIn": "로그인할 수 없음",
+      "billing": "결제 페이지를 열 수 없음",
+      "update": "{{appName}}을(를) 업데이트할 수 없음",
+      "transcription": "받아쓰기 실패",
+      "recording": "녹음을 시작할 수 없음",
+      "model": "모델을 불러올 수 없음",
+      "meeting": "회의 메모가 중지됨",
+      "file": "파일을 받아쓸 수 없음",
+      "settings": "설정을 저장할 수 없음",
+      "shortcut": "단축키를 설정할 수 없음",
+      "generic": "문제가 발생했습니다"
+    },
+    "friendly": {
+      "offline": "{{appName}} 서버에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+      "offlineDownload": "다운로드 서버에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+      "timeout": "서버 응답이 너무 오래 걸렸습니다. 잠시 후 다시 시도하세요.",
+      "notFound": "지금은 이 파일을 사용할 수 없습니다. 나중에 다시 시도하세요.",
+      "diskFull": "이 컴퓨터에 여유 공간이 부족합니다. 공간을 확보한 뒤 다시 시도하세요.",
+      "checksum": "다운로드한 파일이 손상되었습니다. 다시 시도하세요.",
+      "permission": "{{appName}}에 해당 작업 권한이 없습니다. 시스템 설정에서 권한을 확인하세요.",
+      "server": "서버에 문제가 발생했습니다. 잠시 후 다시 시도하세요.",
+      "unknown": "문제가 발생했습니다. 다시 시도하세요."
+    }
   },
   "appLanguage": {
     "title": "애플리케이션 언어",
@@ -1467,7 +1506,7 @@
     "skip": "건너뛰기",
     "next": "다음",
     "done": "완료",
-    "start": "{{appName}} 사용 시작",
+    "start": "시작하기",
     "meet": {
       "title": "에이전트를 소개합니다",
       "description": "단축키를 누른 채 말하세요. 나머지는 {{appName}}이(가) 알아서 합니다."
@@ -1555,10 +1594,7 @@
       },
       "recall": {
         "title": "기억하기",
-        "examples": [
-          "어제 가격에 대해 뭐라고 했지?",
-          "3분기 자료 찾아 줘."
-        ],
+        "examples": ["어제 가격에 대해 뭐라고 했지?", "3분기 자료 찾아 줘."],
         "hint": "내가 말하고, 보고, 작업한 내용."
       },
       "suggestions": {
