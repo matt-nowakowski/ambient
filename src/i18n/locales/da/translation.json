@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "Indstillinger...",
-    "checkUpdates": "Tjek for opdateringer...",
+    "settings": "Indstillinger…",
+    "checkUpdates": "Tjek for opdateringer…",
     "copyLastTranscript": "Kopiér seneste transskription",
     "unloadModel": "Frigør model",
     "model": "Model",
@@ -43,7 +43,7 @@
       "failed": "Download mislykkedes",
       "retry": "Prøv igen",
       "chooseAnother": "Vælg en anden model",
-      "download": "Download modeller ({{size}})",
+      "download": "Hent modeller ({{size}})",
       "continue": "Fortsæt"
     },
     "errors": {
@@ -55,7 +55,7 @@
         "why": "Så {{appName}} kan høre dig. Din stemme forlader aldrig denne computer."
       },
       "accessibility": {
-        "name": "Hjælpemidler",
+        "name": "Tilgængelighed",
         "why": "Så din genvej virker overalt, og teksten havner der, hvor du skriver."
       },
       "errors": {
@@ -83,8 +83,8 @@
       "progress": "Trin {{step}} af {{count}}"
     },
     "welcome": {
-      "title": "Tal i stedet for at skrive, i enhver app",
-      "subtitle": "Vælg de sprog, du vil diktere på",
+      "title": "Hvilke sprog taler du?",
+      "subtitle": "Vælg alle dem, du vil bruge med {{appName}}. Du kan ændre det senere.",
       "languagesLabel": "Sprog",
       "noMatch": "Intet resultat for »{{query}}«. Flere sprog findes i indstillingerne.",
       "appLanguage": "Appens sprog",
@@ -114,7 +114,7 @@
       "stopped": "Download af {{name}} stoppede",
       "retryDetail": "Forsøger igen fra det sted, hvor den stoppede",
       "retryDownload": "Prøv download igen",
-      "cardProgress": "Downloader {{percent}} %, {{done}} af {{total}}",
+      "cardProgress": "Downloader {{percent}} %, {{done}} af {{total}}",
       "timeLeft": "{{time}} tilbage",
       "speedLeft": "{{speed}}, {{time}} tilbage"
     },
@@ -134,9 +134,9 @@
       },
       "model": "Model",
       "showAll": "Vis alle {{count}} modeller",
-      "download": "Download {{size}}",
-      "downloadInstead": "Download {{size}} i stedet",
-      "pauses": "{{name}} holder pause ved {{percent}} %",
+      "download": "Hent {{size}}",
+      "downloadInstead": "Hent {{size}} i stedet",
+      "pauses": "{{name}} holder pause ved {{percent}} %",
       "resumeLater": "Vælg den igen for at fortsætte, hvor den slap",
       "hint": "Downloader, mens du gør opsætningen færdig",
       "onDisk": "Allerede på computeren"
@@ -194,9 +194,9 @@
       "changeKeys": "Skift din genvej, {{keys}}",
       "doneHold": "Highfive! Det var at holde nede.",
       "doneHoldNext": "Nu til den håndfri måde.",
-      "doneTap": "Highfive! Det var at trykke.",
+      "doneTap": "Sådan! Det var at trykke.",
       "doneTapNext": "Prøv nu at holde dem nede, mens du taler.",
-      "giveFive": "Du fik det til! Highfive",
+      "giveFive": "Sådan! Giv mig en highfive",
       "highFive": "Highfive",
       "slowLine": "{{name}} brugte {{wait}} på denne computer. <faster>Prøv en hurtigere model</faster>",
       "nothingTyped": "Hmm, der kom ikke noget.",
@@ -207,7 +207,7 @@
       "noWordsSub": "Prøv igen, og sig en hel sætning.",
       "finish": "Afslut",
       "skip": "Spring over",
-      "seconds": "{{value}} sek.",
+      "seconds": "{{value}} sek.",
       "heardHold": "Det var at holde nede. Nu til den håndfri måde.",
       "heardTap": "Det var at trykke. Prøv nu at holde dem nede, mens du taler.",
       "gotIt": "Fik hvert et ord: »{{quote}}«"
@@ -215,7 +215,7 @@
     "done": {
       "title": "Så er du klar",
       "subMac": "{{appName}} bor i din menulinje. Hold eller tryk på <keys/> i en hvilken som helst app for at tale.",
-      "subTray": "{{appName}} bor i din systembakke. Hold eller tryk på <keys/> i en hvilken som helst app for at tale.",
+      "subTray": "{{appName}} bor i meddelelsesområdet. Hold eller tryk på <keys/> i en hvilken som helst app for at tale.",
       "hint": "Du kan ændre disse senere i Indstillinger",
       "highFiveLabel": "Highfive",
       "atLogin": "Start {{appName}}, når jeg logger ind",
@@ -256,9 +256,9 @@
       },
       "unsupported": "Denne model forstår ikke {{language}}, så den kan ikke skrive det",
       "unrated": "Denne model forstår {{language}}, men vi har ikke målt, hvor godt endnu",
-      "under": "under {{max}} %",
-      "between": "{{min}} til {{max}} %",
-      "over": "{{min}} % eller mere",
+      "under": "under {{max}} %",
+      "between": "{{min}} til {{max}} %",
+      "over": "{{min}} % eller mere",
       "speedTitle": "Hastighed: {{speed}}",
       "speedName": {
         "0": "Meget langsom",
@@ -276,9 +276,9 @@
       },
       "speedPreview": "{{meaning}}, med live-forhåndsvisning, mens du taler",
       "untimed": "Vi har ikke målt, hvor hurtig den er endnu",
-      "underSeconds": "under {{max}} sek.",
-      "betweenSeconds": "{{min}} til {{max}} sek.",
-      "overSeconds": "{{min}} sek. eller mere"
+      "underSeconds": "under {{max}} sek.",
+      "betweenSeconds": "{{min}} til {{max}} sek.",
+      "overSeconds": "{{min}} sek. eller mere"
     },
     "roles": {
       "recommended": "Anbefalet",
@@ -310,7 +310,7 @@
     },
     "missingLanguage": "Mangler et sprog",
     "allLanguages": "Alle",
-    "downloadingLine": "Downloader {{percent}} % af {{total}}",
+    "downloadingLine": "Downloader {{percent}} % af {{total}}",
     "customLine": "Tilføjet fra din modelmappe. Ikke bedømt."
   },
   "languagePicker": {
@@ -325,17 +325,17 @@
     "streaming": "Streaming",
     "active": "Aktiv",
     "noModelsAvailable": "Ingen modeller tilgængelige",
-    "verifying": "Verificerer {{modelName}}...",
-    "verifyingGeneric": "Verificerer...",
-    "downloading": "Downloader {{percentage}}%",
-    "downloadingMultiple": "Downloader {{count}} modeller...",
+    "verifying": "Verificerer {{modelName}}…",
+    "verifyingGeneric": "Verificerer…",
+    "downloading": "Downloader {{percentage}} %",
+    "downloadingMultiple": "Downloader {{count}} modeller…",
     "modelReady": "Model klar",
-    "loading": "Indlæser {{modelName}}...",
-    "loadingGeneric": "Indlæser...",
+    "loading": "Indlæser {{modelName}}…",
+    "loadingGeneric": "Indlæser…",
     "modelError": "Modelfejl",
     "modelUnloaded": "Model frigjort",
     "noModelDownloadRequired": "Ingen model - download påkrævet",
-    "downloadSpeed": "{{speed}} MB/s",
+    "downloadSpeed": "{{speed}} MB/s",
     "lockedWhileTranscribing": "Du kan skifte model, når transskriberingen i Historik er færdig."
   },
   "settings": {
@@ -347,10 +347,10 @@
       "shortcut": {
         "title": "{{appName}}-genveje",
         "description": "Konfigurer tastaturgenveje til at udløse tale-til-tekst-optagelse",
-        "loading": "Indlæser genveje...",
+        "loading": "Indlæser genveje…",
         "none": "Ingen genveje konfigureret",
         "notFound": "Genvej ikke fundet",
-        "pressKeys": "Tryk på ønskede taster...",
+        "pressKeys": "Tryk på taster…",
         "bindings": {
           "transcribe": {
             "name": "Transskriptionsgenvej",
@@ -375,8 +375,8 @@
       },
       "language": {
         "title": "Sprog",
-        "description": "Vælg sproget til talegenkendelse. Auto tyder automatisk sproget, mens valg af et specifikt sprog kan forbedre nøjagtigheden for det pågældende sprog.",
-        "searchPlaceholder": "Søg efter sprog...",
+        "description": "Vælg sproget til talegenkendelse. Med Automatisk registreres sproget af sig selv, mens et bestemt sprog kan give bedre nøjagtighed for netop det sprog.",
+        "searchPlaceholder": "Søg efter sprog…",
         "noResults": "Ingen sprog fundet",
         "auto": "Automatisk",
         "autoUnavailable": {
@@ -415,7 +415,7 @@
         "delay": {
           "label": "Pause før stop",
           "description": "Hvor længe du skal være stille efter at have talt, før dikteringen stopper.",
-          "seconds": "{{seconds}} s"
+          "seconds": "{{seconds}} sek."
         }
       }
     },
@@ -433,8 +433,8 @@
       "emptyYours": "Ingen modeller endnu. Vælg en nedenfor: den downloades, og så bruger {{appName}} den.",
       "showMore": "Vis {{count}} flere",
       "showFewer": "Vis færre",
-      "download": "Download og brug",
-      "downloadingThenUse": "{{percent}} % af {{total}}, så skiftes der",
+      "download": "Hent og brug",
+      "downloadingThenUse": "{{percent}} % af {{total}}, så skiftes der",
       "loading": "Indlæser…",
       "deleteAsk": "Slet {{name}}? Det frigør {{size}}.",
       "deleteAskActive": "Slet {{name}}? {{appName}} kan ikke transskribere, før du vælger en anden.",
@@ -470,8 +470,8 @@
       "microphone": {
         "title": "Mikrofon",
         "description": "Vælg din foretrukne mikrofonenhed",
-        "placeholder": "Vælg mikrofon...",
-        "loading": "Indlæser..."
+        "placeholder": "Vælg mikrofon…",
+        "loading": "Indlæser…"
       },
       "channel": {
         "title": "Inputkanal",
@@ -486,8 +486,8 @@
       "outputDevice": {
         "title": "Outputenhed",
         "description": "Vælg din foretrukne lydoutputenhed til feedbacklyde",
-        "placeholder": "Vælg outputenhed...",
-        "loading": "Indlæser..."
+        "placeholder": "Vælg outputenhed…",
+        "loading": "Indlæser…"
       },
       "volume": {
         "title": "Lydstyrke",
@@ -521,20 +521,20 @@
       },
       "startHidden": {
         "label": "Start skjult",
-        "description": "Vis på meddelelsesområdet uden at åbne vinduet."
+        "description": "Start i meddelelsesområdet uden at åbne vinduet."
       },
       "autostart": {
         "label": "Start ved opstart",
         "description": "Start {{appName}} automatisk, når du logger ind på din computer."
       },
       "showTrayIcon": {
-        "label": "Vis proceslinjeikon",
+        "label": "Vis ikon i meddelelsesområdet",
         "description": "Vis {{appName}}-ikonet i meddelelsesområdet."
       },
       "overlay": {
         "style": {
           "title": "Overlay",
-          "description": "Vælg optagelses-overlay: Ingen skjuler det, Minimal viser en kompakt pille, Live viser transskription i realtid, mens du taler (kun modeller med streaming-understøttelse — se efter Streaming-mærket i modelvælgeren). På Linux anbefales 'Ingen'.",
+          "description": "Vælg optagelses-overlay: Ingen skjuler det, Minimal viser en kompakt pille, Live viser transskription i realtid, mens du taler (kun modeller med streaming-understøttelse — se efter Streaming-mærket i modelvælgeren). På Linux anbefales »Ingen«.",
           "options": {
             "none": "Ingen",
             "minimal": "Minimal",
@@ -565,9 +565,9 @@
       },
       "typingTool": {
         "title": "Skriveværktøj",
-        "description": "Vælg hvilket Linux-skriveværktøj der skal bruges til Direkte indsætningsmetode. Auto registrerer og bruger automatisk det bedste tilgængelige værktøj til dit system.",
+        "description": "Vælg, hvilket Linux-skriveværktøj der skal bruges til indsætningsmetoden Direkte. Automatisk finder og bruger det bedste tilgængelige værktøj til dit system.",
         "options": {
-          "auto": "Auto (anbefalet)"
+          "auto": "Automatisk (anbefalet)"
         }
       },
       "clipboardHandling": {
@@ -609,11 +609,11 @@
       },
       "customWords": {
         "title": "Brugerdefinerede ord",
-        "description": "Hjælp understøttede modeller med at genkende navne og specialiserede udtryk. Fuzzy-korrektion er i øjeblikket begrænset til ord, der bruger A-Z og tal.",
+        "description": "Hjælp understøttede modeller med at genkende navne og fagudtryk. Omtrentlig korrektion virker i øjeblikket kun for ord med A–Z og tal.",
         "placeholder": "Tilføj et ord",
         "add": "Tilføj",
         "remove": "Fjern {{word}}",
-        "duplicate": "\"{{word}}\" findes allerede"
+        "duplicate": "»{{word}}« findes allerede"
       },
       "voiceActivityDetection": {
         "title": "Stemmeaktivitetsdetektion",
@@ -660,7 +660,7 @@
     "history": {
       "title": "Historik",
       "openFolder": "Åbn optagelsesmappe",
-      "loading": "Indlæser historik...",
+      "loading": "Indlæser historik…",
       "empty": "Ingen transskriptioner endnu. Start optagelse for at opbygge din historik!",
       "copyToClipboard": "Kopiér transskription til udklipsholder",
       "copyError": "Kunne ikke kopiere transskriptionen til udklipsholderen.",
@@ -670,16 +670,16 @@
       "deleteError": "Kunne ikke slette posten. Prøv igen.",
       "retranscribe": "Transskribér igen",
       "cancelTranscription": "Annuller transskription",
-      "transcribing": "Transskriberer...",
+      "transcribing": "Transskriberer…",
       "transcriptionFailed": "Transskription mislykkedes. Du kan transskribere igen ved hjælp af genforsøgsikonet.",
       "notTranscribed": "Ikke transskriberet. Du kan transskribere den ved hjælp af genforsøgsikonet.",
-      "transcribeFile": "Transskriber fil",
+      "transcribeFile": "Transskribér fil",
       "mediaFiles": "Lyd og video",
       "fileUnsupported": "Kunne ikke læse lyd fra {{name}}.",
-      "readingFile": "Læser {{name}}...",
+      "readingFile": "Læser {{name}}…",
       "transcribeFailed": "Transskriptionen mislykkedes. Prøv igen.",
       "waiting": "Venter på transskription",
-      "transcribingPercent": "Transskriberer, {{percent}} %",
+      "transcribingPercent": "Transskriberer, {{percent}} %",
       "showMore": "Vis mere",
       "showLess": "Vis mindre",
       "dropTitle": "Slip for at transskribere",
@@ -694,7 +694,7 @@
       "emptyTitle": "Ingen dikteringer endnu",
       "emptyDescription": "Alt, hvad {{appName}} transskriberer, vises her, nyeste først. Hold din genvej nede i en vilkårlig app, og begynd at tale.",
       "noResultsTitle": "Ingen resultater",
-      "noResultsDescription": "Intet i din historik matcher “{{query}}”.",
+      "noResultsDescription": "Intet i din historik matcher »{{query}}«.",
       "loadingMore": "Indlæser flere…",
       "searchingOlder": "Søger i ældre poster…"
     },
@@ -777,7 +777,7 @@
         "days3": "Efter 3 dage",
         "weeks2": "Efter 2 uger",
         "months3": "Efter 3 måneder",
-        "placeholder": "Vælg opbevaringsperiode..."
+        "placeholder": "Vælg opbevaringsperiode…"
       },
       "alwaysOnMicrophone": {
         "label": "Altid aktiv mikrofon",
@@ -792,7 +792,7 @@
         "description": "Aktivér AI-drevet tekstforbedring efter transskription"
       },
       "muteWhileRecording": {
-        "label": "Mute under optagelse",
+        "label": "Slå lyd fra under optagelse",
         "description": "Sluk for systemlyd under optagelse"
       },
       "appendTrailingSpace": {
@@ -817,7 +817,7 @@
         "description": "Kun i automatisk tilstand: hvor længe (i millisekunder) genvejen skal holdes nede, før det tæller som et hold i stedet for et tryk. Sænk værdien, hvis korte hold lader optagelsen køre videre; hæv den, hvis bevidste tryk behandles som hold."
       },
       "reliablePaste": {
-        "title": "Pålidelig indsættelse (Beta)",
+        "title": "Pålidelig indsættelse (beta)",
         "description": "Gendan først din udklipsholder, når målappen faktisk har læst transskriptionen, i stedet for efter en fast forsinkelse. Skal afhjælpe, at gammelt udklipsholderindhold indsættes, når systemet er belastet. Kræver en indsætningsmetode via udklipsholderen; kun macOS og Windows."
       },
       "recordingBuffer": {
@@ -831,7 +831,7 @@
       "keyboardDiagnostic": {
         "title": "Tastaturdiagnostik",
         "description": "Kontrollerer, om tastaturhændelser når frem til {{appName}}. Kun antallet af hændelser registreres — aldrig hvilke taster du trykker på.",
-        "run": "Kør 10 s diagnostik",
+        "run": "Kør diagnostik i 10 sek.",
         "running": "Lytter… tryk på din genvej et par gange (f.eks. Option+Space)",
         "secureInputLabel": "Secure Input",
         "enabled": "aktiveret",
@@ -873,13 +873,13 @@
         "ggml": {
           "title": "ggml",
           "description": "Højtydende tensor-bibliotek til maskinlæringsinferens på enheden",
-          "details": "{{appName}}s lokale tale-til-tekst funktionalitet er bygget på transcribe.cpp og ggml. Tak for det fantastiske arbejde af Georgi Gerganov og bidragyderne."
+          "details": "{{appName}}s lokale tale-til-tekst er bygget på transcribe.cpp og ggml. Tak til Georgi Gerganov og bidragyderne for deres fantastiske arbejde."
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "Open source-licenser",
+          "description": "Licensoplysninger for den open source-software, {{appName}} indeholder",
+          "show": "Vis licenser",
+          "hide": "Skjul licenser"
         }
       },
       "intro": {
@@ -907,25 +907,25 @@
     }
   },
   "footer": {
-    "checkingUpdates": "Tjekker for opdateringer...",
+    "checkingUpdates": "Tjekker for opdateringer…",
     "updateAvailableShort": "Opdatering tilgængelig",
     "upToDate": "Opdateret",
     "updateCheckingDisabled": "Tjek for opdateringer deaktiveret",
-    "downloading": "Downloader... {{progress}}%",
-    "installing": "Installerer...",
-    "preparing": "Forbereder...",
+    "downloading": "Downloader… {{progress}} %",
+    "installing": "Installerer…",
+    "preparing": "Forbereder…",
     "checkForUpdates": "Tjek for opdateringer",
     "portableUpdateTitle": "Manuel opdatering påkrævet",
-    "portableUpdateMessage": "Flytbare installationer kan ikke opdateres automatisk. Download installeren til dit system nedenfor, kør den, og installer i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
-    "portableUpdateButton": "Download installer",
-    "portableUpdateBrowseMessage": "Flytbare installationer kan ikke opdateres automatisk. Download den nyeste version til dit system fra GitHub Releases, og installer den i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
+    "portableUpdateMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent installationsprogrammet til dit system nedenfor, kør det, og installer i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
+    "portableUpdateButton": "Hent installationsprogram",
+    "portableUpdateBrowseMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent den nyeste version til dit system fra GitHub Releases, og installer den i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
     "portableUpdateBrowseButton": "Åbn GitHub Releases"
   },
   "whatsNew": {
     "title": "Nyt i {{appName}} v{{version}}"
   },
   "common": {
-    "loading": "Indlæser...",
+    "loading": "Indlæser…",
     "delete": "Slet",
     "close": "Luk",
     "open": "Åbn",
@@ -938,8 +938,8 @@
     "micPermissionDeniedTitle": "Mikrofonadgang nægtet",
     "micPermissionDenied": {
       "generic": "Mikrofonadgang blev nægtet af operativsystemet. Giv venligst mikrofontilladelse i dine systemindstillinger.",
-      "windows": "Aktivér mikrofonadgang under Indstillinger → Privatliv og sikkerhed → Mikrofon (inklusive adgang for skrivebordsapps).",
-      "macos": "Giv mikrofonadgang under Systemindstillinger → Privatliv og sikkerhed → Mikrofon.",
+      "windows": "Aktivér mikrofonadgang under Indstillinger → Beskyttelse af personlige oplysninger og sikkerhed → Mikrofon (inklusive adgang for skrivebordsapps).",
+      "macos": "Giv mikrofonadgang under Systemindstillinger → Anonymitet & sikkerhed → Mikrofon.",
       "linux": "Giv mikrofonadgang i dit systems lyd- eller privatlivsindstillinger."
     },
     "noInputDeviceTitle": "Ingen mikrofon fundet",
@@ -994,9 +994,9 @@
     }
   },
   "overlay": {
-    "transcribing": "Transskriberer...",
-    "processing": "Behandler...",
-    "loadingModel": "Indlæser model..."
+    "transcribing": "Transskriberer…",
+    "processing": "Behandler…",
+    "loadingModel": "Indlæser model…"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} blokerer muligvis 1 genvej",
@@ -1015,7 +1015,7 @@
       "free": "Gratis",
       "pro": "Pro",
       "team": "Team",
-      "trial": "Pro-prøve"
+      "trial": "Pro-prøveperiode"
     },
     "upgrade": "Opgrader",
     "upgradeTo": "Opgrader til {{plan}}",
@@ -1043,7 +1043,7 @@
       "copied": "Kopieret",
       "errors": {
         "network": "Kunne ikke nå {{appName}} for at aktivere. Tjek din forbindelse, og prøv igen.",
-        "inactive": "Abonnementet for denne kode er ikke aktivt. Forny det for at låse din plan op.",
+        "inactive": "Abonnementet for denne kode er ikke aktivt. Forny det for at låse dit abonnement op.",
         "rate_limited": "For mange forsøg. Prøv igen om 15 minutter.",
         "server": "Aktiveringen mislykkedes hos os. Prøv igen om lidt."
       },
@@ -1096,11 +1096,11 @@
     },
     "polish": {
       "title": "AI-finpudsning",
-      "description": "Rydder op i hver diktering: tegnsætning, fyldeord, lister og rettelser som „slet det“. Kun teksten sendes, aldrig lyden.",
+      "description": "Rydder op i hver diktering: tegnsætning, fyldord, lister og rettelser som »slet det«. Kun teksten sendes, aldrig lyden.",
       "unlock": "Få ubegrænset",
       "onDevice": "Behold det på denne Mac",
       "onDeviceDescription": "Brug Apple Intelligence i stedet. Intet forlader din Mac.",
-      "freeLeft": "{{left}} af {{limit}} gratis brug af AI-finpudsning tilbage i denne uge"
+      "freeLeft": "{{left}} af {{limit}} gratis finpudsninger tilbage i denne uge"
     },
     "trial": {
       "daysLeft_one": "{{count}} dag tilbage",
@@ -1122,11 +1122,11 @@
       "wordsHint": "Dikteret med {{appName}}",
       "saved": "Sparet tid",
       "savedHint": "Taler med {{speaking}} ord/min mod at skrive med {{typing}}",
-      "lessThanMinute": "< 1 min",
-      "minutes_one": "{{count}} min",
-      "minutes_other": "{{count}} min",
-      "hours_one": "{{count}} t",
-      "hours_other": "{{count}} t"
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} t",
+      "hours_other": "{{count}} t"
     },
     "recent": "Seneste dikteringer",
     "viewAll": "Vis alle",
@@ -1146,9 +1146,9 @@
       "openHistory": "Åbn historik"
     },
     "plan": {
-      "title": "Din plan",
+      "title": "Dit abonnement",
       "polishUnlimited": "AI-finpudsning er ubegrænset.",
-      "polishLeft": "{{left}} af {{limit}} gratis brug af AI-finpudsning tilbage i denne uge · nulstilles {{day}}",
+      "polishLeft": "{{left}} af {{limit}} gratis AI-finpudsninger tilbage i denne uge · nulstilles {{day}}",
       "polishFree": "Gratis inkluderer en ugentlig kvote til AI-finpudsning.",
       "meetingsLeft": "{{left}} af {{limit}} mødenoter tilbage denne måned",
       "aiLeft": "{{left}} af {{limit}} AI-forespørgsler tilbage i dag",
@@ -1198,37 +1198,37 @@
       "heardNothing": "Jeg hørte dig, men fangede ikke en forespørgsel.",
       "noWebResults": "Kunne ikke søge på nettet lige nu, så det her er ud fra det, jeg ved.",
       "timeout": "Det tog for lang tid. Prøv igen.",
-      "needsCloud": "Det kræver skyen, og Intelligence er sat til »Kun på denne computer«. Ændr det under Privatliv.",
+      "needsCloud": "Det kræver skyen, og intelligensen er sat til »Kun på denne computer«. Skift det under Privatliv.",
       "cloudOfferOn": "Forslag fra skyen er slået til. Ændr det under Privatliv.",
       "cloudUnavailable": "Cloudforslag er ikke tilgængelige lige nu.",
       "cloudLimited": "Cloudforslag er sat på pause indtil videre: dagens grænse er nået, eller de kræver Pro."
     },
     "undo": "Fortryd",
     "close": "Luk",
-    "meetingOffer": "Tag noter fra dette opkald?",
+    "meetingOffer": "Skal jeg tage noter under opkaldet?",
     "takeNotes": "Tag noter",
     "suggest": {
-      "summariseThread": "Lang tråd. Opsummer den?",
-      "draftReply": "Skriv et svar på dette?",
-      "addToCalendar": "Der er en dato her. Føj den til din kalender?",
-      "summarisePage": "Opsummer denne side?",
-      "explainError": "Forklar denne fejl?",
+      "summariseThread": "Lang tråd. Skal jeg opsummere den?",
+      "draftReply": "Skal jeg skrive et svar?",
+      "addToCalendar": "Der er en dato her. Skal jeg føje den til din kalender?",
+      "summarisePage": "Skal jeg opsummere siden?",
+      "explainError": "Skal jeg forklare fejlen?",
       "summarise": "Opsummer",
       "draft": "Skriv",
       "add": "Tilføj",
       "explain": "Forklar",
-      "tightenDraft": "Stram dette udkast op?",
-      "priceCheck": "Tjek, om det er billigere andre steder?",
+      "tightenDraft": "Skal jeg stramme udkastet op?",
+      "priceCheck": "Skal jeg tjekke, om det er billigere andre steder?",
       "answerSearch": "Skal jeg bare svare på det?",
-      "fixFormula": "Ret disse formelfejl?",
+      "fixFormula": "Skal jeg rette formelfejlene?",
       "meetingPrep": "Der er snart et møde. Skal jeg briefe dig?",
       "tighten": "Stram op",
       "check": "Tjek",
       "answer": "Svar",
       "fix": "Ret",
       "brief": "Brief mig",
-      "reviewCode": "Gennemgå denne pull request?",
-      "commitMessage": "Skriv en commit-besked til dette?",
+      "reviewCode": "Skal jeg gennemgå denne pull request?",
+      "commitMessage": "Skal jeg skrive en commit-besked til det her?",
       "review": "Gennemgå",
       "write": "Skriv",
       "fillForm": "Udfylder du en formular? Jeg kan hjælpe.",
@@ -1249,7 +1249,7 @@
       "copy": "Kopiér"
     },
     "chip": {
-      "searchInstead": "Skrevet. Søg på det i stedet?",
+      "searchInstead": "Skrevet. Skal jeg søge på det i stedet?",
       "search": "Søg"
     },
     "suggestionTip": "Sig »ja«, »ikke nu« eller »vis mig ikke disse«.",
@@ -1363,7 +1363,7 @@
       "pauseDay": "Indtil i morgen",
       "pause": "Pause"
     },
-    "accessibility": "{{appName}} skal have adgang til Hjælpemidler for at læse tekst fra andre apps.",
+    "accessibility": "{{appName}} skal have adgang til Tilgængelighed for at læse tekst fra andre apps.",
     "grant": "Giv adgang",
     "accessibilityLinux": "Slå tilgængelighed til, så {{appName}} kan læse det vindue, du er i. Kør dette, og log derefter ud og ind igen.",
     "accessibilityLinuxChrome": "Chrome-, Chromium- og Electron-apps skal også bruge --force-renderer-accessibility.",
@@ -1415,7 +1415,7 @@
       "noText": "Ingen læsbar tekst i dette vindue.",
       "skipped": {
         "never_watch": "Den app er på din liste over apps, der aldrig overvåges, så intet blev læst.",
-        "no_permission": "Giv først adgang til Hjælpemidler.",
+        "no_permission": "Giv først adgang til Tilgængelighed.",
         "unavailable": "Kunne ikke læse det vindue.",
         "sensitive": "Vinduet viser en gendannelsessætning eller privat nøgle, så intet blev læst."
       }
@@ -1463,7 +1463,7 @@
     },
     "engine": {
       "title": "Brug også Apple Intelligence til svar",
-      "description": "Svar og finpudsning kører på denne computer, når de passer. Resultaterne er mindre finpudsede, så det er slået fra som standard."
+      "description": "Svar og finpudsning kører på denne Mac, når det kan lade sig gøre. Resultaterne er mindre finpudsede, så det er slået fra som standard."
     },
     "suggestions": {
       "title": "Forslag, du får",
@@ -1500,7 +1500,7 @@
       "voice": "Din stemme bliver på denne computer",
       "text": "Læser tekst, aldrig skærmbilleder",
       "sensitive": "Springer adgangskoder, tegnebøger og private vinduer over",
-      "ledger": "Hver forespørgsel, der forlader din Mac, står på listen nedenfor"
+      "ledger": "Hver anmodning, der forlader computeren, står på listen nedenfor"
     },
     "intelligence": {
       "title": "Hvor intelligensen kører",
@@ -1544,7 +1544,7 @@
     "listening": "Lytter…",
     "consent": "Fortæl alle, at du tager noter.",
     "copyConsent": "Kopiér en besked",
-    "consentMessage": "Bare så I ved det: Jeg bruger {{appName}} til at tage noter fra dette opkald.",
+    "consentMessage": "Bare så I ved det: Jeg bruger {{appName}} til at tage noter under dette opkald.",
     "openSettings": "Åbn indstillinger",
     "notes": "Noter",
     "transcript": "Transskription",
@@ -1600,7 +1600,7 @@
     "steps": {
       "join": "Deltag i et opkald i en hvilken som helst app",
       "accept": "Sig ja, når {{appName}} tilbyder det",
-      "summary": "Få et resumé, når det slutter"
+      "summary": "Få en opsummering, når det slutter"
     },
     "email": {
       "title": "Mail noter til mig",
@@ -1638,7 +1638,7 @@
       },
       "answer": {
         "title": "Svar",
-        "example": "Hvad er 15 % af 240?"
+        "example": "Hvad er 15 % af 240?"
       },
       "act": {
         "title": "Handl",
@@ -1674,7 +1674,7 @@
   },
   "getStarted": {
     "title": "Kom i gang",
-    "progress": "{{done}} af {{total}} klaret",
+    "progress": "{{done}} af {{total}} gennemført",
     "hide": "Skjul",
     "whatToSay": "Hvad kan jeg sige?",
     "replayTour": "Se rundvisningen igen",
@@ -1746,8 +1746,8 @@
     "subtitle": "Tal, som du ville spørge en kollega. Et par måder at komme i gang på.",
     "ways": {
       "0": "Hold nede for at tale med agenten.",
-      "1": "Hold nede for at diktere. Start med “Hey {{appName}}” for at spørge i stedet.",
-      "2": "Håndfri: sig “Hey {{appName}}, …”. Slå det til under Privatliv."
+      "1": "Hold nede for at diktere. Start med »Hej {{appName}}« for at spørge i stedet.",
+      "2": "Håndfri: sig »Hej {{appName}}, …«. Slå det til under Privatliv."
     }
   },
   "app": {
@@ -1757,7 +1757,7 @@
     "label": "Søg",
     "button": "Søg",
     "placeholder": "Søg i indstillinger og sider",
-    "empty": "Intet matcher “{{query}}”.",
+    "empty": "Intet matcher »{{query}}«.",
     "jumpTo": "Gå til",
     "escape": "esc"
   },

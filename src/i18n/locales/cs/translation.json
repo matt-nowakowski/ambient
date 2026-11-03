@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "Nastavení...",
-    "checkUpdates": "Zkontrolovat aktualizace...",
+    "settings": "Nastavení…",
+    "checkUpdates": "Zkontrolovat aktualizace…",
     "copyLastTranscript": "Zkopírovat poslední přepis",
     "unloadModel": "Uvolnit model",
     "model": "Model",
@@ -83,8 +83,8 @@
       "progress": "Krok {{step}} z {{count}}"
     },
     "welcome": {
-      "title": "Mluvte místo psaní, v jakékoli aplikaci",
-      "subtitle": "Vyberte jazyky, ve kterých budete diktovat",
+      "title": "Jakými jazyky mluvíte?",
+      "subtitle": "Vyberte všechny, které budete s aplikací {{appName}} používat. Později to můžete změnit.",
       "languagesLabel": "Jazyky",
       "noMatch": "Pro „{{query}}“ nic nenalezeno. Další jazyky najdete v nastavení.",
       "appLanguage": "Jazyk aplikace",
@@ -137,7 +137,7 @@
       "model": "Model",
       "showAll": "Zobrazit všech {{count}} modelů",
       "download": "Stáhnout {{size}}",
-      "downloadInstead": "Stáhnout raději {{size}}",
+      "downloadInstead": "Raději stáhnout {{size}}",
       "pauses": "{{name}} se pozastaví na {{percent}} %",
       "resumeLater": "Vyberte jej znovu a stahování naváže tam, kde skončilo",
       "hint": "Stahuje se, zatímco dokončujete nastavení",
@@ -153,7 +153,7 @@
       },
       "chat": "Přijdeš dneska večer?",
       "noteTitle": "Plány na víkend",
-      "screenLabel": "Notebook: někdo klikne do aplikace, stiskne zkratku a mluví a slova se objeví tam, kam kliknul.",
+      "screenLabel": "Notebook: někdo klikne do aplikace, stiskne zkratku, mluví a slova se objeví tam, kam klikl.",
       "change": "Změnit",
       "yourShortcut": "Vaše zkratka je",
       "pressKeys": "Stiskněte nové klávesy",
@@ -185,7 +185,7 @@
     },
     "try": {
       "title": "Zkuste to!",
-      "subtitle": "{{appName}} je v rohu a provede vás tím",
+      "subtitle": "{{appName}} vás v rohu provede",
       "noteLabel": "Poznámka",
       "placeholder": "Nová poznámka",
       "hold": "Podržte <keys/> a mluvte.",
@@ -195,9 +195,9 @@
       "watch": "Sledujte poznámku.",
       "changeKeys": "Změnit zkratku, {{keys}}",
       "doneHold": "Plácnem si! Tohle bylo podržení.",
-      "doneHoldNext": "Teď to bez rukou.",
+      "doneHoldNext": "Teď bez držení kláves.",
       "doneTap": "Plácnem si! Tohle bylo klepnutí.",
-      "doneTapNext": "Teď to zkuste s podržením, zatímco mluvíte.",
+      "doneTapNext": "Teď zkuste klávesy během mluvení podržet.",
       "giveFive": "Povedlo se! Plácněte si",
       "highFive": "Plácnout si",
       "slowLine": "{{name}} to na tomto počítači trvalo {{wait}}. <faster>Zkuste rychlejší model</faster>",
@@ -209,13 +209,13 @@
       "noWordsSub": "Zkuste to znovu a řekněte celou větu.",
       "finish": "Dokončit",
       "skip": "Přeskočit",
-      "seconds": "{{value}} s",
-      "heardHold": "Tohle bylo podržení. Teď to bez rukou.",
-      "heardTap": "Tohle bylo klepnutí. Teď to zkuste s podržením, zatímco mluvíte.",
+      "seconds": "{{value}} s",
+      "heardHold": "Tohle bylo podržení. Teď bez držení kláves.",
+      "heardTap": "Tohle bylo klepnutí. Teď zkuste klávesy během mluvení podržet.",
       "gotIt": "Mám každé slovo: „{{quote}}“"
     },
     "done": {
-      "title": "Hotovo",
+      "title": "Vše je připraveno",
       "subMac": "{{appName}} najdete v řádku nabídek. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
       "subTray": "{{appName}} najdete v oznamovací oblasti. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
       "hint": "Tohle můžete později změnit v Nastavení",
@@ -242,7 +242,7 @@
       "preview": "Živý náhled",
       "previewTitle": "Zobrazuje vaše slova v překryvu Živě, zatímco mluvíte, a po skončení je napíše",
       "translate": "Překládá",
-      "translateTitle": "Umí změnit to, co řeknete, na anglický text. Zapnete to v nastavení"
+      "translateTitle": "Umí převést, co řeknete, do anglického textu. Zapněte to v nastavení"
     },
     "rubric": {
       "gradeTitle": "Přesnost pro {{language}}: {{grade}}",
@@ -278,9 +278,9 @@
       },
       "speedPreview": "{{meaning}}, s živým náhledem během mluvení",
       "untimed": "Rychlost zatím nebyla změřena",
-      "underSeconds": "pod {{max}} s",
-      "betweenSeconds": "{{min}} až {{max}} s",
-      "overSeconds": "{{min}} s nebo více"
+      "underSeconds": "pod {{max}} s",
+      "betweenSeconds": "{{min}} až {{max}} s",
+      "overSeconds": "{{min}} s nebo více"
     },
     "roles": {
       "recommended": "Doporučeno",
@@ -329,17 +329,17 @@
     "streaming": "Streaming",
     "active": "Aktivní",
     "noModelsAvailable": "Nejsou dostupné žádné modely",
-    "verifying": "Ověřování {{modelName}}...",
-    "verifyingGeneric": "Ověřování...",
-    "downloading": "Stahování {{percentage}}%",
-    "downloadingMultiple": "Stahování {{count}} modelů...",
+    "verifying": "Ověřování {{modelName}}…",
+    "verifyingGeneric": "Ověřování…",
+    "downloading": "Stahování {{percentage}} %",
+    "downloadingMultiple": "Stahování {{count}} modelů…",
     "modelReady": "Model připraven",
-    "loading": "Načítám {{modelName}}...",
-    "loadingGeneric": "Načítání...",
+    "loading": "Načítám {{modelName}}…",
+    "loadingGeneric": "Načítání…",
     "modelError": "Chyba modelu",
     "modelUnloaded": "Model uvolněn",
-    "noModelDownloadRequired": "Žádný model - je nutné stáhnout",
-    "downloadSpeed": "{{speed}} MB/s",
+    "noModelDownloadRequired": "Žádný model – je potřeba ho stáhnout",
+    "downloadSpeed": "{{speed}} MB/s",
     "lockedWhileTranscribing": "Model můžete změnit, až se dokončí přepis v Historii."
   },
   "settings": {
@@ -351,10 +351,10 @@
       "shortcut": {
         "title": "Zkratky {{appName}}",
         "description": "Nastavte klávesové zkratky pro spuštění nahrávání řeči na text",
-        "loading": "Načítám zkratky...",
+        "loading": "Načítám zkratky…",
         "none": "Žádné zkratky nejsou nastavené",
         "notFound": "Zkratka nenalezena",
-        "pressKeys": "Stiskněte klávesy...",
+        "pressKeys": "Stiskněte klávesy…",
         "bindings": {
           "transcribe": {
             "name": "Zkratka přepisu",
@@ -365,8 +365,8 @@
             "description": "Klávesová zkratka pro zrušení aktuálního nahrávání."
           },
           "transcribe_with_post_process": {
-            "name": "Klávesa pro následné zpracování",
-            "description": "Volitelné: Vyhrazená klávesová zkratka, která vždy použije AI následné zpracování na váš přepis."
+            "name": "Zkratka pro AI vyladění",
+            "description": "Volitelné: vyhrazená klávesová zkratka, která přepis vždy projde AI vyladěním."
           },
           "ask_agent": {
             "name": "Zkratka pro dotaz",
@@ -379,17 +379,17 @@
       },
       "language": {
         "title": "Jazyk",
-        "description": "Vyberte jazyk rozpoznávání řeči. Auto jazyk určí automaticky, zatímco výběr konkrétního jazyka může zlepšit přesnost.",
-        "searchPlaceholder": "Hledat jazyky...",
+        "description": "Vyberte jazyk rozpoznávání řeči. Režim Automaticky jazyk určí sám; výběr konkrétního jazyka může zlepšit přesnost.",
+        "searchPlaceholder": "Hledat jazyky…",
         "noResults": "Žádné jazyky nenalezeny",
         "auto": "Automaticky",
         "autoUnavailable": {
-          "title": "Automaticky je vypnuto",
+          "title": "Režim Automaticky je vypnutý",
           "oneLanguage": "S tímto modelem funguje jen jeden z vašich jazyků",
           "undetectable": "Není k dispozici pro {{languages}}",
           "noMatch": "Žádný z vašich jazyků s tímto modelem nefunguje"
         },
-        "detectorMissingTitle": "Automaticky vyžaduje samostatné stažení",
+        "detectorMissingTitle": "Režim Automaticky vyžaduje samostatné stažení",
         "detectorMissing": "Tento model nepozná, jakým jazykem mluvíte. Režim Automaticky potřebuje malý detektor jazyka, který to zjistí",
         "stopDetectorDownload": "Zastavit stahování detektoru jazyka"
       },
@@ -419,7 +419,7 @@
         "delay": {
           "label": "Pauza před zastavením",
           "description": "Jak dlouho po mluvení mlčet, než se diktování zastaví.",
-          "seconds": "{{seconds}} s"
+          "seconds": "{{seconds}} s"
         }
       }
     },
@@ -431,10 +431,10 @@
         "fits": "Pro vaše jazyky",
         "untested": "Netestováno"
       },
-      "untestedNote": "Netestováno s {{appName}}. Mohou být pomalejší nebo dělat více chyb.",
+      "untestedNote": "Netestováno s aplikací {{appName}}. Mohou být pomalejší nebo dělat víc chyb.",
       "untestedHidden_one": "Další {{count}} model není vyladěn pro diktování. Najdete ho hledáním.",
       "untestedHidden_few": "Další {{count}} modely nejsou vyladěny pro diktování. Najdete je hledáním.",
-      "untestedHidden_many": "Další modely nevyladěné pro diktování: {{count}}. Najdete je hledáním.",
+      "untestedHidden_many": "Dalších {{count}} modelu není vyladěno pro diktování. Najdete je hledáním.",
       "untestedHidden_other": "Dalších {{count}} modelů není vyladěno pro diktování. Najdete je hledáním.",
       "emptyYours": "Zatím žádné modely. Vyberte některý níže: stáhne se a {{appName}} ho začne používat.",
       "showMore": "Zobrazit další ({{count}})",
@@ -454,10 +454,10 @@
           "accelerated": "Jak dlouho trvá napsat 30 sekund řeči na grafickém čipu našeho testovacího notebooku. Tento počítač se může lišit.",
           "cpu": "Jak dlouho trvá napsat 30 sekund řeči na procesoru našeho testovacího notebooku. Tento počítač se může lišit."
         },
-        "marks": "? zatím nebylo změřeno. — tomuto jazyku nerozumí."
+        "marks": "? zatím nebylo změřeno. – tomuto jazyku nerozumí."
       },
       "retiredNotice": {
-        "title": "Staré modely už s {{appName}} nefungují",
+        "title": "Staré modely už s aplikací {{appName}} nefungují",
         "description": "Zabírají {{size}} na vašem počítači.",
         "delete": "Smazat modely",
         "deleted": "Staré modely byly smazány",
@@ -476,8 +476,8 @@
       "microphone": {
         "title": "Mikrofon",
         "description": "Vyberte preferované zařízení mikrofonu",
-        "placeholder": "Vyberte mikrofon...",
-        "loading": "Načítání..."
+        "placeholder": "Vyberte mikrofon…",
+        "loading": "Načítání…"
       },
       "channel": {
         "title": "Vstupní kanál",
@@ -492,8 +492,8 @@
       "outputDevice": {
         "title": "Výstupní zařízení",
         "description": "Vyberte preferované výstupní zařízení pro zvuky odezvy",
-        "placeholder": "Vyberte výstupní zařízení...",
-        "loading": "Načítání..."
+        "placeholder": "Vyberte výstupní zařízení…",
+        "loading": "Načítání…"
       },
       "volume": {
         "title": "Hlasitost",
@@ -510,7 +510,7 @@
       },
       "experimentalToggle": {
         "label": "Experimentální funkce",
-        "description": "Povolit experimentální funkce, které jsou stále ve vývoji."
+        "description": "Povolit experimentální funkce, které jsou ještě ve vývoji."
       },
       "lazyStreamClose": {
         "label": "Ponechat mikrofon zapnutý mezi přepisy",
@@ -527,20 +527,20 @@
       },
       "startHidden": {
         "label": "Spouštět skrytě",
-        "description": "Spustit do systémové lišty bez otevření okna."
+        "description": "Spustit do oznamovací oblasti bez otevření okna."
       },
       "autostart": {
         "label": "Spouštět při startu",
         "description": "Automaticky spustit {{appName}} po přihlášení do počítače."
       },
       "showTrayIcon": {
-        "label": "Zobrazit ikonu v systémové liště",
-        "description": "Zobrazit ikonu {{appName}} v systémové liště."
+        "label": "Ikona v oznamovací oblasti",
+        "description": "Zobrazit ikonu {{appName}} v oznamovací oblasti."
       },
       "overlay": {
         "style": {
           "title": "Překryv",
-          "description": "Vyberte překryv při nahrávání: „Žádné“ jej skryje, „Minimální“ zobrazí kompaktní indikátor, „Živě“ zobrazuje přepis v reálném čase, když mluvíte (pouze modely podporující streaming — hledejte odznak „Streaming“ ve výběru modelů). Na Linuxu se doporučuje „Žádné“.",
+          "description": "Vyberte překryv při nahrávání: „Žádné“ jej skryje, „Minimální“ zobrazí kompaktní indikátor, „Živě“ zobrazuje přepis v reálném čase, když mluvíte (pouze modely podporující streaming – hledejte odznak „Streaming“ ve výběru modelů). Na Linuxu se doporučuje „Žádné“.",
           "options": {
             "none": "Žádné",
             "minimal": "Minimální",
@@ -549,7 +549,7 @@
         },
         "position": {
           "title": "Pozice překryvu",
-          "description": "Zobrazovat vizuální překryv během nahrávání a přepisu. Na Linuxu je doporučeno 'Žádné'.",
+          "description": "Kde se překryv zobrazí na obrazovce během nahrávání a přepisu.",
           "options": {
             "bottom": "Dole",
             "top": "Nahoře"
@@ -571,14 +571,14 @@
       },
       "typingTool": {
         "title": "Nástroj pro psaní",
-        "description": "Vyberte, který linuxový nástroj pro psaní použít pro metodu přímého vložení. Auto automaticky zjistí a použije nejlepší dostupný nástroj pro váš systém.",
+        "description": "Vyberte linuxový nástroj pro psaní, který se použije pro přímé vkládání. Režim Automaticky sám zjistí a použije nejlepší dostupný nástroj pro váš systém.",
         "options": {
-          "auto": "Auto (Doporučeno)"
+          "auto": "Automaticky (doporučeno)"
         }
       },
       "clipboardHandling": {
         "title": "Práce se schránkou",
-        "description": "'Neměnit schránku' zachová po přepisu aktuální obsah schránky. 'Kopírovat do schránky' ponechá po vložení výsledek přepisu ve schránce.",
+        "description": "„Neměnit schránku“ zachová po přepisu aktuální obsah schránky. „Kopírovat do schránky“ ponechá po vložení výsledek přepisu ve schránce.",
         "options": {
           "dontModify": "Neměnit schránku",
           "copyToClipboard": "Kopírovat do schránky"
@@ -619,7 +619,7 @@
         "placeholder": "Přidat slovo",
         "add": "Přidat",
         "remove": "Odebrat {{word}}",
-        "duplicate": "\"{{word}}\" již existuje"
+        "duplicate": "„{{word}}“ již existuje"
       },
       "voiceActivityDetection": {
         "title": "Detekce hlasové aktivity",
@@ -631,7 +631,7 @@
       },
       "languageDetection": {
         "title": "Omezit Automaticky na mé jazyky",
-        "description": "Automaticky vybírá jen z vašich preferovaných jazyků pomocí malého detektoru jazyka. Zapněte to, pokud Automaticky stále volí jazyk, kterým nemluvíte",
+        "description": "Režim Automaticky vybírá jen z vašich preferovaných jazyků pomocí malého detektoru jazyka. Zapněte to, pokud stále volí jazyk, kterým nemluvíte",
         "downloadHint": "Zapnutím se stáhne malý detektor jazyka",
         "downloadingHint": "Stahuje se detektor jazyka. Vypnutím stahování zrušíte"
       },
@@ -666,7 +666,7 @@
     "history": {
       "title": "Historie",
       "openFolder": "Otevřít složku nahrávek",
-      "loading": "Načítám historii...",
+      "loading": "Načítám historii…",
       "empty": "Zatím žádné přepisy. Začněte nahrávat a vytvořte si historii!",
       "copyToClipboard": "Kopírovat přepis do schránky",
       "copyError": "Přepis se nepodařilo zkopírovat do schránky.",
@@ -676,19 +676,19 @@
       "deleteError": "Nepodařilo se smazat záznam. Zkuste to prosím znovu.",
       "retranscribe": "Přepsat znovu",
       "cancelTranscription": "Zrušit přepis",
-      "transcribing": "Přepisuji...",
+      "transcribing": "Přepisuji…",
       "transcriptionFailed": "Přepis selhal. Můžete zkusit přepis znovu pomocí ikony opakování.",
-      "notTranscribed": "Nepřepsáno. Můžete to přepsat pomocí ikony opakování.",
+      "notTranscribed": "Nepřepsáno. Přepíšete to pomocí ikony opakování.",
       "transcribeFile": "Přepsat soubor",
       "mediaFiles": "Zvuk a video",
       "fileUnsupported": "Ze souboru {{name}} se nepodařilo načíst zvuk.",
-      "readingFile": "Načítání {{name}}...",
+      "readingFile": "Načítání {{name}}…",
       "transcribeFailed": "Přepis se nezdařil. Zkuste to prosím znovu.",
       "waiting": "Čeká na přepis",
-      "transcribingPercent": "Přepisuji, {{percent}} %",
+      "transcribingPercent": "Přepisuji, {{percent}} %",
       "showMore": "Zobrazit více",
       "showLess": "Zobrazit méně",
-      "dropTitle": "Pusťte pro přepis",
+      "dropTitle": "Pusťte sem k přepisu",
       "dropDescription": "Zobrazí se v historii.",
       "searchPlaceholder": "Hledat v historii",
       "clearSearch": "Vymazat hledání",
@@ -697,7 +697,7 @@
       "saved": "Uloženo",
       "playRecording": "Přehrát nahrávku",
       "hidePlayer": "Skrýt přehrávač",
-      "emptyTitle": "Zatím žádné diktáty",
+      "emptyTitle": "Zatím jste nic nediktovali",
       "emptyDescription": "Vše, co {{appName}} přepíše, se zobrazí tady, nejnovější nahoře. Podržte zkratku v libovolné aplikaci a začněte mluvit.",
       "noResultsTitle": "Žádné shody",
       "noResultsDescription": "V historii nic neodpovídá „{{query}}“.",
@@ -711,19 +711,19 @@
         "description": "Umístění, kde jsou uloženy soubory protokolu"
       },
       "logLevel": {
-        "title": "Úroveň logování",
-        "description": "Nastavte úroveň podrobnosti logování"
+        "title": "Úroveň protokolování",
+        "description": "Nastavte podrobnost protokolování"
       },
       "liveLogs": {
-        "title": "Živé logy",
-        "description": "Sledujte logy aplikace v reálném čase a diagnostikujte problémy bez otevírání souboru logu. Zobrazují se pouze logy vytvořené, když je tento panel otevřený; respektuje nastavení Úroveň logování výše.",
+        "title": "Živé protokoly",
+        "description": "Sledujte protokoly aplikace v reálném čase a diagnostikujte problémy bez otevírání souboru protokolu. Zobrazují se jen záznamy vzniklé, když je tento panel otevřený; respektuje nastavení Úroveň protokolování výše.",
         "live": "Živě",
         "paused": "Pozastaveno",
         "pause": "Pozastavit",
         "resume": "Pokračovat",
         "copied": "Zkopírováno",
         "lineCount": "Řádků: {{count}}",
-        "empty": "Čekání na logy… Záznamy se zde zobrazí, jakmile je aplikace vygeneruje."
+        "empty": "Čekání na protokoly… Záznamy se tu zobrazí, jakmile je aplikace vytvoří."
       },
       "updateChecks": {
         "label": "Kontrolovat aktualizace",
@@ -783,7 +783,7 @@
         "days3": "Po 3 dnech",
         "weeks2": "Po 2 týdnech",
         "months3": "Po 3 měsících",
-        "placeholder": "Vyberte dobu uchování..."
+        "placeholder": "Vyberte dobu uchování…"
       },
       "alwaysOnMicrophone": {
         "label": "Vždy zapnutý mikrofon",
@@ -795,7 +795,7 @@
       },
       "postProcessingToggle": {
         "label": "Následné zpracování",
-        "description": "Povolit AI vylepšení textu po přepisu"
+        "description": "Povolit AI vyladění textu po přepisu"
       },
       "muteWhileRecording": {
         "label": "Ztlumit při nahrávání",
@@ -823,12 +823,12 @@
         "description": "Pouze v automatickém režimu: jak dlouho (v milisekundách) musí být zkratka držena, aby se počítala jako podržení místo klepnutí. Snižte, pokud po krátkém podržení nahrávání zůstává zapnuté; zvyšte, pokud jsou záměrná klepnutí vyhodnocena jako podržení."
       },
       "reliablePaste": {
-        "title": "Spolehlivé vložení (Beta)",
+        "title": "Spolehlivé vložení (beta)",
         "description": "Obnoví schránku teprve poté, co cílová aplikace skutečně přečte přepis, místo po pevně daném zpoždění. Má odstranit vkládání starého obsahu schránky při zatížení systému. Vyžaduje způsob vložení přes schránku; pouze macOS a Windows."
       },
       "recordingBuffer": {
-        "title": "Extra vyrovnávací paměť nahrávání",
-        "description": "Extra čas (v milisekundách) pro pokračování nahrávání po uvolnění klávesy, pro zachycení zbývajícího zvuku. 0 = žádná extra vyrovnávací paměť."
+        "title": "Dodatečná vyrovnávací paměť nahrávání",
+        "description": "Dodatečný čas (v milisekundách), po který se po uvolnění klávesy ještě nahrává, aby se zachytil konec zvuku. 0 = bez dodatečné paměti."
       },
       "languageDetectionWindow": {
         "title": "Zvuk pro rozpoznání jazyka",
@@ -836,8 +836,8 @@
       },
       "keyboardDiagnostic": {
         "title": "Diagnostika klávesnice",
-        "description": "Ověří, zda události klávesnice dorazí do {{appName}}. Zaznamenává se pouze počet událostí — nikdy to, které klávesy stisknete.",
-        "run": "Spustit 10s diagnostiku",
+        "description": "Ověří, zda události klávesnice dorazí do {{appName}}. Zaznamenává se pouze počet událostí – nikdy to, které klávesy stisknete.",
+        "run": "Diagnostika (10 s)",
         "running": "Naslouchání… několikrát stiskněte svou zkratku (např. Option+Space)",
         "secureInputLabel": "Secure Input",
         "enabled": "zapnuto",
@@ -848,10 +848,10 @@
         "keyUp": "Uvolnění klávesy",
         "flagsChanged": "Modifikátory",
         "mouse": "Myš",
-        "verdictBlocked": "Secure Input blokuje události kláves — zkratky obsahující běžnou klávesu nemohou fungovat, dokud se to nevyřeší.",
-        "verdictSuspicious": "Dorazily události modifikátorů, ale žádné události kláves — něco klávesy potlačuje, přestože Secure Input hlásí, že je vypnutý. Nahlaste to prosím na GitHubu.",
+        "verdictBlocked": "Secure Input blokuje události kláves – zkratky obsahující běžnou klávesu nemohou fungovat, dokud se to nevyřeší.",
+        "verdictSuspicious": "Dorazily události modifikátorů, ale žádné události kláves – něco klávesy potlačuje, přestože Secure Input hlásí, že je vypnutý. Nahlaste to prosím na GitHubu.",
         "verdictOk": "Události kláves dorazí do {{appName}} normálně.",
-        "verdictNoEvents": "Nebyly zachyceny žádné události — stiskli jste během testu nějaké klávesy?",
+        "verdictNoEvents": "Nebyly zachyceny žádné události – stiskli jste během testu nějaké klávesy?",
         "failed": "Diagnostika selhala: {{error}}"
       }
     },
@@ -871,21 +871,21 @@
       },
       "sourceCode": {
         "title": "Web",
-        "description": "Novinky, nápověda a tvůj účet",
+        "description": "Novinky, nápověda a váš účet",
         "button": "Otevřít web"
       },
       "acknowledgments": {
         "title": "Poděkování",
         "ggml": {
           "title": "ggml",
-          "description": "Vysoce výkonné inferenční zpracování modelu automatického rozpoznávání řeči Whisper od OpenAI",
-          "details": "{{appName}} používá ggml pro rychlé lokální zpracování řeči na text. Díky skvělé práci Georgiho Gerganova a přispěvatelů."
+          "description": "Vysoce výkonná tenzorová knihovna pro strojové učení přímo v zařízení",
+          "details": "Lokální převod řeči na text v {{appName}} stojí na transcribe.cpp a ggml. Díky za skvělou práci Georgimu Gerganovovi a přispěvatelům."
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "Licence open-source softwaru",
+          "description": "Upozornění k open-source softwaru, který {{appName}} obsahuje",
+          "show": "Zobrazit licence",
+          "hide": "Skrýt licence"
         }
       },
       "intro": {
@@ -908,30 +908,30 @@
       },
       "wake": {
         "label": "Bez rukou: řekněte „Ahoj Ambient“",
-        "description": "Mluvte s {{appName}} bez klávesy: „Ahoj Ambient, co mám v kalendáři?“ Poslouchá na tomto počítači a ignoruje vše, co nezačíná jeho jménem. Dokud je to zapnuté, počítač zobrazuje indikátor mikrofonu."
+        "description": "Mluvte s {{appName}} bez klávesy: „Ahoj Ambient, co mám v kalendáři?“ Poslouchá na tomto počítači a ignoruje vše, co nezačíná jeho jménem. Dokud je to zapnuté, počítač zobrazuje, že se používá mikrofon."
       }
     }
   },
   "footer": {
-    "checkingUpdates": "Kontroluji aktualizace...",
+    "checkingUpdates": "Kontroluji aktualizace…",
     "updateAvailableShort": "Dostupná aktualizace",
     "upToDate": "Vše aktuální",
     "updateCheckingDisabled": "Kontrola aktualizací vypnuta",
-    "downloading": "Stahování... {{progress}}%",
-    "installing": "Instalace...",
-    "preparing": "Příprava...",
+    "downloading": "Stahování… {{progress}} %",
+    "installing": "Instalace…",
+    "preparing": "Příprava…",
     "checkForUpdates": "Zkontrolovat aktualizace",
     "portableUpdateTitle": "Vyžadována ruční aktualizace",
-    "portableUpdateMessage": "Přenosné instalace nelze aktualizovat automaticky. Níže stáhněte instalátor pro svůj systém, spusťte jej a nainstalujte do stejné složky — vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
+    "portableUpdateMessage": "Přenosné instalace nelze aktualizovat automaticky. Níže stáhněte instalátor pro svůj systém, spusťte jej a nainstalujte do stejné složky – vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
     "portableUpdateButton": "Stáhnout instalátor",
-    "portableUpdateBrowseMessage": "Přenosné instalace nelze aktualizovat automaticky. Stáhněte nejnovější verzi pro svůj systém z GitHub Releases a nainstalujte ji do stejné složky — vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
+    "portableUpdateBrowseMessage": "Přenosné instalace nelze aktualizovat automaticky. Stáhněte nejnovější verzi pro svůj systém z GitHub Releases a nainstalujte ji do stejné složky – vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
     "portableUpdateBrowseButton": "Otevřít GitHub Releases"
   },
   "whatsNew": {
     "title": "Novinky v {{appName}} v{{version}}"
   },
   "common": {
-    "loading": "Načítání...",
+    "loading": "Načítání…",
     "delete": "Smazat",
     "close": "Zavřít",
     "open": "Otevřít",
@@ -1000,23 +1000,23 @@
     }
   },
   "overlay": {
-    "transcribing": "Přepisuji...",
-    "processing": "Zpracovávám...",
-    "loadingModel": "Načítání modelu..."
+    "transcribing": "Přepisuji…",
+    "processing": "Zpracovávám…",
+    "loadingModel": "Načítání modelu…"
   },
   "secureInput": {
-    "blockedWithCulprit_one": "{{name}} může blokovat {{count}} zkratku",
+    "blockedWithCulprit_one": "{{name}} může blokovat 1 zkratku",
     "blockedWithCulprit_few": "{{name}} může blokovat {{count}} zkratky",
     "blockedWithCulprit_many": "{{name}} může blokovat {{count}} zkratky",
     "blockedWithCulprit_other": "{{name}} může blokovat {{count}} zkratek",
-    "blockedNoCulprit_one": "macOS dočasně blokuje {{count}} zkratku",
+    "blockedNoCulprit_one": "macOS dočasně blokuje 1 zkratku",
     "blockedNoCulprit_few": "macOS dočasně blokuje {{count}} zkratky",
     "blockedNoCulprit_many": "macOS dočasně blokuje {{count}} zkratky",
     "blockedNoCulprit_other": "macOS dočasně blokuje {{count}} zkratek",
     "recorderBlockedWithCulprit": "{{name}} může blokovat změny zkratek",
     "recorderBlockedNoCulprit": "macOS dočasně blokuje změny zkratek",
     "learnMore": "Jak to vyřešit",
-    "recorderBlocked": "Zkratky teď nelze nahrát — Secure Input v macOS blokuje události kláves. Nejprve vyřešte upozornění na Secure Input.",
+    "recorderBlocked": "Zkratky teď nelze nahrát – Secure Input v macOS blokuje události kláves. Nejprve vyřešte upozornění na Secure Input.",
     "dismiss": "Zavřít"
   },
   "account": {
@@ -1024,7 +1024,7 @@
     "plans": {
       "free": "Zdarma",
       "pro": "Pro",
-      "team": "Team",
+      "team": "Tým",
       "trial": "Zkušební verze Pro"
     },
     "upgrade": "Upgradovat",
@@ -1033,12 +1033,12 @@
     "usage": "{{used}} z {{limit}} slov tento týden",
     "usageShort": "{{used}} / {{limit}} slov",
     "resets": "Obnoví se {{date}}",
-    "limitReached": "Využil jsi bezplatná slova pro tento týden. Upgraduj pro neomezené diktování, nebo pokračuj po obnovení týdne.",
+    "limitReached": "Bezplatná slova na tento týden jste vyčerpali. Přejděte na Pro a diktujte bez omezení, nebo pokračujte po obnovení týdne.",
     "limitToast": "Týdenní bezplatná slova vyčerpána",
     "proFeatures": {
       "polish": "AI vyladění každého diktování",
       "onDevice": "Vyladění přímo v zařízení s Apple Intelligence",
-      "agent": "Agent ambient tak, jak se dodává",
+      "agent": "Ambientní agent se vším, co přibude",
       "priority": "Prioritní podpora"
     },
     "card": {
@@ -1106,11 +1106,11 @@
     },
     "polish": {
       "title": "AI vyladění",
-      "description": "Vyčistí každé diktování: interpunkci, vycpávková slova, seznamy i opravy jako „smaž to“. Odesílá se jen text, nikdy zvuk.",
-      "unlock": "Získej neomezené",
-      "onDevice": "Nech to na tomto Macu",
-      "onDeviceDescription": "Použij místo toho Apple Intelligence. Nic neopustí tvůj Mac.",
-      "freeLeft": "Zbývá {{left}} z {{limit}} bezplatných použití: AI vyladění tento týden"
+      "description": "Vyčistí každé diktování: interpunkci, výplňová slova, seznamy i opravy jako „to škrtni“. Odesílá se jen text, nikdy zvuk.",
+      "unlock": "Získat neomezeně",
+      "onDevice": "Nechat na tomto Macu",
+      "onDeviceDescription": "Použijte místo toho Apple Intelligence. Nic neopustí váš Mac.",
+      "freeLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných vyladění"
     },
     "trial": {
       "daysLeft_one": "Zbývá {{count}} den",
@@ -1134,21 +1134,21 @@
       "wordsHint": "Nadiktováno v {{appName}}",
       "saved": "Ušetřený čas",
       "savedHint": "Mluvení {{speaking}} slov/min oproti psaní {{typing}}",
-      "lessThanMinute": "< 1 min",
-      "minutes_one": "{{count}} min",
-      "minutes_few": "{{count}} min",
-      "minutes_many": "{{count}} min",
-      "minutes_other": "{{count}} min",
-      "hours_one": "{{count}} h",
-      "hours_few": "{{count}} h",
-      "hours_many": "{{count}} h",
-      "hours_other": "{{count}} h"
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_few": "{{count}} min",
+      "minutes_many": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} h",
+      "hours_few": "{{count}} h",
+      "hours_many": "{{count}} h",
+      "hours_other": "{{count}} h"
     },
-    "recent": "Nedávné diktáty",
+    "recent": "Poslední diktování",
     "viewAll": "Zobrazit vše",
     "empty": {
       "title": "Zatím tu nic není",
-      "description": "Stiskněte zkratku v libovolné aplikaci a mluvte. Vaše diktáty se zobrazí tady."
+      "description": "Stiskněte zkratku v libovolné aplikaci a mluvte. Co nadiktujete, objeví se tady."
     },
     "tips": {
       "holdOrTap": "Podržte zkratku a mluvte, nebo ji jednou stiskněte pro zahájení a znovu pro ukončení.",
@@ -1162,10 +1162,10 @@
       "openHistory": "Otevřít historii"
     },
     "plan": {
-      "title": "Tvůj tarif",
+      "title": "Váš tarif",
       "polishUnlimited": "AI vyladění je neomezené.",
-      "polishLeft": "Zbývá {{left}} z {{limit}} bezplatných použití (AI vyladění) tento týden · obnoví se {{day}}",
-      "polishFree": "Bezplatný tarif zahrnuje týdenní limit: AI vyladění.",
+      "polishLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných AI vyladění · obnoví se {{day}}",
+      "polishFree": "Bezplatný tarif zahrnuje týdenní příděl AI vyladění.",
       "meetingsLeft": "Tento měsíc zbývá {{left}} z {{limit}} poznámek ze schůzek",
       "aiLeft": "Dnes zbývá {{left}} z {{limit}} požadavků AI",
       "searchLeft": "Zbývající vyhledávání: {{count}}",
@@ -1192,7 +1192,7 @@
       "needScreenContext": "Chcete-li to použít, zapněte v Soukromí možnost „Číst to, na co se ptáte“.",
       "onDeviceFailed": "Na tomto počítači teď nešlo odpovědět.",
       "offline": "Nelze se spojit s {{appName}}. Zkontrolujte připojení.",
-      "weeklyLimit": "Bezplatná použití AI na tento týden jsou vyčerpána. Pro je neomezené.",
+      "weeklyLimit": "Bezplatná použití AI na tento týden jsou vyčerpána. Pro je bez omezení.",
       "account": "Váš přístup k Pro vyžaduje pozornost v sekci Účet.",
       "failed": "To teď nešlo udělat.",
       "interrupted": "Odpověď byla přerušena.",
@@ -1207,7 +1207,7 @@
       "copied": "Zkopírováno",
       "learned": "Rozumím. Můžete to změnit v Soukromí.",
       "sensitivePaused": "Tady pozastaveno: toto okno zobrazuje frázi pro obnovení nebo soukromý klíč.",
-      "steppingBack": "Ustupuji stranou: vypadá to soukromě, takže to {{appName}} nečte.",
+      "steppingBack": "Tady radši ne: vypadá to soukromě, takže to {{appName}} nečte.",
       "fairUse": "Dosáhli jste dnešního limitu férového používání. Obnoví se o půlnoci UTC.",
       "slowDown": "To je mnoho požadavků najednou. Zkuste to znovu za minutu.",
       "listening": "Poslouchám…",
@@ -1248,11 +1248,11 @@
       "review": "Zkontrolovat",
       "write": "Napsat",
       "fillForm": "Vyplňujete formulář? Můžu pomoct.",
-      "fill": "Pomoz",
+      "fill": "Pomoct",
       "translatePage": "Přeložit tuto stránku?",
       "translate": "Přeložit",
       "helpHere": "Můžu tu s něčím pomoct?",
-      "help": "Pomoz",
+      "help": "Pomoct",
       "summariseThreadCount": "Mám shrnout toto vlákno o {{count}} zprávách?",
       "replyTo": "Odpovědět: {{name}}?",
       "reply": "Odpovědět",
@@ -1286,7 +1286,7 @@
       "searchDrive": "Hledat na Disku Google",
       "searchGmail": "Hledat v Gmailu"
     },
-    "cloudOffer": "{{appName}} může navrhovat pomoc na tomto počítači tak, že na své servery odešle začerněný výřez okna. Zapnout?",
+    "cloudOffer": "{{appName}} může na tomto počítači navrhovat pomoc tak, že na své servery odešle výřez okna očištěný od citlivých údajů. Zapnout?",
     "when": {
       "today": "dnes v {{time}}",
       "tomorrow": "zítra v {{time}}",
@@ -1402,7 +1402,7 @@
       "proactive": {
         "title": "Nabízet návrhy",
         "reads": "Ve správnou chvíli navrhne další krok: konverzace, koncepty, data, chyby, schůzky.",
-        "leaves": "Rozhoduje se na tomto počítači, nebo v cloudu, pokud to níže zvolíte. Nic dalšího se neodešle, dokud nepřijmete, kromě připomínek na schůzkách."
+        "leaves": "Rozhoduje se na tomto počítači, nebo v cloudu, pokud to níže zvolíte. Dokud návrh nepřijmete, nic dalšího se neodešle, s výjimkou tipů během schůzek."
       },
       "meetings": {
         "title": "Poznámky ze schůzek",
@@ -1411,7 +1411,7 @@
       },
       "wake_word": {
         "title": "Bez rukou: řekněte „Ahoj Ambient“",
-        "reads": "Na tomto počítači poslouchá „Ahoj Ambient“. Vše ostatní se průběžně zahazuje.",
+        "reads": "Na tomto počítači čeká na „Ahoj Ambient“. Vše ostatní se průběžně zahazuje.",
         "leaves": "Nic se nenahrává ani neodesílá, dokud to neřeknete."
       },
       "groups": {
@@ -1424,7 +1424,7 @@
     "days_other": "{{count}} dní",
     "preview": {
       "title": "Co vidí {{appName}}",
-      "description": "Přesně to, co by z okna přečetl, po začernění citlivých údajů.",
+      "description": "Přesně to, co by z okna přečetl, po odstranění citlivých údajů.",
       "hint": "Klikněte na Náhled a do 3 sekund přepněte do libovolného okna.",
       "switchNow": "Teď přepněte do jiného okna…",
       "button": "Náhled",
@@ -1485,7 +1485,7 @@
     },
     "engine": {
       "title": "Používat Apple Intelligence i pro odpovědi",
-      "description": "Odpovědi a vyladění běží na tomto počítači, když se vejdou. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté."
+      "description": "Odpovědi a vyladění běží na tomto Macu, když to zvládne. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté."
     },
     "suggestions": {
       "title": "Návrhy, které dostáváte",
@@ -1505,7 +1505,7 @@
         "fill_form": "Pomoc s vyplňováním formulářů",
         "translate_page": "Překlad stránek v jiných jazycích",
         "help_here": "Další pomoc, o které si myslí, že ji budete chtít",
-        "meeting_nudge": "Připomínky během schůzek"
+        "meeting_nudge": "Tipy během schůzek"
       },
       "learned": {
         "title": "Co jste mi řekli",
@@ -1523,7 +1523,7 @@
     "promises": {
       "voice": "Váš hlas zůstává na tomto počítači",
       "text": "Čte text, nikdy snímky obrazovky",
-      "sensitive": "Přeskakuje hesla, peněženky a soukromá okna",
+      "sensitive": "Přeskakuje hesla, peněženky a anonymní okna",
       "ledger": "Každý odeslaný požadavek je uveden níže"
     },
     "intelligence": {
@@ -1531,7 +1531,7 @@
       "description": "Co rozhoduje o návrzích a píše odpovědi. Každá funkce funguje s každou volbou.",
       "capability": {
         "apple": "Apple Intelligence je dostupná na tomto počítači",
-        "none": "Na tomto počítači není model na zařízení"
+        "none": "Na tomto počítači není k dispozici lokální model"
       },
       "options": {
         "auto": {
@@ -1540,16 +1540,16 @@
         },
         "device": {
           "title": "Jen na tomto počítači",
-          "description": "Nic se neodesílá, aby se rozhodlo nebo odpovědělo. Funkce, které potřebují model, se vrátí k jednoduchým pravidlům nebo napíšou, že nemohou."
+          "description": "Nic se neodesílá kvůli rozhodování ani odpovědím. Funkce, které potřebují model, se uchýlí k jednoduchým pravidlům, nebo oznámí, že to nejde."
         },
         "cloud": {
           "title": "Cloud",
-          "description": "Nejlepší výsledky. Začerněný text se odesílá na servery {{appName}}."
+          "description": "Nejlepší výsledky. Na servery {{appName}} se odesílá text očištěný od citlivých údajů."
         }
       },
       "cloudSuggestions": {
         "title": "Návrhy z cloudu",
-        "description": "Odešle začerněný výřez okna, ve kterém jste zůstali, aby se rozhodlo, zda nabídnout pomoc. Každý požadavek je uvedený níže."
+        "description": "Odešle výřez okna, u kterého se zdržíte (očištěný od citlivých údajů), aby se rozhodlo, zda nabídnout pomoc. Každý požadavek je uvedený níže."
       }
     },
     "telemetry": {
@@ -1599,13 +1599,13 @@
     },
     "error": {
       "storage": "Úložiště schůzek se nepodařilo otevřít.",
-      "freeLimit": "Bezplatný tarif zahrnuje 2 schůzky měsíčně. Pro je neomezené.",
+      "freeLimit": "Bezplatný tarif zahrnuje 2 schůzky měsíčně. Pro je bez omezení.",
       "mic": "Mikrofon se nepodařilo otevřít.",
       "notActive": "Neprobíhá žádná schůzka.",
       "notFound": "Tato schůzka už neexistuje.",
       "followUp": "Navazující zprávu teď nešlo navrhnout."
     },
-    "freeLeft": "Zbývající bezplatné schůzky tento měsíc: {{left}} z {{limit}}. Pro je neomezené.",
+    "freeLeft": "Tento měsíc zbývá {{left}} z {{limit}} bezplatných schůzek. Pro je bez omezení.",
     "startNow": "Začít teď",
     "startNowHint": "Dělat poznámky hned, bez čekání na hovor",
     "auto": {
@@ -1618,7 +1618,7 @@
       "pro": "Poznámky se nedělají",
       "proDetail": "S Pro {{appName}} rozpozná vaše hovory a nabídne poznámky.",
       "unsupported": "Poznámky se nedělají",
-      "unsupportedDetail": "Začněte poznámky, když hovor začne.",
+      "unsupportedDetail": "Až hovor začne, spusťte poznámky.",
       "turnOn": "Zapnout"
     },
     "steps": {
@@ -1658,11 +1658,11 @@
     "modes": {
       "write": {
         "title": "Psát",
-        "example": "Můžeme to dát ve čtvrtek?"
+        "example": "Nešlo by to radši ve čtvrtek?"
       },
       "answer": {
         "title": "Odpovídat",
-        "example": "Kolik je 15 % z 240?"
+        "example": "Kolik je 15 % z 240?"
       },
       "act": {
         "title": "Jednat",
@@ -1692,7 +1692,7 @@
         "proactive": "Rozhoduje se na tomto počítači",
         "meetings": "Zvuk zůstává na tomto počítači",
         "wake_word": "Poslouchá jen na tomto počítači",
-        "screen_memory": "Zůstává na tomto počítači, šifrované"
+        "screen_memory": "Zůstává zašifrované na tomto počítači"
       }
     }
   },
@@ -1770,8 +1770,8 @@
     "subtitle": "Mluvte tak, jak byste se zeptali kolegy. Pár způsobů, jak začít.",
     "ways": {
       "0": "Podržte a mluvte s agentem.",
-      "1": "Podržte a diktujte. Začněte slovy „Hey {{appName}}“, pokud se chcete zeptat.",
-      "2": "Bez rukou: řekněte „Hey {{appName}}, …“. Zapněte to v Soukromí."
+      "1": "Podržte a diktujte. Začněte slovy „Ahoj {{appName}}“, pokud se chcete zeptat.",
+      "2": "Bez rukou: řekněte „Ahoj {{appName}}, …“. Zapněte to v Soukromí."
     }
   },
   "app": {
