@@ -281,7 +281,8 @@ export function completionKind(messages: Message[]): UsageKind {
  */
 export const FAIR_USE = {
   ai: 1_500, // requests a day: a very heavy dictation day is a few hundred
-  search: 100, // web searches a day: the costliest call
+  search: 50, // web searches a day: the costliest call (~$0.008 each), capped so a
+  // maxed-out Pro account stays near break-even
   // Cloud suggestion judgements a day (/api/agent/suggest). The app asks at
   // most once per window the user stays on, a few times an hour.
   suggest: 150,
