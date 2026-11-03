@@ -225,6 +225,10 @@
       "hint": "Puedes cambiar esto más tarde en Configuración",
       "highFiveLabel": "Choca esos cinco",
       "atLogin": "Iniciar {{appName}} al iniciar sesión",
+      "polish": {
+        "title": "Deja que {{appName}} pula y escriba por ti",
+        "description": "Envía el texto que dictas (nunca el audio) para pulirlo. Desactívalo para que el dictado se quede en este ordenador."
+      },
       "finish": "Listo",
       "panel": {
         "name": "{{appName}}",

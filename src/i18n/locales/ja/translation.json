@@ -224,6 +224,10 @@
       "hint": "これらは後から設定で変更できます",
       "highFiveLabel": "ハイタッチ",
       "atLogin": "ログイン時に {{appName}} を起動する",
+      "polish": {
+        "title": "{{appName}} に整形と文章作成を任せる",
+        "description": "音声入力したテキスト（音声は送りません）を送信して整形します。オフにすると、音声入力はこのコンピュータ内で完結します。"
+      },
       "finish": "完了",
       "panel": {
         "name": "{{appName}}",

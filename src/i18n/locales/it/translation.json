@@ -225,6 +225,10 @@
       "hint": "Puoi cambiare queste scelte più tardi nelle Impostazioni",
       "highFiveLabel": "Batti il cinque",
       "atLogin": "Avvia {{appName}} quando accedo",
+      "polish": {
+        "title": "Lascia che {{appName}} rifinisca e scriva per te",
+        "description": "Invia il testo che detti (mai l'audio) per rifinirlo. Disattiva per tenere la dettatura su questo computer."
+      },
       "finish": "Fatto",
       "panel": {
         "name": "{{appName}}",

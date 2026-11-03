@@ -224,6 +224,10 @@
       "hint": "Du kannst das später in den Einstellungen ändern",
       "highFiveLabel": "High Five",
       "atLogin": "{{appName}} beim Anmelden starten",
+      "polish": {
+        "title": "{{appName}} feilen und für dich schreiben lassen",
+        "description": "Sendet den diktierten Text (nie Audio), um ihm den Feinschliff zu geben. Schalte es aus, damit Diktate auf diesem Computer bleiben."
+      },
       "finish": "Fertig",
       "panel": {
         "name": "{{appName}}",

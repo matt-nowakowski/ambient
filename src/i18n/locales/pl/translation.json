@@ -226,6 +226,10 @@
       "hint": "Możesz to później zmienić w Ustawieniach",
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
+      "polish": {
+        "title": "Niech {{appName}} szlifuje i pisze za Ciebie",
+        "description": "Wysyła dyktowany tekst (nigdy dźwięk), żeby go oszlifować. Wyłącz, aby dyktowanie zostało na tym komputerze."
+      },
       "finish": "Gotowe",
       "panel": {
         "name": "{{appName}}",

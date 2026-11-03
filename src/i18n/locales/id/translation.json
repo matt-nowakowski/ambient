@@ -224,6 +224,10 @@
       "hint": "Anda dapat mengubahnya nanti di Pengaturan",
       "highFiveLabel": "Tos",
       "atLogin": "Jalankan {{appName}} saat saya masuk",
+      "polish": {
+        "title": "Biarkan {{appName}} memoles dan menulis untuk Anda",
+        "description": "Mengirim teks yang Anda dikte (tidak pernah audio) untuk dipoles. Matikan agar dikte tetap di komputer ini."
+      },
       "finish": "Selesai",
       "panel": {
         "name": "{{appName}}",

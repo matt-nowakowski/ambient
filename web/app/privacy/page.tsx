@@ -87,6 +87,12 @@ export default function PrivacyPage() {
                 said, never what is on your screen.
               </p>
               <p>
+                <strong>AI polish.</strong> AI polish tidies the text you dictate and can write a message for you. It is
+                on by default for new installs and can be turned off during setup or at any time in Account; turning it
+                off keeps dictation on your computer. When it is on, the text you dictate (never audio) is processed as
+                described above, and each request sent to our server is listed on the app’s Privacy page.
+                </p>
+                <p>
                 <strong>Smart writing.</strong> With the Writing setting on Smart (the default), plain speech is typed as you
                 said it without calling a model. When your words read as an instruction to write something, when they are
                 unclear, or when you ask to rewrite text you have selected, what you said (and that selected text) is

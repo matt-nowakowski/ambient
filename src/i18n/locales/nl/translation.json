@@ -224,6 +224,10 @@
       "hint": "Je kunt dit later wijzigen in de instellingen",
       "highFiveLabel": "High five",
       "atLogin": "{{appName}} starten als ik inlog",
+      "polish": {
+        "title": "Laat {{appName}} afwerken en voor je schrijven",
+        "description": "Verstuurt de tekst die je dicteert (nooit audio) om die af te werken. Zet uit om dicteren op deze computer te houden."
+      },
       "finish": "Klaar",
       "panel": {
         "name": "{{appName}}",

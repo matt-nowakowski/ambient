@@ -224,6 +224,10 @@
       "hint": "You can change these later in Settings",
       "highFiveLabel": "High five",
       "atLogin": "Start {{appName}} when I log in",
+      "polish": {
+        "title": "Let {{appName}} tidy up and write for you",
+        "description": "Sends the text you dictate (never audio) to tidy it up. Turn off to keep dictation on this computer."
+      },
       "finish": "Done",
       "panel": {
         "name": "{{appName}}",
