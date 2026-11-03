@@ -11,6 +11,41 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.7",
+    date: "2026-11-03",
+    title: "Your desktop colleague",
+    summary:
+      "Ambient now knows when to type what you said and when to write it for you, offers help from your first day, and Free gets the whole colleague with weekly limits.",
+    sections: [
+      {
+        heading: "Smart writing",
+        items: [
+          "Each time you dictate, Ambient decides: type it as you said it, tidy it up, or write it for you. “Tell him I can't make it, be polite” becomes a proper message.",
+          "A small note shows what it did. Click “Use my words”, or just say it, to get your exact words back.",
+          "Select text and say “make this more formal” or “shorter”; “Undo rewrite” brings your original back.",
+          "Edit by voice: say “warmer” or “shorter” right after.",
+          "It learns where you prefer your own words. Choose Smart, Always as I said, or Always polish in Settings.",
+        ],
+      },
+      {
+        heading: "Free gets the colleague",
+        items: [
+          "Every agent feature is now on Free, with weekly limits: 25 AI uses, 10 suggestions, 2 meetings a month and the last 24 hours of recall. Hands-free “Hey Ambient” included.",
+          "Pro removes the limits. Home shows what's left, and Ambient tells you kindly when you reach one.",
+          "Background decisions, like working out what you meant, never use up your AI uses.",
+        ],
+      },
+      {
+        heading: "Getting started",
+        items: [
+          "Setup introduces Ambient as your desktop colleague, and a new step shows how it offers help, with the switch to turn suggestions on.",
+          "AI polish is on by default for new installs, with a clear switch during setup. Your existing choice doesn't change.",
+          "Your first suggestion comes with a one-time tip on how to answer it.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.6",
     date: "2026-11-03",
     title: "A colleague, not a command line",
