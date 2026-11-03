@@ -10,6 +10,7 @@ import type {
   VadBackend,
   LanguageDetectionMode,
   MeetingsEmail,
+  WritingMode,
 } from "@/bindings";
 import { commands } from "@/bindings";
 import { showError } from "@/lib/errors";
@@ -84,6 +85,8 @@ const settingUpdaters: {
   telemetry: (value) => commands.changeTelemetrySetting(value as boolean),
   meetings_email: (value) =>
     commands.changeMeetingsEmailSetting(value as MeetingsEmail),
+  writing_mode: (value) =>
+    commands.changeWritingModeSetting(value as WritingMode),
   show_whats_new_on_update: (value) =>
     commands.changeShowWhatsNewOnUpdateSetting(value as boolean),
   whats_new_last_seen_version: (value) =>

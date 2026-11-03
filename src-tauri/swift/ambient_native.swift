@@ -383,6 +383,57 @@ public func ambient_context_snapshot(_ pid: Int32, _ maxChars: Int32) -> UnsafeM
     return json(result)
 }
 
+// MARK: - The focused text field (smart writing: "Use my words")
+
+/// The focused element of `pid` as JSON: {"role", "secure", "loc", "len"}
+/// (the selected range in UTF-16 units; `len` 0 is the caret), plus "value"
+/// and "selection" when `readText` is set. Never reads a password field.
+/// Values longer than 200,000 UTF-16 units aren't returned (the caller then
+/// treats the field as unreadable).
+@_cdecl("ambient_focused_field")
+public func ambient_focused_field(_ pid: Int32, _ readText: Bool) -> UnsafeMutablePointer<CChar>? {
+    guard AXIsProcessTrusted() else { return nil }
+    let app = AXUIElementCreateApplication(pid_t(pid))
+    AXUIElementSetMessagingTimeout(app, 0.25)
+    guard let obj = attr(app, kAXFocusedUIElementAttribute),
+          CFGetTypeID(obj) == AXUIElementGetTypeID() else { return nil }
+    let focused = obj as! AXUIElement
+    let role = stringAttr(focused, kAXRoleAttribute) ?? ""
+    var result: [String: Any] = ["role": role, "secure": role == "AXSecureTextField"]
+    if role == "AXSecureTextField" { return json(result) }
+    if let rangeObj = attr(focused, kAXSelectedTextRangeAttribute),
+       CFGetTypeID(rangeObj) == AXValueGetTypeID() {
+        var range = CFRange()
+        if AXValueGetValue(rangeObj as! AXValue, .cfRange, &range) {
+            result["loc"] = range.location
+            result["len"] = range.length
+        }
+    }
+    if readText {
+        if let v = stringAttr(focused, kAXValueAttribute), v.utf16.count <= 200_000 {
+            result["value"] = v
+        }
+        if let s = stringAttr(focused, kAXSelectedTextAttribute) { result["selection"] = s }
+    }
+    return json(result)
+}
+
+/// Select `len` UTF-16 units from `loc` in the focused element of `pid`.
+/// True when the app accepted the new range.
+@_cdecl("ambient_select_range")
+public func ambient_select_range(_ pid: Int32, _ loc: Int, _ len: Int) -> Bool {
+    guard AXIsProcessTrusted() else { return false }
+    let app = AXUIElementCreateApplication(pid_t(pid))
+    AXUIElementSetMessagingTimeout(app, 0.25)
+    guard let obj = attr(app, kAXFocusedUIElementAttribute),
+          CFGetTypeID(obj) == AXUIElementGetTypeID() else { return false }
+    let focused = obj as! AXUIElement
+    if stringAttr(focused, kAXRoleAttribute) == "AXSecureTextField" { return false }
+    var range = CFRange(location: loc, length: len)
+    guard let value = AXValueCreate(.cfRange, &range) else { return false }
+    return AXUIElementSetAttributeValue(focused, kAXSelectedTextRangeAttribute as CFString, value) == .success
+}
+
 // MARK: - Pressing a button (opening a reply)
 
 /// The accessible name of a button or link: its title, description, help, or

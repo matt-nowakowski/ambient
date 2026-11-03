@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Nutze stattdessen Apple Intelligence. Nichts verlässt deinen Mac.",
       "freeLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche"
     },
+    "writing": {
+      "title": "Schreiben",
+      "description": "Wie {{appName}} dein Diktat in ein Textfeld schreibt.",
+      "options": {
+        "smart": {
+          "title": "Smart",
+          "description": "{{appName}} entscheidet jedes Mal: deine Worte wie gesagt, geglättet, wenn du ins Stocken gerätst, oder für dich geschrieben, wenn du darum bittest („sag ihm, dass ich nicht kann, höflich“). Es zeigt, was es getan hat, und „Meine Worte“ macht es rückgängig."
+        },
+        "as_said": {
+          "title": "Immer wie gesagt",
+          "description": "Genau deine Worte. Es schreibt nur für dich, wenn du {{appName}} beim Namen nennst."
+        },
+        "polish": {
+          "title": "Immer glätten",
+          "description": "KI-Feinschliff bei jedem Diktat."
+        }
+      },
+      "needsPolish": "Glätten braucht eingeschalteten KI-Feinschliff. Für dich schreiben zählt als KI-Anfrage."
+    },
     "trial": {
       "daysLeft_one": "Noch {{count}} Tag",
       "daysLeft_other": "Noch {{count}} Tage"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Hilfreich",
       "down": "Nicht hilfreich"
+    },
+    "writing": {
+      "polished": "Geglättet",
+      "written": "Für dich geschrieben",
+      "useMyWords": "Meine Worte",
+      "edit": "Bearbeiten",
+      "cancel": "Abbrechen",
+      "editPrompt": "Sag, was sich ändern soll, z. B. „kürzer“ oder „herzlicher“.",
+      "voiceHint": "Oder sag „meine Worte“",
+      "copiedWords": "Deine genauen Worte sind kopiert. Zum Ersetzen einfügen.",
+      "copiedEdit": "Die neue Fassung ist kopiert. Zum Ersetzen einfügen.",
+      "noAllowance": "Das KI-Schreiben für diese Woche ist aufgebraucht, daher steht es so da, wie du es gesagt hast.",
+      "couldntWrite": "Das ging gerade nicht, daher steht es so da, wie du es gesagt hast."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "Wenn ein Vorschlag erscheint, sag „nicht jetzt“, „zeig mir so was nicht“ oder „nicht in dieser App“, und {{appName}} merkt es sich.",
       "unknownKind": "Eine Art von Vorschlag"
+    },
+    "writing": {
+      "title": "Schreiben",
+      "learned": "Was du mir gesagt hast",
+      "empty": "Noch nichts. Wenn du „Meine Worte“ wählst, schreibt {{appName}} in dieser App seltener um.",
+      "less": {
+        "written": "Schreibt seltener für dich in {{app}}",
+        "polished": "Glättet seltener in {{app}}"
+      },
+      "teach": "Wenn {{appName}} etwas glättet oder schreibt, klicke auf „Meine Worte“ oder sag es, um genau deine Worte zurückzubekommen."
     },
     "macOnly": "Vorerst nur auf dem Mac",
     "promises": {

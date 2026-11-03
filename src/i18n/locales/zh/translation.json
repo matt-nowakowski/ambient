@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "改用 Apple Intelligence。任何内容都不会离开你的 Mac。",
       "freeLeft": "本周还剩 {{left}} 次免费 AI 润色（共 {{limit}} 次）"
     },
+    "writing": {
+      "title": "写作",
+      "description": "{{appName}} 如何把你的口述输入到文本框中。",
+      "options": {
+        "smart": {
+          "title": "智能",
+          "description": "{{appName}} 每次自动判断：按你说的原样输入，说得零乱时帮你润色，或在你要求时替你撰写（“告诉他我去不了，客气点”）。它会显示做了什么，点“用我的原话”即可还原。"
+        },
+        "as_said": {
+          "title": "始终按原话",
+          "description": "一字不改。只有当你叫出 {{appName}} 的名字时才会替你撰写。"
+        },
+        "polish": {
+          "title": "始终润色",
+          "description": "每次口述都用 AI 润色。"
+        }
+      },
+      "needsPolish": "润色需要开启 AI 润色。替你撰写计为一次 AI 请求。"
+    },
     "trial": {
       "daysLeft_one": "还剩 {{count}} 天",
       "daysLeft_other": "还剩 {{count}} 天"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "有帮助",
       "down": "没帮助"
+    },
+    "writing": {
+      "polished": "已润色",
+      "written": "已替你撰写",
+      "useMyWords": "用我的原话",
+      "edit": "编辑",
+      "cancel": "取消",
+      "editPrompt": "说出要改什么，比如“短一点”或“更亲切”。",
+      "voiceHint": "或说“用我的原话”",
+      "copiedWords": "已复制你的原话。粘贴即可替换。",
+      "copiedEdit": "已复制新版本。粘贴即可替换。",
+      "noAllowance": "本周的 AI 写作额度已用完，所以按你说的原话输入。",
+      "couldntWrite": "暂时无法撰写，所以按你说的原话输入。"
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "建议出现时，说“现在不用”“别给我看这些”或“不要在这个应用里”，{{appName}} 就会记住。",
       "unknownKind": "某类建议"
+    },
+    "writing": {
+      "title": "写作",
+      "learned": "你告诉过我的",
+      "empty": "暂无内容。当你选择“用我的原话”，{{appName}} 会在该应用中减少改写。",
+      "less": {
+        "written": "在 {{app}} 中减少替你撰写",
+        "polished": "在 {{app}} 中减少润色"
+      },
+      "teach": "{{appName}} 润色或撰写后，点击“用我的原话”或直接说出来，即可恢复你的原话。"
     },
     "macOnly": "目前仅限 Mac",
     "promises": {

@@ -1112,6 +1112,25 @@
       "onDeviceDescription": "Použijte místo toho Apple Intelligence. Nic neopustí váš Mac.",
       "freeLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných vyladění"
     },
+    "writing": {
+      "title": "Psaní",
+      "description": "Jak {{appName}} píše to, co diktujete, do textového pole.",
+      "options": {
+        "smart": {
+          "title": "Chytře",
+          "description": "{{appName}} pokaždé rozhodne: vaše slova, jak jste je řekli, uhlazená, když je řeč neuspořádaná, nebo napsaná za vás, když o to požádáte („řekni mu, že nemůžu, zdvořile“). Ukáže, co udělal, a „Moje slova“ to vrátí."
+        },
+        "as_said": {
+          "title": "Vždy, jak jsem řekl",
+          "description": "Přesně vaše slova. Za vás píše, jen když {{appName}} oslovíte jménem."
+        },
+        "polish": {
+          "title": "Vždy uhladit",
+          "description": "AI úprava u každého diktování."
+        }
+      },
+      "needsPolish": "Uhlazení vyžaduje zapnutou AI úpravu. Psaní za vás se počítá jako AI požadavek."
+    },
     "trial": {
       "daysLeft_one": "Zbývá {{count}} den",
       "daysLeft_few": "Zbývají {{count}} dny",
@@ -1361,6 +1380,19 @@
     "rate": {
       "up": "Užitečné",
       "down": "Neužitečné"
+    },
+    "writing": {
+      "polished": "Uhlazeno",
+      "written": "Napsáno za vás",
+      "useMyWords": "Moje slova",
+      "edit": "Upravit",
+      "cancel": "Zrušit",
+      "editPrompt": "Řekněte, co změnit, třeba „kratší“ nebo „vřelejší“.",
+      "voiceHint": "Nebo řekněte „moje slova“",
+      "copiedWords": "Vaše přesná slova jsou zkopírovaná. Vložte je pro nahrazení.",
+      "copiedEdit": "Nová verze je zkopírovaná. Vložte ji pro nahrazení.",
+      "noAllowance": "Psaní s AI na tento týden došlo, takže je to napsané, jak jste to řekli.",
+      "couldntWrite": "Teď to nešlo napsat, takže je to napsané, jak jste to řekli."
     }
   },
   "privacy": {
@@ -1516,6 +1548,16 @@
       },
       "teach": "Když se objeví návrh, řekněte „teď ne“, „tohle mi neukazuj“ nebo „ne v této aplikaci“ a {{appName}} si to zapamatuje.",
       "unknownKind": "Typ návrhu"
+    },
+    "writing": {
+      "title": "Psaní",
+      "learned": "Co jste mi řekli",
+      "empty": "Zatím nic. Když zvolíte „Moje slova“, {{appName}} v té aplikaci méně přepisuje.",
+      "less": {
+        "written": "Méně píše za vás v {{app}}",
+        "polished": "Méně uhlazuje v {{app}}"
+      },
+      "teach": "Když {{appName}} něco uhladí nebo napíše, klikněte na „Moje slova“ nebo to řekněte a dostanete zpět přesně svá slova."
     },
     "macOnly": "Zatím jen pro Mac",
     "days_few": "{{count}} dny",

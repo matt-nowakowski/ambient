@@ -333,6 +333,31 @@ impl Bus {
         Some(text.replace('\u{FFFC}', " ")).filter(|s| !s.trim().is_empty())
     }
 
+    /// The caret's character offset in the node's text.
+    pub fn caret(&self, n: &Node) -> Option<i32> {
+        property(&self.conn, n, TEXT, "CaretOffset").and_then(|v| i32::try_from(v).ok())
+    }
+
+    /// The first selection's (start, end) character offsets, if any.
+    pub fn selection_range(&self, n: &Node) -> Option<(i32, i32)> {
+        let count: i32 = call(&self.conn, n, TEXT, "GetNSelections", &())?;
+        if count <= 0 {
+            return None;
+        }
+        call(&self.conn, n, TEXT, "GetSelection", &(0i32,))
+    }
+
+    /// Select characters `start..end` of the node's text.
+    pub fn set_selection(&self, n: &Node, start: i32, end: i32) -> bool {
+        let count: i32 = call(&self.conn, n, TEXT, "GetNSelections", &()).unwrap_or(0);
+        let ok: Option<bool> = if count > 0 {
+            call(&self.conn, n, TEXT, "SetSelection", &(0i32, start, end))
+        } else {
+            call(&self.conn, n, TEXT, "AddSelection", &(start, end))
+        };
+        ok.unwrap_or(false)
+    }
+
     /// A web document's URL (Firefox: DocURL; Chromium and WebKit: URI).
     pub fn doc_url(&self, n: &Node) -> Option<String> {
         let attrs: HashMap<String, String> =

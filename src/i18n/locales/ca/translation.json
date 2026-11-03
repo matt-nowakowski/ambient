@@ -1107,6 +1107,25 @@
       "onDeviceDescription": "Feu servir Apple Intelligence. Res no surt del vostre Mac.",
       "freeLeft": "Us queden {{left}} de {{limit}} usos gratuïts del poliment amb IA aquesta setmana"
     },
+    "writing": {
+      "title": "Escriptura",
+      "description": "Com escriu {{appName}} el que dictes en un camp de text.",
+      "options": {
+        "smart": {
+          "title": "Intel·ligent",
+          "description": "{{appName}} decideix cada vegada: les teves paraules tal qual, polides quan el dictat surt desordenat, o redactades per tu quan ho demanes («digues-li que no podré venir, amb educació»). Mostra què ha fet, i «Les meves paraules» ho desfà."
+        },
+        "as_said": {
+          "title": "Sempre tal com ho dic",
+          "description": "Les teves paraules exactes. Només redacta per tu quan crides {{appName}} pel nom."
+        },
+        "polish": {
+          "title": "Polir sempre",
+          "description": "Polit amb IA a cada dictat."
+        }
+      },
+      "needsPolish": "Per polir cal activar el polit amb IA. Redactar per tu compta com una sol·licitud d'IA."
+    },
     "trial": {
       "daysLeft_one": "Queda {{count}} dia",
       "daysLeft_other": "Queden {{count}} dies",
@@ -1353,6 +1372,19 @@
     "rate": {
       "up": "Útil",
       "down": "No és útil"
+    },
+    "writing": {
+      "polished": "Polit",
+      "written": "Redactat per tu",
+      "useMyWords": "Les meves paraules",
+      "edit": "Edita",
+      "cancel": "Cancel·la",
+      "editPrompt": "Digues què cal canviar, com «més curt» o «més càlid».",
+      "voiceHint": "O digues «les meves paraules»",
+      "copiedWords": "S'han copiat les teves paraules exactes. Enganxa per substituir.",
+      "copiedEdit": "S'ha copiat la versió nova. Enganxa per substituir.",
+      "noAllowance": "S'ha acabat l'escriptura amb IA d'aquesta setmana, així que va tal com ho has dit.",
+      "couldntWrite": "Ara no s'ha pogut redactar, així que va tal com ho has dit."
     }
   },
   "privacy": {
@@ -1505,6 +1537,16 @@
       },
       "teach": "Quan aparegui un suggeriment, digueu «ara no», «no me'n mostris» o «no en aquesta aplicació», i {{appName}} ho recordarà.",
       "unknownKind": "Un tipus de suggeriment"
+    },
+    "writing": {
+      "title": "Escriptura",
+      "learned": "El que m'has dit",
+      "empty": "Res encara. Quan tries «Les meves paraules», {{appName}} reescriu menys en aquesta app.",
+      "less": {
+        "written": "Redacta menys per tu a {{app}}",
+        "polished": "Poleix menys a {{app}}"
+      },
+      "teach": "Quan {{appName}} poleixi o redacti alguna cosa, fes clic a «Les meves paraules» o digues-ho per recuperar les teves paraules exactes."
     },
     "macOnly": "De moment, només al Mac",
     "promises": {

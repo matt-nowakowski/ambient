@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "代わりにApple Intelligenceを使用します。データがMacの外に出ることはありません。",
       "freeLeft": "今週は無料のAIによる整形があと {{left}} 回（全 {{limit}} 回）"
     },
+    "writing": {
+      "title": "書き方",
+      "description": "{{appName}} が音声入力をテキスト欄にどう入力するか。",
+      "options": {
+        "smart": {
+          "title": "スマート",
+          "description": "{{appName}} が毎回判断します。話したとおりの言葉、話し方が乱れたときは整えた文、頼まれたときは代わりに書いた文（「行けないって丁寧に伝えて」）。何をしたかを表示し、「自分の言葉」で元に戻せます。"
+        },
+        "as_said": {
+          "title": "常に話したとおり",
+          "description": "あなたの言葉そのまま。{{appName}} の名前を呼んだときだけ代わりに書きます。"
+        },
+        "polish": {
+          "title": "常に整える",
+          "description": "すべての音声入力に AI 仕上げ。"
+        }
+      },
+      "needsPolish": "整えるには AI 仕上げをオンにしてください。代わりに書くことは AI リクエストとして数えられます。"
+    },
     "trial": {
       "daysLeft_one": "残り {{count}} 日",
       "daysLeft_other": "残り {{count}} 日"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "役に立った",
       "down": "役に立たなかった"
+    },
+    "writing": {
+      "polished": "整えました",
+      "written": "代わりに書きました",
+      "useMyWords": "自分の言葉",
+      "edit": "編集",
+      "cancel": "キャンセル",
+      "editPrompt": "「短く」「もっと温かく」など、変えたい点を話してください。",
+      "voiceHint": "または「自分の言葉」と言う",
+      "copiedWords": "話したとおりの言葉をコピーしました。貼り付けて置き換えてください。",
+      "copiedEdit": "新しい文をコピーしました。貼り付けて置き換えてください。",
+      "noAllowance": "今週の AI 書き込みの上限に達したため、話したとおりに入力しました。",
+      "couldntWrite": "今は書けなかったため、話したとおりに入力しました。"
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "提案が表示されたら「今はいい」「これは表示しないで」「このアプリではやめて」と言えば、{{appName}}が覚えます。",
       "unknownKind": "提案の種類"
+    },
+    "writing": {
+      "title": "書き方",
+      "learned": "教えてもらったこと",
+      "empty": "まだありません。「自分の言葉」を選ぶと、{{appName}} はそのアプリで書き換えを控えます。",
+      "less": {
+        "written": "{{app}} では代わりに書くことを控えます",
+        "polished": "{{app}} では整えることを控えます"
+      },
+      "teach": "{{appName}} が整えたり書いたりしたあと、「自分の言葉」をクリックするか口に出すと、話したとおりの言葉に戻せます。"
     },
     "macOnly": "現在はMacのみ",
     "promises": {

@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Använd Apple Intelligence i stället. Inget lämnar din Mac.",
       "freeLeft": "{{left}} av {{limit}} gratis finslipningar kvar den här veckan"
     },
+    "writing": {
+      "title": "Skrivande",
+      "description": "Hur {{appName}} skriver det du dikterar i ett textfält.",
+      "options": {
+        "smart": {
+          "title": "Smart",
+          "description": "{{appName}} avgör varje gång: dina ord som du sa dem, putsade när talet blir rörigt, eller skrivna åt dig när du ber om det (”säg att jag inte kan komma, artigt”). Den visar vad den gjorde, och ”Mina ord” ångrar det."
+        },
+        "as_said": {
+          "title": "Alltid som jag sa",
+          "description": "Exakt dina ord. Den skriver bara åt dig när du tilltalar {{appName}} vid namn."
+        },
+        "polish": {
+          "title": "Putsa alltid",
+          "description": "AI-putsning på varje diktering."
+        }
+      },
+      "needsPolish": "Putsning kräver att AI-putsning är på. Att skriva åt dig räknas som en AI-förfrågan."
+    },
     "trial": {
       "daysLeft_one": "{{count}} dag kvar",
       "daysLeft_other": "{{count}} dagar kvar"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Hjälpsamt",
       "down": "Inte hjälpsamt"
+    },
+    "writing": {
+      "polished": "Putsat",
+      "written": "Skrivet åt dig",
+      "useMyWords": "Mina ord",
+      "edit": "Redigera",
+      "cancel": "Avbryt",
+      "editPrompt": "Säg vad som ska ändras, som ”kortare” eller ”varmare”.",
+      "voiceHint": "Eller säg ”mina ord”",
+      "copiedWords": "Dina exakta ord är kopierade. Klistra in för att ersätta.",
+      "copiedEdit": "Den nya versionen är kopierad. Klistra in för att ersätta.",
+      "noAllowance": "AI-skrivandet för den här veckan är slut, så det står som du sa det.",
+      "couldntWrite": "Det gick inte att skriva just nu, så det står som du sa det."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "När ett förslag dyker upp, säg ”inte nu”, ”visa inte sådana här” eller ”inte i den här appen”, så kommer {{appName}} ihåg det.",
       "unknownKind": "En typ av förslag"
+    },
+    "writing": {
+      "title": "Skrivande",
+      "learned": "Det du har sagt till mig",
+      "empty": "Inget än. När du väljer ”Mina ord” skriver {{appName}} om mindre i den appen.",
+      "less": {
+        "written": "Skriver mindre åt dig i {{app}}",
+        "polished": "Putsar mindre i {{app}}"
+      },
+      "teach": "När {{appName}} putsar eller skriver något, klicka på ”Mina ord” eller säg det för att få tillbaka dina exakta ord."
     },
     "macOnly": "Endast på Mac än så länge",
     "promises": {

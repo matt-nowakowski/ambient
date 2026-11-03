@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Hãy dùng Apple Intelligence thay thế. Không có gì rời khỏi Mac của bạn.",
       "freeLeft": "Còn {{left}} trên {{limit}} lượt trau chuốt bằng AI miễn phí tuần này"
     },
+    "writing": {
+      "title": "Viết",
+      "description": "Cách {{appName}} gõ những gì bạn đọc vào một ô văn bản.",
+      "options": {
+        "smart": {
+          "title": "Thông minh",
+          "description": "{{appName}} quyết định mỗi lần: lời của bạn y như đã nói, được trau chuốt khi lời nói lộn xộn, hoặc được viết giúp khi bạn yêu cầu (“nói với anh ấy là tôi không đến được, lịch sự nhé”). Nó cho biết đã làm gì, và “Lời của tôi” hoàn tác lại."
+        },
+        "as_said": {
+          "title": "Luôn như tôi nói",
+          "description": "Đúng từng lời của bạn. Nó chỉ viết giúp khi bạn gọi tên {{appName}}."
+        },
+        "polish": {
+          "title": "Luôn trau chuốt",
+          "description": "Trau chuốt bằng AI cho mọi lần đọc."
+        }
+      },
+      "needsPolish": "Trau chuốt cần bật trau chuốt bằng AI. Viết giúp bạn được tính là một yêu cầu AI."
+    },
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",
       "daysLeft_other": "Còn {{count}} ngày"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Hữu ích",
       "down": "Không hữu ích"
+    },
+    "writing": {
+      "polished": "Đã trau chuốt",
+      "written": "Đã viết giúp bạn",
+      "useMyWords": "Lời của tôi",
+      "edit": "Sửa",
+      "cancel": "Hủy",
+      "editPrompt": "Hãy nói cần đổi gì, như “ngắn hơn” hoặc “ấm áp hơn”.",
+      "voiceHint": "Hoặc nói “lời của tôi”",
+      "copiedWords": "Đã sao chép đúng lời của bạn. Dán để thay thế.",
+      "copiedEdit": "Đã sao chép phiên bản mới. Dán để thay thế.",
+      "noAllowance": "Đã hết lượt viết bằng AI tuần này, nên được gõ đúng như bạn nói.",
+      "couldntWrite": "Không viết được lúc này, nên được gõ đúng như bạn nói."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "Khi một gợi ý xuất hiện, hãy nói “không phải bây giờ”, “đừng hiện mấy cái này” hoặc “không trong ứng dụng này”, và {{appName}} sẽ ghi nhớ.",
       "unknownKind": "Một loại gợi ý"
+    },
+    "writing": {
+      "title": "Viết",
+      "learned": "Những gì bạn đã nói với tôi",
+      "empty": "Chưa có gì. Khi bạn chọn “Lời của tôi”, {{appName}} sẽ ít viết lại hơn trong ứng dụng đó.",
+      "less": {
+        "written": "Ít viết giúp bạn hơn trong {{app}}",
+        "polished": "Ít trau chuốt hơn trong {{app}}"
+      },
+      "teach": "Khi {{appName}} trau chuốt hoặc viết gì đó, hãy bấm “Lời của tôi” hoặc nói ra để lấy lại đúng lời của bạn."
     },
     "macOnly": "Hiện chỉ có trên Mac",
     "promises": {

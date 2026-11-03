@@ -13,6 +13,7 @@ import {
   History,
   KeyRound,
   Laptop,
+  PenLine,
   ListChecks,
   Lock,
   Mic,
@@ -345,6 +346,37 @@ export const PrivacyCenter: React.FC = () => {
     save({ ...s, suggestion_prefs: prefs });
   };
 
+  /** What smart writing learned from "Use my words", one row per app and kind. */
+  const writingLearned = Object.entries(s.writing_prefs ?? {}).flatMap(
+    ([bundle, pref]) =>
+      pref
+        ? [
+            ...(pref.written_reverts > 0
+              ? [{ bundle, name: pref.app_name, kind: "written" as const }]
+              : []),
+            ...(pref.polished_reverts > 0
+              ? [{ bundle, name: pref.app_name, kind: "polished" as const }]
+              : []),
+          ]
+        : [],
+  );
+
+  /** Forget one: that app is written for (or polished) as eagerly as before. */
+  const undoWriting = (bundle: string, kind: "written" | "polished") => {
+    const pref = s.writing_prefs?.[bundle];
+    if (!pref) return;
+    const next = {
+      ...pref,
+      written_reverts: kind === "written" ? 0 : pref.written_reverts,
+      polished_reverts: kind === "polished" ? 0 : pref.polished_reverts,
+    };
+    const prefs = { ...s.writing_prefs };
+    if (next.written_reverts === 0 && next.polished_reverts === 0)
+      delete prefs[bundle];
+    else prefs[bundle] = next;
+    save({ ...s, writing_prefs: prefs });
+  };
+
   const pauseItems: MoreMenuItem[] = [
     {
       key: "hour",
@@ -559,6 +591,54 @@ export const PrivacyCenter: React.FC = () => {
               </p>
             </div>
           )}
+        </SettingsGroup>
+
+        {/* Writing: what "Use my words" taught it, per app. */}
+        <SettingsGroup title={t("privacy.writing.title")}>
+          <div className="px-row-x py-row-y">
+            <p className="text-meta font-medium text-ink-3">
+              {t("privacy.writing.learned")}
+            </p>
+            {writingLearned.length === 0 ? (
+              <p className="mt-1 text-small text-ink-2">
+                {t("privacy.writing.empty")}
+              </p>
+            ) : (
+              <ul className="mt-1 divide-y divide-glass-edge">
+                {writingLearned.map(({ bundle, name, kind }) => (
+                  <li
+                    key={`${bundle}:${kind}`}
+                    className="flex items-center gap-3 py-2"
+                  >
+                    <PenLine
+                      width={13}
+                      height={13}
+                      strokeWidth={1.75}
+                      className="shrink-0 text-ink-3"
+                      aria-hidden="true"
+                    />
+                    <span className="min-w-0 flex-1 text-small" title={bundle}>
+                      {t(`privacy.writing.less.${kind}`, {
+                        app: name || appName(bundle),
+                      })}
+                    </span>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="shrink-0 whitespace-nowrap"
+                      onClick={() => undoWriting(bundle, kind)}
+                    >
+                      <Undo2 width={12} height={12} aria-hidden="true" />
+                      {t("privacy.suggestions.learned.undo")}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-3 text-meta text-ink-3">
+              {t("privacy.writing.teach")}
+            </p>
+          </div>
         </SettingsGroup>
 
         {/* Where the intelligence runs: every platform, three choices. */}

@@ -566,6 +566,23 @@ pub struct AppSettings {
     /// Email finished meeting notes to the signed-in account.
     #[serde(default)]
     pub meetings_email: MeetingsEmail,
+    /// How dictation is written: decided per utterance (Smart), always as
+    /// said, or always polished. See `agent::writing`.
+    #[serde(default)]
+    pub writing_mode: WritingMode,
+}
+
+/// The Writing setting.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum WritingMode {
+    /// Per utterance: as said, polished, or written for you.
+    #[default]
+    Smart,
+    /// Always the words as said (light punctuation and casing only).
+    AsSaid,
+    /// Always polished (AI polish on every dictation).
+    Polish,
 }
 
 /// When meeting notes are emailed to the account's address.
@@ -626,6 +643,22 @@ pub struct AgentSettings {
     /// "meeting_nudge", …), off entirely or muted in some apps. Learned when
     /// they say "don't show me these" and editable in the Privacy Center.
     pub suggestion_prefs: std::collections::BTreeMap<String, SuggestionPref>,
+    /// What smart writing learned from "Use my words", per app (bundle id or
+    /// process name): it writes and polishes less where it was reverted.
+    /// Shown in the Privacy Center with Undo.
+    pub writing_prefs: std::collections::BTreeMap<String, WritingPref>,
+}
+
+/// Reverts of smart writing in one app.
+#[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq, Eq, Type)]
+#[serde(default)]
+pub struct WritingPref {
+    /// The app's name, for the Privacy Center.
+    pub app_name: String,
+    /// "Written for you" turned back into the user's words.
+    pub written_reverts: u32,
+    /// "Polished" turned back into the user's words.
+    pub polished_reverts: u32,
 }
 
 /// Where the agent's intelligence runs.
@@ -678,6 +711,7 @@ impl Default for AgentSettings {
             paused_until: None,
             suggestions_per_hour: crate::agent::budget::HOURLY_CAP,
             suggestion_prefs: Default::default(),
+            writing_prefs: Default::default(),
         }
     }
 }
@@ -1034,6 +1068,7 @@ pub fn get_default_settings() -> AppSettings {
         agent: AgentSettings::default(),
         telemetry: false,
         meetings_email: MeetingsEmail::default(),
+        writing_mode: WritingMode::default(),
         intro_seen: false,
     }
 }

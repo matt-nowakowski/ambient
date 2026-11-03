@@ -11,6 +11,8 @@ extern "C" {
     fn ambient_context_snapshot(pid: i32, max_chars: i32) -> *mut c_char;
     fn ambient_open_windows(skip: *const c_char, max_chars: i32) -> *mut c_char;
     fn ambient_press_labeled(pid: i32, labels: *const c_char) -> i32;
+    fn ambient_focused_field(pid: i32, read_text: bool) -> *mut c_char;
+    fn ambient_select_range(pid: i32, loc: isize, len: isize) -> bool;
 }
 
 /// Take ownership of a Swift-allocated JSON string and parse it.
@@ -52,4 +54,59 @@ pub fn press_labeled(pid: i32, labels: &[&str]) -> i32 {
         return 1;
     };
     unsafe { ambient_press_labeled(pid, labels.as_ptr()) }
+}
+
+#[derive(serde::Deserialize)]
+struct RawField {
+    #[serde(default)]
+    secure: bool,
+    loc: Option<i64>,
+    len: Option<i64>,
+    value: Option<String>,
+    selection: Option<String>,
+}
+
+/// The focused field (see `field::focused_field`). AX ranges are UTF-16;
+/// they're converted to characters against the value when it was read.
+pub fn focused_field(pid: i32, read_text: bool) -> Option<super::field::FocusedField> {
+    let raw: RawField = take_json(unsafe { ambient_focused_field(pid, read_text) })?;
+    if raw.secure {
+        return None;
+    }
+    let loc = raw.loc.and_then(|l| usize::try_from(l).ok());
+    let len = raw.len.and_then(|l| usize::try_from(l).ok()).unwrap_or(0);
+    let (caret, sel_len) = match (&raw.value, loc) {
+        (Some(v), Some(loc)) => {
+            let start = super::field::utf16_to_chars(v, loc);
+            let end = super::field::utf16_to_chars(v, loc + len);
+            match (start, end) {
+                (Some(s), Some(e)) => (Some(s), e - s),
+                _ => (None, len),
+            }
+        }
+        _ => (None, len),
+    };
+    Some(super::field::FocusedField {
+        value: raw.value,
+        selection: raw.selection.filter(|s| !s.is_empty()),
+        caret,
+        sel_len,
+    })
+}
+
+/// Select characters `start..start + len` of the focused field.
+pub fn select_chars(pid: i32, start: usize, len: usize) -> bool {
+    let Some(value) = focused_field(pid, true).and_then(|f| f.value) else {
+        return false;
+    };
+    let (Some(a), Some(b)) = (
+        super::field::chars_to_utf16(&value, start),
+        super::field::chars_to_utf16(&value, start + len),
+    ) else {
+        return false;
+    };
+    let (Ok(loc), Ok(n)) = (isize::try_from(a), isize::try_from(b - a)) else {
+        return false;
+    };
+    unsafe { ambient_select_range(pid, loc, n) }
 }

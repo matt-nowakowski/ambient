@@ -18,6 +18,7 @@ pub mod report;
 pub mod router;
 pub mod wake;
 pub mod when;
+pub mod writing;
 
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -818,11 +819,25 @@ fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) -> Str
 /// A finished draft the user asked for by voice: typed where the cursor is;
 /// with no reply box open in Mail or Gmail, one is opened first; otherwise
 /// it's offered as a card (Copy, and Insert once they click into a field).
-pub fn deliver_draft(app: &AppHandle, text: String, can_insert: bool) {
+pub fn deliver_draft(
+    app: &AppHandle,
+    text: String,
+    can_insert: bool,
+    smart: Option<writing::SmartWrite>,
+) {
     crate::hud::hide(app);
     let handle = app.clone();
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_millis(150));
+        // Smart writing: typed with the chip, or replacing the text being
+        // edited; the draft card only if it couldn't be typed.
+        if let Some(smart) = &smart {
+            if (can_insert || smart.replaces.is_some())
+                && writing::deliver_written(&handle, &text, smart)
+            {
+                return;
+            }
+        }
         if can_insert {
             log::debug!("compose: a text field has focus; inserting the draft");
             if let Err(e) = crate::clipboard::paste(text.clone(), handle.clone()) {

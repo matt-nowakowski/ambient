@@ -159,6 +159,10 @@ pub struct Opts {
     /// A drafted reply the user asked for by voice: inserted where the cursor
     /// is when done, or offered as a draft when nothing has focus.
     pub compose: bool,
+    /// Smart writing's "Written for you": inserted with the chip ("Use my
+    /// words"), or replacing the text being edited; on failure the words
+    /// are typed as said with a note.
+    pub smart: Option<super::writing::SmartWrite>,
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -397,7 +401,7 @@ pub async fn run_with(
             .unwrap_or((true, false));
             let (can_insert, in_mail) = situation;
             if opts.compose && !text.trim().is_empty() {
-                super::deliver_draft(&app, text.clone(), can_insert);
+                super::deliver_draft(&app, text.clone(), can_insert, opts.smart.clone());
             } else {
                 let actions = actions_for(
                     &text,
@@ -426,6 +430,11 @@ pub async fn run_with(
         }
         Err(message) => {
             crate::telemetry::error("answer", crate::telemetry::error_kind(&message));
+            // Smart writing never leaves them with nothing: their words, as said.
+            if let Some(smart) = opts.smart.clone() {
+                super::writing::written_failed(&app, smart, &message);
+                return;
+            }
             hud::show(
                 &app,
                 HudContent::Status {

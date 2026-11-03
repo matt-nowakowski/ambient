@@ -654,6 +654,28 @@ pub fn dictation(polish: bool, elapsed: Duration) {
     );
 }
 
+/// Smart writing's decision for one dictation: `as_said`, `polished` or
+/// `written`, by `rules` or a `model`, in a coarse app category.
+pub fn write_mode(decision: &'static str, source: &'static str, app: &str) {
+    record(
+        "write_mode",
+        &[
+            ("decision", P::S(decision)),
+            ("source", P::S(source)),
+            ("app_category", P::S(app_category(app))),
+        ],
+    );
+}
+
+/// "Use my words" took back a `polished` or `written` insertion, by a
+/// `click` on the chip or by `voice`.
+pub fn write_revert(decision: &'static str, by: &'static str) {
+    record(
+        "write_revert",
+        &[("decision", P::S(decision)), ("by", P::S(by))],
+    );
+}
+
 /// 👍/👎 on a card.
 pub fn card_rating(card: &'static str, kind: &str, up: bool) {
     let Some(kind) = rating_kind(kind) else {
@@ -943,6 +965,8 @@ mod tests {
             "dictation",
             "card_rating",
             "meeting_email",
+            "write_mode",
+            "write_revert",
         ] {
             assert!(s.events.contains_key(name), "{name}");
         }
@@ -997,6 +1021,29 @@ mod tests {
             ])
         ));
         assert!(valid(&s, "did_you_mean_shown", &BTreeMap::new()));
+        // Smart writing: a decision and a revert, never the text.
+        assert!(valid(
+            &s,
+            "write_mode",
+            &props(&[
+                ("decision", P::S("written")),
+                ("source", P::S("rules")),
+                (
+                    "app_category",
+                    P::S(app_category("com.tinyspeck.slackmacgap"))
+                )
+            ])
+        ));
+        assert!(valid(
+            &s,
+            "write_revert",
+            &props(&[("decision", P::S("polished")), ("by", P::S("voice"))])
+        ));
+        assert!(!valid(
+            &s,
+            "write_revert",
+            &props(&[("decision", P::S("as_said")), ("by", P::S("click"))])
+        ));
     }
 
     #[test]

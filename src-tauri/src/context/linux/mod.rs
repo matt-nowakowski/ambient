@@ -148,6 +148,60 @@ mod imp {
         Some(snap)
     }
 
+    /// The focused node of `pid`'s active window (never a password field).
+    fn focused_text_node(bus: &Bus, pid: i32) -> Option<atspi::Node> {
+        let frame = atspi::active_frame(bus, u32::try_from(pid).ok())?;
+        if frame.pid.is_some_and(|p| i64::from(p) != i64::from(pid)) {
+            return None;
+        }
+        let focused = bus.focused(&frame.frame, Instant::now() + Duration::from_millis(150))?;
+        (bus.role(&focused) != Some(role::PASSWORD_TEXT)).then_some(focused)
+    }
+
+    /// The focused field (see `field::focused_field`). AT-SPI offsets are
+    /// characters already.
+    pub fn focused_field(pid: i32, read_text: bool) -> Option<super::super::field::FocusedField> {
+        let bus = Bus::open()?;
+        let n = focused_text_node(&bus, pid)?;
+        let (start, end) = match bus.selection_range(&n) {
+            Some((s, e)) if e > s => (s, e),
+            _ => {
+                let c = bus.caret(&n)?;
+                (c, c)
+            }
+        };
+        let value = if read_text {
+            bus.text(&n, 200_000)
+        } else {
+            None
+        };
+        let selection = if read_text {
+            bus.selection(&n, 8000)
+        } else {
+            None
+        };
+        Some(super::super::field::FocusedField {
+            value,
+            selection,
+            caret: usize::try_from(start).ok(),
+            sel_len: usize::try_from(end - start).unwrap_or(0),
+        })
+    }
+
+    /// Select characters `start..start + len` of the focused field.
+    pub fn select_chars(pid: i32, start: usize, len: usize) -> bool {
+        let Some(bus) = Bus::open() else {
+            return false;
+        };
+        let Some(n) = focused_text_node(&bus, pid) else {
+            return false;
+        };
+        let (Ok(s), Ok(e)) = (i32::try_from(start), i32::try_from(start + len)) else {
+            return false;
+        };
+        bus.set_selection(&n, s, e)
+    }
+
     /// Text of every open window (up to four per app), skipping `skip` app
     /// ids. On X11 the window list is `_NET_CLIENT_LIST`; the text always
     /// comes from AT-SPI.

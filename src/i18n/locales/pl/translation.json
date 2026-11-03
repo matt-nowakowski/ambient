@@ -1112,6 +1112,25 @@
       "onDeviceDescription": "Użyj zamiast tego Apple Intelligence. Nic nie opuszcza Twojego Maca.",
       "freeLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu"
     },
+    "writing": {
+      "title": "Pisanie",
+      "description": "Jak {{appName}} wpisuje to, co dyktujesz, w pole tekstowe.",
+      "options": {
+        "smart": {
+          "title": "Inteligentnie",
+          "description": "{{appName}} decyduje za każdym razem: twoje słowa tak, jak je wypowiedziałeś, wygładzone, gdy mowa jest chaotyczna, lub napisane za ciebie, gdy o to prosisz („powiedz mu, że nie dam rady, uprzejmie”). Pokazuje, co zrobił, a „Moje słowa” to cofa."
+        },
+        "as_said": {
+          "title": "Zawsze tak, jak powiedziałem",
+          "description": "Dokładnie twoje słowa. Pisze za ciebie tylko wtedy, gdy zwracasz się do {{appName}} po imieniu."
+        },
+        "polish": {
+          "title": "Zawsze wygładzaj",
+          "description": "Szlif AI przy każdym dyktowaniu."
+        }
+      },
+      "needsPolish": "Wygładzanie wymaga włączonego szlifu AI. Pisanie za ciebie liczy się jako zapytanie AI."
+    },
     "trial": {
       "daysLeft_one": "Pozostał {{count}} dzień",
       "daysLeft_few": "Pozostały {{count}} dni",
@@ -1361,6 +1380,19 @@
     "rate": {
       "up": "Pomocne",
       "down": "Niepomocne"
+    },
+    "writing": {
+      "polished": "Wygładzone",
+      "written": "Napisane za ciebie",
+      "useMyWords": "Moje słowa",
+      "edit": "Edytuj",
+      "cancel": "Anuluj",
+      "editPrompt": "Powiedz, co zmienić, np. „krócej” albo „cieplej”.",
+      "voiceHint": "Albo powiedz „moje słowa”",
+      "copiedWords": "Skopiowano twoje dokładne słowa. Wklej, aby zastąpić.",
+      "copiedEdit": "Skopiowano nową wersję. Wklej, aby zastąpić.",
+      "noAllowance": "Limit pisania z AI na ten tydzień się wyczerpał, więc wpisano tak, jak powiedziałeś.",
+      "couldntWrite": "Nie udało się teraz tego napisać, więc wpisano tak, jak powiedziałeś."
     }
   },
   "privacy": {
@@ -1516,6 +1548,16 @@
       },
       "teach": "Gdy pojawi się sugestia, powiedz „nie teraz”, „nie pokazuj mi tego” albo „nie w tej aplikacji”, a {{appName}} to zapamięta.",
       "unknownKind": "Rodzaj sugestii"
+    },
+    "writing": {
+      "title": "Pisanie",
+      "learned": "Co mi powiedziałeś",
+      "empty": "Jeszcze nic. Gdy wybierzesz „Moje słowa”, {{appName}} rzadziej przepisuje w tej aplikacji.",
+      "less": {
+        "written": "Rzadziej pisze za ciebie w {{app}}",
+        "polished": "Rzadziej wygładza w {{app}}"
+      },
+      "teach": "Gdy {{appName}} coś wygładzi lub napisze, kliknij „Moje słowa” albo to powiedz, aby odzyskać dokładnie swoje słowa."
     },
     "macOnly": "Na razie tylko na Macu",
     "days_few": "{{count}} dni",

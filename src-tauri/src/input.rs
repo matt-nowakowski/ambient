@@ -238,6 +238,32 @@ pub fn send_undo(enigo: &mut Enigo) -> Result<(), String> {
     clicked.map_err(|e| format!("Failed to click Z: {}", e))
 }
 
+/// Redo (Cmd+Shift+Z on macOS, Ctrl+Y on Windows, Ctrl+Shift+Z on Linux):
+/// puts back an Undo that didn't do what smart writing's revert expected.
+pub fn send_redo(enigo: &mut Enigo) -> Result<(), String> {
+    #[cfg(target_os = "macos")]
+    let (modifier_key, key, shift) = (Key::Meta, 'z', true);
+    #[cfg(target_os = "windows")]
+    let (modifier_key, key, shift) = (Key::Control, 'y', false);
+    #[cfg(target_os = "linux")]
+    let (modifier_key, key, shift) = (Key::Control, 'z', true);
+    enigo
+        .key(modifier_key, enigo::Direction::Press)
+        .map_err(|e| format!("Failed to press modifier key: {}", e))?;
+    if shift {
+        let _ = enigo.key(Key::Shift, enigo::Direction::Press);
+    }
+    let clicked = enigo.key(Key::Unicode(key), enigo::Direction::Click);
+    std::thread::sleep(std::time::Duration::from_millis(30));
+    if shift {
+        let _ = enigo.key(Key::Shift, enigo::Direction::Release);
+    }
+    enigo
+        .key(modifier_key, enigo::Direction::Release)
+        .map_err(|e| format!("Failed to release modifier key: {}", e))?;
+    clicked.map_err(|e| format!("Failed to click {key}: {}", e))
+}
+
 /// Sends a Ctrl+Shift+V paste command.
 /// This is commonly used in terminal applications on Linux to paste without formatting.
 /// Note: On Wayland, this may not work - callers should check for Wayland and use alternative methods.

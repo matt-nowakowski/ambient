@@ -37,6 +37,8 @@
     "meeting": { "outcome": ["notes", "empty", "failed"], "duration_bucket": "#duration" },
     "dictation": { "polish": "bool", "ms_bucket": "#ms" },
     "card_rating": { "card": ["answer", "suggestion"], "kind": "@rating_kind", "rating": ["up", "down"] },
-    "meeting_email": { "mode": ["ask", "always"], "outcome": ["sent", "failed"] }
+    "meeting_email": { "mode": ["ask", "always"], "outcome": ["sent", "failed"] },
+    "write_mode": { "decision": ["as_said", "polished", "written"], "source": ["rules", "model"], "app_category": "@app_category" },
+    "write_revert": { "decision": ["polished", "written"], "by": ["click", "voice"] }
   }
 }

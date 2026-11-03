@@ -122,6 +122,20 @@ fn on_device(_system: &str, _user: &str) -> Option<String> {
     None
 }
 
+/// Apple Intelligence on this Mac, whatever the provider setting (callers
+/// check the plan and the Intelligence setting first). None elsewhere or on
+/// failure. Never leaves the Mac.
+pub async fn complete_on_device(system: &str, user: &str) -> Option<String> {
+    if !on_device_ready() || system.len() + user.len() > ON_DEVICE_MAX_CHARS {
+        return None;
+    }
+    let (s, u) = (system.to_string(), user.to_string());
+    tauri::async_runtime::spawn_blocking(move || on_device(&s, &u))
+        .await
+        .ok()
+        .flatten()
+}
+
 /// Skip the on-device attempt (used where the Mac's model already had its
 /// say, like routing). Still on-device in on-device-only mode.
 pub async fn complete_hosted(

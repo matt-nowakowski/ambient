@@ -1107,6 +1107,25 @@
       "onDeviceDescription": "Utilisez plutôt Apple Intelligence. Rien ne quitte votre Mac.",
       "freeLeft": "Il reste {{left}} peaufinages gratuits sur {{limit}} cette semaine"
     },
+    "writing": {
+      "title": "Écriture",
+      "description": "Comment {{appName}} écrit ce que vous dictez dans un champ de texte.",
+      "options": {
+        "smart": {
+          "title": "Intelligent",
+          "description": "{{appName}} décide à chaque fois : vos mots tels quels, peaufinés quand la dictée est hésitante, ou rédigés pour vous quand vous le demandez (« dis-lui que je ne peux pas venir, poliment »). Il montre ce qu'il a fait, et « Mes mots » l'annule."
+        },
+        "as_said": {
+          "title": "Toujours tel quel",
+          "description": "Vos mots exacts. Il ne rédige pour vous que si vous appelez {{appName}} par son nom."
+        },
+        "polish": {
+          "title": "Toujours peaufiner",
+          "description": "Finition IA sur chaque dictée."
+        }
+      },
+      "needsPolish": "Peaufiner nécessite la finition IA. Rédiger pour vous compte comme une requête IA."
+    },
     "trial": {
       "daysLeft_one": "{{count}} jour restant",
       "daysLeft_other": "{{count}} jours restants",
@@ -1353,6 +1372,19 @@
     "rate": {
       "up": "Utile",
       "down": "Pas utile"
+    },
+    "writing": {
+      "polished": "Peaufiné",
+      "written": "Rédigé pour vous",
+      "useMyWords": "Mes mots",
+      "edit": "Modifier",
+      "cancel": "Annuler",
+      "editPrompt": "Dites quoi changer, par exemple « plus court » ou « plus chaleureux ».",
+      "voiceHint": "Ou dites « mes mots »",
+      "copiedWords": "Vos mots exacts sont copiés. Collez pour remplacer.",
+      "copiedEdit": "La nouvelle version est copiée. Collez pour remplacer.",
+      "noAllowance": "Plus d'écriture IA cette semaine, c'est donc tapé tel que vous l'avez dit.",
+      "couldntWrite": "Impossible de rédiger pour l'instant, c'est donc tapé tel que vous l'avez dit."
     }
   },
   "privacy": {
@@ -1505,6 +1537,16 @@
       },
       "teach": "Quand une suggestion apparaît, dites « pas maintenant », « ne me montre plus ça » ou « pas dans cette app », et {{appName}} s'en souvient.",
       "unknownKind": "Un type de suggestion"
+    },
+    "writing": {
+      "title": "Écriture",
+      "learned": "Ce que vous m'avez dit",
+      "empty": "Rien pour l'instant. Quand vous choisissez « Mes mots », {{appName}} réécrit moins dans cette app.",
+      "less": {
+        "written": "Rédige moins pour vous dans {{app}}",
+        "polished": "Peaufine moins dans {{app}}"
+      },
+      "teach": "Quand {{appName}} peaufine ou rédige quelque chose, cliquez sur « Mes mots » ou dites-le pour retrouver vos mots exacts."
     },
     "macOnly": "Mac uniquement pour l’instant",
     "promises": {

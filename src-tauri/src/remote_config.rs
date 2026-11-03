@@ -35,6 +35,17 @@ pub mod bounds {
     pub const ANSWER_FIRST_BYTE_TIMEOUT_MS: (f64, f64, f64) = (8000.0, 40000.0, 25000.0);
     pub const ANSWER_IDLE_TIMEOUT_MS: (f64, f64, f64) = (5000.0, 30000.0, 20000.0);
     pub const SEARCH_TIMEOUT_MS: (f64, f64, f64) = (2000.0, 15000.0, 6000.0);
+    /// Smart writing (`agent::writing`): an instruction score at or above
+    /// this is "Written for you" without a model call.
+    pub const WRITING_WRITTEN_THRESHOLD: (f64, f64, f64) = (0.5, 0.95, 0.7);
+    /// Scores from here up to the threshold are ambiguous: a model decides
+    /// (below it, never written).
+    pub const WRITING_AMBIGUOUS_FLOOR: (f64, f64, f64) = (0.2, 0.7, 0.45);
+    /// Fillers, repeats and restarts per word at or above which speech is
+    /// polished.
+    pub const WRITING_POLISH_DISFLUENCY: (f64, f64, f64) = (0.02, 0.3, 0.06);
+    /// Words without a sentence break that make a run-on (polished).
+    pub const WRITING_RUN_ON_WORDS: (f64, f64, f64) = (15.0, 80.0, 35.0);
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -73,7 +84,31 @@ pub struct AgentConfig {
     pub answer_idle_timeout: Duration,
     /// Used by the server's search; served for completeness.
     pub search_timeout: Duration,
+    /// Smart writing's thresholds (see `bounds::WRITING_*`).
+    pub writing: WritingConfig,
     kinds: BTreeMap<String, KindConfig>,
+}
+
+/// Smart writing's tunables. The tuner raises `written_threshold` when
+/// "Written for you" is reverted too often.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct WritingConfig {
+    pub written_threshold: f32,
+    /// Always below `written_threshold`.
+    pub ambiguous_floor: f32,
+    pub polish_disfluency: f32,
+    pub run_on_words: u32,
+}
+
+impl Default for WritingConfig {
+    fn default() -> Self {
+        Self {
+            written_threshold: bounds::WRITING_WRITTEN_THRESHOLD.2 as f32,
+            ambiguous_floor: bounds::WRITING_AMBIGUOUS_FLOOR.2 as f32,
+            polish_disfluency: bounds::WRITING_POLISH_DISFLUENCY.2 as f32,
+            run_on_words: bounds::WRITING_RUN_ON_WORDS.2 as u32,
+        }
+    }
 }
 
 impl Default for AgentConfig {
@@ -88,6 +123,7 @@ impl Default for AgentConfig {
             answer_first_byte_timeout: ms(bounds::ANSWER_FIRST_BYTE_TIMEOUT_MS),
             answer_idle_timeout: ms(bounds::ANSWER_IDLE_TIMEOUT_MS),
             search_timeout: ms(bounds::SEARCH_TIMEOUT_MS),
+            writing: WritingConfig::default(),
             kinds: BTreeMap::new(),
         }
     }
@@ -168,6 +204,30 @@ pub fn parse(text: &str) -> Option<AgentConfig> {
             v.pointer("/search/timeout_ms"),
             bounds::SEARCH_TIMEOUT_MS,
         )),
+        writing: {
+            let threshold = clamp(
+                v.pointer("/writing/written_threshold"),
+                bounds::WRITING_WRITTEN_THRESHOLD,
+            ) as f32;
+            let floor = clamp(
+                v.pointer("/writing/ambiguous_floor"),
+                bounds::WRITING_AMBIGUOUS_FLOOR,
+            ) as f32;
+            WritingConfig {
+                written_threshold: threshold,
+                // The ambiguous band never reaches past the threshold.
+                ambiguous_floor: floor.min(threshold - 0.05),
+                polish_disfluency: clamp(
+                    v.pointer("/writing/polish_disfluency"),
+                    bounds::WRITING_POLISH_DISFLUENCY,
+                ) as f32,
+                run_on_words: clamp(
+                    v.pointer("/writing/run_on_words"),
+                    bounds::WRITING_RUN_ON_WORDS,
+                )
+                .round() as u32,
+            }
+        },
         kinds: BTreeMap::new(),
     };
     if let Some(kinds) = v.get("kinds").and_then(Value::as_object) {
@@ -314,6 +374,19 @@ mod tests {
     }
 
     #[test]
+    fn writing_tunables_are_clamped_and_the_band_stays_below_the_threshold() {
+        let c = parse(
+            r#"{"schema":1,"writing":{"written_threshold":0.55,"ambiguous_floor":0.69,"polish_disfluency":9,"run_on_words":2}}"#,
+        )
+        .unwrap();
+        assert!((c.writing.written_threshold - 0.55).abs() < 1e-6);
+        assert!((c.writing.ambiguous_floor - 0.5).abs() < 1e-6);
+        assert!((c.writing.polish_disfluency - 0.3).abs() < 1e-6);
+        assert_eq!(c.writing.run_on_words, 15);
+        assert_eq!(AgentConfig::default().writing, WritingConfig::default());
+    }
+
+    #[test]
     fn another_schema_or_garbage_keeps_defaults() {
         assert!(parse(r#"{"schema":2,"hourly_budget":5}"#).is_none());
         assert!(parse("not json").is_none());
@@ -346,6 +419,16 @@ mod tests {
         );
         check("answer.idle_timeout_ms", bounds::ANSWER_IDLE_TIMEOUT_MS);
         check("search.timeout_ms", bounds::SEARCH_TIMEOUT_MS);
+        check(
+            "writing.written_threshold",
+            bounds::WRITING_WRITTEN_THRESHOLD,
+        );
+        check("writing.ambiguous_floor", bounds::WRITING_AMBIGUOUS_FLOOR);
+        check(
+            "writing.polish_disfluency",
+            bounds::WRITING_POLISH_DISFLUENCY,
+        );
+        check("writing.run_on_words", bounds::WRITING_RUN_ON_WORDS);
         for k in v["kinds"].as_array().unwrap() {
             assert!(known_kind(k.as_str().unwrap()), "{k}");
         }

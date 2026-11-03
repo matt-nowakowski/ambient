@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "대신 Apple Intelligence를 사용하세요. 어떤 데이터도 Mac 밖으로 나가지 않습니다.",
       "freeLeft": "이번 주 무료 AI 다듬기 {{limit}}회 중 {{left}}회 남음"
     },
+    "writing": {
+      "title": "쓰기",
+      "description": "{{appName}}가 받아쓴 내용을 텍스트 입력란에 어떻게 입력할지 정합니다.",
+      "options": {
+        "smart": {
+          "title": "스마트",
+          "description": "{{appName}}가 매번 판단합니다. 말한 그대로, 말이 정돈되지 않았으면 다듬어서, 부탁하면 대신 써서(“못 간다고 정중하게 전해 줘”) 입력합니다. 무엇을 했는지 보여 주고, “내 말 그대로”로 되돌릴 수 있습니다."
+        },
+        "as_said": {
+          "title": "항상 말한 그대로",
+          "description": "말한 그대로 입력합니다. {{appName}}를 이름으로 부를 때만 대신 씁니다."
+        },
+        "polish": {
+          "title": "항상 다듬기",
+          "description": "모든 받아쓰기에 AI 다듬기."
+        }
+      },
+      "needsPolish": "다듬으려면 AI 다듬기를 켜야 합니다. 대신 쓰기는 AI 요청으로 계산됩니다."
+    },
     "trial": {
       "daysLeft_one": "{{count}}일 남음",
       "daysLeft_other": "{{count}}일 남음"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "도움이 됨",
       "down": "도움이 안 됨"
+    },
+    "writing": {
+      "polished": "다듬음",
+      "written": "대신 씀",
+      "useMyWords": "내 말 그대로",
+      "edit": "편집",
+      "cancel": "취소",
+      "editPrompt": "“더 짧게”나 “더 따뜻하게”처럼 바꿀 점을 말해 주세요.",
+      "voiceHint": "또는 “내 말 그대로”라고 말하기",
+      "copiedWords": "말한 그대로의 문장을 복사했습니다. 붙여넣어 바꾸세요.",
+      "copiedEdit": "새 버전을 복사했습니다. 붙여넣어 바꾸세요.",
+      "noAllowance": "이번 주 AI 쓰기 한도를 다 써서 말한 그대로 입력했습니다.",
+      "couldntWrite": "지금은 쓸 수 없어서 말한 그대로 입력했습니다."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "제안이 나타나면 ‘지금은 말고’, ‘이런 건 보여 주지 마’, ‘이 앱에서는 말고’라고 말하세요. {{appName}}이(가) 기억합니다.",
       "unknownKind": "제안 유형"
+    },
+    "writing": {
+      "title": "쓰기",
+      "learned": "알려 주신 내용",
+      "empty": "아직 없습니다. “내 말 그대로”를 선택하면 {{appName}}가 그 앱에서 덜 고쳐 씁니다.",
+      "less": {
+        "written": "{{app}}에서는 대신 쓰기를 줄입니다",
+        "polished": "{{app}}에서는 다듬기를 줄입니다"
+      },
+      "teach": "{{appName}}가 다듬거나 쓴 뒤 “내 말 그대로”를 클릭하거나 말하면 말한 그대로 되돌릴 수 있습니다."
     },
     "macOnly": "현재 Mac 전용",
     "promises": {

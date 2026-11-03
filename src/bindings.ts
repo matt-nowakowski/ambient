@@ -815,6 +815,14 @@ async changeMeetingsEmailSetting(mode: MeetingsEmail) : Promise<Result<null, str
     else return { status: "error", error: e  as any };
 }
 },
+async changeWritingModeSetting(mode: WritingMode) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_writing_mode_setting", { mode }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 /**
  * Turn anonymous usage counts on or off. Off clears anything queued.
  */
@@ -1454,7 +1462,13 @@ suggestions_per_hour: number;
  * "meeting_nudge", …), off entirely or muted in some apps. Learned when
  * they say "don't show me these" and editable in the Privacy Center.
  */
-suggestion_prefs: Partial<{ [key in string]: SuggestionPref }> }
+suggestion_prefs: Partial<{ [key in string]: SuggestionPref }>; 
+/**
+ * What smart writing learned from "Use my words", per app (bundle id or
+ * process name): it writes and polishes less where it was reverted.
+ * Shown in the Privacy Center with Undo.
+ */
+writing_prefs: Partial<{ [key in string]: WritingPref }> }
 export type AgentStatus = { settings: AgentSettings; 
 /**
  * Accessibility permission (needed to read any window).
@@ -1594,7 +1608,12 @@ telemetry?: boolean;
 /**
  * Email finished meeting notes to the signed-in account.
  */
-meetings_email?: MeetingsEmail }
+meetings_email?: MeetingsEmail; 
+/**
+ * How dictation is written: decided per utterance (Smart), always as
+ * said, or always polished. See `agent::writing`.
+ */
+writing_mode?: WritingMode }
 export type AppUsage = { bundle_id: string; entries: number }
 export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
@@ -1796,7 +1815,16 @@ export type HudContent =
 /**
  * Meeting notes are ready (meeting/deliver.rs): Open, Copy, Email to me.
  */
-({ kind: "meeting_notes" } & NotesCard)
+({ kind: "meeting_notes" } & NotesCard) | 
+/**
+ * Smart writing, after typing (agent/writing.rs): a small chip saying
+ * what was done, "Polished" or "Written for you", with "Use my
+ * words" (`revert`) and, for written text, "Edit". `decision` is
+ * `polished`, `written`, `editing` (Edit: say what to change) or
+ * `note`; `note` is an i18n key for a line instead ("Copied your exact
+ * words…"). Fades after a few seconds unless hovered.
+ */
+{ kind: "writing"; id: string; decision: string; note: string | null; revert: boolean; edit: boolean }
 /**
  * A button on a notice: an alternative the agent can do instead. `label`
  * is an i18n key; `copy` is handled by the HUD itself (it copies `value`),
@@ -2258,6 +2286,38 @@ search: number; ai_limit: number; search_limit: number;
 meetings: number; meetings_limit: number | null }
 export type VadBackend = "silero" | "earshot"
 export type WindowsMicrophonePermissionStatus = { supported: boolean; overall_access: PermissionAccess; device_access: PermissionAccess; app_access: PermissionAccess; desktop_app_access: PermissionAccess }
+/**
+ * The Writing setting.
+ */
+export type WritingMode =
+/**
+ * Per utterance: as said, polished, or written for you.
+ */
+"smart" |
+/**
+ * Always the words as said (light punctuation and casing only).
+ */
+"as_said" |
+/**
+ * Always polished (AI polish on every dictation).
+ */
+"polish"
+/**
+ * Reverts of smart writing in one app.
+ */
+export type WritingPref = {
+/**
+ * The app's name, for the Privacy Center.
+ */
+app_name: string;
+/**
+ * "Written for you" turned back into the user's words.
+ */
+written_reverts: number;
+/**
+ * "Polished" turned back into the user's words.
+ */
+polished_reverts: number }
 
 /** tauri-specta globals **/
 

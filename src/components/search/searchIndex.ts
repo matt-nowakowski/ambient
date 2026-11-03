@@ -382,6 +382,25 @@ const PLACES: Place[] = [
             keywords: ["ai", "clean up", "post-processing"],
           },
           {
+            label: "account.writing.title",
+            description: "account.writing.description",
+            keywords: [
+              "writing",
+              "smart",
+              "rewrite",
+              "compose",
+              "as said",
+              "my words",
+              "dictation",
+              "polish",
+            ],
+          },
+          ...["smart", "as_said", "polish"].map((key) => ({
+            label: `account.writing.options.${key}.title`,
+            description: `account.writing.options.${key}.description`,
+            keywords: ["writing", "dictation"],
+          })),
+          {
             label: "account.signIn.sectionTitle",
             keywords: [
               "sign in",

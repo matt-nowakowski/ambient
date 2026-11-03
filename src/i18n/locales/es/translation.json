@@ -1107,6 +1107,25 @@
       "onDeviceDescription": "Usa Apple Intelligence en su lugar. Nada sale de tu Mac.",
       "freeLeft": "Te quedan {{left}} de {{limit}} usos gratuitos de pulido con IA esta semana"
     },
+    "writing": {
+      "title": "Escritura",
+      "description": "Cómo escribe {{appName}} lo que dictas en un campo de texto.",
+      "options": {
+        "smart": {
+          "title": "Inteligente",
+          "description": "{{appName}} decide cada vez: tus palabras tal cual, pulidas cuando el dictado sale desordenado, o redactadas por ti cuando lo pides («dile que no puedo ir, con educación»). Muestra lo que hizo y «Mis palabras» lo deshace."
+        },
+        "as_said": {
+          "title": "Siempre tal cual",
+          "description": "Tus palabras exactas. Solo redacta por ti cuando llamas a {{appName}} por su nombre."
+        },
+        "polish": {
+          "title": "Pulir siempre",
+          "description": "Pulido con IA en cada dictado."
+        }
+      },
+      "needsPolish": "Para pulir hay que activar el pulido con IA. Redactar por ti cuenta como una solicitud de IA."
+    },
     "trial": {
       "daysLeft_one": "Queda {{count}} día",
       "daysLeft_many": "Quedan {{count}} días",
@@ -1353,6 +1372,19 @@
     "rate": {
       "up": "Útil",
       "down": "No útil"
+    },
+    "writing": {
+      "polished": "Pulido",
+      "written": "Redactado por ti",
+      "useMyWords": "Mis palabras",
+      "edit": "Editar",
+      "cancel": "Cancelar",
+      "editPrompt": "Di qué cambiar, como «más corto» o «más cálido».",
+      "voiceHint": "O di «mis palabras»",
+      "copiedWords": "Copiamos tus palabras exactas. Pega para reemplazar.",
+      "copiedEdit": "Copiamos la nueva versión. Pega para reemplazar.",
+      "noAllowance": "Se acabó la escritura con IA de esta semana, así que va tal como lo dijiste.",
+      "couldntWrite": "No se pudo redactar ahora, así que va tal como lo dijiste."
     }
   },
   "privacy": {
@@ -1505,6 +1537,16 @@
       },
       "teach": "Cuando aparezca una sugerencia, di «ahora no», «no me enseñes esto» o «no en esta app», y {{appName}} lo recordará.",
       "unknownKind": "Un tipo de sugerencia"
+    },
+    "writing": {
+      "title": "Escritura",
+      "learned": "Lo que me has dicho",
+      "empty": "Nada todavía. Cuando eliges «Mis palabras», {{appName}} reescribe menos en esa app.",
+      "less": {
+        "written": "Redacta menos por ti en {{app}}",
+        "polished": "Pule menos en {{app}}"
+      },
+      "teach": "Cuando {{appName}} pula o redacte algo, pulsa «Mis palabras» o dilo para recuperar tus palabras exactas."
     },
     "macOnly": "Solo en Mac por ahora",
     "days_many": "{{count}} días",

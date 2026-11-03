@@ -123,6 +123,19 @@ pub enum HudContent {
     },
     /// Meeting notes are ready (meeting/deliver.rs): Open, Copy, Email to me.
     MeetingNotes(crate::meeting::deliver::NotesCard),
+    /// Smart writing, after typing (agent/writing.rs): a small chip saying
+    /// what was done, "Polished" or "Written for you", with "Use my
+    /// words" (`revert`) and, for written text, "Edit". `decision` is
+    /// `polished`, `written`, `editing` (Edit: say what to change) or
+    /// `note`; `note` is an i18n key for a line instead ("Copied your exact
+    /// words…"). Fades after a few seconds unless hovered.
+    Writing {
+        id: String,
+        decision: String,
+        note: Option<String>,
+        revert: bool,
+        edit: bool,
+    },
 }
 
 /// A button on a notice: an alternative the agent can do instead. `label`
@@ -159,6 +172,7 @@ impl HudContent {
             HudContent::Notice { .. } => "notice",
             HudContent::Report { .. } => "report",
             HudContent::MeetingNotes(_) => "meeting_notes",
+            HudContent::Writing { .. } => "writing",
         }
     }
 
@@ -169,7 +183,8 @@ impl HudContent {
             | HudContent::Steps { id, .. }
             | HudContent::Draft { id, .. }
             | HudContent::Notice { id, .. }
-            | HudContent::Report { id, .. } => id.clone(),
+            | HudContent::Report { id, .. }
+            | HudContent::Writing { id, .. } => id.clone(),
             HudContent::MeetingNotes(n) => n.id.clone(),
             _ => String::new(),
         }
@@ -424,6 +439,9 @@ pub fn show(app: &AppHandle, content: HudContent) {
         *g = Some(content.clone());
     }
     VISIBLE.store(true, Ordering::SeqCst);
+    // The writing chip is passive: it never takes Escape from the app the
+    // user is typing in (it fades on its own).
+    let passive = matches!(content, HudContent::Writing { .. });
     let handle = app.clone();
     let _ = app.run_on_main_thread(move || {
         if handle.get_webview_window(LABEL).is_none() {
@@ -436,7 +454,11 @@ pub fn show(app: &AppHandle, content: HudContent) {
                 order_front(&handle, &w);
             }
         }
-        hold_escape(&handle);
+        if passive {
+            release_escape(&handle);
+        } else {
+            hold_escape(&handle);
+        }
     });
 }
 
@@ -634,7 +656,10 @@ fn on_click_outside(card: &HudContent) -> ClickOutside {
         HudContent::Listening { .. }
         | HudContent::Steps { .. }
         | HudContent::Status { .. }
-        | HudContent::Notice { .. } => ClickOutside::Ignore,
+        | HudContent::Notice { .. }
+        // The writing chip fades on its own; clicking back into the text
+        // must not take "Use my words" away before it's read.
+        | HudContent::Writing { .. } => ClickOutside::Ignore,
     }
 }
 
@@ -669,6 +694,8 @@ fn watch(app: AppHandle) {
     // text field took focus.
     let mut draft_clicked_away = false;
     let mut last_focus_check = Instant::now();
+    // Whether the cursor was over the writing chip (it stays while hovered).
+    let mut hovering = false;
     loop {
         let visible = is_visible();
         std::thread::sleep(Duration::from_millis(if visible { 30 } else { 200 }));
@@ -681,6 +708,15 @@ fn watch(app: AppHandle) {
             continue;
         }
         let Some(card) = current() else { continue };
+        if matches!(card, HudContent::Writing { .. }) {
+            let inside = cursor_inside(&app);
+            if inside != hovering {
+                hovering = inside;
+                let _ = app.emit_to(LABEL, "hud-hover", inside);
+            }
+        } else {
+            hovering = false;
+        }
         if pressed && !cursor_inside(&app) {
             match on_click_outside(&card) {
                 ClickOutside::Dismiss => {
@@ -774,6 +810,12 @@ fn paste_later(app: &AppHandle, text: String, select_all: bool) {
 #[tauri::command]
 #[specta::specta]
 pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<String>) {
+    // Smart writing's chip: "Use my words", "Edit".
+    if id.starts_with(crate::agent::writing::PREFIX) {
+        crate::agent::writing::on_action(&app, &id, &action);
+        let _ = app.emit("hud-action", HudActionEvent { id, action });
+        return;
+    }
     // "Send this to the team?" and the "report this?" offer.
     if id.starts_with(crate::agent::report::CARD_PREFIX) {
         crate::agent::report::on_action(&app, &id, &action, text);

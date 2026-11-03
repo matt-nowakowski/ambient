@@ -6,6 +6,7 @@
 //! stores or sends anything; callers decide what to keep (`recall`) and what
 //! to send (after `redact`).
 
+pub mod field;
 pub mod redact;
 pub mod sensitive;
 

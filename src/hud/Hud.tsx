@@ -21,6 +21,7 @@ import { Orb } from "@/components/orb/Orb";
 import "./hud.css";
 import { MeetingNotesCard } from "./MeetingNotesCard";
 import { Thumbs } from "./Thumbs";
+import { WritingChip } from "./WritingChip";
 
 /** Key glyphs (symbols, not words, so not translated). */
 const KEY_ENTER = "⏎";
@@ -657,6 +658,10 @@ export default function Hud() {
                   <span className="hud-hint">{t("hud.report.voiceHint")}</span>
                 </footer>
               </>
+            )}
+
+            {content.kind === "writing" && (
+              <WritingChip key={content.id} card={content} />
             )}
 
             {content.kind === "meeting_notes" && (

@@ -884,6 +884,7 @@ pub fn run(cli_args: CliArgs) {
             meeting::meeting_follow_up,
             meeting::deliver::email_meeting_notes,
             meeting::deliver::change_meetings_email_setting,
+            agent::writing::change_writing_mode_setting,
             telemetry::change_telemetry_setting,
             telemetry::record_ui_error,
             feedback::feedback_preview,

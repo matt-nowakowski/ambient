@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Use Apple Intelligence instead. Nothing leaves your Mac.",
       "freeLeft": "{{left}} of {{limit}} free polishes left this week"
     },
+    "writing": {
+      "title": "Writing",
+      "description": "How {{appName}} types what you dictate into a text field.",
+      "options": {
+        "smart": {
+          "title": "Smart",
+          "description": "{{appName}} decides each time: your words as said, polished when the speech is messy, or written for you when you ask (“tell him I can't make it, be polite”). It shows what it did, and “Use my words” takes it back."
+        },
+        "as_said": {
+          "title": "Always as I said",
+          "description": "Your exact words. It only writes for you when you ask {{appName}} by name."
+        },
+        "polish": {
+          "title": "Always polish",
+          "description": "AI polish on every dictation."
+        }
+      },
+      "needsPolish": "Polishing needs AI polish on. Writing for you counts as an AI request."
+    },
     "trial": {
       "daysLeft_one": "{{count}} day left",
       "daysLeft_other": "{{count}} days left"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Helpful",
       "down": "Not helpful"
+    },
+    "writing": {
+      "polished": "Polished",
+      "written": "Written for you",
+      "useMyWords": "Use my words",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "editPrompt": "Say what to change, like “shorter” or “warmer”.",
+      "voiceHint": "Or say “use my words”",
+      "copiedWords": "Copied your exact words. Paste to replace.",
+      "copiedEdit": "Copied the new version. Paste to replace.",
+      "noAllowance": "Out of AI writing for this week, so it's typed as you said it.",
+      "couldntWrite": "Couldn't write that just now, so it's typed as you said it."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "When a suggestion appears, say “not now”, “don't show me these” or “not in this app”, and {{appName}} remembers.",
       "unknownKind": "A type of suggestion"
+    },
+    "writing": {
+      "title": "Writing",
+      "learned": "What you've told me",
+      "empty": "Nothing yet. When you choose “Use my words”, {{appName}} rewrites less in that app.",
+      "less": {
+        "written": "Writes for you less in {{app}}",
+        "polished": "Polishes less in {{app}}"
+      },
+      "teach": "After {{appName}} polishes or writes something, click “Use my words” or say it to get your exact words back."
     },
     "macOnly": "Mac only for now",
     "promises": {

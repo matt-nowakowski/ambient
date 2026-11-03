@@ -15,6 +15,10 @@
     "router.did_you_mean_bias": { "min": 0, "max": 1, "default": 0.5 },
     "answer.first_byte_timeout_ms": { "min": 8000, "max": 40000, "default": 25000 },
     "answer.idle_timeout_ms": { "min": 5000, "max": 30000, "default": 20000 },
-    "search.timeout_ms": { "min": 2000, "max": 15000, "default": 6000 }
+    "search.timeout_ms": { "min": 2000, "max": 15000, "default": 6000 },
+    "writing.written_threshold": { "min": 0.5, "max": 0.95, "default": 0.7 },
+    "writing.ambiguous_floor": { "min": 0.2, "max": 0.7, "default": 0.45 },
+    "writing.polish_disfluency": { "min": 0.02, "max": 0.3, "default": 0.06 },
+    "writing.run_on_words": { "min": 15, "max": 80, "default": 35 }
   }
 }

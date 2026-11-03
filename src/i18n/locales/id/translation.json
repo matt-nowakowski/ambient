@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Gunakan Apple Intelligence sebagai gantinya. Tidak ada yang keluar dari Mac Anda.",
       "freeLeft": "Sisa {{left}} dari {{limit}} poles AI gratis minggu ini"
     },
+    "writing": {
+      "title": "Menulis",
+      "description": "Cara {{appName}} mengetik apa yang Anda diktekan ke kolom teks.",
+      "options": {
+        "smart": {
+          "title": "Pintar",
+          "description": "{{appName}} memutuskan setiap kali: kata-kata Anda apa adanya, dirapikan saat ucapan berantakan, atau dituliskan untuk Anda saat diminta (“bilang ke dia aku nggak bisa datang, yang sopan”). Ia menunjukkan apa yang dilakukan, dan “Kata-kata saya” membatalkannya."
+        },
+        "as_said": {
+          "title": "Selalu seperti yang saya ucapkan",
+          "description": "Kata-kata Anda persis. Ia hanya menuliskan untuk Anda jika Anda memanggil {{appName}} dengan namanya."
+        },
+        "polish": {
+          "title": "Selalu rapikan",
+          "description": "Perapian AI di setiap dikte."
+        }
+      },
+      "needsPolish": "Merapikan memerlukan perapian AI aktif. Menuliskan untuk Anda dihitung sebagai permintaan AI."
+    },
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",
       "daysLeft_other": "Sisa {{count}} hari"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Membantu",
       "down": "Tidak membantu"
+    },
+    "writing": {
+      "polished": "Dirapikan",
+      "written": "Dituliskan untuk Anda",
+      "useMyWords": "Kata-kata saya",
+      "edit": "Edit",
+      "cancel": "Batal",
+      "editPrompt": "Katakan apa yang diubah, misalnya “lebih pendek” atau “lebih hangat”.",
+      "voiceHint": "Atau ucapkan “kata-kata saya”",
+      "copiedWords": "Kata-kata persis Anda sudah disalin. Tempel untuk mengganti.",
+      "copiedEdit": "Versi baru sudah disalin. Tempel untuk mengganti.",
+      "noAllowance": "Jatah menulis AI minggu ini habis, jadi diketik seperti yang Anda ucapkan.",
+      "couldntWrite": "Tidak bisa menulisnya sekarang, jadi diketik seperti yang Anda ucapkan."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "Saat saran muncul, ucapkan “jangan sekarang”, “jangan tampilkan ini” atau “jangan di aplikasi ini”, dan {{appName}} akan mengingatnya.",
       "unknownKind": "Suatu jenis saran"
+    },
+    "writing": {
+      "title": "Menulis",
+      "learned": "Yang Anda katakan kepada saya",
+      "empty": "Belum ada. Saat Anda memilih “Kata-kata saya”, {{appName}} lebih jarang menulis ulang di aplikasi itu.",
+      "less": {
+        "written": "Lebih jarang menuliskan untuk Anda di {{app}}",
+        "polished": "Lebih jarang merapikan di {{app}}"
+      },
+      "teach": "Setelah {{appName}} merapikan atau menulis sesuatu, klik “Kata-kata saya” atau ucapkan untuk mendapatkan kembali kata-kata persis Anda."
     },
     "macOnly": "Untuk saat ini hanya di Mac",
     "promises": {

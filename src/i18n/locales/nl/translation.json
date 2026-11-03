@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Gebruik in plaats daarvan Apple Intelligence. Er verlaat niets je Mac.",
       "freeLeft": "Nog {{left}} van {{limit}} gratis AI-afwerkingen deze week"
     },
+    "writing": {
+      "title": "Schrijven",
+      "description": "Hoe {{appName}} je dictaat in een tekstveld typt.",
+      "options": {
+        "smart": {
+          "title": "Slim",
+          "description": "{{appName}} beslist elke keer: je woorden zoals gezegd, opgepoetst als het rommelig klinkt, of voor je geschreven als je erom vraagt (‘zeg dat ik niet kan, beleefd’). Het laat zien wat het deed, en ‘Mijn woorden’ draait het terug."
+        },
+        "as_said": {
+          "title": "Altijd zoals gezegd",
+          "description": "Precies je woorden. Het schrijft alleen voor je als je {{appName}} bij naam noemt."
+        },
+        "polish": {
+          "title": "Altijd oppoetsen",
+          "description": "AI-polish bij elk dictaat."
+        }
+      },
+      "needsPolish": "Oppoetsen werkt alleen met AI-polish aan. Voor je schrijven telt als AI-verzoek."
+    },
     "trial": {
       "daysLeft_one": "Nog {{count}} dag",
       "daysLeft_other": "Nog {{count}} dagen"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Nuttig",
       "down": "Niet nuttig"
+    },
+    "writing": {
+      "polished": "Opgepoetst",
+      "written": "Voor je geschreven",
+      "useMyWords": "Mijn woorden",
+      "edit": "Bewerken",
+      "cancel": "Annuleren",
+      "editPrompt": "Zeg wat er anders moet, zoals ‘korter’ of ‘hartelijker’.",
+      "voiceHint": "Of zeg ‘mijn woorden’",
+      "copiedWords": "Je precieze woorden zijn gekopieerd. Plak om te vervangen.",
+      "copiedEdit": "De nieuwe versie is gekopieerd. Plak om te vervangen.",
+      "noAllowance": "Het AI-schrijven voor deze week is op, dus het staat er zoals je het zei.",
+      "couldntWrite": "Schrijven lukte nu niet, dus het staat er zoals je het zei."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "Zeg bij een suggestie ‘nu niet’, ‘laat me deze niet zien’ of ‘niet in deze app’, en {{appName}} onthoudt het.",
       "unknownKind": "Een soort suggestie"
+    },
+    "writing": {
+      "title": "Schrijven",
+      "learned": "Wat je me hebt verteld",
+      "empty": "Nog niets. Als je ‘Mijn woorden’ kiest, herschrijft {{appName}} minder in die app.",
+      "less": {
+        "written": "Schrijft minder voor je in {{app}}",
+        "polished": "Poetst minder op in {{app}}"
+      },
+      "teach": "Als {{appName}} iets oppoetst of schrijft, klik op ‘Mijn woorden’ of zeg het om je precieze woorden terug te krijgen."
     },
     "macOnly": "Voorlopig alleen op Mac",
     "promises": {

@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "改用 Apple Intelligence。任何內容都不會離開你的 Mac。",
       "freeLeft": "本週還剩 {{left}} 次免費 AI 潤飾（共 {{limit}} 次）"
     },
+    "writing": {
+      "title": "寫作",
+      "description": "{{appName}} 如何把你的口述輸入到文字欄位中。",
+      "options": {
+        "smart": {
+          "title": "智慧",
+          "description": "{{appName}} 每次自動判斷：照你說的原樣輸入，說得零亂時幫你潤飾，或在你要求時替你撰寫（「跟他說我去不了，客氣一點」）。它會顯示做了什麼，點「用我的原話」即可還原。"
+        },
+        "as_said": {
+          "title": "一律照原話",
+          "description": "一字不改。只有當你叫出 {{appName}} 的名字時才會替你撰寫。"
+        },
+        "polish": {
+          "title": "一律潤飾",
+          "description": "每次口述都用 AI 潤飾。"
+        }
+      },
+      "needsPolish": "潤飾需要開啟 AI 潤飾。替你撰寫算一次 AI 請求。"
+    },
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",
       "daysLeft_other": "還剩 {{count}} 天"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "有幫助",
       "down": "沒幫助"
+    },
+    "writing": {
+      "polished": "已潤飾",
+      "written": "已替你撰寫",
+      "useMyWords": "用我的原話",
+      "edit": "編輯",
+      "cancel": "取消",
+      "editPrompt": "說出要改什麼，例如「短一點」或「更親切」。",
+      "voiceHint": "或說「用我的原話」",
+      "copiedWords": "已複製你的原話。貼上即可取代。",
+      "copiedEdit": "已複製新版本。貼上即可取代。",
+      "noAllowance": "本週的 AI 寫作額度已用完，所以照你說的原話輸入。",
+      "couldntWrite": "暫時無法撰寫，所以照你說的原話輸入。"
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "建議出現時，說「現在不用」、「不要給我看這些」或「不要在這個應用程式」，{{appName}} 就會記住。",
       "unknownKind": "某類建議"
+    },
+    "writing": {
+      "title": "寫作",
+      "learned": "你告訴過我的",
+      "empty": "目前沒有內容。當你選擇「用我的原話」，{{appName}} 會在該 App 中減少改寫。",
+      "less": {
+        "written": "在 {{app}} 中減少替你撰寫",
+        "polished": "在 {{app}} 中減少潤飾"
+      },
+      "teach": "{{appName}} 潤飾或撰寫後，點擊「用我的原話」或直接說出來，即可恢復你的原話。"
     },
     "macOnly": "目前僅限 Mac",
     "promises": {

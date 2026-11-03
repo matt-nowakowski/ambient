@@ -1102,6 +1102,25 @@
       "onDeviceDescription": "Bunun yerine Apple Intelligence kullanın. Hiçbir şey Mac’inizden çıkmaz.",
       "freeLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı"
     },
+    "writing": {
+      "title": "Yazma",
+      "description": "{{appName}}, dikte ettiğinizi bir metin alanına nasıl yazar.",
+      "options": {
+        "smart": {
+          "title": "Akıllı",
+          "description": "{{appName}} her seferinde karar verir: sözleriniz söylediğiniz gibi, konuşma dağınıksa düzeltilmiş ya da istediğinizde sizin için yazılmış (“ona gelemeyeceğimi söyle, kibarca”). Ne yaptığını gösterir; “Benim sözlerim” geri alır."
+        },
+        "as_said": {
+          "title": "Her zaman söylediğim gibi",
+          "description": "Tam olarak sizin sözleriniz. Yalnızca {{appName}}'e adıyla seslendiğinizde sizin için yazar."
+        },
+        "polish": {
+          "title": "Her zaman düzelt",
+          "description": "Her diktede yapay zekâ düzeltmesi."
+        }
+      },
+      "needsPolish": "Düzeltme için yapay zekâ düzeltmesinin açık olması gerekir. Sizin için yazmak bir yapay zekâ isteği sayılır."
+    },
     "trial": {
       "daysLeft_one": "{{count}} gün kaldı",
       "daysLeft_other": "{{count}} gün kaldı"
@@ -1345,6 +1364,19 @@
     "rate": {
       "up": "Faydalı",
       "down": "Faydalı değil"
+    },
+    "writing": {
+      "polished": "Düzeltildi",
+      "written": "Sizin için yazıldı",
+      "useMyWords": "Benim sözlerim",
+      "edit": "Düzenle",
+      "cancel": "İptal",
+      "editPrompt": "Neyin değişeceğini söyleyin, örneğin “daha kısa” ya da “daha sıcak”.",
+      "voiceHint": "Ya da “benim sözlerim” deyin",
+      "copiedWords": "Tam sözleriniz kopyalandı. Değiştirmek için yapıştırın.",
+      "copiedEdit": "Yeni sürüm kopyalandı. Değiştirmek için yapıştırın.",
+      "noAllowance": "Bu haftaki yapay zekâ yazma hakkınız bitti, bu yüzden söylediğiniz gibi yazıldı.",
+      "couldntWrite": "Şu anda yazılamadı, bu yüzden söylediğiniz gibi yazıldı."
     }
   },
   "privacy": {
@@ -1494,6 +1526,16 @@
       },
       "teach": "Bir öneri göründüğünde “şimdi değil”, “bunları gösterme” ya da “bu uygulamada değil” deyin, {{appName}} bunu hatırlar.",
       "unknownKind": "Bir öneri türü"
+    },
+    "writing": {
+      "title": "Yazma",
+      "learned": "Bana söyledikleriniz",
+      "empty": "Henüz bir şey yok. “Benim sözlerim”i seçtiğinizde {{appName}} o uygulamada daha az yeniden yazar.",
+      "less": {
+        "written": "{{app}} içinde sizin için daha az yazar",
+        "polished": "{{app}} içinde daha az düzeltir"
+      },
+      "teach": "{{appName}} bir şeyi düzelttiğinde ya da yazdığında, tam sözlerinizi geri almak için “Benim sözlerim”e tıklayın ya da bunu söyleyin."
     },
     "macOnly": "Şimdilik yalnızca Mac’te",
     "promises": {

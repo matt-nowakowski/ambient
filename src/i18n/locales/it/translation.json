@@ -1107,6 +1107,25 @@
       "onDeviceDescription": "Usa invece Apple Intelligence. Nulla lascia il tuo Mac.",
       "freeLeft": "Ti restano {{left}} rifiniture gratuite su {{limit}} questa settimana"
     },
+    "writing": {
+      "title": "Scrittura",
+      "description": "Come {{appName}} scrive ciò che detti in un campo di testo.",
+      "options": {
+        "smart": {
+          "title": "Smart",
+          "description": "{{appName}} decide ogni volta: le tue parole così come le hai dette, rifinite quando il parlato è disordinato, o scritte per te quando lo chiedi («digli che non posso venire, con gentilezza»). Mostra cosa ha fatto e «Le mie parole» lo annulla."
+        },
+        "as_said": {
+          "title": "Sempre come l'ho detto",
+          "description": "Le tue parole esatte. Scrive per te solo se chiami {{appName}} per nome."
+        },
+        "polish": {
+          "title": "Rifinisci sempre",
+          "description": "Rifinitura IA su ogni dettatura."
+        }
+      },
+      "needsPolish": "Per rifinire serve la rifinitura IA attiva. Scrivere per te conta come una richiesta IA."
+    },
     "trial": {
       "daysLeft_one": "{{count}} giorno rimasto",
       "daysLeft_other": "{{count}} giorni rimasti",
@@ -1353,6 +1372,19 @@
     "rate": {
       "up": "Utile",
       "down": "Non utile"
+    },
+    "writing": {
+      "polished": "Rifinito",
+      "written": "Scritto per te",
+      "useMyWords": "Le mie parole",
+      "edit": "Modifica",
+      "cancel": "Annulla",
+      "editPrompt": "Di' cosa cambiare, ad esempio «più breve» o «più caloroso».",
+      "voiceHint": "Oppure di' «le mie parole»",
+      "copiedWords": "Ho copiato le tue parole esatte. Incolla per sostituire.",
+      "copiedEdit": "Ho copiato la nuova versione. Incolla per sostituire.",
+      "noAllowance": "La scrittura IA di questa settimana è finita, quindi è scritto come l'hai detto.",
+      "couldntWrite": "Non è stato possibile scriverlo ora, quindi è scritto come l'hai detto."
     }
   },
   "privacy": {
@@ -1505,6 +1537,16 @@
       },
       "teach": "Quando compare un suggerimento, di' «non ora», «non mostrarmeli» o «non in questa app», e {{appName}} se lo ricorda.",
       "unknownKind": "Un tipo di suggerimento"
+    },
+    "writing": {
+      "title": "Scrittura",
+      "learned": "Cosa mi hai detto",
+      "empty": "Ancora niente. Quando scegli «Le mie parole», {{appName}} riscrive meno in quell'app.",
+      "less": {
+        "written": "Scrive meno per te in {{app}}",
+        "polished": "Rifinisce meno in {{app}}"
+      },
+      "teach": "Quando {{appName}} rifinisce o scrive qualcosa, fai clic su «Le mie parole» o dillo per riavere le tue parole esatte."
     },
     "macOnly": "Per ora solo su Mac",
     "promises": {

@@ -24,8 +24,9 @@ use ::windows::Win32::System::Threading::{
 };
 use ::windows::Win32::UI::Accessibility::{
     CUIAutomation, CUIAutomation8, IUIAutomation, IUIAutomation2, IUIAutomationElement,
-    IUIAutomationElement5, IUIAutomationTextPattern, IUIAutomationTreeWalker,
-    IUIAutomationValuePattern, UIA_TextPatternId, UIA_ValuePatternId,
+    IUIAutomationElement5, IUIAutomationTextPattern, IUIAutomationTextRange,
+    IUIAutomationTreeWalker, IUIAutomationValuePattern, TextPatternRangeEndpoint_End,
+    TextPatternRangeEndpoint_Start, TextUnit_Character, UIA_TextPatternId, UIA_ValuePatternId,
 };
 use ::windows::Win32::UI::WindowsAndMessaging::{
     EnumChildWindows, EnumWindows, GetForegroundWindow, GetWindow, GetWindowLongPtrW,
@@ -630,6 +631,98 @@ pub fn window_snapshot(pid: i32, max_chars: usize) -> Option<RawSnapshot> {
             ..Default::default()
         },
     })
+}
+
+// ── The focused text field (smart writing) ──────────────────────────────
+
+/// The focused element of `pid`, if it's in that process.
+fn focused_in(pid: i32) -> Option<IUIAutomationElement> {
+    let (_, front_pid) = foreground()?;
+    if front_pid as i32 != pid || front_pid == unsafe { GetCurrentProcessId() } {
+        return None;
+    }
+    let uia = automation()?;
+    unsafe { uia.GetFocusedElement() }
+        .ok()
+        .filter(|f| unsafe { f.CurrentProcessId() }.ok() == Some(pid))
+}
+
+fn range_text(r: &IUIAutomationTextRange) -> Option<String> {
+    unsafe { r.GetText(-1) }.ok().map(|s| s.to_string())
+}
+
+/// The focused field (see `field::focused_field`): its text through the
+/// TextPattern (else the ValuePattern), and the selection's start and
+/// length counted as characters of that text.
+pub fn focused_field(pid: i32, read_text: bool) -> Option<super::field::FocusedField> {
+    let el = focused_in(pid)?;
+    if is_password(&el) {
+        return None;
+    }
+    let Some(pattern) = text_pattern(&el) else {
+        // No TextPattern: the value only, with no position.
+        return Some(super::field::FocusedField {
+            value: if read_text { value(&el) } else { None },
+            ..Default::default()
+        });
+    };
+    let doc = unsafe { pattern.DocumentRange() }.ok()?;
+    let ranges = unsafe { pattern.GetSelection() }.ok()?;
+    let sel = unsafe { ranges.GetElement(0) }.ok()?;
+    let selected = range_text(&sel).unwrap_or_default();
+    let before = unsafe { doc.Clone() }.ok()?;
+    unsafe {
+        before.MoveEndpointByRange(
+            TextPatternRangeEndpoint_End,
+            &sel,
+            TextPatternRangeEndpoint_Start,
+        )
+    }
+    .ok()?;
+    let caret = range_text(&before).map(|t| t.chars().count());
+    Some(super::field::FocusedField {
+        value: if read_text { range_text(&doc) } else { None },
+        selection: (read_text && !selected.is_empty()).then_some(selected.clone()),
+        caret,
+        sel_len: selected.chars().count(),
+    })
+}
+
+/// Select characters `start..start + len` of the focused field.
+pub fn select_chars(pid: i32, start: usize, len: usize) -> bool {
+    (|| -> Option<bool> {
+        let el = focused_in(pid)?;
+        if is_password(&el) {
+            return Some(false);
+        }
+        let pattern = text_pattern(&el)?;
+        let doc = unsafe { pattern.DocumentRange() }.ok()?;
+        let r = unsafe { doc.Clone() }.ok()?;
+        // Collapse to the start of the document, then walk to `start`.
+        unsafe {
+            r.MoveEndpointByRange(
+                TextPatternRangeEndpoint_End,
+                &doc,
+                TextPatternRangeEndpoint_Start,
+            )
+        }
+        .ok()?;
+        let (start, len) = (i32::try_from(start).ok()?, i32::try_from(len).ok()?);
+        if start > 0 {
+            let moved = unsafe { r.Move(TextUnit_Character, start) }.ok()?;
+            if moved != start {
+                return Some(false);
+            }
+        }
+        let moved =
+            unsafe { r.MoveEndpointByUnit(TextPatternRangeEndpoint_End, TextUnit_Character, len) }
+                .ok()?;
+        if moved != len {
+            return Some(false);
+        }
+        Some(unsafe { r.Select() }.is_ok())
+    })()
+    .unwrap_or(false)
 }
 
 // ── Every open window ───────────────────────────────────────────────────
