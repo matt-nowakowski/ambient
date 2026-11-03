@@ -1137,14 +1137,10 @@
       "interrupted": "Jawaban terputus.",
       "opened": "Dibuka",
       "searching": "Mencari di browser Anda",
-      "reminderAdded": "Pengingat ditambahkan",
-      "eventAdded": "Ditambahkan ke kalender Anda",
       "shortcutRan": "Pintasan dijalankan",
       "cantDoYet": "Saya belum bisa melakukan itu. Penggunaan komputer segera hadir.",
       "appNotFound": "Tidak dapat menemukan aplikasi itu.",
-      "shortcutNotFound": "Tidak dapat menemukan Pintasan itu.",
       "automationNotFound": "Tidak menemukan pintasan menu Start atau alur Power Automate dengan nama itu.",
-      "calendarPermission": "Izinkan dulu akses Kalender dan Pengingat di System Settings.",
       "undone": "Diurungkan",
       "meetingStarted": "Mencatat. Beri tahu peserta lain.",
       "copied": "Disalin",
@@ -1158,7 +1154,9 @@
       "noWebResults": "Tidak bisa mencari di web saat ini, jadi ini dari yang saya tahu.",
       "timeout": "Terlalu lama. Coba lagi.",
       "needsCloud": "Ini memerlukan cloud, dan Kecerdasan diatur ke “Hanya di komputer ini”. Ubah di Privasi.",
-      "cloudOfferOn": "Saran dari cloud aktif. Ubah di Privasi."
+      "cloudOfferOn": "Saran dari cloud aktif. Ubah di Privasi.",
+      "cloudUnavailable": "Saran cloud sedang tidak tersedia.",
+      "cloudLimited": "Saran cloud dijeda untuk sementara: batas hari ini sudah tercapai, atau memerlukan Pro."
     },
     "undo": "Urungkan",
     "close": "Tutup",
@@ -1193,7 +1191,12 @@
       "translatePage": "Terjemahkan halaman ini?",
       "translate": "Terjemahkan",
       "helpHere": "Ada yang bisa saya bantu di sini?",
-      "help": "Bantu"
+      "help": "Bantu",
+      "summariseThreadCount": "Mau saya ringkas utas berisi {{count}} pesan ini?",
+      "replyTo": "Balas {{name}}?",
+      "reply": "Balas",
+      "translatePageLang": "Halaman ini dalam {{language}}. Terjemahkan?",
+      "explainErrorWhat": "Muncul “{{error}}”. Mau lihat kemungkinan solusinya?"
     },
     "nudge": {
       "findIt": "Temukan",
@@ -1215,13 +1218,74 @@
     "draft": {
       "title": "Apakah Anda ingin mengetik ini?",
       "composed": "Ini draf Anda.",
-      "focusHint": "Klik kolom teks untuk menyisipkannya."
+      "focusHint": "Klik kolom teks untuk menyisipkannya.",
+      "askInstead": "Tanya {{appName}} saja"
     },
     "source": {
       "searchDrive": "Cari di Google Drive",
       "searchGmail": "Cari di Gmail"
     },
-    "cloudOffer": "{{appName}} dapat menyarankan bantuan di komputer ini dengan mengirim cuplikan jendela yang telah disamarkan ke servernya. Aktifkan?"
+    "cloudOffer": "{{appName}} dapat menyarankan bantuan di komputer ini dengan mengirim cuplikan jendela yang telah disamarkan ke servernya. Aktifkan?",
+    "when": {
+      "today": "hari ini pukul {{time}}",
+      "tomorrow": "besok pukul {{time}}",
+      "on": "{{day}} pukul {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} dibuka",
+      "appNotFound": "Saya tidak menemukan aplikasi bernama “{{name}}” di komputer ini. Mau saya cari di web?",
+      "badLink": "Tautan itu sepertinya tidak benar, jadi tidak saya buka. Anda bisa menyalinnya saja.",
+      "noBrowser": "Saya tidak dapat membuka browser Anda.",
+      "reminderSetAt": "Pengingat diatur untuk {{when}}: {{title}}",
+      "reminderSet": "Pengingat ditambahkan: {{title}}",
+      "remindersPermission": "Saya belum bisa menambahkan pengingat: {{appName}} memerlukan akses ke Pengingat. Aktifkan di Pengaturan Sistem, atau salin dulu untuk sekarang.",
+      "reminderFailed": "Pengingat tidak menerima “{{title}}”. Mau saya tambahkan ke kalender Anda saja, atau salin?",
+      "reminderNeedsTime": "Di {{os}}, saya hanya bisa mengatur pengingat dengan waktu. Sebutkan kapan, misalnya “ingatkan saya jam 5 untuk …”, atau salin dulu untuk sekarang.",
+      "reminderLinux": "Saya tidak bisa mengatur pengingat di sistem Linux ini: tidak ada timer notifikasi (systemd dan notify-send). Mau saya tambahkan ke kalender Anda saja, atau salin?",
+      "reminderWindows": "Windows tidak mengizinkan saya menjadwalkan notifikasi. Mau saya tambahkan ke kalender Anda saja, atau salin?",
+      "reminderNotificationsOff": "Notifikasi untuk {{appName}} mati di {{os}}, jadi pengingat tidak akan muncul. Mau saya tambahkan ke kalender Anda saja, atau salin?",
+      "eventNeedsTime": "Saya tidak tahu kapan “{{title}}”. Sebutkan hari dan waktunya, atau salin dulu untuk sekarang.",
+      "eventAdded": "Ditambahkan ke kalender Anda untuk {{when}}: {{title}}",
+      "calendarsPermission": "Saya belum bisa menambahkan acara: {{appName}} memerlukan akses ke Kalender. Aktifkan di Pengaturan Sistem, atau salin dulu untuk sekarang.",
+      "eventFailed": "Kalender Anda tidak menerima “{{title}}”. Anda bisa menyalin dan menambahkannya sendiri.",
+      "eventIcsOpened": "“{{title}}” ({{when}}) dibuka di aplikasi kalender Anda. Simpan di sana untuk menambahkannya.",
+      "noCalendarApp": "Tidak ada aplikasi kalender yang terhubung di {{os}}, jadi saya menyimpan file kalender ({{file}}) yang bisa Anda impor.",
+      "shortcutRan": "“{{name}}” dijalankan",
+      "shortcutNotFound": "Saya tidak menemukan pintasan bernama “{{name}}”. Mau tahu cara membuatnya?",
+      "cantDoYet": "Saya belum bisa melakukan ini: {{what}}. Mau saya tunjukkan cara melakukannya sendiri?",
+      "cantDoYetPlain": "Saya belum bisa melakukan itu di komputer ini. Mau saya tunjukkan cara melakukannya sendiri?",
+      "failed": "Kali ini tidak berhasil. Coba lagi sebentar lagi.",
+      "undoFailed": "Saya tidak dapat membatalkannya. Anda bisa menghapusnya langsung di aplikasinya."
+    },
+    "offer": {
+      "searchWeb": "Cari di web",
+      "copyLink": "Salin tautan",
+      "answerHere": "Jawab di sini",
+      "addToCalendar": "Tambah ke kalender",
+      "openSettings": "Buka Pengaturan",
+      "showFile": "Tampilkan file",
+      "howTo": "Tunjukkan caranya",
+      "showMeHow": "Tunjukkan caranya"
+    },
+    "report": {
+      "title": "Kirim ini ke tim {{appName}}?",
+      "kinds": {
+        "bug": "Bug",
+        "idea": "Ide",
+        "other": "Masukan"
+      },
+      "diagnostics": "Sertakan diagnostik",
+      "diagnosticsHint": "(membantu tim mereproduksinya)",
+      "send": "Kirim",
+      "edit": "Edit",
+      "cancel": "Batal",
+      "editHint": "Tahan pintasan Anda dan ucapkan pesan baru.",
+      "voiceHint": "Atau ucapkan “kirim”",
+      "sent": "Terkirim. Terima kasih, tim akan melihatnya.",
+      "failed": "Tidak bisa mengirim sekarang. Salin dan coba lagi nanti?",
+      "offer": "Mau saya laporkan ini ke tim?",
+      "offerAccept": "Laporkan"
+    }
   },
   "privacy": {
     "title": "Privasi",
@@ -1339,8 +1403,6 @@
     },
     "suggestions": {
       "title": "Saran yang Anda terima",
-      "description": "Ucapkan “nanti saja”, “jangan tampilkan ini” atau “jangan di aplikasi ini” saat saran muncul, dan ia akan belajar. Ubah di sini kapan saja.",
-      "mutedIn": "Nonaktif di {{apps}}",
       "kinds": {
         "summarise_thread": "Ringkas utas email panjang",
         "draft_reply": "Buat draf balasan",
@@ -1358,7 +1420,16 @@
         "translate_page": "Terjemahkan halaman dalam bahasa lain",
         "help_here": "Bantuan lain yang menurutnya Anda perlukan",
         "meeting_nudge": "Pengingat selama rapat"
-      }
+      },
+      "learned": {
+        "title": "Yang sudah Anda beri tahu saya",
+        "empty": "Belum ada. Saat Anda menolak saran, saran itu akan muncul di sini.",
+        "never": "Jangan pernah: {{kind}}",
+        "notIn": "{{kind}}, tidak di {{app}}",
+        "undo": "Urungkan"
+      },
+      "teach": "Saat saran muncul, ucapkan “jangan sekarang”, “jangan tampilkan ini” atau “jangan di aplikasi ini”, dan {{appName}} akan mengingatnya.",
+      "unknownKind": "Suatu jenis saran"
     },
     "macOnly": "Untuk saat ini hanya di Mac",
     "promises": {

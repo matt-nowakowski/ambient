@@ -1137,14 +1137,10 @@
       "interrupted": "Svaret blev afbrudt.",
       "opened": "Åbnet",
       "searching": "Søger i din browser",
-      "reminderAdded": "Påmindelse tilføjet",
-      "eventAdded": "Føjet til din kalender",
       "shortcutRan": "Genvejen blev kørt",
       "cantDoYet": "Det kan jeg ikke endnu. Computerstyring kommer snart.",
       "appNotFound": "Kunne ikke finde den app.",
-      "shortcutNotFound": "Kunne ikke finde den genvej.",
       "automationNotFound": "Kunne ikke finde en genvej i menuen Start eller et Power Automate-flow med det navn.",
-      "calendarPermission": "Giv først adgang til Kalender og Påmindelser i Systemindstillinger.",
       "undone": "Fortrudt",
       "meetingStarted": "Tager noter. Giv de andre besked.",
       "copied": "Kopieret",
@@ -1158,7 +1154,9 @@
       "noWebResults": "Kunne ikke søge på nettet lige nu, så det her er ud fra det, jeg ved.",
       "timeout": "Det tog for lang tid. Prøv igen.",
       "needsCloud": "Det kræver skyen, og Intelligence er sat til »Kun på denne computer«. Ændr det under Privatliv.",
-      "cloudOfferOn": "Forslag fra skyen er slået til. Ændr det under Privatliv."
+      "cloudOfferOn": "Forslag fra skyen er slået til. Ændr det under Privatliv.",
+      "cloudUnavailable": "Cloudforslag er ikke tilgængelige lige nu.",
+      "cloudLimited": "Cloudforslag er sat på pause indtil videre: dagens grænse er nået, eller de kræver Pro."
     },
     "undo": "Fortryd",
     "close": "Luk",
@@ -1193,7 +1191,12 @@
       "translatePage": "Skal jeg oversætte siden?",
       "translate": "Oversæt",
       "helpHere": "Kan jeg hjælpe med noget her?",
-      "help": "Hjælp"
+      "help": "Hjælp",
+      "summariseThreadCount": "Skal jeg opsummere denne tråd med {{count}} beskeder?",
+      "replyTo": "Svar {{name}}?",
+      "reply": "Svar",
+      "translatePageLang": "Siden er på {{language}}. Skal den oversættes?",
+      "explainErrorWhat": "Fejlen »{{error}}«. Vil du have den sandsynlige løsning?"
     },
     "nudge": {
       "findIt": "Find det",
@@ -1215,13 +1218,74 @@
     "draft": {
       "title": "Ville du skrive det her?",
       "composed": "Her er dit udkast.",
-      "focusHint": "Klik i et tekstfelt for at indsætte det."
+      "focusHint": "Klik i et tekstfelt for at indsætte det.",
+      "askInstead": "Spørg {{appName}} i stedet"
     },
     "source": {
       "searchDrive": "Søg i Google Drev",
       "searchGmail": "Søg i Gmail"
     },
-    "cloudOffer": "{{appName}} kan foreslå hjælp på denne computer ved at sende et maskeret udsnit af vinduet til sine servere. Slå til?"
+    "cloudOffer": "{{appName}} kan foreslå hjælp på denne computer ved at sende et maskeret udsnit af vinduet til sine servere. Slå til?",
+    "when": {
+      "today": "i dag kl. {{time}}",
+      "tomorrow": "i morgen kl. {{time}}",
+      "on": "{{day}} kl. {{time}}"
+    },
+    "notice": {
+      "opened": "Åbnede {{name}}",
+      "appNotFound": "Jeg kunne ikke finde en app ved navn »{{name}}« på denne computer. Skal jeg søge efter den på nettet?",
+      "badLink": "Linket ser ikke rigtigt ud, så jeg åbnede det ikke. Du kan kopiere det i stedet.",
+      "noBrowser": "Jeg kunne ikke åbne din browser.",
+      "reminderSetAt": "Påmindelse sat til {{when}}: {{title}}",
+      "reminderSet": "Påmindelse tilføjet: {{title}}",
+      "remindersPermission": "Jeg kan ikke tilføje påmindelser endnu: {{appName}} skal have adgang til Påmindelser. Slå det til i Systemindstillinger, eller kopiér den indtil videre.",
+      "reminderFailed": "Påmindelser accepterede ikke »{{title}}«. Skal jeg tilføje den til din kalender i stedet, eller kopiere den?",
+      "reminderNeedsTime": "På {{os}} kan jeg kun sætte påmindelser med et tidspunkt. Sig hvornår, fx »mind mig om kl. 5 at …«, eller kopiér den indtil videre.",
+      "reminderLinux": "Jeg kan ikke sætte påmindelser på dette Linux-system: det har ingen notifikationstimer (systemd og notify-send). Skal jeg tilføje den til din kalender i stedet, eller kopiere den?",
+      "reminderWindows": "Windows lod mig ikke planlægge en notifikation. Skal jeg tilføje den til din kalender i stedet, eller kopiere den?",
+      "reminderNotificationsOff": "Notifikationer er slået fra for {{appName}} på {{os}}, så en påmindelse ville ikke blive vist. Skal jeg tilføje den til din kalender i stedet, eller kopiere den?",
+      "eventNeedsTime": "Jeg kunne ikke se, hvornår »{{title}}« er. Sig dag og tidspunkt, eller kopiér det indtil videre.",
+      "eventAdded": "Tilføjet til din kalender {{when}}: {{title}}",
+      "calendarsPermission": "Jeg kan ikke tilføje begivenheder endnu: {{appName}} skal have adgang til Kalendere. Slå det til i Systemindstillinger, eller kopiér den indtil videre.",
+      "eventFailed": "Din kalender accepterede ikke »{{title}}«. Du kan kopiere den og tilføje den selv.",
+      "eventIcsOpened": "Åbnede »{{title}}« ({{when}}) i din kalenderapp. Gem den der for at tilføje den.",
+      "noCalendarApp": "Der er ingen kalenderapp forbundet på {{os}}, så jeg gemte en kalenderfil ({{file}}), som du kan importere.",
+      "shortcutRan": "Kørte »{{name}}«",
+      "shortcutNotFound": "Jeg kunne ikke finde en genvej ved navn »{{name}}«. Vil du vide, hvordan du laver en?",
+      "cantDoYet": "Det kan jeg ikke endnu: {{what}}. Skal jeg vise dig, hvordan du gør det selv?",
+      "cantDoYetPlain": "Det kan jeg ikke på denne computer endnu. Skal jeg vise dig, hvordan du gør det selv?",
+      "failed": "Det virkede ikke denne gang. Prøv igen om lidt.",
+      "undoFailed": "Jeg kunne ikke fortryde det. Du kan fjerne det i selve appen."
+    },
+    "offer": {
+      "searchWeb": "Søg på nettet",
+      "copyLink": "Kopiér link",
+      "answerHere": "Svar her",
+      "addToCalendar": "Føj til kalender",
+      "openSettings": "Åbn Indstillinger",
+      "showFile": "Vis fil",
+      "howTo": "Vis mig hvordan",
+      "showMeHow": "Vis mig hvordan"
+    },
+    "report": {
+      "title": "Send dette til {{appName}}-teamet?",
+      "kinds": {
+        "bug": "Fejl",
+        "idea": "Idé",
+        "other": "Feedback"
+      },
+      "diagnostics": "Medtag diagnosticering",
+      "diagnosticsHint": "(hjælper teamet med at genskabe det)",
+      "send": "Send",
+      "edit": "Redigér",
+      "cancel": "Annullér",
+      "editHint": "Hold din genvej nede, og sig den nye besked.",
+      "voiceHint": "Eller sig »send den«",
+      "sent": "Sendt. Tak, teamet ser det.",
+      "failed": "Kunne ikke sende den lige nu. Kopiér den, og prøv igen senere?",
+      "offer": "Skal jeg rapportere det til teamet?",
+      "offerAccept": "Rapportér"
+    }
   },
   "privacy": {
     "title": "Privatliv",
@@ -1339,8 +1403,6 @@
     },
     "suggestions": {
       "title": "Forslag, du får",
-      "description": "Sig »ikke nu«, »vis mig ikke disse« eller »ikke i denne app«, når et forslag dukker op, så lærer den det. Skift det her når som helst.",
-      "mutedIn": "Fra i {{apps}}",
       "kinds": {
         "summarise_thread": "Opsummer lange mailtråde",
         "draft_reply": "Skriv udkast til svar",
@@ -1358,7 +1420,16 @@
         "translate_page": "Oversæt sider på andre sprog",
         "help_here": "Anden hjælp, den tror, du vil have",
         "meeting_nudge": "Påmindelser under møder"
-      }
+      },
+      "learned": {
+        "title": "Det, du har fortalt mig",
+        "empty": "Intet endnu. Når du afviser et forslag, vises det her.",
+        "never": "Aldrig: {{kind}}",
+        "notIn": "{{kind}}, ikke i {{app}}",
+        "undo": "Fortryd"
+      },
+      "teach": "Når et forslag dukker op, så sig »ikke nu«, »vis mig ikke dem her« eller »ikke i denne app«, og {{appName}} husker det.",
+      "unknownKind": "En type forslag"
     },
     "macOnly": "Kun på Mac indtil videre",
     "promises": {

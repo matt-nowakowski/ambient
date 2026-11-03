@@ -1145,14 +1145,10 @@
       "interrupted": "La réponse a été interrompue.",
       "opened": "Ouvert",
       "searching": "Recherche dans votre navigateur",
-      "reminderAdded": "Rappel ajouté",
-      "eventAdded": "Ajouté à votre calendrier",
       "shortcutRan": "Raccourci exécuté",
       "cantDoYet": "Je ne sais pas encore faire cela. Le contrôle de l'ordinateur arrive bientôt.",
       "appNotFound": "Impossible de trouver cette app.",
-      "shortcutNotFound": "Impossible de trouver ce raccourci.",
       "automationNotFound": "Aucun raccourci du menu Démarrer ni flux Power Automate ne porte ce nom.",
-      "calendarPermission": "Autorisez d'abord l'accès à Calendrier et Rappels dans Réglages du système.",
       "undone": "Annulé",
       "meetingStarted": "Prise de notes en cours. Prévenez les participants.",
       "copied": "Copié",
@@ -1166,7 +1162,9 @@
       "noWebResults": "Impossible de chercher sur le web pour l'instant : voici ce que je sais.",
       "timeout": "C'était trop long. Réessayez.",
       "needsCloud": "Il faut le cloud pour cela, et l'intelligence est réglée sur « Sur cet ordinateur uniquement ». Modifiez-le dans Confidentialité.",
-      "cloudOfferOn": "Les suggestions depuis le cloud sont activées. Modifiez-le dans Confidentialité."
+      "cloudOfferOn": "Les suggestions depuis le cloud sont activées. Modifiez-le dans Confidentialité.",
+      "cloudUnavailable": "Les suggestions cloud sont indisponibles pour le moment.",
+      "cloudLimited": "Les suggestions cloud sont en pause pour l'instant : la limite du jour est atteinte, ou elles nécessitent Pro."
     },
     "undo": "Annuler",
     "close": "Fermer",
@@ -1201,7 +1199,12 @@
       "translatePage": "Traduire cette page ?",
       "translate": "Traduire",
       "helpHere": "Je peux vous aider ici ?",
-      "help": "Aider"
+      "help": "Aider",
+      "summariseThreadCount": "Je résume ce fil de {{count}} messages ?",
+      "replyTo": "Répondre à {{name}} ?",
+      "reply": "Répondre",
+      "translatePageLang": "Cette page est en {{language}}. La traduire ?",
+      "explainErrorWhat": "Erreur « {{error}} ». Voulez-vous la solution probable ?"
     },
     "nudge": {
       "findIt": "Le trouver",
@@ -1223,13 +1226,74 @@
     "draft": {
       "title": "Vouliez-vous taper ceci ?",
       "composed": "Voici votre brouillon.",
-      "focusHint": "Cliquez dans un champ de texte pour l'insérer."
+      "focusHint": "Cliquez dans un champ de texte pour l'insérer.",
+      "askInstead": "Demander plutôt à {{appName}}"
     },
     "source": {
       "searchDrive": "Rechercher dans Google Drive",
       "searchGmail": "Rechercher dans Gmail"
     },
-    "cloudOffer": "{{appName}} peut suggérer de l'aide sur cet ordinateur en envoyant à ses serveurs un extrait expurgé de la fenêtre. Activer ?"
+    "cloudOffer": "{{appName}} peut suggérer de l'aide sur cet ordinateur en envoyant à ses serveurs un extrait expurgé de la fenêtre. Activer ?",
+    "when": {
+      "today": "aujourd'hui à {{time}}",
+      "tomorrow": "demain à {{time}}",
+      "on": "{{day}} à {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} ouvert",
+      "appNotFound": "Je n'ai pas trouvé d'app nommée « {{name}} » sur cet ordinateur. Voulez-vous que je la cherche sur le web ?",
+      "badLink": "Ce lien ne semble pas correct, je ne l'ai donc pas ouvert. Vous pouvez le copier à la place.",
+      "noBrowser": "Je n'ai pas pu ouvrir votre navigateur.",
+      "reminderSetAt": "Rappel prévu {{when}} : {{title}}",
+      "reminderSet": "Rappel ajouté : {{title}}",
+      "remindersPermission": "Je ne peux pas encore ajouter de rappels : {{appName}} a besoin d'accéder à Rappels. Activez-le dans Réglages Système, ou copiez-le pour l'instant.",
+      "reminderFailed": "Rappels n'a pas accepté « {{title}} ». Voulez-vous que je l'ajoute plutôt à votre calendrier, ou que je le copie ?",
+      "reminderNeedsTime": "Sur {{os}}, je ne peux créer des rappels qu'avec une heure. Dites quand, par exemple « rappelle-moi à 17 h de … », ou copiez-le pour l'instant.",
+      "reminderLinux": "Je ne peux pas créer de rappels sur ce système Linux : il n'a pas de minuteur de notifications (systemd et notify-send). Voulez-vous que je l'ajoute plutôt à votre calendrier, ou que je le copie ?",
+      "reminderWindows": "Windows ne m'a pas laissé programmer de notification. Voulez-vous que je l'ajoute plutôt à votre calendrier, ou que je le copie ?",
+      "reminderNotificationsOff": "Les notifications sont désactivées pour {{appName}} sur {{os}}, un rappel ne s'afficherait donc pas. Voulez-vous que je l'ajoute plutôt à votre calendrier, ou que je le copie ?",
+      "eventNeedsTime": "Je n'ai pas compris quand a lieu « {{title}} ». Indiquez le jour et l'heure, ou copiez-le pour l'instant.",
+      "eventAdded": "Ajouté à votre calendrier {{when}} : {{title}}",
+      "calendarsPermission": "Je ne peux pas encore ajouter d'événements : {{appName}} a besoin d'accéder à Calendrier. Activez-le dans Réglages Système, ou copiez-le pour l'instant.",
+      "eventFailed": "Votre calendrier n'a pas accepté « {{title}} ». Vous pouvez le copier et l'ajouter vous-même.",
+      "eventIcsOpened": "« {{title}} » ({{when}}) ouvert dans votre app de calendrier. Enregistrez-le là-bas pour l'ajouter.",
+      "noCalendarApp": "Aucune app de calendrier n'est connectée sur {{os}}, j'ai donc enregistré un fichier de calendrier ({{file}}) que vous pouvez importer.",
+      "shortcutRan": "« {{name}} » exécuté",
+      "shortcutNotFound": "Je n'ai pas trouvé de raccourci nommé « {{name}} ». Voulez-vous savoir comment en créer un ?",
+      "cantDoYet": "Je ne sais pas encore faire ceci : {{what}}. Voulez-vous que je vous montre comment le faire vous-même ?",
+      "cantDoYetPlain": "Je ne peux pas encore faire ça sur cet ordinateur. Voulez-vous que je vous montre comment le faire vous-même ?",
+      "failed": "Ça n'a pas marché cette fois. Réessayez dans un instant.",
+      "undoFailed": "Je n'ai pas pu annuler cela. Vous pouvez le supprimer directement dans l'app."
+    },
+    "offer": {
+      "searchWeb": "Chercher sur le web",
+      "copyLink": "Copier le lien",
+      "answerHere": "Répondre ici",
+      "addToCalendar": "Ajouter au calendrier",
+      "openSettings": "Ouvrir les réglages",
+      "showFile": "Afficher le fichier",
+      "howTo": "Montrez-moi",
+      "showMeHow": "Montrez-moi"
+    },
+    "report": {
+      "title": "Envoyer ceci à l'équipe {{appName}} ?",
+      "kinds": {
+        "bug": "Bug",
+        "idea": "Idée",
+        "other": "Avis"
+      },
+      "diagnostics": "Inclure les diagnostics",
+      "diagnosticsHint": "(aide l'équipe à le reproduire)",
+      "send": "Envoyer",
+      "edit": "Modifier",
+      "cancel": "Annuler",
+      "editHint": "Maintenez votre raccourci et dites le nouveau message.",
+      "voiceHint": "Ou dites « envoie-le »",
+      "sent": "Envoyé. Merci, l'équipe le verra.",
+      "failed": "Envoi impossible pour le moment. Le copier et réessayer plus tard ?",
+      "offer": "Voulez-vous que je signale ceci à l'équipe ?",
+      "offerAccept": "Signaler"
+    }
   },
   "privacy": {
     "title": "Confidentialité",
@@ -1350,8 +1414,6 @@
     },
     "suggestions": {
       "title": "Suggestions que vous recevez",
-      "description": "Dites « pas maintenant », « ne me montre plus ça » ou « pas dans cette app » quand une suggestion apparaît, et il apprend. Modifiez cela ici à tout moment.",
-      "mutedIn": "Désactivé dans {{apps}}",
       "kinds": {
         "summarise_thread": "Résumer les longs fils d'e-mails",
         "draft_reply": "Rédiger des réponses",
@@ -1369,7 +1431,16 @@
         "translate_page": "Traduire les pages dans d'autres langues",
         "help_here": "Autres aides qu'il pense utiles pour vous",
         "meeting_nudge": "Rappels pendant les réunions"
-      }
+      },
+      "learned": {
+        "title": "Ce que vous m'avez dit",
+        "empty": "Rien pour l'instant. Quand vous refusez une suggestion, elle apparaît ici.",
+        "never": "Jamais : {{kind}}",
+        "notIn": "{{kind}}, pas dans {{app}}",
+        "undo": "Annuler"
+      },
+      "teach": "Quand une suggestion apparaît, dites « pas maintenant », « ne me montre plus ça » ou « pas dans cette app », et {{appName}} s'en souvient.",
+      "unknownKind": "Un type de suggestion"
     },
     "macOnly": "Mac uniquement pour l'instant",
     "days_many": "{{count}} jours",
