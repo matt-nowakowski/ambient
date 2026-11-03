@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "設定...",
-    "checkUpdates": "檢查更新...",
+    "settings": "設定…",
+    "checkUpdates": "檢查更新…",
     "copyLastTranscript": "複製最新轉錄",
     "unloadModel": "卸載模型",
     "model": "模型",
@@ -36,7 +36,7 @@
   "onboarding": {
     "customModelDescription": "官方不支援",
     "migration": {
-      "title": "您的模型需要更新",
+      "title": "你的模型需要更新",
       "description": "{{appName}} 現在使用更好的模型。下載後即可繼續轉錄。",
       "replaces": "取代 {{name}}",
       "oldFormat": "舊格式",
@@ -59,11 +59,11 @@
         "why": "讓快捷鍵在任何地方都能使用，文字會出現在你輸入的位置。"
       },
       "errors": {
-        "checkFailed": "檢查權限失敗，請重試",
-        "requestFailed": "請求權限失敗，請重試"
+        "checkFailed": "檢查權限失敗，請再試一次。",
+        "requestFailed": "要求權限失敗，請再試一次。"
       },
-      "titleMac": "兩項權限，然後就大功告成",
-      "titleWindows": "一項權限，然後就大功告成",
+      "titleMac": "只需兩項權限，馬上就好",
+      "titleWindows": "只需一項權限，馬上就好",
       "subtitleMac": "macOS 會先詢問，才允許應用程式聆聽或輸入。",
       "subtitleWindows": "Windows 會先詢問，才允許應用程式聆聽。",
       "allow": "允許",
@@ -83,15 +83,15 @@
       "progress": "第 {{step}} 步，共 {{count}} 步"
     },
     "welcome": {
-      "title": "在任何應用程式中，用說的取代打字",
-      "subtitle": "選擇您要用來聽寫的語言",
+      "title": "你說哪些語言？",
+      "subtitle": "選擇你會在 {{appName}} 中使用的所有語言，之後可以隨時變更。",
       "languagesLabel": "語言",
       "noMatch": "沒有符合「{{query}}」的結果。更多語言請見設定。",
       "appLanguage": "應用程式語言",
       "menusIn": "介面使用<b>{{language}}</b>",
       "chinese": {
-        "question": "您說{{languages}}。{{appName}} 該使用哪種字體書寫？",
-        "label": "中文字體",
+        "question": "你說{{languages}}。{{appName}} 該用哪種中文字書寫？",
+        "label": "中文字",
         "zh-Hans": "簡體",
         "zh-Hant": "臺灣",
         "zh-HK": "香港"
@@ -128,7 +128,7 @@
         "accurate": "錯誤最少，但速度較慢"
       },
       "shorts": {
-        "recommended": "最適合您的平衡",
+        "recommended": "最適合你的平衡選擇",
         "faster": "較快，錯誤稍多",
         "accurate": "錯誤最少，但較慢"
       },
@@ -138,7 +138,7 @@
       "downloadInstead": "改為下載 {{size}}",
       "pauses": "{{name}} 會在 {{percent}}% 暫停",
       "resumeLater": "再次選擇它即可從中斷處繼續",
-      "hint": "會在您完成設定的同時下載",
+      "hint": "會在你完成設定的同時下載",
       "onDisk": "已在這台電腦上"
     },
     "demo": {
@@ -153,7 +153,7 @@
       "noteTitle": "週末計畫",
       "screenLabel": "一台筆記型電腦：有人點進應用程式、按下快捷鍵並開始說話，文字就出現在剛才點選的位置。",
       "change": "變更",
-      "yourShortcut": "您的快捷鍵是",
+      "yourShortcut": "你的快捷鍵是",
       "pressKeys": "請按下新的按鍵",
       "addKey": "再加上一個按鍵",
       "cancel": "取消",
@@ -183,7 +183,7 @@
     },
     "try": {
       "title": "來試試看吧！",
-      "subtitle": "{{appName}} 就在角落，陪您一步步操作",
+      "subtitle": "{{appName}} 就在角落，陪你一步步操作",
       "noteLabel": "備忘錄",
       "placeholder": "新增備忘錄",
       "hold": "按住 <keys/> 並開始說話。",
@@ -191,7 +191,7 @@
       "letGo": "說完後放開 <keys/>。",
       "tapAgain": "說完後再按一次 <keys/>。",
       "watch": "看看備忘錄。",
-      "changeKeys": "變更快捷鍵，{{keys}}",
+      "changeKeys": "變更快捷鍵，目前為 {{keys}}",
       "doneHold": "擊掌！這就是按住的用法。",
       "doneHoldNext": "接下來，試試免持的方式。",
       "doneTap": "擊掌！這就是輕按的用法。",
@@ -214,8 +214,8 @@
     },
     "done": {
       "title": "全部設定完成",
-      "subMac": "{{appName}} 位於選單列。在任何 App 中按住或輕點 <keys/> 即可說話。",
-      "subTray": "{{appName}} 位於系統匣。在任何 App 中按住或輕點 <keys/> 即可說話。",
+      "subMac": "{{appName}} 位於選單列。在任何應用程式中按住或輕點 <keys/> 即可說話。",
+      "subTray": "{{appName}} 位於系統匣。在任何應用程式中按住或輕點 <keys/> 即可說話。",
       "hint": "之後可以隨時在「設定」中變更",
       "highFiveLabel": "擊掌",
       "atLogin": "登入時啟動 {{appName}}",
@@ -226,8 +226,8 @@
         "languages": "語言",
         "model": "語音模型",
         "shortcut": "快捷鍵",
-        "changeLanguages": "變更語言，{{languages}}",
-        "changeModel": "變更語音模型，{{model}}"
+        "changeLanguages": "變更語言，目前為{{languages}}",
+        "changeModel": "變更語音模型，目前為{{model}}"
       }
     },
     "linux": {
@@ -238,21 +238,21 @@
   "modelTable": {
     "tags": {
       "preview": "即時預覽",
-      "previewTitle": "說話時在「即時」懸浮窗中顯示您的文字，停止後再輸入",
+      "previewTitle": "說話時在「即時」懸浮窗中顯示你的文字，停止後再輸入",
       "translate": "可翻譯",
-      "translateTitle": "可以把您說的話轉成英文文字。請在設定中開啟"
+      "translateTitle": "可以把你說的話轉成英文文字。請在設定中開啟"
     },
     "rubric": {
       "gradeTitle": "{{language}}準確度：{{grade}}",
       "accuracyTitle": "{{language}}準確度",
-      "overallTitle": "您所用語言的準確度：{{grade}}",
-      "overall": "您所用語言的準確度",
+      "overallTitle": "你所用語言的準確度：{{grade}}",
+      "overall": "你所用語言的準確度",
       "meaning": {
-        "A": "錯誤非常少：您說的話通常都能原樣呈現",
+        "A": "錯誤非常少：你說的話通常都能原樣呈現",
         "B": "有些錯誤：偶爾需要修正幾個字",
         "C": "錯誤頻繁：部分細節可能會遺漏",
         "D": "錯誤很多：需要檢查並修正輸入的內容",
-        "F": "常常聽不清楚：您說的話有許多可能會出錯"
+        "F": "常常聽不清楚：你說的話有許多可能會出錯"
       },
       "unsupported": "這個模型聽不懂{{language}}，所以無法輸入",
       "unrated": "這個模型聽得懂{{language}}，但我們還沒測量過準確度",
@@ -311,7 +311,7 @@
     "missingLanguage": "缺少某種語言",
     "allLanguages": "全部",
     "downloadingLine": "已下載 {{percent}}%（共 {{total}}）",
-    "customLine": "從您的模型資料夾新增。未評分。"
+    "customLine": "從你的模型資料夾新增。未評分。"
   },
   "languagePicker": {
     "search": "搜尋語言",
@@ -325,13 +325,13 @@
     "streaming": "串流",
     "active": "使用中",
     "noModelsAvailable": "沒有可用的模型",
-    "verifying": "正在驗證 {{modelName}}...",
-    "verifyingGeneric": "正在驗證...",
+    "verifying": "正在驗證 {{modelName}}…",
+    "verifyingGeneric": "正在驗證…",
     "downloading": "下載中 {{percentage}}%",
-    "downloadingMultiple": "正在下載 {{count}} 個模型...",
+    "downloadingMultiple": "正在下載 {{count}} 個模型…",
     "modelReady": "模型已就緒",
-    "loading": "正在載入 {{modelName}}...",
-    "loadingGeneric": "載入中...",
+    "loading": "正在載入 {{modelName}}…",
+    "loadingGeneric": "載入中…",
     "modelError": "模型錯誤",
     "modelUnloaded": "模型已卸載",
     "noModelDownloadRequired": "無模型 - 需要下載",
@@ -347,22 +347,22 @@
       "shortcut": {
         "title": "{{appName}} 快捷鍵",
         "description": "設定啟動語音轉文字錄製的鍵盤快捷鍵",
-        "loading": "載入快捷鍵中...",
+        "loading": "載入快捷鍵中…",
         "none": "未設定快捷鍵",
         "notFound": "未找到快捷鍵",
-        "pressKeys": "請按鍵...",
+        "pressKeys": "請按鍵…",
         "bindings": {
           "transcribe": {
             "name": "轉錄快捷鍵",
-            "description": "用於錄製和轉錄語音的鍵盤快捷鍵"
+            "description": "用於錄製和轉錄語音的鍵盤快捷鍵。"
           },
           "cancel": {
             "name": "取消快捷鍵",
-            "description": "用於取消目前錄製的鍵盤快捷鍵"
+            "description": "用於取消目前錄製的鍵盤快捷鍵。"
           },
           "transcribe_with_post_process": {
             "name": "後處理快捷鍵",
-            "description": "可選：專用快捷鍵，使用時一律對轉錄結果套用 AI 後處理"
+            "description": "可選：專用快捷鍵，使用時一律對轉錄結果套用 AI 後處理。"
           },
           "ask_agent": {
             "name": "提問快捷鍵",
@@ -370,13 +370,13 @@
           }
         },
         "errors": {
-          "set": "無法設定快捷鍵: {{error}}"
+          "set": "無法設定快捷鍵：{{error}}"
         }
       },
       "language": {
         "title": "語言",
-        "description": "選擇語音辨識的語言。選擇自動將自動判定語言，選擇特定語言可以提高該語言的準確度",
-        "searchPlaceholder": "搜尋語言...",
+        "description": "選擇語音辨識的語言。選擇「自動」會自動偵測語言；選擇特定語言可以提高該語言的準確度。",
+        "searchPlaceholder": "搜尋語言…",
         "noResults": "未找到語言",
         "auto": "自動",
         "autoUnavailable": {
@@ -391,7 +391,7 @@
       },
       "preferredLanguages": {
         "title": "偏好語言",
-        "description": "您所說的語言。{{appName}} 會依據這些語言推薦模型。",
+        "description": "你所說的語言。{{appName}} 會依據這些語言推薦模型。",
         "noMatch": "找不到符合「{{query}}」的語言",
         "weak": "目前還沒有模型能把{{languages}}辨識得很準。"
       },
@@ -424,7 +424,7 @@
       "changeLanguages": "變更語言",
       "sections": {
         "yours": "在這台電腦上",
-        "fits": "適用於您的語言",
+        "fits": "適用於你的語言",
         "untested": "未測試"
       },
       "untestedNote": "尚未經過 {{appName}} 測試，可能較慢或錯誤較多。",
@@ -437,25 +437,25 @@
       "downloadingThenUse": "{{percent}}%（共 {{total}}），完成後自動切換",
       "loading": "載入中…",
       "deleteAsk": "要刪除 {{name}} 嗎？這會釋出 {{size}} 的空間。",
-      "deleteAskActive": "要刪除 {{name}} 嗎？在您選擇其他模型之前，{{appName}} 無法進行轉錄。",
+      "deleteAskActive": "要刪除 {{name}} 嗎？在你選擇其他模型之前，{{appName}} 無法進行轉錄。",
       "cancel": "取消",
       "deleteModel": "刪除 {{name}}",
       "cancelDownload": "停止下載 {{name}}",
       "legend": {
         "open": "模型如何評分",
-        "accuracyNote": "針對您的每一種語言：模型在我們的測試錄音中聽錯了多少字。",
+        "accuracyNote": "針對你的每一種語言：模型在我們的測試錄音中聽錯了多少字。",
         "speedNote": {
-          "accelerated": "在我們的測試筆電的顯示晶片上，輸入 30 秒語音所需的時間。這台電腦可能不同。",
-          "cpu": "在我們的測試筆電的處理器上，輸入 30 秒語音所需的時間。這台電腦可能不同。"
+          "accelerated": "在我們測試用筆電的顯示晶片上，把 30 秒語音轉成文字所需的時間。這台電腦的速度可能不同。",
+          "cpu": "在我們測試用筆電的處理器上，把 30 秒語音轉成文字所需的時間。這台電腦的速度可能不同。"
         },
         "marks": "? 表示尚未測量。— 表示聽不懂該語言。"
       },
       "retiredNotice": {
         "title": "舊模型已無法在 {{appName}} 中使用",
-        "description": "它們佔用了您電腦上 {{size}} 的空間。",
+        "description": "它們佔用了你電腦上 {{size}} 的空間。",
         "delete": "刪除模型",
         "deleted": "已刪除舊模型",
-        "deleteFailed": "部分舊模型無法刪除。請查看記錄檔以了解詳情。"
+        "deleteFailed": "部分舊模型無法刪除。請查看日誌以了解詳情。"
       },
       "rescan": {
         "label": "重新掃描",
@@ -469,13 +469,13 @@
       "title": "聲音",
       "microphone": {
         "title": "麥克風",
-        "description": "選擇您偏好的麥克風裝置",
-        "placeholder": "選擇麥克風...",
-        "loading": "載入中..."
+        "description": "選擇你偏好的麥克風裝置",
+        "placeholder": "選擇麥克風…",
+        "loading": "載入中…"
       },
       "channel": {
         "title": "輸入聲道",
-        "description": "選擇要錄音的輸入聲道。如果您的音訊介面有多個輸入，請使用此選項。",
+        "description": "選擇要錄音的輸入聲道。如果你的音訊介面有多個輸入，請使用此選項。",
         "average": "所有聲道的平均值",
         "channel": "聲道 {{n}}"
       },
@@ -486,8 +486,8 @@
       "outputDevice": {
         "title": "輸出裝置",
         "description": "選擇用於聲音回饋的音訊輸出裝置",
-        "placeholder": "選擇輸出裝置...",
-        "loading": "載入中..."
+        "placeholder": "選擇輸出裝置…",
+        "loading": "載入中…"
       },
       "volume": {
         "title": "音量",
@@ -504,11 +504,11 @@
       },
       "experimentalToggle": {
         "label": "實驗性功能",
-        "description": "啟用仍在開發中的實驗性功能"
+        "description": "啟用仍在開發中的實驗性功能。"
       },
       "lazyStreamClose": {
         "label": "在轉錄之間保持麥克風開啟",
-        "description": "錄音停止後保持麥克風串流開啟30秒，減少連續轉錄時的延遲。啟用時可能會降低藍牙音訊品質。"
+        "description": "錄音停止後讓麥克風串流保持開啟 30 秒，減少連續轉錄時的延遲。開啟期間可能會降低藍牙音訊品質。"
       },
       "acceleration": {
         "transcribe": {
@@ -521,7 +521,7 @@
       },
       "startHidden": {
         "label": "隱藏啟動",
-        "description": "啟動至系統匣而不開啟視窗"
+        "description": "啟動至系統匣而不開啟視窗。"
       },
       "autostart": {
         "label": "開機啟動",
@@ -529,12 +529,12 @@
       },
       "showTrayIcon": {
         "label": "顯示系統匣圖示",
-        "description": "在系統匣中顯示 {{appName}} 圖示"
+        "description": "在系統匣中顯示 {{appName}} 圖示。"
       },
       "overlay": {
         "style": {
           "title": "懸浮窗",
-          "description": "選擇錄音懸浮窗的樣式：「無」會隱藏懸浮窗，「精簡」顯示小巧的膠囊狀指示，「即時」在您說話時即時顯示轉錄內容（僅限支援串流的模型——請在模型選擇器中尋找「串流」標籤）。在 Linux 上建議選擇「無」",
+          "description": "選擇錄音懸浮窗的樣式：「無」會隱藏懸浮窗，「精簡」顯示小巧的膠囊狀指示，「即時」在你說話時即時顯示轉錄內容（僅限支援串流的模型——請在模型選擇器中尋找「串流」標籤）。在 Linux 上建議選擇「無」。",
           "options": {
             "none": "無",
             "minimal": "精簡",
@@ -543,7 +543,7 @@
         },
         "position": {
           "title": "懸浮窗位置",
-          "description": "在錄製和轉錄期間顯示視覺回饋懸浮窗。在 Linux 上建議選擇「無」",
+          "description": "錄製和轉錄時懸浮窗在螢幕上的顯示位置。",
           "options": {
             "bottom": "底部",
             "top": "頂部"
@@ -552,11 +552,11 @@
       },
       "pasteMethod": {
         "title": "貼上方式",
-        "description": "選擇文字插入方式。直接：透過系統輸入模擬打字。無：跳過貼上，僅更新歷史紀錄/剪貼簿",
+        "description": "選擇文字插入方式。直接：透過系統輸入模擬打字。無：跳過貼上，僅更新歷史紀錄/剪貼簿。",
         "options": {
-          "clipboard": "剪貼簿 ({{modifier}}+V)",
-          "clipboardCtrlShiftV": "剪貼簿 (Ctrl+Shift+V)",
-          "clipboardShiftInsert": "剪貼簿 (Shift+Insert)",
+          "clipboard": "剪貼簿（{{modifier}}+V）",
+          "clipboardCtrlShiftV": "剪貼簿（Ctrl+Shift+V）",
+          "clipboardShiftInsert": "剪貼簿（Shift+Insert）",
           "direct": "直接",
           "none": "無",
           "externalScript": "外部腳本"
@@ -565,14 +565,14 @@
       },
       "typingTool": {
         "title": "輸入工具",
-        "description": "選擇在直接貼上方式下使用的 Linux 輸入工具。選擇自動會自動偵測並使用系統中可用的最佳工具",
+        "description": "選擇在「直接」貼上方式下使用的 Linux 輸入工具。「自動」會偵測並使用系統中可用的最佳工具。",
         "options": {
           "auto": "自動（推薦）"
         }
       },
       "clipboardHandling": {
         "title": "剪貼簿處理",
-        "description": "不修改剪貼簿將在轉錄後保留目前剪貼簿內容。複製到剪貼簿會在貼上後將轉錄結果留在剪貼簿中",
+        "description": "「不修改剪貼簿」會在轉錄後保留目前的剪貼簿內容；「複製到剪貼簿」會在貼上後將轉錄結果留在剪貼簿中。",
         "options": {
           "dontModify": "不修改剪貼簿",
           "copyToClipboard": "複製到剪貼簿"
@@ -580,7 +580,7 @@
       },
       "autoSubmit": {
         "title": "自動送出",
-        "description": "插入文字後自動發送指定的按鍵組合。macOS 為 Cmd+Enter，Windows/Linux 為 Super+Enter",
+        "description": "插入文字後自動送出指定的按鍵組合。macOS 為 Cmd+Enter，Windows/Linux 為 Super+Enter。",
         "options": {
           "off": "關閉",
           "enter": "Enter",
@@ -591,7 +591,7 @@
       },
       "translateToEnglish": {
         "label": "翻譯為英語",
-        "description": "在轉錄過程中自動將其他語言的語音翻譯為英語"
+        "description": "在轉錄過程中自動將其他語言的語音翻譯為英語。"
       },
       "modelUnload": {
         "title": "卸載模型",
@@ -617,7 +617,7 @@
       },
       "voiceActivityDetection": {
         "title": "語音活動偵測",
-        "description": "過濾錄音中的靜音。支援串流的模型會使用較長的 VAD 尾段；停用 VAD 則會錄製原始音訊"
+        "description": "過濾錄音中的靜音。支援串流的模型會使用較長的 VAD 尾段；停用 VAD 則會錄製原始音訊。"
       },
       "longFormChunking": {
         "title": "長音訊分段",
@@ -660,30 +660,30 @@
     "history": {
       "title": "歷史紀錄",
       "openFolder": "開啟錄音資料夾",
-      "loading": "載入歷史紀錄中...",
-      "empty": "還沒有轉錄紀錄。開始錄製以建立您的歷史紀錄！",
+      "loading": "載入歷史紀錄中…",
+      "empty": "還沒有轉錄紀錄。開始錄製以建立你的歷史紀錄！",
       "copyToClipboard": "複製轉錄到剪貼簿",
       "copyError": "無法將轉錄複製到剪貼簿。",
       "save": "儲存轉錄",
       "unsave": "從已儲存中移除",
       "delete": "刪除條目",
-      "deleteError": "刪除條目失敗，請重試",
+      "deleteError": "刪除條目失敗，請重試。",
       "retranscribe": "重新轉錄",
       "cancelTranscription": "取消轉錄",
-      "transcribing": "轉錄中...",
-      "transcriptionFailed": "轉錄失敗。您可以使用重試圖示重新轉錄。",
-      "notTranscribed": "尚未轉錄。您可以使用重試圖示進行轉錄。",
+      "transcribing": "轉錄中…",
+      "transcriptionFailed": "轉錄失敗。你可以使用重試圖示重新轉錄。",
+      "notTranscribed": "尚未轉錄。你可以使用重試圖示進行轉錄。",
       "transcribeFile": "轉錄檔案",
       "mediaFiles": "音訊和影片",
       "fileUnsupported": "無法讀取 {{name}} 中的音訊。",
-      "readingFile": "正在讀取 {{name}}...",
+      "readingFile": "正在讀取 {{name}}…",
       "transcribeFailed": "轉錄失敗，請重試。",
       "waiting": "等待轉錄",
       "transcribingPercent": "正在轉錄，{{percent}}%",
       "showMore": "顯示更多",
       "showLess": "收合",
       "dropTitle": "拖放到此處進行轉錄",
-      "dropDescription": "它會出現在歷史記錄中。",
+      "dropDescription": "它會出現在歷史紀錄中。",
       "searchPlaceholder": "搜尋歷史紀錄",
       "clearSearch": "清除搜尋",
       "today": "今天",
@@ -692,7 +692,7 @@
       "playRecording": "播放錄音",
       "hidePlayer": "隱藏播放器",
       "emptyTitle": "尚無聽寫紀錄",
-      "emptyDescription": "{{appName}} 轉錄的所有內容都會依時間由新到舊顯示在這裡。在任何 App 中按住快速鍵並開始說話即可。",
+      "emptyDescription": "{{appName}} 轉錄的所有內容都會依時間由新到舊顯示在這裡。在任何應用程式中按住快捷鍵並開始說話即可。",
       "noResultsTitle": "沒有符合的項目",
       "noResultsDescription": "歷史紀錄中沒有符合「{{query}}」的內容。",
       "loadingMore": "正在載入更多…",
@@ -717,12 +717,12 @@
         "resume": "繼續",
         "copied": "已複製",
         "lineCount": "{{count}} 行",
-        "empty": "正在等待日誌…… 應用程式產生日誌時會顯示於此。"
+        "empty": "正在等待日誌……應用程式產生日誌後會顯示在這裡。"
       },
       "updateChecks": {
         "label": "檢查更新",
         "description": "自動檢查 {{appName}} 的新版本",
-        "lockedDescription": "已被系統設定停用 (AMBIENT_DISABLE_UPDATER)"
+        "lockedDescription": "已被系統設定停用（AMBIENT_DISABLE_UPDATER）"
       },
       "whatsNewPreview": {
         "title": "預覽新功能",
@@ -747,7 +747,7 @@
       },
       "onboardingRun": {
         "title": "執行新手引導",
-        "description": "從頭實際跑一遍新手引導：會要求權限、下載模型並儲存您的選擇",
+        "description": "從頭實際跑一遍新手引導：會要求權限、下載模型並儲存你的選擇",
         "button": "開始"
       },
       "modelMigration": {
@@ -777,7 +777,7 @@
         "days3": "3 天後",
         "weeks2": "2 週後",
         "months3": "3 個月後",
-        "placeholder": "選擇保留期限..."
+        "placeholder": "選擇保留期限…"
       },
       "alwaysOnMicrophone": {
         "label": "麥克風常開",
@@ -801,7 +801,7 @@
       },
       "keyboardImplementation": {
         "title": "鍵盤實作",
-        "description": "選擇鍵盤快捷鍵的後端",
+        "description": "選擇鍵盤快捷鍵的後端。",
         "bindingsReset": "鍵盤快捷鍵不相容，已重設為預設值"
       },
       "pasteDelay": {
@@ -830,14 +830,14 @@
       },
       "keyboardDiagnostic": {
         "title": "鍵盤診斷",
-        "description": "檢查鍵盤事件是否能送達 {{appName}}。只會記錄事件數量，絕不記錄您按了哪些按鍵。",
+        "description": "檢查鍵盤事件是否能送達 {{appName}}。只會記錄事件數量，絕不記錄你按了哪些按鍵。",
         "run": "執行 10 秒診斷",
-        "running": "正在監聽… 請按幾次您的快捷鍵（例如 Option+Space）",
+        "running": "正在監聽… 請按幾次你的快捷鍵（例如 Option+Space）",
         "secureInputLabel": "Secure Input",
         "enabled": "已啟用",
         "disabled": "已停用",
-        "holder": "被 {{name}}（pid {{pid}}）占用",
-        "holderUnknown": "找不到占用的程式",
+        "holder": "被 {{name}}（pid {{pid}}）佔用",
+        "holderUnknown": "找不到佔用的程式",
         "keyDown": "按鍵按下",
         "keyUp": "按鍵放開",
         "flagsChanged": "修飾鍵",
@@ -845,7 +845,7 @@
         "verdictBlocked": "Secure Input 正在阻擋按鍵事件——在問題解決前，包含一般按鍵的快捷鍵無法運作。",
         "verdictSuspicious": "收到了修飾鍵事件，但沒有按鍵事件——即使 Secure Input 回報為已停用，仍有程式在抑制按鍵。請在 GitHub 上回報此問題。",
         "verdictOk": "按鍵事件正常送達 {{appName}}。",
-        "verdictNoEvents": "未擷取到任何事件——測試期間您有按鍵嗎？",
+        "verdictNoEvents": "未擷取到任何事件——測試期間你有按鍵嗎？",
         "failed": "診斷失敗：{{error}}"
       }
     },
@@ -872,14 +872,14 @@
         "title": "致謝",
         "ggml": {
           "title": "ggml",
-          "description": "針對 OpenAI Whisper 自動語音辨識模型的高效能推理引擎",
-          "details": "{{appName}} 使用 ggml 進行快速的本機語音轉文字處理。感謝 Georgi Gerganov 和貢獻者們的傑出工作"
+          "description": "用於裝置端機器學習推論的高效能張量函式庫",
+          "details": "{{appName}} 的本機語音轉文字是以 transcribe.cpp 和 ggml 打造。感謝 Georgi Gerganov 與所有貢獻者的傑出成果。"
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "開放原始碼授權",
+          "description": "{{appName}} 所含開放原始碼軟體的授權聲明",
+          "show": "顯示授權",
+          "hide": "隱藏授權"
         }
       },
       "intro": {
@@ -901,19 +901,19 @@
         "description": "請求會被處理，其他內容照常輸入。關閉後一律輸入文字。"
       },
       "wake": {
-        "label": "免持：說「嘿 Ambient」",
-        "description": "無須按鍵即可與 {{appName}} 對話：「嘿 Ambient，我的行事曆上有什麼？」它在這台電腦上聆聽，並忽略所有不以它名字開頭的內容。開啟期間，電腦會顯示麥克風指示燈。"
+        "label": "免持：說「Hey Ambient」",
+        "description": "無須按鍵即可與 {{appName}} 對話：「Hey Ambient，我的行事曆上有什麼？」它在這台電腦上聆聽，並忽略所有不以它名字開頭的內容。開啟期間，電腦會顯示麥克風正在使用。"
       }
     }
   },
   "footer": {
-    "checkingUpdates": "檢查更新中...",
+    "checkingUpdates": "檢查更新中…",
     "updateAvailableShort": "有可用更新",
     "upToDate": "已是最新版本",
     "updateCheckingDisabled": "更新檢查已停用",
-    "downloading": "下載中... {{progress}}%",
-    "installing": "安裝中...",
-    "preparing": "準備中...",
+    "downloading": "下載中… {{progress}}%",
+    "installing": "安裝中…",
+    "preparing": "準備中…",
     "checkForUpdates": "檢查更新",
     "portableUpdateTitle": "需要手動更新",
     "portableUpdateMessage": "可攜式安裝無法自動更新。請透過下方按鈕下載適用於你的系統的安裝程式，執行後安裝到相同資料夾，你的 Data/ 資料夾（設定、模型、錄音）會保留在原處。",
@@ -925,7 +925,7 @@
     "title": "{{appName}} v{{version}} 新功能"
   },
   "common": {
-    "loading": "載入中...",
+    "loading": "載入中…",
     "delete": "刪除",
     "close": "關閉",
     "open": "開啟",
@@ -934,7 +934,7 @@
     "noOptionsFound": "未找到選項"
   },
   "errors": {
-    "loadDirectory": "載入目錄時發生錯誤: {{error}}",
+    "loadDirectory": "載入目錄時發生錯誤：{{error}}",
     "micPermissionDeniedTitle": "麥克風存取被拒絕",
     "micPermissionDenied": {
       "generic": "作業系統拒絕了麥克風存取。請在系統設定中授予麥克風權限。",
@@ -944,8 +944,8 @@
     },
     "noInputDeviceTitle": "找不到麥克風",
     "noInputDevice": "未偵測到音訊輸入裝置。請連接麥克風或耳機後重試。",
-    "recordingFailed": "錄音啟動失敗: {{error}}",
-    "modelLoadFailed": "載入模型失敗: {{model}}",
+    "recordingFailed": "錄音啟動失敗：{{error}}",
+    "modelLoadFailed": "載入模型失敗：{{model}}",
     "modelLoadFailedUnknown": "未知模型",
     "pasteFailedTitle": "貼上文字失敗",
     "pasteFailed": "無法將文字貼上至目前作用中的應用程式。",
@@ -994,9 +994,9 @@
     }
   },
   "overlay": {
-    "transcribing": "正在轉錄...",
-    "processing": "處理中...",
-    "loadingModel": "正在載入模型..."
+    "transcribing": "正在轉錄…",
+    "processing": "處理中…",
+    "loadingModel": "正在載入模型…"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} 可能正在阻擋 1 個快捷鍵",
@@ -1028,7 +1028,7 @@
     "proFeatures": {
       "polish": "對每次聽寫進行 AI 潤飾",
       "onDevice": "使用 Apple Intelligence 在裝置上潤飾",
-      "agent": "依原樣推出的 ambient 智慧代理",
+      "agent": "Ambient 智慧代理，新功能陸續推出",
       "priority": "優先支援"
     },
     "card": {
@@ -1038,16 +1038,16 @@
       "activating": "正在啟用…",
       "paste": "貼上",
       "pasteFailed": "無法讀取剪貼簿。請改用 {{keys}} 貼上。",
-      "holder": "登入帳戶",
+      "holder": "目前登入",
       "renewsLabel": "續訂日期",
       "copied": "已複製",
       "errors": {
         "network": "無法連線至 {{appName}} 進行啟用。請檢查網路連線後再試一次。",
         "inactive": "此代碼的訂閱未啟用。續訂後即可解鎖你的方案。",
         "rate_limited": "嘗試次數過多。請於 15 分鐘後再試。",
-        "server": "啟用在我們這端失敗了。請稍後再試。"
+        "server": "我們這端啟用失敗，請稍後再試。"
       },
-      "menu": "帳號操作"
+      "menu": "帳戶操作"
     },
     "signIn": {
       "sectionTitle": "你的帳戶",
@@ -1090,7 +1090,7 @@
         "invalid_code": "驗證碼不正確。請檢查郵件後再試一次。",
         "expired": "驗證碼已過期，請重新取得。",
         "too_many_attempts": "嘗試次數過多，請重新取得驗證碼。",
-        "server": "登入在我們這邊失敗了，請稍後再試。",
+        "server": "我們這端登入失敗，請稍後再試。",
         "redeem_invalid": "無法辨識此代碼，請檢查後再試一次。"
       }
     },
@@ -1100,7 +1100,7 @@
       "unlock": "取得無限次",
       "onDevice": "僅在這台 Mac 上處理",
       "onDeviceDescription": "改用 Apple Intelligence。任何內容都不會離開你的 Mac。",
-      "freeLeft": "本週還剩 {{left}} 次免費AI 潤飾（共 {{limit}} 次）"
+      "freeLeft": "本週還剩 {{left}} 次免費 AI 潤飾（共 {{limit}} 次）"
     },
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",
@@ -1111,17 +1111,17 @@
     "greeting": {
       "morning": "早安",
       "afternoon": "午安",
-      "evening": "晚安",
+      "evening": "晚上好",
       "night": "夜深了"
     },
-    "hold": "在任何 App 中按住",
+    "hold": "在任何應用程式中按住",
     "anywhere": "並開始說話。",
-    "noShortcut": "請在設定中設定快速鍵以開始聽寫。",
+    "noShortcut": "請在設定中設定快捷鍵以開始聽寫。",
     "stats": {
       "words": "本週字數",
       "wordsHint": "使用 {{appName}} 聽寫",
       "saved": "節省的時間",
-      "savedHint": "口述 {{speaking}} 字/分鐘，打字 {{typing}}",
+      "savedHint": "說話每分鐘 {{speaking}} 字，打字每分鐘 {{typing}} 字",
       "lessThanMinute": "不到 1 分鐘",
       "minutes_one": "{{count}} 分鐘",
       "minutes_other": "{{count}} 分鐘",
@@ -1132,13 +1132,13 @@
     "viewAll": "檢視全部",
     "empty": {
       "title": "這裡還沒有內容",
-      "description": "在任何 App 中按下快速鍵並開始說話，聽寫內容會顯示在這裡。"
+      "description": "在任何應用程式中按下快捷鍵並開始說話，聽寫內容會顯示在這裡。"
     },
     "tips": {
-      "holdOrTap": "按住快速鍵說話，或按一次開始、再按一次停止。",
-      "customWords": "在 設定 → 進階 → 自訂詞彙 中加入人名與專業術語，可提高準確度。",
+      "holdOrTap": "按住快捷鍵說話，或按一次開始、再按一次停止。",
+      "customWords": "在「設定 → 進階 → 自訂詞彙」中加入人名與專業術語，可提高準確度。",
       "dropFile": "將音訊檔案拖曳到此視窗即可轉錄。",
-      "languages": "在 設定 → 一般 中選擇您使用的語言，以獲得更合適的模型建議。"
+      "languages": "在「設定 → 一般」中選擇你使用的語言，以獲得更合適的模型建議。"
     },
     "quickActions": {
       "label": "快速動作",
@@ -1148,8 +1148,8 @@
     "plan": {
       "title": "你的方案",
       "polishUnlimited": "AI 潤飾不限次數。",
-      "polishLeft": "本週還剩 {{left}} 次免費AI 潤飾（共 {{limit}} 次）· {{day}}重置",
-      "polishFree": "免費方案包含每週的AI 潤飾額度。",
+      "polishLeft": "本週還剩 {{left}} 次免費 AI 潤飾（共 {{limit}} 次）· {{day}} 重設",
+      "polishFree": "免費方案包含每週的 AI 潤飾額度。",
       "meetingsLeft": "本月還剩 {{left}}/{{limit}} 份會議記錄",
       "aiLeft": "今天還剩 {{left}}/{{limit}} 次 AI 請求",
       "searchLeft": "剩餘搜尋次數：{{count}}",
@@ -1198,8 +1198,8 @@
       "heardNothing": "聽到了，但沒聽出具體要求。",
       "noWebResults": "暫時無法上網搜尋，以下內容根據我已知的資訊。",
       "timeout": "花太久了，請再試一次。",
-      "needsCloud": "這需要雲端，但智慧功能已設為「僅在這台電腦上」。請在隱私中變更。",
-      "cloudOfferOn": "雲端建議已開啟。請在隱私中變更。",
+      "needsCloud": "這需要雲端，但智慧功能已設為「僅在這台電腦上」。請在「隱私」中變更。",
+      "cloudOfferOn": "雲端建議已開啟。可在「隱私」中變更。",
       "cloudUnavailable": "雲端建議目前無法使用。",
       "cloudLimited": "雲端建議暫時停用：今天的上限已達到，或需要 Pro。"
     },
@@ -1270,7 +1270,7 @@
       "searchDrive": "在 Google 雲端硬碟中搜尋",
       "searchGmail": "在 Gmail 中搜尋"
     },
-    "cloudOffer": "{{appName}} 可以將視窗內容的遮蔽片段傳送到其伺服器，藉此在這台電腦上建議提供協助。要開啟嗎？",
+    "cloudOffer": "{{appName}} 可以將目前視窗的一小段內容（已移除機密資訊）傳送到伺服器，藉此在這台電腦上為你提供協助建議。要開啟嗎？",
     "when": {
       "today": "今天 {{time}}",
       "tomorrow": "明天 {{time}}",
@@ -1365,11 +1365,11 @@
     },
     "accessibility": "{{appName}} 需要輔助使用權限，才能讀取其他應用程式中的文字。",
     "grant": "允許取用",
-    "accessibilityLinux": "開啟輔助使用，讓 {{appName}} 能讀取你所在的視窗。執行此命令，然後登出再重新登入。",
+    "accessibilityLinux": "開啟輔助使用，讓 {{appName}} 能讀取你所在的視窗。執行此指令，然後登出再重新登入。",
     "accessibilityLinuxChrome": "Chrome、Chromium 和 Electron 應用程式還需要 --force-renderer-accessibility。",
-    "copyCommand": "複製命令",
-    "commandCopied": "已複製命令",
-    "commandCopyFailed": "無法複製命令",
+    "copyCommand": "複製指令",
+    "commandCopied": "已複製指令",
+    "commandCopyFailed": "無法複製指令",
     "capabilities": {
       "title": "{{appName}} 可以做什麼",
       "description": "每項功能在你開啟之前都維持關閉。",
@@ -1389,13 +1389,13 @@
         "leaves": "在這台電腦上決定，或依你在下方的選擇在雲端決定。除會議提示外，除非你接受，否則不會傳送任何內容。"
       },
       "meetings": {
-        "title": "會議筆記",
+        "title": "會議記錄",
         "reads": "記錄時會聆聽你的麥克風和通話。",
         "leaves": "音訊留在這裡。只傳送文字，用於撰寫摘要。"
       },
       "wake_word": {
-        "title": "免持：說「嘿 Ambient」",
-        "reads": "在這台電腦上聆聽「嘿 Ambient」。其他內容會在你說話時直接捨棄。",
+        "title": "免持：說「Hey Ambient」",
+        "reads": "在這台電腦上聆聽「Hey Ambient」。其他內容會在你說話時直接捨棄。",
         "leaves": "在你說出之前，不會錄製或傳送任何內容。"
       },
       "groups": {
@@ -1408,13 +1408,13 @@
     "days_other": "{{count}} 天",
     "preview": {
       "title": "{{appName}} 看到的內容",
-      "description": "遮蔽敏感資訊後，它會從視窗讀取的確切內容。",
+      "description": "移除機密資訊後，它會從視窗讀取的確切內容。",
       "hint": "按一下「預覽」，然後在 3 秒內切換到任一視窗。",
       "switchNow": "現在切換到另一個視窗…",
       "button": "預覽",
       "noText": "此視窗中沒有可讀取的文字。",
       "skipped": {
-        "never_watch": "該應用程式在你的「永不查看」列表中，因此未讀取任何內容。",
+        "never_watch": "該應用程式在你的「永不查看」清單中，因此未讀取任何內容。",
         "no_permission": "請先允許輔助使用權限。",
         "unavailable": "無法讀取該視窗。",
         "sensitive": "此視窗顯示了助記詞或私密金鑰，因此未讀取任何內容。"
@@ -1463,7 +1463,7 @@
     },
     "engine": {
       "title": "回答也使用 Apple Intelligence",
-      "description": "條件允許時，回答和潤飾會在這台電腦上執行。效果不夠精緻，因此預設為關閉。"
+      "description": "條件允許時，回答和潤飾會在這台 Mac 上執行。效果不如雲端精緻，因此預設為關閉。"
     },
     "suggestions": {
       "title": "你收到的建議",
@@ -1499,12 +1499,12 @@
     "promises": {
       "voice": "你的聲音只留在這台電腦上",
       "text": "只讀取文字，絕不截圖",
-      "sensitive": "略過密碼、錢包和隱私視窗",
+      "sensitive": "略過密碼、錢包和私密視窗",
       "ledger": "每個送出的請求都列在下方"
     },
     "intelligence": {
       "title": "智慧功能在哪裡執行",
-      "description": "決定何時給出建議並撰寫回答。無論怎麼選，所有功能都可使用。",
+      "description": "由它決定何時給出建議並撰寫回答。無論選擇哪一項，所有功能都可使用。",
       "capability": {
         "apple": "這台電腦上可使用 Apple Intelligence",
         "none": "這台電腦上沒有裝置端模型"
@@ -1520,12 +1520,12 @@
         },
         "cloud": {
           "title": "雲端",
-          "description": "效果最佳。遮蔽後的文字會傳送到 {{appName}} 的伺服器。"
+          "description": "效果最佳。移除機密資訊後的文字會傳送到 {{appName}} 的伺服器。"
         }
       },
       "cloudSuggestions": {
         "title": "雲端建議",
-        "description": "傳送你停留過的視窗的遮蔽片段，以判斷是否提供協助。每筆請求都會列在下方。"
+        "description": "傳送你停留過的視窗片段（已移除機密資訊），以判斷是否提供協助。每筆請求都會列在下方。"
       }
     },
     "telemetry": {
@@ -1545,7 +1545,7 @@
     "consent": "告訴大家你正在做筆記。",
     "copyConsent": "複製訊息",
     "consentMessage": "提醒一下：我正在使用 {{appName}} 為這通電話做筆記。",
-    "openSettings": "打開設定",
+    "openSettings": "開啟設定",
     "notes": "筆記",
     "transcript": "逐字稿",
     "past": "過往會議",
@@ -1571,7 +1571,7 @@
       "oldMacOS": "聆聽通話需要 macOS 13 或以上版本。你的麥克風仍在轉錄。",
       "failed": "無法擷取通話音訊。你的麥克風仍在轉錄。",
       "unsupported": "此系統尚不支援聆聽通話。",
-      "linuxNoParec": "聽到通話需要 parec（安裝 pulseaudio-utils）。你的麥克風仍在轉寫。"
+      "linuxNoParec": "聆聽通話需要 parec（請安裝 pulseaudio-utils）。你的麥克風仍在轉錄。"
     },
     "error": {
       "storage": "無法開啟會議儲存空間。",
@@ -1585,12 +1585,12 @@
     "startNow": "立即開始",
     "startNowHint": "現在就做記錄，不必等通話",
     "auto": {
-      "on": "已準備好迎接下一通通話",
+      "on": "已準備好記錄你的下一通電話",
       "onDetail": "通話開始時，{{appName}} 會提議做記錄。同意，或忽略即可。",
       "off": "通話偵測已關閉",
       "offDetail": "開啟後，通話開始時 {{appName}} 會提議做記錄。",
       "paused": "已暫停",
-      "pausedDetail": "在隱私中恢復之前，{{appName}} 不會提議做記錄。",
+      "pausedDetail": "在「隱私」中恢復之前，{{appName}} 不會提議做記錄。",
       "pro": "未做記錄",
       "proDetail": "使用 Pro，{{appName}} 會偵測你的通話並提議做記錄。",
       "unsupported": "未做記錄",
@@ -1598,7 +1598,7 @@
       "turnOn": "開啟"
     },
     "steps": {
-      "join": "在任何 App 中加入通話",
+      "join": "在任何應用程式中加入通話",
       "accept": "{{appName}} 提議時說「好」",
       "summary": "結束後取得摘要"
     },
@@ -1651,7 +1651,7 @@
     },
     "nothingToConnect": {
       "title": "無須連接任何東西。",
-      "body": "無須帳號、整合或機器人。直接搭配你已在使用的應用程式。"
+      "body": "無須帳戶、整合或機器人。直接搭配你已在使用的應用程式。"
     },
     "try": {
       "title": "現在試試",
@@ -1690,7 +1690,7 @@
   "trySaying": {
     "title": "我可以說什麼？",
     "close": "關閉",
-    "footnote": "在 ChatGPT 或 Claude 中，以「嘿 Ambient」開頭即可改為與智慧代理對話。",
+    "footnote": "在 ChatGPT 或 Claude 中，以「Hey Ambient」開頭即可改為與智慧代理對話。",
     "groups": {
       "answer": {
         "title": "提問",
@@ -1710,12 +1710,12 @@
           "打開 Linear。",
           "執行我的站立會議捷徑。"
         ],
-        "hint": "提醒、行程、App 和捷徑。"
+        "hint": "提醒、行程、應用程式和捷徑。"
       },
       "recall": {
         "title": "回想",
         "examples": [
-          "我昨天說了什麼關於定價的事？",
+          "我昨天對定價說了什麼？",
           "找出第三季的簡報。"
         ],
         "hint": "你說過、看過或做過的事。"
@@ -1726,16 +1726,16 @@
           "說「好」或「去做吧」接受。",
           "說「稍後再說」關閉。",
           "說「別給我看這些」關閉這類建議。",
-          "說「這裡不要」在此應用程式中停止。"
+          "說「這裡不要」，不再在此應用程式中出現。"
         ],
         "hint": "大聲回答一則建議。"
       },
       "meetings": {
         "title": "會議",
         "examples": [
-          "從「會議」開始記錄，或在 Ambient 提議時說「是」。",
-          "有人向你要東西時，「尋找」。",
-          "你答應做某件事時，「提醒我」。"
+          "從「會議」開始記錄，或在 Ambient 提議時說「好」。",
+          "有人向你要東西時，說「尋找」。",
+          "你答應做某件事時，說「提醒我」。"
         ],
         "hint": "通話時由 {{appName}} 做記錄。"
       },
@@ -1747,7 +1747,7 @@
     "ways": {
       "0": "按住說話，與智慧代理對話。",
       "1": "按住聽寫。以「Hey {{appName}}」開頭則改為提問。",
-      "2": "免持：說「Hey {{appName}}，……」。在隱私中開啟。"
+      "2": "免持：說「Hey {{appName}}，……」。可在「隱私」中開啟。"
     }
   },
   "app": {
