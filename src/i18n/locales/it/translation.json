@@ -99,7 +99,8 @@
       "hint": {
         "pickOne": "Scegli almeno una lingua",
         "weak_one": "{{languages}}: nessun modello la riconosce ancora bene",
-        "weak_other": "{{languages}}: nessun modello le riconosce ancora bene"
+        "weak_other": "{{languages}}: nessun modello le riconosce ancora bene",
+        "weak_many": "{{languages}}: nessun modello le riconosce ancora bene"
       }
     },
     "download": {
@@ -318,7 +319,8 @@
     "addAnother": "Aggiungine un'altra",
     "remove": "Rimuovi {{language}}",
     "alreadyAdded_one": "{{languages}} è già stata aggiunta.",
-    "alreadyAdded_other": "{{languages}} sono già state aggiunte."
+    "alreadyAdded_other": "{{languages}} sono già state aggiunte.",
+    "alreadyAdded_many": "{{languages}} sono già state aggiunte."
   },
   "modelSelector": {
     "custom": "Personalizzato",
@@ -460,7 +462,8 @@
       "rescan": {
         "label": "Riscansiona",
         "tooltip": "Riscansiona per trovare modelli aggiunti alla cartella dei modelli o alla cache di Hugging Face al di fuori di {{appName}}"
-      }
+      },
+      "untestedHidden_many": "Altri {{count}} modelli non sono ottimizzati per la dettatura. Usa la ricerca per trovarne uno."
     },
     "languages": {
       "title": "Lingue"
@@ -1007,7 +1010,9 @@
     "recorderBlockedNoCulprit": "macOS sta bloccando temporaneamente le modifiche alle scorciatoie",
     "learnMore": "Come risolvere",
     "recorderBlocked": "Non è possibile registrare scorciatoie in questo momento: Secure Input di macOS sta bloccando gli eventi dei tasti. Risolvi prima l'avviso di Secure Input.",
-    "dismiss": "Ignora"
+    "dismiss": "Ignora",
+    "blockedWithCulprit_many": "{{name}} potrebbe bloccare {{count}} scorciatoie",
+    "blockedNoCulprit_many": "macOS sta bloccando temporaneamente {{count}} scorciatoie"
   },
   "account": {
     "currentPlan": "Piano attuale",
@@ -1104,7 +1109,8 @@
     },
     "trial": {
       "daysLeft_one": "{{count}} giorno rimasto",
-      "daysLeft_other": "{{count}} giorni rimasti"
+      "daysLeft_other": "{{count}} giorni rimasti",
+      "daysLeft_many": "{{count}} giorni rimasti"
     }
   },
   "home": {
@@ -1126,7 +1132,9 @@
       "minutes_one": "{{count}} min",
       "minutes_other": "{{count}} min",
       "hours_one": "{{count}} h",
-      "hours_other": "{{count}} h"
+      "hours_other": "{{count}} h",
+      "minutes_many": "{{count}} min",
+      "hours_many": "{{count}} h"
     },
     "recent": "Dettati recenti",
     "viewAll": "Mostra tutto",
@@ -1436,7 +1444,9 @@
       "deleteApp": "Elimina le istantanee di questa app",
       "empty": "Nulla di memorizzato.",
       "deleteAll": "Elimina tutto",
-      "deletedAll": "La memoria dello schermo e il registro delle richieste sono stati eliminati."
+      "deletedAll": "La memoria dello schermo e il registro delle richieste sono stati eliminati.",
+      "summary_many": "{{count}} istantanee dal {{since}}.",
+      "entries_many": "{{count}} istantanee"
     },
     "ledger": {
       "title": "Richieste uscite da questo computer",
@@ -1459,7 +1469,8 @@
         "config": "Controllo impostazioni (nulla inviato)",
         "meeting_email": "Email con le note della riunione",
         "feedback": "Feedback"
-      }
+      },
+      "bytes_many": "{{count}} byte"
     },
     "engine": {
       "title": "Usa Apple Intelligence anche per le risposte",
@@ -1532,7 +1543,8 @@
       "title": "Aiuta a migliorare {{appName}}",
       "label": "Condividi conteggi d'uso anonimi",
       "description": "Solo conteggi e tempi, mai ciò che dici, scrivi o vedi. Disattivato finché non lo attivi."
-    }
+    },
+    "days_many": "{{count}} giorni"
   },
   "meetings": {
     "title": "Riunioni",

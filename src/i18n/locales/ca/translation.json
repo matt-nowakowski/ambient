@@ -99,7 +99,8 @@
       "hint": {
         "pickOne": "Trieu almenys una llengua",
         "weak_one": "{{languages}}: cap model l'entén bé encara",
-        "weak_other": "{{languages}}: cap model les entén bé encara"
+        "weak_other": "{{languages}}: cap model les entén bé encara",
+        "weak_many": "{{languages}}: cap model les entén bé encara"
       }
     },
     "download": {
@@ -318,7 +319,8 @@
     "addAnother": "Afegeix-ne una altra",
     "remove": "Elimina {{language}}",
     "alreadyAdded_one": "{{languages}} ja està afegida.",
-    "alreadyAdded_other": "{{languages}} ja estan afegides."
+    "alreadyAdded_other": "{{languages}} ja estan afegides.",
+    "alreadyAdded_many": "{{languages}} ja estan afegides."
   },
   "modelSelector": {
     "custom": "Personalitzat",
@@ -460,7 +462,8 @@
       "rescan": {
         "label": "Torna a cercar",
         "tooltip": "Torna a cercar models afegits a la carpeta de models o a la memòria cau de Hugging Face des de fora del {{appName}}"
-      }
+      },
+      "untestedHidden_many": "{{count}} models més no estan ajustats per al dictat. Feu una cerca per trobar-ne algun."
     },
     "languages": {
       "title": "Llengües"
@@ -1007,7 +1010,9 @@
     "recorderBlockedNoCulprit": "El macOS està blocant temporalment els canvis de dreceres",
     "learnMore": "Com es resol",
     "recorderBlocked": "Ara no es poden enregistrar dreceres: l'entrada segura del macOS bloca els esdeveniments de tecla. Primer resoleu l'avís d'entrada segura.",
-    "dismiss": "Descarta"
+    "dismiss": "Descarta",
+    "blockedWithCulprit_many": "{{name}} pot estar blocant {{count}} dreceres",
+    "blockedNoCulprit_many": "El macOS està blocant temporalment {{count}} dreceres"
   },
   "account": {
     "currentPlan": "Pla actual",
@@ -1104,7 +1109,8 @@
     },
     "trial": {
       "daysLeft_one": "Queda {{count}} dia",
-      "daysLeft_other": "Queden {{count}} dies"
+      "daysLeft_other": "Queden {{count}} dies",
+      "daysLeft_many": "Queden {{count}} dies"
     }
   },
   "home": {
@@ -1126,7 +1132,9 @@
       "minutes_one": "{{count}} min",
       "minutes_other": "{{count}} min",
       "hours_one": "{{count}} h",
-      "hours_other": "{{count}} h"
+      "hours_other": "{{count}} h",
+      "minutes_many": "{{count}} min",
+      "hours_many": "{{count}} h"
     },
     "recent": "Dictats recents",
     "viewAll": "Mostra-ho tot",
@@ -1436,7 +1444,9 @@
       "deleteApp": "Suprimeix les instantànies d'aquesta aplicació",
       "empty": "No hi ha res desat.",
       "deleteAll": "Suprimeix-ho tot",
-      "deletedAll": "S'han suprimit la memòria de pantalla i el registre de peticions."
+      "deletedAll": "S'han suprimit la memòria de pantalla i el registre de peticions.",
+      "summary_many": "{{count}} instantànies des de {{since}}.",
+      "entries_many": "{{count}} instantànies"
     },
     "ledger": {
       "title": "Peticions que han sortit d'aquest ordinador",
@@ -1459,7 +1469,8 @@
         "config": "Comprovació de la configuració (no s'envia res)",
         "meeting_email": "Correu amb les notes de la reunió",
         "feedback": "Comentaris"
-      }
+      },
+      "bytes_many": "{{count}} bytes"
     },
     "engine": {
       "title": "Fer servir Apple Intelligence també per a les respostes",
@@ -1532,7 +1543,8 @@
       "title": "Ajuda a millorar {{appName}}",
       "label": "Comparteix recomptes d'ús anònims",
       "description": "Només recomptes i temps, mai el que dius, escrius o veus. Desactivat fins que l'activis."
-    }
+    },
+    "days_many": "{{count}} dies"
   },
   "meetings": {
     "title": "Reunions",

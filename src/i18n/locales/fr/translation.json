@@ -99,7 +99,8 @@
       "hint": {
         "pickOne": "Choisissez au moins une langue",
         "weak_one": "{{languages}} : aucun modèle ne la comprend bien pour l’instant",
-        "weak_other": "{{languages}} : aucun modèle ne les comprend bien pour l’instant"
+        "weak_other": "{{languages}} : aucun modèle ne les comprend bien pour l’instant",
+        "weak_many": "{{languages}} : aucun modèle ne les comprend bien pour l’instant"
       }
     },
     "download": {
@@ -318,7 +319,8 @@
     "addAnother": "Ajouter une autre",
     "remove": "Retirer {{language}}",
     "alreadyAdded_one": "{{languages}} est déjà ajoutée.",
-    "alreadyAdded_other": "{{languages}} sont déjà ajoutées."
+    "alreadyAdded_other": "{{languages}} sont déjà ajoutées.",
+    "alreadyAdded_many": "{{languages}} sont déjà ajoutées."
   },
   "modelSelector": {
     "custom": "Personnalisé",
@@ -460,7 +462,8 @@
       "rescan": {
         "label": "Réanalyser",
         "tooltip": "Réanalyser pour détecter les modèles ajoutés au dossier des modèles ou au cache Hugging Face en dehors de {{appName}}"
-      }
+      },
+      "untestedHidden_many": "{{count}} autres modèles ne sont pas adaptés à la dictée. Utilisez la recherche pour en trouver un."
     },
     "languages": {
       "title": "Langues"
@@ -1007,7 +1010,9 @@
     "recorderBlockedNoCulprit": "macOS bloque temporairement la modification des raccourcis",
     "learnMore": "Comment résoudre ce problème",
     "recorderBlocked": "Impossible d’enregistrer un raccourci pour le moment : Secure Input de macOS bloque les événements clavier. Résolvez d’abord l’avertissement Secure Input.",
-    "dismiss": "Ignorer"
+    "dismiss": "Ignorer",
+    "blockedWithCulprit_many": "{{name}} bloque peut-être {{count}} raccourcis",
+    "blockedNoCulprit_many": "macOS bloque temporairement {{count}} raccourcis"
   },
   "account": {
     "currentPlan": "Offre actuelle",
@@ -1104,7 +1109,8 @@
     },
     "trial": {
       "daysLeft_one": "{{count}} jour restant",
-      "daysLeft_other": "{{count}} jours restants"
+      "daysLeft_other": "{{count}} jours restants",
+      "daysLeft_many": "{{count}} jours restants"
     }
   },
   "home": {
@@ -1126,7 +1132,9 @@
       "minutes_one": "{{count}} min",
       "minutes_other": "{{count}} min",
       "hours_one": "{{count}} h",
-      "hours_other": "{{count}} h"
+      "hours_other": "{{count}} h",
+      "minutes_many": "{{count}} min",
+      "hours_many": "{{count}} h"
     },
     "recent": "Dictées récentes",
     "viewAll": "Tout afficher",
@@ -1436,7 +1444,9 @@
       "deleteApp": "Supprimer les captures de cette app",
       "empty": "Rien n’est stocké.",
       "deleteAll": "Tout supprimer",
-      "deletedAll": "La mémoire d’écran et le journal des requêtes sont supprimés."
+      "deletedAll": "La mémoire d’écran et le journal des requêtes sont supprimés.",
+      "summary_many": "{{count}} captures depuis {{since}}.",
+      "entries_many": "{{count}} captures"
     },
     "ledger": {
       "title": "Requêtes sorties de cet ordinateur",
@@ -1459,7 +1469,8 @@
         "config": "Vérification des réglages (rien n'est envoyé)",
         "meeting_email": "E-mail des notes de réunion",
         "feedback": "Avis"
-      }
+      },
+      "bytes_many": "{{count}} octets"
     },
     "engine": {
       "title": "Utiliser aussi Apple Intelligence pour les réponses",
@@ -1532,7 +1543,8 @@
       "title": "Aidez à améliorer {{appName}}",
       "label": "Partager des statistiques d'usage anonymes",
       "description": "Uniquement des comptages et des durées, jamais ce que vous dites, tapez ou voyez. Désactivé tant que vous ne l'activez pas."
-    }
+    },
+    "days_many": "{{count}} jours"
   },
   "meetings": {
     "title": "Réunions",
