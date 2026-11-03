@@ -102,8 +102,7 @@ export default function TermsPage() {
               What you dictate, and what {brand.name} reads or writes for you, is yours. Transcription happens on your
               device and we never receive your audio. AI features run on your device where they can; when they need our
               server, the text involved is processed by our servers and our model provider only to return the result,
-              and is not stored. Web searches send only the search query to our search provider. If you use your own API
-              key with another provider, you are responsible for your agreement with that provider. See the{" "}
+              and is not stored. Web searches send only the search query to our search provider. See the{" "}
               <Link href="/privacy">Privacy Policy</Link>.
             </p>
           ),

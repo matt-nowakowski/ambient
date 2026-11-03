@@ -30,9 +30,9 @@ export default function SuggestionsPage() {
 
       <DocSection id="quiet-by-design" title="Quiet by design">
         <ul>
-          <li>At most 3 an hour by default.</li>
-          <li>The same window doesn’t get the same offer twice in an hour.</li>
-          <li>Dismiss a kind and it backs off.</li>
+          <li>At most 10 an hour, and fewer each time you dismiss one.</li>
+          <li>The same window never gets the same offer twice.</li>
+          <li>Dismiss a kind twice and it rests for a day.</li>
           <li>Pause everything for an hour, or until tomorrow, from Privacy.</li>
         </ul>
       </DocSection>
