@@ -10,13 +10,21 @@ import { OrbIcon, orbIconSize } from "./orb-icon";
 
 type Mode = (typeof agentModes)[number]["k"];
 
-const white = { "--orb-fg": "#ffffff", "--orb-rest-ink": 0.22, "--orb-ring-rest-ink": 0.3 } as CSSProperties;
+export const white = { "--orb-fg": "#ffffff", "--orb-rest-ink": 0.22, "--orb-ring-rest-ink": 0.3 } as CSSProperties;
 const SAY_MS = 1700;
 const REDUCED = "(prefers-reduced-motion: reduce)";
 function subscribeReduced(cb: () => void) {
   const mq = window.matchMedia(REDUCED);
   mq.addEventListener("change", cb);
   return () => mq.removeEventListener("change", cb);
+}
+/** True when the OS asks for reduced motion. */
+export function useReducedMotionPref() {
+  return useSyncExternalStore(
+    subscribeReduced,
+    () => window.matchMedia(REDUCED).matches,
+    () => false,
+  );
 }
 const SHOW_MS = 4600;
 
@@ -38,7 +46,8 @@ function Backdrop() {
   );
 }
 
-function Card({ children, orb }: { children: ReactNode; orb: "B2" | "S3" | "G3" }) {
+/** The glass answer card, top right, as the app shows it. */
+export function Card({ children, orb }: { children: ReactNode; orb: "B2" | "S3" | "G3" | "C4" }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -8, scale: 0.96, filter: "blur(6px)" }}
@@ -105,11 +114,7 @@ export function AgentDemo() {
   const [i, setI] = useState(0);
   const [stage, setStage] = useState<"say" | "show">("say");
   const [auto, setAuto] = useState(true);
-  const reduced = useSyncExternalStore(
-    subscribeReduced,
-    () => window.matchMedia(REDUCED).matches,
-    () => false,
-  );
+  const reduced = useReducedMotionPref();
 
   useEffect(() => {
     if (reduced) return;
@@ -175,7 +180,7 @@ export function AgentDemo() {
         </div>
       </div>
 
-      <div className="mt-4 flex justify-center">
+      <div className="mt-4 flex flex-col items-center gap-3">
         <div className="glass inline-flex gap-1 rounded-full p-1" role="group" aria-label="Agent outcomes">
           {agentModes.map((x, n) => (
             <button
@@ -195,6 +200,19 @@ export function AgentDemo() {
             </button>
           ))}
         </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={m.k}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25 }}
+            aria-hidden="true"
+            className="min-h-5 text-center text-[13px] text-muted"
+          >
+            {m.body}
+          </motion.p>
+        </AnimatePresence>
       </div>
     </div>
   );

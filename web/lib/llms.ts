@@ -12,12 +12,14 @@ import {
   featureGroups,
   features,
   heroSub,
+  heroTitle,
   macFirst,
   meetings,
   platforms,
   suggestions,
   tiers,
   trust,
+  writing,
 } from "./content";
 import { changelog } from "./changelog";
 
@@ -61,14 +63,14 @@ export function llmsTxt() {
 
 > ${description}
 
-${brand.name} is a desktop voice agent: hold a global shortcut, speak, release, and the text is pasted wherever the cursor is. With Pro, the same key also answers questions, takes actions, recalls what you said or saw, and takes meeting notes. ${brand.tagline}
+${brand.name} is a live agent on your desktop, like a colleague: hold a global shortcut and talk, and it answers (on screen, with sources), takes actions, or recalls what you said or saw. When it can help, it nudges you with one suggestion on screen; it does not talk out loud. It takes meeting notes with no bot. It also types for you in any app: free dictation, transcribed on your computer, which AI polish can tidy or turn into a written message.
 
 ${facts()}
 
 ## Pages
 
-- [Home](${url("/")}): What ${brand.name} does: dictation, the voice agent, meetings, suggestions, privacy, comparison with ${competitors.join(" and ")}, FAQ
-- [Pricing](${url("/pricing")}): Free, Pro and Team plans
+- [Home](${url("/")}): What ${brand.name} does: the live agent, suggestions, meetings, writing and dictation, privacy, comparison with ${competitors.join(" and ")}, FAQ
+- [Pricing](${url("/pricing")}): Free, Pro and Team plans, the full comparison and FAQ
 - [Download](${url("/download")}): Installers for every platform and first-run steps
 - [Features](${url("/features")}): Every capability in detail: voice agent, meetings, suggestions, recall, privacy, dictation
 - [Release notes](${url("/changelog")}): What changed in each version
@@ -94,7 +96,8 @@ export function llmsFullTxt() {
   const s: string[] = [];
   s.push(`# ${brand.name}\n\n> ${description}\n\n${facts()}\n`);
 
-  s.push(`## Home (${url("/")})\n\n### ${brand.tagline}\n\n${heroSub}\n`);
+  s.push(`## Home (${url("/")})\n\n### ${heroTitle.join(" ")}\n\n${heroSub}\n`);
+  s.push(`### ${writing.eyebrow}: ${writing.title}\n\n${writing.body}\n`);
   s.push(
     `### ${agent.eyebrow}: ${agent.title}\n\n${agent.body}\n\n${agentModes.map((m) => `- ${m.k} (“${m.say}”): ${m.body}`).join("\n")}\n\n${agent.handsFree}\n`,
   );

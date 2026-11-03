@@ -69,7 +69,7 @@ export const guidePages = [
     "Suggestions",
     "Suggestions",
     `Every moment where ${brand.name} offers a next step, and how to answer it by voice.`,
-    "Turn them on and it speaks up when it can help, offering one next step at the right moment. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud. Nothing is sent unless you accept.",
+    "Turn them on and it nudges you when it can help, offering one next step at the right moment. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud. Nothing is sent unless you accept.",
   ),
   page(
     "privacy",

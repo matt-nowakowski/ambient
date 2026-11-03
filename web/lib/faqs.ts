@@ -13,11 +13,11 @@ const plans: FaqItem = {
     : `Dictation is free and unlimited, forever. Every install gets ${brand.trialDays} days of everything, no card. After that, Free includes ${brand.freePolishPerWeek} AI uses a week and ${freeMeetingsPerMonth} meetings a month. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually, and removes both limits. Cancel anytime.`,
 };
 
-/** The landing-page FAQ: the six questions a buyer asks. Keep it to six. */
+/** The full general FAQ, on /pricing and in llms-full.txt. */
 export const faqs: FaqItem[] = [
   {
     q: `What is ${brand.name}?`,
-    a: `A voice agent for your computer. Hold a key and talk: it writes polished text where your cursor is, answers with sources, acts (calendar, reminders, apps, your Shortcuts) or recalls what you said or saw. It takes meeting notes with no bot. Nothing to connect.`,
+    a: `A live agent on your desktop, like a colleague. Hold a key and talk: it answers with sources, acts (calendar, reminders, apps, your Shortcuts), recalls what you said or saw, or writes polished text where your cursor is. When it can help, it nudges you with one suggestion on screen. It takes meeting notes with no bot. Nothing to connect.`,
   },
   {
     q: "What leaves my computer?",
@@ -34,7 +34,33 @@ export const faqs: FaqItem[] = [
   },
   {
     q: `How is it different from ${competitors.join(" or ")}?`,
-    a: `Your voice is transcribed on your computer, not in the cloud. Dictation is free and unlimited. And it doesn’t stop at writing or answering: it acts on your Mac, with nothing to connect and no bot on your calls.`,
+    a: `It’s a live agent, not only dictation or a notetaker: it answers, acts on your computer and nudges you when it can help, with nothing to connect and no bot on your calls. Your voice is transcribed on your computer, not in the cloud, and dictation is free and unlimited.`,
+  },
+];
+
+/** The landing-page FAQ: five short questions. Its JSON-LD is built from this list, so they match. */
+export const homeFaqs: FaqItem[] = [
+  {
+    q: `What is ${brand.name}?`,
+    a: `A live agent on your desktop. Talk to it and it answers or acts. It nudges you when it can help, and types for you in any app.`,
+  },
+  {
+    q: "What leaves my computer?",
+    a: `Never your audio. Only the text a feature needs, with passwords, card numbers, keys and codes removed first. Choose “On this computer only” and nothing is sent for AI.`,
+  },
+  {
+    q: "What’s free, and what does Pro cost?",
+    a: brand.enforceFreeWordLimit
+      ? `Free includes ${freeWordsLabel} of dictation and ${brand.trialDays} days of everything, no card. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually.`
+      : `Dictation is free and unlimited, forever, with ${brand.trialDays} days of everything, no card. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually.`,
+  },
+  {
+    q: "Which platforms does it run on?",
+    a: "macOS, Windows and Linux, dictation and the agent. The agent is in beta on Windows and Linux.",
+  },
+  {
+    q: `How is it different from ${competitors.join(" or ")}?`,
+    a: `It’s an agent, not only dictation or notes: it acts on your computer and nudges you when it can help. Your voice is transcribed on your computer.`,
   },
 ];
 

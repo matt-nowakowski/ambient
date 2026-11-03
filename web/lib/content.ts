@@ -1,13 +1,15 @@
 // Shared page copy, used by the pages, JSON-LD and /llms.txt so they never drift.
 import { brand, freeMeetingsPerMonth, freeWordsFeature, freeWordsLabel } from "./brand";
 
-export const description = `${brand.name} is a private voice agent. Speak and it writes, answers or acts. Free dictation, and meeting notes with no bot. Speech recognition runs on your computer, and what’s on your screen stays on your Mac.`;
+export const description = `${brand.name} is a live agent on your desktop, like a colleague. Talk to it and it answers or acts, and it nudges you when it can help. Meeting notes with no bot, free dictation in any app, and speech recognition on your computer.`;
 
-export const heroSub = `Free dictation that runs on your computer, plus an agent that answers, acts, and speaks up when it can help.`;
+/** The hero eyebrow pill. */
+export const heroEyebrow = "A live agent on your desktop";
 
-/** The hero headline. The last word cycles through what one key can do. */
-export const heroLead = "Speak.";
-export const heroOutcomes = ["written.", "answered.", "done."];
+/** The hero headline, split where it breaks. The launch video opens with the same line. */
+export const heroTitle = ["Your desktop just", "got a colleague."] as const;
+
+export const heroSub = "You talk, it writes, answers and acts. And when it can help, it nudges you.";
 
 export const apps = ["Slack", "Gmail", "Notion", "Linear", "Cursor", "VS Code", "Google Docs", "Messages", "ChatGPT", "Figma"];
 
@@ -54,16 +56,25 @@ export const agentModes = [
 ] as const;
 
 export const agent = {
-  eyebrow: "The voice agent",
-  title: "One key. It writes, answers or acts.",
-  body: `Hold the key and talk. ${brand.name} works out whether to write, answer or act. No modes to pick.`,
+  eyebrow: "Talk to it",
+  title: "Ask anything. It answers or does it.",
+  body: `Hold a key and talk. ${brand.name} works out whether to write, answer, act or recall.`,
   handsFree: `Or turn on hands-free and just say “Hey ${brand.name}, …”. No key. Optional.`,
+  /** Short chip for the landing page. */
+  handsFreeChip: `Hands-free: “Hey ${brand.name}, …”`,
 };
 
 export const meetings = {
   eyebrow: "Meetings",
   title: "Notes for any call. No bot joins.",
-  body: `Zoom, Meet, Teams, FaceTime or Slack huddles. You and them, transcribed on your Mac.`,
+  body: `Zoom, Meet, Teams, FaceTime or Slack huddles. You and them, transcribed on your computer.`,
+  /** The landing page shows these as chips. */
+  chips: [
+    { k: "Live notes", orb: "S2" },
+    { k: "Nudges when asked", orb: "S1" },
+    { k: "Summary and action items", orb: "B1" },
+    { k: "Audio never saved", orb: "G5" },
+  ],
   points: [
     { k: "While you talk", v: "Rolling notes, and a nudge when you’re asked or promise something." },
     { k: "After the call", v: "Summary, decisions, action items and a follow-up email." },
@@ -73,8 +84,13 @@ export const meetings = {
 
 export const suggestions = {
   eyebrow: "Suggestions",
-  title: "It speaks up, like a colleague.",
+  title: "It nudges you, like a colleague.",
   body: "You don't have to ask. When it notices a moment it can help, it offers once. Say “yes”, “not now”, or ignore it, and it learns what you want.",
+  /** One line for the landing page. */
+  short: "When it can help, it offers once. Say “yes”, or ignore it. It learns.",
+  /** The examples as short chips, for the landing page. */
+  chips: ["Summarise a long thread", "Reply to Ana?", "Explain a failing test", "Translate a page", "Add a date to your calendar", "Tighten a draft", "Prep for a meeting"],
+  promiseShort: "Off until you turn it on. Nothing sent unless you accept.",
   examples: [
     "A long email thread: “Want me to summarise these 40 messages?”",
     "Someone waiting on you: “Reply to Ana?”, then just say what to say",
@@ -85,6 +101,15 @@ export const suggestions = {
     "A meeting in a few minutes: prep notes",
   ],
   promise: "Off until you turn it on. Decided on your computer, or by the cloud only if you choose. Nothing is sent unless you accept.",
+};
+
+/** Writing: dictation as an assistant. The landing page's compact section. */
+export const writing = {
+  eyebrow: "Writing, in any app",
+  title: "Say it rough. It writes it right.",
+  body: "Free dictation on your computer, in any app. AI polish tidies your words, or writes the message for you.",
+  chips: ["On your computer", "Works offline", "99 languages", "Custom words"],
+  caption: `AI polish: unlimited with Pro, ${brand.freePolishPerWeek} uses a week on Free`,
 };
 
 /** Where Recall looks. Nothing to connect. */
@@ -102,7 +127,16 @@ export const sources = [
 export const trust = {
   eyebrow: "Privacy",
   title: "What it hears, sees, keeps and sends.",
+  /** The landing-page headline and line. */
+  short: { title: "Your voice never leaves your computer.", body: "Nothing reads your screen until you turn it on." },
   body: "Nothing reads your screen until you turn it on. Here is exactly how it behaves.",
+  /** The landing page: four promises, as icons with short labels. */
+  promises: [
+    { k: "Your voice stays here", v: "Speech recognition runs on your computer.", orb: "B1" },
+    { k: "Passwords never read", v: "Nor password managers or crypto wallets.", orb: "S3" },
+    { k: "Secrets removed first", v: "Cards, API keys and codes, before anything is sent.", orb: "M2" },
+    { k: "Every request on record", v: "See exactly what was sent.", orb: "S1" },
+  ],
   highlights: [
     {
       k: "Your voice stays on your computer",
@@ -159,6 +193,9 @@ export const trust = {
   ],
 };
 
+/** The landing page's one-line mention of what's next. */
+export const comingSoonChip = "Coming soon: it uses your apps for you";
+
 export const comingSoon = {
   label: "Coming soon · computer use",
   title: "Next, it uses your apps for you.",
@@ -183,10 +220,40 @@ export type Cell = boolean | string;
 
 export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
   {
+    label: "Answers about what’s on screen",
+    us: true,
+    // docs.wisprflow.ai Command Mode: uses the text box and selected text. support.cluely.com: "questions about your screen".
+    them: ["Selected text", true],
+  },
+  {
+    label: "Acts on your computer",
+    us: "Calendar, reminders, apps",
+    // Neither documents creating events, reminders or opening apps.
+    them: ["—", "—"],
+  },
+  {
+    label: "Nudges you when it can help",
+    us: "Decided on your computer",
+    // wisprflow.ai/post/wispr-flow-notetaker: "Briefs you before each meeting". support.cluely.com: suggestions when you click.
+    them: ["Meeting briefs", "On request, in calls"],
+  },
+  {
+    label: "Meeting notes, no bot joins",
+    us: true,
+    // wisprflow.ai/notetaker/record-meetings-without-a-bot. cluely.com: "Cluely never joins your meetings".
+    them: [true, true],
+  },
+  {
     label: "Speech recognition",
     us: "On your computer",
     // wisprflow.ai/data-controls: "Transcription always occurs on the cloud." Cluely: not stated.
     them: ["In the cloud", "—"],
+  },
+  {
+    label: "Reads the screen as",
+    us: "Text, never screenshots",
+    // docs.wisprflow.ai Context Awareness: "Flow works from text and does not take screenshots." Cluely: not stated in its docs.
+    them: ["Text", "—"],
   },
   {
     label: "Dictation in any app",
@@ -213,36 +280,6 @@ export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
     them: ["$12/mo", "From $11.99/mo"],
   },
   {
-    label: "Answers about what’s on screen",
-    us: true,
-    // docs.wisprflow.ai Command Mode: uses the text box and selected text. support.cluely.com: "questions about your screen".
-    them: ["Selected text", true],
-  },
-  {
-    label: "Meeting notes, no bot joins",
-    us: true,
-    // wisprflow.ai/notetaker/record-meetings-without-a-bot. cluely.com: "Cluely never joins your meetings".
-    them: [true, true],
-  },
-  {
-    label: "Proactive suggestions",
-    us: "Decided on your computer",
-    // wisprflow.ai/post/wispr-flow-notetaker: "Briefs you before each meeting". support.cluely.com: suggestions when you click.
-    them: ["Meeting briefs", "On request, in calls"],
-  },
-  {
-    label: "Acts on your computer",
-    us: "Calendar, reminders, apps",
-    // Neither documents creating events, reminders or opening apps.
-    them: ["—", "—"],
-  },
-  {
-    label: "Reads the screen as",
-    us: "Text, never screenshots",
-    // docs.wisprflow.ai Context Awareness: "Flow works from text and does not take screenshots." Cluely: not stated in its docs.
-    them: ["Text", "—"],
-  },
-  {
     label: "Platforms",
     us: "macOS, Windows, Linux (agent in beta on Windows and Linux)",
     // docs.wisprflow.ai supported devices. cluely.com/download, support.cluely.com system requirements.
@@ -253,8 +290,11 @@ export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
 export const tiers = {
   free: {
     name: "Free",
+    tagline: "Dictation, free forever",
     price: 0,
     note: "No account needed.",
+    /** The landing page's short list. */
+    key: [freeWordsFeature, "On your computer, works offline", "macOS, Windows and Linux", `${brand.trialDays} days of the agent, no card`],
     features: [
       freeWordsFeature,
       "On-device speech recognition, works offline",
@@ -266,6 +306,9 @@ export const tiers = {
   },
   pro: {
     name: "Pro",
+    tagline: "The agent",
+    /** The landing page's short list. */
+    key: ["Talk to it: write, answer, act, recall", "Nudges when it can help", "Meeting notes with live nudges", "Unlimited AI and meetings (fair use)", "Everything in Free"],
     monthly: brand.pricing.proMonthly,
     yearlyPerMonth: brand.pricing.proYearlyPerMonth,
     yearlyTotal: brand.pricing.proYearlyTotal,
@@ -302,7 +345,7 @@ export type FeatureGroup = {
 export const featureGroups: FeatureGroup[] = [
   {
     id: "agent",
-    heading: "The voice agent",
+    heading: "The agent",
     pro: true,
     intro: `One shortcut. ${brand.name} decides from what you say whether to write, answer, act or recall. The Ask shortcut (${shortcuts.ask}) always goes to the agent. Free includes ${brand.freePolishPerWeek} AI uses a week.`,
     items: [
@@ -334,7 +377,7 @@ export const featureGroups: FeatureGroup[] = [
     id: "suggestions",
     heading: "Suggestions",
     pro: true,
-    intro: "Switch it on and it speaks up when it can help, offering one next step at the right moment. Say “yes” or “not now”, and it learns. It is decided on your computer (or by the cloud only if you choose Cloud in Intelligence), and nothing is sent unless you accept. During a meeting, nudges use only the recent transcript text.",
+    intro: "Switch it on and it nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud, and nothing is sent unless you accept.",
     items: [
       { title: "Email", body: "Long threads: summarise them. Replies: dictate the gist, get the email. A date in an email or Slack message: add it to your calendar.", orb: "B4" },
       { title: "Writing", body: "A long draft: tighten it.", orb: "S4" },

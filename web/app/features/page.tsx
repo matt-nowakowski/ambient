@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { AgentDemo } from "@/components/agent-demo";
 import { AmbientPreview } from "@/components/ambient-preview";
+import { HeroDemo } from "@/components/hero-demo";
 import { LiftCard, Reveal, Stagger } from "@/components/motion";
 import type { OrbVariant } from "@/components/orb/Orb";
 import { OrbIcon } from "@/components/orb-icon";
@@ -14,14 +15,15 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Features",
-  description: `Everything ${brand.name} does: free on-device dictation, and with Pro a voice agent that writes, answers and acts, meeting notes with no bot, suggestions that speak up when they can help, and recall with nothing to connect.`,
+  description: `Everything ${brand.name} does: a live agent on your desktop that answers, acts and recalls, nudges you when it can help, and takes meeting notes with no bot. Plus free on-device dictation that polishes your words or writes the message for you.`,
   path: "/features",
 });
 
 const demos: Partial<Record<string, { node: ReactNode; caption: string }>> = {
   agent: { node: <AgentDemo />, caption: "One key, four outcomes" },
   meetings: { node: <AmbientPreview preset="meeting" />, caption: "A live nudge during a call" },
-  suggestions: { node: <AmbientPreview preset="suggestion" />, caption: "A suggestion from an email thread" },
+  suggestions: { node: <AmbientPreview preset="suggestion" loop />, caption: "A suggestion from an email thread" },
+  dictation: { node: <HeroDemo />, caption: "Shown with optional AI polish" },
 };
 
 function Group({ g }: { g: FeatureGroup }) {
@@ -68,8 +70,8 @@ export default function FeaturesPage() {
       <Container className="pt-14 sm:pt-20">
         <PageHeader
           eyebrow="Features"
-          title="A voice agent that writes, answers and acts."
-          intro={`Dictation is free and unlimited, transcribed on your computer. With Pro, the same key writes, answers and acts, takes meeting notes and offers the next step. ${macFirst}`}
+          title="A live agent on your desktop."
+          intro={`Talk to it and it answers, acts or recalls. It nudges you when it can help. Dictation is free. ${macFirst}`}
         />
       </Container>
 
