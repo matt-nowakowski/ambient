@@ -606,7 +606,8 @@ async upgradeUrl() : Promise<string> {
     return await TAURI_INVOKE("upgrade_url");
 },
 /**
- * Free's hosted AI polish usage this week, from the server.
+ * Free's AI uses this week: the server's hosted count plus on-device uses
+ * (one pool), against the server's limit (`free.ai_per_week`).
  */
 async getPolishUsage() : Promise<Result<PolishUsage, string>> {
     try {
@@ -2284,7 +2285,15 @@ search: number; ai_limit: number; search_limit: number;
 /**
  * Meetings started this month, and Free's monthly limit (None when unlimited).
  */
-meetings: number; meetings_limit: number | null }
+meetings: number; meetings_limit: number | null;
+/**
+ * Suggestions offered this week, and Free's weekly limit (None when unlimited).
+ */
+suggestions: number; suggestions_limit: number | null;
+/**
+ * How long Free's screen memory keeps things, in hours (None on paid plans).
+ */
+memory_hours_limit: number | null }
 export type VadBackend = "silero" | "earshot"
 export type WindowsMicrophonePermissionStatus = { supported: boolean; overall_access: PermissionAccess; device_access: PermissionAccess; app_access: PermissionAccess; desktop_app_access: PermissionAccess }
 /**

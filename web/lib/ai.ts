@@ -1,5 +1,5 @@
 import "server-only";
-import { brand } from "./brand";
+import { freeAiPerWeek } from "./agent/config-store";
 import { currentWeek, db, isDatabaseConfigured } from "./db";
 import { verifyLicense, type LicensePayload } from "./license";
 import { machineKey, parseMachine } from "./machine";
@@ -54,15 +54,18 @@ export function authorize(req: Request): Authorized {
   return { ok: true, kind: "paid", subject: result.payload.sub, license: result.payload };
 }
 
-/** Takes one of Free's weekly polishes; false when the week's allowance is used. */
+/**
+ * Takes one of Free's weekly AI uses (polish, answers, actions, summaries);
+ * false when the week's allowance (`free.ai_per_week`) is used.
+ */
 export async function consumeFreePolish(subject: string): Promise<boolean> {
   if (!isDatabaseConfigured()) return false;
-  const sql = await db();
+  const [sql, limit] = await Promise.all([db(), freeAiPerWeek()]);
   const { week } = currentWeek();
   const rows = await sql`
     insert into polish_usage (machine, week, count) values (${subject}, ${week}, 1)
     on conflict (machine, week) do update set count = polish_usage.count + 1
-    where polish_usage.count < ${brand.freePolishPerWeek}
+    where polish_usage.count < ${limit}
     returning count`;
   // First polish of a new week: drop older weeks, so only the current count is
   // ever kept (the privacy policy relies on this).
@@ -281,14 +284,22 @@ export function completionKind(messages: Message[]): UsageKind {
  */
 export const FAIR_USE = {
   ai: 1_500, // requests a day: a very heavy dictation day is a few hundred
-  search: 100, // web searches a day: the costliest call
+  search: 50, // web searches a day: the costliest call (~$0.008 each), capped so a
+  // maxed-out Pro account stays near break-even
   // Cloud suggestion judgements a day (/api/agent/suggest). The app asks at
   // most once per window the user stays on, a few times an hour.
   suggest: 150,
   // Meeting notes emailed to the account (/api/meetings/email), per recipient.
   meeting_email: 20,
+  // Free only: the agent router's tiny "what did they mean?" calls. They run in
+  // the background, so they don't spend Free's weekly AI uses; this daily cap
+  // (plus ROUTE_MAX_TOKENS) keeps them from being worth abusing.
+  route: 300,
 } as const;
-const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40, meeting_email: 5 } as const;
+const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40, meeting_email: 5, route: 60 } as const;
+
+/** Output cap for router completions: a short JSON verdict, nothing more. */
+export const ROUTE_MAX_TOKENS = 120;
 
 type FairKind = keyof typeof FAIR_USE;
 const local = new Map<string, { day: string; count: number; synced: number }>();

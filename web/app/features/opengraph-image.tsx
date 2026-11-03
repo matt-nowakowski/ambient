@@ -6,5 +6,5 @@ export const size = ogSize;
 export const contentType = "image/png";
 
 export default function Image() {
-  return ogImage({ title: "A voice agent that writes, answers and acts." });
+  return ogImage({ title: "A live agent on your desktop." });
 }

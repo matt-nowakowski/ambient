@@ -41,7 +41,20 @@ export type AgentHealth = {
     total: number;
     decisions: { decision: "as_said" | "polished" | "written"; n: number; model: number; reverts: number; byVoice: number }[];
   };
+  /**
+   * Free limits hit, per week (Monday, UTC) in the window: each install
+   * reports a limit at most once per period (week; month for meetings), so
+   * these are roughly "installs that hit it". Tells whether the limits are right.
+   */
+  limitHits: { week: string; ai: number; suggestions: number; meetings: number }[];
 };
+
+/** The Monday (UTC) of a YYYY-MM-DD day. */
+export function weekOf(day: string): string {
+  const d = new Date(`${day}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+  return d.toISOString().slice(0, 10);
+}
 
 const WRITE_DECISIONS = ["as_said", "polished", "written"] as const;
 type WriteDecision = (typeof WRITE_DECISIONS)[number];
@@ -91,6 +104,8 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
     WriteDecision,
     { n: number; model: number; reverts: number; byVoice: number }
   >;
+  const limits = new Map<string, Record<"ai" | "suggestions" | "meetings", number>>();
+  for (const d of days) limits.set(weekOf(d), { ai: 0, suggestions: 0, meetings: 0 });
   let events = 0;
 
   for (const r of rows) {
@@ -148,6 +163,11 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
         break;
       case "meeting_email":
         if (p.outcome === "sent" || p.outcome === "failed") emails[p.outcome] += r.n;
+        break;
+      case "limit_hit":
+        if (p.kind === "ai" || p.kind === "suggestions" || p.kind === "meetings") {
+          bump(limits, weekOf(r.day), () => ({ ai: 0, suggestions: 0, meetings: 0 }), p.kind, r.n);
+        }
         break;
       case "dictation":
         dict.n += r.n;
@@ -233,6 +253,7 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
       total: WRITE_DECISIONS.reduce((a, d) => a + writing[d].n, 0),
       decisions: WRITE_DECISIONS.map((decision) => ({ decision, ...writing[decision] })),
     },
+    limitHits: [...limits.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([week, v]) => ({ week, ...v })),
   };
 }
 

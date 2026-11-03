@@ -22,6 +22,7 @@ mod input;
 mod installer;
 mod intro;
 mod language_detection;
+mod limits;
 mod llm_client;
 mod managers;
 mod meeting;
@@ -327,6 +328,8 @@ fn initialize_core_logic(app_handle: &AppHandle) {
             if let Err(e) = recall::init(dir, days) {
                 log::warn!("agent memory unavailable: {e}");
             }
+            // Free keeps screen memory for a day (the agent loop keeps this current).
+            recall::set_cap_hours(limits::memory_cap_hours(app_handle));
         }
         Err(e) => log::warn!("agent memory unavailable: {e}"),
     }

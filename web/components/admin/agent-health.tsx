@@ -29,6 +29,10 @@ const KEY_LABEL: Record<string, string> = {
   "writing.ambiguous_floor": "Writing: score a model decides from",
   "writing.polish_disfluency": "Writing: fillers per word to polish",
   "writing.run_on_words": "Writing: run-on length to polish (words)",
+  "free.ai_per_week": "Free: AI uses per week",
+  "free.suggestions_per_week": "Free: suggestions per week",
+  "free.memory_hours": "Free: screen memory (hours)",
+  "free.meetings_per_month": "Free: meetings per month",
 };
 
 const WRITE_LABEL: Record<string, string> = { as_said: "As said", polished: "Polished", written: "Written for you" };
@@ -182,6 +186,23 @@ function Health({ h }: { h: AgentHealth }) {
           </Table>
         </Panel>
       </div>
+
+      <Panel title="Free limits hit per week" meta="Installs that reached a limit (each counted once a week; meetings once a month). Tune them in Remote config.">
+        {h.limitHits.every((w) => w.ai + w.suggestions + w.meetings === 0) ? (
+          <Empty>No Free limits hit in the last 30 days.</Empty>
+        ) : (
+          <Table head={["Week of", "AI uses", "Suggestions", "Meetings"]} text={[0]}>
+            {h.limitHits.map((w) => (
+              <tr key={w.week}>
+                <td>{dayLabel(w.week)}</td>
+                <td className="num">{fmtInt(w.ai)}</td>
+                <td className="num">{fmtInt(w.suggestions)}</td>
+                <td className="num">{fmtInt(w.meetings)}</td>
+              </tr>
+            ))}
+          </Table>
+        )}
+      </Panel>
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-2">
         <Panel title="Meetings">

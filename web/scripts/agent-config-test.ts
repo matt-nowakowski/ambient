@@ -6,6 +6,7 @@
  * Run: bun scripts/agent-config-test.ts
  */
 import schema from "../lib/agent/config-schema.json";
+import { brand, freeMeetingsPerMonth } from "../lib/brand";
 import telemetry from "../lib/agent/telemetry-schema.json";
 import {
   GLOBAL_KEYS,
@@ -36,7 +37,15 @@ check(
 );
 check("every global key has a bound", GLOBAL_KEYS.every((k) => boundFor(k) !== null && boundFor(k) !== "bool"));
 check("config kinds match telemetry suggestion kinds", JSON.stringify(KINDS) === JSON.stringify(telemetry.enums.suggestion_kind));
-check("16 kinds × 3 + 12 globals", GLOBAL_KEYS.length === 12 && configKeys().length === KINDS.length * 3 + GLOBAL_KEYS.length);
+check("16 kinds × 3 + 16 globals", configKeys().length === KINDS.length * 3 + GLOBAL_KEYS.length && GLOBAL_KEYS.length === 16);
+check(
+  "Free limits default to the brand values",
+  schema.bounds["free.ai_per_week"].default === brand.freePolishPerWeek &&
+    schema.bounds["free.suggestions_per_week"].default === brand.freeSuggestionsPerWeek &&
+    schema.bounds["free.meetings_per_month"].default === freeMeetingsPerMonth &&
+    schema.bounds["free.memory_hours"].default === 24,
+);
+check("a Free limit is clamped and whole", clampValue("free.ai_per_week", 0) === 5 && clampValue("free.suggestions_per_week", 10.4) === 10);
 const pub = toPublic(defaults(), new Date("2026-11-02T00:00:00Z"));
 check(
   "public config shape",
@@ -53,6 +62,10 @@ check(
     pub.writing.ambiguous_floor === 0.45 &&
     pub.writing.polish_disfluency === 0.06 &&
     pub.writing.run_on_words === 35 &&
+    pub.free.ai_per_week === 25 &&
+    pub.free.suggestions_per_week === 10 &&
+    pub.free.memory_hours === 24 &&
+    pub.free.meetings_per_month === 2 &&
     Object.keys(pub.kinds).length === KINDS.length &&
     pub.kinds.draft_reply.enabled === true &&
     pub.kinds.draft_reply.min_confidence === 0.6 &&

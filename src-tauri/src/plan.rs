@@ -35,7 +35,7 @@ use std::time::Instant;
 use tauri::{AppHandle, Emitter};
 use tauri_plugin_store::StoreExt;
 
-const STORE_PATH: &str = "plan.json";
+pub(crate) const STORE_PATH: &str = "plan.json";
 const LICENSE_KEY_FIELD: &str = "license_key";
 /// Where the stored token came from: `"account"` (sign-in) or `"code"`.
 /// Only an account token is removed when the account has no subscription.
@@ -161,7 +161,7 @@ fn now() -> i64 {
 }
 
 /// Local Monday 00:00 of the current week, and the next one.
-fn current_week() -> (i64, i64) {
+pub(crate) fn current_week() -> (i64, i64) {
     let today = Local::now().date_naive();
     let monday = today - Duration::days(today.weekday().num_days_from_monday() as i64);
     let midnight = |date: chrono::NaiveDate| {
@@ -348,8 +348,9 @@ pub fn can_dictate(app: &AppHandle) -> bool {
     usage(app).words < free_words_per_week()
 }
 
-/// Whether a paid plan (Pro, Team or the trial) is active. Gates Pro-only features
-/// such as AI polish.
+/// Whether a paid plan (Pro, Team or the trial) is active. Free has every
+/// feature within weekly limits (`crate::limits`); this lifts them. The cloud
+/// suggestion judge is the one Pro-only feature.
 pub fn is_paid(app: &AppHandle) -> bool {
     active_license(app).0.is_some()
 }
@@ -360,8 +361,10 @@ pub fn license_key(app: &AppHandle) -> Option<String> {
     stored_key(app)
 }
 
-/// Pro's AI polish cleans up every dictation, not only the separate
-/// post-process shortcut, when a Pro provider is selected and enabled.
+/// AI polish cleans up every dictation, not only the separate post-process
+/// shortcut, when our hosted model or Apple Intelligence is selected and
+/// enabled. On Free each polish is an AI use from the weekly pool (hosted
+/// ones counted by the server, on-device ones by `consume_local_ai`).
 pub fn polish_every_dictation(app: &AppHandle) -> bool {
     let settings = crate::settings::get_settings(app);
     if !settings.post_process_enabled {
@@ -372,10 +375,8 @@ pub fn polish_every_dictation(app: &AppHandle) -> bool {
         .map(|p| p.id)
         .as_deref()
     {
-        // Free gets a weekly allowance of hosted polish; the server counts it.
-        Some(crate::settings::AMBIENT_AI_PROVIDER_ID) => true,
-        Some(id) if crate::settings::is_pro_post_process_provider(id) => is_paid(app),
-        _ => false,
+        Some(id) => crate::settings::is_pro_post_process_provider(id),
+        None => false,
     }
 }
 
@@ -499,13 +500,15 @@ pub struct PolishUsage {
     pub resets_at: f64,
 }
 
-/// Free's hosted AI polish usage this week, from the server.
+/// Free's AI uses this week: the server's hosted count plus on-device uses
+/// (one pool), against the server's limit (`free.ai_per_week`).
 #[tauri::command]
 #[specta::specta]
 pub async fn get_polish_usage(app: AppHandle) -> Result<PolishUsage, String> {
     let local = local_ai_used(&app);
     let mut usage = server_polish_usage().await?;
-    usage.used += local;
+    crate::limits::note_server_usage(usage.used);
+    usage.used = usage.used.saturating_add(local);
     Ok(usage)
 }
 
@@ -543,6 +546,11 @@ pub struct UsageToday {
     /// Meetings started this month, and Free's monthly limit (None when unlimited).
     pub meetings: u32,
     pub meetings_limit: Option<u32>,
+    /// Suggestions offered this week, and Free's weekly limit (None when unlimited).
+    pub suggestions: u32,
+    pub suggestions_limit: Option<u32>,
+    /// How long Free's screen memory keeps things, in hours (None on paid plans).
+    pub memory_hours_limit: Option<u32>,
 }
 
 fn today_key() -> String {
@@ -580,23 +588,20 @@ pub fn get_usage_today(app: AppHandle) -> UsageToday {
             .and_then(|n| n.as_u64())
             .unwrap_or(0) as u32
     };
-    let month_start = Local::now()
-        .date_naive()
-        .with_day(1)
-        .and_then(|d| d.and_hms_opt(0, 0, 0))
-        .and_then(|d| d.and_local_timezone(Local).single())
-        .map(|d| d.timestamp())
-        .unwrap_or(0);
     let meetings = crate::recall::get_if_open()
-        .and_then(|r| r.meetings_since(month_start).ok())
+        .and_then(|r| r.meetings_since(crate::limits::month_start()).ok())
         .unwrap_or(0) as u32;
+    let free = !is_paid(&app);
     UsageToday {
         ai: count("ai"),
         search: count("search"),
         ai_limit: FAIR_USE_AI_PER_DAY,
         search_limit: FAIR_USE_SEARCH_PER_DAY,
         meetings,
-        meetings_limit: (!is_paid(&app)).then_some(crate::meeting::FREE_MEETINGS_PER_MONTH as u32),
+        meetings_limit: crate::limits::meetings_limit(&app),
+        suggestions: crate::limits::suggestions_used(&app),
+        suggestions_limit: free.then(|| crate::limits::free().suggestions_per_week),
+        memory_hours_limit: crate::limits::memory_cap_hours(&app),
     }
 }
 
@@ -615,16 +620,18 @@ pub fn local_ai_used(app: &AppHandle) -> u32 {
         .unwrap_or(0) as u32
 }
 
-/// Take one on-device use. Always true on a paid plan or the trial.
+/// Take one on-device use. Always true on a paid plan or the trial. On
+/// Free, false once the week's shared pool (`free.ai_per_week`, on-device
+/// and hosted together) is used; callers then say so (`limits::ai_spent`).
 pub fn consume_local_ai(app: &AppHandle) -> bool {
     if is_paid(app) {
         return true;
     }
-    let limit: u32 = env!("BRAND_FREE_POLISH_PER_WEEK").parse().unwrap_or(25);
-    let used = local_ai_used(app);
-    if used >= limit {
+    let _guard = USAGE_LOCK.lock().unwrap_or_else(|e| e.into_inner());
+    if !crate::limits::ai_available(app) {
         return false;
     }
+    let used = local_ai_used(app);
     if let Ok(store) = app.store(crate::portable::store_path(STORE_PATH)) {
         let (week, _) = current_week();
         store.set(

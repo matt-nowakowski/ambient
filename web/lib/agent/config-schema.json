@@ -19,6 +19,10 @@
     "writing.written_threshold": { "min": 0.5, "max": 0.95, "default": 0.7 },
     "writing.ambiguous_floor": { "min": 0.2, "max": 0.7, "default": 0.45 },
     "writing.polish_disfluency": { "min": 0.02, "max": 0.3, "default": 0.06 },
-    "writing.run_on_words": { "min": 15, "max": 80, "default": 35 }
+    "writing.run_on_words": { "min": 15, "max": 80, "default": 35 },
+    "free.ai_per_week": { "min": 5, "max": 500, "default": 25 },
+    "free.suggestions_per_week": { "min": 1, "max": 200, "default": 10 },
+    "free.memory_hours": { "min": 1, "max": 168, "default": 24 },
+    "free.meetings_per_month": { "min": 1, "max": 30, "default": 2 }
   }
 }

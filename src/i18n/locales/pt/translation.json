@@ -83,8 +83,8 @@
       "progress": "Etapa {{step}} de {{count}}"
     },
     "welcome": {
-      "title": "Quais idiomas você fala?",
-      "subtitle": "Escolha todos que você vai usar com o {{appName}}. Dá para mudar isso depois.",
+      "title": "Seu colega no desktop.",
+      "subtitle": "Você fala; ele escreve, responde, age e avisa quando precisa. Escolha todos os idiomas que você vai falar.",
       "languagesLabel": "Idiomas",
       "noMatch": "Nenhum resultado para “{{query}}”. Há mais idiomas nas configurações.",
       "appLanguage": "Idioma do app",
@@ -143,16 +143,16 @@
       "onDisk": "Já está neste computador"
     },
     "demo": {
-      "title": "Fale em qualquer app, com um único atalho",
-      "hold": "<0>Clique onde você digitaria.</0> <1>Mantenha o atalho pressionado e fale.</1> <2>Solte, e suas palavras aparecem.</2>",
-      "tap": "<0>Clique onde você digitaria.</0> <1>Toque no atalho e fale.</1> <2>Toque de novo, e suas palavras aparecem.</2>",
+      "title": "Fale com ele em qualquer app, com um único atalho",
+      "hold": "<0>Clique onde você digitaria.</0> <1>Mantenha o atalho pressionado e fale.</1> <2>Solte, e ele digita para você.</2>",
+      "tap": "<0>Clique onde você digitaria.</0> <1>Toque no atalho e fale.</1> <2>Toque de novo, e ele digita para você.</2>",
       "apps": {
         "messages": "Mensagens",
         "notes": "Notas"
       },
       "chat": "Você ainda vem hoje à noite?",
       "noteTitle": "Planos do fim de semana",
-      "screenLabel": "Um laptop: alguém clica em um app, aperta o atalho e fala, e as palavras aparecem onde clicou.",
+      "screenLabel": "Um laptop: alguém aperta o atalho e fala. O agente digita por essa pessoa, responde, age, lembra e oferece ajuda por conta própria.",
       "change": "Alterar",
       "yourShortcut": "Seu atalho é",
       "pressKeys": "Pressione as novas teclas",
@@ -179,12 +179,17 @@
           "sentence": "<0>Esqueceu algo?</0> <1>Mantenha o atalho pressionado e pergunte.</1> <2>Ele lembra.</2>",
           "said": "O que a Ana disse sobre o local?",
           "reply": "Ela reservou o Rosa's para sábado às 20h."
+        },
+        "offer": {
+          "head": "Sugestão",
+          "sentence": "<0>Ele também percebe.</0> <1>Quando pode ajudar, ele oferece.</1> <2>Diga “sim”, e está feito.</2>",
+          "reply": "Adicionado ao sábado: piquenique no parque."
         }
       }
     },
     "try": {
       "title": "Experimente!",
-      "subtitle": "O {{appName}} está no canto para guiar você",
+      "subtitle": "Fale, e o {{appName}} responde no canto da tela",
       "noteLabel": "Nota",
       "placeholder": "Nova nota",
       "hold": "Mantenha <keys/> pressionado e fale.",
@@ -214,9 +219,9 @@
       "gotIt": "Peguei cada palavra: “{{quote}}”"
     },
     "done": {
-      "title": "Tudo pronto",
-      "subMac": "O {{appName}} fica na barra de menus. Mantenha pressionado ou toque em <keys/> em qualquer app para falar.",
-      "subTray": "O {{appName}} fica na bandeja do sistema. Mantenha pressionado ou toque em <keys/> em qualquer app para falar.",
+      "title": "Seu novo colega está pronto",
+      "subMac": "O {{appName}} fica na barra de menus. Mantenha pressionado ou toque em <keys/> em qualquer app para falar com ele.",
+      "subTray": "O {{appName}} fica na bandeja do sistema. Mantenha pressionado ou toque em <keys/> em qualquer app para falar com ele.",
       "hint": "Você pode alterar isso depois nas Configurações",
       "highFiveLabel": "Toca aqui",
       "atLogin": "Abrir o {{appName}} ao iniciar a sessão",
@@ -1031,10 +1036,10 @@
     "limitReached": "Você usou as palavras gratuitas desta semana. Faça upgrade para ditado ilimitado ou continue quando a semana reiniciar.",
     "limitToast": "Palavras gratuitas da semana esgotadas",
     "proFeatures": {
-      "polish": "Refinamento com IA em cada ditado",
-      "onDevice": "Refinamento no dispositivo com Apple Intelligence",
-      "agent": "O agente, com cada novidade que for lançada",
-      "priority": "Suporte prioritário"
+      "priority": "Suporte prioritário",
+      "noLimits": "Sem limites semanais de usos de IA ou sugestões",
+      "meetings": "Notas de reunião ilimitadas",
+      "memory": "Memória da tela por até 90 dias"
     },
     "card": {
       "activate": "Ativar",
@@ -1105,7 +1110,7 @@
       "unlock": "Obter ilimitado",
       "onDevice": "Manter neste Mac",
       "onDeviceDescription": "Use o Apple Intelligence em vez disso. Nada sai do seu Mac.",
-      "freeLeft": "Restam {{left}} de {{limit}} refinamentos gratuitos nesta semana"
+      "freeUsesLeft": "{{left}} de {{limit}} usos gratuitos de IA restantes nesta semana"
     },
     "writing": {
       "title": "Escrita",
@@ -1175,12 +1180,13 @@
     "plan": {
       "title": "Seu plano",
       "polishUnlimited": "Refinamento com IA é ilimitado.",
-      "polishLeft": "Restam {{left}} de {{limit}} refinamentos com IA gratuitos nesta semana · reinicia {{day}}",
       "polishFree": "O plano gratuito inclui uma cota semanal de refinamento com IA.",
       "meetingsLeft": "Restam {{left}} de {{limit}} notas de reunião este mês",
       "aiLeft": "Restam {{left}} de {{limit}} solicitações de IA hoje",
       "searchLeft": "Pesquisas restantes: {{count}}",
-      "meterLabel": "Limite restante"
+      "meterLabel": "Limite restante",
+      "aiUsesLeft": "{{left}} de {{limit}} usos de IA restantes nesta semana · reinicia {{day}}",
+      "suggestionsLeft": "{{left}} de {{limit}} sugestões restantes nesta semana"
     },
     "privacy": {
       "title": "Privacidade",
@@ -1327,7 +1333,10 @@
       "cantDoYet": "Ainda não sei fazer isto: {{what}}. Quer que eu mostre como fazer você mesmo?",
       "cantDoYetPlain": "Ainda não consigo fazer isso neste computador. Quer que eu mostre como fazer você mesmo?",
       "failed": "Não funcionou desta vez. Tente de novo em instantes.",
-      "undoFailed": "Não consegui desfazer isso. Você pode remover no próprio app."
+      "undoFailed": "Não consegui desfazer isso. Você pode remover no próprio app.",
+      "limitAi": "Você usou os {{limit}} usos de IA desta semana. Eles reiniciam na segunda-feira. Faça upgrade para não ter limites.",
+      "limitSuggestions": "Você já recebeu as {{limit}} sugestões desta semana do plano Grátis.",
+      "limitMeetings": "Você usou as {{limit}} reuniões deste mês do plano Grátis. Faça upgrade para não ter limites."
     },
     "offer": {
       "searchWeb": "Pesquisar na web",
@@ -1337,7 +1346,8 @@
       "openSettings": "Abrir Ajustes",
       "showFile": "Mostrar arquivo",
       "howTo": "Mostre como",
-      "showMeHow": "Mostre como"
+      "showMeHow": "Mostre como",
+      "upgrade": "Fazer upgrade"
     },
     "report": {
       "title": "Enviar isto para a equipe do {{appName}}?",
@@ -1383,13 +1393,13 @@
       "voiceHint": "Ou diga «minhas palavras»",
       "copiedWords": "Suas palavras exatas foram copiadas. Cole para substituir.",
       "copiedEdit": "A nova versão foi copiada. Cole para substituir.",
-      "noAllowance": "A escrita com IA desta semana acabou, então foi digitado como você disse.",
       "couldntWrite": "Não deu para escrever agora, então foi digitado como você disse.",
       "rewritten": "Reescrito",
       "undoRewrite": "Desfazer reescrita",
       "copiedOriginal": "Seu texto original foi copiado. Cole para substituir.",
       "couldntRewrite": "Não deu para reescrever agora, então seu texto não mudou."
-    }
+    },
+    "firstSuggestionTip": "Sua primeira sugestão. Diga “sim”, “agora não” ou “não me mostre isso”. Ele aprende."
   },
   "privacy": {
     "title": "Privacidade",
@@ -1590,7 +1600,13 @@
       "label": "Compartilhar contagens de uso anônimas",
       "description": "Apenas contagens e tempos, nunca o que você diz, digita ou vê. Desativado até você ativar."
     },
-    "days_many": "{{count}} dias"
+    "days_many": "{{count}} dias",
+    "free": {
+      "perWeek": "Grátis: {{limit}} por semana",
+      "perMonth": "Grátis: {{limit}} por mês",
+      "hours": "Grátis: {{limit}} horas",
+      "retention": "O plano Grátis guarda as últimas {{limit}} horas. O Pro guarda até 90 dias."
+    }
   },
   "meetings": {
     "title": "Reuniões",
@@ -1633,7 +1649,7 @@
     },
     "error": {
       "storage": "Não foi possível abrir o armazenamento de reuniões.",
-      "freeLimit": "O plano gratuito inclui 2 reuniões por mês. O Pro é ilimitado.",
+      "freeLimit": "Você usou as {{limit}} reuniões deste mês do plano Grátis. Faça upgrade para não ter limites.",
       "mic": "Não foi possível abrir o microfone.",
       "notActive": "Nenhuma reunião em andamento.",
       "notFound": "Essa reunião não existe mais.",
@@ -1649,8 +1665,6 @@
       "offDetail": "Ative e o {{appName}} se oferece para fazer anotações quando uma chamada começa.",
       "paused": "Pausado",
       "pausedDetail": "O {{appName}} não vai oferecer anotações até você retomar em Privacidade.",
-      "pro": "Sem anotações",
-      "proDetail": "Com o Pro, o {{appName}} detecta suas chamadas e se oferece para fazer anotações.",
       "unsupported": "Sem anotações",
       "unsupportedDetail": "Inicie as anotações quando sua chamada começar.",
       "turnOn": "Ativar"
@@ -1687,7 +1701,7 @@
     "start": "Começar",
     "meet": {
       "title": "Conheça o agente",
-      "description": "Mantenha seu atalho pressionado e fale. O {{appName}} cuida do resto."
+      "description": "Fale com ele como com um colega, ou deixe que ofereça ajuda na hora certa."
     },
     "modes": {
       "write": {
@@ -1720,14 +1734,25 @@
       "title": "Escolha o que o {{appName}} pode fazer",
       "description": "Tudo opcional. Mude quando quiser em Privacidade.",
       "footnote": "Senhas, carteiras e janelas privadas nunca são lidas.",
-      "proOnly": "Parte do Pro. Faça upgrade em Conta.",
       "caps": {
         "screen_context": "Só a janela em questão",
         "proactive": "Decidido neste computador",
         "meetings": "O áudio fica neste computador",
         "wake_word": "Escuta só neste computador",
         "screen_memory": "Fica neste computador, criptografado"
-      }
+      },
+      "freeNote": "No plano Grátis, usos de IA e sugestões têm limites semanais."
+    },
+    "offers": {
+      "title": "Ele também oferece ajuda",
+      "description": "Quando pode ajudar, como numa conversa longa ou num erro, ele oferece uma vez. Diga “sim” ou “agora não”, ou ignore. Ele aprende.",
+      "app": "Mail",
+      "subject": "Plano de lançamento do T3",
+      "count": "40 mensagens",
+      "summaryHead": "Resumo da conversa",
+      "summary": "O lançamento passou para quinta. Sam cuida da apresentação e Ana reserva a sala.",
+      "noOnDevice": "Sem o Apple Intelligence, regras simples decidem neste computador. Ele pergunta uma vez antes de usar a nuvem.",
+      "screenLabel": "Uma conversa de e-mail com 40 mensagens. Uma sugestão oferece um resumo; depois do “sim”, aparece um resumo curto."
     }
   },
   "getStarted": {
@@ -1786,7 +1811,9 @@
           "“Não me mostre isso” para desativar esse tipo.",
           "“Aqui não” para parar neste app."
         ],
-        "hint": "Responda a uma sugestão em voz alta."
+        "hint": "Responda a uma sugestão em voz alta.",
+        "off": "Elas estão desativadas por enquanto.",
+        "turnOn": "Ative em Privacidade"
       },
       "meetings": {
         "title": "Reuniões",

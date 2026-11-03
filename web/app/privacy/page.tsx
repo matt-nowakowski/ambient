@@ -110,7 +110,7 @@ export default function PrivacyPage() {
           body: (
             <>
               <p>
-                <strong>Screen context</strong> is off until you turn it on, and is part of Pro. When you ask about
+                <strong>Screen context</strong> is off until you turn it on, on every plan. When you ask about
                 “this”, or ask {brand.name} to find something, the app reads the text of the front window and of your
                 other open windows using the system’s accessibility interface (Accessibility on macOS, UI Automation
                 on Windows, AT-SPI on Linux). It keeps a rolling buffer of the last 2 minutes of window
@@ -126,8 +126,9 @@ export default function PrivacyPage() {
                 <strong>Screen memory</strong> is a separate opt-in. If you turn it on, window text is saved on your
                 device, encrypted (AES-256-GCM, with the key kept in your macOS Keychain, or in a key file in the app’s
                 own data folder on Windows and Linux), so you can find things you
-                saw earlier. It is kept for 7 days by default (you can choose 1 to 90 days), and you can delete it for a
-                single app or entirely at any time. Screen memory is never uploaded.
+                saw earlier. On Pro it is kept for 7 days by default (you can choose 1 to 90 days); on Free it keeps the
+                last 24 hours. You can delete it for a single app or entirely at any time. Screen memory is never
+                uploaded.
               </p>
             </>
           ),
@@ -307,12 +308,13 @@ export default function PrivacyPage() {
           title: "Trial and free allowance",
           body: (
             <p>
-              To give each computer one free trial and count the free weekly allowance of 25 AI uses (shared across
-              polish, answers, actions, Ask and meeting summaries), the app sends a one-way hash of your computer’s
-              hardware identifier. We store only a further keyed hash of it, with the date your trial started and the
-              number of hosted AI uses in the current week. AI uses that run on your Mac are counted on your device and
-              are not sent to us. We cannot reverse the hash into your hardware identifier, and it is not linked to your
-              name, email or payment details. The app also checks for a trial once, on first launch.
+              To give each computer one free trial and count the free weekly allowance of {brand.freePolishPerWeek} AI
+              uses (shared across polish, answers, actions, Ask and meeting summaries), the app sends a one-way hash of
+              your computer’s hardware identifier. We store only a further keyed hash of it, with the date your trial
+              started and the number of hosted AI uses in the current week. AI uses that run on your Mac, and Free’s
+              weekly suggestions and monthly meetings, are counted on your device and are not sent to us. We cannot
+              reverse the hash into your hardware identifier, and it is not linked to your name, email or payment
+              details. The app also checks for a trial once, on first launch.
             </p>
           ),
         },
@@ -481,7 +483,8 @@ export default function PrivacyPage() {
               <li>Server logs: kept by our hosting provider for a short period, typically no more than 30 days.</li>
               <li>
                 Data on your device: dictation history, meeting transcripts, notes and summaries are kept until you
-                delete them; screen memory for 7 days by default (1 to 90 days, your choice); the network ledger for 30
+                delete them; screen memory for 7 days by default on Pro (1 to 90 days, your choice) and 24 hours on
+                Free; the network ledger for 30
                 days; the screen context buffer for 2 minutes, in memory only.
               </li>
             </ul>

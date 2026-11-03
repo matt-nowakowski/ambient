@@ -83,8 +83,8 @@
       "progress": "Schritt {{step}} von {{count}}"
     },
     "welcome": {
-      "title": "Welche Sprachen sprichst du?",
-      "subtitle": "Wähle alle, die du mit {{appName}} nutzen wirst. Du kannst das später ändern.",
+      "title": "Dein Kollege auf dem Desktop.",
+      "subtitle": "{{appName}} ist ein Kollege auf deinem Desktop, mit dem du sprichst. Wähle alle Sprachen, die du nutzt.",
       "languagesLabel": "Sprachen",
       "noMatch": "Kein Treffer für „{{query}}“. Weitere Sprachen findest du in den Einstellungen.",
       "appLanguage": "App-Sprache",
@@ -142,16 +142,16 @@
       "onDisk": "Schon auf diesem Computer"
     },
     "demo": {
-      "title": "Sprich in jeder App, mit einem Tastenkürzel",
-      "hold": "<0>Klicke dorthin, wo du tippen würdest.</0> <1>Halte dein Tastenkürzel gedrückt und sprich.</1> <2>Lass los, und deine Worte erscheinen.</2>",
-      "tap": "<0>Klicke dorthin, wo du tippen würdest.</0> <1>Tippe auf dein Tastenkürzel und sprich.</1> <2>Tippe erneut, und deine Worte erscheinen.</2>",
+      "title": "Sprich in jeder App mit ihm, mit einem Tastenkürzel",
+      "hold": "<0>Klicke dorthin, wo du tippen würdest.</0> <1>Halte dein Tastenkürzel gedrückt und sprich.</1> <2>Lass los, und es schreibt für dich.</2>",
+      "tap": "<0>Klicke dorthin, wo du tippen würdest.</0> <1>Tippe auf dein Tastenkürzel und sprich.</1> <2>Tippe erneut, und es schreibt für dich.</2>",
       "apps": {
         "messages": "Nachrichten",
         "notes": "Notizen"
       },
       "chat": "Kommst du heute Abend noch?",
       "noteTitle": "Pläne fürs Wochenende",
-      "screenLabel": "Ein Laptop: Jemand klickt in eine App, drückt das Tastenkürzel und spricht, und die Worte erscheinen dort, wo geklickt wurde.",
+      "screenLabel": "Ein Laptop: Jemand drückt das Tastenkürzel und spricht. Der Agent schreibt für ihn, antwortet, handelt, erinnert sich und bietet von selbst Hilfe an.",
       "change": "Ändern",
       "yourShortcut": "Dein Tastenkürzel ist",
       "pressKeys": "Drücke die neuen Tasten",
@@ -178,12 +178,17 @@
           "sentence": "<0>Etwas vergessen?</0> <1>Halte dein Tastenkürzel gedrückt und frag.</1> <2>Es erinnert sich.</2>",
           "said": "Was hat Ana über die Location gesagt?",
           "reply": "Sie hat Rosa's für Samstag um 20 Uhr gebucht."
+        },
+        "offer": {
+          "head": "Vorschlag",
+          "sentence": "<0>Es bemerkt auch selbst etwas.</0> <1>Wenn es helfen kann, bietet es das an.</1> <2>Sag „ja“, und es ist erledigt.</2>",
+          "reply": "Zu Samstag hinzugefügt: Picknick im Park."
         }
       }
     },
     "try": {
       "title": "Probier es aus!",
-      "subtitle": "{{appName}} wartet unten in der Ecke und zeigt dir, wie es geht",
+      "subtitle": "Sprich, und {{appName}} antwortet dir aus der Ecke",
       "noteLabel": "Notiz",
       "placeholder": "Neue Notiz",
       "hold": "Halte <keys/> gedrückt und sprich.",
@@ -213,9 +218,9 @@
       "gotIt": "Jedes Wort erkannt: „{{quote}}“"
     },
     "done": {
-      "title": "Alles bereit",
-      "subMac": "{{appName}} wohnt in deiner Menüleiste. Halte <keys/> gedrückt oder tippe kurz darauf, um in jeder App zu sprechen.",
-      "subTray": "{{appName}} wohnt in deiner Taskleiste. Halte <keys/> gedrückt oder tippe kurz darauf, um in jeder App zu sprechen.",
+      "title": "Dein neuer Kollege ist bereit",
+      "subMac": "{{appName}} wohnt in deiner Menüleiste. Halte <keys/> gedrückt oder tippe kurz darauf, um in jeder App mit ihm zu sprechen.",
+      "subTray": "{{appName}} wohnt in deiner Taskleiste. Halte <keys/> gedrückt oder tippe kurz darauf, um in jeder App mit ihm zu sprechen.",
       "hint": "Du kannst das später in den Einstellungen ändern",
       "highFiveLabel": "High Five",
       "atLogin": "{{appName}} beim Anmelden starten",
@@ -1026,10 +1031,10 @@
     "limitReached": "Du hast die kostenlosen Wörter dieser Woche aufgebraucht. Upgrade für unbegrenztes Diktieren oder mach weiter, sobald die Woche zurückgesetzt wird.",
     "limitToast": "Kostenlose Wörter dieser Woche aufgebraucht",
     "proFeatures": {
-      "polish": "KI-Feinschliff für jedes Diktat",
-      "onDevice": "Feinschliff auf dem Gerät mit Apple Intelligence",
-      "agent": "Der Ambient-Agent mit allen neuen Funktionen",
-      "priority": "Prioritärer Support"
+      "priority": "Prioritärer Support",
+      "noLimits": "Keine Wochenlimits für KI-Nutzungen und Vorschläge",
+      "meetings": "Unbegrenzte Meeting-Notizen",
+      "memory": "Bildschirmgedächtnis bis zu 90 Tage"
     },
     "card": {
       "activate": "Aktivieren",
@@ -1100,7 +1105,7 @@
       "unlock": "Unbegrenzt freischalten",
       "onDevice": "Auf diesem Mac behalten",
       "onDeviceDescription": "Nutze stattdessen Apple Intelligence. Nichts verlässt deinen Mac.",
-      "freeLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche"
+      "freeUsesLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Nutzungen diese Woche"
     },
     "writing": {
       "title": "Schreiben",
@@ -1167,12 +1172,13 @@
     "plan": {
       "title": "Dein Tarif",
       "polishUnlimited": "KI-Feinschliff ist unbegrenzt.",
-      "polishLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche · wird {{day}} zurückgesetzt",
       "polishFree": "Im kostenlosen Tarif ist ein wöchentliches Kontingent an KI-Feinschliff enthalten.",
       "meetingsLeft": "Noch {{left}} von {{limit}} Meeting-Notizen in diesem Monat",
       "aiLeft": "Heute noch {{left}} von {{limit}} KI-Anfragen",
       "searchLeft": "Verbleibende Suchen: {{count}}",
-      "meterLabel": "Verbleibendes Kontingent"
+      "meterLabel": "Verbleibendes Kontingent",
+      "aiUsesLeft": "Noch {{left}} von {{limit}} KI-Nutzungen diese Woche · wird {{day}} zurückgesetzt",
+      "suggestionsLeft": "Noch {{left}} von {{limit}} Vorschlägen diese Woche"
     },
     "privacy": {
       "title": "Datenschutz",
@@ -1319,7 +1325,10 @@
       "cantDoYet": "Das kann ich noch nicht: {{what}}. Soll ich dir zeigen, wie du es selbst machst?",
       "cantDoYetPlain": "Das kann ich auf diesem Computer noch nicht. Soll ich dir zeigen, wie du es selbst machst?",
       "failed": "Das hat diesmal nicht geklappt. Versuch es gleich noch einmal.",
-      "undoFailed": "Das konnte ich nicht rückgängig machen. Du kannst es direkt in der App entfernen."
+      "undoFailed": "Das konnte ich nicht rückgängig machen. Du kannst es direkt in der App entfernen.",
+      "limitAi": "Das waren die {{limit}} KI-Nutzungen dieser Woche. Sie werden am Montag zurückgesetzt. Mit einem Upgrade gibt es keine Limits.",
+      "limitSuggestions": "Du hattest die {{limit}} Vorschläge dieser Woche im kostenlosen Tarif.",
+      "limitMeetings": "Das waren die {{limit}} Meetings dieses Monats im kostenlosen Tarif. Mit einem Upgrade gibt es keine Limits."
     },
     "offer": {
       "searchWeb": "Im Web suchen",
@@ -1329,7 +1338,8 @@
       "openSettings": "Einstellungen öffnen",
       "showFile": "Datei zeigen",
       "howTo": "Zeig mir, wie",
-      "showMeHow": "Zeig mir, wie"
+      "showMeHow": "Zeig mir, wie",
+      "upgrade": "Upgrade"
     },
     "report": {
       "title": "An das {{appName}}-Team senden?",
@@ -1375,13 +1385,13 @@
       "voiceHint": "Oder sag „meine Worte“",
       "copiedWords": "Deine genauen Worte sind kopiert. Zum Ersetzen einfügen.",
       "copiedEdit": "Die neue Fassung ist kopiert. Zum Ersetzen einfügen.",
-      "noAllowance": "Das KI-Schreiben für diese Woche ist aufgebraucht, daher steht es so da, wie du es gesagt hast.",
       "couldntWrite": "Das ging gerade nicht, daher steht es so da, wie du es gesagt hast.",
       "rewritten": "Umgeschrieben",
       "undoRewrite": "Umschreiben rückgängig",
       "copiedOriginal": "Dein ursprünglicher Text ist kopiert. Zum Ersetzen einfügen.",
       "couldntRewrite": "Das ließ sich gerade nicht umschreiben, dein Text bleibt unverändert."
-    }
+    },
+    "firstSuggestionTip": "Dein erster Vorschlag. Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“. Es lernt dazu."
   },
   "privacy": {
     "title": "Datenschutz",
@@ -1578,6 +1588,12 @@
       "title": "Hilf mit, {{appName}} zu verbessern",
       "label": "Anonyme Nutzungszahlen teilen",
       "description": "Nur Zählungen und Zeiten, nie, was du sagst, tippst oder siehst. Aus, bis du es einschaltest."
+    },
+    "free": {
+      "perWeek": "Kostenlos: {{limit}} pro Woche",
+      "perMonth": "Kostenlos: {{limit}} pro Monat",
+      "hours": "Kostenlos: {{limit}} Stunden",
+      "retention": "Kostenlos bleiben die letzten {{limit}} Stunden gespeichert. Pro behält bis zu 90 Tage."
     }
   },
   "meetings": {
@@ -1621,7 +1637,7 @@
     },
     "error": {
       "storage": "Der Meeting-Speicher konnte nicht geöffnet werden.",
-      "freeLimit": "Im kostenlosen Tarif sind 2 Meetings pro Monat enthalten. Pro ist unbegrenzt.",
+      "freeLimit": "Das waren die {{limit}} Meetings dieses Monats im kostenlosen Tarif. Mit einem Upgrade gibt es keine Limits.",
       "mic": "Das Mikrofon konnte nicht geöffnet werden.",
       "notActive": "Kein Meeting aktiv.",
       "notFound": "Dieses Meeting existiert nicht mehr.",
@@ -1637,8 +1653,6 @@
       "offDetail": "Aktiviere sie, und {{appName}} bietet beim Start eines Anrufs an, Notizen zu machen.",
       "paused": "Pausiert",
       "pausedDetail": "{{appName}} bietet keine Notizen an, bis du es unter Datenschutz wieder fortsetzt.",
-      "pro": "Keine Notizen",
-      "proDetail": "Mit Pro erkennt {{appName}} deine Anrufe und bietet an, Notizen zu machen.",
       "unsupported": "Keine Notizen",
       "unsupportedDetail": "Starte Notizen, wenn dein Anruf beginnt.",
       "turnOn": "Aktivieren"
@@ -1675,7 +1689,7 @@
     "start": "Los geht's",
     "meet": {
       "title": "Lerne den Agenten kennen",
-      "description": "Halte dein Tastenkürzel gedrückt und sprich. {{appName}} erledigt den Rest."
+      "description": "Sprich mit ihm wie mit einem Kollegen, oder es bietet Hilfe an, wenn es passt."
     },
     "modes": {
       "write": {
@@ -1708,14 +1722,25 @@
       "title": "Wähle, was {{appName}} darf",
       "description": "Alles optional. Jederzeit unter Datenschutz änderbar.",
       "footnote": "Passwörter, Wallets und private Fenster werden nie gelesen.",
-      "proOnly": "Teil von Pro. Upgrade unter Konto.",
       "caps": {
         "screen_context": "Nur das Fenster, das du meinst",
         "proactive": "Wird auf diesem Computer entschieden",
         "meetings": "Audio bleibt auf diesem Computer",
         "wake_word": "Hört nur auf diesem Computer zu",
         "screen_memory": "Verschlüsselt auf diesem Computer"
-      }
+      },
+      "freeNote": "Im kostenlosen Tarif haben KI-Nutzungen und Vorschläge Wochenlimits."
+    },
+    "offers": {
+      "title": "Es bietet auch Hilfe an",
+      "description": "Wenn es helfen kann, etwa bei einem langen Thread oder einem Fehler, bietet es das einmal an. Sag „ja“ oder „nicht jetzt“, oder ignorier es. Es lernt dazu.",
+      "app": "Mail",
+      "subject": "Launch-Plan Q3",
+      "count": "40 Nachrichten",
+      "summaryHead": "Zusammenfassung",
+      "summary": "Der Launch rückt auf Donnerstag. Sam übernimmt die Präsentation, Ana bucht den Raum.",
+      "noOnDevice": "Ohne Apple Intelligence entscheiden einfache Regeln auf diesem Computer. Bevor es die Cloud nutzt, fragt es einmal nach.",
+      "screenLabel": "Ein Mail-Thread mit 40 Nachrichten. Ein Vorschlag bietet an, ihn zusammenzufassen; nach „ja“ erscheint eine kurze Zusammenfassung."
     }
   },
   "getStarted": {
@@ -1774,7 +1799,9 @@
           "„Zeig mir das nicht mehr“, um diese Art auszuschalten.",
           "„Nicht hier“, um sie in dieser App zu stoppen."
         ],
-        "hint": "Beantworte einen Vorschlag laut."
+        "hint": "Beantworte einen Vorschlag laut.",
+        "off": "Sie sind gerade aus.",
+        "turnOn": "Unter Datenschutz einschalten"
       },
       "meetings": {
         "title": "Meetings",

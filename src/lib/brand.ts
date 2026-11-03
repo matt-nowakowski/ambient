@@ -12,5 +12,7 @@ export const BRAND = {
   tagline: config.tagline,
   apiBaseUrl: config.apiBaseUrl,
   freeWordsPerWeek: config.freeWordsPerWeek,
+  /** Defaults of Free's limits; the live values come from the backend. */
+  freeMeetingsPerMonth: config.freeMeetingsPerMonth,
   pricing: config.pricing,
 } as const;

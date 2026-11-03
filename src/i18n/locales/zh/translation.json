@@ -83,8 +83,8 @@
       "progress": "第 {{step}} 步，共 {{count}} 步"
     },
     "welcome": {
-      "title": "你说哪些语言？",
-      "subtitle": "选择你会在 {{appName}} 中使用的所有语言，之后可以随时更改。",
+      "title": "你桌面上的同事。",
+      "subtitle": "你说话，它来写、回答、行动，还会提醒你。选择你会说的所有语言。",
       "languagesLabel": "语言",
       "noMatch": "没有与“{{query}}”匹配的结果。更多语言请见设置。",
       "appLanguage": "应用语言",
@@ -142,16 +142,16 @@
       "onDisk": "已在这台电脑上"
     },
     "demo": {
-      "title": "一个快捷键，在任何应用中开口就写",
-      "hold": "<0>点一下要输入的位置。</0><1>按住快捷键并说话。</1><2>松开，文字就出现了。</2>",
-      "tap": "<0>点一下要输入的位置。</0><1>轻按快捷键并说话。</1><2>再按一次，文字就出现了。</2>",
+      "title": "一个快捷键，在任何应用中跟它说话",
+      "hold": "<0>点一下要输入的位置。</0><1>按住快捷键并说话。</1><2>松开，它就替你打字。</2>",
+      "tap": "<0>点一下要输入的位置。</0><1>轻按快捷键并说话。</1><2>再按一次，它就替你打字。</2>",
       "apps": {
         "messages": "信息",
         "notes": "备忘录"
       },
       "chat": "你今晚还来吗？",
       "noteTitle": "周末计划",
-      "screenLabel": "一台笔记本电脑：有人点进一个应用，按下快捷键并开口说话，文字就出现在点击的位置。",
+      "screenLabel": "一台笔记本电脑：有人按下快捷键说话。智能体替他打字、回答、执行、记忆，还会主动提供帮助。",
       "change": "更改",
       "yourShortcut": "你的快捷键是",
       "pressKeys": "请按下新的按键",
@@ -178,12 +178,17 @@
           "sentence": "<0>忘了什么？</0><1>按住快捷键提问。</1><2>它都记得。</2>",
           "said": "Ana 对场地怎么说的？",
           "reply": "她订了周六晚 8 点的 Rosa's。"
+        },
+        "offer": {
+          "head": "建议",
+          "sentence": "<0>它也会留意。</0><1>能帮忙时，它会主动提出。</1><2>说“好”，就搞定了。</2>",
+          "reply": "已添加到周六：公园野餐。"
         }
       }
     },
     "try": {
       "title": "来试一试吧！",
-      "subtitle": "{{appName}} 就在角落里，带你一步步体验",
+      "subtitle": "说话吧，{{appName}} 会在角落里回答你",
       "noteLabel": "备忘录",
       "placeholder": "新备忘录",
       "hold": "按住 <keys/> 并说话。",
@@ -213,9 +218,9 @@
       "gotIt": "每个字都听清了：“{{quote}}”"
     },
     "done": {
-      "title": "一切就绪",
-      "subMac": "{{appName}} 位于菜单栏。在任意应用中按住或轻点 <keys/> 即可说话。",
-      "subTray": "{{appName}} 位于系统托盘。在任意应用中按住或轻点 <keys/> 即可说话。",
+      "title": "你的新同事已就绪",
+      "subMac": "{{appName}} 位于菜单栏。在任意应用中按住或轻点 <keys/> 即可跟它说话。",
+      "subTray": "{{appName}} 位于系统托盘。在任意应用中按住或轻点 <keys/> 即可跟它说话。",
       "hint": "这些内容以后可以在“设置”中更改",
       "highFiveLabel": "击掌",
       "atLogin": "登录时启动 {{appName}}",
@@ -1026,10 +1031,10 @@
     "limitReached": "你已用完本周的免费字数。升级即可无限听写，或等本周重置后继续使用。",
     "limitToast": "本周免费字数已用完",
     "proFeatures": {
-      "polish": "对每次听写进行 AI 润色",
-      "onDevice": "使用 Apple Intelligence 在设备上润色",
-      "agent": "Ambient 智能体，新功能陆续推出",
-      "priority": "优先支持"
+      "priority": "优先支持",
+      "noLimits": "AI 使用和建议没有每周上限",
+      "meetings": "会议笔记不限次数",
+      "memory": "屏幕记忆最长保留 90 天"
     },
     "card": {
       "activate": "激活",
@@ -1100,7 +1105,7 @@
       "unlock": "获取无限次",
       "onDevice": "仅在这台 Mac 上处理",
       "onDeviceDescription": "改用 Apple Intelligence。任何内容都不会离开你的 Mac。",
-      "freeLeft": "本周还剩 {{left}} 次免费 AI 润色（共 {{limit}} 次）"
+      "freeUsesLeft": "本周还剩 {{left}} / {{limit}} 次免费 AI 使用"
     },
     "writing": {
       "title": "写作",
@@ -1167,12 +1172,13 @@
     "plan": {
       "title": "你的套餐",
       "polishUnlimited": "AI 润色不限次数。",
-      "polishLeft": "本周还剩 {{left}} 次免费 AI 润色（共 {{limit}} 次）· {{day}} 重置",
       "polishFree": "免费套餐包含每周的 AI 润色额度。",
       "meetingsLeft": "本月还剩 {{left}}/{{limit}} 份会议纪要",
       "aiLeft": "今天还剩 {{left}}/{{limit}} 次 AI 请求",
       "searchLeft": "剩余搜索次数：{{count}}",
-      "meterLabel": "剩余额度"
+      "meterLabel": "剩余额度",
+      "aiUsesLeft": "本周还剩 {{left}} / {{limit}} 次 AI 使用 · {{day}}重置",
+      "suggestionsLeft": "本周还剩 {{left}} / {{limit}} 条建议"
     },
     "privacy": {
       "title": "隐私",
@@ -1319,7 +1325,10 @@
       "cantDoYet": "我暂时还做不到：{{what}}。要我教你自己操作吗？",
       "cantDoYetPlain": "我暂时还无法在这台电脑上做到。要我教你自己操作吗？",
       "failed": "这次没有成功。请稍后再试。",
-      "undoFailed": "无法撤销这一项。你可以在该应用中直接删除。"
+      "undoFailed": "无法撤销这一项。你可以在该应用中直接删除。",
+      "limitAi": "本周的 {{limit}} 次 AI 使用已用完，将于周一重置。升级即可不受限制。",
+      "limitSuggestions": "免费版本周的 {{limit}} 条建议已全部提供。",
+      "limitMeetings": "免费版本月的 {{limit}} 场会议已用完。升级即可不受限制。"
     },
     "offer": {
       "searchWeb": "在网上搜索",
@@ -1329,7 +1338,8 @@
       "openSettings": "打开设置",
       "showFile": "显示文件",
       "howTo": "教我怎么做",
-      "showMeHow": "教我怎么做"
+      "showMeHow": "教我怎么做",
+      "upgrade": "升级"
     },
     "report": {
       "title": "发送给 {{appName}} 团队？",
@@ -1375,13 +1385,13 @@
       "voiceHint": "或说“用我的原话”",
       "copiedWords": "已复制你的原话。粘贴即可替换。",
       "copiedEdit": "已复制新版本。粘贴即可替换。",
-      "noAllowance": "本周的 AI 写作额度已用完，所以按你说的原话输入。",
       "couldntWrite": "暂时无法撰写，所以按你说的原话输入。",
       "rewritten": "已改写",
       "undoRewrite": "撤销改写",
       "copiedOriginal": "已复制你的原文。粘贴即可替换。",
       "couldntRewrite": "暂时无法改写，你的文字保持不变。"
-    }
+    },
+    "firstSuggestionTip": "这是你的第一条建议。说“好”“以后再说”或“别给我看这些”。它会学习。"
   },
   "privacy": {
     "title": "隐私",
@@ -1578,6 +1588,12 @@
       "title": "帮助改进 {{appName}}",
       "label": "分享匿名使用计数",
       "description": "仅计数和耗时，绝不包括你说的、输入的或看到的内容。在你开启前保持关闭。"
+    },
+    "free": {
+      "perWeek": "免费版：每周 {{limit}} 条",
+      "perMonth": "免费版：每月 {{limit}} 场",
+      "hours": "免费版：{{limit}} 小时",
+      "retention": "免费版保留最近 {{limit}} 小时。Pro 最长保留 90 天。"
     }
   },
   "meetings": {
@@ -1621,7 +1637,7 @@
     },
     "error": {
       "storage": "无法打开会议存储。",
-      "freeLimit": "免费套餐每月包含 2 场会议。Pro 不限次数。",
+      "freeLimit": "免费版本月的 {{limit}} 场会议已用完。升级即可不受限制。",
       "mic": "无法打开麦克风。",
       "notActive": "当前没有进行中的会议。",
       "notFound": "该会议已不存在。",
@@ -1637,8 +1653,6 @@
       "offDetail": "开启后，通话开始时 {{appName}} 会提议做记录。",
       "paused": "已暂停",
       "pausedDetail": "在“隐私”中恢复之前，{{appName}} 不会提议做记录。",
-      "pro": "未做记录",
-      "proDetail": "使用 Pro，{{appName}} 会发现你的通话并提议做记录。",
       "unsupported": "未做记录",
       "unsupportedDetail": "通话开始时开始记录。",
       "turnOn": "开启"
@@ -1675,7 +1689,7 @@
     "start": "开始使用",
     "meet": {
       "title": "认识智能体",
-      "description": "按住快捷键说话。剩下的交给 {{appName}}。"
+      "description": "像跟同事一样跟它说话，或让它在合适的时候主动帮忙。"
     },
     "modes": {
       "write": {
@@ -1708,14 +1722,25 @@
       "title": "选择 {{appName}} 可以做什么",
       "description": "全部可选。可随时在“隐私”中更改。",
       "footnote": "从不读取密码、钱包和无痕窗口。",
-      "proOnly": "Pro 功能。可在“账户”中升级。",
       "caps": {
         "screen_context": "只看你问到的窗口",
         "proactive": "在这台电脑上决定",
         "meetings": "音频留在这台电脑上",
         "wake_word": "只在这台电脑上聆听",
         "screen_memory": "加密保存在这台电脑上"
-      }
+      },
+      "freeNote": "免费版的 AI 使用和建议有每周上限。"
+    },
+    "offers": {
+      "title": "它还会主动帮忙",
+      "description": "遇到它能帮上忙的时候，比如长对话或报错，它会提议一次。说“好”或“以后再说”，或者直接忽略。它会学习。",
+      "app": "邮件",
+      "subject": "第三季度发布计划",
+      "count": "40 条消息",
+      "summaryHead": "对话摘要",
+      "summary": "发布改到周四。Sam 负责演示文稿，Ana 预订会议室。",
+      "noOnDevice": "没有 Apple Intelligence 时，由这台电脑上的简单规则来判断。使用云端前会先询问一次。",
+      "screenLabel": "一个有 40 条消息的邮件对话。一条建议提出要总结它；说“好”之后，出现一段简短摘要。"
     }
   },
   "getStarted": {
@@ -1774,7 +1799,9 @@
           "说“别给我看这些”关闭这类建议。",
           "说“这里不要”，不再在此应用中出现。"
         ],
-        "hint": "大声回答一条建议。"
+        "hint": "大声回答一条建议。",
+        "off": "目前已关闭。",
+        "turnOn": "在“隐私”中开启"
       },
       "meetings": {
         "title": "会议",

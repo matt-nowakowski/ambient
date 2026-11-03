@@ -17,7 +17,6 @@ use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
-use chrono::Datelike;
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -30,8 +29,9 @@ use segmenter::{Segmenter, Utterance};
 
 pub use capture::system::mic_in_use;
 
-/// Free plan: meetings per calendar month (Pro and the trial are unlimited).
-pub const FREE_MEETINGS_PER_MONTH: i64 = 2;
+/// `start`'s error when Free's meetings this month are used
+/// (`limits::meetings_limit`; Pro and the trial are unlimited).
+pub const FREE_LIMIT_ERROR: &str = "meetings.error.freeLimit";
 const NOTES_EVERY: Duration = Duration::from_secs(5 * 60);
 const SAVE_EVERY: Duration = Duration::from_secs(30);
 /// Hosted model input cap is 16k chars; leave room for the prompt.
@@ -197,16 +197,18 @@ pub fn start(app: &AppHandle) -> Result<MeetingState, String> {
         return Ok(drop_and_state(guard));
     }
     let recall = crate::recall::get().ok_or("meetings.error.storage")?;
-    if !crate::plan::is_paid(app) {
-        let month_start = chrono::Local::now()
-            .date_naive()
-            .with_day(1)
-            .and_then(|d| d.and_hms_opt(0, 0, 0))
-            .and_then(|d| d.and_local_timezone(chrono::Local).single())
-            .map(|d| d.timestamp())
+    // Free: `free.meetings_per_month` (default 2); the caller says so.
+    if let Some(limit) = crate::limits::meetings_limit(app) {
+        let used = recall
+            .meetings_since(crate::limits::month_start())
             .unwrap_or(0);
-        if recall.meetings_since(month_start).unwrap_or(0) >= FREE_MEETINGS_PER_MONTH {
-            return Err("meetings.error.freeLimit".into());
+        if used >= i64::from(limit) {
+            crate::limits::hit(
+                app,
+                crate::limits::Limit::Meetings,
+                crate::limits::Show::Never,
+            );
+            return Err(FREE_LIMIT_ERROR.into());
         }
     }
 

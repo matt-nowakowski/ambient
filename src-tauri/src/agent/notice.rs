@@ -28,6 +28,8 @@ pub mod offer {
     pub const OPEN_FILE: &str = "open_file";
     /// Copy the value (handled by the HUD itself).
     pub const COPY: &str = "copy";
+    /// Open the pricing page to upgrade (a Free limit was reached).
+    pub const UPGRADE: &str = "upgrade";
 }
 
 /// A notice, built up and then shown.
@@ -161,6 +163,14 @@ pub fn on_action(app: &AppHandle, _id: &str, action: &str, value: Option<String>
         offer::SETTINGS => {
             hud::hide(app);
             open_settings(app, &value);
+        }
+        offer::UPGRADE => {
+            hud::hide(app);
+            use tauri_plugin_opener::OpenerExt;
+            let url = crate::plan::upgrade_url(app.clone());
+            if let Err(e) = app.opener().open_url(url, None::<&str>) {
+                log::warn!("notice: couldn't open the pricing page: {e}");
+            }
         }
         offer::OPEN_FILE => {
             hud::hide(app);

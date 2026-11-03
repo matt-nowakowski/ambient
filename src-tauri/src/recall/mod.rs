@@ -22,6 +22,34 @@ use crypto::Sealer;
 
 pub const DEFAULT_RETENTION_DAYS: i64 = 7;
 const LEDGER_RETENTION_DAYS: i64 = 30;
+/// How often expired screen memory is dropped while it's being written.
+const PURGE_EVERY: std::time::Duration = std::time::Duration::from_secs(10 * 60);
+
+/// Free's cap on screen memory, in hours (`limits::memory_cap_hours`);
+/// `None` on paid plans. Held outside the store, so setting it never opens
+/// the store (or the Keychain).
+static CAP_HOURS: Mutex<Option<u32>> = Mutex::new(None);
+static LAST_PURGE: Mutex<Option<std::time::Instant>> = Mutex::new(None);
+
+/// Cap how long screen memory keeps anything (Free), or lift the cap.
+pub fn set_cap_hours(hours: Option<u32>) {
+    *CAP_HOURS
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner) = hours;
+}
+
+fn cap_hours() -> Option<u32> {
+    *CAP_HOURS
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
+/// Seconds screen memory keeps an entry: the retention in days, or Free's
+/// cap when that's shorter.
+fn max_age_secs(retention_days: i64, cap_hours: Option<u32>) -> i64 {
+    let days = retention_days * 86_400;
+    cap_hours.map_or(days, |h| days.min(i64::from(h.max(1)) * 3600))
+}
 /// Ledger previews are capped so the ledger can't become a second copy of
 /// everything, but a whole cloud suggestion check (≤ 3500 chars of window
 /// text plus its JSON) fits, so it's shown exactly as sent.
@@ -153,6 +181,27 @@ impl Recall {
             .unwrap_or_else(std::sync::PoisonError::into_inner)
     }
 
+    /// The oldest timestamp screen memory keeps (unsaved entries).
+    fn screen_floor(&self) -> i64 {
+        chrono::Utc::now().timestamp() - max_age_secs(self.retention(), cap_hours())
+    }
+
+    /// Drop expired entries every few minutes while memory is being written,
+    /// so a short cap (Free's 24 hours) holds without a restart.
+    pub fn purge_if_due(&self) {
+        let mut last = LAST_PURGE
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        if last.is_some_and(|t| t.elapsed() < PURGE_EVERY) {
+            return;
+        }
+        *last = Some(std::time::Instant::now());
+        drop(last);
+        if let Err(e) = self.purge_expired() {
+            log::debug!("screen memory purge failed: {e}");
+        }
+    }
+
     /// Store an already-redacted snapshot. Identical text (same app) is stored once.
     pub fn add_screen(&self, snap: &ContextSnapshot) -> Result<bool> {
         let text = snap.text.clone().unwrap_or_default();
@@ -186,10 +235,13 @@ impl Recall {
     ) -> Result<Vec<ScreenEntry>> {
         let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
         let conn = self.conn();
+        // Nothing older than the retention (or Free's cap) is found, even
+        // before the next purge removes it; saved entries are kept.
         let mut stmt = conn.prepare(
-            "select id, ts, bundle_id, sealed from screen where ts >= ?1 order by ts desc",
+            "select id, ts, bundle_id, sealed from screen
+             where ts >= ?1 and (saved = 1 or ts >= ?2) order by ts desc",
         )?;
-        let rows = stmt.query_map(params![since.unwrap_or(0)], |r| {
+        let rows = stmt.query_map(params![since.unwrap_or(0), self.screen_floor()], |r| {
             Ok((
                 r.get::<_, i64>(0)?,
                 r.get::<_, i64>(1)?,
@@ -409,7 +461,7 @@ impl Recall {
         let conn = self.conn();
         conn.execute(
             "delete from screen where saved = 0 and ts < ?1",
-            params![now - self.retention() * 86_400],
+            params![self.screen_floor()],
         )?;
         conn.execute(
             "delete from ledger where ts < ?1",
@@ -474,5 +526,23 @@ pub fn log_request_if_open(destination: &str, purpose: &str, payload: &str) {
         if let Err(e) = r.log_request(destination, purpose, payload) {
             log::warn!("network ledger write failed: {e}");
         }
+    }
+}
+
+#[cfg(test)]
+mod cap_tests {
+    use super::max_age_secs;
+
+    #[test]
+    fn free_cap_shortens_retention_but_never_lengthens_it() {
+        // Paid: the user's retention.
+        assert_eq!(max_age_secs(7, None), 7 * 86_400);
+        // Free: 24 hours, whatever the retention says.
+        assert_eq!(max_age_secs(7, Some(24)), 24 * 3600);
+        assert_eq!(max_age_secs(30, Some(24)), 24 * 3600);
+        // A cap longer than the retention changes nothing.
+        assert_eq!(max_age_secs(1, Some(72)), 86_400);
+        // A zero cap counts as an hour.
+        assert_eq!(max_age_secs(7, Some(0)), 3600);
     }
 }

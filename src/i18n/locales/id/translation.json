@@ -83,8 +83,8 @@
       "progress": "Langkah {{step}} dari {{count}}"
     },
     "welcome": {
-      "title": "Bahasa apa saja yang Anda gunakan?",
-      "subtitle": "Pilih semua bahasa yang akan Anda gunakan dengan {{appName}}. Anda bisa mengubahnya nanti.",
+      "title": "Rekan kerja di desktop Anda.",
+      "subtitle": "Anda bicara; ia menulis, menjawab, bertindak, dan mengingatkan Anda. Pilih semua bahasa yang akan Anda gunakan.",
       "languagesLabel": "Bahasa",
       "noMatch": "Tidak ada hasil untuk “{{query}}”. Bahasa lain ada di pengaturan.",
       "appLanguage": "Bahasa aplikasi",
@@ -142,16 +142,16 @@
       "onDisk": "Sudah ada di komputer ini"
     },
     "demo": {
-      "title": "Bicara di aplikasi apa pun, dengan satu pintasan",
-      "hold": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Tahan pintasan Anda dan bicara.</1> <2>Lepaskan, dan kata-kata Anda muncul.</2>",
-      "tap": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Ketuk pintasan Anda dan bicara.</1> <2>Ketuk lagi, dan kata-kata Anda muncul.</2>",
+      "title": "Ajak bicara di aplikasi apa pun, dengan satu pintasan",
+      "hold": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Tahan pintasan Anda dan bicara.</1> <2>Lepaskan, dan ia mengetik untuk Anda.</2>",
+      "tap": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Ketuk pintasan Anda dan bicara.</1> <2>Ketuk lagi, dan ia mengetik untuk Anda.</2>",
       "apps": {
         "messages": "Pesan",
         "notes": "Catatan"
       },
       "chat": "Kamu jadi datang malam ini?",
       "noteTitle": "Rencana akhir pekan",
-      "screenLabel": "Sebuah laptop: seseorang mengeklik sebuah aplikasi, menekan pintasan lalu berbicara, dan kata-katanya muncul di tempat yang diklik.",
+      "screenLabel": "Sebuah laptop: seseorang menekan pintasan dan bicara. Agen mengetik untuknya, menjawab, bertindak, mengingat, dan menawarkan bantuan atas inisiatif sendiri.",
       "change": "Ubah",
       "yourShortcut": "Pintasan Anda adalah",
       "pressKeys": "Tekan tombol baru",
@@ -178,12 +178,17 @@
           "sentence": "<0>Lupa sesuatu?</0> <1>Tahan pintasan Anda dan bertanya.</1> <2>Ia ingat.</2>",
           "said": "Ana bilang apa soal tempatnya?",
           "reply": "Dia memesan Rosa's untuk Sabtu pukul 20.00."
+        },
+        "offer": {
+          "head": "Saran",
+          "sentence": "<0>Ia juga memperhatikan.</0> <1>Saat bisa membantu, ia menawarkan.</1> <2>Ucapkan “ya”, dan beres.</2>",
+          "reply": "Ditambahkan ke Sabtu: piknik di taman."
         }
       }
     },
     "try": {
       "title": "Coba sekarang!",
-      "subtitle": "{{appName}} ada di pojok untuk memandu Anda",
+      "subtitle": "Bicaralah, dan {{appName}} menjawab Anda dari pojok layar",
       "noteLabel": "Catatan",
       "placeholder": "Catatan baru",
       "hold": "Tahan <keys/> dan bicara.",
@@ -213,9 +218,9 @@
       "gotIt": "Setiap kata tertangkap: “{{quote}}”"
     },
     "done": {
-      "title": "Semua siap",
-      "subMac": "{{appName}} ada di bar menu Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara.",
-      "subTray": "{{appName}} ada di baki sistem Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara.",
+      "title": "Rekan kerja baru Anda sudah siap",
+      "subMac": "{{appName}} ada di bar menu Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara dengannya.",
+      "subTray": "{{appName}} ada di baki sistem Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara dengannya.",
       "hint": "Anda dapat mengubahnya nanti di Pengaturan",
       "highFiveLabel": "Tos",
       "atLogin": "Jalankan {{appName}} saat saya masuk",
@@ -1026,10 +1031,10 @@
     "limitReached": "Kata gratis minggu ini sudah habis. Tingkatkan untuk dikte tanpa batas, atau lanjutkan saat minggu direset.",
     "limitToast": "Kata gratis mingguan habis",
     "proFeatures": {
-      "polish": "Poles AI di setiap dikte",
-      "onDevice": "Poles di perangkat dengan Apple Intelligence",
-      "agent": "Agen ambient, dengan setiap fitur baru begitu dirilis",
-      "priority": "Dukungan prioritas"
+      "priority": "Dukungan prioritas",
+      "noLimits": "Tanpa batas mingguan untuk penggunaan AI dan saran",
+      "meetings": "Catatan rapat tanpa batas",
+      "memory": "Memori layar hingga 90 hari"
     },
     "card": {
       "activate": "Aktifkan",
@@ -1100,7 +1105,7 @@
       "unlock": "Dapatkan tanpa batas",
       "onDevice": "Simpan di Mac ini",
       "onDeviceDescription": "Gunakan Apple Intelligence sebagai gantinya. Tidak ada yang keluar dari Mac Anda.",
-      "freeLeft": "Sisa {{left}} dari {{limit}} poles AI gratis minggu ini"
+      "freeUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI gratis minggu ini"
     },
     "writing": {
       "title": "Menulis",
@@ -1167,12 +1172,13 @@
     "plan": {
       "title": "Paket Anda",
       "polishUnlimited": "Poles AI tanpa batas.",
-      "polishLeft": "Sisa {{left}} dari {{limit}} poles AI gratis minggu ini · direset {{day}}",
       "polishFree": "Paket Gratis mencakup jatah poles AI mingguan.",
       "meetingsLeft": "Sisa {{left}} dari {{limit}} catatan rapat bulan ini",
       "aiLeft": "Sisa {{left}} dari {{limit}} permintaan AI hari ini",
       "searchLeft": "Sisa pencarian: {{count}}",
-      "meterLabel": "Sisa jatah"
+      "meterLabel": "Sisa jatah",
+      "aiUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI minggu ini · direset {{day}}",
+      "suggestionsLeft": "Sisa {{left}} dari {{limit}} saran minggu ini"
     },
     "privacy": {
       "title": "Privasi",
@@ -1319,7 +1325,10 @@
       "cantDoYet": "Saya belum bisa melakukan ini: {{what}}. Mau saya tunjukkan cara melakukannya sendiri?",
       "cantDoYetPlain": "Saya belum bisa melakukan itu di komputer ini. Mau saya tunjukkan cara melakukannya sendiri?",
       "failed": "Kali ini tidak berhasil. Coba lagi sebentar lagi.",
-      "undoFailed": "Saya tidak dapat membatalkannya. Anda bisa menghapusnya langsung di aplikasinya."
+      "undoFailed": "Saya tidak dapat membatalkannya. Anda bisa menghapusnya langsung di aplikasinya.",
+      "limitAi": "Itu {{limit}} penggunaan AI minggu ini. Direset hari Senin. Tingkatkan agar tanpa batas.",
+      "limitSuggestions": "Anda sudah mendapat {{limit}} saran minggu ini di paket Gratis.",
+      "limitMeetings": "Itu {{limit}} rapat bulan ini di paket Gratis. Tingkatkan agar tanpa batas."
     },
     "offer": {
       "searchWeb": "Cari di web",
@@ -1329,7 +1338,8 @@
       "openSettings": "Buka Pengaturan",
       "showFile": "Tampilkan file",
       "howTo": "Tunjukkan caranya",
-      "showMeHow": "Tunjukkan caranya"
+      "showMeHow": "Tunjukkan caranya",
+      "upgrade": "Tingkatkan"
     },
     "report": {
       "title": "Kirim ini ke tim {{appName}}?",
@@ -1375,13 +1385,13 @@
       "voiceHint": "Atau ucapkan “kata-kata saya”",
       "copiedWords": "Kata-kata persis Anda sudah disalin. Tempel untuk mengganti.",
       "copiedEdit": "Versi baru sudah disalin. Tempel untuk mengganti.",
-      "noAllowance": "Jatah menulis AI minggu ini habis, jadi diketik seperti yang Anda ucapkan.",
       "couldntWrite": "Tidak bisa menulisnya sekarang, jadi diketik seperti yang Anda ucapkan.",
       "rewritten": "Ditulis ulang",
       "undoRewrite": "Batalkan tulis ulang",
       "copiedOriginal": "Teks asli Anda sudah disalin. Tempel untuk mengganti.",
       "couldntRewrite": "Tidak bisa menulis ulang sekarang, jadi teks Anda tidak berubah."
-    }
+    },
+    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar."
   },
   "privacy": {
     "title": "Privasi",
@@ -1578,6 +1588,12 @@
       "title": "Bantu tingkatkan {{appName}}",
       "label": "Bagikan hitungan penggunaan anonim",
       "description": "Hanya hitungan dan waktu, tidak pernah apa yang Anda ucapkan, ketik, atau lihat. Mati sampai Anda menyalakannya."
+    },
+    "free": {
+      "perWeek": "Gratis: {{limit}} per minggu",
+      "perMonth": "Gratis: {{limit}} per bulan",
+      "hours": "Gratis: {{limit}} jam",
+      "retention": "Paket Gratis menyimpan {{limit}} jam terakhir. Pro menyimpan hingga 90 hari."
     }
   },
   "meetings": {
@@ -1621,7 +1637,7 @@
     },
     "error": {
       "storage": "Tidak dapat membuka penyimpanan rapat.",
-      "freeLimit": "Paket Gratis mencakup 2 rapat per bulan. Pro tanpa batas.",
+      "freeLimit": "Itu {{limit}} rapat bulan ini di paket Gratis. Tingkatkan agar tanpa batas.",
       "mic": "Tidak dapat membuka mikrofon.",
       "notActive": "Tidak ada rapat yang sedang berlangsung.",
       "notFound": "Rapat itu sudah tidak ada.",
@@ -1637,8 +1653,6 @@
       "offDetail": "Aktifkan, dan {{appName}} menawarkan pencatatan saat panggilan dimulai.",
       "paused": "Dijeda",
       "pausedDetail": "{{appName}} tidak akan menawarkan pencatatan sampai Anda melanjutkannya di Privasi.",
-      "pro": "Tidak mencatat",
-      "proDetail": "Dengan Pro, {{appName}} mengenali panggilan Anda dan menawarkan pencatatan.",
       "unsupported": "Tidak mencatat",
       "unsupportedDetail": "Mulai mencatat saat panggilan Anda dimulai.",
       "turnOn": "Aktifkan"
@@ -1675,7 +1689,7 @@
     "start": "Mulai",
     "meet": {
       "title": "Kenali agennya",
-      "description": "Tahan pintasan Anda dan bicaralah. {{appName}} mengurus sisanya."
+      "description": "Ajak bicara seperti rekan kerja, atau biarkan ia menawarkan bantuan di saat yang tepat."
     },
     "modes": {
       "write": {
@@ -1708,14 +1722,25 @@
       "title": "Pilih yang boleh dilakukan {{appName}}",
       "description": "Semuanya opsional. Ubah kapan saja di Privasi.",
       "footnote": "Kata sandi, dompet, dan jendela pribadi tidak pernah dibaca.",
-      "proOnly": "Bagian dari Pro. Tingkatkan di Akun.",
       "caps": {
         "screen_context": "Hanya jendela yang Anda tanyakan",
         "proactive": "Diputuskan di komputer ini",
         "meetings": "Audio tetap di komputer ini",
         "wake_word": "Hanya mendengarkan di komputer ini",
         "screen_memory": "Tetap di komputer ini, terenkripsi"
-      }
+      },
+      "freeNote": "Di paket Gratis, penggunaan AI dan saran punya batas mingguan."
+    },
+    "offers": {
+      "title": "Ia juga menawarkan bantuan",
+      "description": "Saat bisa membantu, misalnya untuk utas panjang atau kesalahan, ia menawarkan sekali. Ucapkan “ya” atau “nanti saja”, atau abaikan. Ia belajar.",
+      "app": "Mail",
+      "subject": "Rencana peluncuran Q3",
+      "count": "40 pesan",
+      "summaryHead": "Ringkasan utas",
+      "summary": "Peluncuran pindah ke Kamis. Sam mengurus presentasi, dan Ana memesan ruangan.",
+      "noOnDevice": "Tanpa Apple Intelligence, aturan sederhana memutuskan di komputer ini. Ia bertanya sekali sebelum memakai cloud.",
+      "screenLabel": "Utas email berisi 40 pesan. Sebuah saran menawarkan untuk meringkasnya; setelah “ya”, ringkasan singkat muncul."
     }
   },
   "getStarted": {
@@ -1774,7 +1799,9 @@
           "“Jangan tampilkan ini” untuk menonaktifkan jenis itu.",
           "“Jangan di sini” untuk menghentikannya di aplikasi ini."
         ],
-        "hint": "Jawab saran dengan suara."
+        "hint": "Jawab saran dengan suara.",
+        "off": "Untuk saat ini, saran nonaktif.",
+        "turnOn": "Aktifkan di Privasi"
       },
       "meetings": {
         "title": "Rapat",

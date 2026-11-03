@@ -36,3 +36,20 @@ export function TrustList() {
     </Stagger>
   );
 }
+
+/** The landing page: four promises, as orbs with short labels. */
+export function TrustPromises() {
+  return (
+    <Stagger className="grid grid-cols-2 gap-3">
+      {trust.promises.map((h) => (
+        <LiftCard key={h.k} className="glass flex flex-col rounded-[22px] p-5 sm:p-6">
+          <div className="flex h-6 items-center">
+            <OrbIcon variant={h.orb as OrbVariant} footprint={18} />
+          </div>
+          <h3 className="mt-5 text-[15px] font-normal tracking-[-0.01em]">{h.k}</h3>
+          <p className="mt-1 text-[13px] leading-snug text-muted">{h.v}</p>
+        </LiftCard>
+      ))}
+    </Stagger>
+  );
+}

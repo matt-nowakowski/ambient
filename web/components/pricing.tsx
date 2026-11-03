@@ -16,7 +16,8 @@ type Interval = "month" | "year";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-export function Pricing({ headingLevel = "h3" }: { headingLevel?: "h2" | "h3" }) {
+/** `compact`: Free and Pro only, with their short lists (the landing page). */
+export function Pricing({ headingLevel = "h3", compact = false }: { headingLevel?: "h2" | "h3"; compact?: boolean }) {
   const [interval, setBillingInterval] = useState<Interval>("year");
   const [toast, setToast] = useState<string | null>(null);
   const H = headingLevel;
@@ -29,15 +30,17 @@ export function Pricing({ headingLevel = "h3" }: { headingLevel?: "h2" | "h3" })
         <IntervalToggle value={interval} onChange={setBillingInterval} savePct={savePct} />
       </div>
 
-      <Stagger className="mt-10 grid gap-4 lg:grid-cols-3">
+      <Stagger className={`mt-10 grid gap-4 ${compact ? "mx-auto max-w-[760px] md:grid-cols-2" : "lg:grid-cols-3"}`}>
         <Tier
           H={H}
+          compact={compact}
           name="Free"
+          tagline={tiers.free.tagline}
           orb="G5"
           price={0}
           unit="forever"
           note={tiers.free.note}
-          features={tiers.free.features}
+          features={compact ? tiers.free.key : tiers.free.features}
           cta={
             <Link href="/download" className={buttonClass("glass", "md", "w-full")}>
               Download
@@ -46,8 +49,10 @@ export function Pricing({ headingLevel = "h3" }: { headingLevel?: "h2" | "h3" })
         />
         <Tier
           H={H}
+          compact={compact}
           featured
           name="Pro"
+          tagline={tiers.pro.tagline}
           orb="B2"
           price={interval === "year" ? p.proYearlyPerMonth : p.proMonthly}
           unit="per month"
@@ -56,9 +61,10 @@ export function Pricing({ headingLevel = "h3" }: { headingLevel?: "h2" | "h3" })
               ? `Billed annually ($${p.proYearlyTotal}/yr).`
               : `Billed monthly. Or $${p.proYearlyPerMonth}/mo billed annually.`
           }
-          features={tiers.pro.features}
+          features={compact ? tiers.pro.key : tiers.pro.features}
           cta={<CheckoutButton interval={interval} onError={setToast} />}
         />
+        {compact ? null : (
         <Tier
           H={H}
           name="Team"
@@ -73,6 +79,7 @@ export function Pricing({ headingLevel = "h3" }: { headingLevel?: "h2" | "h3" })
             </a>
           }
         />
+        )}
       </Stagger>
 
       <Toast message={toast} onClose={() => setToast(null)} />
@@ -177,6 +184,7 @@ function PopNumber({ value }: { value: number }) {
 function Tier({
   H,
   name,
+  tagline,
   orb,
   price,
   unit,
@@ -184,17 +192,20 @@ function Tier({
   features,
   cta,
   featured = false,
+  compact = false,
 }: {
   H: "h2" | "h3";
   name: string;
+  tagline?: string;
   orb: OrbVariant;
   /** A number animates; text (e.g. "Custom") is shown as is. */
   price: number | string;
   unit: string;
   note: string;
-  features: string[];
+  features: readonly string[];
   cta: React.ReactNode;
   featured?: boolean;
+  compact?: boolean;
 }) {
   return (
     <motion.div
@@ -209,18 +220,19 @@ function Tier({
         <div className="flex items-center gap-2.5">
           <OrbIcon variant={orb} footprint={13} />
           <H className="text-[15px] font-normal">{name}</H>
+          {tagline ? <span className="text-[13px] text-muted">{tagline}</span> : null}
         </div>
         {featured ? <span className="eyebrow">Most popular</span> : null}
       </div>
-      <p className="mt-8 flex items-baseline gap-2">
+      <p className={`${compact ? "mt-5" : "mt-8"} flex items-baseline gap-2`}>
         <span className="text-[48px] font-extralight leading-none tracking-[-0.05em] tabular-nums">
           {typeof price === "number" ? <PopNumber value={price} /> : price}
         </span>
         <span className="text-[13px] text-muted">{unit}</span>
       </p>
-      <p className="mt-3 min-h-10 text-[13px] text-subtle">{note}</p>
-      <div className="mt-6">{cta}</div>
-      <ul className="mt-7 space-y-2.5 border-t border-border pt-6 text-[13.5px]">
+      <p className={`mt-3 text-[13px] text-subtle ${compact ? "" : "min-h-10"}`}>{note}</p>
+      <div className={compact ? "mt-5" : "mt-6"}>{cta}</div>
+      <ul className={`space-y-2.5 border-t border-border text-[13.5px] ${compact ? "mt-5 pt-5" : "mt-7 pt-6"}`}>
         {features.map((f) => (
           <li key={f} className="flex items-start gap-2.5">
             <Check className="mt-0.5 size-4 shrink-0 text-foreground/70" />

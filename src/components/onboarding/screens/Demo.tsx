@@ -20,18 +20,20 @@ import { OnboardingShell, ScreenHeader, ScreenMain } from "../OnboardingShell";
 import { useOnboardingStore } from "../onboardingStore";
 import "./demo.css";
 
-/** Dictation two ways, then the agent: asked, acting, remembering. */
-type AgentMode = "ask" | "act" | "recall";
+/** Dictation two ways, then the agent: asked, acting, remembering, and
+ * last, offering help on its own (you talk to it; it suggests). */
+type AgentMode = "ask" | "act" | "recall" | "offer";
 type Mode = "hold" | "tap" | AgentMode;
-const ORDER: Mode[] = ["hold", "tap", "ask", "act", "recall"];
+const ORDER: Mode[] = ["hold", "tap", "ask", "act", "recall", "offer"];
 const isAgent = (m: Mode): m is AgentMode =>
-  m === "ask" || m === "act" || m === "recall";
+  m === "ask" || m === "act" || m === "recall" || m === "offer";
 
 /** Each agent chapter's card: titled and marked like the tour's cards. */
 const CARDS: Record<AgentMode, { title: string; orb: OrbVariant }> = {
-  ask: { title: "answer", orb: "S1" },
-  act: { title: "act", orb: "C2" },
-  recall: { title: "recall", orb: "G5" },
+  ask: { title: "tour.modes.answer.title", orb: "S1" },
+  act: { title: "tour.modes.act.title", orb: "C2" },
+  recall: { title: "tour.modes.recall.title", orb: "G5" },
+  offer: { title: "onboarding.demo.agent.offer.head", orb: "C2" },
 };
 type PillState = "hidden" | "rec" | "work";
 /** The pointer on the drawn screen: off to the side, on the field, gone. */
@@ -39,7 +41,16 @@ type Pointer = "rest" | "field" | "gone";
 /** The sentence's lit phrase: click, press and talk, the words appear. */
 type Phrase = 0 | 1 | 2;
 /** `lift` is a tap's first key-up, while Ambient keeps listening. */
-type Beat = "reset" | "point" | "click" | "press" | "lift" | "release" | "land";
+type Beat =
+  | "reset"
+  | "point"
+  | "click"
+  | "press"
+  | "lift"
+  | "release"
+  | "land"
+  // The offer chapter: the suggestion card arrives unasked.
+  | "offer";
 
 /**
  * Each chapter's beats, in ms from its start. `ms` is its full length (then
@@ -91,9 +102,22 @@ const CHAPTERS: Record<
       },
     ]),
   ) as Record<
-    AgentMode,
+    Exclude<AgentMode, "offer">,
     { script: [number, Beat][]; ms: number; still: number }
   >),
+  // Nobody asks: it notices the date in the note and offers once; a held
+  // "yes" takes it up. The still frame is the offer.
+  offer: {
+    script: [
+      [0, "reset"],
+      [900, "offer"], //   the card arrives
+      [2700, "press"], //  "yes", said with the shortcut held
+      [3500, "release"],
+      [4000, "land"], //   done: the card says so for 2.8s
+    ],
+    ms: 6800,
+    still: 2000,
+  },
 };
 
 /** Under reduced motion: each way's still picture, in turn. */
@@ -179,14 +203,18 @@ const DemoPill: React.FC<{ state: PillState; still: boolean }> = ({
 
 /* ---------------- the agent's card ---------------- */
 
-/** The HUD, drawn: what was asked and the answer, top right like the real one. */
+/** The HUD, drawn: what was asked and the answer, top right like the real
+ * one. The offer chapter's card is a suggestion (Yes / Not now) until
+ * `answered`. */
 const DemoCard: React.FC<{
   mode: AgentMode;
   shown: boolean;
+  answered: boolean;
   still: boolean;
-}> = ({ mode, shown, still }) => {
+}> = ({ mode, shown, answered, still }) => {
   const { t } = useTranslation();
   const card = CARDS[mode];
+  const offering = mode === "offer" && !answered;
   return (
     <div
       className="demo-card"
@@ -196,14 +224,30 @@ const DemoCard: React.FC<{
     >
       <p className="demo-card-head">
         <Orb variant={card.orb} size={12} />
-        {t(`tour.modes.${card.title}.title`)}
+        {t(card.title)}
       </p>
-      <p className="demo-card-said">
-        “{t(`onboarding.demo.agent.${mode}.said`)}”
-      </p>
-      <p className="demo-card-reply">
-        {t(`onboarding.demo.agent.${mode}.reply`)}
-      </p>
+      {offering ? (
+        <>
+          <p className="demo-card-reply">{t("hud.suggest.addToCalendar")}</p>
+          <p className="demo-card-actions">
+            <span className="is-primary">{t("hud.yes")}</span>
+            <span>{t("hud.notNow")}</span>
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="demo-card-said">
+            “
+            {mode === "offer"
+              ? t("hud.yes")
+              : t(`onboarding.demo.agent.${mode}.said`)}
+            ”
+          </p>
+          <p className="demo-card-reply">
+            {t(`onboarding.demo.agent.${mode}.reply`)}
+          </p>
+        </>
+      )}
     </div>
   );
 };
@@ -230,6 +274,8 @@ const DemoLaptop: React.FC<{
   /** The last agent chapter's card, and whether it's up. */
   card: AgentMode;
   cardShown: boolean;
+  /** The offer chapter's suggestion was taken up. */
+  cardAnswered: boolean;
 }> = ({
   os,
   shortcut,
@@ -247,6 +293,7 @@ const DemoLaptop: React.FC<{
   focused,
   card,
   cardShown,
+  cardAnswered,
 }) => {
   const { t } = useTranslation();
   // The agent's chapters happen in the note: no Messages, no click.
@@ -319,7 +366,12 @@ const DemoLaptop: React.FC<{
             </div>
           </div>
         </div>
-        <DemoCard mode={card} shown={cardShown} still={still} />
+        <DemoCard
+          mode={card}
+          shown={cardShown}
+          answered={cardAnswered}
+          still={still}
+        />
         <div className="demo-pill-wrap">
           <DemoPill state={pill} still={still} />
         </div>
@@ -430,7 +482,8 @@ interface DemoProps {
 
 /**
  * Screen 4, while the model downloads: an animated demo of dictation (hold,
- * then tap), then the agent answering, acting and remembering. Its words are
+ * then tap), then the agent answering, acting, remembering and, last,
+ * offering help unasked. Its words are
  * in the interface language: it shows the app, not the user's speech.
  */
 export const Demo: React.FC<DemoProps> = ({
@@ -457,9 +510,14 @@ export const Demo: React.FC<DemoProps> = ({
   const [focused, setFocused] = useState(false);
   const [keyDown, setKeyDown] = useState(false);
   const [pillState, setPillState] = useState<PillState>("hidden");
-  const [card, setCard] = useState<{ mode: AgentMode; shown: boolean }>({
+  const [card, setCard] = useState<{
+    mode: AgentMode;
+    shown: boolean;
+    answered: boolean;
+  }>({
     mode: "ask",
     shown: false,
+    answered: false,
   });
   const [text, setText] = useState({
     value: "",
@@ -491,7 +549,11 @@ export const Demo: React.FC<DemoProps> = ({
           lang: i18n.language,
           landed: false,
         }));
-        setCard((c) => ({ mode: isAgent(mode) ? mode : c.mode, shown: false }));
+        setCard((c) => ({
+          mode: isAgent(mode) ? mode : c.mode,
+          shown: false,
+          answered: false,
+        }));
         setPillState("hidden");
         setKeyDown(false);
         setPointer("rest");
@@ -507,6 +569,10 @@ export const Demo: React.FC<DemoProps> = ({
         // Hide while listening; the still frame keeps it to show the click.
         setPointer(animate ? "gone" : "field");
         setPillState((p) => (p === "hidden" ? "rec" : p));
+        // Answering an offer is its last phrase: "say yes".
+        setPhrase(mode === "offer" ? 2 : 1);
+      } else if (beat === "offer" && isAgent(mode)) {
+        setCard({ mode, shown: true, answered: false });
         setPhrase(1);
       } else if (beat === "lift") {
         setKeyDown(false);
@@ -516,7 +582,7 @@ export const Demo: React.FC<DemoProps> = ({
         setPhrase(2);
       } else if (isAgent(mode)) {
         setPillState("hidden");
-        setCard({ mode, shown: true });
+        setCard({ mode, shown: true, answered: true });
       } else {
         setPillState("hidden");
         setText((x) => ({
@@ -633,6 +699,7 @@ export const Demo: React.FC<DemoProps> = ({
           focused={focused}
           card={card.mode}
           cardShown={card.shown}
+          cardAnswered={card.answered}
         />
         {/* The shortcut and Change as one button; capture happens in place. */}
         <button

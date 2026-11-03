@@ -1,0 +1,17 @@
+{
+ "id": "talk",
+ "text": "You talk.",
+ "duration": 1.04,
+ "words": [
+  {
+   "w": "You",
+   "start": 0,
+   "end": 0.24
+  },
+  {
+   "w": "talk.",
+   "start": 0.52,
+   "end": 1.04
+  }
+ ]
+}

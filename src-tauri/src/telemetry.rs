@@ -702,6 +702,12 @@ pub fn meeting_email(always: bool, sent: bool) {
     );
 }
 
+/// Free reached one of its limits (`ai`, `suggestions` or `meetings`).
+/// Counted once per period (week, or month for meetings) per install.
+pub fn limit_hit(kind: &'static str) {
+    record("limit_hit", &[("kind", P::S(kind))]);
+}
+
 /// A suggestion kind's name as a `'static` from the allowlist, if it is one.
 fn known(kind: &str) -> Option<&'static str> {
     static KINDS: Lazy<Vec<&'static str>> = Lazy::new(|| {
@@ -967,6 +973,7 @@ mod tests {
             "meeting_email",
             "write_mode",
             "write_revert",
+            "limit_hit",
         ] {
             assert!(s.events.contains_key(name), "{name}");
         }

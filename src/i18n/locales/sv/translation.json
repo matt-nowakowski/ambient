@@ -83,8 +83,8 @@
       "progress": "Steg {{step}} av {{count}}"
     },
     "welcome": {
-      "title": "Vilka språk talar du?",
-      "subtitle": "Välj alla som du kommer att använda med {{appName}}. Du kan ändra det senare.",
+      "title": "Din kollega på skrivbordet.",
+      "subtitle": "Du pratar; den skriver, svarar, agerar och påminner dig. Välj alla språk du kommer att tala.",
       "languagesLabel": "Språk",
       "noMatch": "Ingen träff för ”{{query}}”. Fler språk finns i inställningarna.",
       "appLanguage": "Appspråk",
@@ -142,16 +142,16 @@
       "onDisk": "Finns redan på datorn"
     },
     "demo": {
-      "title": "Tala i vilken app som helst, med ett enda kortkommando",
-      "hold": "<0>Klicka där du vill skriva.</0> <1>Håll in kortkommandot och tala.</1> <2>Släpp, så dyker orden upp.</2>",
-      "tap": "<0>Klicka där du vill skriva.</0> <1>Tryck på kortkommandot och tala.</1> <2>Tryck igen, så dyker orden upp.</2>",
+      "title": "Prata med den i vilken app som helst, med ett enda kortkommando",
+      "hold": "<0>Klicka där du vill skriva.</0> <1>Håll in kortkommandot och tala.</1> <2>Släpp, så skriver den åt dig.</2>",
+      "tap": "<0>Klicka där du vill skriva.</0> <1>Tryck på kortkommandot och tala.</1> <2>Tryck igen, så skriver den åt dig.</2>",
       "apps": {
         "messages": "Meddelanden",
         "notes": "Anteckningar"
       },
       "chat": "Kommer du fortfarande i kväll?",
       "noteTitle": "Helgplaner",
-      "screenLabel": "En bärbar dator: någon klickar i en app, trycker på kortkommandot och talar, och orden dyker upp där hen klickade.",
+      "screenLabel": "En bärbar dator: någon trycker på kortkommandot och talar. Agenten skriver åt hen, svarar, agerar, minns och erbjuder hjälp på eget initiativ.",
       "change": "Ändra",
       "yourShortcut": "Ditt kortkommando är",
       "pressKeys": "Tryck på de nya tangenterna",
@@ -178,12 +178,17 @@
           "sentence": "<0>Glömt något?</0> <1>Håll in kortkommandot och fråga.</1> <2>Den minns.</2>",
           "said": "Vad sa Ana om lokalen?",
           "reply": "Hon bokade Rosa's på lördag kl. 20."
+        },
+        "offer": {
+          "head": "Förslag",
+          "sentence": "<0>Den märker saker också.</0> <1>När den kan hjälpa till erbjuder den sig.</1> <2>Säg ”ja”, så är det klart.</2>",
+          "reply": "Tillagt på lördag: picknick i parken."
         }
       }
     },
     "try": {
       "title": "Testa nu!",
-      "subtitle": "{{appName}} finns i hörnet och guidar dig",
+      "subtitle": "Prata, så svarar {{appName}} dig från hörnet",
       "noteLabel": "Anteckning",
       "placeholder": "Ny anteckning",
       "hold": "Håll in <keys/> och tala.",
@@ -213,9 +218,9 @@
       "gotIt": "Fick med varje ord: ”{{quote}}”"
     },
     "done": {
-      "title": "Nu är allt klart",
-      "subMac": "{{appName}} finns i menyraden. Håll in eller tryck på <keys/> i valfri app för att tala.",
-      "subTray": "{{appName}} finns i systemfältet. Håll in eller tryck på <keys/> i valfri app för att tala.",
+      "title": "Din nya kollega är redo",
+      "subMac": "{{appName}} finns i menyraden. Håll in eller tryck på <keys/> i valfri app för att prata med den.",
+      "subTray": "{{appName}} finns i systemfältet. Håll in eller tryck på <keys/> i valfri app för att prata med den.",
       "hint": "Du kan ändra detta senare i Inställningar",
       "highFiveLabel": "High five",
       "atLogin": "Starta {{appName}} när jag loggar in",
@@ -1026,10 +1031,10 @@
     "limitReached": "Du har använt veckans gratisord. Uppgradera för obegränsad diktering eller fortsätt när veckan återställs.",
     "limitToast": "Veckans gratisord är slut",
     "proFeatures": {
-      "polish": "AI-finslipning av varje diktering",
-      "onDevice": "Finslipning på enheten med Apple Intelligence",
-      "agent": "Ambient-agenten, med nya funktioner när de släpps",
-      "priority": "Prioriterad support"
+      "priority": "Prioriterad support",
+      "noLimits": "Inga veckogränser för AI-användning eller förslag",
+      "meetings": "Obegränsade mötesanteckningar",
+      "memory": "Skärmminne i upp till 90 dagar"
     },
     "card": {
       "activate": "Aktivera",
@@ -1100,7 +1105,7 @@
       "unlock": "Skaffa obegränsat",
       "onDevice": "Behåll det på den här Macen",
       "onDeviceDescription": "Använd Apple Intelligence i stället. Inget lämnar din Mac.",
-      "freeLeft": "{{left}} av {{limit}} gratis finslipningar kvar den här veckan"
+      "freeUsesLeft": "{{left}} av {{limit}} gratis AI-användningar kvar den här veckan"
     },
     "writing": {
       "title": "Skrivande",
@@ -1167,12 +1172,13 @@
     "plan": {
       "title": "Din plan",
       "polishUnlimited": "AI-finslipning är obegränsad.",
-      "polishLeft": "{{left}} av {{limit}} gratis AI-finslipningar kvar den här veckan · återställs {{day}}",
       "polishFree": "Gratis inkluderar en veckokvot för AI-finslipning.",
       "meetingsLeft": "{{left}} av {{limit}} mötesanteckningar kvar den här månaden",
       "aiLeft": "{{left}} av {{limit}} AI-förfrågningar kvar i dag",
       "searchLeft": "Sökningar kvar: {{count}}",
-      "meterLabel": "Återstående kvot"
+      "meterLabel": "Återstående kvot",
+      "aiUsesLeft": "{{left}} av {{limit}} AI-användningar kvar den här veckan · återställs {{day}}",
+      "suggestionsLeft": "{{left}} av {{limit}} förslag kvar den här veckan"
     },
     "privacy": {
       "title": "Integritet",
@@ -1319,7 +1325,10 @@
       "cantDoYet": "Det här kan jag inte än: {{what}}. Vill du att jag visar hur du gör det själv?",
       "cantDoYetPlain": "Det kan jag inte göra på den här datorn än. Vill du att jag visar hur du gör det själv?",
       "failed": "Det fungerade inte den här gången. Försök igen om en stund.",
-      "undoFailed": "Jag kunde inte ångra det. Du kan ta bort det i själva appen."
+      "undoFailed": "Jag kunde inte ångra det. Du kan ta bort det i själva appen.",
+      "limitAi": "Det var veckans {{limit}} AI-användningar. De återställs på måndag. Uppgradera för inga gränser.",
+      "limitSuggestions": "Du har fått veckans {{limit}} förslag på Gratis.",
+      "limitMeetings": "Det var månadens {{limit}} möten på Gratis. Uppgradera för inga gränser."
     },
     "offer": {
       "searchWeb": "Sök på webben",
@@ -1329,7 +1338,8 @@
       "openSettings": "Öppna Inställningar",
       "showFile": "Visa fil",
       "howTo": "Visa hur",
-      "showMeHow": "Visa hur"
+      "showMeHow": "Visa hur",
+      "upgrade": "Uppgradera"
     },
     "report": {
       "title": "Skicka detta till {{appName}}-teamet?",
@@ -1375,13 +1385,13 @@
       "voiceHint": "Eller säg ”mina ord”",
       "copiedWords": "Dina exakta ord är kopierade. Klistra in för att ersätta.",
       "copiedEdit": "Den nya versionen är kopierad. Klistra in för att ersätta.",
-      "noAllowance": "AI-skrivandet för den här veckan är slut, så det står som du sa det.",
       "couldntWrite": "Det gick inte att skriva just nu, så det står som du sa det.",
       "rewritten": "Omskrivet",
       "undoRewrite": "Ångra omskrivning",
       "copiedOriginal": "Din ursprungliga text är kopierad. Klistra in för att ersätta.",
       "couldntRewrite": "Det gick inte att skriva om just nu, så din text är oförändrad."
-    }
+    },
+    "firstSuggestionTip": "Ditt första förslag. Säg ”ja”, ”inte nu” eller ”visa inte sådana”. Den lär sig."
   },
   "privacy": {
     "title": "Integritet",
@@ -1578,6 +1588,12 @@
       "title": "Hjälp till att förbättra {{appName}}",
       "label": "Dela anonym användningsstatistik",
       "description": "Bara räkningar och tider, aldrig vad du säger, skriver eller ser. Av tills du slår på det."
+    },
+    "free": {
+      "perWeek": "Gratis: {{limit}} i veckan",
+      "perMonth": "Gratis: {{limit}} i månaden",
+      "hours": "Gratis: {{limit}} timmar",
+      "retention": "Gratis sparar de senaste {{limit}} timmarna. Pro sparar i upp till 90 dagar."
     }
   },
   "meetings": {
@@ -1621,7 +1637,7 @@
     },
     "error": {
       "storage": "Kunde inte öppna möteslagringen.",
-      "freeLimit": "Gratis inkluderar 2 möten i månaden. Pro är obegränsat.",
+      "freeLimit": "Det var månadens {{limit}} möten på Gratis. Uppgradera för inga gränser.",
       "mic": "Kunde inte öppna mikrofonen.",
       "notActive": "Inget möte pågår.",
       "notFound": "Mötet finns inte längre.",
@@ -1637,8 +1653,6 @@
       "offDetail": "Slå på den så erbjuder {{appName}} sig att ta anteckningar när ett samtal börjar.",
       "paused": "Pausad",
       "pausedDetail": "{{appName}} erbjuder inte anteckningar förrän du återupptar under Integritet.",
-      "pro": "Tar inga anteckningar",
-      "proDetail": "Med Pro upptäcker {{appName}} dina samtal och erbjuder sig att ta anteckningar.",
       "unsupported": "Tar inga anteckningar",
       "unsupportedDetail": "Starta anteckningar när ditt samtal börjar.",
       "turnOn": "Slå på"
@@ -1675,7 +1689,7 @@
     "start": "Kom igång",
     "meet": {
       "title": "Möt agenten",
-      "description": "Håll in kortkommandot och prata. {{appName}} sköter resten."
+      "description": "Prata med den som med en kollega, eller låt den erbjuda hjälp i rätt stund."
     },
     "modes": {
       "write": {
@@ -1708,14 +1722,25 @@
       "title": "Välj vad {{appName}} får göra",
       "description": "Allt är valfritt. Ändra när som helst under Integritet.",
       "footnote": "Lösenord, plånböcker och privata fönster läses aldrig.",
-      "proOnly": "Ingår i Pro. Uppgradera under Konto.",
       "caps": {
         "screen_context": "Bara fönstret du frågar om",
         "proactive": "Avgörs på den här datorn",
         "meetings": "Ljudet stannar på den här datorn",
         "wake_word": "Lyssnar bara på den här datorn",
         "screen_memory": "Krypterat, kvar på den här datorn"
-      }
+      },
+      "freeNote": "På Gratis har AI-användning och förslag veckogränser."
+    },
+    "offers": {
+      "title": "Den erbjuder hjälp också",
+      "description": "När den kan hjälpa till, till exempel med en lång tråd eller ett fel, erbjuder den det en gång. Säg ”ja” eller ”inte nu”, eller strunta i det. Den lär sig.",
+      "app": "Mail",
+      "subject": "Lanseringsplan för Q3",
+      "count": "40 meddelanden",
+      "summaryHead": "Sammanfattning av tråden",
+      "summary": "Lanseringen flyttas till torsdag. Sam ansvarar för presentationen och Ana bokar rummet.",
+      "noOnDevice": "Utan Apple Intelligence avgör enkla regler på den här datorn. Den frågar en gång innan molnet används.",
+      "screenLabel": "En e-posttråd med 40 meddelanden. Ett förslag erbjuder att sammanfatta den; efter ”ja” visas en kort sammanfattning."
     }
   },
   "getStarted": {
@@ -1774,7 +1799,9 @@
           "”Visa inte sådana” för att stänga av den sortens förslag.",
           "”Inte här” för att stoppa det i den här appen."
         ],
-        "hint": "Svara på ett förslag högt."
+        "hint": "Svara på ett förslag högt.",
+        "off": "De är avstängda just nu.",
+        "turnOn": "Slå på dem under Integritet"
       },
       "meetings": {
         "title": "Möten",

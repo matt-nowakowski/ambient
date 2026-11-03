@@ -2,8 +2,9 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
-import type { OrbVariant } from "./orb/Orb";
-import { OrbIcon } from "./orb-icon";
+import { useReducedMotionPref, white } from "./agent-demo";
+import { Orb, type OrbVariant } from "./orb/Orb";
+import { OrbIcon, orbIconSize } from "./orb-icon";
 import { spring } from "./motion";
 
 type PreviewProps = {
@@ -17,22 +18,41 @@ type PreviewProps = {
   meta: string;
   accept: string;
   orb?: OrbVariant;
+  /** With `loop`: what you say to accept, and what it then did. */
+  say?: string;
+  result?: { title: string; detail: string; note: string };
 };
+
+/** The loop: the window alone, the offer slides in, you say “yes”, the result appears. */
+type Stage = "idle" | "offer" | "say" | "done";
+const STAGE_MS: Record<Stage, number> = { idle: 1400, offer: 2800, say: 1600, done: 3800 };
+const NEXT: Record<Stage, Stage> = { idle: "offer", offer: "say", say: "done", done: "idle" };
 
 /**
  * A window with a quiet HUD bubble offering the next step: how meeting nudges
  * and suggestions look in the app. Illustrative mock, not a screenshot.
  */
-export function AmbientPreview({ preset }: { preset: "meeting" | "suggestion" }) {
-  const { window: title, heading, lines, offer, meta, accept, orb = "S1" } = presets[preset];
+export function AmbientPreview({ preset, loop = false }: { preset: "meeting" | "suggestion"; loop?: boolean }) {
+  const { window: title, heading, lines, offer, meta, accept, orb = "S1", say, result } = presets[preset];
   const [open, setOpen] = useState(true);
+  const [stage, setStage] = useState<Stage>("offer");
+  const reduced = useReducedMotionPref();
+  const looping = loop && !!say && !!result && !reduced;
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduced || looping) return;
     // Visible most of the time; briefly dismissed, then offered again.
     const t = setTimeout(() => setOpen((o) => !o), open ? 7000 : 1200);
     return () => clearTimeout(t);
-  }, [open]);
+  }, [open, reduced, looping]);
+
+  useEffect(() => {
+    if (!looping) return;
+    const t = setTimeout(() => setStage((s) => NEXT[s]), STAGE_MS[stage]);
+    return () => clearTimeout(t);
+  }, [stage, looping]);
+
+  const showBubble = looping ? stage === "offer" : open;
 
   return (
     <div aria-hidden="true" className="glass-strong relative overflow-hidden rounded-[24px]">
@@ -42,7 +62,7 @@ export function AmbientPreview({ preset }: { preset: "meeting" | "suggestion" })
         <span className="size-[11px] rounded-full bg-foreground/10" />
         <span className="eyebrow ml-3 truncate">{title}</span>
       </div>
-      <div className="relative h-[390px] px-6 py-6 text-[14px] font-light leading-[1.7] text-muted sm:h-[360px]">
+      <div className="relative h-[370px] px-6 py-6 text-[14px] font-light leading-[1.7] text-muted sm:h-[310px]">
         <p className="text-foreground">{heading}</p>
         <ul className="mt-3 space-y-1">
           {lines.map((l, i) => (
@@ -56,7 +76,7 @@ export function AmbientPreview({ preset }: { preset: "meeting" | "suggestion" })
         </ul>
 
         <AnimatePresence>
-          {open ? (
+          {showBubble ? (
             <motion.div
               key="bubble"
               initial={{ opacity: 0, y: 10, scale: 0.94, filter: "blur(6px)" }}
@@ -84,6 +104,53 @@ export function AmbientPreview({ preset }: { preset: "meeting" | "suggestion" })
             </motion.div>
           ) : null}
         </AnimatePresence>
+
+        {looping ? (
+          <>
+            <AnimatePresence>
+              {stage === "done" && result ? (
+                <motion.div
+                  key="result"
+                  initial={{ opacity: 0, y: 10, scale: 0.94, filter: "blur(6px)" }}
+                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: 6, scale: 0.97, filter: "blur(4px)" }}
+                  transition={spring}
+                  style={{ transformOrigin: "100% 100%" }}
+                  className="glass-strong absolute bottom-5 left-4 right-4 rounded-[18px] p-4 sm:left-[38%] sm:right-6"
+                >
+                  <div className="flex items-start gap-3">
+                    <OrbIcon variant={orb} footprint={15} className="mt-0.5" />
+                    <div className="min-w-0 text-[13px] leading-relaxed">
+                      <p className="text-foreground">{result.title}</p>
+                      <p className="mt-1 text-muted">{result.detail}</p>
+                      <p className="mt-2 text-[11.5px] text-subtle">
+                        You said “{say}” · {result.note}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+            <div className="absolute inset-x-4 bottom-5 flex justify-center">
+              <AnimatePresence>
+                {stage === "say" ? (
+                  <motion.div
+                    key="say"
+                    initial={{ opacity: 0, y: 12, scale: 0.92, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95, filter: "blur(4px)" }}
+                    transition={spring}
+                    className="glass-dark flex h-10 items-center gap-2.5 rounded-full pl-2.5 pr-4"
+                  >
+                    <Orb variant="C2" size={orbIconSize("C2").size} style={white} />
+                    <span className="rec-dot size-1.5 shrink-0 rounded-full bg-rec" />
+                    <span className="text-[12px] text-white/80">{say}</span>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );
@@ -118,6 +185,8 @@ const suggestionPreview: PreviewProps = {
   meta: "Spotted on this computer · nothing sent",
   accept: "Add it",
   orb: "C4",
+  say: "yes",
+  result: { title: "Added to Calendar", detail: "Launch review · Thursday, 3:00 pm", note: "Undo" },
 };
 
 const presets = { meeting: meetingPreview, suggestion: suggestionPreview };

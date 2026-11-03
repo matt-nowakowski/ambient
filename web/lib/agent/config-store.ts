@@ -81,6 +81,24 @@ export async function loadConfig(): Promise<ConfigState> {
   }
 }
 
+const FREE_AI_TTL_MS = 5 * 60_000;
+let freeAiCache: { value: number; at: number } | null = null;
+
+/**
+ * Free's weekly AI uses (`free.ai_per_week`, clamped), the same value the app
+ * reads from /api/agent/config. Held in memory for five minutes, so a change
+ * in /admin reaches every instance within that and Free requests don't read
+ * the config each time.
+ */
+export async function freeAiPerWeek(now = Date.now()): Promise<number> {
+  if (freeAiCache && now - freeAiCache.at < FREE_AI_TTL_MS) return freeAiCache.value;
+  const state = await loadConfig();
+  const value = Number(state.values["free.ai_per_week"] ?? defaults()["free.ai_per_week"]);
+  // A failed read isn't cached for long: try again within a minute.
+  freeAiCache = { value, at: state.ok ? now : now - FREE_AI_TTL_MS + 60_000 };
+  return value;
+}
+
 export async function loadHistory(limit = 50): Promise<HistoryRow[]> {
   if (!isDatabaseConfigured()) return [];
   try {

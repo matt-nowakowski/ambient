@@ -83,8 +83,8 @@
       "progress": "Krok {{step}} z {{count}}"
     },
     "welcome": {
-      "title": "W jakich językach mówisz?",
-      "subtitle": "Wybierz wszystkie, których użyjesz z {{appName}}. Możesz to później zmienić.",
+      "title": "Twój współpracownik na pulpicie.",
+      "subtitle": "Ty mówisz, a on pisze, odpowiada, działa i daje znać, gdy coś zauważy. Wybierz wszystkie języki, w których będziesz mówić.",
       "languagesLabel": "Języki",
       "noMatch": "Brak wyników dla „{{query}}”. Więcej języków znajdziesz w ustawieniach.",
       "appLanguage": "Język aplikacji",
@@ -144,16 +144,16 @@
       "onDisk": "Już na tym komputerze"
     },
     "demo": {
-      "title": "Mów w dowolnej aplikacji, jednym skrótem",
-      "hold": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Przytrzymaj skrót i mów.</1> <2>Puść, a Twoje słowa się pojawią.</2>",
-      "tap": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Naciśnij skrót i mów.</1> <2>Naciśnij ponownie, a Twoje słowa się pojawią.</2>",
+      "title": "Rozmawiaj z nim w dowolnej aplikacji, jednym skrótem",
+      "hold": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Przytrzymaj skrót i mów.</1> <2>Puść, a napisze za Ciebie.</2>",
+      "tap": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Naciśnij skrót i mów.</1> <2>Naciśnij ponownie, a napisze za Ciebie.</2>",
       "apps": {
         "messages": "Wiadomości",
         "notes": "Notatki"
       },
       "chat": "Przyjdziesz dziś wieczorem?",
       "noteTitle": "Plany na weekend",
-      "screenLabel": "Laptop: ktoś klika w aplikację, naciska skrót i mówi, a słowa pojawiają się tam, gdzie kliknął.",
+      "screenLabel": "Laptop: ktoś naciska skrót i mówi. Agent pisze za tę osobę, odpowiada, działa, pamięta i sam proponuje pomoc.",
       "change": "Zmień",
       "yourShortcut": "Twój skrót to",
       "pressKeys": "Naciśnij nowe klawisze",
@@ -180,12 +180,17 @@
           "sentence": "<0>Coś umknęło?</0> <1>Przytrzymaj skrót i zapytaj.</1> <2>Wszystko pamięta.</2>",
           "said": "Co Ana mówiła o lokalu?",
           "reply": "Zarezerwowała Rosa's na sobotę na 20:00."
+        },
+        "offer": {
+          "head": "Sugestia",
+          "sentence": "<0>Sam też zauważa.</0> <1>Gdy może pomóc, proponuje.</1> <2>Powiedz „tak” i gotowe.</2>",
+          "reply": "Dodano do soboty: piknik w parku."
         }
       }
     },
     "try": {
       "title": "Spróbuj!",
-      "subtitle": "{{appName}} czeka w rogu i pomoże Ci przejść przez to krok po kroku",
+      "subtitle": "Mów, a {{appName}} odpowie Ci z rogu ekranu",
       "noteLabel": "Notatka",
       "placeholder": "Nowa notatka",
       "hold": "Przytrzymaj <keys/> i mów.",
@@ -215,9 +220,9 @@
       "gotIt": "Mam każde słowo: „{{quote}}”"
     },
     "done": {
-      "title": "Wszystko gotowe",
-      "subMac": "{{appName}} czeka na pasku menu. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby mówić.",
-      "subTray": "{{appName}} czeka w zasobniku systemowym. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby mówić.",
+      "title": "Twój nowy współpracownik jest gotowy",
+      "subMac": "{{appName}} czeka na pasku menu. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby z nim rozmawiać.",
+      "subTray": "{{appName}} czeka w zasobniku systemowym. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby z nim rozmawiać.",
       "hint": "Możesz to później zmienić w Ustawieniach",
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
@@ -1036,10 +1041,10 @@
     "limitReached": "Wykorzystano darmowe słowa z tego tygodnia. Ulepsz plan, aby dyktować bez limitu, albo kontynuuj po resecie tygodnia.",
     "limitToast": "Wykorzystano tygodniowy limit darmowych słów",
     "proFeatures": {
-      "polish": "Szlifowanie AI przy każdym dyktowaniu",
-      "onDevice": "Szlifowanie na urządzeniu z Apple Intelligence",
-      "agent": "Agent działający w tle, z każdą nową funkcją",
-      "priority": "Priorytetowa pomoc techniczna"
+      "priority": "Priorytetowa pomoc techniczna",
+      "noLimits": "Bez tygodniowych limitów użyć AI i sugestii",
+      "meetings": "Nielimitowane notatki ze spotkań",
+      "memory": "Pamięć ekranu do 90 dni"
     },
     "card": {
       "activate": "Aktywuj",
@@ -1110,7 +1115,7 @@
       "unlock": "Odblokuj bez limitu",
       "onDevice": "Zostaw to na tym Macu",
       "onDeviceDescription": "Użyj zamiast tego Apple Intelligence. Nic nie opuszcza Twojego Maca.",
-      "freeLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu"
+      "freeUsesLeft": "Pozostało {{left}} z {{limit}} darmowych użyć AI w tym tygodniu"
     },
     "writing": {
       "title": "Pisanie",
@@ -1183,12 +1188,13 @@
     "plan": {
       "title": "Twój plan",
       "polishUnlimited": "Szlifowanie AI: bez limitu.",
-      "polishLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu · reset: {{day}}",
       "polishFree": "Plan darmowy obejmuje tygodniowy limit szlifowania AI.",
       "meetingsLeft": "W tym miesiącu zostało {{left}} z {{limit}} notatek ze spotkań",
       "aiLeft": "Dziś zostało {{left}} z {{limit}} zapytań AI",
       "searchLeft": "Pozostałe wyszukiwania: {{count}}",
-      "meterLabel": "Pozostały limit"
+      "meterLabel": "Pozostały limit",
+      "aiUsesLeft": "Pozostało {{left}} z {{limit}} użyć AI w tym tygodniu · reset {{day}}",
+      "suggestionsLeft": "Pozostało {{left}} z {{limit}} sugestii w tym tygodniu"
     },
     "privacy": {
       "title": "Prywatność",
@@ -1335,7 +1341,10 @@
       "cantDoYet": "Tego jeszcze nie potrafię: {{what}}. Pokazać ci, jak zrobić to samodzielnie?",
       "cantDoYetPlain": "Nie mogę jeszcze tego zrobić na tym komputerze. Pokazać ci, jak zrobić to samodzielnie?",
       "failed": "Tym razem się nie udało. Spróbuj ponownie za chwilę.",
-      "undoFailed": "Nie udało się tego cofnąć. Możesz to usunąć bezpośrednio w aplikacji."
+      "undoFailed": "Nie udało się tego cofnąć. Możesz to usunąć bezpośrednio w aplikacji.",
+      "limitAi": "To już {{limit}} użyć AI w tym tygodniu. Limit odnowi się w poniedziałek. Ulepsz plan, aby nie mieć limitów.",
+      "limitSuggestions": "Wykorzystano {{limit}} sugestii w tym tygodniu w planie Darmowym.",
+      "limitMeetings": "To już {{limit}} spotkań w tym miesiącu w planie Darmowym. Ulepsz plan, aby nie mieć limitów."
     },
     "offer": {
       "searchWeb": "Szukaj w internecie",
@@ -1345,7 +1354,8 @@
       "openSettings": "Otwórz Ustawienia",
       "showFile": "Pokaż plik",
       "howTo": "Pokaż jak",
-      "showMeHow": "Pokaż jak"
+      "showMeHow": "Pokaż jak",
+      "upgrade": "Ulepsz"
     },
     "report": {
       "title": "Wysłać to zespołowi {{appName}}?",
@@ -1391,13 +1401,13 @@
       "voiceHint": "Albo powiedz „moje słowa”",
       "copiedWords": "Skopiowano twoje dokładne słowa. Wklej, aby zastąpić.",
       "copiedEdit": "Skopiowano nową wersję. Wklej, aby zastąpić.",
-      "noAllowance": "Limit pisania z AI na ten tydzień się wyczerpał, więc wpisano tak, jak powiedziałeś.",
       "couldntWrite": "Nie udało się teraz tego napisać, więc wpisano tak, jak powiedziałeś.",
       "rewritten": "Przepisane",
       "undoRewrite": "Cofnij przepisanie",
       "copiedOriginal": "Skopiowano twój oryginalny tekst. Wklej, aby zastąpić.",
       "couldntRewrite": "Nie udało się teraz tego przepisać, więc twój tekst się nie zmienił."
-    }
+    },
+    "firstSuggestionTip": "Twoja pierwsza sugestia. Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”. Uczy się."
   },
   "privacy": {
     "title": "Prywatność",
@@ -1602,6 +1612,12 @@
       "title": "Pomóż ulepszyć {{appName}}",
       "label": "Udostępniaj anonimowe statystyki użycia",
       "description": "Tylko liczniki i czasy, nigdy to, co mówisz, piszesz lub widzisz. Wyłączone, dopóki tego nie włączysz."
+    },
+    "free": {
+      "perWeek": "Darmowy: {{limit}} na tydzień",
+      "perMonth": "Darmowy: {{limit}} na miesiąc",
+      "hours": "Darmowy: {{limit}} godz.",
+      "retention": "Plan Darmowy przechowuje ostatnie {{limit}} godz. Pro przechowuje do 90 dni."
     }
   },
   "meetings": {
@@ -1645,7 +1661,7 @@
     },
     "error": {
       "storage": "Nie udało się otworzyć magazynu spotkań.",
-      "freeLimit": "Plan darmowy obejmuje 2 spotkania miesięcznie. Pro nie ma limitu.",
+      "freeLimit": "To już {{limit}} spotkań w tym miesiącu w planie Darmowym. Ulepsz plan, aby nie mieć limitów.",
       "mic": "Nie udało się otworzyć mikrofonu.",
       "notActive": "Żadne spotkanie nie trwa.",
       "notFound": "To spotkanie już nie istnieje.",
@@ -1661,8 +1677,6 @@
       "offDetail": "Włącz, a {{appName}} zaproponuje notatki, gdy zacznie się rozmowa.",
       "paused": "Wstrzymano",
       "pausedDetail": "{{appName}} nie zaproponuje notatek, dopóki nie wznowisz tego w sekcji Prywatność.",
-      "pro": "Notatki wyłączone",
-      "proDetail": "W Pro {{appName}} wykrywa Twoje rozmowy i proponuje notatki.",
       "unsupported": "Notatki wyłączone",
       "unsupportedDetail": "Zacznij notatki, gdy rozpocznie się rozmowa.",
       "turnOn": "Włącz"
@@ -1699,7 +1713,7 @@
     "start": "Zaczynamy",
     "meet": {
       "title": "Poznaj agenta",
-      "description": "Przytrzymaj skrót i mów. {{appName}} zajmie się resztą."
+      "description": "Rozmawiaj z nim jak ze współpracownikiem lub pozwól mu samemu proponować pomoc."
     },
     "modes": {
       "write": {
@@ -1732,14 +1746,25 @@
       "title": "Wybierz, co może robić {{appName}}",
       "description": "Wszystko opcjonalne. Zmienisz to w każdej chwili w sekcji Prywatność.",
       "footnote": "Hasła, portfele i okna prywatne nigdy nie są odczytywane.",
-      "proOnly": "Część Pro. Przejdź na Pro w sekcji Konto.",
       "caps": {
         "screen_context": "Tylko okno, o które pytasz",
         "proactive": "Decyzja zapada na tym komputerze",
         "meetings": "Dźwięk zostaje na tym komputerze",
         "wake_word": "Słucha tylko na tym komputerze",
         "screen_memory": "Zostaje na tym komputerze, szyfrowane"
-      }
+      },
+      "freeNote": "W planie Darmowym użycia AI i sugestie mają tygodniowe limity."
+    },
+    "offers": {
+      "title": "Sam też proponuje pomoc",
+      "description": "Gdy może pomóc, np. przy długim wątku albo błędzie, proponuje to raz. Powiedz „tak” albo „nie teraz” lub to zignoruj. Uczy się.",
+      "app": "Poczta",
+      "subject": "Plan premiery na Q3",
+      "count": "40 wiadomości",
+      "summaryHead": "Podsumowanie wątku",
+      "summary": "Premiera przesuwa się na czwartek. Sam przygotowuje prezentację, Ana rezerwuje salę.",
+      "noOnDevice": "Bez Apple Intelligence decydują proste reguły na tym komputerze. Przed użyciem chmury zapyta raz.",
+      "screenLabel": "Wątek w poczcie z 40 wiadomościami. Sugestia proponuje podsumowanie; po „tak” pojawia się krótkie podsumowanie."
     }
   },
   "getStarted": {
@@ -1798,7 +1823,9 @@
           "„Nie pokazuj mi tego”, aby wyłączyć ten rodzaj.",
           "„Nie tutaj”, aby wyłączyć ją w tej aplikacji."
         ],
-        "hint": "Odpowiedz na sugestię na głos."
+        "hint": "Odpowiedz na sugestię na głos.",
+        "off": "Na razie są wyłączone.",
+        "turnOn": "Włącz je w sekcji Prywatność"
       },
       "meetings": {
         "title": "Spotkania",

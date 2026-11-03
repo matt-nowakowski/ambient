@@ -11,8 +11,15 @@
 //
 // v4: "They asked… Q3 numbers" and the app names hold twice as long (+4 beats
 // each). To keep the logo on the bed's lift and the end card on its final hit,
-// the bed repeats two bars of its steady groove (its beats 40–48) at video beat
-// 48 (MUSIC_SPLICE): from there on, music beat = video beat − 8.
+// the bed repeated two bars of its steady groove (its beats 40–48) at video beat 48.
+//
+// v5: a new opening (an empty desktop, the orb pulls up a chair, "Your desktop
+// colleague.", "You talk."), a smart-writing beat after the mail,
+// suggestions moved up after the four verbs and held longer, the modes beat cut,
+// and the tagline "Your desktop colleague." Every shot that v4 had
+// still sits on the same beat of the bed (writes on its groove, Hey Ambient on
+// its breakdown, the logo on its lift, the end card on its final hit); the bed is
+// re-cut to fit (MUSIC_SPLICES, see script.md).
 export const FPS = 30;
 export const W = 1920;
 export const H = 1080;
@@ -20,8 +27,26 @@ export const H = 1080;
 export const BPM = 100;
 export const FIRST_BEAT = 0.032;
 export const MUSIC_TRIM = 0;
-/** v4: at video beat `at`, the bed jumps back to its beat `to` (repeats `at − to` beats). */
-export const MUSIC_SPLICE = { at: 48, to: 40 };
+/**
+ * v5: the bed as segments [video beat, bed beat]: from each video beat on, the
+ * bed plays from that beat of its own (until the next segment). Each joint is a
+ * 3-frame crossfade on a beat.
+ *  - 0 → 0, then 4 → 0: the intro bar plays twice (quietly the first time, under
+ *    the empty desktop), so the slam line lands on the bed's first beat;
+ *  - 16 → 8: a bar of the groove repeats under the mail, so "It answers" still
+ *    lands on the bed's dip (its beat 15);
+ *  - 40 → 20: three bars of the groove repeat under the suggestions, so Hey
+ *    Ambient still lands on the breakdown (its beat 36);
+ *  - 68 → 52: from "No bot." on, the bed is v4's (v4's 48 → 40 splice, minus the
+ *    12 beats the suggestions took there).
+ */
+export const MUSIC_SPLICES: [number, number][] = [
+  [0, 0],
+  [4, 0],
+  [16, 8],
+  [40, 20],
+  [68, 52],
+];
 /** Frames per beat. */
 export const FB = (60 / BPM) * FPS;
 /** Global frame of beat b. */
@@ -30,53 +55,56 @@ export const beat = (b: number) => Math.round((FIRST_BEAT + (b * 60) / BPM) * FP
 /** Shots: [id, start beat in this cut, start beat in v1]. Each runs until the next one starts. */
 export const SHOTS: [string, number, number][] = [
   ["open", 0, 0],
-  ["speak", 4, 4],
-  ["writes", 8, 7],
-  ["answers", 15, 12],
-  ["acts", 21, 16],
-  ["remembers", 26, 20],
-  ["modes", 32, 24],
-  ["hey", 36, 28],
-  ["meeting", 42, 32],
-  ["nobot", 48, 36],
-  ["suggest", 57, 40],
-  ["apps", 69, 48],
-  ["connect", 81, 54],
-  ["private", 85, 57],
-  ["gather", 92, 62],
-  ["reveal", 96, 64],
-  ["tagline", 104, 72],
-  ["endcard", 112, 80],
+  ["talk", 8, 4],
+  ["writes", 12, 7],
+  ["smart", 18, 0],
+  ["answers", 23, 12],
+  ["acts", 29, 16],
+  ["remembers", 34, 20],
+  ["nudge", 40, 0],
+  ["suggest", 50, 40],
+  ["hey", 56, 28],
+  ["meeting", 62, 32],
+  ["nobot", 68, 36],
+  ["apps", 77, 48],
+  ["connect", 89, 54],
+  ["private", 93, 57],
+  ["gather", 100, 62],
+  ["reveal", 104, 64],
+  ["tagline", 112, 72],
+  ["endcard", 120, 80],
 ];
-export const END_BEAT = 123;
+export const END_BEAT = 131;
 export const TOTAL = beat(END_BEAT);
 
 /** Voice fragments: [file in public/vo, beat it starts on]. */
 export const VO: [string, number][] = [
-  ["speak", 4],
-  ["writes", 11.5],
-  ["answers", 15],
-  ["acts", 21],
-  ["remembers", 26],
-  ["hey", 36],
-  ["notes", 42],
-  ["nobot", 52],
-  ["anyapp", 69],
-  ["nothing", 81],
-  ["private", 85.5],
-  ["meet", 96],
-  ["free", 113],
+  ["colleague", 4],
+  ["talk", 8.2],
+  ["writes", 15.5],
+  ["answers", 23],
+  ["acts", 29],
+  ["remembers", 34],
+  ["nudges", 40],
+  ["hey", 56],
+  ["notes", 62],
+  ["nobot", 72],
+  ["anyapp", 77],
+  ["nothing", 89],
+  ["private", 93.5],
+  ["meet", 104],
+  ["free", 121],
 ];
 
 /** Chapters for the site's player (seconds). */
 export const CHAPTERS: [string, number][] = [
   ["Intro", 0],
-  ["Dictation", 4],
-  ["The agent", 15],
-  ["Hey Ambient", 36],
-  ["Meetings", 42],
-  ["Suggestions", 57],
-  ["Nothing to connect", 69],
-  ["Privacy", 85],
-  ["Meet Ambient", 96],
+  ["Writing", 8],
+  ["The agent", 23],
+  ["Suggestions", 40],
+  ["Hey Ambient", 56],
+  ["Meetings", 62],
+  ["Nothing to connect", 77],
+  ["Privacy", 93],
+  ["Meet Ambient", 104],
 ];

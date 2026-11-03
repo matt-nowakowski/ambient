@@ -1,0 +1,282 @@
+/* "It offers help, too" (OffersPreview.tsx): onboarding's drawn screen,
+   with the real HUD's suggestion card on it. The card copies src/hud/hud.css
+   (fixed dark glass in both themes, as the real one), a touch smaller. */
+.offers-stage {
+  position: relative;
+  isolation: isolate;
+  height: 188px;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--demo-wallpaper);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-text) 9%, transparent);
+  user-select: none;
+}
+
+/* ---------- the mail window: a long thread, drawn, not written ---------- */
+.offers-mail {
+  position: absolute;
+  /* Low and to the left, so the HUD (top right) leaves the thread's
+     subject and its "40 messages" in view. */
+  top: 72px;
+  inset-inline-start: 14px;
+  width: 66%;
+  bottom: -14px;
+  border-radius: 11px;
+  overflow: hidden;
+  text-align: start;
+  background: color-mix(in srgb, var(--color-demo-window) 80%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+  box-shadow:
+    0 0 0 0.5px var(--color-line),
+    inset 0 0.5px 0 rgb(255 255 255 / 0.5),
+    0 10px 30px rgb(40 20 50 / 0.16);
+}
+.offers-mail-body {
+  padding: 2px 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.offers-subject {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+.offers-count {
+  flex: none;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--color-glass-press);
+  font-size: 11px;
+  font-weight: 450;
+  color: var(--color-ink-2);
+}
+.offers-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.offers-avatar {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-line);
+}
+.offers-lines {
+  flex: 1;
+  display: grid;
+  gap: 5px;
+}
+.offers-lines i {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--color-line);
+}
+.offers-lines i + i {
+  opacity: 0.6;
+}
+
+/* ---------- the HUD's suggestion card ---------- */
+.offers-hud {
+  --h-ink: #fafafa;
+  --h-muted: rgba(255, 255, 255, 0.64);
+  --h-raise: rgba(255, 255, 255, 0.08);
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+  width: 244px;
+  /* The orb in light ink, as on dark glass in either theme. */
+  --orb-fg: #f5f5f5;
+  --orb-rest-ink: 0.2;
+  --orb-dim-ink: 0.1;
+  --orb-ring-rest-ink: 0.3;
+  border-radius: 12px;
+  overflow: hidden;
+  color: var(--h-ink);
+  text-align: start;
+  background: rgba(18, 18, 22, 0.74);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 28px rgb(20 10 30 / 0.22);
+  opacity: 0;
+  filter: blur(2px);
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: top right;
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease,
+    transform 420ms var(--spring),
+    height 380ms var(--ease-glide);
+}
+[dir="rtl"] .offers-hud {
+  transform-origin: top left;
+}
+.offers-hud[data-shown] {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+/* Its two faces share the card; the one showing sets its height. */
+.offers-face {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  padding: 10px 12px 11px;
+  opacity: 0;
+  transition:
+    opacity 260ms ease,
+    filter 260ms ease;
+  filter: blur(3px);
+}
+.offers-face[data-on] {
+  opacity: 1;
+  filter: none;
+}
+.offers-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+}
+.offers-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.35;
+  /* Two even lines rather than one long and a stray word. */
+  text-wrap: balance;
+}
+.offers-actions {
+  flex-basis: 100%;
+  display: flex;
+  gap: 6px;
+  padding-inline-start: 24px;
+}
+.offers-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: var(--h-raise);
+  color: var(--h-ink);
+  font-size: 11.5px;
+  white-space: nowrap;
+  transition:
+    transform 180ms var(--spring),
+    background 180ms ease;
+}
+.offers-btn.is-primary {
+  background: var(--h-ink);
+  color: #111;
+}
+/* "Yes" is said: the button takes it, like a press. */
+.offers-btn[data-pressed] {
+  transform: scale(0.94);
+  background: rgba(255, 255, 255, 0.82);
+}
+.offers-btn kbd {
+  font-family: inherit;
+  font-size: 9.5px;
+  opacity: 0.55;
+}
+.offers-timer {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.35);
+  transform-origin: left;
+}
+[dir="rtl"] .offers-timer {
+  transform-origin: right;
+}
+.offers-timer[data-run] {
+  transform: scaleX(0);
+  transition: transform 8s linear;
+}
+.offers-summary-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 450;
+  color: var(--h-muted);
+}
+.offers-summary-text {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  font-weight: 380;
+  line-height: 1.45;
+}
+
+/* ---------- "Yes", said: the recording pill's material ---------- */
+.offers-said {
+  position: absolute;
+  bottom: 16px;
+  inset-inline-end: 22px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px 0 10px;
+  border-radius: 999px;
+  background: var(--color-background);
+  box-shadow: var(--demo-pill-shadow);
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 450;
+  opacity: 0;
+  transform: translateY(8px) scale(0.94);
+  transition:
+    opacity 220ms ease,
+    transform 420ms var(--spring);
+}
+.offers-said[data-shown] {
+  opacity: 1;
+  transform: none;
+}
+.offers-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--onb-live, #ef4444);
+  animation: offers-pulse 1.4s infinite;
+}
+@keyframes offers-pulse {
+  0% {
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--onb-live, #ef4444) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+/* Reduced motion: the last frame, held still. */
+.offers-stage[data-still] *,
+.offers-stage[data-still] {
+  transition: none !important;
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .offers-dot {
+    animation: none;
+  }
+}

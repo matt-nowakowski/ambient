@@ -46,6 +46,36 @@ pub mod bounds {
     pub const WRITING_POLISH_DISFLUENCY: (f64, f64, f64) = (0.02, 0.3, 0.06);
     /// Words without a sentence break that make a run-on (polished).
     pub const WRITING_RUN_ON_WORDS: (f64, f64, f64) = (15.0, 80.0, 35.0);
+    /// Free's weekly pool of AI uses (hosted and on-device together). The
+    /// server enforces the hosted side with the same tunable.
+    pub const FREE_AI_PER_WEEK: (f64, f64, f64) = (5.0, 500.0, 25.0);
+    /// Suggestions Free is offered a week (judged on device or by rules).
+    pub const FREE_SUGGESTIONS_PER_WEEK: (f64, f64, f64) = (1.0, 200.0, 10.0);
+    /// How long Free's screen memory keeps what it saw, in hours.
+    pub const FREE_MEMORY_HOURS: (f64, f64, f64) = (1.0, 168.0, 24.0);
+    /// Meetings Free can take notes in each calendar month.
+    pub const FREE_MEETINGS_PER_MONTH: (f64, f64, f64) = (1.0, 30.0, 2.0);
+}
+
+/// Free's limits (`crate::limits`). Pro, Team and the trial have none
+/// beyond fair use.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct FreeLimits {
+    pub ai_per_week: u32,
+    pub suggestions_per_week: u32,
+    pub memory_hours: u32,
+    pub meetings_per_month: u32,
+}
+
+impl Default for FreeLimits {
+    fn default() -> Self {
+        Self {
+            ai_per_week: bounds::FREE_AI_PER_WEEK.2 as u32,
+            suggestions_per_week: bounds::FREE_SUGGESTIONS_PER_WEEK.2 as u32,
+            memory_hours: bounds::FREE_MEMORY_HOURS.2 as u32,
+            meetings_per_month: bounds::FREE_MEETINGS_PER_MONTH.2 as u32,
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -86,6 +116,7 @@ pub struct AgentConfig {
     pub search_timeout: Duration,
     /// Smart writing's thresholds (see `bounds::WRITING_*`).
     pub writing: WritingConfig,
+    pub free: FreeLimits,
     kinds: BTreeMap<String, KindConfig>,
 }
 
@@ -124,6 +155,7 @@ impl Default for AgentConfig {
             answer_idle_timeout: ms(bounds::ANSWER_IDLE_TIMEOUT_MS),
             search_timeout: ms(bounds::SEARCH_TIMEOUT_MS),
             writing: WritingConfig::default(),
+            free: FreeLimits::default(),
             kinds: BTreeMap::new(),
         }
     }
@@ -164,6 +196,10 @@ fn clamp(v: Option<&Value>, b: (f64, f64, f64)) -> f64 {
     v.and_then(Value::as_f64)
         .filter(|x| x.is_finite())
         .map_or(b.2, |x| x.clamp(b.0, b.1))
+}
+
+fn whole(v: Option<&Value>, b: (f64, f64, f64)) -> u32 {
+    clamp(v, b).round() as u32
 }
 
 /// The server's JSON, applied within bounds. None for another schema version
@@ -227,6 +263,18 @@ pub fn parse(text: &str) -> Option<AgentConfig> {
                 )
                 .round() as u32,
             }
+        },
+        free: FreeLimits {
+            ai_per_week: whole(v.pointer("/free/ai_per_week"), bounds::FREE_AI_PER_WEEK),
+            suggestions_per_week: whole(
+                v.pointer("/free/suggestions_per_week"),
+                bounds::FREE_SUGGESTIONS_PER_WEEK,
+            ),
+            memory_hours: whole(v.pointer("/free/memory_hours"), bounds::FREE_MEMORY_HOURS),
+            meetings_per_month: whole(
+                v.pointer("/free/meetings_per_month"),
+                bounds::FREE_MEETINGS_PER_MONTH,
+            ),
         },
         kinds: BTreeMap::new(),
     };
@@ -345,6 +393,27 @@ mod tests {
         assert!((c.min_confidence_for("draft_reply") - 0.6).abs() < 1e-6);
         assert!(c.kind("summarise_thread").enabled);
         assert_eq!(c.kind("draft_reply").cooldown, Duration::from_secs(180));
+        assert_eq!(
+            c.free,
+            FreeLimits {
+                ai_per_week: 25,
+                suggestions_per_week: 10,
+                memory_hours: 24,
+                meetings_per_month: 2,
+            }
+        );
+    }
+
+    #[test]
+    fn free_limits_are_clamped() {
+        let c = parse(
+            r#"{"schema":1,"free":{"ai_per_week":100000,"suggestions_per_week":0,"memory_hours":"x","meetings_per_month":3.6}}"#,
+        )
+        .unwrap();
+        assert_eq!(c.free.ai_per_week, 500);
+        assert_eq!(c.free.suggestions_per_week, 1);
+        assert_eq!(c.free.memory_hours, 24); // not a number → default
+        assert_eq!(c.free.meetings_per_month, 4);
     }
 
     #[test]
@@ -429,6 +498,13 @@ mod tests {
             bounds::WRITING_POLISH_DISFLUENCY,
         );
         check("writing.run_on_words", bounds::WRITING_RUN_ON_WORDS);
+        check("free.ai_per_week", bounds::FREE_AI_PER_WEEK);
+        check(
+            "free.suggestions_per_week",
+            bounds::FREE_SUGGESTIONS_PER_WEEK,
+        );
+        check("free.memory_hours", bounds::FREE_MEMORY_HOURS);
+        check("free.meetings_per_month", bounds::FREE_MEETINGS_PER_MONTH);
         for k in v["kinds"].as_array().unwrap() {
             assert!(known_kind(k.as_str().unwrap()), "{k}");
         }

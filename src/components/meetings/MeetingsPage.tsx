@@ -30,7 +30,7 @@ import { Orb } from "../orb/Orb";
 import { Button } from "../ui/Button";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { useSettings } from "../../hooks/useSettings";
-import { isPaid, usePlan } from "../account/usePlan";
+import { openUpgrade } from "../account/usePlan";
 import { EmailNotesButton, MeetingsEmailSetting } from "./MeetingsEmail";
 import { usePendingMeeting } from "./pendingMeeting";
 
@@ -43,6 +43,9 @@ const AUTO_STEPS = [
   { key: "accept", icon: MessageCircle },
   { key: "summary", icon: FileText },
 ] as const;
+
+/** `meeting::start`'s error when Free's meetings this month are used. */
+const FREE_LIMIT = "meetings.error.freeLimit";
 
 const SCREEN_RECORDING_SETTINGS =
   "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture";
@@ -93,7 +96,6 @@ export const MeetingsPage: React.FC = () => {
   const [usage, setUsage] = useState<UsageToday | null>(null);
   const transcriptEnd = useRef<HTMLDivElement>(null);
   const { getSetting, refreshSettings } = useSettings();
-  const { status: plan } = usePlan();
   const agent = getSetting("agent");
 
   const when = (secs: number) =>
@@ -160,7 +162,19 @@ export const MeetingsPage: React.FC = () => {
     setBusy(true);
     const r = await commands.startMeeting();
     setBusy(false);
-    if (r.status === "error") showError("meeting", r.error, { retry: start });
+    if (r.status === "error" && r.error === FREE_LIMIT) {
+      // Free's meetings this month are used: kindly, with the way out.
+      toast(
+        t(FREE_LIMIT, {
+          limit: usage?.meetings_limit ?? BRAND.freeMeetingsPerMonth,
+        }),
+        {
+          action: { label: t("account.upgrade"), onClick: openUpgrade },
+        },
+      );
+    } else if (r.status === "error") {
+      showError("meeting", r.error, { retry: start });
+    }
     await refresh();
   };
 
@@ -339,16 +353,14 @@ export const MeetingsPage: React.FC = () => {
 
   // ── list + live ──
   const elapsed = state.started ? now - state.started * 1000 : 0;
-  const paid = plan ? isPaid(plan) : false;
+  // Call detection is on every plan; Free counts meetings a month.
   const autoState: Detection = !AUTO_DETECTS
     ? "unsupported"
     : agent?.meetings
       ? agent.paused_until && agent.paused_until * 1000 > now
         ? "paused"
         : "on"
-      : paid
-        ? "off"
-        : "pro";
+      : "off";
   return (
     <div className="max-w-3xl w-full mx-auto">
       <header className="mb-section">
@@ -516,7 +528,7 @@ const Transcript: React.FC<{ segments: Segment[] }> = ({ segments }) => {
   );
 };
 
-type Detection = "on" | "off" | "paused" | "pro" | "unsupported";
+type Detection = "on" | "off" | "paused" | "unsupported";
 
 /**
  * Idle: notes start themselves. While a call app is in front and the mic is

@@ -6,34 +6,35 @@ import { RevealLines } from "@/components/hero-copy";
 import { Reveal } from "@/components/motion";
 import { Pricing } from "@/components/pricing";
 import { Container, Eyebrow } from "@/components/ui";
-import { brand, emails, fairUseNote, freeMeetingsPerMonth, mailto } from "@/lib/brand";
-import { macFirst } from "@/lib/content";
-import { billingFaqs } from "@/lib/faqs";
+import { brand, emails, fairUseNote, mailto } from "@/lib/brand";
+import { billingFaqs, faqs } from "@/lib/faqs";
 import { faqPageLd, productLd } from "@/lib/structured-data";
 import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = pageMetadata({
   title: "Pricing",
-  description: `Dictation is free and unlimited. ${brand.name} Pro adds the voice agent, meeting notes and suggestions for $${brand.pricing.proYearlyPerMonth}/mo billed annually or $${brand.pricing.proMonthly} monthly. ${brand.trialDays}-day trial, no card.`,
+  description: `${brand.name} Free gets the whole colleague, with weekly limits and unlimited dictation. Pro removes the limits for $${brand.pricing.proYearlyPerMonth}/mo billed annually or $${brand.pricing.proMonthly} monthly. Try Pro free for ${brand.trialDays} days, no card.`,
   path: "/pricing",
 });
+
+/** Every question, general then billing ("What’s free" is in both lists once). */
+const pricingFaqs = [...faqs, ...billingFaqs.filter((b) => !faqs.some((f) => f.q === b.q))];
 
 export default function PricingPage() {
   return (
     <>
       <JsonLd data={productLd()} />
-      <JsonLd data={faqPageLd(billingFaqs)} />
+      <JsonLd data={faqPageLd(pricingFaqs)} />
       <Container className="pt-14 sm:pt-20">
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow>Pricing</Eyebrow>
           <h1 className="mt-5 text-balance text-[44px] font-extralight leading-[1.04] tracking-[-0.05em] sm:text-[64px]">
-            <RevealLines lines={["Simple pricing."]} />
+            <RevealLines lines={["Start free. Go unlimited."]} />
           </h1>
           <Reveal delay={0.15}>
             <p className="mx-auto mt-6 max-w-md text-pretty text-[15px] leading-relaxed text-muted">
-              Dictation is free and unlimited on every platform, forever. Pro adds the agent: AI polish, answers,
-              actions, meeting notes and suggestions, with no weekly cap. Every install starts with {brand.trialDays}{" "}
-              days of everything, no card.
+              Free gets the whole colleague, with weekly limits. Pro removes them. Try Pro free for {brand.trialDays}{" "}
+              days, no card.
             </p>
           </Reveal>
         </div>
@@ -41,8 +42,8 @@ export default function PricingPage() {
           <Pricing headingLevel="h2" />
         </div>
         <p className="mx-auto mt-8 max-w-2xl text-center text-[13px] leading-relaxed text-subtle">
-          After the trial, Free includes {brand.freePolishPerWeek} AI uses a week, shared across polish, answers,
-          actions, Ask and meeting summaries, and {freeMeetingsPerMonth} meetings a month. {fairUseNote} {macFirst}
+          Free’s {brand.freePolishPerWeek} AI uses a week are shared across polish, writing, answers, actions and
+          meeting summaries. {fairUseNote}
         </p>
         <p className="mt-3 text-center text-[13px] text-subtle">
           Prices in USD. Taxes calculated at checkout. Need an invoice or a larger plan?{" "}
@@ -55,7 +56,7 @@ export default function PricingPage() {
         </p>
       </Container>
 
-      <section aria-labelledby="compare-heading">
+      <section id="compare" aria-labelledby="compare-heading" className="scroll-mt-20">
         <Container className="pt-28 sm:pt-32">
           <Reveal>
             <Eyebrow>Compare</Eyebrow>
@@ -69,16 +70,16 @@ export default function PricingPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="faq-heading">
+      <section id="faq" aria-labelledby="faq-heading" className="scroll-mt-20">
         <Container className="pt-28 sm:pt-32">
           <Reveal>
             <Eyebrow>FAQ</Eyebrow>
             <h2 id="faq-heading" className="mt-4 text-[30px] font-light tracking-[-0.035em] sm:text-[36px]">
-              Billing questions
+              Questions
             </h2>
           </Reveal>
           <Reveal delay={0.1} className="mt-8">
-            <Faq items={billingFaqs} />
+            <Faq items={pricingFaqs} />
           </Reveal>
         </Container>
       </section>

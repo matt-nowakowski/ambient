@@ -1305,6 +1305,15 @@ fn offer(
         log::debug!("proactive: not offering {}: {why}", kind.name());
         return;
     }
+    // Free: one of the week's suggestions (`free.suggestions_per_week`).
+    // At the limit nothing is offered; the first time, the HUD says so once.
+    if !crate::limits::take_suggestion(app) {
+        log::debug!(
+            "proactive: not offering {}: Free's suggestions this week are used",
+            kind.name()
+        );
+        return;
+    }
     let mut st = STATE
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
@@ -1579,6 +1588,10 @@ async fn add_to_calendar(app: AppHandle, context: String) {
     });
     match action {
         Some(a @ Action::CalendarEvent { .. }) => act::run(app, a).await,
+        // Free's AI uses this week are spent: say that, not "failed".
+        None if !crate::limits::ai_available(&app) => {
+            crate::limits::show(&app, crate::limits::Limit::Ai)
+        }
         _ => hud::show(
             &app,
             HudContent::Status {

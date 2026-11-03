@@ -83,8 +83,8 @@
       "progress": "Adım {{step}} / {{count}}"
     },
     "welcome": {
-      "title": "Hangi dilleri konuşuyorsunuz?",
-      "subtitle": "{{appName}} ile kullanacağınız tüm dilleri seçin. Bunu daha sonra değiştirebilirsiniz.",
+      "title": "Masaüstündeki iş arkadaşınız.",
+      "subtitle": "Siz konuşursunuz; o yazar, yanıtlar, harekete geçer ve size hatırlatır. Konuşacağınız tüm dilleri seçin.",
       "languagesLabel": "Diller",
       "noMatch": "“{{query}}” için sonuç yok. Daha fazla dil ayarlarda.",
       "appLanguage": "Uygulama dili",
@@ -142,16 +142,16 @@
       "onDisk": "Bu bilgisayarda zaten var"
     },
     "demo": {
-      "title": "Tek kısayolla her uygulamada konuşun",
-      "hold": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuzu basılı tutup konuşun.</1> <2>Bırakın, sözcükleriniz belirsin.</2>",
-      "tap": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuza dokunup konuşun.</1> <2>Tekrar dokunun, sözcükleriniz belirsin.</2>",
+      "title": "Tek kısayolla her uygulamada onunla konuşun",
+      "hold": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuzu basılı tutup konuşun.</1> <2>Bırakın, sizin yerinize yazsın.</2>",
+      "tap": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuza dokunup konuşun.</1> <2>Tekrar dokunun, sizin yerinize yazsın.</2>",
       "apps": {
         "messages": "Mesajlar",
         "notes": "Notlar"
       },
       "chat": "Bu akşam hâlâ geliyor musun?",
       "noteTitle": "Hafta sonu planları",
-      "screenLabel": "Bir dizüstü bilgisayar: biri bir uygulamaya tıklıyor, kısayola basıp konuşuyor ve sözcükler tıkladığı yerde beliriyor.",
+      "screenLabel": "Bir dizüstü bilgisayar: biri kısayola basıp konuşuyor. Aracı onun yerine yazıyor, yanıtlıyor, harekete geçiyor, hatırlıyor ve kendiliğinden yardım öneriyor.",
       "change": "Değiştir",
       "yourShortcut": "Kısayolunuz",
       "pressKeys": "Yeni tuşlara basın",
@@ -178,12 +178,17 @@
           "sentence": "<0>Bir şey mi unuttunuz?</0> <1>Kısayolunuzu basılı tutup sorun.</1> <2>O hatırlar.</2>",
           "said": "Ana mekân hakkında ne dedi?",
           "reply": "Cumartesi 20.00 için Rosa’s’ta yer ayırttı."
+        },
+        "offer": {
+          "head": "Öneri",
+          "sentence": "<0>Kendisi de fark eder.</0> <1>Yardım edebileceğinde önerir.</1> <2>“Evet” deyin, iş tamam.</2>",
+          "reply": "Cumartesiye eklendi: parkta piknik."
         }
       }
     },
     "try": {
       "title": "Bir deneyin!",
-      "subtitle": "{{appName}} köşede, size yol göstermek için hazır",
+      "subtitle": "Konuşun, {{appName}} köşeden size yanıt versin",
       "noteLabel": "Not",
       "placeholder": "Yeni not",
       "hold": "<keys/> tuşlarını basılı tutun ve konuşun.",
@@ -213,9 +218,9 @@
       "gotIt": "Her sözcük alındı: “{{quote}}”"
     },
     "done": {
-      "title": "Hazırsınız",
-      "subMac": "{{appName}} menü çubuğunuzda durur. Konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
-      "subTray": "{{appName}} sistem tepsinizde durur. Konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
+      "title": "Yeni iş arkadaşınız hazır",
+      "subMac": "{{appName}} menü çubuğunuzda durur. Onunla konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
+      "subTray": "{{appName}} sistem tepsinizde durur. Onunla konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
       "hint": "Bunları daha sonra Ayarlar’dan değiştirebilirsiniz",
       "highFiveLabel": "Çak bir beşlik",
       "atLogin": "Oturum açtığımda {{appName}} uygulamasını başlat",
@@ -1026,10 +1031,10 @@
     "limitReached": "Bu haftaki ücretsiz kelimelerinizi kullandınız. Sınırsız dikte için yükseltin veya hafta sıfırlandığında devam edin.",
     "limitToast": "Haftalık ücretsiz kelimeler bitti",
     "proFeatures": {
-      "polish": "Her dikteye yapay zekâ cilası",
-      "onDevice": "Apple Intelligence ile cihazda cila",
-      "agent": "Ambient aracısı, çıktığı anda",
-      "priority": "Öncelikli destek"
+      "priority": "Öncelikli destek",
+      "noLimits": "Yapay zekâ kullanımı ve önerilerde haftalık sınır yok",
+      "meetings": "Sınırsız toplantı notları",
+      "memory": "90 güne kadar ekran belleği"
     },
     "card": {
       "activate": "Etkinleştir",
@@ -1100,7 +1105,7 @@
       "unlock": "Sınırsıza geç",
       "onDevice": "Bu Mac’te tutun",
       "onDeviceDescription": "Bunun yerine Apple Intelligence kullanın. Hiçbir şey Mac’inizden çıkmaz.",
-      "freeLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı"
+      "freeUsesLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ kullanımından {{left}} tanesi kaldı"
     },
     "writing": {
       "title": "Yazma",
@@ -1167,12 +1172,13 @@
     "plan": {
       "title": "Planınız",
       "polishUnlimited": "Yapay zekâ cilası sınırsızdır.",
-      "polishLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı · {{day}} sıfırlanır",
       "polishFree": "Ücretsiz plan haftalık yapay zekâ cilası hakkı içerir.",
       "meetingsLeft": "Bu ay {{limit}} toplantı notundan {{left}} tanesi kaldı",
       "aiLeft": "Bugün {{limit}} yapay zekâ isteğinden {{left}} tanesi kaldı",
       "searchLeft": "Kalan aramalar: {{count}}",
-      "meterLabel": "Kalan hak"
+      "meterLabel": "Kalan hak",
+      "aiUsesLeft": "Bu hafta {{limit}} yapay zekâ kullanımından {{left}} tanesi kaldı · {{day}} sıfırlanır",
+      "suggestionsLeft": "Bu hafta {{limit}} öneriden {{left}} tanesi kaldı"
     },
     "privacy": {
       "title": "Gizlilik",
@@ -1319,7 +1325,10 @@
       "cantDoYet": "Bunu henüz yapamıyorum: {{what}}. Kendiniz nasıl yapacağınızı göstereyim mi?",
       "cantDoYetPlain": "Bunu bu bilgisayarda henüz yapamıyorum. Kendiniz nasıl yapacağınızı göstereyim mi?",
       "failed": "Bu sefer olmadı. Birazdan tekrar deneyin.",
-      "undoFailed": "Bunu geri alamadım. Uygulamanın kendisinden kaldırabilirsiniz."
+      "undoFailed": "Bunu geri alamadım. Uygulamanın kendisinden kaldırabilirsiniz.",
+      "limitAi": "Bu haftanın {{limit}} yapay zekâ kullanımı bitti. Pazartesi sıfırlanır. Sınırsız kullanım için yükseltin.",
+      "limitSuggestions": "Ücretsiz planda bu haftanın {{limit}} önerisini aldınız.",
+      "limitMeetings": "Ücretsiz planda bu ayın {{limit}} toplantısı bitti. Sınırsız kullanım için yükseltin."
     },
     "offer": {
       "searchWeb": "Web'de ara",
@@ -1329,7 +1338,8 @@
       "openSettings": "Ayarları aç",
       "showFile": "Dosyayı göster",
       "howTo": "Nasıl yapılır",
-      "showMeHow": "Nasıl yapılır"
+      "showMeHow": "Nasıl yapılır",
+      "upgrade": "Yükselt"
     },
     "report": {
       "title": "Bu, {{appName}} ekibine gönderilsin mi?",
@@ -1375,13 +1385,13 @@
       "voiceHint": "Ya da “benim sözlerim” deyin",
       "copiedWords": "Tam sözleriniz kopyalandı. Değiştirmek için yapıştırın.",
       "copiedEdit": "Yeni sürüm kopyalandı. Değiştirmek için yapıştırın.",
-      "noAllowance": "Bu haftaki yapay zekâ yazma hakkınız bitti, bu yüzden söylediğiniz gibi yazıldı.",
       "couldntWrite": "Şu anda yazılamadı, bu yüzden söylediğiniz gibi yazıldı.",
       "rewritten": "Yeniden yazıldı",
       "undoRewrite": "Yeniden yazmayı geri al",
       "copiedOriginal": "Özgün metniniz kopyalandı. Değiştirmek için yapıştırın.",
       "couldntRewrite": "Şu anda yeniden yazılamadı, metniniz değişmedi."
-    }
+    },
+    "firstSuggestionTip": "İlk öneriniz. “Evet”, “şimdi değil” veya “bunları gösterme” deyin. Öğrenir."
   },
   "privacy": {
     "title": "Gizlilik",
@@ -1578,6 +1588,12 @@
       "title": "{{appName}} uygulamasını geliştirmeye yardım et",
       "label": "Anonim kullanım sayılarını paylaş",
       "description": "Yalnızca sayılar ve süreler; söylediklerin, yazdıkların veya gördüklerin asla. Sen açana kadar kapalı."
+    },
+    "free": {
+      "perWeek": "Ücretsiz: haftada {{limit}}",
+      "perMonth": "Ücretsiz: ayda {{limit}}",
+      "hours": "Ücretsiz: {{limit}} saat",
+      "retention": "Ücretsiz plan son {{limit}} saati saklar. Pro 90 güne kadar saklar."
     }
   },
   "meetings": {
@@ -1621,7 +1637,7 @@
     },
     "error": {
       "storage": "Toplantı depolaması açılamadı.",
-      "freeLimit": "Ücretsiz plan ayda 2 toplantı içerir. Pro sınırsızdır.",
+      "freeLimit": "Ücretsiz planda bu ayın {{limit}} toplantısı bitti. Sınırsız kullanım için yükseltin.",
       "mic": "Mikrofon açılamadı.",
       "notActive": "Devam eden toplantı yok.",
       "notFound": "Bu toplantı artık mevcut değil.",
@@ -1637,8 +1653,6 @@
       "offDetail": "Açın, görüşme başlayınca {{appName}} not almayı önersin.",
       "paused": "Duraklatıldı",
       "pausedDetail": "Gizlilik bölümünden devam ettirene kadar {{appName}} not önermeyecek.",
-      "pro": "Not alınmıyor",
-      "proDetail": "Pro ile {{appName}} görüşmelerinizi fark eder ve not almayı önerir.",
       "unsupported": "Not alınmıyor",
       "unsupportedDetail": "Görüşmeniz başlayınca not almaya başlayın.",
       "turnOn": "Aç"
@@ -1675,7 +1689,7 @@
     "start": "Başlayın",
     "meet": {
       "title": "Aracıyla tanışın",
-      "description": "Kısayolunuzu basılı tutun ve konuşun. Gerisini {{appName}} halleder."
+      "description": "Onunla bir iş arkadaşı gibi konuşun ya da yeri gelince yardım önersin."
     },
     "modes": {
       "write": {
@@ -1708,14 +1722,25 @@
       "title": "{{appName}} neler yapabilir, seçin",
       "description": "Hepsi isteğe bağlı. Gizlilik bölümünden istediğiniz zaman değiştirin.",
       "footnote": "Parolalar, cüzdanlar ve gizli pencereler asla okunmaz.",
-      "proOnly": "Pro’ya dahildir. Hesap bölümünden yükseltin.",
       "caps": {
         "screen_context": "Yalnızca sorduğunuz pencere",
         "proactive": "Bu bilgisayarda karar verilir",
         "meetings": "Ses bu bilgisayarda kalır",
         "wake_word": "Yalnızca bu bilgisayarda dinler",
         "screen_memory": "Bu bilgisayarda şifreli kalır"
-      }
+      },
+      "freeNote": "Ücretsiz planda yapay zekâ kullanımı ve önerilerin haftalık sınırları vardır."
+    },
+    "offers": {
+      "title": "Kendisi de yardım önerir",
+      "description": "Uzun bir yazışma ya da bir hata gibi yardımcı olabileceği bir durumda bir kez önerir. “Evet” ya da “şimdi değil” deyin veya görmezden gelin. Öğrenir.",
+      "app": "Posta",
+      "subject": "3. çeyrek lansman planı",
+      "count": "40 mesaj",
+      "summaryHead": "Yazışma özeti",
+      "summary": "Lansman perşembeye kaydı. Sunumdan Sam sorumlu, odayı Ana ayırtıyor.",
+      "noOnDevice": "Apple Intelligence olmadan, kararı bu bilgisayarda basit kurallar verir. Bulutu kullanmadan önce bir kez sorar.",
+      "screenLabel": "40 mesajlık bir e-posta yazışması. Bir öneri yazışmayı özetlemeyi teklif ediyor; “evet” denince kısa bir özet beliriyor."
     }
   },
   "getStarted": {
@@ -1774,7 +1799,9 @@
           "O türü kapatmak için “bunları gösterme”.",
           "Bu uygulamada durdurmak için “burada değil”."
         ],
-        "hint": "Bir öneriyi sesli yanıtlayın."
+        "hint": "Bir öneriyi sesli yanıtlayın.",
+        "off": "Şu an kapalılar.",
+        "turnOn": "Gizlilik bölümünden açın"
       },
       "meetings": {
         "title": "Toplantılar",

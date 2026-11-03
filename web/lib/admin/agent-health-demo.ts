@@ -99,6 +99,9 @@ export function demoAgentRows(days: string[]): EventRow[] {
     add(day, "meeting", { outcome: "failed", duration_bucket: "lt15m" }, 0.2 * v());
     add(day, "meeting_email", { mode: "ask", outcome: "sent" }, 1.8 * v());
     add(day, "meeting_email", { mode: "always", outcome: "sent" }, 1.1 * v());
+    add(day, "limit_hit", { kind: "ai" }, 1.4 * v());
+    add(day, "limit_hit", { kind: "suggestions" }, 0.9 * v());
+    add(day, "limit_hit", { kind: "meetings" }, 0.2 * v());
     add(day, "dictation", { polish: "true", ms_bucket: "lt1s" }, 16 * v());
     add(day, "dictation", { polish: "false", ms_bucket: "lt500" }, 9 * v());
     add(day, "dictation", { polish: "true", ms_bucket: "lt2s" }, 6 * v());

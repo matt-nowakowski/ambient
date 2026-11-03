@@ -407,9 +407,12 @@ pub fn parse_label(reply: &str) -> Option<Decision> {
 const MODEL_TIMEOUT: Duration = Duration::from_millis(3_000);
 
 /// Ask a model about an ambiguous phrasing: Apple Intelligence on this Mac
-/// when it can run it (Pro, or "On this computer only"), else the hosted
-/// model the user chose, never in "On this computer only". None when no
-/// model may be asked, it timed out, or the reply made no sense.
+/// when it can run it (on a paid plan, "On this computer only", or when
+/// the user prefers it), else the hosted model the user chose, never in
+/// "On this computer only". On Free either way takes one of the week's AI
+/// uses (on device through `plan::consume_local_ai`); with the pool spent
+/// nothing is asked. None when no model may be asked, it timed out, or the
+/// reply made no sense.
 pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Option<Decision> {
     use crate::settings::Intelligence;
     let s = settings::get_settings(app);
@@ -423,11 +426,14 @@ pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Optio
         },
         transcript.trim()
     );
+    if !crate::limits::ai_available(app) {
+        return None;
+    }
     let local_ok = super::llm::on_device_ready()
         && s.agent.intelligence != Intelligence::Cloud
-        && (crate::plan::is_paid(app) || s.agent.device_only());
+        && (crate::plan::is_paid(app) || s.agent.device_only() || s.agent.on_device_when_possible);
     let ask = async {
-        if local_ok {
+        if local_ok && crate::plan::consume_local_ai(app) {
             let reply = super::llm::complete_on_device(MODEL_SYSTEM, &user).await;
             if reply.is_some() || s.agent.device_only() {
                 return reply;
@@ -504,50 +510,10 @@ pub fn has_selection(app: &AppHandle) -> bool {
 
 // ── Out of allowance ─────────────────────────────────────────────────────
 
-static LIMITED_UNTIL: Mutex<Option<Instant>> = Mutex::new(None);
-const LIMITED_FOR: Duration = Duration::from_secs(15 * 60);
-
-/// The hosted model refused for the plan's allowance (HTTP 429 / 402):
-/// writing stays as said for a while, with a gentle note.
-pub fn note_limited(error: &str) {
-    if error.contains("status 429") || error.contains("status 402") {
-        if !limited() {
-            LIMIT_NOTED.store(false, std::sync::atomic::Ordering::SeqCst);
-        }
-        if let Ok(mut g) = LIMITED_UNTIL.lock() {
-            *g = Some(Instant::now() + LIMITED_FOR);
-        }
-    }
-}
-
-/// Out of AI allowance right now.
-pub fn limited() -> bool {
-    LIMITED_UNTIL
-        .lock()
-        .ok()
-        .and_then(|g| *g)
-        .is_some_and(|t| Instant::now() < t)
-}
-
-static LIMIT_NOTED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
-
-/// The out-of-allowance note, once per limited spell (not on every
-/// dictation while it lasts).
-pub fn limit_note() -> Option<&'static str> {
-    use std::sync::atomic::Ordering;
-    if !limited() {
-        LIMIT_NOTED.store(false, Ordering::SeqCst);
-        return None;
-    }
-    (!LIMIT_NOTED.swap(true, Ordering::SeqCst)).then_some("hud.writing.noAllowance")
-}
-
-/// Whether an answer error (an i18n key) means the allowance is used up.
-pub fn is_limit_error(key: &str) -> bool {
-    matches!(
-        key,
-        "hud.status.weeklyLimit" | "hud.status.fairUse" | "hud.status.account"
-    )
+/// Whether an answer error (an i18n key) is Free's spent weekly AI pool:
+/// `limits` then says so (with Upgrade) instead of a writing note.
+pub fn is_weekly_limit(key: &str) -> bool {
+    key == "hud.status.weeklyLimit"
 }
 
 // ── After inserting: the chip, and what to revert ───────────────────────
@@ -1163,23 +1129,13 @@ pub fn deliver_written(app: &AppHandle, text: &str, smart: &SmartWrite) -> bool 
     true
 }
 
-/// Writing failed (no allowance, offline…): type their words as said, with
-/// a gentle note. After Edit, nothing is typed; the note says so.
+/// Writing failed (Free's week spent, offline…): type their words as said
+/// (a failed rewrite leaves the selection alone), then say why: Free's
+/// spent pool through `limits` (with Upgrade), anything else as a note.
 pub fn written_failed(app: &AppHandle, smart: SmartWrite, error_key: &str) {
-    let limit = is_limit_error(error_key);
-    if limit {
-        if let Ok(mut g) = LIMITED_UNTIL.lock() {
-            *g = Some(Instant::now() + LIMITED_FOR);
-        }
-        // This note says it; don't repeat it on the next dictation.
-        LIMIT_NOTED.store(true, std::sync::atomic::Ordering::SeqCst);
-    }
-    // A failed rewrite leaves the selection alone (typing the command over
-    // it would lose their text).
+    let spent = is_weekly_limit(error_key);
     let note = if smart.rewrite {
         "hud.writing.couldntRewrite"
-    } else if limit {
-        "hud.writing.noAllowance"
     } else {
         "hud.writing.couldntWrite"
     };
@@ -1193,7 +1149,11 @@ pub fn written_failed(app: &AppHandle, smart: SmartWrite, error_key: &str) {
         {
             return;
         }
-        show_note(&app, note);
+        if spent {
+            crate::limits::ai_spent(&app, crate::limits::Show::Always);
+        } else {
+            show_note(&app, note);
+        }
     });
 }
 

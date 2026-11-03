@@ -83,8 +83,8 @@
       "progress": "Krok {{step}} z {{count}}"
     },
     "welcome": {
-      "title": "Jakými jazyky mluvíte?",
-      "subtitle": "Vyberte všechny, které budete s aplikací {{appName}} používat. Později to můžete změnit.",
+      "title": "Váš kolega na ploše.",
+      "subtitle": "{{appName}} je kolega na vaší ploše, se kterým mluvíte. Vyberte všechny jazyky, které budete používat.",
       "languagesLabel": "Jazyky",
       "noMatch": "Pro „{{query}}“ nic nenalezeno. Další jazyky najdete v nastavení.",
       "appLanguage": "Jazyk aplikace",
@@ -144,16 +144,16 @@
       "onDisk": "Už je v tomto počítači"
     },
     "demo": {
-      "title": "Mluvte v jakékoli aplikaci jedinou zkratkou",
-      "hold": "<0>Klikněte tam, kam byste psali.</0> <1>Podržte zkratku a mluvte.</1> <2>Pusťte ji a vaše slova se objeví.</2>",
-      "tap": "<0>Klikněte tam, kam byste psali.</0> <1>Klepněte na zkratku a mluvte.</1> <2>Klepněte znovu a vaše slova se objeví.</2>",
+      "title": "Mluvte s ním v jakékoli aplikaci jedinou zkratkou",
+      "hold": "<0>Klikněte tam, kam byste psali.</0> <1>Podržte zkratku a mluvte.</1> <2>Pusťte ji a napíše to za vás.</2>",
+      "tap": "<0>Klikněte tam, kam byste psali.</0> <1>Klepněte na zkratku a mluvte.</1> <2>Klepněte znovu a napíše to za vás.</2>",
       "apps": {
         "messages": "Zprávy",
         "notes": "Poznámky"
       },
       "chat": "Přijdeš dneska večer?",
       "noteTitle": "Plány na víkend",
-      "screenLabel": "Notebook: někdo klikne do aplikace, stiskne zkratku, mluví a slova se objeví tam, kam klikl.",
+      "screenLabel": "Notebook: někdo stiskne zkratku a mluví. Agent za něj píše, odpovídá, jedná, pamatuje si a sám nabízí pomoc.",
       "change": "Změnit",
       "yourShortcut": "Vaše zkratka je",
       "pressKeys": "Stiskněte nové klávesy",
@@ -180,12 +180,17 @@
           "sentence": "<0>Něco jste zapomněli?</0> <1>Podržte zkratku a zeptejte se.</1> <2>Pamatuje si to.</2>",
           "said": "Co říkala Ana o místě?",
           "reply": "Zamluvila Rosa's na sobotu na 20:00."
+        },
+        "offer": {
+          "head": "Návrh",
+          "sentence": "<0>Také si všímá.</0> <1>Když může pomoct, nabídne to.</1> <2>Řekněte „ano“ a je hotovo.</2>",
+          "reply": "Přidáno na sobotu: piknik v parku."
         }
       }
     },
     "try": {
       "title": "Zkuste to!",
-      "subtitle": "{{appName}} vás v rohu provede",
+      "subtitle": "Mluvte a {{appName}} vám odpoví z rohu",
       "noteLabel": "Poznámka",
       "placeholder": "Nová poznámka",
       "hold": "Podržte <keys/> a mluvte.",
@@ -215,9 +220,9 @@
       "gotIt": "Mám každé slovo: „{{quote}}“"
     },
     "done": {
-      "title": "Vše je připraveno",
-      "subMac": "{{appName}} najdete v řádku nabídek. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
-      "subTray": "{{appName}} najdete v oznamovací oblasti. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
+      "title": "Váš nový kolega je připraven",
+      "subMac": "{{appName}} najdete v řádku nabídek. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte s ním.",
+      "subTray": "{{appName}} najdete v oznamovací oblasti. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte s ním.",
       "hint": "Tohle můžete později změnit v Nastavení",
       "highFiveLabel": "Plácnout si",
       "atLogin": "Spustit {{appName}} po přihlášení",
@@ -1036,10 +1041,10 @@
     "limitReached": "Bezplatná slova na tento týden jste vyčerpali. Přejděte na Pro a diktujte bez omezení, nebo pokračujte po obnovení týdne.",
     "limitToast": "Týdenní bezplatná slova vyčerpána",
     "proFeatures": {
-      "polish": "AI vyladění každého diktování",
-      "onDevice": "Vyladění přímo v zařízení s Apple Intelligence",
-      "agent": "Ambientní agent se vším, co přibude",
-      "priority": "Prioritní podpora"
+      "priority": "Prioritní podpora",
+      "noLimits": "Žádné týdenní limity použití AI ani návrhů",
+      "meetings": "Neomezené poznámky ze schůzek",
+      "memory": "Paměť obrazovky až 90 dní"
     },
     "card": {
       "activate": "Aktivovat",
@@ -1110,7 +1115,7 @@
       "unlock": "Získat neomezeně",
       "onDevice": "Nechat na tomto Macu",
       "onDeviceDescription": "Použijte místo toho Apple Intelligence. Nic neopustí váš Mac.",
-      "freeLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných vyladění"
+      "freeUsesLeft": "Zbývá {{left}} z {{limit}} bezplatných použití AI tento týden"
     },
     "writing": {
       "title": "Psaní",
@@ -1183,12 +1188,13 @@
     "plan": {
       "title": "Váš tarif",
       "polishUnlimited": "AI vyladění je neomezené.",
-      "polishLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných AI vyladění · obnoví se {{day}}",
       "polishFree": "Bezplatný tarif zahrnuje týdenní příděl AI vyladění.",
       "meetingsLeft": "Tento měsíc zbývá {{left}} z {{limit}} poznámek ze schůzek",
       "aiLeft": "Dnes zbývá {{left}} z {{limit}} požadavků AI",
       "searchLeft": "Zbývající vyhledávání: {{count}}",
-      "meterLabel": "Zbývající limit"
+      "meterLabel": "Zbývající limit",
+      "aiUsesLeft": "Zbývá {{left}} z {{limit}} použití AI tento týden · obnoví se {{day}}",
+      "suggestionsLeft": "Zbývá {{left}} z {{limit}} návrhů tento týden"
     },
     "privacy": {
       "title": "Soukromí",
@@ -1335,7 +1341,10 @@
       "cantDoYet": "Tohle zatím neumím: {{what}}. Mám vám ukázat, jak to udělat sami?",
       "cantDoYetPlain": "Tohle na tomto počítači zatím neumím. Mám vám ukázat, jak to udělat sami?",
       "failed": "Tentokrát to nevyšlo. Zkuste to za chvíli znovu.",
-      "undoFailed": "Tohle se mi nepodařilo vrátit. Můžete to odstranit přímo v aplikaci."
+      "undoFailed": "Tohle se mi nepodařilo vrátit. Můžete to odstranit přímo v aplikaci.",
+      "limitAi": "To bylo {{limit}} použití AI na tento týden. Obnoví se v pondělí. Přejděte na Pro a limity zmizí.",
+      "limitSuggestions": "Tento týden jste v bezplatném tarifu dostali všech {{limit}} návrhů.",
+      "limitMeetings": "To bylo {{limit}} schůzek na tento měsíc v bezplatném tarifu. Přejděte na Pro a limity zmizí."
     },
     "offer": {
       "searchWeb": "Hledat na webu",
@@ -1345,7 +1354,8 @@
       "openSettings": "Otevřít Nastavení",
       "showFile": "Zobrazit soubor",
       "howTo": "Ukázat jak",
-      "showMeHow": "Ukázat jak"
+      "showMeHow": "Ukázat jak",
+      "upgrade": "Upgradovat"
     },
     "report": {
       "title": "Odeslat to týmu {{appName}}?",
@@ -1391,13 +1401,13 @@
       "voiceHint": "Nebo řekněte „moje slova“",
       "copiedWords": "Vaše přesná slova jsou zkopírovaná. Vložte je pro nahrazení.",
       "copiedEdit": "Nová verze je zkopírovaná. Vložte ji pro nahrazení.",
-      "noAllowance": "Psaní s AI na tento týden došlo, takže je to napsané, jak jste to řekli.",
       "couldntWrite": "Teď to nešlo napsat, takže je to napsané, jak jste to řekli.",
       "rewritten": "Přepsáno",
       "undoRewrite": "Vrátit přepsání",
       "copiedOriginal": "Váš původní text je zkopírovaný. Vložte ho pro nahrazení.",
       "couldntRewrite": "Teď to nešlo přepsat, takže váš text zůstal beze změny."
-    }
+    },
+    "firstSuggestionTip": "Váš první návrh. Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“. Učí se."
   },
   "privacy": {
     "title": "Soukromí",
@@ -1602,6 +1612,12 @@
       "title": "Pomozte vylepšit {{appName}}",
       "label": "Sdílet anonymní statistiky používání",
       "description": "Jen počty a časy, nikdy to, co říkáte, píšete nebo vidíte. Vypnuto, dokud to nezapnete."
+    },
+    "free": {
+      "perWeek": "Zdarma: {{limit}} týdně",
+      "perMonth": "Zdarma: {{limit}} měsíčně",
+      "hours": "Zdarma: {{limit}} hodin",
+      "retention": "Bezplatný tarif uchovává posledních {{limit}} hodin. Pro uchovává až 90 dní."
     }
   },
   "meetings": {
@@ -1645,7 +1661,7 @@
     },
     "error": {
       "storage": "Úložiště schůzek se nepodařilo otevřít.",
-      "freeLimit": "Bezplatný tarif zahrnuje 2 schůzky měsíčně. Pro je bez omezení.",
+      "freeLimit": "To bylo {{limit}} schůzek na tento měsíc v bezplatném tarifu. Přejděte na Pro a limity zmizí.",
       "mic": "Mikrofon se nepodařilo otevřít.",
       "notActive": "Neprobíhá žádná schůzka.",
       "notFound": "Tato schůzka už neexistuje.",
@@ -1661,8 +1677,6 @@
       "offDetail": "Zapněte to a {{appName}} nabídne poznámky, když začne hovor.",
       "paused": "Pozastaveno",
       "pausedDetail": "{{appName}} nenabídne poznámky, dokud to neobnovíte v Soukromí.",
-      "pro": "Poznámky se nedělají",
-      "proDetail": "S Pro {{appName}} rozpozná vaše hovory a nabídne poznámky.",
       "unsupported": "Poznámky se nedělají",
       "unsupportedDetail": "Až hovor začne, spusťte poznámky.",
       "turnOn": "Zapnout"
@@ -1699,7 +1713,7 @@
     "start": "Začít",
     "meet": {
       "title": "Seznamte se s agentem",
-      "description": "Podržte zkratku a mluvte. {{appName}} zařídí zbytek."
+      "description": "Mluvte s ním jako s kolegou, nebo ať nabídne pomoc, když se to hodí."
     },
     "modes": {
       "write": {
@@ -1732,14 +1746,25 @@
       "title": "Vyberte, co smí {{appName}} dělat",
       "description": "Vše je volitelné. Změnit to můžete kdykoli v Soukromí.",
       "footnote": "Hesla, peněženky a anonymní okna se nikdy nečtou.",
-      "proOnly": "Součást Pro. Upgradujte v sekci Účet.",
       "caps": {
         "screen_context": "Jen okno, na které se ptáte",
         "proactive": "Rozhoduje se na tomto počítači",
         "meetings": "Zvuk zůstává na tomto počítači",
         "wake_word": "Poslouchá jen na tomto počítači",
         "screen_memory": "Zůstává zašifrované na tomto počítači"
-      }
+      },
+      "freeNote": "V bezplatném tarifu mají použití AI a návrhy týdenní limity."
+    },
+    "offers": {
+      "title": "Nabízí i pomoc",
+      "description": "Když může pomoct, třeba s dlouhým vláknem nebo chybou, jednou to nabídne. Řekněte „ano“ nebo „teď ne“, nebo to ignorujte. Učí se.",
+      "app": "Pošta",
+      "subject": "Plán spuštění na Q3",
+      "count": "40 zpráv",
+      "summaryHead": "Shrnutí vlákna",
+      "summary": "Spuštění se přesouvá na čtvrtek. Sam má na starosti prezentaci a Ana zamluví místnost.",
+      "noOnDevice": "Bez Apple Intelligence rozhodují na tomto počítači jednoduchá pravidla. Před použitím cloudu se jednou zeptá.",
+      "screenLabel": "E-mailové vlákno se 40 zprávami. Návrh nabídne jeho shrnutí; po „ano“ se objeví krátké shrnutí."
     }
   },
   "getStarted": {
@@ -1798,7 +1823,9 @@
           "„Tyhle mi neukazuj“ pro vypnutí tohoto druhu.",
           "„Tady ne“ pro vypnutí v této aplikaci."
         ],
-        "hint": "Odpovězte na návrh nahlas."
+        "hint": "Odpovězte na návrh nahlas.",
+        "off": "Teď jsou vypnuté.",
+        "turnOn": "Zapněte je v Soukromí"
       },
       "meetings": {
         "title": "Schůzky",

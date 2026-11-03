@@ -83,8 +83,8 @@
       "progress": "Step {{step}} of {{count}}"
     },
     "welcome": {
-      "title": "Which languages do you speak?",
-      "subtitle": "Pick every one you'll use with {{appName}}. You can change this later.",
+      "title": "Your desktop colleague.",
+      "subtitle": "You talk; it writes, answers, acts and nudges you. Pick every language you'll speak.",
       "languagesLabel": "Languages",
       "noMatch": "No match for “{{query}}”. More languages are in settings.",
       "appLanguage": "App language",
@@ -142,16 +142,16 @@
       "onDisk": "Already on this computer"
     },
     "demo": {
-      "title": "Talk in any app, with one shortcut",
-      "hold": "<0>Click where you’d type.</0> <1>Hold your shortcut and talk.</1> <2>Let go, and your words appear.</2>",
-      "tap": "<0>Click where you’d type.</0> <1>Tap your shortcut and talk.</1> <2>Tap again, and your words appear.</2>",
+      "title": "Talk to it in any app, with one shortcut",
+      "hold": "<0>Click where you’d type.</0> <1>Hold your shortcut and talk.</1> <2>Let go, and it types for you.</2>",
+      "tap": "<0>Click where you’d type.</0> <1>Tap your shortcut and talk.</1> <2>Tap again, and it types for you.</2>",
       "apps": {
         "messages": "Messages",
         "notes": "Notes"
       },
       "chat": "Are you still coming tonight?",
       "noteTitle": "Weekend plans",
-      "screenLabel": "A laptop: someone clicks into an app, presses the shortcut and talks, and the words appear where they clicked.",
+      "screenLabel": "A laptop: someone presses the shortcut and talks. The agent types for them, answers, acts, remembers, and offers help on its own.",
       "change": "Change",
       "yourShortcut": "Your shortcut is",
       "pressKeys": "Press the new keys",
@@ -178,12 +178,17 @@
           "sentence": "<0>Forgot something?</0> <1>Hold your shortcut and ask.</1> <2>It remembers.</2>",
           "said": "What did Ana say about the venue?",
           "reply": "She booked Rosa's for Saturday at 8."
+        },
+        "offer": {
+          "head": "Suggestion",
+          "sentence": "<0>It notices, too.</0> <1>When it can help, it offers.</1> <2>Say “yes”, and it's done.</2>",
+          "reply": "Added to Saturday: picnic in the park."
         }
       }
     },
     "try": {
       "title": "Give it a try!",
-      "subtitle": "{{appName}}'s in the corner to help walk you through it",
+      "subtitle": "Talk, and {{appName}} answers you from the corner",
       "noteLabel": "Note",
       "placeholder": "New note",
       "hold": "Hold <keys/> and talk.",
@@ -213,9 +218,9 @@
       "gotIt": "Got every word: “{{quote}}”"
     },
     "done": {
-      "title": "You're all set",
-      "subMac": "{{appName}} lives in your menu bar. Hold or tap <keys/> in any app to talk.",
-      "subTray": "{{appName}} lives in your system tray. Hold or tap <keys/> in any app to talk.",
+      "title": "Your new colleague is ready",
+      "subMac": "{{appName}} lives in your menu bar. Hold or tap <keys/> in any app to talk to it.",
+      "subTray": "{{appName}} lives in your system tray. Hold or tap <keys/> in any app to talk to it.",
       "hint": "You can change these later in Settings",
       "highFiveLabel": "High five",
       "atLogin": "Start {{appName}} when I log in",
@@ -1026,10 +1031,10 @@
     "limitReached": "You've used this week's free words. Upgrade for unlimited dictation, or keep going when the week resets.",
     "limitToast": "Weekly free words used up",
     "proFeatures": {
-      "polish": "AI polish on every dictation",
-      "onDevice": "On-device polish with Apple Intelligence",
-      "agent": "The {{appName}} agent, with every new feature as it ships",
-      "priority": "Priority support"
+      "priority": "Priority support",
+      "noLimits": "No weekly limits on AI uses or suggestions",
+      "meetings": "Unlimited meeting notes",
+      "memory": "Screen memory for up to 90 days"
     },
     "card": {
       "activate": "Activate",
@@ -1100,7 +1105,7 @@
       "unlock": "Get unlimited",
       "onDevice": "Keep it on this Mac",
       "onDeviceDescription": "Use Apple Intelligence instead. Nothing leaves your Mac.",
-      "freeLeft": "{{left}} of {{limit}} free polishes left this week"
+      "freeUsesLeft": "{{left}} of {{limit}} free AI uses left this week"
     },
     "writing": {
       "title": "Writing",
@@ -1167,12 +1172,13 @@
     "plan": {
       "title": "Your plan",
       "polishUnlimited": "AI polish is unlimited.",
-      "polishLeft": "{{left}} of {{limit}} free AI polishes left this week · resets {{day}}",
       "polishFree": "Free includes a weekly allowance of AI polish.",
       "meetingsLeft": "{{left}} of {{limit}} meeting notes left this month",
       "aiLeft": "{{left}} of {{limit}} AI requests left today",
       "searchLeft": "Searches left: {{count}}",
-      "meterLabel": "Allowance left"
+      "meterLabel": "Allowance left",
+      "aiUsesLeft": "{{left}} of {{limit}} AI uses left this week · resets {{day}}",
+      "suggestionsLeft": "{{left}} of {{limit}} suggestions left this week"
     },
     "privacy": {
       "title": "Privacy",
@@ -1319,7 +1325,10 @@
       "cantDoYet": "I can't {{what}} yet. Want me to show you how to do it yourself?",
       "cantDoYetPlain": "I can't do that on this computer yet. Want me to show you how to do it yourself?",
       "failed": "That didn't work this time. Try again in a moment.",
-      "undoFailed": "I couldn't undo that one. You can remove it in the app itself."
+      "undoFailed": "I couldn't undo that one. You can remove it in the app itself.",
+      "limitAi": "That's this week's {{limit}} AI uses. They reset Monday. Upgrade for no limits.",
+      "limitSuggestions": "You've had this week's {{limit}} suggestions on Free.",
+      "limitMeetings": "That's this month's {{limit}} meetings on Free. Upgrade for no limits."
     },
     "offer": {
       "searchWeb": "Search the web",
@@ -1329,7 +1338,8 @@
       "openSettings": "Open Settings",
       "showFile": "Show file",
       "howTo": "Show me how",
-      "showMeHow": "Show me how"
+      "showMeHow": "Show me how",
+      "upgrade": "Upgrade"
     },
     "report": {
       "title": "Send this to the {{appName}} team?",
@@ -1375,13 +1385,13 @@
       "voiceHint": "Or say “use my words”",
       "copiedWords": "Copied your exact words. Paste to replace.",
       "copiedEdit": "Copied the new version. Paste to replace.",
-      "noAllowance": "Out of AI writing for this week, so it's typed as you said it.",
       "couldntWrite": "Couldn't write that just now, so it's typed as you said it.",
       "rewritten": "Rewritten",
       "undoRewrite": "Undo rewrite",
       "copiedOriginal": "Copied your original text. Paste to replace.",
       "couldntRewrite": "Couldn't rewrite that just now, so your text is unchanged."
-    }
+    },
+    "firstSuggestionTip": "Your first suggestion. Say “yes”, “not now” or “don't show me these”. It learns."
   },
   "privacy": {
     "title": "Privacy",
@@ -1578,6 +1588,12 @@
       "title": "Help improve {{appName}}",
       "label": "Share anonymous usage counts",
       "description": "Counts and timings only, never what you say, type or see. Off unless you turn it on."
+    },
+    "free": {
+      "perWeek": "Free: {{limit}} a week",
+      "perMonth": "Free: {{limit}} a month",
+      "hours": "Free: {{limit}} hours",
+      "retention": "Free keeps the last {{limit}} hours. Pro keeps up to 90 days."
     }
   },
   "meetings": {
@@ -1621,7 +1637,7 @@
     },
     "error": {
       "storage": "Couldn't open meeting storage.",
-      "freeLimit": "Free includes 2 meetings a month. Pro is unlimited.",
+      "freeLimit": "That's this month's {{limit}} meetings on Free. Upgrade for no limits.",
       "mic": "Couldn't open the microphone.",
       "notActive": "No meeting in progress.",
       "notFound": "That meeting no longer exists.",
@@ -1637,8 +1653,6 @@
       "offDetail": "Turn it on and {{appName}} offers to take notes when a call starts.",
       "paused": "Paused",
       "pausedDetail": "{{appName}} won't offer notes until you resume it in Privacy.",
-      "pro": "Not taking notes",
-      "proDetail": "With Pro, {{appName}} spots your calls and offers to take notes.",
       "unsupported": "Not taking notes",
       "unsupportedDetail": "Start notes when your call begins.",
       "turnOn": "Turn on"
@@ -1675,7 +1689,7 @@
     "start": "Get started",
     "meet": {
       "title": "Meet the agent",
-      "description": "Hold your shortcut and talk. {{appName}} figures out the rest."
+      "description": "Talk to it like a colleague, or let it offer help when it spots a moment."
     },
     "modes": {
       "write": {
@@ -1708,14 +1722,25 @@
       "title": "Choose what {{appName}} may do",
       "description": "All optional. Change them any time in Privacy.",
       "footnote": "Passwords, wallets and private windows are never read.",
-      "proOnly": "Part of Pro. Upgrade in Account.",
       "caps": {
         "screen_context": "Only the window you ask about",
         "proactive": "Decided on this computer",
         "meetings": "Audio stays on this computer",
         "wake_word": "Listens on this computer only",
         "screen_memory": "Stays on this computer, encrypted"
-      }
+      },
+      "freeNote": "On Free, AI uses and suggestions have weekly limits."
+    },
+    "offers": {
+      "title": "It offers help, too",
+      "description": "When it can help, like with a long thread or an error, it offers once. Say “yes” or “not now”, or ignore it. It learns.",
+      "app": "Mail",
+      "subject": "Q3 launch plan",
+      "count": "40 messages",
+      "summaryHead": "Thread summary",
+      "summary": "Launch moves to Thursday. Sam owns the deck, and Ana books the room.",
+      "noOnDevice": "Without Apple Intelligence, simple rules decide on this computer. It asks once before using the cloud.",
+      "screenLabel": "A mail thread with 40 messages. A suggestion offers to summarise it; after “yes”, a short summary appears."
     }
   },
   "getStarted": {
@@ -1774,7 +1799,9 @@
           "“Don't show me these” to turn that kind off.",
           "“Not here” to stop it in this app."
         ],
-        "hint": "Answer a suggestion out loud."
+        "hint": "Answer a suggestion out loud.",
+        "off": "They're off for now.",
+        "turnOn": "Turn them on in Privacy"
       },
       "meetings": {
         "title": "Meetings",

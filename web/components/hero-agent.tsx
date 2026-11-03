@@ -1,0 +1,227 @@
+"use client";
+
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { Card, useReducedMotionPref, white } from "./agent-demo";
+import { spring } from "./motion";
+import { Orb } from "./orb/Orb";
+import { OrbIcon, orbIconSize } from "./orb-icon";
+
+/**
+ * The hero: a conversation with the agent, both ways. You ask and it answers,
+ * you ask and it acts, then it notices a moment and offers to help. Illustrative mock.
+ */
+
+type Beat = "ask" | "act" | "nudge";
+type Step =
+  | { beat: Beat; kind: "say"; text: string; ms: number }
+  | { beat: Beat; kind: "answer" | "act" | "offer" | "reply"; ms: number }
+  | { beat: Beat; kind: "accept"; text: string; ms: number };
+
+const STEPS: Step[] = [
+  { beat: "ask", kind: "say", text: "when did Ana want to meet?", ms: 1800 },
+  { beat: "ask", kind: "answer", ms: 3600 },
+  { beat: "act", kind: "say", text: "add the launch review on Thursday at 3", ms: 1900 },
+  { beat: "act", kind: "act", ms: 3200 },
+  { beat: "nudge", kind: "offer", ms: 2800 },
+  { beat: "nudge", kind: "accept", text: "yes, tell her Thursday works", ms: 1900 },
+  { beat: "nudge", kind: "reply", ms: 4200 },
+];
+
+const BEATS: { k: Beat; label: string }[] = [
+  { k: "ask", label: "You ask" },
+  { k: "act", label: "It acts" },
+  { k: "nudge", label: "It nudges you" },
+];
+
+/** The step shown for each beat when motion is reduced, or a beat is picked. */
+const lastStep = (b: Beat) => STEPS.length - 1 - [...STEPS].reverse().findIndex((s) => s.beat === b);
+const firstStep = (b: Beat) => STEPS.findIndex((s) => s.beat === b);
+/** With reduced motion, each beat holds one still: the answer, the action, and the offer itself. */
+const stillStep = (b: Beat) => (b === "nudge" ? STEPS.findIndex((s) => s.kind === "offer") : lastStep(b));
+
+const REPLY = "Hi Ana, Thursday at 3 works for me. See you then.";
+
+export function HeroAgent() {
+  const reduced = useReducedMotionPref();
+  const [i, setI] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.1 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (reduced || !visible) return;
+    const t = setTimeout(() => setI((n) => (n + 1) % STEPS.length), STEPS[i].ms);
+    return () => clearTimeout(t);
+  }, [i, reduced, visible]);
+
+  const idx = reduced ? stillStep(STEPS[i].beat) : i;
+  const step = STEPS[idx];
+  const beat = step.beat;
+  // What was last said in this beat, for the quiet caption once the result shows.
+  const said = STEPS.slice(0, idx + 1).reverse().find((s) => s.beat === beat && "text" in s) as
+    | { text: string }
+    | undefined;
+
+  const showOffer = step.kind === "offer" || step.kind === "accept";
+  const pill = step.kind === "say" || step.kind === "accept" ? (step as { text: string }).text : null;
+
+  return (
+    <div ref={rootRef}>
+      <p className="sr-only">
+        Demo of talking with the agent. You ask “when did Ana want to meet?” and it answers: Thursday at 3pm. You
+        say “add the launch review on Thursday at 3” and it adds the event to your calendar. Then it notices Ana is
+        waiting on a reply and offers to help; you say “yes, tell her Thursday works” and the reply is written for you.
+      </p>
+      <div aria-hidden="true" className="glass-strong overflow-hidden rounded-[24px]">
+        <div className="flex h-11 items-center gap-2 border-b border-border px-4">
+          <span className="size-[11px] rounded-full bg-foreground/10" />
+          <span className="size-[11px] rounded-full bg-foreground/10" />
+          <span className="size-[11px] rounded-full bg-foreground/10" />
+          <span className="eyebrow ml-3 truncate">Mail · Re: Launch review</span>
+        </div>
+        <div className="relative h-[360px] px-5 py-5 text-left text-[14px] font-light leading-[1.7] text-muted sm:h-[330px] sm:px-6">
+          <p className="text-foreground">Re: Launch review</p>
+          <ul className="mt-2 space-y-0.5 sm:max-w-[52%]">
+            <li>Ana: Thanks for the deck, it reads well.</li>
+            <li>Ana: Can we walk through it on Thursday at 3pm?</li>
+          </ul>
+
+          {/* The reply it writes for you */}
+          <AnimatePresence>
+            {step.kind === "reply" ? (
+              <motion.p
+                key="reply"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="mt-4 rounded-[14px] px-4 py-3 text-foreground ring-[0.5px] ring-border-strong sm:max-w-[60%]"
+              >
+                <Typed text={REPLY} instant={reduced} />
+                <span className="caret ml-px inline-block h-[1.05em] w-px translate-y-[3px] bg-foreground" />
+              </motion.p>
+            ) : null}
+          </AnimatePresence>
+
+          {/* Its answer and its action: the glass card, top right */}
+          <AnimatePresence mode="wait">
+            {step.kind === "answer" ? (
+              <Card key="answer" orb="B2">
+                <p className="text-foreground">Thursday at 3pm.</p>
+                <p className="mt-1 text-muted">In Ana’s last email, to walk through the deck.</p>
+                <p className="mt-2.5 text-[11.5px] text-subtle">From this window</p>
+              </Card>
+            ) : step.kind === "act" ? (
+              <Card key="act" orb="S3">
+                <p className="text-foreground">Added to Calendar</p>
+                <p className="mt-1 text-muted">Launch review · Thursday, 3:00 pm</p>
+                <p className="mt-2.5 text-[11.5px] text-subtle">Undo</p>
+              </Card>
+            ) : null}
+          </AnimatePresence>
+
+          {/* It notices, and offers: the HUD bubble */}
+          <AnimatePresence>
+            {showOffer ? (
+              <motion.div
+                key="offer"
+                initial={{ opacity: 0, y: 10, scale: 0.94, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: 6, scale: 0.97, filter: "blur(4px)" }}
+                transition={spring}
+                style={{ transformOrigin: "100% 0%" }}
+                className="glass-strong absolute left-4 right-4 top-4 rounded-[18px] p-4 sm:left-auto sm:w-[300px]"
+              >
+                <div className="flex items-start gap-3">
+                  <OrbIcon variant="S1" footprint={15} className="mt-0.5" />
+                  <div className="min-w-0">
+                    <p className="text-[13.5px] leading-snug text-foreground">Ana is waiting on you. Reply to Ana?</p>
+                    <p className="mt-1 text-[12px] text-subtle">Noticed on this computer · nothing sent</p>
+                  </div>
+                </div>
+                <div className="mt-3.5 flex items-center gap-2">
+                  <span
+                    className={`inline-flex h-7 items-center gap-1.5 rounded-full bg-inverse px-3 text-[12px] text-inverse-fg transition-transform duration-300 ${
+                      step.kind === "accept" ? "scale-105" : ""
+                    }`}
+                  >
+                    Reply <span className="text-[10px] opacity-60">↵</span>
+                  </span>
+                  <span className="inline-flex h-7 items-center gap-1.5 rounded-full px-3 text-[12px] text-muted ring-[0.5px] ring-border-strong">
+                    Not now <span className="text-[10px] opacity-60">esc</span>
+                  </span>
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+
+          {/* What you say: the recording pill, then a quiet caption */}
+          <div className="absolute inset-x-4 bottom-5 flex justify-center">
+            <AnimatePresence mode="popLayout">
+              {pill ? (
+                <motion.div
+                  key={`say-${idx}`}
+                  initial={{ opacity: 0, y: 12, scale: 0.92, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: 8, scale: 0.95, filter: "blur(4px)" }}
+                  transition={spring}
+                  className="glass-dark flex h-10 max-w-full items-center gap-2.5 rounded-full pl-2.5 pr-4"
+                >
+                  <Orb variant="C2" size={orbIconSize("C2").size} style={white} />
+                  <span className="rec-dot size-1.5 shrink-0 rounded-full bg-rec" />
+                  <span className="truncate text-[12px] text-white/80">{pill}</span>
+                </motion.div>
+              ) : said && step.kind !== "offer" ? (
+                <motion.p
+                  key={`said-${beat}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="eyebrow flex h-10 items-center truncate"
+                >
+                  “{said.text}”
+                </motion.p>
+              ) : null}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 flex justify-center">
+        <div className="glass inline-flex gap-1 rounded-full p-1" role="group" aria-label="Talking with the agent">
+          {BEATS.map((b) => (
+            <button
+              key={b.k}
+              type="button"
+              aria-pressed={beat === b.k}
+              onClick={() => setI(reduced ? stillStep(b.k) : firstStep(b.k))}
+              className={`h-8 rounded-full px-3.5 text-[12.5px] transition-colors duration-200 ${
+                beat === b.k ? "bg-[var(--toggle-pill)] text-foreground" : "text-muted hover:text-foreground"
+              }`}
+            >
+              {b.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Types the text out once, a few characters at a time. */
+function Typed({ text, instant }: { text: string; instant: boolean }) {
+  const [n, setN] = useState(instant ? text.length : 0);
+  useEffect(() => {
+    if (instant || n >= text.length) return;
+    const t = setTimeout(() => setN((c) => Math.min(text.length, c + 2)), 32);
+    return () => clearTimeout(t);
+  }, [n, text, instant]);
+  return <>{text.slice(0, instant ? text.length : n)}</>;
+}

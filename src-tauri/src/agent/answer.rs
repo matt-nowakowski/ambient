@@ -355,7 +355,10 @@ pub async fn run_with(
         || (!needs_web
             && (llm::use_on_device(&app, size + 400)
                 || llm::target(&app).is_some_and(|t| t.is_on_device())));
-    let result = if on_device {
+    // Free's weekly AI uses are spent: say so rather than ask the server.
+    let result = if !crate::limits::ai_available(&app) {
+        Err(WEEKLY_LIMIT.to_string())
+    } else if on_device {
         on_device_answer(&app, &question, &history, context.as_deref(), opts.write)
             .await
             .map(|t| Answered {
@@ -428,6 +431,15 @@ pub async fn run_with(
                 });
             }
         }
+        // Free's week of AI uses: kindly, with Upgrade (not an error card).
+        Err(message) if message == WEEKLY_LIMIT => {
+            // Smart writing: their words as said, then `limits` says why.
+            if let Some(smart) = opts.smart.clone() {
+                super::writing::written_failed(&app, smart, &message);
+            } else {
+                crate::limits::ai_spent(&app, crate::limits::Show::Always)
+            }
+        }
         Err(message) => {
             crate::telemetry::error("answer", crate::telemetry::error_kind(&message));
             // Smart writing never leaves them with nothing: their words, as said.
@@ -481,8 +493,17 @@ async fn on_device_answer(
     }
     llm::complete(app, "answer", system, &user)
         .await
-        .ok_or_else(|| "hud.status.onDeviceFailed".to_string())
+        .ok_or_else(|| {
+            if crate::limits::ai_available(app) {
+                "hud.status.onDeviceFailed".to_string()
+            } else {
+                WEEKLY_LIMIT.to_string()
+            }
+        })
 }
+
+/// The error for "Free's weekly AI uses are spent" (shown by `limits`).
+const WEEKLY_LIMIT: &str = "hud.status.weeklyLimit";
 
 /// Why sending the request failed, before any answer arrived.
 enum SendError {

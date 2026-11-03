@@ -174,6 +174,10 @@ requests ending on "did you mean to type this?" moves the router bias +0.05. "Wr
 | `writing.ambiguous_floor` | 0.2 | 0.7 | 0.45 |
 | `writing.polish_disfluency` | 0.02 | 0.3 | 0.06 |
 | `writing.run_on_words` | 15 | 80 | 35 |
+| `free.ai_per_week` | 5 | 500 | 25 |
+| `free.suggestions_per_week` | 1 | 200 | 10 |
+| `free.memory_hours` | 1 | 168 | 24 |
+| `free.meetings_per_month` | 1 | 30 | 2 |
 
 Smart writing (`src-tauri/src/agent/writing.rs`) scores each dictation 0–1 as an instruction to
 write: at or above `written_threshold` it's "Written for you" with no model call; from
