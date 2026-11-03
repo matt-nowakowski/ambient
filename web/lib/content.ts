@@ -290,7 +290,7 @@ export const compareRows: { label: string; us: Cell; them: [Cell, Cell] }[] = [
 export const tiers = {
   free: {
     name: "Free",
-    tagline: "The whole colleague, with weekly limits",
+    tagline: "The whole colleague, with weekly limits.",
     price: 0,
     note: "No account needed.",
     /** The landing page's short list. */
@@ -311,7 +311,7 @@ export const tiers = {
   },
   pro: {
     name: "Pro",
-    tagline: "No limits",
+    tagline: "No limits.",
     /** The landing page's short list. */
     key: ["No limits on AI or meetings (fair use)", "Cloud suggestions, if you choose", "Longer recall", "Everything in Free"],
     monthly: brand.pricing.proMonthly,

@@ -29,7 +29,7 @@ export default function PricingPage() {
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow>Pricing</Eyebrow>
           <h1 className="mt-5 text-balance text-[44px] font-extralight leading-[1.04] tracking-[-0.05em] sm:text-[64px]">
-            <RevealLines lines={["Simple pricing."]} />
+            <RevealLines lines={["Start free. Go unlimited."]} />
           </h1>
           <Reveal delay={0.15}>
             <p className="mx-auto mt-6 max-w-md text-pretty text-[15px] leading-relaxed text-muted">

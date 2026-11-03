@@ -255,7 +255,7 @@ export default function Home() {
             <SectionHeading
               id="pricing-heading"
               eyebrow="Pricing"
-              title="Free gets the colleague. Pro removes the limits."
+              title="Start free. Go unlimited."
               className="mx-auto text-center"
             />
           </Reveal>
