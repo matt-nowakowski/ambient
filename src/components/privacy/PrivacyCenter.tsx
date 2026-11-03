@@ -35,6 +35,7 @@ import {
   type ContextSnapshot,
   type Intelligence,
   type LedgerEntry,
+  type UsageToday,
 } from "@/bindings";
 import { Button } from "../ui/Button";
 import { Radio } from "../ui/Radio";
@@ -174,9 +175,12 @@ export const PrivacyCenter: React.FC = () => {
   const [preview, setPreview] = useState<ContextSnapshot | null>(null);
   const [previewing, setPreviewing] = useState(false);
   const [previewNote, setPreviewNote] = useState<string | null>(null);
+  // Free's limits, for the small "Free: 10 a week" hints.
+  const [limits, setLimits] = useState<UsageToday | null>(null);
 
   const refresh = useCallback(async () => {
     setStatus(await commands.getAgentStatus());
+    setLimits(await commands.getUsageToday());
     const l = await commands.getNetworkLedger(50);
     if (l.status === "ok") setLedger(l.data);
   }, []);
@@ -239,10 +243,23 @@ export const PrivacyCenter: React.FC = () => {
       ? "on"
       : "off";
 
-  /** One capability: what it reads, what leaves the computer, and its switch. */
+  /** Free's limit on a capability, as a short hint ("Free: 10 a week"). */
+  const freeHint = (cap: Capability): string | null => {
+    if (paid || !limits) return null;
+    if (cap === "proactive" && limits.suggestions_limit != null)
+      return t("privacy.free.perWeek", { limit: limits.suggestions_limit });
+    if (cap === "screen_memory" && limits.memory_hours_limit != null)
+      return t("privacy.free.hours", { limit: limits.memory_hours_limit });
+    if (cap === "meetings" && limits.meetings_limit != null)
+      return t("privacy.free.perMonth", { limit: limits.meetings_limit });
+    return null;
+  };
+
+  /** One capability: what it reads, what leaves the computer, and its switch.
+   * Every one is on every plan; Free has limits on some (the hint says which). */
   const capabilityRow = (cap: Capability, Icon: LucideIcon) => {
     const unsupported = UNSUPPORTED.includes(cap);
-    const locked = !paid || unsupported;
+    const hint = freeHint(cap);
     return (
       <div
         key={cap}
@@ -260,10 +277,9 @@ export const PrivacyCenter: React.FC = () => {
                 {t("privacy.macOnly")}
               </span>
             ) : (
-              locked && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
-                  <Lock width={10} height={10} />
-                  {t("account.plans.pro")}
+              hint && (
+                <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                  {hint}
                 </span>
               )
             )}
@@ -281,7 +297,15 @@ export const PrivacyCenter: React.FC = () => {
             />
             {t(`privacy.capabilities.${cap}.leaves`)}
           </p>
-          {cap === "screen_memory" && s.screen_memory && (
+          {/* Free keeps a day of memory; the choices are Pro's. */}
+          {cap === "screen_memory" && s.screen_memory && hint && (
+            <p className="mt-2 text-small text-ink-2">
+              {t("privacy.free.retention", {
+                limit: limits?.memory_hours_limit,
+              })}
+            </p>
+          )}
+          {cap === "screen_memory" && s.screen_memory && !hint && (
             <div className="mt-2 flex flex-wrap items-center gap-1.5">
               <span className="text-small text-ink-2">
                 {t("privacy.retention")}
@@ -305,7 +329,7 @@ export const PrivacyCenter: React.FC = () => {
         </div>
         <Switch
           checked={s[cap]}
-          disabled={locked}
+          disabled={unsupported}
           ariaLabel={t(`privacy.capabilities.${cap}.title`)}
           onChange={(on) => save({ ...s, [cap]: on })}
         />

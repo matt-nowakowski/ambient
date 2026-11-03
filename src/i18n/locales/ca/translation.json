@@ -1036,10 +1036,10 @@
     "limitReached": "Heu fet servir les paraules gratuïtes d'aquesta setmana. Milloreu el pla per dictar sense límits, o continueu quan es restableixi la setmana.",
     "limitToast": "Paraules gratuïtes setmanals esgotades",
     "proFeatures": {
-      "polish": "Poliment amb IA a cada dictat",
-      "onDevice": "Poliment al dispositiu amb Apple Intelligence",
-      "agent": "L'agent ambient, a mesura que arribi",
-      "priority": "Assistència prioritària"
+      "priority": "Assistència prioritària",
+      "noLimits": "Sense límits setmanals d'usos d'IA ni de suggeriments",
+      "meetings": "Notes de reunions il·limitades",
+      "memory": "Memòria de la pantalla fins a 90 dies"
     },
     "card": {
       "activate": "Activa",
@@ -1110,7 +1110,7 @@
       "unlock": "Desbloqueja'l",
       "onDevice": "Mantén-ho en aquest Mac",
       "onDeviceDescription": "Feu servir Apple Intelligence. Res no surt del vostre Mac.",
-      "freeLeft": "Us queden {{left}} de {{limit}} usos gratuïts del poliment amb IA aquesta setmana"
+      "freeUsesLeft": "Queden {{left}} de {{limit}} usos gratuïts d'IA aquesta setmana"
     },
     "trial": {
       "daysLeft_one": "Queda {{count}} dia",
@@ -1161,12 +1161,13 @@
     "plan": {
       "title": "El vostre pla",
       "polishUnlimited": "El poliment amb IA és il·limitat.",
-      "polishLeft": "Us queden {{left}} de {{limit}} usos gratuïts del poliment amb IA aquesta setmana · es restableix {{day}}",
       "polishFree": "El pla gratuït inclou una quota setmanal de poliment amb IA.",
       "meetingsLeft": "Aquest mes queden {{left}} de {{limit}} notes de reunions",
       "aiLeft": "Avui queden {{left}} de {{limit}} peticions d'IA",
       "searchLeft": "Cerques restants: {{count}}",
-      "meterLabel": "Marge restant"
+      "meterLabel": "Marge restant",
+      "aiUsesLeft": "Queden {{left}} de {{limit}} usos d'IA aquesta setmana · es restableix {{day}}",
+      "suggestionsLeft": "Queden {{left}} de {{limit}} suggeriments aquesta setmana"
     },
     "privacy": {
       "title": "Privadesa",
@@ -1313,7 +1314,10 @@
       "cantDoYet": "Encara no sé fer això: {{what}}. Voleu que us mostri com fer-ho pel vostre compte?",
       "cantDoYetPlain": "Encara no puc fer això en aquest ordinador. Voleu que us mostri com fer-ho pel vostre compte?",
       "failed": "Aquesta vegada no ha funcionat. Torneu-ho a provar d'aquí a un moment.",
-      "undoFailed": "No he pogut desfer-ho. Ho podeu eliminar des de la mateixa aplicació."
+      "undoFailed": "No he pogut desfer-ho. Ho podeu eliminar des de la mateixa aplicació.",
+      "limitAi": "Heu fet servir els {{limit}} usos d'IA d'aquesta setmana. Es restableixen dilluns. Milloreu el pla per no tenir límits.",
+      "limitSuggestions": "Ja heu tingut els {{limit}} suggeriments d'aquesta setmana del pla Gratuït.",
+      "limitMeetings": "Heu fet servir les {{limit}} reunions d'aquest mes del pla Gratuït. Milloreu el pla per no tenir límits."
     },
     "offer": {
       "searchWeb": "Cerca al web",
@@ -1323,7 +1327,8 @@
       "openSettings": "Obre la configuració",
       "showFile": "Mostra el fitxer",
       "howTo": "Mostra com es fa",
-      "showMeHow": "Mostra com es fa"
+      "showMeHow": "Mostra com es fa",
+      "upgrade": "Millora el pla"
     },
     "report": {
       "title": "Voleu enviar això a l'equip de {{appName}}?",
@@ -1550,7 +1555,13 @@
       "label": "Comparteix recomptes d'ús anònims",
       "description": "Només recomptes i temps, mai el que dius, escrius o veus. Desactivat fins que l'activis."
     },
-    "days_many": "{{count}} dies"
+    "days_many": "{{count}} dies",
+    "free": {
+      "perWeek": "Gratuït: {{limit}} per setmana",
+      "perMonth": "Gratuït: {{limit}} al mes",
+      "hours": "Gratuït: {{limit}} hores",
+      "retention": "El pla Gratuït conserva les últimes {{limit}} hores. Pro conserva fins a 90 dies."
+    }
   },
   "meetings": {
     "title": "Reunions",
@@ -1593,7 +1604,7 @@
     },
     "error": {
       "storage": "No s'ha pogut obrir l'emmagatzematge de reunions.",
-      "freeLimit": "El pla gratuït inclou 2 reunions al mes. Pro és il·limitat.",
+      "freeLimit": "Heu fet servir les {{limit}} reunions d'aquest mes del pla Gratuït. Milloreu el pla per no tenir límits.",
       "mic": "No s'ha pogut obrir el micròfon.",
       "notActive": "No hi ha cap reunió en curs.",
       "notFound": "Aquesta reunió ja no existeix.",
@@ -1609,8 +1620,6 @@
       "offDetail": "Activeu-la i el {{appName}} us oferirà prendre notes quan comenci una trucada.",
       "paused": "En pausa",
       "pausedDetail": "El {{appName}} no oferirà notes fins que el reprengueu a Privadesa.",
-      "pro": "No pren notes",
-      "proDetail": "Amb Pro, el {{appName}} detecta les trucades i ofereix prendre notes.",
       "unsupported": "No pren notes",
       "unsupportedDetail": "Comenceu a prendre notes quan comenci la trucada.",
       "turnOn": "Activa"
@@ -1680,14 +1689,14 @@
       "title": "Trieu què pot fer el {{appName}}",
       "description": "Tot és opcional. Canvieu-ho quan vulgueu a Privadesa.",
       "footnote": "Les contrasenyes, els moneders i les finestres privades no es llegeixen mai.",
-      "proOnly": "Part de Pro. Milloreu el pla a Compte.",
       "caps": {
         "screen_context": "Només la finestra per la qual pregunteu",
         "proactive": "Es decideix en aquest ordinador",
         "meetings": "L'àudio es queda en aquest ordinador",
         "wake_word": "Només escolta en aquest ordinador",
         "screen_memory": "Es queda en aquest ordinador, xifrat"
-      }
+      },
+      "freeNote": "Amb el pla Gratuït, els usos d'IA i els suggeriments tenen límits setmanals."
     },
     "offers": {
       "title": "També ofereix ajuda",

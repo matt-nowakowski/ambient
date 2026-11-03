@@ -1031,10 +1031,10 @@
     "limitReached": "你已用完本周的免费字数。升级即可无限听写，或等本周重置后继续使用。",
     "limitToast": "本周免费字数已用完",
     "proFeatures": {
-      "polish": "对每次听写进行 AI 润色",
-      "onDevice": "使用 Apple Intelligence 在设备上润色",
-      "agent": "Ambient 智能体，新功能陆续推出",
-      "priority": "优先支持"
+      "priority": "优先支持",
+      "noLimits": "AI 使用和建议没有每周上限",
+      "meetings": "会议笔记不限次数",
+      "memory": "屏幕记忆最长保留 90 天"
     },
     "card": {
       "activate": "激活",
@@ -1105,7 +1105,7 @@
       "unlock": "获取无限次",
       "onDevice": "仅在这台 Mac 上处理",
       "onDeviceDescription": "改用 Apple Intelligence。任何内容都不会离开你的 Mac。",
-      "freeLeft": "本周还剩 {{left}} 次免费 AI 润色（共 {{limit}} 次）"
+      "freeUsesLeft": "本周还剩 {{left}} / {{limit}} 次免费 AI 使用"
     },
     "trial": {
       "daysLeft_one": "还剩 {{count}} 天",
@@ -1153,12 +1153,13 @@
     "plan": {
       "title": "你的套餐",
       "polishUnlimited": "AI 润色不限次数。",
-      "polishLeft": "本周还剩 {{left}} 次免费 AI 润色（共 {{limit}} 次）· {{day}} 重置",
       "polishFree": "免费套餐包含每周的 AI 润色额度。",
       "meetingsLeft": "本月还剩 {{left}}/{{limit}} 份会议纪要",
       "aiLeft": "今天还剩 {{left}}/{{limit}} 次 AI 请求",
       "searchLeft": "剩余搜索次数：{{count}}",
-      "meterLabel": "剩余额度"
+      "meterLabel": "剩余额度",
+      "aiUsesLeft": "本周还剩 {{left}} / {{limit}} 次 AI 使用 · {{day}}重置",
+      "suggestionsLeft": "本周还剩 {{left}} / {{limit}} 条建议"
     },
     "privacy": {
       "title": "隐私",
@@ -1305,7 +1306,10 @@
       "cantDoYet": "我暂时还做不到：{{what}}。要我教你自己操作吗？",
       "cantDoYetPlain": "我暂时还无法在这台电脑上做到。要我教你自己操作吗？",
       "failed": "这次没有成功。请稍后再试。",
-      "undoFailed": "无法撤销这一项。你可以在该应用中直接删除。"
+      "undoFailed": "无法撤销这一项。你可以在该应用中直接删除。",
+      "limitAi": "本周的 {{limit}} 次 AI 使用已用完，将于周一重置。升级即可不受限制。",
+      "limitSuggestions": "免费版本周的 {{limit}} 条建议已全部提供。",
+      "limitMeetings": "免费版本月的 {{limit}} 场会议已用完。升级即可不受限制。"
     },
     "offer": {
       "searchWeb": "在网上搜索",
@@ -1315,7 +1319,8 @@
       "openSettings": "打开设置",
       "showFile": "显示文件",
       "howTo": "教我怎么做",
-      "showMeHow": "教我怎么做"
+      "showMeHow": "教我怎么做",
+      "upgrade": "升级"
     },
     "report": {
       "title": "发送给 {{appName}} 团队？",
@@ -1538,6 +1543,12 @@
       "title": "帮助改进 {{appName}}",
       "label": "分享匿名使用计数",
       "description": "仅计数和耗时，绝不包括你说的、输入的或看到的内容。在你开启前保持关闭。"
+    },
+    "free": {
+      "perWeek": "免费版：每周 {{limit}} 条",
+      "perMonth": "免费版：每月 {{limit}} 场",
+      "hours": "免费版：{{limit}} 小时",
+      "retention": "免费版保留最近 {{limit}} 小时。Pro 最长保留 90 天。"
     }
   },
   "meetings": {
@@ -1581,7 +1592,7 @@
     },
     "error": {
       "storage": "无法打开会议存储。",
-      "freeLimit": "免费套餐每月包含 2 场会议。Pro 不限次数。",
+      "freeLimit": "免费版本月的 {{limit}} 场会议已用完。升级即可不受限制。",
       "mic": "无法打开麦克风。",
       "notActive": "当前没有进行中的会议。",
       "notFound": "该会议已不存在。",
@@ -1597,8 +1608,6 @@
       "offDetail": "开启后，通话开始时 {{appName}} 会提议做记录。",
       "paused": "已暂停",
       "pausedDetail": "在“隐私”中恢复之前，{{appName}} 不会提议做记录。",
-      "pro": "未做记录",
-      "proDetail": "使用 Pro，{{appName}} 会发现你的通话并提议做记录。",
       "unsupported": "未做记录",
       "unsupportedDetail": "通话开始时开始记录。",
       "turnOn": "开启"
@@ -1668,14 +1677,14 @@
       "title": "选择 {{appName}} 可以做什么",
       "description": "全部可选。可随时在“隐私”中更改。",
       "footnote": "从不读取密码、钱包和无痕窗口。",
-      "proOnly": "Pro 功能。可在“账户”中升级。",
       "caps": {
         "screen_context": "只看你问到的窗口",
         "proactive": "在这台电脑上决定",
         "meetings": "音频留在这台电脑上",
         "wake_word": "只在这台电脑上聆听",
         "screen_memory": "加密保存在这台电脑上"
-      }
+      },
+      "freeNote": "免费版的 AI 使用和建议有每周上限。"
     },
     "offers": {
       "title": "它还会主动帮忙",
@@ -1731,7 +1740,10 @@
       },
       "recall": {
         "title": "回忆",
-        "examples": ["我昨天关于定价说了什么？", "找到第三季度的演示文稿。"],
+        "examples": [
+          "我昨天关于定价说了什么？",
+          "找到第三季度的演示文稿。"
+        ],
         "hint": "你说过、看过或做过的事。"
       },
       "suggestions": {

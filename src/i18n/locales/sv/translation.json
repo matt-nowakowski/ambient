@@ -1031,10 +1031,10 @@
     "limitReached": "Du har använt veckans gratisord. Uppgradera för obegränsad diktering eller fortsätt när veckan återställs.",
     "limitToast": "Veckans gratisord är slut",
     "proFeatures": {
-      "polish": "AI-finslipning av varje diktering",
-      "onDevice": "Finslipning på enheten med Apple Intelligence",
-      "agent": "Ambient-agenten, med nya funktioner när de släpps",
-      "priority": "Prioriterad support"
+      "priority": "Prioriterad support",
+      "noLimits": "Inga veckogränser för AI-användning eller förslag",
+      "meetings": "Obegränsade mötesanteckningar",
+      "memory": "Skärmminne i upp till 90 dagar"
     },
     "card": {
       "activate": "Aktivera",
@@ -1105,7 +1105,7 @@
       "unlock": "Skaffa obegränsat",
       "onDevice": "Behåll det på den här Macen",
       "onDeviceDescription": "Använd Apple Intelligence i stället. Inget lämnar din Mac.",
-      "freeLeft": "{{left}} av {{limit}} gratis finslipningar kvar den här veckan"
+      "freeUsesLeft": "{{left}} av {{limit}} gratis AI-användningar kvar den här veckan"
     },
     "trial": {
       "daysLeft_one": "{{count}} dag kvar",
@@ -1153,12 +1153,13 @@
     "plan": {
       "title": "Din plan",
       "polishUnlimited": "AI-finslipning är obegränsad.",
-      "polishLeft": "{{left}} av {{limit}} gratis AI-finslipningar kvar den här veckan · återställs {{day}}",
       "polishFree": "Gratis inkluderar en veckokvot för AI-finslipning.",
       "meetingsLeft": "{{left}} av {{limit}} mötesanteckningar kvar den här månaden",
       "aiLeft": "{{left}} av {{limit}} AI-förfrågningar kvar i dag",
       "searchLeft": "Sökningar kvar: {{count}}",
-      "meterLabel": "Återstående kvot"
+      "meterLabel": "Återstående kvot",
+      "aiUsesLeft": "{{left}} av {{limit}} AI-användningar kvar den här veckan · återställs {{day}}",
+      "suggestionsLeft": "{{left}} av {{limit}} förslag kvar den här veckan"
     },
     "privacy": {
       "title": "Integritet",
@@ -1305,7 +1306,10 @@
       "cantDoYet": "Det här kan jag inte än: {{what}}. Vill du att jag visar hur du gör det själv?",
       "cantDoYetPlain": "Det kan jag inte göra på den här datorn än. Vill du att jag visar hur du gör det själv?",
       "failed": "Det fungerade inte den här gången. Försök igen om en stund.",
-      "undoFailed": "Jag kunde inte ångra det. Du kan ta bort det i själva appen."
+      "undoFailed": "Jag kunde inte ångra det. Du kan ta bort det i själva appen.",
+      "limitAi": "Det var veckans {{limit}} AI-användningar. De återställs på måndag. Uppgradera för inga gränser.",
+      "limitSuggestions": "Du har fått veckans {{limit}} förslag på Gratis.",
+      "limitMeetings": "Det var månadens {{limit}} möten på Gratis. Uppgradera för inga gränser."
     },
     "offer": {
       "searchWeb": "Sök på webben",
@@ -1315,7 +1319,8 @@
       "openSettings": "Öppna Inställningar",
       "showFile": "Visa fil",
       "howTo": "Visa hur",
-      "showMeHow": "Visa hur"
+      "showMeHow": "Visa hur",
+      "upgrade": "Uppgradera"
     },
     "report": {
       "title": "Skicka detta till {{appName}}-teamet?",
@@ -1538,6 +1543,12 @@
       "title": "Hjälp till att förbättra {{appName}}",
       "label": "Dela anonym användningsstatistik",
       "description": "Bara räkningar och tider, aldrig vad du säger, skriver eller ser. Av tills du slår på det."
+    },
+    "free": {
+      "perWeek": "Gratis: {{limit}} i veckan",
+      "perMonth": "Gratis: {{limit}} i månaden",
+      "hours": "Gratis: {{limit}} timmar",
+      "retention": "Gratis sparar de senaste {{limit}} timmarna. Pro sparar i upp till 90 dagar."
     }
   },
   "meetings": {
@@ -1581,7 +1592,7 @@
     },
     "error": {
       "storage": "Kunde inte öppna möteslagringen.",
-      "freeLimit": "Gratis inkluderar 2 möten i månaden. Pro är obegränsat.",
+      "freeLimit": "Det var månadens {{limit}} möten på Gratis. Uppgradera för inga gränser.",
       "mic": "Kunde inte öppna mikrofonen.",
       "notActive": "Inget möte pågår.",
       "notFound": "Mötet finns inte längre.",
@@ -1597,8 +1608,6 @@
       "offDetail": "Slå på den så erbjuder {{appName}} sig att ta anteckningar när ett samtal börjar.",
       "paused": "Pausad",
       "pausedDetail": "{{appName}} erbjuder inte anteckningar förrän du återupptar under Integritet.",
-      "pro": "Tar inga anteckningar",
-      "proDetail": "Med Pro upptäcker {{appName}} dina samtal och erbjuder sig att ta anteckningar.",
       "unsupported": "Tar inga anteckningar",
       "unsupportedDetail": "Starta anteckningar när ditt samtal börjar.",
       "turnOn": "Slå på"
@@ -1668,14 +1677,14 @@
       "title": "Välj vad {{appName}} får göra",
       "description": "Allt är valfritt. Ändra när som helst under Integritet.",
       "footnote": "Lösenord, plånböcker och privata fönster läses aldrig.",
-      "proOnly": "Ingår i Pro. Uppgradera under Konto.",
       "caps": {
         "screen_context": "Bara fönstret du frågar om",
         "proactive": "Avgörs på den här datorn",
         "meetings": "Ljudet stannar på den här datorn",
         "wake_word": "Lyssnar bara på den här datorn",
         "screen_memory": "Krypterat, kvar på den här datorn"
-      }
+      },
+      "freeNote": "På Gratis har AI-användning och förslag veckogränser."
     },
     "offers": {
       "title": "Den erbjuder hjälp också",

@@ -19,6 +19,8 @@
   "enforceFreeWordLimit": false,
   "trialDays": 7,
   "freePolishPerWeek": 25,
+  "freeSuggestionsPerWeek": 10,
+  "freeMeetingsPerMonth": 2,
   "pricing": {
     "proMonthly": 12,
     "proYearlyPerMonth": 9,

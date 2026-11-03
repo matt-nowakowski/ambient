@@ -1031,10 +1031,10 @@
     "limitReached": "You've used this week's free words. Upgrade for unlimited dictation, or keep going when the week resets.",
     "limitToast": "Weekly free words used up",
     "proFeatures": {
-      "polish": "AI polish on every dictation",
-      "onDevice": "On-device polish with Apple Intelligence",
-      "agent": "The {{appName}} agent, with every new feature as it ships",
-      "priority": "Priority support"
+      "priority": "Priority support",
+      "noLimits": "No weekly limits on AI uses or suggestions",
+      "meetings": "Unlimited meeting notes",
+      "memory": "Screen memory for up to 90 days"
     },
     "card": {
       "activate": "Activate",
@@ -1105,7 +1105,7 @@
       "unlock": "Get unlimited",
       "onDevice": "Keep it on this Mac",
       "onDeviceDescription": "Use Apple Intelligence instead. Nothing leaves your Mac.",
-      "freeLeft": "{{left}} of {{limit}} free polishes left this week"
+      "freeUsesLeft": "{{left}} of {{limit}} free AI uses left this week"
     },
     "trial": {
       "daysLeft_one": "{{count}} day left",
@@ -1153,12 +1153,13 @@
     "plan": {
       "title": "Your plan",
       "polishUnlimited": "AI polish is unlimited.",
-      "polishLeft": "{{left}} of {{limit}} free AI polishes left this week · resets {{day}}",
       "polishFree": "Free includes a weekly allowance of AI polish.",
       "meetingsLeft": "{{left}} of {{limit}} meeting notes left this month",
       "aiLeft": "{{left}} of {{limit}} AI requests left today",
       "searchLeft": "Searches left: {{count}}",
-      "meterLabel": "Allowance left"
+      "meterLabel": "Allowance left",
+      "aiUsesLeft": "{{left}} of {{limit}} AI uses left this week · resets {{day}}",
+      "suggestionsLeft": "{{left}} of {{limit}} suggestions left this week"
     },
     "privacy": {
       "title": "Privacy",
@@ -1305,7 +1306,10 @@
       "cantDoYet": "I can't {{what}} yet. Want me to show you how to do it yourself?",
       "cantDoYetPlain": "I can't do that on this computer yet. Want me to show you how to do it yourself?",
       "failed": "That didn't work this time. Try again in a moment.",
-      "undoFailed": "I couldn't undo that one. You can remove it in the app itself."
+      "undoFailed": "I couldn't undo that one. You can remove it in the app itself.",
+      "limitAi": "That's this week's {{limit}} AI uses. They reset Monday. Upgrade for no limits.",
+      "limitSuggestions": "You've had this week's {{limit}} suggestions on Free.",
+      "limitMeetings": "That's this month's {{limit}} meetings on Free. Upgrade for no limits."
     },
     "offer": {
       "searchWeb": "Search the web",
@@ -1315,7 +1319,8 @@
       "openSettings": "Open Settings",
       "showFile": "Show file",
       "howTo": "Show me how",
-      "showMeHow": "Show me how"
+      "showMeHow": "Show me how",
+      "upgrade": "Upgrade"
     },
     "report": {
       "title": "Send this to the {{appName}} team?",
@@ -1538,6 +1543,12 @@
       "title": "Help improve {{appName}}",
       "label": "Share anonymous usage counts",
       "description": "Counts and timings only, never what you say, type or see. Off unless you turn it on."
+    },
+    "free": {
+      "perWeek": "Free: {{limit}} a week",
+      "perMonth": "Free: {{limit}} a month",
+      "hours": "Free: {{limit}} hours",
+      "retention": "Free keeps the last {{limit}} hours. Pro keeps up to 90 days."
     }
   },
   "meetings": {
@@ -1581,7 +1592,7 @@
     },
     "error": {
       "storage": "Couldn't open meeting storage.",
-      "freeLimit": "Free includes 2 meetings a month. Pro is unlimited.",
+      "freeLimit": "That's this month's {{limit}} meetings on Free. Upgrade for no limits.",
       "mic": "Couldn't open the microphone.",
       "notActive": "No meeting in progress.",
       "notFound": "That meeting no longer exists.",
@@ -1597,8 +1608,6 @@
       "offDetail": "Turn it on and {{appName}} offers to take notes when a call starts.",
       "paused": "Paused",
       "pausedDetail": "{{appName}} won't offer notes until you resume it in Privacy.",
-      "pro": "Not taking notes",
-      "proDetail": "With Pro, {{appName}} spots your calls and offers to take notes.",
       "unsupported": "Not taking notes",
       "unsupportedDetail": "Start notes when your call begins.",
       "turnOn": "Turn on"
@@ -1668,14 +1677,14 @@
       "title": "Choose what {{appName}} may do",
       "description": "All optional. Change them any time in Privacy.",
       "footnote": "Passwords, wallets and private windows are never read.",
-      "proOnly": "Part of Pro. Upgrade in Account.",
       "caps": {
         "screen_context": "Only the window you ask about",
         "proactive": "Decided on this computer",
         "meetings": "Audio stays on this computer",
         "wake_word": "Listens on this computer only",
         "screen_memory": "Stays on this computer, encrypted"
-      }
+      },
+      "freeNote": "On Free, AI uses and suggestions have weekly limits."
     },
     "offers": {
       "title": "It offers help, too",

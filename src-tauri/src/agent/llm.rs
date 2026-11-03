@@ -45,9 +45,8 @@ pub fn target(app: &AppHandle) -> Option<Target> {
         Intelligence::Cloud => ai_provider(AMBIENT_AI_PROVIDER_ID)?,
         Intelligence::Auto => settings.active_post_process_provider()?,
     };
-    if provider.id == APPLE_INTELLIGENCE_PROVIDER_ID && !crate::plan::is_paid(app) {
-        return None;
-    }
+    // Apple Intelligence is on every plan; on Free each call is an AI use
+    // from the weekly pool (`complete_inner` takes it).
     // The hosted endpoint picks the real model; Apple Intelligence has one.
     let model = AMBIENT_AI_DEFAULT_MODEL_ID.to_string();
     let api_key = server_token(app);
@@ -153,10 +152,19 @@ async fn complete_inner(
     user: &str,
     local_first: bool,
 ) -> Option<String> {
-    if local_first
-        && use_on_device(app, system.len() + user.len())
-        && crate::plan::consume_local_ai(app)
-    {
+    // Free's weekly AI pool is used: say so (for what the user asked for)
+    // instead of sending a request the server would refuse.
+    if !crate::limits::ai_available(app) {
+        crate::limits::ai_spent(app, limit_show(purpose));
+        return None;
+    }
+    let mut took_local = false;
+    if local_first && use_on_device(app, system.len() + user.len()) {
+        if !crate::plan::consume_local_ai(app) {
+            crate::limits::ai_spent(app, limit_show(purpose));
+            return None;
+        }
+        took_local = true;
         let (s, u) = (system.to_string(), user.to_string());
         let out = tauri::async_runtime::spawn_blocking(move || on_device(&s, &u))
             .await
@@ -168,6 +176,10 @@ async fn complete_inner(
     }
     let t = target(app)?;
     if t.is_on_device() {
+        if !took_local && !crate::plan::consume_local_ai(app) {
+            crate::limits::ai_spent(app, limit_show(purpose));
+            return None;
+        }
         #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
         {
             if !crate::apple_intelligence::check_apple_intelligence_availability() {
@@ -201,8 +213,19 @@ async fn complete_inner(
         Ok(None) => None,
         Err(e) => {
             log::warn!("agent {purpose} call failed: {e}");
+            crate::limits::check_model_error(app, &e, limit_show(purpose));
             None
         }
+    }
+}
+
+/// When a Free limit stops a model call: said for what the user asked for
+/// (answers, meeting summaries, drafts), counted only for background work
+/// (routing, judging, nudges), where the caller has its own fallback.
+fn limit_show(purpose: &str) -> crate::limits::Show {
+    match purpose {
+        "answer" | "summary" | "draft" | "onboarding_reply" => crate::limits::Show::Always,
+        _ => crate::limits::Show::Never,
     }
 }
 

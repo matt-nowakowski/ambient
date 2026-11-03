@@ -10,8 +10,9 @@ import {
   usePolishUsage,
 } from "./usePlan";
 
-/** Plan and AI polish at a glance (Home): Free shows the weekly allowance,
- * the trial its days left, Pro that polish is unlimited. */
+/** Plan at a glance (Home): Free shows what's left of its limits (AI uses
+ * and suggestions this week, meetings this month), the trial its days left,
+ * Pro its daily fair use. */
 export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
   onOpenAccount,
 }) => {
@@ -21,7 +22,7 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
   const [today, setToday] = useState<UsageToday | null>(null);
   useEffect(() => {
     commands.getUsageToday().then(setToday);
-  }, [status]);
+  }, [status, usage]);
   if (!status) return null;
 
   const paid = isPaid(status);
@@ -73,7 +74,7 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
                 })
               : t("home.plan.polishUnlimited")
             : usage
-              ? t("home.plan.polishLeft", {
+              ? t("home.plan.aiUsesLeft", {
                   left,
                   limit: usage.limit,
                   day: resets,
@@ -86,12 +87,25 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
             </span>
           )}
         </p>
-        {today?.meetings_limit != null && (
-          <p className="mt-0.5 text-small text-ink-2">
-            {t("home.plan.meetingsLeft", {
-              left: Math.max(0, today.meetings_limit - today.meetings),
-              limit: today.meetings_limit,
-            })}
+        {!paid && today && (
+          <p className="mt-0.5 text-small text-ink-3">
+            {[
+              today.suggestions_limit != null &&
+                t("home.plan.suggestionsLeft", {
+                  left: Math.max(
+                    0,
+                    today.suggestions_limit - today.suggestions,
+                  ),
+                  limit: today.suggestions_limit,
+                }),
+              today.meetings_limit != null &&
+                t("home.plan.meetingsLeft", {
+                  left: Math.max(0, today.meetings_limit - today.meetings),
+                  limit: today.meetings_limit,
+                }),
+            ]
+              .filter(Boolean)
+              .join(" · ")}
           </p>
         )}
         {/* The meter shows what is left: full at the start of the day or

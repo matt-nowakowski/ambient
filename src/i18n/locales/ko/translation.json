@@ -1031,10 +1031,10 @@
     "limitReached": "이번 주 무료 단어를 모두 사용했습니다. 업그레이드하면 무제한으로 받아쓰기를 할 수 있고, 주가 초기화되면 계속 사용할 수도 있습니다.",
     "limitToast": "이번 주 무료 단어 소진",
     "proFeatures": {
-      "polish": "모든 받아쓰기에 AI 다듬기",
-      "onDevice": "Apple Intelligence로 기기에서 다듬기",
-      "agent": "ambient 에이전트 신기능을 출시 즉시 이용",
-      "priority": "우선 지원"
+      "priority": "우선 지원",
+      "noLimits": "AI 사용과 제안에 주간 한도 없음",
+      "meetings": "무제한 회의 노트",
+      "memory": "최대 90일간 화면 기억"
     },
     "card": {
       "activate": "활성화",
@@ -1105,7 +1105,7 @@
       "unlock": "무제한 이용하기",
       "onDevice": "이 Mac에서만 처리",
       "onDeviceDescription": "대신 Apple Intelligence를 사용하세요. 어떤 데이터도 Mac 밖으로 나가지 않습니다.",
-      "freeLeft": "이번 주 무료 AI 다듬기 {{limit}}회 중 {{left}}회 남음"
+      "freeUsesLeft": "이번 주 무료 AI 사용 {{left}}/{{limit}}회 남음"
     },
     "trial": {
       "daysLeft_one": "{{count}}일 남음",
@@ -1153,12 +1153,13 @@
     "plan": {
       "title": "내 요금제",
       "polishUnlimited": "AI 다듬기는 무제한입니다.",
-      "polishLeft": "이번 주 무료 AI 다듬기 {{limit}}회 중 {{left}}회 남음 · {{day}}에 초기화",
       "polishFree": "무료 요금제에는 매주 AI 다듬기 이용량이 포함됩니다.",
       "meetingsLeft": "이번 달 회의록 {{left}}/{{limit}}개 남음",
       "aiLeft": "오늘 AI 요청 {{left}}/{{limit}}회 남음",
       "searchLeft": "남은 검색: {{count}}회",
-      "meterLabel": "남은 사용량"
+      "meterLabel": "남은 사용량",
+      "aiUsesLeft": "이번 주 AI 사용 {{left}}/{{limit}}회 남음 · {{day}} 초기화",
+      "suggestionsLeft": "이번 주 제안 {{left}}/{{limit}}개 남음"
     },
     "privacy": {
       "title": "개인정보 보호",
@@ -1305,7 +1306,10 @@
       "cantDoYet": "아직 이 작업은 할 수 없습니다: {{what}}. 직접 하는 방법을 알려 드릴까요?",
       "cantDoYetPlain": "아직 이 컴퓨터에서는 그 작업을 할 수 없습니다. 직접 하는 방법을 알려 드릴까요?",
       "failed": "이번에는 잘 되지 않았습니다. 잠시 후 다시 시도하세요.",
-      "undoFailed": "실행 취소할 수 없었습니다. 앱에서 직접 삭제할 수 있습니다."
+      "undoFailed": "실행 취소할 수 없었습니다. 앱에서 직접 삭제할 수 있습니다.",
+      "limitAi": "이번 주 AI 사용 {{limit}}회를 모두 썼습니다. 월요일에 초기화됩니다. 업그레이드하면 한도가 없습니다.",
+      "limitSuggestions": "무료 플랜의 이번 주 제안 {{limit}}개를 모두 받았습니다.",
+      "limitMeetings": "무료 플랜의 이번 달 회의 {{limit}}회를 모두 썼습니다. 업그레이드하면 한도가 없습니다."
     },
     "offer": {
       "searchWeb": "웹에서 검색",
@@ -1315,7 +1319,8 @@
       "openSettings": "설정 열기",
       "showFile": "파일 보기",
       "howTo": "방법 보기",
-      "showMeHow": "방법 보기"
+      "showMeHow": "방법 보기",
+      "upgrade": "업그레이드"
     },
     "report": {
       "title": "{{appName}} 팀에 보낼까요?",
@@ -1538,6 +1543,12 @@
       "title": "{{appName}} 개선에 도움 주기",
       "label": "익명 사용 횟수 공유",
       "description": "횟수와 소요 시간만 보내며, 말하거나 입력하거나 보는 내용은 절대 보내지 않습니다. 켜기 전까지는 꺼져 있습니다."
+    },
+    "free": {
+      "perWeek": "무료: 주 {{limit}}개",
+      "perMonth": "무료: 월 {{limit}}회",
+      "hours": "무료: {{limit}}시간",
+      "retention": "무료 플랜은 최근 {{limit}}시간을 보관합니다. Pro는 최대 90일간 보관합니다."
     }
   },
   "meetings": {
@@ -1581,7 +1592,7 @@
     },
     "error": {
       "storage": "회의 저장소를 열 수 없습니다.",
-      "freeLimit": "무료 요금제에는 매월 회의 2회가 포함됩니다. Pro는 무제한입니다.",
+      "freeLimit": "무료 플랜의 이번 달 회의 {{limit}}회를 모두 썼습니다. 업그레이드하면 한도가 없습니다.",
       "mic": "마이크를 열 수 없습니다.",
       "notActive": "진행 중인 회의가 없습니다.",
       "notFound": "해당 회의가 더 이상 존재하지 않습니다.",
@@ -1597,8 +1608,6 @@
       "offDetail": "켜면 통화가 시작될 때 {{appName}}이(가) 회의록 작성을 제안합니다.",
       "paused": "일시 정지됨",
       "pausedDetail": "개인정보 보호에서 다시 시작하기 전까지 {{appName}}은(는) 회의록 작성을 제안하지 않습니다.",
-      "pro": "기록하지 않음",
-      "proDetail": "Pro에서는 {{appName}}이(가) 통화를 감지해 회의록 작성을 제안합니다.",
       "unsupported": "기록하지 않음",
       "unsupportedDetail": "통화가 시작되면 기록을 시작하세요.",
       "turnOn": "켜기"
@@ -1668,14 +1677,14 @@
       "title": "{{appName}}이(가) 할 수 있는 일 선택",
       "description": "모두 선택 사항입니다. 개인정보 보호에서 언제든지 변경하세요.",
       "footnote": "암호, 지갑, 비공개 창은 절대 읽지 않습니다.",
-      "proOnly": "Pro 기능입니다. 계정에서 업그레이드하세요.",
       "caps": {
         "screen_context": "물어본 창만",
         "proactive": "이 컴퓨터에서 결정",
         "meetings": "오디오는 이 컴퓨터에만 저장",
         "wake_word": "이 컴퓨터에서만 듣기",
         "screen_memory": "이 컴퓨터에 암호화해 저장"
-      }
+      },
+      "freeNote": "무료 플랜에서는 AI 사용과 제안에 주간 한도가 있습니다."
     },
     "offers": {
       "title": "먼저 돕기도 합니다",
@@ -1731,7 +1740,10 @@
       },
       "recall": {
         "title": "기억하기",
-        "examples": ["어제 가격에 대해 뭐라고 했지?", "3분기 자료 찾아 줘."],
+        "examples": [
+          "어제 가격에 대해 뭐라고 했지?",
+          "3분기 자료 찾아 줘."
+        ],
         "hint": "내가 말하고, 보고, 작업한 내용."
       },
       "suggestions": {

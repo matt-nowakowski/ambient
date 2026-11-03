@@ -180,6 +180,10 @@ fn listen_for_offer(app: &AppHandle) {
                         undo: false,
                     },
                 ),
+                // Free's meetings this month are used: say so, with Upgrade.
+                Err(key) if key == crate::meeting::FREE_LIMIT_ERROR => {
+                    crate::limits::show(&handle, crate::limits::Limit::Meetings)
+                }
                 Err(key) => crate::hud::show(
                     &handle,
                     crate::hud::HudContent::Status {
@@ -276,11 +280,12 @@ fn run(app: AppHandle) {
         }
 
         // Meeting prep from the user's own Calendar, checked once a minute.
+        // On Free it's one of the week's suggestions, and the brief an AI use.
         if agent_prep_due(&mut last_prep) {
             let a = settings::get_settings(&app).agent;
             if a.proactive
                 && !a.is_paused()
-                && crate::plan::is_paid(&app)
+                && !crate::limits::suggestions_done(&app)
                 && !crate::hud::is_visible()
             {
                 proactive::consider_calendar(&app, a.suggestions_per_hour);
@@ -316,8 +321,10 @@ fn run(app: AppHandle) {
             Some("proactive off".to_string())
         } else if agent.is_paused() {
             Some("paused".into())
-        } else if !crate::plan::is_paid(&app) {
-            Some("not paid".into())
+        } else if crate::limits::suggestions_done(&app) {
+            // Free's suggestions this week are used (and the user was told):
+            // don't spend judgements that can't be offered.
+            Some("free suggestions used this week".into())
         } else {
             match &meta {
                 Err(reason) => Some(format!("no snapshot ({reason:?})")),
@@ -396,11 +403,9 @@ fn run(app: AppHandle) {
         last_capture = Some(Instant::now());
 
         // The 2-minute rolling memory (in RAM only) needs screen context;
-        // the encrypted on-disk memory needs screen memory too.
-        if !(agent.screen_context || agent.screen_memory)
-            || agent.is_paused()
-            || !crate::plan::is_paid(&app)
-        {
+        // the encrypted on-disk memory needs screen memory too. Both are
+        // local and on every plan; Free's memory keeps `free.memory_hours`.
+        if !(agent.screen_context || agent.screen_memory) || agent.is_paused() {
             continue;
         }
         match context::snapshot(SNAPSHOT_CHARS, &agent.never_watch) {
@@ -411,6 +416,8 @@ fn run(app: AppHandle) {
                 remember_recent(&snap);
                 if agent.screen_memory {
                     if let Some(recall) = crate::recall::get() {
+                        crate::recall::set_cap_hours(crate::limits::memory_cap_hours(&app));
+                        recall.purge_if_due();
                         if let Err(e) = recall.add_screen(&snap) {
                             log::debug!("screen memory write failed: {e}");
                         }

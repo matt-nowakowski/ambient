@@ -1031,10 +1031,10 @@
     "limitReached": "Je hebt de gratis woorden van deze week gebruikt. Upgrade voor onbeperkt dicteren, of ga verder wanneer de week wordt gereset.",
     "limitToast": "Wekelijkse gratis woorden op",
     "proFeatures": {
-      "polish": "AI-afwerking voor alles wat je dicteert",
-      "onDevice": "AI-afwerking op het apparaat met Apple Intelligence",
-      "agent": "De Ambient-agent, met elke nieuwe versie",
-      "priority": "Prioriteitsondersteuning"
+      "priority": "Prioriteitsondersteuning",
+      "noLimits": "Geen weeklimieten op AI-gebruik of suggesties",
+      "meetings": "Onbeperkt vergadernotities",
+      "memory": "Schermgeheugen tot 90 dagen"
     },
     "card": {
       "activate": "Activeren",
@@ -1105,7 +1105,7 @@
       "unlock": "Ga voor onbeperkt",
       "onDevice": "Houd het op deze Mac",
       "onDeviceDescription": "Gebruik in plaats daarvan Apple Intelligence. Er verlaat niets je Mac.",
-      "freeLeft": "Nog {{left}} van {{limit}} gratis AI-afwerkingen deze week"
+      "freeUsesLeft": "Nog {{left}} van {{limit}} gratis AI-gebruiken deze week"
     },
     "trial": {
       "daysLeft_one": "Nog {{count}} dag",
@@ -1153,12 +1153,13 @@
     "plan": {
       "title": "Jouw abonnement",
       "polishUnlimited": "AI-afwerking is onbeperkt.",
-      "polishLeft": "Nog {{left}} van {{limit}} gratis AI-afwerkingen deze week · reset op {{day}}",
       "polishFree": "Gratis bevat een wekelijks tegoed aan AI-afwerking.",
       "meetingsLeft": "Nog {{left}} van {{limit}} vergadernotities over deze maand",
       "aiLeft": "Nog {{left}} van {{limit}} AI-verzoeken over vandaag",
       "searchLeft": "Resterende zoekopdrachten: {{count}}",
-      "meterLabel": "Resterend tegoed"
+      "meterLabel": "Resterend tegoed",
+      "aiUsesLeft": "Nog {{left}} van {{limit}} AI-gebruiken deze week · reset {{day}}",
+      "suggestionsLeft": "Nog {{left}} van {{limit}} suggesties deze week"
     },
     "privacy": {
       "title": "Privacy",
@@ -1305,7 +1306,10 @@
       "cantDoYet": "Dit kan ik nog niet: {{what}}. Zal ik je laten zien hoe je het zelf doet?",
       "cantDoYetPlain": "Dat kan ik nog niet op deze computer. Zal ik je laten zien hoe je het zelf doet?",
       "failed": "Dat lukte deze keer niet. Probeer het zo nog eens.",
-      "undoFailed": "Ik kon dat niet ongedaan maken. Je kunt het in de app zelf verwijderen."
+      "undoFailed": "Ik kon dat niet ongedaan maken. Je kunt het in de app zelf verwijderen.",
+      "limitAi": "Dat waren de {{limit}} AI-gebruiken van deze week. Ze worden maandag gereset. Upgrade voor geen limieten.",
+      "limitSuggestions": "Je hebt de {{limit}} suggesties van deze week op Gratis gehad.",
+      "limitMeetings": "Dat waren de {{limit}} vergaderingen van deze maand op Gratis. Upgrade voor geen limieten."
     },
     "offer": {
       "searchWeb": "Zoeken op internet",
@@ -1315,7 +1319,8 @@
       "openSettings": "Instellingen openen",
       "showFile": "Bestand tonen",
       "howTo": "Laat zien hoe",
-      "showMeHow": "Laat zien hoe"
+      "showMeHow": "Laat zien hoe",
+      "upgrade": "Upgraden"
     },
     "report": {
       "title": "Dit naar het {{appName}}-team sturen?",
@@ -1538,6 +1543,12 @@
       "title": "Help {{appName}} verbeteren",
       "label": "Anonieme gebruikstellingen delen",
       "description": "Alleen tellingen en tijden, nooit wat je zegt, typt of ziet. Uit tot je het aanzet."
+    },
+    "free": {
+      "perWeek": "Gratis: {{limit}} per week",
+      "perMonth": "Gratis: {{limit}} per maand",
+      "hours": "Gratis: {{limit}} uur",
+      "retention": "Gratis bewaart de laatste {{limit}} uur. Pro bewaart tot 90 dagen."
     }
   },
   "meetings": {
@@ -1581,7 +1592,7 @@
     },
     "error": {
       "storage": "Kon de opslag voor vergaderingen niet openen.",
-      "freeLimit": "Gratis bevat 2 vergaderingen per maand. Pro is onbeperkt.",
+      "freeLimit": "Dat waren de {{limit}} vergaderingen van deze maand op Gratis. Upgrade voor geen limieten.",
       "mic": "Kon de microfoon niet openen.",
       "notActive": "Geen vergadering bezig.",
       "notFound": "Die vergadering bestaat niet meer.",
@@ -1597,8 +1608,6 @@
       "offDetail": "Zet het aan en {{appName}} biedt aan notities te maken als een gesprek begint.",
       "paused": "Gepauzeerd",
       "pausedDetail": "{{appName}} biedt geen notities aan tot je het hervat bij Privacy.",
-      "pro": "Maakt geen notities",
-      "proDetail": "Met Pro merkt {{appName}} je gesprekken op en biedt aan notities te maken.",
       "unsupported": "Maakt geen notities",
       "unsupportedDetail": "Start notities wanneer je gesprek begint.",
       "turnOn": "Aanzetten"
@@ -1668,14 +1677,14 @@
       "title": "Kies wat {{appName}} mag doen",
       "description": "Alles is optioneel. Altijd te wijzigen in Privacy.",
       "footnote": "Wachtwoorden, wallets en privévensters worden nooit gelezen.",
-      "proOnly": "Onderdeel van Pro. Upgrade in Account.",
       "caps": {
         "screen_context": "Alleen het venster waar je naar vraagt",
         "proactive": "Wordt op deze computer bepaald",
         "meetings": "Audio blijft op deze computer",
         "wake_word": "Luistert alleen op deze computer",
         "screen_memory": "Blijft versleuteld op deze computer"
-      }
+      },
+      "freeNote": "Op Gratis hebben AI-gebruik en suggesties weeklimieten."
     },
     "offers": {
       "title": "Het biedt ook zelf hulp aan",

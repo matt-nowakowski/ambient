@@ -1031,10 +1031,10 @@
     "limitReached": "Du har brugt ugens gratis ord. Opgrader for ubegrænset diktering, eller fortsæt, når ugen nulstilles.",
     "limitToast": "Ugens gratis ord er brugt op",
     "proFeatures": {
-      "polish": "AI-finpudsning af hver diktering",
-      "onDevice": "Finpudsning på enheden med Apple Intelligence",
-      "agent": "Ambient-agenten, som den leveres",
-      "priority": "Prioriteret support"
+      "priority": "Prioriteret support",
+      "noLimits": "Ingen ugentlige grænser for AI-brug eller forslag",
+      "meetings": "Ubegrænsede mødenoter",
+      "memory": "Skærmhukommelse i op til 90 dage"
     },
     "card": {
       "activate": "Aktiver",
@@ -1105,7 +1105,7 @@
       "unlock": "Få ubegrænset",
       "onDevice": "Behold det på denne Mac",
       "onDeviceDescription": "Brug Apple Intelligence i stedet. Intet forlader din Mac.",
-      "freeLeft": "{{left}} af {{limit}} gratis finpudsninger tilbage i denne uge"
+      "freeUsesLeft": "{{left}} af {{limit}} gratis AI-brug tilbage denne uge"
     },
     "trial": {
       "daysLeft_one": "{{count}} dag tilbage",
@@ -1153,12 +1153,13 @@
     "plan": {
       "title": "Dit abonnement",
       "polishUnlimited": "AI-finpudsning er ubegrænset.",
-      "polishLeft": "{{left}} af {{limit}} gratis AI-finpudsninger tilbage i denne uge · nulstilles {{day}}",
       "polishFree": "Gratis inkluderer en ugentlig kvote til AI-finpudsning.",
       "meetingsLeft": "{{left}} af {{limit}} mødenoter tilbage denne måned",
       "aiLeft": "{{left}} af {{limit}} AI-forespørgsler tilbage i dag",
       "searchLeft": "Søgninger tilbage: {{count}}",
-      "meterLabel": "Resterende kvote"
+      "meterLabel": "Resterende kvote",
+      "aiUsesLeft": "{{left}} af {{limit}} AI-brug tilbage denne uge · nulstilles {{day}}",
+      "suggestionsLeft": "{{left}} af {{limit}} forslag tilbage denne uge"
     },
     "privacy": {
       "title": "Privatliv",
@@ -1305,7 +1306,10 @@
       "cantDoYet": "Det kan jeg ikke endnu: {{what}}. Skal jeg vise dig, hvordan du gør det selv?",
       "cantDoYetPlain": "Det kan jeg ikke på denne computer endnu. Skal jeg vise dig, hvordan du gør det selv?",
       "failed": "Det virkede ikke denne gang. Prøv igen om lidt.",
-      "undoFailed": "Jeg kunne ikke fortryde det. Du kan fjerne det i selve appen."
+      "undoFailed": "Jeg kunne ikke fortryde det. Du kan fjerne det i selve appen.",
+      "limitAi": "Det var ugens {{limit}} AI-brug. De nulstilles mandag. Opgrader for ingen grænser.",
+      "limitSuggestions": "Du har fået ugens {{limit}} forslag på Gratis.",
+      "limitMeetings": "Det var månedens {{limit}} møder på Gratis. Opgrader for ingen grænser."
     },
     "offer": {
       "searchWeb": "Søg på nettet",
@@ -1315,7 +1319,8 @@
       "openSettings": "Åbn Indstillinger",
       "showFile": "Vis fil",
       "howTo": "Vis mig hvordan",
-      "showMeHow": "Vis mig hvordan"
+      "showMeHow": "Vis mig hvordan",
+      "upgrade": "Opgrader"
     },
     "report": {
       "title": "Send dette til {{appName}}-teamet?",
@@ -1538,6 +1543,12 @@
       "title": "Hjælp med at forbedre {{appName}}",
       "label": "Del anonyme brugstal",
       "description": "Kun optællinger og tider, aldrig hvad du siger, skriver eller ser. Slået fra, indtil du slår det til."
+    },
+    "free": {
+      "perWeek": "Gratis: {{limit}} om ugen",
+      "perMonth": "Gratis: {{limit}} om måneden",
+      "hours": "Gratis: {{limit}} timer",
+      "retention": "Gratis gemmer de seneste {{limit}} timer. Pro gemmer i op til 90 dage."
     }
   },
   "meetings": {
@@ -1581,7 +1592,7 @@
     },
     "error": {
       "storage": "Kunne ikke åbne mødelageret.",
-      "freeLimit": "Gratis inkluderer 2 møder om måneden. Pro er ubegrænset.",
+      "freeLimit": "Det var månedens {{limit}} møder på Gratis. Opgrader for ingen grænser.",
       "mic": "Kunne ikke åbne mikrofonen.",
       "notActive": "Intet møde i gang.",
       "notFound": "Det møde findes ikke længere.",
@@ -1597,8 +1608,6 @@
       "offDetail": "Slå det til, så tilbyder {{appName}} at tage noter, når et opkald starter.",
       "paused": "På pause",
       "pausedDetail": "{{appName}} tilbyder ikke noter, før du genoptager det under Privatliv.",
-      "pro": "Tager ikke noter",
-      "proDetail": "Med Pro opdager {{appName}} dine opkald og tilbyder at tage noter.",
       "unsupported": "Tager ikke noter",
       "unsupportedDetail": "Start noter, når dit opkald begynder.",
       "turnOn": "Slå til"
@@ -1668,14 +1677,14 @@
       "title": "Vælg, hvad {{appName}} må",
       "description": "Alt er valgfrit. Skift når som helst under Privatliv.",
       "footnote": "Adgangskoder, tegnebøger og private vinduer læses aldrig.",
-      "proOnly": "En del af Pro. Opgrader under Konto.",
       "caps": {
         "screen_context": "Kun det vindue, du spørger om",
         "proactive": "Afgøres på denne computer",
         "meetings": "Lyd bliver på denne computer",
         "wake_word": "Lytter kun på denne computer",
         "screen_memory": "Bliver krypteret på denne computer"
-      }
+      },
+      "freeNote": "På Gratis har AI-brug og forslag ugentlige grænser."
     },
     "offers": {
       "title": "Den tilbyder også hjælp",

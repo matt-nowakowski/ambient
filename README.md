@@ -62,13 +62,21 @@ costs us nothing; the unlimited free tier is a selling point against Wispr
 Flow's 2,000 words/week. `enforceFreeWordLimit` in `brand.config.json` stays
 `false` (the weekly counter still exists, but nothing is ever blocked).
 
-Pro pays for what costs money to run or is unique to Ambient:
+Free gets every agent feature with low weekly limits; Pro removes the limits
+(the plan isn't "dictation free, agent Pro"):
 
-| Plan | Price                            | What you get                                                                                                                 |
-| ---- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Free | $0                               | Unlimited on-device dictation, every platform, a weekly allowance of hosted AI polish                                        |
-| Pro  | $12/mo, or $9/mo billed annually | AI polish on every dictation (hosted, or on-device with Apple Intelligence), the ambient agent as it ships, priority support |
-| Team | $8/user/mo billed annually       | Everything in Pro, central billing                                                                                           |
+| Plan | Price                            | What you get                                                                                                                                                                  |
+| ---- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Free | $0                               | Unlimited dictation; every agent feature within limits: 25 AI uses a week (one pool), 10 suggestions a week (judged on device), 24 hours of screen memory, 2 meetings a month |
+| Pro  | $12/mo, or $9/mo billed annually | No limits (fair use), the cloud suggestion judge, screen memory up to 90 days, priority support                                                                               |
+| Team | $8/user/mo billed annually       | Everything in Pro, central billing                                                                                                                                            |
+
+Every Free limit is a remote-config tunable (`free.*` in
+`web/lib/agent/config-schema.json`, set in /admin › Agent). Hosted AI uses are
+enforced by the server (`web/lib/ai.ts`); suggestions, screen memory, meetings
+and on-device AI uses by the app (`src-tauri/src/limits.rs`). Reaching one
+shows a HUD notice with Upgrade, and `limit_hit` feeds "Free limits hit per
+week" in the Agent health tab.
 
 ### AI polish (Pro)
 
@@ -81,8 +89,9 @@ Pro pays for what costs money to run or is unique to Ambient:
   license (valid, unexpired, paid), caps request size, and calls DeepSeek V4
   Flash on Baseten with thinking off (~1s). Each upstream attempt times out at
   8s with one retry; if polish fails the app pastes the raw transcript.
-- Apple Intelligence ("Keep it on this Mac") is also Pro-only.
-- With a Pro provider selected, every dictation is polished, not only the
+- Apple Intelligence ("Keep it on this Mac") works on every plan; on Free each
+  on-device use comes out of the same weekly pool (`plan::consume_local_ai`).
+- With a polish provider selected, every dictation is polished, not only the
   separate post-process shortcut (`plan::polish_every_dictation`).
 - No database: a per-license rate limit lives in server memory. If strict
   quotas are ever needed, use Upstash Redis (pay per request, no idle cost).

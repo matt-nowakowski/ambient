@@ -36,7 +36,20 @@ export type AgentHealth = {
   meetings: { outcome: string; n: number }[];
   meetingEmails: { sent: number; failed: number };
   dictation: { n: number; polished: number; p50: number | null; p95: number | null };
+  /**
+   * Free limits hit, per week (Monday, UTC) in the window: each install
+   * reports a limit at most once per period (week; month for meetings), so
+   * these are roughly "installs that hit it". Tells whether the limits are right.
+   */
+  limitHits: { week: string; ai: number; suggestions: number; meetings: number }[];
 };
+
+/** The Monday (UTC) of a YYYY-MM-DD day. */
+export function weekOf(day: string): string {
+  const d = new Date(`${day}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+  return d.toISOString().slice(0, 10);
+}
 
 export type ConfigView = {
   ok: boolean;
@@ -78,6 +91,8 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
   const meetings = new Map<string, number>();
   const emails = { sent: 0, failed: 0 };
   const dict = { n: 0, polished: 0, buckets: {} as Record<string, number> };
+  const limits = new Map<string, Record<"ai" | "suggestions" | "meetings", number>>();
+  for (const d of days) limits.set(weekOf(d), { ai: 0, suggestions: 0, meetings: 0 });
   let events = 0;
 
   for (const r of rows) {
@@ -135,6 +150,11 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
         break;
       case "meeting_email":
         if (p.outcome === "sent" || p.outcome === "failed") emails[p.outcome] += r.n;
+        break;
+      case "limit_hit":
+        if (p.kind === "ai" || p.kind === "suggestions" || p.kind === "meetings") {
+          bump(limits, weekOf(r.day), () => ({ ai: 0, suggestions: 0, meetings: 0 }), p.kind, r.n);
+        }
         break;
       case "dictation":
         dict.n += r.n;
@@ -204,6 +224,7 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
     meetings: byCount([...meetings.entries()].map(([outcome, n]) => ({ outcome, n }))),
     meetingEmails: emails,
     dictation: { n: dict.n, polished: dict.polished, p50: bucketPercentile(dict.buckets, 0.5), p95: bucketPercentile(dict.buckets, 0.95) },
+    limitHits: [...limits.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([week, v]) => ({ week, ...v })),
   };
 }
 

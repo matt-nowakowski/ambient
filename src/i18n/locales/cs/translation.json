@@ -1041,10 +1041,10 @@
     "limitReached": "Bezplatná slova na tento týden jste vyčerpali. Přejděte na Pro a diktujte bez omezení, nebo pokračujte po obnovení týdne.",
     "limitToast": "Týdenní bezplatná slova vyčerpána",
     "proFeatures": {
-      "polish": "AI vyladění každého diktování",
-      "onDevice": "Vyladění přímo v zařízení s Apple Intelligence",
-      "agent": "Ambientní agent se vším, co přibude",
-      "priority": "Prioritní podpora"
+      "priority": "Prioritní podpora",
+      "noLimits": "Žádné týdenní limity použití AI ani návrhů",
+      "meetings": "Neomezené poznámky ze schůzek",
+      "memory": "Paměť obrazovky až 90 dní"
     },
     "card": {
       "activate": "Aktivovat",
@@ -1115,7 +1115,7 @@
       "unlock": "Získat neomezeně",
       "onDevice": "Nechat na tomto Macu",
       "onDeviceDescription": "Použijte místo toho Apple Intelligence. Nic neopustí váš Mac.",
-      "freeLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných vyladění"
+      "freeUsesLeft": "Zbývá {{left}} z {{limit}} bezplatných použití AI tento týden"
     },
     "trial": {
       "daysLeft_one": "Zbývá {{count}} den",
@@ -1169,12 +1169,13 @@
     "plan": {
       "title": "Váš tarif",
       "polishUnlimited": "AI vyladění je neomezené.",
-      "polishLeft": "Tento týden zbývá {{left}} z {{limit}} bezplatných AI vyladění · obnoví se {{day}}",
       "polishFree": "Bezplatný tarif zahrnuje týdenní příděl AI vyladění.",
       "meetingsLeft": "Tento měsíc zbývá {{left}} z {{limit}} poznámek ze schůzek",
       "aiLeft": "Dnes zbývá {{left}} z {{limit}} požadavků AI",
       "searchLeft": "Zbývající vyhledávání: {{count}}",
-      "meterLabel": "Zbývající limit"
+      "meterLabel": "Zbývající limit",
+      "aiUsesLeft": "Zbývá {{left}} z {{limit}} použití AI tento týden · obnoví se {{day}}",
+      "suggestionsLeft": "Zbývá {{left}} z {{limit}} návrhů tento týden"
     },
     "privacy": {
       "title": "Soukromí",
@@ -1321,7 +1322,10 @@
       "cantDoYet": "Tohle zatím neumím: {{what}}. Mám vám ukázat, jak to udělat sami?",
       "cantDoYetPlain": "Tohle na tomto počítači zatím neumím. Mám vám ukázat, jak to udělat sami?",
       "failed": "Tentokrát to nevyšlo. Zkuste to za chvíli znovu.",
-      "undoFailed": "Tohle se mi nepodařilo vrátit. Můžete to odstranit přímo v aplikaci."
+      "undoFailed": "Tohle se mi nepodařilo vrátit. Můžete to odstranit přímo v aplikaci.",
+      "limitAi": "To bylo {{limit}} použití AI na tento týden. Obnoví se v pondělí. Přejděte na Pro a limity zmizí.",
+      "limitSuggestions": "Tento týden jste v bezplatném tarifu dostali všech {{limit}} návrhů.",
+      "limitMeetings": "To bylo {{limit}} schůzek na tento měsíc v bezplatném tarifu. Přejděte na Pro a limity zmizí."
     },
     "offer": {
       "searchWeb": "Hledat na webu",
@@ -1331,7 +1335,8 @@
       "openSettings": "Otevřít Nastavení",
       "showFile": "Zobrazit soubor",
       "howTo": "Ukázat jak",
-      "showMeHow": "Ukázat jak"
+      "showMeHow": "Ukázat jak",
+      "upgrade": "Upgradovat"
     },
     "report": {
       "title": "Odeslat to týmu {{appName}}?",
@@ -1562,6 +1567,12 @@
       "title": "Pomozte vylepšit {{appName}}",
       "label": "Sdílet anonymní statistiky používání",
       "description": "Jen počty a časy, nikdy to, co říkáte, píšete nebo vidíte. Vypnuto, dokud to nezapnete."
+    },
+    "free": {
+      "perWeek": "Zdarma: {{limit}} týdně",
+      "perMonth": "Zdarma: {{limit}} měsíčně",
+      "hours": "Zdarma: {{limit}} hodin",
+      "retention": "Bezplatný tarif uchovává posledních {{limit}} hodin. Pro uchovává až 90 dní."
     }
   },
   "meetings": {
@@ -1605,7 +1616,7 @@
     },
     "error": {
       "storage": "Úložiště schůzek se nepodařilo otevřít.",
-      "freeLimit": "Bezplatný tarif zahrnuje 2 schůzky měsíčně. Pro je bez omezení.",
+      "freeLimit": "To bylo {{limit}} schůzek na tento měsíc v bezplatném tarifu. Přejděte na Pro a limity zmizí.",
       "mic": "Mikrofon se nepodařilo otevřít.",
       "notActive": "Neprobíhá žádná schůzka.",
       "notFound": "Tato schůzka už neexistuje.",
@@ -1621,8 +1632,6 @@
       "offDetail": "Zapněte to a {{appName}} nabídne poznámky, když začne hovor.",
       "paused": "Pozastaveno",
       "pausedDetail": "{{appName}} nenabídne poznámky, dokud to neobnovíte v Soukromí.",
-      "pro": "Poznámky se nedělají",
-      "proDetail": "S Pro {{appName}} rozpozná vaše hovory a nabídne poznámky.",
       "unsupported": "Poznámky se nedělají",
       "unsupportedDetail": "Až hovor začne, spusťte poznámky.",
       "turnOn": "Zapnout"
@@ -1692,14 +1701,14 @@
       "title": "Vyberte, co smí {{appName}} dělat",
       "description": "Vše je volitelné. Změnit to můžete kdykoli v Soukromí.",
       "footnote": "Hesla, peněženky a anonymní okna se nikdy nečtou.",
-      "proOnly": "Součást Pro. Upgradujte v sekci Účet.",
       "caps": {
         "screen_context": "Jen okno, na které se ptáte",
         "proactive": "Rozhoduje se na tomto počítači",
         "meetings": "Zvuk zůstává na tomto počítači",
         "wake_word": "Poslouchá jen na tomto počítači",
         "screen_memory": "Zůstává zašifrované na tomto počítači"
-      }
+      },
+      "freeNote": "V bezplatném tarifu mají použití AI a návrhy týdenní limity."
     },
     "offers": {
       "title": "Nabízí i pomoc",

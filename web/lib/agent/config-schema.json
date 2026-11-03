@@ -15,6 +15,10 @@
     "router.did_you_mean_bias": { "min": 0, "max": 1, "default": 0.5 },
     "answer.first_byte_timeout_ms": { "min": 8000, "max": 40000, "default": 25000 },
     "answer.idle_timeout_ms": { "min": 5000, "max": 30000, "default": 20000 },
-    "search.timeout_ms": { "min": 2000, "max": 15000, "default": 6000 }
+    "search.timeout_ms": { "min": 2000, "max": 15000, "default": 6000 },
+    "free.ai_per_week": { "min": 5, "max": 500, "default": 25 },
+    "free.suggestions_per_week": { "min": 1, "max": 200, "default": 10 },
+    "free.memory_hours": { "min": 1, "max": 168, "default": 24 },
+    "free.meetings_per_month": { "min": 1, "max": 30, "default": 2 }
   }
 }
