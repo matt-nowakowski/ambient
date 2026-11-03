@@ -42,6 +42,12 @@ export type Block =
   | { t: "callout"; icon?: IconName; k: string; v: Rich }
   | { t: "links"; items: { href: string; label: string }[] }
   | { t: "note"; text: Rich }
+  /** A to-do list: an empty box before each item (plain text: `[ ] item`). */
+  | { t: "checklist"; title?: string; items: string[] }
+  /** Plain bullets (plain text: `- item`). */
+  | { t: "list"; title?: string; items: string[] }
+  /** A quoted block with a left rule, e.g. a draft to copy (plain text: `> ` lines). */
+  | { t: "quote"; title?: string; text: string }
   | { t: "rule" }
   /** Sign-off; `line` overrides the role under the name. */
   | { t: "sign"; line?: string };
@@ -227,6 +233,29 @@ ${b.icon ? `<td valign="top" style="width:50px;">${iconImg(ctx, b.icon)}</td>` :
         .join(`<span class="subtle" style="color:${C.subtle};">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`)}</p>`;
     case "note":
       return `<p class="subtle" style="margin:0 0 16px;font-family:${FONT};font-size:13px;line-height:1.6;color:${C.subtle};">${richHtml(b.text)}</p>`;
+    case "checklist":
+      // A bordered cell, not a ☐ glyph: it renders the same in every client and font.
+      return `${sectionTitle(b.title)}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;">${b.items
+        .map(
+          (it) => `<tr>
+<td valign="top" style="width:30px;padding:3px 0 12px;"><div class="box" style="width:14px;height:14px;border:1.5px solid #b9bdd6;border-radius:4px;font-size:0;line-height:0;">&nbsp;</div></td>
+<td valign="top" class="muted" style="padding:0 0 12px;font-family:${FONT};font-size:15px;line-height:1.5;color:${C.muted};">${esc(it)}</td>
+</tr>`,
+        )
+        .join("")}</table>`;
+    case "list":
+      return `${sectionTitle(b.title)}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;">${b.items
+        .map(
+          (it) => `<tr>
+<td valign="top" style="width:30px;padding:9px 0 10px 4px;"><div class="dot" style="width:6px;height:6px;border-radius:3px;background:${C.accent};font-size:0;line-height:0;">&nbsp;</div></td>
+<td valign="top" class="muted" style="padding:0 0 10px;font-family:${FONT};font-size:15px;line-height:1.5;color:${C.muted};">${esc(it)}</td>
+</tr>`,
+        )
+        .join("")}</table>`;
+    case "quote":
+      return `${sectionTitle(b.title)}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;"><tr><td class="quote well" bgcolor="${C.well}" style="background:${C.well};border-left:3px solid #c5cbeb;border-radius:0 12px 12px 0;padding:14px 18px;">
+<div class="ink2" style="font-family:${FONT};font-size:15px;line-height:1.6;color:#2c2c31;">${esc(b.text).replace(/\r?\n/g, "<br>")}</div>
+</td></tr></table>`;
     case "rule":
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 26px;"><tr><td class="hair" style="border-top:1px solid ${C.hair};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr></table>`;
     case "sign":
@@ -258,6 +287,15 @@ function blockText(b: Block): string {
       return `${b.k}\n${richText(b.v)}`;
     case "links":
       return b.items.map((l) => `${l.label}: ${l.href}`).join("\n");
+    case "checklist":
+      return `${b.title ? `${b.title}\n\n` : ""}${b.items.map((it) => `[ ] ${it}`).join("\n")}`;
+    case "list":
+      return `${b.title ? `${b.title}\n\n` : ""}${b.items.map((it) => `- ${it}`).join("\n")}`;
+    case "quote":
+      return `${b.title ? `${b.title}\n\n` : ""}${b.text
+        .split(/\r?\n/)
+        .map((l) => `> ${l}`)
+        .join("\n")}`;
     case "rule":
       return "---";
     case "sign":
@@ -281,6 +319,9 @@ span.orb-dark{display:none;}
   .link{color:#a9b5f0 !important;}
   .eyebrow{color:#a9b5f0 !important;}
   .step{background:#1f2235 !important;color:#a9b5f0 !important;}
+  .box{border-color:#5a5f80 !important;}
+  .dot{background:#a9b5f0 !important;}
+  .quote{border-left-color:#4a5180 !important;}
   .btn{background:#f0f0f2 !important;}
   .btn-text{color:#0a0a0a !important;}
   .lic{background-color:#242428 !important;background-image:url('${asset}/email/card-dark.jpg') !important;border-color:#2f2f36 !important;box-shadow:0 16px 48px -12px rgba(0,0,0,0.75) !important;}
@@ -294,6 +335,8 @@ span.orb-dark{display:none;}
 [data-ogsc] .ink{color:#f0f0f2 !important;}
 [data-ogsc] .lic,[data-ogsb] .lic{background-color:#242428 !important;background-image:url('${asset}/email/card-dark.jpg') !important;border-color:#2f2f36 !important;}
 [data-ogsc] .muted{color:#a9a9b1 !important;}
+[data-ogsc] .ink2{color:#d6d6db !important;}
+[data-ogsb] .well{background:#1b1d29 !important;}
 [data-ogsc] .link,[data-ogsc] .eyebrow{color:#a9b5f0 !important;}
 [data-ogsc] .btn-text{color:#0a0a0a !important;}
 [data-ogsb] .btn{background:#f0f0f2 !important;}
