@@ -21,7 +21,7 @@ export const faqs: FaqItem[] = [
   },
   {
     q: "What leaves my computer?",
-    a: `Never your audio. Speech recognition runs on your device. When an AI feature needs a model, only the text it needs is sent, with passwords, card numbers, API keys and one-time codes removed first. Screen features are off until you turn them on, and password managers, private windows and crypto wallets are never read. Set Intelligence to “On this computer only” and nothing is sent for AI at all.`,
+    a: `Never your audio. Speech recognition runs on your device. When an AI feature needs a model, only the text it needs is sent, with passwords, card numbers, API keys and one-time codes removed first. Screen features are off until you turn them on, and password managers, private windows and crypto wallets are never read. Set Intelligence to “On this computer only” and nothing is sent for AI at all. Anonymous usage counts (never what you say, type or see) are shared only if you opt in, and feedback only when you send it. Every request is listed in the app’s Privacy Center.`,
   },
   plans,
   {
