@@ -139,18 +139,52 @@ fn arm_exit_watchdog() {
     }
 }
 
-/// After a runtime Accessory → Regular promotion, macOS 26 can create the Dock
-/// tile without its image, leaving a tiny placeholder with a running dot.
-/// Resetting the application icon to nil (AppKit's "use the bundle icon")
-/// makes the Dock redraw the tile with the real icon.
+/// After a runtime Accessory → Regular promotion, macOS 26 can show the Dock
+/// tile as a tiny image with a running dot. The Dock draws that tile from its
+/// own icon lookup for the bundle (which can be stale after an in-place
+/// update), not from anything in this process; resetting the application icon
+/// to nil, as 0.1.5 did, is a no-op because it already was nil. Handing the
+/// Dock the bundle's own `icon.icns` as an explicit image (every
+/// representation) makes it draw our pixels. Done once now and once more after
+/// the Dock has had time to create the tile, since tile creation is
+/// asynchronous in the Dock process.
 #[cfg(target_os = "macos")]
 pub(crate) fn refresh_dock_icon(app: &AppHandle) {
+    set_dock_icon_from_bundle(app);
+    let handle = app.clone();
+    let spawned = std::thread::Builder::new()
+        .name("dock-icon".into())
+        .spawn(move || {
+            std::thread::sleep(std::time::Duration::from_millis(400));
+            set_dock_icon_from_bundle(&handle);
+        });
+    if let Err(e) = spawned {
+        log::warn!("Dock icon: could not schedule the second refresh: {e}");
+    }
+}
+
+#[cfg(target_os = "macos")]
+fn set_dock_icon_from_bundle(app: &AppHandle) {
     let _ = app.run_on_main_thread(|| {
+        use objc2::AllocAnyThread;
+        use objc2_app_kit::{NSApplication, NSImage};
+        use objc2_foundation::{ns_string, NSBundle};
+
         let Some(mtm) = objc2::MainThreadMarker::new() else {
             return;
         };
-        let ns_app = objc2_app_kit::NSApplication::sharedApplication(mtm);
-        unsafe { ns_app.setApplicationIconImage(None) };
+        // None outside a bundle (`tauri dev`), where Tauri sets the icon itself.
+        let Some(path) = NSBundle::mainBundle()
+            .pathForResource_ofType(Some(ns_string!("icon")), Some(ns_string!("icns")))
+        else {
+            return;
+        };
+        let Some(image) = NSImage::initWithContentsOfFile(NSImage::alloc(), &path) else {
+            log::warn!("Dock icon: could not load {path}");
+            return;
+        };
+        let ns_app = NSApplication::sharedApplication(mtm);
+        unsafe { ns_app.setApplicationIconImage(Some(&image)) };
         ns_app.dockTile().display();
     });
 }
