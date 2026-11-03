@@ -153,8 +153,9 @@ reason and the numbers behind it). Event and install rows are pruned after **180
 offers gets +0.05 minimum confidence (×1.5 cooldown once confidence is at its ceiling); < 5% over
 ≥ 100 offers turns it off; ≥ 50% over ≥ 50 offers relaxes −0.02 (÷1.25 cooldown at the floor). A
 judge timing out on > 20% of ≥ 50 runs gets +1000 ms (device and cloud separately). Over 25% of ≥ 50
-requests ending on "did you mean to type this?" moves the router bias +0.05. Each step stays in the
-bounds:
+requests ending on "did you mean to type this?" moves the router bias +0.05. "Written for you"
+(smart writing) reverted with "Use my words" on over 20% of ≥ 50 cases (`write_mode` /
+`write_revert` events) raises `writing.written_threshold` +0.05. Each step stays in the bounds:
 
 | Key | Min | Max | Default |
 | --- | --- | --- | --- |
@@ -169,6 +170,17 @@ bounds:
 | `answer.first_byte_timeout_ms` | 8000 | 40000 | 25000 |
 | `answer.idle_timeout_ms` | 5000 | 30000 | 20000 |
 | `search.timeout_ms` | 2000 | 15000 | 6000 |
+| `writing.written_threshold` | 0.5 | 0.95 | 0.7 |
+| `writing.ambiguous_floor` | 0.2 | 0.7 | 0.45 |
+| `writing.polish_disfluency` | 0.02 | 0.3 | 0.06 |
+| `writing.run_on_words` | 15 | 80 | 35 |
+
+Smart writing (`src-tauri/src/agent/writing.rs`) scores each dictation 0–1 as an instruction to
+write: at or above `written_threshold` it's "Written for you" with no model call; from
+`ambiguous_floor` up to the threshold a model decides (on device when it can); below it, it's typed
+as said, or polished when fillers/repeats per word reach `polish_disfluency` or a sentence runs
+`run_on_words` words. The app keeps the floor at least 0.05 under the threshold, and raises both
+per app where the user reverted.
 
 The bounds live in `lib/agent/config-schema.json`; the app keeps its own copy (`src-tauri`), and a
 unit test there checks the two match. Tests: `bun scripts/telemetry-test.ts`,

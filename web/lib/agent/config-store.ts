@@ -110,14 +110,15 @@ export async function tuneStats(days = TUNE_WINDOW_DAYS): Promise<TuneStats> {
     select name, props_key, sum(count)::bigint as n
     from product_events_daily
     where day >= current_date - ${days}::int
-      and name in ('suggestion_offered', 'suggestion_result', 'judge_run', 'route', 'did_you_mean_shown')
+      and name in ('suggestion_offered', 'suggestion_result', 'judge_run', 'route', 'did_you_mean_shown', 'write_mode', 'write_revert')
     group by name, props_key`;
   return statsFromRows(rows.map((r) => ({ name: String(r.name), props: String(r.props_key), n: Number(r.n) })));
 }
 
 /** Pure: event rows → the tuning aggregates (exported for the admin tab). */
 export function statsFromRows(rows: { name: string; props: string; n: number }[]): TuneStats {
-  const stats: TuneStats = { kinds: {}, judge: {}, route: { total: 0, didYouMean: 0 } };
+  const stats: TuneStats = { kinds: {}, judge: {}, route: { total: 0, didYouMean: 0 }, writing: { written: 0, writtenReverts: 0 } };
+  const writing = stats.writing ?? { written: 0, writtenReverts: 0 };
   for (const r of rows) {
     const p = parsePropsKey(r.props);
     if (r.name === "suggestion_offered" && p.kind) {
@@ -132,6 +133,10 @@ export function statsFromRows(rows: { name: string; props: string; n: number }[]
       stats.route.total += r.n;
     } else if (r.name === "did_you_mean_shown") {
       stats.route.didYouMean += r.n;
+    } else if (r.name === "write_mode" && p.decision === "written") {
+      writing.written += r.n;
+    } else if (r.name === "write_revert" && p.decision === "written") {
+      writing.writtenReverts += r.n;
     }
   }
   return stats;

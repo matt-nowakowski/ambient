@@ -31,6 +31,10 @@ export const GLOBAL_KEYS = [
   "answer.first_byte_timeout_ms",
   "answer.idle_timeout_ms",
   "search.timeout_ms",
+  "writing.written_threshold",
+  "writing.ambiguous_floor",
+  "writing.polish_disfluency",
+  "writing.run_on_words",
 ] as const;
 
 const KIND_FIELDS = ["enabled", "min_confidence", "cooldown_min"] as const;
@@ -111,6 +115,7 @@ export type PublicConfig = {
   router: { did_you_mean_bias: number };
   answer: { first_byte_timeout_ms: number; idle_timeout_ms: number };
   search: { timeout_ms: number };
+  writing: { written_threshold: number; ambiguous_floor: number; polish_disfluency: number; run_on_words: number };
   kinds: Record<string, { enabled: boolean; min_confidence: number; cooldown_min: number }>;
 };
 
@@ -125,6 +130,12 @@ export function toPublic(values: Flat, now = new Date()): PublicConfig {
     router: { did_you_mean_bias: n("router.did_you_mean_bias") },
     answer: { first_byte_timeout_ms: n("answer.first_byte_timeout_ms"), idle_timeout_ms: n("answer.idle_timeout_ms") },
     search: { timeout_ms: n("search.timeout_ms") },
+    writing: {
+      written_threshold: n("writing.written_threshold"),
+      ambiguous_floor: n("writing.ambiguous_floor"),
+      polish_disfluency: n("writing.polish_disfluency"),
+      run_on_words: n("writing.run_on_words"),
+    },
     kinds: Object.fromEntries(
       KINDS.map((k) => [
         k,
@@ -148,6 +159,8 @@ export type TuneStats = {
   judge: Partial<Record<"device" | "cloud", { runs: number; timeouts: number }>>;
   /** Routed utterances, and how many ended on a "did you mean to type this?" card. */
   route: { total: number; didYouMean: number };
+  /** Smart writing: "Written for you" decisions, and how many were reverted ("Use my words"). */
+  writing?: { written: number; writtenReverts: number };
 };
 
 export type Change = {
@@ -181,6 +194,10 @@ export const RULES = {
   didYouMeanRate: 0.25,
   didYouMeanMinRoutes: 50,
   biasStep: 0.05,
+  /** "Written for you" reverted too often: write less eagerly. */
+  writtenRevertRate: 0.2,
+  writtenMinCases: 50,
+  writtenThresholdStep: 0.05,
 } as const;
 
 const pct = (x: number) => `${Math.round(x * 100)}%`;
@@ -251,6 +268,19 @@ export function tune(current: Flat, stats: TuneStats, locked: ReadonlySet<string
       propose(key, cur + RULES.biasStep, `${pct(rate)} of ${stats.route.total} requests ended on "did you mean to type this?" (over ${pct(RULES.didYouMeanRate)}): lean towards the agent`, {
         routes: stats.route.total,
         did_you_mean: stats.route.didYouMean,
+        rate: Math.round(rate * 1000) / 1000,
+      });
+    }
+  }
+  const w = stats.writing;
+  if (w && w.written >= RULES.writtenMinCases) {
+    const rate = w.writtenReverts / w.written;
+    if (rate > RULES.writtenRevertRate) {
+      const key = "writing.written_threshold";
+      const cur = Number(current[key] ?? defaultValue(key));
+      propose(key, cur + RULES.writtenThresholdStep, `${pct(rate)} of ${w.written} "Written for you" were reverted (over ${pct(RULES.writtenRevertRate)}): write for them less eagerly`, {
+        written: w.written,
+        reverts: w.writtenReverts,
         rate: Math.round(rate * 1000) / 1000,
       });
     }

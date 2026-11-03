@@ -25,7 +25,13 @@ const KEY_LABEL: Record<string, string> = {
   "answer.first_byte_timeout_ms": "Answer first-byte timeout (ms)",
   "answer.idle_timeout_ms": "Answer stream idle timeout (ms)",
   "search.timeout_ms": "Web search timeout (ms)",
+  "writing.written_threshold": "Writing: score to write for them",
+  "writing.ambiguous_floor": "Writing: score a model decides from",
+  "writing.polish_disfluency": "Writing: fillers per word to polish",
+  "writing.run_on_words": "Writing: run-on length to polish (words)",
 };
+
+const WRITE_LABEL: Record<string, string> = { as_said: "As said", polished: "Polished", written: "Written for you" };
 
 export async function AgentHealth({ demo }: { demo: boolean }) {
   const [h, c] = await Promise.all([loadAgentHealth(demo), loadConfigView(demo)]);
@@ -184,6 +190,30 @@ function Health({ h }: { h: AgentHealth }) {
           ))}
           <Stat label="Notes emailed" value={fmtInt(h.meetingEmails.sent)} hint={`${fmtInt(h.meetingEmails.failed)} failed`} />
         </Panel>
+        <Panel title="Writing" meta={`${fmtInt(h.writing.total)} smart dictations · revert = "Use my words"`}>
+          <Table head={["Decision", "Share", "By a model", "Reverted", "By voice", ""]}>
+            {h.writing.decisions.map((d) => {
+              const revertRate = d.n > 0 ? d.reverts / d.n : 0;
+              return (
+                <tr key={d.decision}>
+                  <td>{WRITE_LABEL[d.decision] ?? d.decision}</td>
+                  <td className="num">{rate(d.n, h.writing.total)}</td>
+                  <td className="num">{rate(d.model, d.n)}</td>
+                  <td className="num">{d.decision === "as_said" ? "—" : rate(d.reverts, d.n)}</td>
+                  <td className="num">{d.decision === "as_said" ? "—" : rate(d.byVoice, d.reverts)}</td>
+                  <td className="w-[90px]">
+                    {d.decision === "as_said" ? null : (
+                      <Bar
+                        value={revertRate}
+                        warn={d.decision === "written" && d.n >= RULES.writtenMinCases && revertRate > RULES.writtenRevertRate}
+                      />
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </Table>
+        </Panel>
         <Panel title="Dictation (sampled 1 in 10)">
           <Stat label="Sampled dictations" value={fmtInt(h.dictation.n)} hint={`${rate(h.dictation.polished, h.dictation.n)} polished`} />
           <Stat label="Time to text p50" value={fmtBucketMs(h.dictation.p50)} />
@@ -286,7 +316,8 @@ function Config({ c, demo }: { c: ConfigView; demo: boolean }) {
           (or ×{RULES.cooldownGrow} cooldown at the ceiling); under {RULES.offRate * 100}% over {RULES.offMinOffers}+ it&apos;s turned off; {RULES.highRate * 100}%+ over{" "}
           {RULES.highMinOffers}+ relaxes by {RULES.confidenceDown}. A judge timing out on over {RULES.timeoutRate * 100}% of {RULES.timeoutMinRuns}+ runs gets +
           {RULES.timeoutStepMs} ms. Over {RULES.didYouMeanRate * 100}% &ldquo;did you mean&rdquo; over {RULES.didYouMeanMinRoutes}+ requests nudges the router bias +
-          {RULES.biasStep}. Manual and pinned values always win.
+          {RULES.biasStep}. &ldquo;Written for you&rdquo; reverted on over {RULES.writtenRevertRate * 100}% of {RULES.writtenMinCases}+ cases raises the written
+          threshold +{RULES.writtenThresholdStep}. Manual and pinned values always win.
         </p>
       </Panel>
       <Panel title="Global">

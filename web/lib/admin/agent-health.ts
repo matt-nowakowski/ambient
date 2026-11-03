@@ -36,7 +36,16 @@ export type AgentHealth = {
   meetings: { outcome: string; n: number }[];
   meetingEmails: { sent: number; failed: number };
   dictation: { n: number; polished: number; p50: number | null; p95: number | null };
+  /** Smart writing: the decision mix (and who decided), and how often each was reverted. */
+  writing: {
+    total: number;
+    decisions: { decision: "as_said" | "polished" | "written"; n: number; model: number; reverts: number; byVoice: number }[];
+  };
 };
+
+const WRITE_DECISIONS = ["as_said", "polished", "written"] as const;
+type WriteDecision = (typeof WRITE_DECISIONS)[number];
+const isWriteDecision = (d: string): d is WriteDecision => (WRITE_DECISIONS as readonly string[]).includes(d);
 
 export type ConfigView = {
   ok: boolean;
@@ -78,6 +87,10 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
   const meetings = new Map<string, number>();
   const emails = { sent: 0, failed: 0 };
   const dict = { n: 0, polished: 0, buckets: {} as Record<string, number> };
+  const writing = Object.fromEntries(WRITE_DECISIONS.map((d) => [d, { n: 0, model: 0, reverts: 0, byVoice: 0 }])) as Record<
+    WriteDecision,
+    { n: number; model: number; reverts: number; byVoice: number }
+  >;
   let events = 0;
 
   for (const r of rows) {
@@ -140,6 +153,18 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
         dict.n += r.n;
         if (p.polish === "true") dict.polished += r.n;
         dict.buckets[p.ms_bucket] = (dict.buckets[p.ms_bucket] ?? 0) + r.n;
+        break;
+      case "write_mode":
+        if (isWriteDecision(p.decision)) {
+          writing[p.decision].n += r.n;
+          if (p.source === "model") writing[p.decision].model += r.n;
+        }
+        break;
+      case "write_revert":
+        if (isWriteDecision(p.decision)) {
+          writing[p.decision].reverts += r.n;
+          if (p.by === "voice") writing[p.decision].byVoice += r.n;
+        }
         break;
     }
   }
@@ -204,6 +229,10 @@ export function buildHealth(rows: EventRow[], installRows: { day: string; n: num
     meetings: byCount([...meetings.entries()].map(([outcome, n]) => ({ outcome, n }))),
     meetingEmails: emails,
     dictation: { n: dict.n, polished: dict.polished, p50: bucketPercentile(dict.buckets, 0.5), p95: bucketPercentile(dict.buckets, 0.95) },
+    writing: {
+      total: WRITE_DECISIONS.reduce((a, d) => a + writing[d].n, 0),
+      decisions: WRITE_DECISIONS.map((decision) => ({ decision, ...writing[decision] })),
+    },
   };
 }
 

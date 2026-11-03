@@ -102,6 +102,17 @@ export function demoAgentRows(days: string[]): EventRow[] {
     add(day, "dictation", { polish: "true", ms_bucket: "lt1s" }, 16 * v());
     add(day, "dictation", { polish: "false", ms_bucket: "lt500" }, 9 * v());
     add(day, "dictation", { polish: "true", ms_bucket: "lt2s" }, 6 * v());
+    // Smart writing: mostly as said, some polished, a few written for you.
+    for (const [category, k] of [["chat", 1], ["mail", 0.7], ["browser", 0.6], ["editor", 0.4]] as const) {
+      add(day, "write_mode", { decision: "as_said", source: "rules", app_category: category }, 60 * k * v());
+      add(day, "write_mode", { decision: "polished", source: "rules", app_category: category }, 22 * k * v());
+      add(day, "write_mode", { decision: "written", source: "rules", app_category: category }, 4 * k * v());
+      add(day, "write_mode", { decision: "written", source: "model", app_category: category }, 1.5 * k * v());
+      add(day, "write_mode", { decision: "as_said", source: "model", app_category: category }, 2 * k * v());
+    }
+    add(day, "write_revert", { decision: "polished", by: "click" }, 1.2 * v());
+    add(day, "write_revert", { decision: "written", by: "click" }, 0.9 * v());
+    add(day, "write_revert", { decision: "written", by: "voice" }, 0.4 * v());
   });
   return rows;
 }

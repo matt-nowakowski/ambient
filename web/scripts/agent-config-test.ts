@@ -36,7 +36,7 @@ check(
 );
 check("every global key has a bound", GLOBAL_KEYS.every((k) => boundFor(k) !== null && boundFor(k) !== "bool"));
 check("config kinds match telemetry suggestion kinds", JSON.stringify(KINDS) === JSON.stringify(telemetry.enums.suggestion_kind));
-check("16 kinds × 3 + 8 globals", configKeys().length === KINDS.length * 3 + GLOBAL_KEYS.length);
+check("16 kinds × 3 + 12 globals", GLOBAL_KEYS.length === 12 && configKeys().length === KINDS.length * 3 + GLOBAL_KEYS.length);
 const pub = toPublic(defaults(), new Date("2026-11-02T00:00:00Z"));
 check(
   "public config shape",
@@ -49,6 +49,10 @@ check(
     pub.answer.first_byte_timeout_ms === 25000 &&
     pub.answer.idle_timeout_ms === 20000 &&
     pub.search.timeout_ms === 6000 &&
+    pub.writing.written_threshold === 0.7 &&
+    pub.writing.ambiguous_floor === 0.45 &&
+    pub.writing.polish_disfluency === 0.06 &&
+    pub.writing.run_on_words === 35 &&
     Object.keys(pub.kinds).length === KINDS.length &&
     pub.kinds.draft_reply.enabled === true &&
     pub.kinds.draft_reply.min_confidence === 0.6 &&
@@ -144,7 +148,23 @@ check(
   "manual / pinned keys are never tuned (a pinned confidence leaves only the cooldown to tune)",
   keys(c) === "judge.timeout_ms,kind.help_here.cooldown_min,kind.price_check.enabled",
 );
-check("rule thresholds as documented", RULES.lowRate === 0.15 && RULES.offRate === 0.05 && RULES.timeoutRate === 0.2 && RULES.didYouMeanRate === 0.25);
+// Smart writing: "Written for you" reverted too often → write less eagerly.
+c = tune(d, stats({ writing: { written: 100, writtenReverts: 25 } }));
+check(
+  "written reverted >20% over ≥50 → written threshold +0.05",
+  c.length === 1 && c[0].key === "writing.written_threshold" && c[0].old === 0.7 && c[0].new === 0.75,
+);
+c = tune(d, stats({ writing: { written: 40, writtenReverts: 30 } }));
+check("written reverts under the minimum sample → no change", c.length === 0);
+c = tune(d, stats({ writing: { written: 100, writtenReverts: 20 } }));
+check("written reverted at exactly 20% → no change", c.length === 0);
+c = tune({ ...d, "writing.written_threshold": 0.95 }, stats({ writing: { written: 200, writtenReverts: 150 } }));
+check("written threshold at its ceiling → no change", c.length === 0);
+c = tune(d, stats({ writing: { written: 100, writtenReverts: 60 } }), new Set(["writing.written_threshold"]));
+check("pinned written threshold is never tuned", c.length === 0);
+check("writing threshold clamped", clampValue("writing.written_threshold", 2) === 0.95 && clampValue("writing.run_on_words", 3) === 15);
+
+check("rule thresholds as documented", RULES.lowRate === 0.15 && RULES.offRate === 0.05 && RULES.timeoutRate === 0.2 && RULES.didYouMeanRate === 0.25 && RULES.writtenRevertRate === 0.2 && RULES.writtenMinCases === 50);
 
 if (failures) {
   console.error(`\n${failures} failed`);
