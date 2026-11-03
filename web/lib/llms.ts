@@ -35,6 +35,8 @@ import {
   suggestionMoments,
   talkingWays,
   trySaying,
+  writingOutcomes,
+  writingSettings,
 } from "./guide";
 import { RELEASE_VERSION, defaultShortcut, releases } from "./releases";
 
@@ -46,13 +48,15 @@ function facts() {
     `- Platforms: ${platforms.join(", ")}. Current version ${RELEASE_VERSION}.`,
     `- Privacy: speech-to-text runs on the user's device with local models; audio is never uploaded. Dictation works offline.`,
     `- ${macFirst}`,
-    `- Free plan: $0, the whole colleague with weekly limits. Dictation ${freeWordsLabel.toLowerCase()}; ${brand.freePolishPerWeek} AI uses a week shared across polish, writing, answers, actions, Ask and meeting summaries; ${freeMeetingsPerMonth} meetings a month. Every install starts with a ${brand.trialDays}-day trial of Pro, no card.`,
+    `- Free plan: $0, the whole colleague with weekly limits. Dictation ${freeWordsLabel.toLowerCase()}; ${brand.freePolishPerWeek} AI uses a week shared across polish, smart writing, answers, actions and meeting summaries; up to ${brand.freeSuggestionsPerWeek} suggestions a week; screen reading; hands-free “Hey ${brand.name}”; ${freeMeetingsPerMonth} meetings a month; the last 24 hours of screen memory. Every install starts with a ${brand.trialDays}-day trial of Pro, no card. It is not “dictation free, agent paid”: every feature is on Free.`,
     `- Pro: $${tiers.pro.monthly}/month, or $${tiers.pro.yearlyPerMonth}/month billed annually ($${tiers.pro.yearlyTotal}/year). ${tiers.pro.features.join("; ")}.`,
     `- Team: custom pricing for 5+ people, via sales (${emails.sales}).`,
     `- Licensing: Pro is unlocked by signing in to the app with the purchase email and a 6-digit emailed code (Account → Sign in); Free and the trial need no account.`,
     `- Built on ${upstream.name} by ${upstream.author} (${upstream.license}), an open-source dictation app.`,
-    `- Pro removes the weekly limits (fair use). The agent, on Free and Pro: it decides from what you say whether to write, answer (with sources, web search only when needed), act (Calendar, Reminders, open apps and links, run Shortcuts) or recall; meeting notes for any call with no bot; suggestions decided on the Mac; and recall from local sources with nothing to connect.`,
-    `- Talking to ${brand.name}: hold the Ask shortcut; or start with “Hey ${brand.name}” on the dictation key (works in AI chat apps and messaging apps, where plain dictation is typed); or, optionally, turn on hands-free and just say “Hey ${brand.name}, …” with no key. Hands-free is off by default, listens on the Mac, checks only the first couple of seconds of speech for the phrase and drops everything else; nothing is recorded or sent until the phrase is said.`,
+    `- Pro removes the weekly limits (fair use). The agent, on Free and Pro: it decides from what you say whether to write, answer (with sources, web search only when needed), act (calendar, reminders, open apps and links, run your shortcuts) or recall; meeting notes for any call with no bot; suggestions decided on the computer (or, optionally on Pro, in the cloud); and recall from local sources with nothing to connect.`,
+    `- Smart writing (dictation): per dictation, ${brand.name} types the words as said, polishes them, or writes the message for you from an instruction (“tell him I can’t make it, be polite”), and rewrites selected text on request (“make this more formal”). A chip shows what it did; “Use my words” (click, or say “use my words”, “undo that” or “just what I said”) takes it back, and Edit changes it by voice (“shorter”, “warmer”). It learns per app. Setting: Writing = Smart (default), Always as I said, or Always polish. Polishing needs AI polish on, which is the default for new installs. Only Polished or Written insertions spend AI uses; deciding how to write is a background call that never does.`,
+    `- ${brand.name} never talks out loud. It answers on screen and nudges with one-line suggestions.`,
+    `- Talking to ${brand.name}: hold the Ask shortcut; or start with “Hey ${brand.name}” on the dictation key (works in AI chat apps and messaging apps, where plain dictation is typed); or, optionally, turn on hands-free and just say “Hey ${brand.name}, …” with no key. Hands-free is off by default, listens on the computer, checks only the first couple of seconds of speech for the phrase and drops everything else; nothing is recorded or sent until the phrase is said.`,
     `- No bots, no accounts, no integrations to connect. ${nothingToConnect.lead} Everything that reads the screen is off until the user turns it on.`,
     `- Coming soon (not shipped): computer use, operating apps on screen like a person.`,
   ].join("\n");
@@ -63,7 +67,7 @@ export function llmsTxt() {
 
 > ${description}
 
-${brand.name} is a live agent on your desktop, like a colleague: hold a global shortcut and talk, and it answers (on screen, with sources), takes actions, or recalls what you said or saw. When it can help, it nudges you with one suggestion on screen; it does not talk out loud. It takes meeting notes with no bot. It also types for you in any app: free dictation, transcribed on your computer, which AI polish can tidy or turn into a written message.
+${brand.name} is a live agent on your desktop, like a colleague: hold a global shortcut and talk, and it answers (on screen, with sources), takes actions, or recalls what you said or saw. When it can help, it nudges you with one suggestion on screen; it does not talk out loud. It takes meeting notes with no bot. It also writes for you in any app: free, unlimited dictation, transcribed on your computer, that knows when to type what you said, when to polish it, and when to write the message for you.
 
 ${facts()}
 
@@ -72,7 +76,7 @@ ${facts()}
 - [Home](${url("/")}): What ${brand.name} does: the live agent, suggestions, meetings, writing and dictation, privacy, comparison with ${competitors.join(" and ")}, FAQ
 - [Pricing](${url("/pricing")}): Free, Pro and Team plans, the full comparison and FAQ
 - [Download](${url("/download")}): Installers for every platform and first-run steps
-- [Features](${url("/features")}): Every capability in detail: voice agent, meetings, suggestions, recall, privacy, dictation
+- [Features](${url("/features")}): Every capability in detail: the agent, meetings, suggestions, recall, privacy, smart writing and dictation
 - [Release notes](${url("/changelog")}): What changed in each version
 - [Contact](${url("/contact")}): Support email and help links
 - [Sales](${url("/sales")}): Team plan
@@ -81,7 +85,7 @@ ${facts()}
 
 ${guidePages.map((p) => `- [${p.title}](${url(p.path)}): ${p.description}`).join("\n")}
 - [Troubleshooting](${url("/docs/troubleshooting")}): Shortcuts and macOS Secure Input, microphone and accessibility permissions, pasting
-- [Linux setup](${url("/docs/linux")}): Packages, Wayland shortcuts, paste tools, overlay
+- [Linux setup](${url("/docs/linux")}): Packages, Wayland shortcuts, paste tools, accessibility, meeting audio, reminders, overlay
 
 ## Optional
 
@@ -180,12 +184,13 @@ ${rows(nothingToConnect.sources)}
 
 ${platformNote}
 `,
+    `${head("writing")}\nTry saying:\n${say(trySaying.writing)}\n\nWhat it does:\n${rows(writingOutcomes)}\n\nTake it back: click Use my words, or say “use my words”, “undo that” or “just what I said”. It learns per app; see and undo it in Privacy → Writing → What you’ve told me.\n\nThe Writing setting (Account → Writing):\n${rows(writingSettings)}\n`,
     `${head("answers")}\nTry saying:\n${say(trySaying.answers)}\n`,
-    `${head("actions")}\nTry saying:\n${say(trySaying.actions)}\n\nReminders and events show Undo for a few seconds.\n`,
+    `${head("actions")}\nTry saying:\n${say(trySaying.actions)}\n\nReminders and events show Undo for a few seconds. On Windows and Linux, reminders are scheduled notifications and events open as an .ics file.\n`,
     `${head("recall")}\nTry saying:\n${say(trySaying.recall)}\n`,
-    `${head("meetings")}\nTry saying:\n${say(trySaying.meetings)}\n\nDuring the call: a live transcript of You and Them, rolling notes and nudges (Find it, Remind me, Copy). After: summary, decisions, action items, questions for you and a follow-up email draft. A consent message is offered to paste into the call chat. No bot joins. Audio is never saved.\n`,
+    `${head("meetings")}\nTry saying:\n${say(trySaying.meetings)}\n\nDuring the call: a live transcript of You and Them, rolling notes and nudges (Find it, Remind me, Copy). After: summary, decisions, action items, questions for you and a follow-up email draft; a card says the notes are ready, with Email to me when signed in. A consent message is offered to paste into the call chat. No bot joins. Audio is never saved.\n`,
     `${head("suggestions")}\nMoments:\n${rows(suggestionMoments)}\n\nWhen one appears, try saying:\n${say(trySaying.suggestions)}\n`,
-    `${head("privacy")}\nSwitches: Read what you ask about; Remember what you’ve seen; Offer suggestions; Meeting notes; Hands-free. Intelligence: Automatic, On this computer only, or Cloud. Never read: password fields, password managers and Keychain, private windows, crypto wallets, and any window showing a recovery phrase or private key. Secrets are removed before text is sent. The network ledger lists every request and exactly what it sent.\n`,
+    `${head("privacy")}\nSwitches: Read what you ask about; Remember what you’ve seen; Offer suggestions; Meeting notes; Hands-free; Share anonymous usage counts (counts and timings only, off by default). Intelligence: Automatic, On this computer only, or Cloud. What you’ve told me: suggestions you turned down and per-app writing preferences, with Undo. Never read: password fields, password managers and Keychain, private windows, crypto wallets, and any window showing a recovery phrase or private key. Secrets are removed before text is sent. The network ledger lists every request and exactly what it sent.\n`,
   ].join("\n");
 }
 

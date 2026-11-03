@@ -31,22 +31,24 @@ export default function MeetingsPage() {
           Click <strong>Start notes</strong> in {brand.name} → Meetings. Or turn on meeting suggestions: when a call app
           is open and your microphone is in use, it asks “Take notes for this call?”
         </p>
-        <p>Works with Zoom, Google Meet, Microsoft Teams, FaceTime and Slack huddles. If it plays on your Mac, it works.</p>
+        <p>Works with Zoom, Google Meet, Microsoft Teams, FaceTime and Slack huddles. If it plays on your computer, it works.</p>
       </DocSection>
 
       <DocSection id="during-the-call" title="During the call">
         <p>
           A live transcript, with <strong>You</strong> and <strong>Them</strong> kept apart: your microphone and the
-          call audio are transcribed separately, on your Mac. Rolling notes build as you talk.
+          call audio are transcribed separately, on your computer. Rolling notes build as you talk.
         </p>
         <p>Nudges appear when they matter. Answer with a click or by voice.</p>
         <DocRows items={nudges} />
       </DocSection>
 
       <DocSection id="after-the-call" title="After the call">
-        <p>Click Stop and summarise.</p>
+        <p>
+          Click Stop and summarise. When the call ends, a card says your notes are ready: open them, copy them, or, signed
+          in, click <strong>Email to me</strong>.
+        </p>
         <DocRows items={after} />
-        <p>Copy everything as Markdown with one click.</p>
       </DocSection>
 
       <DocSection id="consent" title="Let people know">
@@ -59,13 +61,12 @@ export default function MeetingsPage() {
 
       <DocSection id="privacy" title="Audio and privacy">
         <p>
-          Audio is transcribed on your Mac and never saved. Only the transcript text is sent, to write the summary. Notes
-          stay on your Mac until you delete them.
+          Audio is transcribed on your computer and never saved. Only the transcript text is sent, to write the summary.
+          Notes stay on your computer until you delete them.
         </p>
         <p>
-          Hearing the call needs macOS 13 or later and the Screen Recording permission. Only audio is used. On Linux it
-          records what your computer plays through PipeWire or PulseAudio (needs <C>pulseaudio-utils</C>). On
-          Windows, only your microphone is transcribed for now.
+          To hear the call, a Mac needs macOS 13 or later and the Screen Recording permission (audio only). Windows
+          needs nothing extra. Linux uses PipeWire or PulseAudio (needs <C>pulseaudio-utils</C>).
         </p>
         <p>
           Free includes {freeMeetingsPerMonth} meetings a month. Pro is unlimited.

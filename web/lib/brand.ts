@@ -44,7 +44,7 @@ export const brand = {
 export const freeMeetingsPerMonth: number = config.freeMeetingsPerMonth;
 
 /** Fair-use limits on paid plans (Pro and Team), per account per day, reset at midnight UTC. */
-export const fairUse = { aiRequestsPerDay: 1500, webSearchesPerDay: 100 } as const;
+export const fairUse = { aiRequestsPerDay: 1500, webSearchesPerDay: 50 } as const;
 
 /** One-line fair-use note for pricing. */
 export const fairUseNote = `Pro and Team are unlimited within fair use: ${fairUse.aiRequestsPerDay.toLocaleString("en-US")} AI requests and ${fairUse.webSearchesPerDay} web searches per account per day, reset at midnight UTC.`;

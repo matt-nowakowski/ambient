@@ -37,6 +37,13 @@ export const guidePages = [
     `Hold a key and talk. ${brand.name} decides whether to type, answer, act or look something up. No modes, nothing to connect.`,
   ),
   page(
+    "writing",
+    "Writing",
+    "Smart writing",
+    `How ${brand.name} decides, per dictation, whether to type what you said, polish it, or write it for you, and how to take it back.`,
+    "Dictate as usual. Each time, it types what you said, polishes it, or writes it for you. A small chip says which, and one click takes it back.",
+  ),
+  page(
     "answers",
     "Answers",
     "Answers",
@@ -48,13 +55,13 @@ export const guidePages = [
     "Actions",
     "Actions",
     `Reminders, calendar events, apps, links, browser searches and your own Shortcuts, by voice with ${brand.name}.`,
-    "Say what you want done. It uses your Mac’s own Reminders, Calendar, browser and Shortcuts. One click undoes it.",
+    "Say what you want done. It uses your own reminders, calendar, browser and shortcuts. One click undoes it.",
   ),
   page(
     "recall",
     "Recall",
     "Recall",
-    `Ask ${brand.name} what you said, saw or saved. It looks on your Mac, with nothing to connect.`,
+    `Ask ${brand.name} what you said, saw or saved. It looks on your computer, with nothing to connect.`,
     "Ask about something you said, read or saved. It looks where your things already are.",
   ),
   page(
@@ -62,14 +69,14 @@ export const guidePages = [
     "Meetings",
     "Meetings",
     `Meeting notes for any call with ${brand.name}: a live transcript of you and them, nudges, a summary and a follow-up email. No bot joins.`,
-    "Notes for any call, taken on your Mac. No bot joins.",
+    "Notes for any call, taken on your computer. No bot joins.",
   ),
   page(
     "suggestions",
     "Suggestions",
     "Suggestions",
     `Every moment where ${brand.name} offers a next step, and how to answer it by voice.`,
-    "Turn them on and it nudges you when it can help, offering one next step at the right moment. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud. Nothing is sent unless you accept.",
+    "When it can help, it offers one next step. Say “yes” or “not now”, and it learns. Off until you turn it on.",
   ),
   page(
     "privacy",
@@ -109,13 +116,13 @@ export const talkingWays = [
   },
   {
     k: "Hands-free (optional)",
-    v: `Turn it on and just say “Hey ${brand.name}, what’s on my calendar?” No key. Pro.`,
+    v: `Turn it on and just say “Hey ${brand.name}, what’s on my calendar?” No key. On every plan.`,
   },
 ] as const;
 
 /** Hands-free, the details. */
 export const handsFree = [
-  { k: "Listens on your Mac", v: "Only the first couple of seconds after you start speaking are checked for the phrase. Everything else is dropped at once." },
+  { k: "Listens on your computer", v: "Only the first couple of seconds after you start speaking are checked for the phrase. Everything else is dropped at once." },
   { k: "Nothing sent", v: `Nothing is recorded or sent until you say “Hey ${brand.name}”.` },
   { k: "Off by default", v: "Your computer shows its mic indicator while it’s on. It pauses during meeting notes." },
   { k: "One breath or two", v: `Say it all at once, or say “Hey ${brand.name}”, pause, and ask.` },
@@ -126,14 +133,14 @@ export const greetingsNote = `Greetings work in many languages: “Hola ${brand.
 /** The recurring point: you don't connect anything. */
 export const nothingToConnect = {
   title: "Nothing to connect.",
-  lead: `${brand.name} works with the apps you already use, because it works on your Mac.`,
+  lead: `${brand.name} works with the apps you already use, because it works on your computer.`,
   body: "No integrations. No sign-ins. No bots on your calls. It uses what’s already there:",
   sources: [
     { k: "Your screen", v: "The text of the window in front of you." },
     { k: "Your open windows", v: "Every app you have open, read when you ask." },
-    { k: "Spotlight", v: "Your files, Mail messages and notes, through the Mac’s own index." },
-    { k: "Calendar and Reminders", v: "Your own, through macOS." },
-    { k: "Your Shortcuts", v: "Run by name, exactly as you wrote them." },
+    { k: "Spotlight", v: "Your files: Spotlight on a Mac (Mail and notes too), Windows Search, or Tracker on Linux." },
+    { k: "Calendar and Reminders", v: "Your own: Calendar and Reminders on a Mac; Outlook and notifications on Windows; GNOME Calendar and notifications on Linux." },
+    { k: "Your Shortcuts", v: "Run by name: Shortcuts on a Mac, Start menu shortcuts or Power Automate flows on Windows, your scripts on Linux." },
     { k: "Your browser", v: "Drive and Gmail searches open in the browser you’re already signed in to." },
   ],
 } as const;
@@ -158,9 +165,17 @@ export const routingRules = [
   },
 ] as const;
 
-export const platformNote = `Everything works on macOS, Windows and Linux (the agent is in beta on Windows and Linux). On Windows and Linux, reminders and events open as an .ics file in your calendar app, and your automations are Start menu shortcuts or Power Automate flows on Windows, and apps or scripts on Linux.`;
+export const platformNote = `Everything works on macOS, Windows and Linux (the agent is in beta on Windows and Linux). On Windows and Linux, reminders are notifications at the time you asked, and events open as an .ics file in your calendar app.`;
 
 export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">, Say[]> = {
+  writing: [
+    { say: "Running ten minutes late, start without me.", then: "Typed as you said it. Plain speech never waits on a model." },
+    { say: "So um the build is uh green now, let’s ship it.", then: "Polished: “The build is green now. Let’s ship it.”" },
+    { say: "Tell him I can’t make it, be polite.", then: "Written for you: a proper message, typed where your cursor is." },
+    { say: "Make this more formal.", then: "With text selected, it rewrites the selection. The chip reads “Rewritten · Undo rewrite · Edit”." },
+    { say: "Shorter.", then: "After it writes something, click Edit and say what to change: “shorter”, “warmer”." },
+    { say: "Use my words.", then: "Swaps in exactly what you said. “Undo that” and “just what I said” work too." },
+  ],
   answers: [
     { say: "What’s the difference between UTC and GMT?", then: "A short answer in the card. It already knows this, so no web search is made." },
     { say: "What’s the weather in Lisbon tomorrow?", then: "It searches the web, answers in a sentence or two and lists the sources it used." },
@@ -173,21 +188,21 @@ export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">
     { say: `Hey ${brand.name}, what does this paragraph mean?`, then: `In ChatGPT or Claude, “Hey ${brand.name}” makes it answer instead of typing your prompt.` },
   ],
   actions: [
-    { say: "Remind me at 5 to call Sam.", then: "A reminder in your Mac’s Reminders, due at 5 pm. Undo appears for a few seconds." },
-    { say: "Add lunch with Ana on Friday at 1.", then: "An event in your Calendar on Friday at 1 pm, in your default calendar." },
+    { say: "Remind me at 5 to call Sam.", then: "A reminder at 5 pm: in Reminders on a Mac, a notification on Windows and Linux. Undo appears for a few seconds." },
+    { say: "Add lunch with Ana on Friday at 1.", then: "An event on Friday at 1 pm, in your default calendar." },
     { say: "Remind me tomorrow at 9 to send the invoice.", then: "Dates like “tomorrow”, “Friday” and “at 9” are read in your local time." },
     { say: "Open Figma.", then: "Opens the app." },
     { say: "Open nytimes.com.", then: "Opens the site in your default browser." },
     { say: "Search for flights to Lisbon in March.", then: "Opens the search in your browser, so you see the results yourself." },
-    { say: "Run my standup shortcut.", then: "Runs the Shortcut you made with that name in the Shortcuts app." },
+    { say: "Run my standup shortcut.", then: "Runs your shortcut with that name: Shortcuts on a Mac, a Start menu shortcut or Power Automate flow on Windows, a script on Linux." },
     { say: "Open Linear and file a ticket for the login bug.", then: "Not yet. It tells you computer use is coming soon and does nothing." },
   ],
   recall: [
     { say: "What did I say about pricing yesterday?", then: "Answers from your dictation history, with when you said it." },
     { say: "What was that number on the page I just closed?", then: "Looks in the last two minutes of what was on screen, kept in memory only." },
     { say: "What did Priya say about the launch date?", then: "Looks in your meeting notes and transcripts." },
-    { say: "Find the Q3 deck.", then: "Finds matching files through Spotlight, plus a one-click Drive search in your browser." },
-    { say: "Find the email from Sam about the contract.", then: "Mail messages through Spotlight, plus a one-click Gmail search." },
+    { say: "Find the Q3 deck.", then: "Finds matching files on your computer, plus a one-click Drive search in your browser." },
+    { say: "Find the email from Sam about the contract.", then: "Mail messages through Spotlight on a Mac, plus a one-click Gmail search." },
     { say: "Where did I see the Acme invoice number?", then: "Searches the text of the windows you have open, in every app." },
     { say: "What was that article about battery recycling I read last week?", then: "Looks in screen memory, if you’ve turned it on." },
   ],
@@ -224,4 +239,19 @@ export const suggestionMoments = [
   { k: "A git diff in your terminal", v: "“Write a commit message for this?”" },
   { k: "A meeting in the next 10 minutes", v: "“Meeting coming up. Brief you?” From your own Calendar." },
   { k: "A call starting", v: "“Take notes for this call?” when a call app is open and the microphone is in use." },
+] as const;
+
+/** Smart writing: the three outcomes, as the chip names them. */
+export const writingOutcomes = [
+  { k: "As said", v: "Your exact words, with your custom words applied. No chip. Used whenever it isn’t sure." },
+  { k: "Polished", v: "Messy speech cleaned up, in your words. Chip: “Polished · Use my words”. Needs AI polish on (the default for new installs)." },
+  { k: "Written for you", v: "An instruction turned into the message. Chip: “Written for you · Use my words · Edit”." },
+  { k: "Rewritten", v: "Selected text rewritten as you asked. Chip: “Rewritten · Undo rewrite · Edit”." },
+] as const;
+
+/** The Writing setting, in Account. */
+export const writingSettings = [
+  { k: "Smart (default)", v: `${brand.name} decides each time.` },
+  { k: "Always as I said", v: `Your exact words. It only writes for you when you ask ${brand.name} by name.` },
+  { k: "Always polish", v: "AI polish on every dictation." },
 ] as const;

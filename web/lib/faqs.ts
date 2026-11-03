@@ -10,14 +10,14 @@ const plans: FaqItem = {
   q: "What’s free, and what does Pro cost?",
   a: brand.enforceFreeWordLimit
     ? `Free includes ${freeWordsLabel} of dictation, and every install gets ${brand.trialDays} days of everything, no card. Pro is $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually, and removes the limits. Cancel anytime.`
-    : `Free gets the whole colleague, with weekly limits: unlimited dictation, ${brand.freePolishPerWeek} AI uses a week and ${freeMeetingsPerMonth} meetings a month. Pro removes the limits for $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually. Every install starts with ${brand.trialDays} days of Pro, no card. Cancel anytime.`,
+    : `Free gets the whole colleague, with weekly limits: unlimited dictation, ${brand.freePolishPerWeek} AI uses a week, up to ${brand.freeSuggestionsPerWeek} suggestions a week and ${freeMeetingsPerMonth} meetings a month. Pro removes the limits for $${p.proMonthly}/month, or $${p.proYearlyPerMonth}/month billed annually. Every install starts with ${brand.trialDays} days of Pro, no card. Cancel anytime.`,
 };
 
 /** The full general FAQ, on /pricing and in llms-full.txt. */
 export const faqs: FaqItem[] = [
   {
     q: `What is ${brand.name}?`,
-    a: `A live agent on your desktop, like a colleague. Hold a key and talk: it answers with sources, acts (calendar, reminders, apps, your Shortcuts), recalls what you said or saw, or writes polished text where your cursor is. When it can help, it nudges you with one suggestion on screen. It takes meeting notes with no bot. Nothing to connect.`,
+    a: `A live agent on your desktop, like a colleague. Hold a key and talk: it answers with sources, acts (calendar, reminders, apps, your shortcuts), recalls what you said or saw, or writes where your cursor is: your words as said, polished, or written for you. When it can help, it nudges you with one suggestion on screen. It takes meeting notes with no bot. Nothing to connect.`,
   },
   {
     q: "What leaves my computer?",
@@ -69,7 +69,7 @@ export const billingFaqs: FaqItem[] = [
   plans,
   {
     q: "What counts as an AI use?",
-    a: `Each polished dictation, answer, action, Ask or meeting summary counts as one. The ${brand.freePolishPerWeek} a week are shared and reset every Monday (UTC). Plain dictation never counts.`,
+    a: `Each polished or written dictation, answer, action, Ask or meeting summary counts as one. The ${brand.freePolishPerWeek} a week are shared and reset every Monday (UTC). Plain dictation, and deciding how to write it, never count.`,
   },
   {
     q: "Is Pro really unlimited?",

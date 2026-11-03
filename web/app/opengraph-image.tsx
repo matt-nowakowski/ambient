@@ -6,5 +6,5 @@ export const size = ogSize;
 export const contentType = "image/png";
 
 export default function Image() {
-  return ogImage({ title: brand.tagline });
+  return ogImage({ title: `${brand.tagline}.` });
 }

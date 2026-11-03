@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
-  description: `How ${company.legalName} handles data for ${brand.name}. Audio never leaves your device; AI runs on your Mac where it can, and text is sent to our server only when a feature needs it.`,
+  description: `How ${company.legalName} handles data for ${brand.name}. Audio never leaves your device; AI runs on your device where it can, and text is sent to our server only when a feature needs it.`,
   path: "/privacy",
 });
 
@@ -82,9 +82,16 @@ export default function PrivacyPage() {
               </ul>
               <p>
                 <strong>Voice requests.</strong> When you speak, the app decides whether your words are text to type or a
-                request for the assistant. Ordinary dictation is simply typed. Only if your words look like a request
+                request for the assistant. Ordinary dictation is typed (polished first if AI polish is on). Only if your words look like a request
                 are they sent to our server to work out what you want and pick out details such as times or app names. What is sent is only what you
                 said, never what is on your screen.
+              </p>
+              <p>
+                <strong>Smart writing.</strong> With the Writing setting on Smart (the default), plain speech is typed as you
+                said it without calling a model. When your words read as an instruction to write something, when they are
+                unclear, or when you ask to rewrite text you have selected, what you said (and that selected text) is
+                processed as described above to decide and write it. Choose “Always as I said” to have your exact words typed
+                unless you ask {brand.name} by name. Your per-app writing preferences are stored on your device.
               </p>
               <p>
                 <strong>Web search.</strong> For questions that need the web, our server sends only the search query to
@@ -120,7 +127,7 @@ export default function PrivacyPage() {
                 Apps and sites on the <strong>never-watch list</strong> are never read. By default it includes password
                 managers, crypto wallets, private and incognito browser windows and messaging apps, and you can add any app
                 or site. Password fields are never read. Only the text a request needs is sent, after secrets are
-                redacted as described above, and only when the request can’t be handled on your Mac.
+                redacted as described above, and only when the request can’t be handled on your device.
               </p>
               <p>
                 <strong>Screen memory</strong> is a separate opt-in. If you turn it on, window text is saved on your
@@ -139,9 +146,10 @@ export default function PrivacyPage() {
           body: (
             <>
               <p>
-                When you ask {brand.name} to find something, it searches on your device only: the macOS Spotlight index
-                (your files, Mail.app messages and notes), your calendar events through macOS EventKit, and your dictation
-                history. Calendar is read only after you grant {brand.name} Calendar access; it also reads upcoming
+                When you ask {brand.name} to find something, it searches on your device only: your file index (the macOS
+                Spotlight index, including Mail.app messages and notes; Windows Search; or Tracker or locate on Linux), your
+                calendar events (through macOS EventKit, Outlook on Windows, or Evolution Data Server on Linux), and your
+                dictation history. On a Mac, Calendar is read only after you grant {brand.name} Calendar access; it also reads upcoming
                 events to help you prepare for meetings, but only if you have already granted that access. These sources
                 are not uploaded or copied to us. If a request then needs our server (see above), only the text needed to
                 answer it is sent.
@@ -159,8 +167,9 @@ export default function PrivacyPage() {
           body: (
             <p>
               When you ask, {brand.name} can create reminders and calendar events in your own Calendar and Reminders apps
-              (through macOS EventKit, with your permission) or, on Windows and Linux, as an .ics file opened by your
-              calendar app. It can also open apps and links, run your Shortcuts and paste drafts where your cursor is.
+              (through macOS EventKit, with your permission) or, on Windows and Linux, as a scheduled notification
+              (reminders) or an .ics file opened by your calendar app (events, and reminders when a notification isn’t
+              possible). It can also open apps and links, run your Shortcuts and paste drafts where your cursor is.
               These happen on your computer; the reminders and events are stored by your own apps, not by us.
             </p>
           ),
@@ -171,8 +180,8 @@ export default function PrivacyPage() {
           body: (
             <>
               <p>
-                If you turn on meeting notes, {brand.name} listens to your microphone and, on Mac, to your computer’s
-                audio output (this uses the macOS Screen Recording permission for audio only). It transcribes on your
+                If you turn on meeting notes, {brand.name} listens to your microphone and to your computer’s audio output
+                (on a Mac this uses the macOS Screen Recording permission for audio only). It transcribes on your
                 device. Meeting audio is never saved. Transcripts, notes and summaries are stored on your device,
                 encrypted, until you delete them.
               </p>
@@ -309,9 +318,9 @@ export default function PrivacyPage() {
           body: (
             <p>
               To give each computer one free trial and count the free weekly allowance of {brand.freePolishPerWeek} AI
-              uses (shared across polish, answers, actions, Ask and meeting summaries), the app sends a one-way hash of
+              uses (shared across polish, smart writing, answers, actions, Ask and meeting summaries), the app sends a one-way hash of
               your computer’s hardware identifier. We store only a further keyed hash of it, with the date your trial
-              started and the number of hosted AI uses in the current week. AI uses that run on your Mac, and Free’s
+              started and the number of hosted AI uses in the current week. AI uses that run on your device, and Free’s
               weekly suggestions and monthly meetings, are counted on your device and are not sent to us. We cannot
               reverse the hash into your hardware identifier, and it is not linked to your name, email or payment
               details. The app also checks for a trial once, on first launch.

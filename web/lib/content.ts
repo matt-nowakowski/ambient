@@ -51,7 +51,7 @@ export const agentModes = [
   {
     k: "Recall",
     say: "what did I say about pricing yesterday",
-    body: "What you said, saw or saved, found on your Mac.",
+    body: "What you said, saw or saved, found on your computer.",
   },
 ] as const;
 
@@ -116,9 +116,9 @@ export const writing = {
 export const sources = [
   { title: "Open windows", body: "The text of the windows open in every app, read when you ask." },
   { title: "The last two minutes", body: "A short rolling buffer, in memory only, for “what was that number I just closed?”." },
-  { title: "Screen memory", body: "What was on screen, saved as text, encrypted on your Mac. Kept 7 days by default." },
-  { title: "Spotlight", body: "Your files, Mail messages and notes, through the Mac’s own index." },
-  { title: "Calendar", body: "Your events, read through macOS." },
+  { title: "Screen memory", body: "What was on screen, saved as text, encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro." },
+  { title: "Your files", body: "Through Spotlight on a Mac (Mail and notes too), Windows Search, or Tracker on Linux." },
+  { title: "Calendar", body: "Your events, from Calendar on a Mac, Outlook on Windows, or GNOME Calendar on Linux." },
   { title: "Dictation history", body: "Everything you’ve said to it." },
   { title: "Drive and Gmail", body: "Searched in the browser you’re already signed in to. No login handed over." },
 ] as const;
@@ -160,7 +160,7 @@ export const trust = {
     },
     {
       k: "Secrets removed first",
-      v: "Card numbers, API keys, passwords and one-time codes are removed on your Mac before any text is sent.",
+      v: "Card numbers, API keys, passwords and one-time codes are removed on your computer before any text is sent.",
       orb: "M2",
     },
     {
@@ -177,19 +177,19 @@ export const trust = {
     },
     {
       k: "Hands-free is opt-in",
-      v: `Off by default. It listens on your Mac, and nothing is recorded or sent until you say “Hey ${brand.name}”.`,
+      v: `Off by default. It listens on your computer, and nothing is recorded or sent until you say “Hey ${brand.name}”.`,
     },
     { k: "Suggestions stay local", v: "Suggestions are decided on your computer unless you choose Cloud. Nothing is sent unless you accept one." },
     {
       k: "Stored on your computer, encrypted",
-      v: "Screen memory is kept 7 days by default, meetings until you delete them. Delete everything with one click.",
+      v: "Screen memory is kept 24 hours on Free and 7 days by default on Pro, meetings until you delete them. Delete everything with one click.",
     },
     {
       k: "On this computer only",
       v: "An optional Intelligence mode: AI runs on your device (Apple Intelligence on a Mac) and web search is off, so nothing is sent.",
     },
     { k: "Invisible in screen shares", v: "The HUD doesn’t appear in screen shares or recordings. One key pauses everything." },
-    { k: "No bots, no accounts", v: "No bot joins your calls and there is nothing to connect. The only account is the email you sign in with for Pro." },
+    { k: "No bots, no accounts", v: "No bot joins your calls and there is nothing to connect. The only account is the email you sign in with for Pro, and Free needs none." },
   ],
 };
 
@@ -306,8 +306,8 @@ export const tiers = {
       "macOS, Windows and Linux",
       `${brand.trialDays}-day trial of Pro, no card`,
       "Every agent feature: write, answer, act, recall, screen context, hands-free",
-      `${brand.freePolishPerWeek} AI uses a week, shared across polish, answers, actions, Ask and meeting summaries`,
-      `${brand.freeSuggestionsPerWeek} suggestions a week, decided on your computer`,
+      `${brand.freePolishPerWeek} AI uses a week, shared across polish, smart writing, answers, actions and meeting summaries`,
+      `Up to ${brand.freeSuggestionsPerWeek} suggestions a week, decided on your computer`,
       "Screen memory keeps the last 24 hours",
       `${freeMeetingsPerMonth} meetings a month`,
     ],
@@ -325,7 +325,7 @@ export const tiers = {
       "Unlimited AI uses (fair use), no API key",
       "Unlimited suggestions, with the option to judge them in the cloud",
       "Unlimited meeting notes (fair use) with live nudges",
-      "Screen memory for up to 90 days",
+      "Longer recall: screen memory for 7 days by default, up to 90",
       "Computer use, coming soon",
     ],
   },
@@ -358,11 +358,11 @@ export const featureGroups: FeatureGroup[] = [
       { title: "Write", body: "Talking to someone? Your words are polished and pasted where your cursor is, exactly like dictation.", orb: "C2" },
       { title: "Answer", body: "Ask a question and a glass answer card appears near the top right, with sources. It searches the web only when the answer needs it.", orb: "B2" },
       { title: "Answer about this", body: "“Summarise this” or “what does this error mean” uses the text of the window in front of you.", orb: "B3" },
-      { title: "Act", body: "“Remind me at 5 to call Sam” or “add lunch with Ana Friday at 1” lands in your Mac’s own Reminders and Calendar. It also opens apps and links, and runs your Shortcuts by name.", orb: "S3" },
+      { title: "Act", body: "“Remind me at 5 to call Sam” or “add lunch with Ana Friday at 1” lands in your own reminders and calendar. It also opens apps and links, and runs your shortcuts by name.", orb: "S3" },
       { title: "Recall", body: "“What did I say about pricing yesterday?” is answered from your dictations, meetings and, if you turn it on, screen memory.", orb: "G3" },
       { title: "Writing stays the default", body: "When it isn’t sure, it writes. Dictating an email stays dictating.", orb: "C1" },
       { title: `“Hey ${brand.name}”`, body: `Start with it to talk to ${brand.name} from ChatGPT, Cursor, Slack or Mail, where your words would otherwise be typed.`, orb: "M3" },
-      { title: "Hands-free (optional)", body: `Turn it on and just say “Hey ${brand.name}, what’s on my calendar?” No key. It listens on your Mac, and nothing is sent until you say it.`, orb: "G1" },
+      { title: "Hands-free (optional)", body: `Turn it on and just say “Hey ${brand.name}, what’s on my calendar?” No key. It listens on your computer, and nothing is sent until you say it.`, orb: "G1" },
     ],
   },
   {
@@ -371,19 +371,19 @@ export const featureGroups: FeatureGroup[] = [
     pro: true,
     intro: `Notes for any call, with no bot joining and nothing to connect. Free includes ${freeMeetingsPerMonth} meetings a month.`,
     items: [
-      { title: "Any call", body: "Zoom, Google Meet, Microsoft Teams, FaceTime and Slack huddles. If it plays on your Mac, it works.", orb: "C3" },
-      { title: "You and them", body: "Your microphone and your Mac’s audio are transcribed separately on your Mac, so it knows who said what.", orb: "M2" },
+      { title: "Any call", body: "Zoom, Google Meet, Microsoft Teams, FaceTime and Slack huddles. If it plays on your computer, it works.", orb: "C3" },
+      { title: "You and them", body: "Your microphone and the call’s audio are transcribed separately on your computer, so it knows who said what.", orb: "M2" },
       { title: "Notes as you talk", body: "Rolling notes build during the call, so you can look back mid-meeting.", orb: "S2" },
       { title: "Live nudges", body: "They asked you for something: Find it. You promised something: Remind me. Plus follow-up questions worth asking.", orb: "S1" },
       { title: "After the call", body: "A summary, decisions, action items, questions for you, and a follow-up email draft ready to send.", orb: "B1" },
-      { title: "Audio never saved", body: "The audio is transcribed on your Mac and thrown away. Only the text is kept, on your Mac.", orb: "G5" },
+      { title: "Audio never saved", body: "The audio is transcribed on your computer and thrown away. Only the text is kept, on your computer.", orb: "G5" },
     ],
   },
   {
     id: "suggestions",
     heading: "Suggestions",
     pro: true,
-    intro: "Switch it on and it nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud, and nothing is sent unless you accept.",
+    intro: `Switch it on and it nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud (Pro), and nothing is sent unless you accept. Up to ${brand.freeSuggestionsPerWeek} a week on Free.`,
     items: [
       { title: "Email", body: "Long threads: summarise them. Replies: dictate the gist, get the email. A date in an email or Slack message: add it to your calendar.", orb: "B4" },
       { title: "Writing", body: "A long draft: tighten it.", orb: "S4" },
@@ -397,14 +397,16 @@ export const featureGroups: FeatureGroup[] = [
     id: "recall",
     heading: "Finds your own things",
     pro: true,
-    intro: "Nothing to connect. It looks where your things already are.",
+    intro: "Nothing to connect. It looks where your things already are. Free keeps the last 24 hours of screen memory.",
     items: sources.map((s, i) => ({ ...s, orb: ["C2", "M1", "B1", "S5", "C5", "G1", "B5"][i] })),
   },
   {
     id: "dictation",
-    heading: "Dictation, unlimited and free",
-    intro: "Unlimited, on every platform, transcribed on your computer.",
+    heading: "Writing, unlimited and free",
+    intro: "Dictation that knows when to type what you said, when to polish it, and when to write it for you. Unlimited, on every platform, transcribed on your computer. On Free, polishing and writing for you count as AI uses.",
     items: [
+      { title: "Smart writing", body: "Say “tell him I can’t make it, be polite” and get a proper message. Messy speech gets polished; everything else is typed as you said it. A small chip shows what it did, and “Use my words” takes it back.", orb: "C1" },
+      { title: "Edit by voice", body: "Say “shorter” or “warmer” to change what it wrote. Select text and say “make this more formal” to rewrite it. It learns, per app, how much you want.", orb: "S5" },
       { title: "On-device transcription", body: "Speech-to-text runs locally with open models (Whisper, Parakeet, Moonshine, SenseVoice and more) with GPU acceleration where available. Your audio never leaves your computer.", orb: "B1" },
       { title: "Works offline", body: "Once a model is downloaded, dictation needs no connection at all.", orb: "G5" },
       { title: "99 languages", body: "Pick the languages you speak. Whisper models cover 99 of them, and can translate what you say into English.", orb: "G2" },

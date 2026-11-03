@@ -150,6 +150,11 @@ sudo dnf install pulseaudio-utils`}</Cmd>
             GNOME Calendar, Evolution and GNOME Online Accounts, when it&rsquo;s running.
           </li>
           <li>
+            <strong>Reminders</strong> are <C>systemd-run --user</C> timers that show a <C>notify-send</C> notification,
+            so they fire even if {brand.name} isn&rsquo;t running. Without a systemd user session, it offers an .ics
+            file for your calendar instead.
+          </li>
+          <li>
             <strong>&ldquo;Run my &hellip; shortcut&rdquo;</strong> runs your own script from{" "}
             <C>{`~/.local/share/${bin}/actions/`}</C>: the name lowercased with spaces as dashes, so &ldquo;run my
             focus mode shortcut&rdquo; runs <C>focus-mode.sh</C> (with <C>sh</C>). If there&rsquo;s no script, it

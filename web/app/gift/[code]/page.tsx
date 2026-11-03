@@ -29,7 +29,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const from = name((await searchParams).from) ?? signoff.name;
   return pageMetadata({
     title: "A gift for you",
-    description: `${from} gifted you ${proName}: the voice agent, unlimited AI polish and meeting notes. On the house.`,
+    description: `${from} gifted you ${proName}: your desktop colleague, with no limits. On the house.`,
     path: `/gift/${encodeURIComponent(code)}`,
     noindex: true,
   });
@@ -55,11 +55,11 @@ const problems: Record<Exclude<View, "valid">, { title: string; body: string }> 
   },
   expired: {
     title: "This gift has expired.",
-    body: "Sorry, you just missed it. Dictation is still free, and every install gets a trial of Pro.",
+    body: "Sorry, you just missed it. Free still gets the whole colleague, and every install gets a trial of Pro.",
   },
   used_up: {
     title: "This gift has all been claimed.",
-    body: "Every one of these went. Dictation is still free, and every install gets a trial of Pro.",
+    body: "Every one of these went. Free still gets the whole colleague, and every install gets a trial of Pro.",
   },
   unavailable: {
     title: "We couldn’t open your gift.",

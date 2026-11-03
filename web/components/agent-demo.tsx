@@ -93,7 +93,7 @@ function Result({ mode }: { mode: Mode }) {
         <Card key="act" orb="S3">
           <p className="text-foreground">Added to Calendar</p>
           <p className="mt-1 text-muted">Lunch with Ana · Friday, 1:00 pm</p>
-          <p className="mt-2.5 text-[11.5px] text-subtle">In your Mac’s own Calendar</p>
+          <p className="mt-2.5 text-[11.5px] text-subtle">In your own calendar</p>
         </Card>
       );
     case "Recall":

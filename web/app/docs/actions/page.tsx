@@ -6,12 +6,12 @@ import { guideMetadata, guidePage, trySaying } from "@/lib/guide";
 export const metadata = guideMetadata("actions");
 
 const what = [
-  { k: "Reminders", v: "Added to your Mac’s Reminders, with a due time if you give one." },
+  { k: "Reminders", v: "In Reminders on a Mac, or a notification at the time on Windows and Linux." },
   { k: "Calendar events", v: "Added to your default calendar. Relative dates are read in your local time." },
   { k: "Apps", v: "Opened by name." },
   { k: "Links", v: "Opened in your default browser." },
   { k: "Browser searches", v: "Opened in your browser, so you see the results yourself." },
-  { k: "Your Shortcuts", v: "Run by name from the Shortcuts app." },
+  { k: "Your shortcuts", v: "Run by name: Shortcuts on a Mac, a Start menu shortcut or Power Automate flow on Windows, a script on Linux." },
 ] as const;
 
 export default function ActionsPage() {
@@ -25,7 +25,7 @@ export default function ActionsPage() {
       <DocSection id="what-it-can-do" title="What it can do">
         <DocRows items={what} />
         <p>
-          The first time, macOS asks to let {brand.name} use Calendars and Reminders. Nothing else to set up.
+          On a Mac, the first time, macOS asks to let {brand.name} use Calendars and Reminders. Nothing else to set up.
         </p>
       </DocSection>
 
@@ -42,13 +42,14 @@ export default function ActionsPage() {
           {brand.name} says so and does nothing.
         </p>
         <Callout title="On Windows and Linux">
-          Apps, links and browser searches work. Reminders and events open as an .ics file in your calendar app, so
-          there is no Undo. On Linux, “run my … shortcut” runs your own script from{" "}
+          Reminders are scheduled notifications, with Undo. If notifications are off, or Linux has no systemd user
+          session, it says so and offers to add it to your calendar instead. Events open as an .ics file in your calendar
+          app, so they have no Undo. On Linux, “run my … shortcut” runs your own script from{" "}
           <C>{`~/.local/share/${brand.slug}/actions/`}</C> or opens an app of that name (see{" "}
           <Link href="/docs/linux#files-calendar-actions" className="text-foreground underline underline-offset-4">
             Linux setup
           </Link>
-          ). Shortcuts on Windows aren’t available yet.
+          ).
         </Callout>
       </DocSection>
 

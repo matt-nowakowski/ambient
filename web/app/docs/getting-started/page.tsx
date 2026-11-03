@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Callout, DocHeader, DocRows, DocSection, GuideNext } from "@/components/docs";
 import { Kbd } from "@/components/ui";
-import { brand } from "@/lib/brand";
+import { brand, freeMeetingsPerMonth } from "@/lib/brand";
 import {
   guideMetadata,
   guidePage,
@@ -20,6 +20,7 @@ export const metadata = guideMetadata("getting-started");
 const link = "text-foreground underline underline-offset-4";
 
 const examples: Record<string, string> = {
+  writing: "“Tell him I can’t make it, be polite.”",
   answers: "“What’s the weather in Lisbon tomorrow?”",
   actions: "“Remind me at 5 to call Sam.”",
   recall: "“What did I say about pricing yesterday?”",
@@ -54,7 +55,13 @@ export default function GettingStartedPage() {
                 <Kbd>{guideShortcuts.dictate.mac}</Kbd> on Mac, <Kbd>{guideShortcuts.dictate.other}</Kbd> on Windows
                 and Linux.
               </p>
-              <p>Types what you say. If what you say is a request, the agent handles it.</p>
+              <p>
+                Types what you say, polishes it, or{" "}
+                <Link href="/docs/writing" className={link}>
+                  writes it for you
+                </Link>
+                . If it’s a request, the agent handles it.
+              </p>
             </dd>
           </div>
           <div className="grid gap-2 border-t border-border py-4 sm:grid-cols-[150px_1fr] sm:gap-6">
@@ -132,7 +139,8 @@ export default function GettingStartedPage() {
       <DocSection id="turn-on-what-you-want" title="Turn on what you want">
         <p>
           Dictation and questions work straight away. Anything that reads your screen is off until you switch it on in{" "}
-          {brand.name} → Privacy. See{" "}
+          {brand.name} → Privacy. Suggestions are off too: setup offers them (“It offers help, too”), or turn on{" "}
+          <strong>Offer suggestions</strong> later. See{" "}
           <Link href="/docs/privacy" className={link}>
             Privacy controls
           </Link>
@@ -143,8 +151,19 @@ export default function GettingStartedPage() {
       <DocSection id="where-it-works" title="Where it works">
         <p>{platformNote}</p>
         <p>
-          The agent is part of Pro. Every install gets {brand.trialDays} days of everything, then Free includes{" "}
-          {brand.freePolishPerWeek} AI uses a week.
+          Free gets all of it, with weekly limits: {brand.freePolishPerWeek} AI uses, up to{" "}
+          {brand.freeSuggestionsPerWeek} suggestions and {freeMeetingsPerMonth} meetings a month. Dictation is unlimited.
+          Every install starts with {brand.trialDays} days of Pro, no card.{" "}
+          <Link href="/pricing" className={link}>
+            Plans
+          </Link>
+        </p>
+      </DocSection>
+
+      <DocSection id="feedback" title="Tell us what broke">
+        <p>
+          Say “Hey {brand.name}, report a bug…”, click 👍 or 👎 on any answer, or use <strong>Send feedback</strong> in
+          the menu. It comes straight to the team.
         </p>
       </DocSection>
 

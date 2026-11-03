@@ -1,8 +1,11 @@
 # Ambient
 
-**Speak. It's written.** Ambient is a desktop dictation app: hold a shortcut, talk,
-and clean text appears wherever your cursor is. Transcription runs on your
-device, works offline, and supports macOS, Windows and Linux.
+**Your desktop colleague.** Ambient is a live agent on your desktop that you talk
+to: it writes, answers, acts and remembers, and nudges you with suggestions when
+it can help (on screen; it never talks out loud). It also takes meeting notes with
+no bot, and its free, unlimited dictation knows when to type what you said, when
+to polish it, and when to write it for you. Speech recognition runs on your
+device. macOS, Windows and Linux (the agent is in beta on Windows and Linux).
 
 > **Source available, not open source.** This code is public to read and review
 > only. You may not use, copy, modify, build or redistribute it: see [LICENSE](LICENSE).
@@ -67,8 +70,8 @@ Free gets every agent feature with low weekly limits; Pro removes the limits
 
 | Plan | Price                            | What you get                                                                                                                                                                  |
 | ---- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Free | $0                               | Unlimited dictation; every agent feature within limits: 25 AI uses a week (one pool), 10 suggestions a week (judged on device), 24 hours of screen memory, 2 meetings a month |
-| Pro  | $12/mo, or $9/mo billed annually | No limits (fair use), the cloud suggestion judge, screen memory up to 90 days, priority support                                                                               |
+| Free | $0                               | Unlimited dictation; every agent feature within limits: 25 AI uses a week (one pool: polish, smart writing, answers, actions, meeting summaries), up to 10 suggestions a week (judged on device), screen reading, hands-free, 24 hours of screen memory, 2 meetings a month |
+| Pro  | $12/mo, or $9/mo billed annually | No limits (fair use), the cloud suggestion judge, screen memory 7 days by default (up to 90), priority support                                                                                                                 |
 | Team | $8/user/mo billed annually       | Everything in Pro, central billing                                                                                                                                            |
 
 Every Free limit is a remote-config tunable (`free.*` in
@@ -76,17 +79,19 @@ Every Free limit is a remote-config tunable (`free.*` in
 enforced by the server (`web/lib/ai.ts`); suggestions, screen memory, meetings
 and on-device AI uses by the app (`src-tauri/src/limits.rs`). Reaching one
 shows a HUD notice with Upgrade, and `limit_hit` feeds "Free limits hit per
-week" in the Agent health tab.
+week" in the Agent health tab. Every install starts with a 7-day trial of Pro, no
+card.
 
-### AI polish (Pro)
+### AI polish and the hosted model
 
 - The app ships a built-in provider, **Ambient AI** (`settings.rs`,
   `AMBIENT_AI_PROVIDER_ID`), pointing at `{apiBaseUrl}/api/ai/v1`. Its API key is
-  the user's signed Pro token (from sign-in, a redeemed code or the trial); the
-  user configures nothing. There are no bring-your-own-key providers: polish
+  the user's signed Pro token (from sign-in, a redeemed code or the trial), or on
+  Free `free_<machine hash>`, which spends the weekly AI uses; the user
+  configures nothing. There are no bring-your-own-key providers: polish
   and the agent use only this hosted model or Apple Intelligence.
 - `web/app/api/ai/v1/chat/completions` is OpenAI-compatible: it checks the
-  license (valid, unexpired, paid), caps request size, and calls DeepSeek V4
+  license (valid and unexpired) or Free's weekly allowance, caps request size, and calls DeepSeek V4
   Flash on Baseten with thinking off (~1s). Each upstream attempt times out at
   8s with one retry; if polish fails the app pastes the raw transcript.
 - Apple Intelligence ("Keep it on this Mac") works on every plan; on Free each
