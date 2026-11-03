@@ -33,7 +33,7 @@
       "failed": "ダウンロードに失敗しました",
       "retry": "再試行",
       "chooseAnother": "別のモデルを選択",
-      "download": "モデルをダウンロード ({{size}})",
+      "download": "モデルをダウンロード（{{size}}）",
       "continue": "続行"
     },
     "errors": {
@@ -73,14 +73,14 @@
       "progress": "ステップ {{step}} / {{count}}"
     },
     "welcome": {
-      "title": "どのアプリでも、入力のかわりに話すだけ",
-      "subtitle": "音声入力で使う言語を選んでください",
+      "title": "どの言語を話しますか？",
+      "subtitle": "{{appName}} で使う言語をすべて選んでください。あとから変更できます。",
       "languagesLabel": "言語",
       "noMatch": "「{{query}}」に一致する言語はありません。ほかの言語は設定にあります。",
       "appLanguage": "アプリの言語",
       "menusIn": "表示言語：<b>{{language}}</b>",
       "chinese": {
-        "question": "{{languages}}を話しますね。{{appName}} にはどの文字で書かせますか?",
+        "question": "{{languages}}を話すのですね。{{appName}} はどの文字で書きましょうか？",
         "label": "中国語の文字",
         "zh-Hans": "簡体字",
         "zh-Hant": "台湾",
@@ -88,8 +88,8 @@
       },
       "hint": {
         "pickOne": "言語を1つ以上選んでください",
-        "weak_one": "{{languages}}: まだこの言語をうまく聞き取れるモデルはありません",
-        "weak_other": "{{languages}}: まだこれらの言語をうまく聞き取れるモデルはありません"
+        "weak_one": "{{languages}}：まだこの言語をうまく聞き取れるモデルはありません",
+        "weak_other": "{{languages}}：まだこれらの言語をうまく聞き取れるモデルはありません"
       }
     },
     "download": {
@@ -113,14 +113,14 @@
       "subtitle": "このコンピュータ上で声を文字に変換します",
       "label": "音声モデル",
       "lines": {
-        "recommended": "あなたの言語に最適な速度と精度",
-        "faster": "より速いが、間違いはやや増える",
-        "accurate": "間違いが最も少ないが、遅い"
+        "recommended": "選んだ言語に最適な速度と精度",
+        "faster": "より速いですが、間違いがやや増えます",
+        "accurate": "間違いが最も少ないですが、速度は遅めです"
       },
       "shorts": {
-        "recommended": "バランス重視",
-        "faster": "速い、間違いはやや増える",
-        "accurate": "間違いが最少、ただし遅い"
+        "recommended": "最適なバランス",
+        "faster": "高速、間違いはやや多め",
+        "accurate": "間違いが最少、速度は遅め"
       },
       "model": "モデル",
       "showAll": "全 {{count}} 個のモデルを表示",
@@ -138,11 +138,11 @@
         "messages": "メッセージ",
         "notes": "メモ"
       },
-      "chat": "今夜まだ来られる?",
+      "chat": "今夜まだ来られる？",
       "noteTitle": "週末の予定",
-      "screenLabel": "ノートパソコンの画面: アプリをクリックしてショートカットを押して話すと、クリックした場所に言葉が表示されます。",
+      "screenLabel": "ノートパソコンの画面：アプリをクリックしてショートカットを押して話すと、クリックした場所に言葉が表示されます。",
       "change": "変更",
-      "yourShortcut": "あなたのショートカット:",
+      "yourShortcut": "ショートカット：",
       "pressKeys": "新しいキーを押してください",
       "addKey": "続けてキーを追加してください",
       "cancel": "キャンセル",
@@ -171,7 +171,7 @@
       }
     },
     "try": {
-      "title": "さっそく試してみよう!",
+      "title": "さっそく試してみましょう！",
       "subtitle": "画面の隅から {{appName}} が案内します",
       "noteLabel": "メモ",
       "placeholder": "新規メモ",
@@ -181,13 +181,13 @@
       "tapAgain": "話し終えたら、もう一度 <keys/> をタップしてください。",
       "watch": "メモを見てみましょう。",
       "changeKeys": "ショートカットを変更、{{keys}}",
-      "doneHold": "ハイタッチ! 押したまま話す方法はバッチリ。",
+      "doneHold": "ハイタッチ！押したまま話す方法はばっちりです。",
       "doneHoldNext": "次は、手を使わない方法です。",
-      "doneTap": "イェイ! タップして話す方法もバッチリ。",
+      "doneTap": "やりました！タップして話す方法もばっちりです。",
       "doneTapNext": "今度は、押したまま話してみましょう。",
-      "giveFive": "できた! ハイタッチ!",
+      "giveFive": "できました！ハイタッチ！",
       "highFive": "ハイタッチ",
-      "slowLine": "このコンピューターでは {{name}} に {{wait}} かかりました。<faster>より高速なモデルを試す</faster>",
+      "slowLine": "このコンピュータでは {{name}} に {{wait}} かかりました。<faster>より高速なモデルを試す</faster>",
       "nothingTyped": "あれ、何も入力されませんでした。",
       "nothingTypedSub": "まずメモをクリックしてから、もう一度試してください。",
       "silent": "何も聞こえませんでした。",
@@ -197,8 +197,8 @@
       "finish": "完了",
       "skip": "スキップ",
       "seconds": "{{value}}秒",
-      "heardHold": "押したまま話す方法はバッチリ。次は、手を使わない方法です。",
-      "heardTap": "タップして話す方法もバッチリ。今度は、押したまま話してみましょう。",
+      "heardHold": "押したまま話す方法はばっちりです。次は、手を使わない方法です。",
+      "heardTap": "タップして話す方法もばっちりです。今度は、押したまま話してみましょう。",
       "gotIt": "すべて聞き取りました：「{{quote}}」"
     },
     "done": {
@@ -232,9 +232,9 @@
       "translateTitle": "話した内容を英語のテキストに変換できます。設定でオンにします"
     },
     "rubric": {
-      "gradeTitle": "{{language}}の精度: {{grade}}",
+      "gradeTitle": "{{language}}の精度：{{grade}}",
       "accuracyTitle": "{{language}}の精度",
-      "overallTitle": "選んだ言語での精度: {{grade}}",
+      "overallTitle": "選んだ言語での精度：{{grade}}",
       "overall": "選んだ言語での精度",
       "meaning": {
         "A": "間違いはごくわずか。話した言葉がほぼそのまま出力されます",
@@ -248,7 +248,7 @@
       "under": "{{max}}% 未満",
       "between": "{{min}}〜{{max}}%",
       "over": "{{min}}% 以上",
-      "speedTitle": "速度: {{speed}}",
+      "speedTitle": "速度：{{speed}}",
       "speedName": {
         "0": "とても遅い",
         "1": "遅い",
@@ -300,7 +300,7 @@
     "missingLanguage": "言語が見つからない場合",
     "allLanguages": "すべて",
     "downloadingLine": "{{total}} のうち {{percent}}% をダウンロード中",
-    "customLine": "モデルフォルダから追加されました。評価対象外です。"
+    "customLine": "モデルフォルダーから追加されました。評価対象外です。"
   },
   "languagePicker": {
     "search": "言語を検索",
@@ -351,7 +351,7 @@
           },
           "transcribe_with_post_process": {
             "name": "後処理のショートカット",
-            "description": "文字起こしに常に AI 後処理を適用するキーボードショートカット。 (任意)"
+            "description": "任意：文字起こしに常に AI 後処理を適用する専用ショートカットです。"
           },
           "ask_agent": {
             "name": "質問のショートカット",
@@ -359,7 +359,7 @@
           }
         },
         "errors": {
-          "set": "ショートカットを設定できませんでした: {{error}}"
+          "set": "ショートカットを設定できませんでした：{{error}}"
         }
       },
       "language": {
@@ -370,13 +370,13 @@
         "auto": "自動",
         "autoUnavailable": {
           "title": "自動は無効です",
-          "oneLanguage": "このモデルで使えるのはあなたの言語のうち1つだけです",
+          "oneLanguage": "このモデルで使えるのは、選んだ言語のうち1つだけです",
           "undetectable": "{{languages}}では利用できません",
-          "noMatch": "あなたの言語はどれもこのモデルで使えません"
+          "noMatch": "選んだ言語はどれもこのモデルで使えません"
         },
         "detectorMissingTitle": "自動には別のダウンロードが必要です",
-        "detectorMissing": "このモデルは話している言語を判別できません。自動では小さな言語検出を使って判別します",
-        "stopDetectorDownload": "言語検出のダウンロードを停止"
+        "detectorMissing": "このモデルは話している言語を判別できません。「自動」を使うには、小さな言語検出モデルが必要です",
+        "stopDetectorDownload": "言語検出モデルのダウンロードを停止"
       },
       "preferredLanguages": {
         "title": "使用する言語",
@@ -412,7 +412,7 @@
       "title": "モデル",
       "changeLanguages": "言語を変更",
       "sections": {
-        "yours": "このコンピューター上",
+        "yours": "このコンピュータ上",
         "fits": "選んだ言語向け",
         "untested": "未テスト"
       },
@@ -425,8 +425,8 @@
       "download": "ダウンロードして使用",
       "downloadingThenUse": "{{total}} のうち {{percent}}%、完了後に切り替え",
       "loading": "読み込み中…",
-      "deleteAsk": "{{name}} を削除しますか? {{size}} の空き容量が増えます。",
-      "deleteAskActive": "{{name}} を削除しますか? ほかのモデルを選ぶまで、{{appName}} は文字起こしできません。",
+      "deleteAsk": "{{name}} を削除しますか？{{size}} の空き容量が増えます。",
+      "deleteAskActive": "{{name}} を削除しますか？ほかのモデルを選ぶまで、{{appName}} は文字起こしできません。",
       "cancel": "キャンセル",
       "deleteModel": "{{name}} を削除",
       "cancelDownload": "{{name}} のダウンロードを中止",
@@ -434,14 +434,14 @@
         "open": "モデルの評価方法",
         "accuracyNote": "選んだ言語ごとに、テスト用の録音でモデルが間違えた単語の割合です。",
         "speedNote": {
-          "accelerated": "テスト用ノートパソコンのグラフィックチップで、30秒の音声を文字にするまでにかかる時間です。お使いのコンピューターでは異なる場合があります。",
-          "cpu": "テスト用ノートパソコンのプロセッサで、30秒の音声を文字にするまでにかかる時間です。お使いのコンピューターでは異なる場合があります。"
+          "accelerated": "テスト用ノートパソコンのグラフィックチップで、30秒の音声を文字にするまでにかかる時間です。お使いのコンピュータでは異なる場合があります。",
+          "cpu": "テスト用ノートパソコンのプロセッサで、30秒の音声を文字にするまでにかかる時間です。お使いのコンピュータでは異なる場合があります。"
         },
         "marks": "? はまだ測定されていません。— はその言語を聞き取れません。"
       },
       "retiredNotice": {
         "title": "古いモデルは {{appName}} で使用できなくなりました",
-        "description": "コンピューター上で {{size}} を使用しています。",
+        "description": "コンピュータ上で {{size}} を使用しています。",
         "delete": "モデルを削除",
         "deleted": "古いモデルを削除しました",
         "deleteFailed": "一部の古いモデルを削除できませんでした。詳細はログを確認してください。"
@@ -496,8 +496,8 @@
         "description": "まだ開発中の実験的な機能を有効にします。"
       },
       "lazyStreamClose": {
-        "label": "文字起こし間でマイクを有効にする",
-        "description": "録音停止後マイクを30秒間有効なままにし、連続した文字起こしの遅延を軽減します。Bluetooth 音声品質に影響する場合があります。"
+        "label": "文字起こしの合間もマイクを開いたままにする",
+        "description": "録音停止後もマイクを30秒間開いたままにし、続けて文字起こしするときの遅延を減らします。オンの間は Bluetooth の音質が低下する場合があります。"
       },
       "acceleration": {
         "transcribe": {
@@ -514,7 +514,7 @@
       },
       "autostart": {
         "label": "起動時に実行",
-        "description": "コンピューターにログインしたときに {{appName}} を自動的に起動。"
+        "description": "コンピュータにログインしたときに {{appName}} を自動的に起動。"
       },
       "showTrayIcon": {
         "label": "トレイアイコンを表示",
@@ -523,7 +523,7 @@
       "overlay": {
         "style": {
           "title": "オーバーレイ",
-          "description": "録音中のオーバーレイを選択します。「なし」は非表示、「ミニマル」はコンパクトなカプセル型表示、「ライブ」はリアルタイムで文字起こしを表示します(ストリーミング対応モデルのみ。モデル選択画面の「ストリーミング」表示を確認してください)。Linux では「なし」を推奨します。",
+          "description": "録音中のオーバーレイを選択します。「なし」は非表示、「ミニマル」はコンパクトなカプセル型表示、「ライブ」はリアルタイムで文字起こしを表示します（ストリーミング対応モデルのみ。モデル選択画面の「ストリーミング」表示を確認してください）。Linux では「なし」を推奨します。",
           "options": {
             "none": "なし",
             "minimal": "ミニマル",
@@ -532,7 +532,7 @@
         },
         "position": {
           "title": "オーバーレイの位置",
-          "description": "録音と文字起こし中に表示するオーバーレイが表示される位置を選択します。",
+          "description": "録音中や文字起こし中に、オーバーレイを画面のどこに表示するかを選びます。",
           "options": {
             "bottom": "下",
             "top": "上"
@@ -543,9 +543,9 @@
         "title": "貼り付け方法",
         "description": "テキストの挿入方法を選択。「直接」はシステム入力でタイピングをシミュレート。「なし」は貼り付けをスキップし、履歴/クリップボードのみ更新。",
         "options": {
-          "clipboard": "クリップボード ({{modifier}}+V)",
-          "clipboardCtrlShiftV": "クリップボード (Ctrl+Shift+V)",
-          "clipboardShiftInsert": "クリップボード (Shift+Insert)",
+          "clipboard": "クリップボード（{{modifier}}+V）",
+          "clipboardCtrlShiftV": "クリップボード（Ctrl+Shift+V）",
+          "clipboardShiftInsert": "クリップボード（Shift+Insert）",
           "direct": "直接",
           "none": "なし",
           "externalScript": "外部スクリプト"
@@ -554,9 +554,9 @@
       },
       "typingTool": {
         "title": "タイピングツール",
-        "description": "直接貼り付け方式で使用する Linux のタイピングツールを選択します。Auto は自動的に最適なツールを検出して使用します。",
+        "description": "「直接」貼り付けで使用する Linux のタイピングツールを選択します。「自動」を選ぶと、最適なツールを自動的に検出して使用します。",
         "options": {
-          "auto": "自動 (推奨)"
+          "auto": "自動（推奨）"
         }
       },
       "clipboardHandling": {
@@ -593,7 +593,7 @@
           "min10": "10分後",
           "min15": "15分後",
           "hour1": "1時間後",
-          "sec15": "15秒後 (デバッグ)"
+          "sec15": "15秒後（デバッグ）"
         }
       },
       "customWords": {
@@ -605,7 +605,7 @@
         "duplicate": "「{{word}}」は既に存在します"
       },
       "voiceActivityDetection": {
-        "title": "音声区間検出 (VAD)",
+        "title": "音声区間検出（VAD）",
         "description": "録音から無音部分を除去します。ストリーミング対応モデルはより長い音声検出区間を使用します。VAD を無効にすると音声をそのまま録音します。"
       },
       "longFormChunking": {
@@ -614,9 +614,9 @@
       },
       "languageDetection": {
         "title": "自動を自分の言語に限定",
-        "description": "自動は小さな言語検出を使い、優先言語の中からだけ選びます。自動が話していない言語を選び続ける場合はオンにしてください",
-        "downloadHint": "オンにすると小さな言語検出がダウンロードされます",
-        "downloadingHint": "言語検出をダウンロード中です。キャンセルするにはオフにしてください"
+        "description": "「自動」は小さな言語検出モデルを使い、優先言語の中からだけ選びます。話していない言語が選ばれ続ける場合はオンにしてください",
+        "downloadHint": "オンにすると小さな言語検出モデルがダウンロードされます",
+        "downloadingHint": "言語検出モデルをダウンロード中です。キャンセルするにはオフにしてください"
       },
       "vadBackend": {
         "title": "音声区間検出バックエンド",
@@ -636,8 +636,8 @@
         "options": {
           "asTranscribed": "文字起こしのまま",
           "simplified": "簡体字",
-          "traditionalTw": "繁体字 (台湾)",
-          "traditionalHk": "繁体字 (香港)"
+          "traditionalTw": "繁体字（台湾）",
+          "traditionalHk": "繁体字（香港）"
         }
       }
     },
@@ -648,9 +648,9 @@
     },
     "history": {
       "title": "履歴",
-      "openFolder": "録音フォルダを開く",
+      "openFolder": "録音フォルダーを開く",
       "loading": "履歴を読み込み中…",
-      "empty": "まだ文字起こしがありません。録音を開始して履歴を作成しましょう!",
+      "empty": "まだ文字起こしがありません。録音を開始して履歴を作成しましょう！",
       "copyToClipboard": "文字起こしをクリップボードにコピー",
       "copyError": "文字起こしをクリップボードにコピーできませんでした。",
       "save": "文字起こしを保存",
@@ -660,12 +660,12 @@
       "retranscribe": "再文字起こし",
       "cancelTranscription": "文字起こしをキャンセル",
       "transcribing": "文字起こし中…",
-      "transcriptionFailed": "文字起こしに失敗しました。リトライアイコンを使用して再文字起こしできます。",
-      "notTranscribed": "文字起こしされていません。リトライアイコンを使用して文字起こしできます。",
+      "transcriptionFailed": "文字起こしに失敗しました。再試行アイコンから文字起こしをやり直せます。",
+      "notTranscribed": "まだ文字起こしされていません。再試行アイコンから文字起こしできます。",
       "transcribeFile": "ファイルを文字起こし",
       "mediaFiles": "音声と動画",
       "fileUnsupported": "{{name}} から音声を読み込めませんでした。",
-      "readingFile": "{{name}} を読み込み中...",
+      "readingFile": "{{name}} を読み込み中…",
       "transcribeFailed": "文字起こしに失敗しました。もう一度お試しください。",
       "waiting": "文字起こし待ち",
       "transcribingPercent": "文字起こし中… {{percent}}%",
@@ -680,7 +680,7 @@
       "saved": "保存済み",
       "playRecording": "録音を再生",
       "hidePlayer": "プレーヤーを隠す",
-      "emptyTitle": "ディクテーションはまだありません",
+      "emptyTitle": "まだ音声入力の履歴はありません",
       "emptyDescription": "{{appName}} が文字起こししたものはすべて新しい順にここに表示されます。どのアプリでもショートカットを押しながら話し始めましょう。",
       "noResultsTitle": "一致なし",
       "noResultsDescription": "履歴に「{{query}}」に一致するものはありません。",
@@ -711,7 +711,7 @@
       "updateChecks": {
         "label": "アップデートを確認",
         "description": "{{appName}} の新しいバージョンを自動的にチェック",
-        "lockedDescription": "システム設定により無効化されています (AMBIENT_DISABLE_UPDATER)"
+        "lockedDescription": "システム設定により無効化されています（AMBIENT_DISABLE_UPDATER）"
       },
       "whatsNewPreview": {
         "title": "新機能をプレビュー",
@@ -794,34 +794,34 @@
         "bindingsReset": "キーボードショートカットに互換性がなかったため、デフォルトにリセットされました"
       },
       "pasteDelay": {
-        "title": "貼り付け遅延(前)",
-        "description": "テキストをコピーした後、貼り付けキーを送信する前の遅延(ミリ秒)。何も貼り付けられない場合は増やしてください。"
+        "title": "貼り付け遅延（前）",
+        "description": "テキストをコピーした後、貼り付けキーを送信する前の遅延（ミリ秒）。何も貼り付けられない場合は増やしてください。"
       },
       "pasteDelayAfter": {
-        "title": "貼り付け遅延(後)",
-        "description": "貼り付けキーを送信した後、以前のクリップボードを復元する前の遅延(ミリ秒)。文字起こしではなく古いクリップボードの内容が貼り付けられる場合は増やしてください。"
+        "title": "貼り付け遅延（後）",
+        "description": "貼り付けキーを送信した後、以前のクリップボードを復元する前の遅延（ミリ秒）。文字起こしではなく古いクリップボードの内容が貼り付けられる場合は増やしてください。"
       },
       "holdThreshold": {
         "title": "長押しのしきい値",
-        "description": "「自動」モードのみ: タップではなく長押しとみなすためにショートカットを押し続ける必要がある時間（ミリ秒）。短い長押しの後も録音が続いてしまう場合は下げ、意図したタップが長押しと判定される場合は上げてください。"
+        "description": "「自動」モードのみ：タップではなく長押しとみなすためにショートカットを押し続ける必要がある時間（ミリ秒）。短い長押しの後も録音が続いてしまう場合は下げ、意図したタップが長押しと判定される場合は上げてください。"
       },
       "reliablePaste": {
-        "title": "確実な貼り付け(Beta)",
+        "title": "確実な貼り付け（Beta）",
         "description": "固定の遅延ではなく、対象アプリが実際に文字起こしを読み取った後にのみクリップボードを復元します。システム負荷が高いときに古いクリップボードの内容が貼り付けられる問題を解決するための設定です。クリップボードを使う貼り付け方法が必要です。macOS と Windows のみ。"
       },
       "recordingBuffer": {
         "title": "追加録音バッファ",
-        "description": "キーを離した後に録音を続ける追加時間(ミリ秒)。末尾の音声を捕捉するため。0 = 追加バッファなし。"
+        "description": "キーを離した後に録音を続ける追加時間（ミリ秒）。末尾の音声を捕捉するため。0 = 追加バッファなし。"
       },
       "languageDetectionWindow": {
         "title": "言語検出の音声",
-        "description": "言語検出が聞く音声の秒数です。長いほど正確ですが遅くなります。"
+        "description": "言語検出モデルが聞き取る音声の秒数です。長いほど正確ですが、遅くなります。"
       },
       "keyboardDiagnostic": {
         "title": "キーボード診断",
         "description": "キーボードイベントが {{appName}} に届いているかを確認します。記録されるのはイベント数のみで、押したキーの内容は記録されません。",
         "run": "10 秒間の診断を実行",
-        "running": "待機中… ショートカットを数回押してください (例: Option+Space)",
+        "running": "待機中… ショートカットを数回押してください（例：Option+Space）",
         "secureInputLabel": "Secure Input",
         "enabled": "有効",
         "disabled": "無効",
@@ -835,7 +835,7 @@
         "verdictSuspicious": "修飾キーのイベントは届いていますが、キーイベントは届いていません。Secure Input は無効と報告されているのに、何かがキーを抑制しています。GitHub で報告してください。",
         "verdictOk": "キーイベントは {{appName}} に正常に届いています。",
         "verdictNoEvents": "イベントを検出できませんでした。テスト中にキーを押しましたか？",
-        "failed": "診断に失敗しました: {{error}}"
+        "failed": "診断に失敗しました：{{error}}"
       }
     },
     "about": {
@@ -862,13 +862,13 @@
         "ggml": {
           "title": "ggml",
           "description": "オンデバイス機械学習推論のための高性能テンソルライブラリ",
-          "details": "{{appName}} のローカルの音声からテキストへの文字起こしは transcribe.cpp と ggml を基盤としています。Georgi Gerganov 氏と貢献者の皆様の素晴らしい仕事に感謝します。"
+          "details": "{{appName}} のローカル文字起こしは transcribe.cpp と ggml を基盤としています。Georgi Gerganov 氏と貢献者の皆様の素晴らしい仕事に感謝します。"
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "オープンソースライセンス",
+          "description": "{{appName}} に含まれるオープンソースソフトウェアのライセンス表示",
+          "show": "ライセンスを表示",
+          "hide": "ライセンスを隠す"
         }
       },
       "intro": {
@@ -885,8 +885,8 @@
         "description": "リクエストは処理され、それ以外はいつもどおり入力されます。常に入力したい場合はオフにしてください。"
       },
       "wake": {
-        "label": "ハンズフリー：「ねえ Ambient」と話しかける",
-        "description": "キーを押さずに{{appName}}と話せます：「ねえ Ambient、今日の予定は？」このコンピュータ上で聞き取り、名前で始まらない言葉はすべて無視します。オンの間はコンピュータにマイクのインジケータが表示されます。"
+        "label": "ハンズフリー：「Hey Ambient」と話しかける",
+        "description": "キーを押さずに{{appName}}と話せます：「Hey Ambient、今日の予定は？」このコンピュータ上で聞き取り、名前で始まらない言葉はすべて無視します。オンの間は、マイクが使用中であることがコンピュータに表示されます。"
       }
     }
   },
@@ -900,9 +900,9 @@
     "preparing": "準備中…",
     "checkForUpdates": "アップデートを確認",
     "portableUpdateTitle": "手動での更新が必要です",
-    "portableUpdateMessage": "ポータブル版は自動的に更新できません。下のボタンからお使いのシステム向けのインストーラーをダウンロードし、実行して同じフォルダーにインストールしてください。Data フォルダー(設定、モデル、録音)はそのまま残ります。",
+    "portableUpdateMessage": "ポータブル版は自動的に更新できません。下のボタンからお使いのシステム向けのインストーラーをダウンロードし、実行して同じフォルダーにインストールしてください。Data フォルダー（設定、モデル、録音）はそのまま残ります。",
     "portableUpdateButton": "インストーラーをダウンロード",
-    "portableUpdateBrowseMessage": "ポータブル版は自動的に更新できません。GitHub Releases からお使いのシステム向けの最新版をダウンロードし、同じフォルダーにインストールしてください。Data フォルダー(設定、モデル、録音)はそのまま残ります。",
+    "portableUpdateBrowseMessage": "ポータブル版は自動的に更新できません。GitHub Releases からお使いのシステム向けの最新版をダウンロードし、同じフォルダーにインストールしてください。Data フォルダー（設定、モデル、録音）はそのまま残ります。",
     "portableUpdateBrowseButton": "GitHub Releases を開く"
   },
   "whatsNew": {
@@ -918,18 +918,18 @@
     "noOptionsFound": "オプションが見つかりません"
   },
   "errors": {
-    "loadDirectory": "ディレクトリの読み込みエラー: {{error}}",
+    "loadDirectory": "ディレクトリの読み込みエラー：{{error}}",
     "micPermissionDeniedTitle": "マイクへのアクセスが拒否されました",
     "micPermissionDenied": {
       "generic": "オペレーティングシステムによりマイクへのアクセスが拒否されました。システム設定でマイクの許可を付与してください。",
-      "windows": "設定 → プライバシーとセキュリティ → マイク(デスクトップアプリのアクセスを含む)でマイクへのアクセスを有効にしてください。",
+      "windows": "設定 → プライバシーとセキュリティ → マイク（デスクトップアプリのアクセスを含む）でマイクへのアクセスを有効にしてください。",
       "macos": "システム設定 → プライバシーとセキュリティ → マイクでマイクへのアクセスを許可してください。",
       "linux": "システムのサウンドまたはプライバシー設定でマイクへのアクセスを許可してください。"
     },
     "noInputDeviceTitle": "マイクが見つかりません",
     "noInputDevice": "オーディオ入力デバイスが検出されませんでした。マイクまたはヘッドセットを接続してから再試行してください。",
-    "recordingFailed": "録音の開始に失敗しました: {{error}}",
-    "modelLoadFailed": "モデルの読み込みに失敗しました: {{model}}",
+    "recordingFailed": "録音の開始に失敗しました：{{error}}",
+    "modelLoadFailed": "モデルの読み込みに失敗しました：{{model}}",
     "modelLoadFailedUnknown": "不明なモデル",
     "pasteFailedTitle": "テキストの貼り付けに失敗しました",
     "pasteFailed": "アクティブなアプリにテキストを貼り付けられませんでした。",
@@ -983,7 +983,7 @@
     "proFeatures": {
       "polish": "すべての音声入力をAIで整形",
       "onDevice": "Apple Intelligenceによるデバイス上での整形",
-      "agent": "出荷時のままのambientエージェント",
+      "agent": "ambient エージェントの新機能をリリースと同時に利用",
       "priority": "優先サポート"
     },
     "card": {
@@ -991,16 +991,16 @@
       "active": "有効なプラン",
       "remove": "削除",
       "activating": "有効化しています…",
-      "paste": "ペースト",
+      "paste": "貼り付け",
       "pasteFailed": "クリップボードを読み取れませんでした。代わりに ⌘V で貼り付けてください。",
       "holder": "サインイン中のアカウント",
       "renewsLabel": "更新日",
       "copied": "コピーしました",
       "errors": {
-        "network": "アクティベートのため {{appName}} に接続できませんでした。接続を確認して、もう一度お試しください。",
+        "network": "有効化のため {{appName}} に接続できませんでした。接続を確認して、もう一度お試しください。",
         "inactive": "このコードのサブスクリプションは有効ではありません。更新するとプランが利用できます。",
         "rate_limited": "試行回数が多すぎます。15 分後にもう一度お試しください。",
-        "server": "こちら側でアクティベートに失敗しました。少し待ってからもう一度お試しください。"
+        "server": "サーバー側の問題で有効化できませんでした。少し待ってからもう一度お試しください。"
       },
       "menu": "アカウント操作"
     },
@@ -1045,7 +1045,7 @@
         "invalid_code": "コードが正しくありません。メールを確認して、もう一度お試しください。",
         "expired": "コードの有効期限が切れました。新しいコードをリクエストしてください。",
         "too_many_attempts": "試行回数が多すぎます。新しいコードをリクエストしてください。",
-        "server": "こちら側でサインインに失敗しました。少し待ってからもう一度お試しください。",
+        "server": "サーバー側の問題でサインインできませんでした。少し待ってからもう一度お試しください。",
         "redeem_invalid": "このコードは認識されませんでした。確認してもう一度お試しください。"
       }
     },
@@ -1055,7 +1055,7 @@
       "unlock": "無制限にする",
       "onDevice": "このMacで処理する",
       "onDeviceDescription": "代わりにApple Intelligenceを使用します。データがMacの外に出ることはありません。",
-      "freeLeft": "今週は無料のAIによる整形があと {{left}} 回 (全 {{limit}} 回)"
+      "freeLeft": "今週は無料のAIによる整形があと {{left}} 回（全 {{limit}} 回）"
     },
     "trial": {
       "daysLeft_one": "残り {{count}} 日",
@@ -1071,10 +1071,10 @@
     },
     "hold": "どのアプリでも",
     "anywhere": "を押しながら話し始めましょう。",
-    "noShortcut": "ディクテーションを始めるには、設定でショートカットを設定してください。",
+    "noShortcut": "音声入力を始めるには、設定でショートカットを設定してください。",
     "stats": {
       "words": "今週の単語数",
-      "wordsHint": "{{appName}} でディクテーション",
+      "wordsHint": "{{appName}} で音声入力した単語",
       "saved": "節約した時間",
       "savedHint": "話す速度 {{speaking}} 語/分 vs タイピング {{typing}}",
       "lessThanMinute": "1分未満",
@@ -1083,11 +1083,11 @@
       "hours_one": "{{count}}時間",
       "hours_other": "{{count}}時間"
     },
-    "recent": "最近のディクテーション",
+    "recent": "最近の音声入力",
     "viewAll": "すべて表示",
     "empty": {
       "title": "まだ何もありません",
-      "description": "どのアプリでもショートカットを押して話すだけ。ディクテーションがここに表示されます。"
+      "description": "どのアプリでもショートカットを押して話すだけ。音声入力した内容がここに表示されます。"
     },
     "tips": {
       "holdOrTap": "ショートカットを押し続けて話すか、1回押して開始し、もう一度押して停止します。",
@@ -1101,13 +1101,13 @@
       "openHistory": "履歴を開く"
     },
     "plan": {
-      "title": "あなたのプラン",
+      "title": "ご利用中のプラン",
       "polishUnlimited": "AIによる整形は無制限です。",
-      "polishLeft": "今週は無料のAIによる整形があと {{left}} 回 (全 {{limit}} 回)・{{day}}にリセット",
+      "polishLeft": "今週は無料のAIによる整形があと {{left}} 回（全 {{limit}} 回）・{{day}}にリセット",
       "polishFree": "無料プランには週ごとのAIによる整形の利用枠が含まれます。",
-      "meetingsLeft": "今月の会議ノート残り {{left}}/{{limit}}",
+      "meetingsLeft": "今月の会議メモ残り {{left}}/{{limit}}",
       "aiLeft": "今日のAIリクエスト残り {{left}}/{{limit}}",
-      "searchLeft": "残りの検索: {{count}}",
+      "searchLeft": "残りの検索：{{count}}",
       "meterLabel": "残り枠"
     },
     "privacy": {
@@ -1221,7 +1221,7 @@
       "searchDrive": "Google ドライブで検索",
       "searchGmail": "Gmail で検索"
     },
-    "cloudOffer": "{{appName}}は、ウィンドウの内容を伏せた一部をサーバーに送信して、このコンピュータでの手助けを提案できます。オンにしますか？"
+    "cloudOffer": "{{appName}} は、機密情報を除いたウィンドウの一部をサーバーに送信して、このコンピュータでの作業に役立つ提案ができます。オンにしますか？"
   },
   "privacy": {
     "title": "プライバシー",
@@ -1270,8 +1270,8 @@
         "leaves": "音声はここに残ります。要約の作成にはテキストだけが送信されます。"
       },
       "wake_word": {
-        "title": "ハンズフリー：「ねえ Ambient」と話しかける",
-        "reads": "このコンピュータ上で「ねえ Ambient」を聞き取ります。それ以外は話している間に破棄されます。",
+        "title": "ハンズフリー：「Hey Ambient」と話しかける",
+        "reads": "このコンピュータ上で「Hey Ambient」を聞き取ります。それ以外の音声は話したそばから破棄されます。",
         "leaves": "呼びかけるまで、何も録音・送信されません。"
       },
       "groups": {
@@ -1284,7 +1284,7 @@
     "days_other": "{{count}}日",
     "preview": {
       "title": "{{appName}}に見えるもの",
-      "description": "墨消し後に、ウィンドウから実際に読み取られる内容です。",
+      "description": "機密情報を除いたあとに、ウィンドウから実際に読み取られる内容です。",
       "hint": "「プレビュー」をクリックしてから、3秒以内にいずれかのウィンドウに切り替えてください。",
       "switchNow": "別のウィンドウに切り替えてください…",
       "button": "プレビュー",
@@ -1323,7 +1323,7 @@
       "purpose": {
         "polish": "AIによる整形",
         "answer": "回答",
-        "search": "Web検索",
+        "search": "ウェブ検索",
         "suggestion": "提案",
         "summary": "会議の要約",
         "act": "アクション",
@@ -1335,7 +1335,7 @@
     },
     "engine": {
       "title": "回答にもApple Intelligenceを使う",
-      "description": "可能な場合、回答と仕上げはこのコンピュータで実行されます。仕上がりが劣るため、デフォルトではオフです。"
+      "description": "可能な場合、回答と整形をこの Mac で実行します。仕上がりの質は下がるため、デフォルトではオフです。"
     },
     "suggestions": {
       "title": "受け取る提案",
@@ -1385,18 +1385,18 @@
         },
         "cloud": {
           "title": "クラウド",
-          "description": "最高の結果が得られます。伏せ字処理したテキストが{{appName}}のサーバーに送信されます。"
+          "description": "最も高品質な結果が得られます。機密情報を除いたテキストが{{appName}}のサーバーに送信されます。"
         }
       },
       "cloudSuggestions": {
         "title": "クラウドからの提案",
-        "description": "開いていたウィンドウの内容を伏せた一部を送信し、手助けを提案するか判断します。すべてのリクエストは下に一覧表示されます。"
+        "description": "開いたままのウィンドウから機密情報を除いた一部を送信し、手助けを提案するかどうかを判断します。すべてのリクエストは下に一覧表示されます。"
       }
     }
   },
   "meetings": {
     "title": "会議",
-    "intro": "どんな通話でもメモ：あなたと相手を、このコンピュータ上で文字起こし。音声は保存されません。",
+    "intro": "どんな通話でもメモを作成：あなたと相手の発言を、このコンピュータ上で文字起こしします。音声は保存されません。",
     "live": "メモを取っています · {{time}}",
     "capturingBoth": "あなたと通話の音声を聞き取っています。",
     "capturingMic": "マイクの音声のみを聞き取っています。",
@@ -1497,7 +1497,7 @@
     "try": {
       "title": "今すぐ試す",
       "body": "{{keys}}を押したまま「明日のリスボンの天気は？」と聞いてみてください。",
-      "done": "以上です。エージェントを使いこなせました。"
+      "done": "以上です。これでエージェントを使えました。"
     },
     "choose": {
       "title": "{{appName}}に許可することを選ぶ",
@@ -1531,7 +1531,7 @@
   "trySaying": {
     "title": "何と言えばいい？",
     "close": "閉じる",
-    "footnote": "ChatGPTやClaudeでは、「ねえ Ambient」で始めるとエージェントに話しかけられます。",
+    "footnote": "ChatGPTやClaudeでは、「Hey Ambient」で始めるとエージェントに話しかけられます。",
     "groups": {
       "answer": {
         "title": "質問",
@@ -1588,7 +1588,7 @@
     "ways": {
       "0": "押している間、エージェントに話しかけます。",
       "1": "押している間、音声入力します。質問するときは「Hey {{appName}}」で始めます。",
-      "2": "ハンズフリー: 「Hey {{appName}}、…」と話しかけます。プライバシーでオンにします。"
+      "2": "ハンズフリー：「Hey {{appName}}、…」と話しかけます。プライバシーでオンにします。"
     }
   },
   "app": {
