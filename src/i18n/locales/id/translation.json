@@ -83,8 +83,8 @@
       "progress": "Langkah {{step}} dari {{count}}"
     },
     "welcome": {
-      "title": "Bahasa apa saja yang Anda gunakan?",
-      "subtitle": "Pilih semua bahasa yang akan Anda gunakan dengan {{appName}}. Anda bisa mengubahnya nanti.",
+      "title": "Rekan kerja di desktop Anda.",
+      "subtitle": "Anda bicara; ia menulis, menjawab, bertindak, dan mengingatkan Anda. Pilih semua bahasa yang akan Anda gunakan.",
       "languagesLabel": "Bahasa",
       "noMatch": "Tidak ada hasil untuk “{{query}}”. Bahasa lain ada di pengaturan.",
       "appLanguage": "Bahasa aplikasi",
@@ -142,16 +142,16 @@
       "onDisk": "Sudah ada di komputer ini"
     },
     "demo": {
-      "title": "Bicara di aplikasi apa pun, dengan satu pintasan",
-      "hold": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Tahan pintasan Anda dan bicara.</1> <2>Lepaskan, dan kata-kata Anda muncul.</2>",
-      "tap": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Ketuk pintasan Anda dan bicara.</1> <2>Ketuk lagi, dan kata-kata Anda muncul.</2>",
+      "title": "Ajak bicara di aplikasi apa pun, dengan satu pintasan",
+      "hold": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Tahan pintasan Anda dan bicara.</1> <2>Lepaskan, dan ia mengetik untuk Anda.</2>",
+      "tap": "<0>Klik di tempat Anda ingin mengetik.</0> <1>Ketuk pintasan Anda dan bicara.</1> <2>Ketuk lagi, dan ia mengetik untuk Anda.</2>",
       "apps": {
         "messages": "Pesan",
         "notes": "Catatan"
       },
       "chat": "Kamu jadi datang malam ini?",
       "noteTitle": "Rencana akhir pekan",
-      "screenLabel": "Sebuah laptop: seseorang mengeklik sebuah aplikasi, menekan pintasan lalu berbicara, dan kata-katanya muncul di tempat yang diklik.",
+      "screenLabel": "Sebuah laptop: seseorang menekan pintasan dan bicara. Agen mengetik untuknya, menjawab, bertindak, mengingat, dan menawarkan bantuan atas inisiatif sendiri.",
       "change": "Ubah",
       "yourShortcut": "Pintasan Anda adalah",
       "pressKeys": "Tekan tombol baru",
@@ -178,12 +178,17 @@
           "sentence": "<0>Lupa sesuatu?</0> <1>Tahan pintasan Anda dan bertanya.</1> <2>Ia ingat.</2>",
           "said": "Ana bilang apa soal tempatnya?",
           "reply": "Dia memesan Rosa's untuk Sabtu pukul 20.00."
+        },
+        "offer": {
+          "head": "Saran",
+          "sentence": "<0>Ia juga memperhatikan.</0> <1>Saat bisa membantu, ia menawarkan.</1> <2>Ucapkan “ya”, dan beres.</2>",
+          "reply": "Ditambahkan ke Sabtu: piknik di taman."
         }
       }
     },
     "try": {
       "title": "Coba sekarang!",
-      "subtitle": "{{appName}} ada di pojok untuk memandu Anda",
+      "subtitle": "Bicaralah, dan {{appName}} menjawab Anda dari pojok layar",
       "noteLabel": "Catatan",
       "placeholder": "Catatan baru",
       "hold": "Tahan <keys/> dan bicara.",
@@ -213,9 +218,9 @@
       "gotIt": "Setiap kata tertangkap: “{{quote}}”"
     },
     "done": {
-      "title": "Semua siap",
-      "subMac": "{{appName}} ada di bar menu Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara.",
-      "subTray": "{{appName}} ada di baki sistem Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara.",
+      "title": "Rekan kerja baru Anda sudah siap",
+      "subMac": "{{appName}} ada di bar menu Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara dengannya.",
+      "subTray": "{{appName}} ada di baki sistem Anda. Tahan atau ketuk <keys/> di aplikasi apa pun untuk berbicara dengannya.",
       "hint": "Anda dapat mengubahnya nanti di Pengaturan",
       "highFiveLabel": "Tos",
       "atLogin": "Jalankan {{appName}} saat saya masuk",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Membantu",
       "down": "Tidak membantu"
-    }
+    },
+    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar."
   },
   "privacy": {
     "title": "Privasi",
@@ -1629,7 +1635,7 @@
     "start": "Mulai",
     "meet": {
       "title": "Kenali agennya",
-      "description": "Tahan pintasan Anda dan bicaralah. {{appName}} mengurus sisanya."
+      "description": "Ajak bicara seperti rekan kerja, atau biarkan ia menawarkan bantuan di saat yang tepat."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Hanya mendengarkan di komputer ini",
         "screen_memory": "Tetap di komputer ini, terenkripsi"
       }
+    },
+    "offers": {
+      "title": "Ia juga menawarkan bantuan",
+      "description": "Saat bisa membantu, misalnya untuk utas panjang atau kesalahan, ia menawarkan sekali. Ucapkan “ya” atau “nanti saja”, atau abaikan. Ia belajar.",
+      "app": "Mail",
+      "subject": "Rencana peluncuran Q3",
+      "count": "40 pesan",
+      "summaryHead": "Ringkasan utas",
+      "summary": "Peluncuran pindah ke Kamis. Sam mengurus presentasi, dan Ana memesan ruangan.",
+      "noOnDevice": "Tanpa Apple Intelligence, aturan sederhana memutuskan di komputer ini. Ia bertanya sekali sebelum memakai cloud.",
+      "screenLabel": "Utas email berisi 40 pesan. Sebuah saran menawarkan untuk meringkasnya; setelah “ya”, ringkasan singkat muncul."
     }
   },
   "getStarted": {
@@ -1728,7 +1745,9 @@
           "“Jangan tampilkan ini” untuk menonaktifkan jenis itu.",
           "“Jangan di sini” untuk menghentikannya di aplikasi ini."
         ],
-        "hint": "Jawab saran dengan suara."
+        "hint": "Jawab saran dengan suara.",
+        "off": "Untuk saat ini, saran nonaktif.",
+        "turnOn": "Aktifkan di Privasi"
       },
       "meetings": {
         "title": "Rapat",

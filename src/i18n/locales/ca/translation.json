@@ -83,8 +83,8 @@
       "progress": "Pas {{step}} de {{count}}"
     },
     "welcome": {
-      "title": "Quines llengües parleu?",
-      "subtitle": "Trieu totes les que fareu servir amb el {{appName}}. Podeu canviar-ho més tard.",
+      "title": "El vostre company a l'escriptori.",
+      "subtitle": "El {{appName}} és un company al vostre escriptori amb qui parleu. Trieu totes les llengües que fareu servir.",
       "languagesLabel": "Llengües",
       "noMatch": "No hi ha resultats per a «{{query}}». Hi ha més llengües a la configuració.",
       "appLanguage": "Llengua de l'aplicació",
@@ -143,16 +143,16 @@
       "onDisk": "Ja és en aquest ordinador"
     },
     "demo": {
-      "title": "Parleu a qualsevol aplicació, amb una sola drecera",
-      "hold": "<0>Feu clic on voldríeu escriure.</0> <1>Manteniu premuda la drecera i parleu.</1> <2>Deixeu-la anar i les paraules apareixeran.</2>",
-      "tap": "<0>Feu clic on voldríeu escriure.</0> <1>Premeu la drecera i parleu.</1> <2>Torneu-la a prémer i les paraules apareixeran.</2>",
+      "title": "Parleu-hi a qualsevol aplicació, amb una sola drecera",
+      "hold": "<0>Feu clic on voldríeu escriure.</0> <1>Manteniu premuda la drecera i parleu.</1> <2>Deixeu-la anar i escriurà per vosaltres.</2>",
+      "tap": "<0>Feu clic on voldríeu escriure.</0> <1>Premeu la drecera i parleu.</1> <2>Torneu-la a prémer i escriurà per vosaltres.</2>",
       "apps": {
         "messages": "Missatges",
         "notes": "Notes"
       },
       "chat": "Al final vindràs aquesta nit?",
       "noteTitle": "Plans per al cap de setmana",
-      "screenLabel": "Un portàtil: algú fa clic en una aplicació, prem la drecera i parla, i les paraules apareixen on ha fet clic.",
+      "screenLabel": "Un portàtil: algú prem la drecera i parla. L'agent escriu per ell, respon, actua, recorda i ofereix ajuda pel seu compte.",
       "change": "Canvia",
       "yourShortcut": "La vostra drecera és",
       "pressKeys": "Premeu les tecles noves",
@@ -179,12 +179,17 @@
           "sentence": "<0>Us heu oblidat d'alguna cosa?</0> <1>Manteniu premuda la drecera i pregunteu.</1> <2>Se'n recorda.</2>",
           "said": "Què va dir l'Ana del lloc?",
           "reply": "Va reservar al Rosa's per dissabte a les 20:00."
+        },
+        "offer": {
+          "head": "Suggeriment",
+          "sentence": "<0>També s'adona de les coses.</0> <1>Quan pot ajudar, s'ofereix.</1> <2>Digueu «sí» i ja està fet.</2>",
+          "reply": "Afegit a dissabte: pícnic al parc."
         }
       }
     },
     "try": {
       "title": "Proveu-ho!",
-      "subtitle": "El {{appName}} és a la cantonada per guiar-vos pas a pas",
+      "subtitle": "Parleu i el {{appName}} us respon des de la cantonada",
       "noteLabel": "Nota",
       "placeholder": "Nota nova",
       "hold": "Manteniu premut <keys/> i parleu.",
@@ -214,9 +219,9 @@
       "gotIt": "He captat cada paraula: «{{quote}}»"
     },
     "done": {
-      "title": "Tot a punt",
-      "subMac": "El {{appName}} és a la barra de menús. Manteniu premut o toqueu <keys/> a qualsevol aplicació per parlar.",
-      "subTray": "El {{appName}} és a la safata del sistema. Manteniu premut o toqueu <keys/> a qualsevol aplicació per parlar.",
+      "title": "El vostre nou company ja és a punt",
+      "subMac": "El {{appName}} és a la barra de menús. Manteniu premut o toqueu <keys/> a qualsevol aplicació per parlar-hi.",
+      "subTray": "El {{appName}} és a la safata del sistema. Manteniu premut o toqueu <keys/> a qualsevol aplicació per parlar-hi.",
       "hint": "Podeu canviar-ho més tard a la configuració",
       "highFiveLabel": "Xoqueu-la",
       "atLogin": "Inicia el {{appName}} quan entri a la sessió",
@@ -1353,7 +1358,8 @@
     "rate": {
       "up": "Útil",
       "down": "No és útil"
-    }
+    },
+    "firstSuggestionTip": "El vostre primer suggeriment. Digueu «sí», «ara no» o «no me'ls mostris». Aprèn."
   },
   "privacy": {
     "title": "Privadesa",
@@ -1641,7 +1647,7 @@
     "start": "Comencem",
     "meet": {
       "title": "Coneixeu l'agent",
-      "description": "Manteniu premuda la drecera i parleu. El {{appName}} s'encarrega de la resta."
+      "description": "Parleu-hi com amb un company, o deixeu que us ofereixi ajuda quan calgui."
     },
     "modes": {
       "write": {
@@ -1682,6 +1688,17 @@
         "wake_word": "Només escolta en aquest ordinador",
         "screen_memory": "Es queda en aquest ordinador, xifrat"
       }
+    },
+    "offers": {
+      "title": "També ofereix ajuda",
+      "description": "Quan us pot ajudar, com amb un fil llarg o un error, us ho ofereix una vegada. Digueu «sí» o «ara no», o ignoreu-ho. Aprèn.",
+      "app": "Correu",
+      "subject": "Pla de llançament del T3",
+      "count": "40 missatges",
+      "summaryHead": "Resum del fil",
+      "summary": "El llançament passa a dijous. La Sam s'encarrega de la presentació i l'Ana reserva la sala.",
+      "noOnDevice": "Sense Apple Intelligence, unes regles senzilles decideixen en aquest ordinador. Pregunta una vegada abans d'usar el núvol.",
+      "screenLabel": "Un fil de correu amb 40 missatges. Un suggeriment ofereix resumir-lo; després de «sí», apareix un resum breu."
     }
   },
   "getStarted": {
@@ -1740,7 +1757,9 @@
           "«No me'ls mostris» per desactivar aquest tipus.",
           "«Aquí no» per aturar-lo en aquesta aplicació."
         ],
-        "hint": "Responeu un suggeriment en veu alta."
+        "hint": "Responeu un suggeriment en veu alta.",
+        "off": "Ara estan desactivats.",
+        "turnOn": "Activeu-los a Privadesa"
       },
       "meetings": {
         "title": "Reunions",

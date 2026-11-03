@@ -39,7 +39,9 @@ export const TrySaying: React.FC<{
   onOpenChange: (open: boolean) => void;
   /** The group shown first (the Get started item that opened it). */
   group?: TrySayingGroup;
-}> = ({ open, onOpenChange, group = "answer" }) => {
+  /** Where suggestions are switched on, for when they're off. */
+  onOpenPrivacy?: () => void;
+}> = ({ open, onOpenChange, group = "answer", onOpenPrivacy }) => {
   const { t } = useTranslation();
   const os = useOsType();
   const { getSetting } = useSettings();
@@ -57,6 +59,9 @@ export const TrySaying: React.FC<{
   }, [open, group]);
 
   const current = groups.find((g) => g.key === active) ?? groups[0];
+  // Suggestions are off until chosen: say so where they're explained.
+  const suggestionsOff =
+    current.key === "suggestions" && getSetting("agent")?.proactive === false;
 
   return (
     <Dialog
@@ -153,6 +158,24 @@ export const TrySaying: React.FC<{
               >
                 <p className="text-small text-ink-3">
                   {t(`trySaying.groups.${current.key}.hint`)}
+                  {suggestionsOff && (
+                    <>
+                      {" "}
+                      {t("trySaying.groups.suggestions.off")}{" "}
+                      {onOpenPrivacy && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onOpenChange(false);
+                            onOpenPrivacy();
+                          }}
+                          className="cursor-pointer text-text underline decoration-line-strong underline-offset-4 hover:decoration-current"
+                        >
+                          {t("trySaying.groups.suggestions.turnOn")}
+                        </button>
+                      )}
+                    </>
+                  )}
                 </p>
                 <ul className="mt-2 grid grid-cols-2 gap-2">
                   {Array.from({ length: current.count }, (_, i) => (

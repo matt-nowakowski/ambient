@@ -83,8 +83,8 @@
       "progress": "Steg {{step}} av {{count}}"
     },
     "welcome": {
-      "title": "Vilka språk talar du?",
-      "subtitle": "Välj alla som du kommer att använda med {{appName}}. Du kan ändra det senare.",
+      "title": "Din kollega på skrivbordet.",
+      "subtitle": "Du pratar; den skriver, svarar, agerar och påminner dig. Välj alla språk du kommer att tala.",
       "languagesLabel": "Språk",
       "noMatch": "Ingen träff för ”{{query}}”. Fler språk finns i inställningarna.",
       "appLanguage": "Appspråk",
@@ -142,16 +142,16 @@
       "onDisk": "Finns redan på datorn"
     },
     "demo": {
-      "title": "Tala i vilken app som helst, med ett enda kortkommando",
-      "hold": "<0>Klicka där du vill skriva.</0> <1>Håll in kortkommandot och tala.</1> <2>Släpp, så dyker orden upp.</2>",
-      "tap": "<0>Klicka där du vill skriva.</0> <1>Tryck på kortkommandot och tala.</1> <2>Tryck igen, så dyker orden upp.</2>",
+      "title": "Prata med den i vilken app som helst, med ett enda kortkommando",
+      "hold": "<0>Klicka där du vill skriva.</0> <1>Håll in kortkommandot och tala.</1> <2>Släpp, så skriver den åt dig.</2>",
+      "tap": "<0>Klicka där du vill skriva.</0> <1>Tryck på kortkommandot och tala.</1> <2>Tryck igen, så skriver den åt dig.</2>",
       "apps": {
         "messages": "Meddelanden",
         "notes": "Anteckningar"
       },
       "chat": "Kommer du fortfarande i kväll?",
       "noteTitle": "Helgplaner",
-      "screenLabel": "En bärbar dator: någon klickar i en app, trycker på kortkommandot och talar, och orden dyker upp där hen klickade.",
+      "screenLabel": "En bärbar dator: någon trycker på kortkommandot och talar. Agenten skriver åt hen, svarar, agerar, minns och erbjuder hjälp på eget initiativ.",
       "change": "Ändra",
       "yourShortcut": "Ditt kortkommando är",
       "pressKeys": "Tryck på de nya tangenterna",
@@ -178,12 +178,17 @@
           "sentence": "<0>Glömt något?</0> <1>Håll in kortkommandot och fråga.</1> <2>Den minns.</2>",
           "said": "Vad sa Ana om lokalen?",
           "reply": "Hon bokade Rosa's på lördag kl. 20."
+        },
+        "offer": {
+          "head": "Förslag",
+          "sentence": "<0>Den märker saker också.</0> <1>När den kan hjälpa till erbjuder den sig.</1> <2>Säg ”ja”, så är det klart.</2>",
+          "reply": "Tillagt på lördag: picknick i parken."
         }
       }
     },
     "try": {
       "title": "Testa nu!",
-      "subtitle": "{{appName}} finns i hörnet och guidar dig",
+      "subtitle": "Prata, så svarar {{appName}} dig från hörnet",
       "noteLabel": "Anteckning",
       "placeholder": "Ny anteckning",
       "hold": "Håll in <keys/> och tala.",
@@ -213,9 +218,9 @@
       "gotIt": "Fick med varje ord: ”{{quote}}”"
     },
     "done": {
-      "title": "Nu är allt klart",
-      "subMac": "{{appName}} finns i menyraden. Håll in eller tryck på <keys/> i valfri app för att tala.",
-      "subTray": "{{appName}} finns i systemfältet. Håll in eller tryck på <keys/> i valfri app för att tala.",
+      "title": "Din nya kollega är redo",
+      "subMac": "{{appName}} finns i menyraden. Håll in eller tryck på <keys/> i valfri app för att prata med den.",
+      "subTray": "{{appName}} finns i systemfältet. Håll in eller tryck på <keys/> i valfri app för att prata med den.",
       "hint": "Du kan ändra detta senare i Inställningar",
       "highFiveLabel": "High five",
       "atLogin": "Starta {{appName}} när jag loggar in",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Hjälpsamt",
       "down": "Inte hjälpsamt"
-    }
+    },
+    "firstSuggestionTip": "Ditt första förslag. Säg ”ja”, ”inte nu” eller ”visa inte sådana”. Den lär sig."
   },
   "privacy": {
     "title": "Integritet",
@@ -1629,7 +1635,7 @@
     "start": "Kom igång",
     "meet": {
       "title": "Möt agenten",
-      "description": "Håll in kortkommandot och prata. {{appName}} sköter resten."
+      "description": "Prata med den som med en kollega, eller låt den erbjuda hjälp i rätt stund."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Lyssnar bara på den här datorn",
         "screen_memory": "Krypterat, kvar på den här datorn"
       }
+    },
+    "offers": {
+      "title": "Den erbjuder hjälp också",
+      "description": "När den kan hjälpa till, till exempel med en lång tråd eller ett fel, erbjuder den det en gång. Säg ”ja” eller ”inte nu”, eller strunta i det. Den lär sig.",
+      "app": "Mail",
+      "subject": "Lanseringsplan för Q3",
+      "count": "40 meddelanden",
+      "summaryHead": "Sammanfattning av tråden",
+      "summary": "Lanseringen flyttas till torsdag. Sam ansvarar för presentationen och Ana bokar rummet.",
+      "noOnDevice": "Utan Apple Intelligence avgör enkla regler på den här datorn. Den frågar en gång innan molnet används.",
+      "screenLabel": "En e-posttråd med 40 meddelanden. Ett förslag erbjuder att sammanfatta den; efter ”ja” visas en kort sammanfattning."
     }
   },
   "getStarted": {
@@ -1728,7 +1745,9 @@
           "”Visa inte sådana” för att stänga av den sortens förslag.",
           "”Inte här” för att stoppa det i den här appen."
         ],
-        "hint": "Svara på ett förslag högt."
+        "hint": "Svara på ett förslag högt.",
+        "off": "De är avstängda just nu.",
+        "turnOn": "Slå på dem under Integritet"
       },
       "meetings": {
         "title": "Möten",

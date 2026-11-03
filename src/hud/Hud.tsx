@@ -28,6 +28,10 @@ const KEY_ESC = "esc";
 
 const TIP_KEY = "ambient.suggestionTips";
 const TIPS_SHOWN = 3;
+/** Set once the first real suggestion on this install has had its hint. */
+const FIRST_KEY = "ambient.firstSuggestionHint";
+/** Rust's one-time "judge suggestions in the cloud?" card (proactive.rs). */
+const CLOUD_OFFER_ID = "cloud-suggestions-offer";
 
 /** Seconds a suggestion stays before dismissing itself. */
 const SUGGESTION_TTL = 8;
@@ -72,7 +76,7 @@ export default function Hud() {
   const reduceMotion = useReducedMotion();
   const [content, setContent] = useState<HudContent | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
-  const [showTip, setShowTip] = useState(false);
+  const [tip, setTip] = useState<"first" | "tip" | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,16 +92,27 @@ export default function Hud() {
         if (!sameCard) setCopied(null);
         return e.payload;
       });
-      // The first few suggestions teach that you can answer by voice.
+      // The first few suggestions teach that you can answer by voice; the
+      // very first real one on this install says so, once.
       if (e.payload.kind === "suggestion") {
         let seen = 0;
+        let first = false;
         try {
           seen = Number(localStorage.getItem(TIP_KEY) ?? 0);
           localStorage.setItem(TIP_KEY, String(seen + 1));
+          // The one-time cloud offer is a question, not a suggestion.
+          if (
+            e.payload.id !== CLOUD_OFFER_ID &&
+            !localStorage.getItem(FIRST_KEY)
+          ) {
+            localStorage.setItem(FIRST_KEY, "1");
+            // Anyone who already had suggestions has met them.
+            first = seen === 0;
+          }
         } catch {
           // No storage: show the tip.
         }
-        setShowTip(seen < TIPS_SHOWN);
+        setTip(first ? "first" : seen < TIPS_SHOWN ? "tip" : null);
       }
     });
     // Rust is closing the panel: dissolve the card first.
@@ -501,8 +516,14 @@ export default function Hud() {
                   <kbd>{KEY_ESC}</kbd>
                 </button>
                 <Thumbs id={content.id} />
-                {showTip && (
-                  <span className="hud-tip">{t("hud.suggestionTip")}</span>
+                {tip && (
+                  <span className="hud-tip">
+                    {t(
+                      tip === "first"
+                        ? "hud.firstSuggestionTip"
+                        : "hud.suggestionTip",
+                    )}
+                  </span>
                 )}
                 <motion.span
                   key={content.id}
