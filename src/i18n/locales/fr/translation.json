@@ -83,8 +83,8 @@
       "progress": "Étape {{step}} sur {{count}}"
     },
     "welcome": {
-      "title": "Quelles langues parlez-vous ?",
-      "subtitle": "Choisissez toutes celles que vous utiliserez avec {{appName}}. Vous pourrez modifier ce choix plus tard.",
+      "title": "Votre collègue de bureau.",
+      "subtitle": "Vous parlez ; il écrit, répond, agit et vous fait signe. Choisissez toutes les langues que vous parlerez.",
       "languagesLabel": "Langues",
       "noMatch": "Aucun résultat pour « {{query}} ». D’autres langues sont disponibles dans les paramètres.",
       "appLanguage": "Langue de l’app",
@@ -143,16 +143,16 @@
       "onDisk": "Déjà sur cet ordinateur"
     },
     "demo": {
-      "title": "Parlez dans n’importe quelle app, avec un seul raccourci",
-      "hold": "<0>Cliquez là où vous voulez écrire.</0> <1>Maintenez votre raccourci et parlez.</1> <2>Relâchez, et vos mots apparaissent.</2>",
-      "tap": "<0>Cliquez là où vous voulez écrire.</0> <1>Appuyez sur votre raccourci et parlez.</1> <2>Appuyez à nouveau, et vos mots apparaissent.</2>",
+      "title": "Parlez-lui dans n’importe quelle app, avec un seul raccourci",
+      "hold": "<0>Cliquez là où vous voulez écrire.</0> <1>Maintenez votre raccourci et parlez.</1> <2>Relâchez, et il écrit pour vous.</2>",
+      "tap": "<0>Cliquez là où vous voulez écrire.</0> <1>Appuyez sur votre raccourci et parlez.</1> <2>Appuyez à nouveau, et il écrit pour vous.</2>",
       "apps": {
         "messages": "Messages",
         "notes": "Notes"
       },
       "chat": "Tu viens toujours ce soir ?",
       "noteTitle": "Projets du week-end",
-      "screenLabel": "Un ordinateur portable : quelqu’un clique dans une app, appuie sur le raccourci et parle, puis les mots apparaissent là où il a cliqué.",
+      "screenLabel": "Un ordinateur portable : quelqu’un appuie sur le raccourci et parle. L’agent écrit à sa place, répond, agit, se souvient et propose son aide de lui-même.",
       "change": "Modifier",
       "yourShortcut": "Votre raccourci est",
       "pressKeys": "Appuyez sur les nouvelles touches",
@@ -179,12 +179,17 @@
           "sentence": "<0>Un oubli ?</0> <1>Maintenez votre raccourci et demandez.</1> <2>Il s’en souvient.</2>",
           "said": "Qu’a dit Ana à propos du lieu ?",
           "reply": "Elle a réservé chez Rosa samedi à 20 h."
+        },
+        "offer": {
+          "head": "Suggestion",
+          "sentence": "<0>Et il est attentif.</0> <1>Quand il peut aider, il le propose.</1> <2>Dites « oui », c’est fait.</2>",
+          "reply": "Ajouté à samedi : pique-nique au parc."
         }
       }
     },
     "try": {
       "title": "À vous de jouer !",
-      "subtitle": "{{appName}} vous guide depuis le coin de l’écran",
+      "subtitle": "Parlez, et {{appName}} vous répond depuis le coin de l’écran",
       "noteLabel": "Note",
       "placeholder": "Nouvelle note",
       "hold": "Maintenez <keys/> et parlez.",
@@ -214,9 +219,9 @@
       "gotIt": "Chaque mot capté : « {{quote}} »"
     },
     "done": {
-      "title": "Tout est prêt",
-      "subMac": "{{appName}} se trouve dans votre barre des menus. Maintenez ou appuyez sur <keys/> dans n’importe quelle app pour parler.",
-      "subTray": "{{appName}} se trouve dans votre zone de notification. Maintenez ou appuyez sur <keys/> dans n’importe quelle app pour parler.",
+      "title": "Votre nouveau collègue est prêt",
+      "subMac": "{{appName}} se trouve dans votre barre des menus. Maintenez ou appuyez sur <keys/> dans n’importe quelle app pour lui parler.",
+      "subTray": "{{appName}} se trouve dans votre zone de notification. Maintenez ou appuyez sur <keys/> dans n’importe quelle app pour lui parler.",
       "hint": "Vous pourrez modifier tout cela plus tard dans les Paramètres",
       "highFiveLabel": "Tope là",
       "atLogin": "Lancer {{appName}} à l’ouverture de ma session",
@@ -1353,7 +1358,8 @@
     "rate": {
       "up": "Utile",
       "down": "Pas utile"
-    }
+    },
+    "firstSuggestionTip": "Votre première suggestion. Dites « oui », « pas maintenant » ou « ne me montre plus ça ». Il apprend."
   },
   "privacy": {
     "title": "Confidentialité",
@@ -1641,7 +1647,7 @@
     "start": "C'est parti",
     "meet": {
       "title": "Découvrez l’agent",
-      "description": "Maintenez votre raccourci et parlez. {{appName}} s’occupe du reste."
+      "description": "Parlez-lui comme à un collègue, ou laissez-le proposer son aide au bon moment."
     },
     "modes": {
       "write": {
@@ -1682,6 +1688,17 @@
         "wake_word": "N’écoute que sur cet ordinateur",
         "screen_memory": "Reste sur cet ordinateur, chiffré"
       }
+    },
+    "offers": {
+      "title": "Il propose aussi son aide",
+      "description": "Quand il peut aider, avec un long fil ou une erreur par exemple, il le propose une fois. Dites « oui » ou « pas maintenant », ou ignorez-le. Il apprend.",
+      "app": "Mail",
+      "subject": "Plan de lancement T3",
+      "count": "40 messages",
+      "summaryHead": "Résumé du fil",
+      "summary": "Le lancement passe à jeudi. Sam s’occupe de la présentation, Ana réserve la salle.",
+      "noOnDevice": "Sans Apple Intelligence, des règles simples décident sur cet ordinateur. Il demande une fois avant d’utiliser le cloud.",
+      "screenLabel": "Un fil de 40 messages. Une suggestion propose de le résumer ; après « oui », un court résumé apparaît."
     }
   },
   "getStarted": {
@@ -1740,7 +1757,9 @@
           "« Ne me montre plus ça » pour désactiver ce type de suggestion.",
           "« Pas ici » pour l’arrêter dans cette app."
         ],
-        "hint": "Répondez à une suggestion à voix haute."
+        "hint": "Répondez à une suggestion à voix haute.",
+        "off": "Elles sont désactivées pour l’instant.",
+        "turnOn": "Les activer dans Confidentialité"
       },
       "meetings": {
         "title": "Réunions",

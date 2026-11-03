@@ -363,3 +363,23 @@
     animation: none !important;
   }
 }
+
+/* The offer chapter: the card is a suggestion, with the HUD's two answers. */
+.demo-card-actions {
+  display: flex;
+  gap: 5px;
+  margin: 7px 0 0;
+}
+.demo-card-actions span {
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--color-glass-press);
+  font-size: 11px;
+  line-height: 20px;
+  color: var(--color-text);
+}
+.demo-card-actions .is-primary {
+  background: var(--color-text);
+  color: var(--color-background);
+}

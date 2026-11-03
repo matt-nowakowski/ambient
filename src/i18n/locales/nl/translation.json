@@ -83,8 +83,8 @@
       "progress": "Stap {{step}} van {{count}}"
     },
     "welcome": {
-      "title": "Welke talen spreek je?",
-      "subtitle": "Kies alle talen die je met {{appName}} gebruikt. Je kunt dit later wijzigen.",
+      "title": "Je collega op je bureaublad.",
+      "subtitle": "Jij praat; het schrijft, antwoordt, doet en geeft je een seintje. Kies alle talen die je spreekt.",
       "languagesLabel": "Talen",
       "noMatch": "Geen resultaat voor ‘{{query}}’. Meer talen vind je in de instellingen.",
       "appLanguage": "App-taal",
@@ -142,16 +142,16 @@
       "onDisk": "Al op deze computer"
     },
     "demo": {
-      "title": "Praat in elke app, met één sneltoets",
-      "hold": "<0>Klik waar je wilt typen.</0> <1>Houd je sneltoets ingedrukt en praat.</1> <2>Laat los en je woorden verschijnen.</2>",
-      "tap": "<0>Klik waar je wilt typen.</0> <1>Tik op je sneltoets en praat.</1> <2>Tik nogmaals en je woorden verschijnen.</2>",
+      "title": "Praat ermee in elke app, met één sneltoets",
+      "hold": "<0>Klik waar je wilt typen.</0> <1>Houd je sneltoets ingedrukt en praat.</1> <2>Laat los en het typt voor je.</2>",
+      "tap": "<0>Klik waar je wilt typen.</0> <1>Tik op je sneltoets en praat.</1> <2>Tik nogmaals en het typt voor je.</2>",
       "apps": {
         "messages": "Berichten",
         "notes": "Notities"
       },
       "chat": "Kom je vanavond nog?",
       "noteTitle": "Plannen voor het weekend",
-      "screenLabel": "Een laptop: iemand klikt in een app, drukt op de sneltoets en praat, en de woorden verschijnen waar is geklikt.",
+      "screenLabel": "Een laptop: iemand drukt op de sneltoets en praat. De agent typt, antwoordt, doet dingen, onthoudt en biedt uit zichzelf hulp aan.",
       "change": "Wijzigen",
       "yourShortcut": "Je sneltoets is",
       "pressKeys": "Druk op de nieuwe toetsen",
@@ -178,12 +178,17 @@
           "sentence": "<0>Iets vergeten?</0> <1>Houd je sneltoets ingedrukt en vraag het.</1> <2>Het weet het nog.</2>",
           "said": "Wat zei Ana over de locatie?",
           "reply": "Ze heeft Rosa's geboekt, zaterdag om 20:00."
+        },
+        "offer": {
+          "head": "Suggestie",
+          "sentence": "<0>Het let ook zelf op.</0> <1>Kan het helpen, dan biedt het dat aan.</1> <2>Zeg ‘ja’ en het is geregeld.</2>",
+          "reply": "Toegevoegd aan zaterdag: picknick in het park."
         }
       }
     },
     "try": {
       "title": "Probeer het maar!",
-      "subtitle": "{{appName}} staat in de hoek en helpt je op weg",
+      "subtitle": "Praat, en {{appName}} antwoordt je vanuit de hoek",
       "noteLabel": "Notitie",
       "placeholder": "Nieuwe notitie",
       "hold": "Houd <keys/> ingedrukt en praat.",
@@ -213,9 +218,9 @@
       "gotIt": "Elk woord opgevangen: ‘{{quote}}’"
     },
     "done": {
-      "title": "Alles staat klaar",
-      "subMac": "{{appName}} staat in je menubalk. Houd <keys/> ingedrukt of tik erop in elke app om te praten.",
-      "subTray": "{{appName}} staat in je systeemvak. Houd <keys/> ingedrukt of tik erop in elke app om te praten.",
+      "title": "Je nieuwe collega staat klaar",
+      "subMac": "{{appName}} staat in je menubalk. Houd <keys/> ingedrukt of tik erop in elke app om ermee te praten.",
+      "subTray": "{{appName}} staat in je systeemvak. Houd <keys/> ingedrukt of tik erop in elke app om ermee te praten.",
       "hint": "Je kunt dit later wijzigen in de instellingen",
       "highFiveLabel": "High five",
       "atLogin": "{{appName}} starten als ik inlog",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Nuttig",
       "down": "Niet nuttig"
-    }
+    },
+    "firstSuggestionTip": "Je eerste suggestie. Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’. Het leert ervan."
   },
   "privacy": {
     "title": "Privacy",
@@ -1629,7 +1635,7 @@
     "start": "Aan de slag",
     "meet": {
       "title": "Maak kennis met de agent",
-      "description": "Houd je sneltoets ingedrukt en praat. {{appName}} doet de rest."
+      "description": "Praat ermee als met een collega, of laat het zelf hulp aanbieden."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Luistert alleen op deze computer",
         "screen_memory": "Blijft versleuteld op deze computer"
       }
+    },
+    "offers": {
+      "title": "Het biedt ook zelf hulp aan",
+      "description": "Kan het helpen, zoals bij een lange thread of een foutmelding, dan biedt het dat één keer aan. Zeg ‘ja’ of ‘niet nu’, of negeer het. Het leert ervan.",
+      "app": "Mail",
+      "subject": "Lanceringsplan Q3",
+      "count": "40 berichten",
+      "summaryHead": "Samenvatting van de thread",
+      "summary": "Lancering schuift naar donderdag. Sam doet de presentatie, Ana boekt de zaal.",
+      "noOnDevice": "Zonder Apple Intelligence beslissen eenvoudige regels op deze computer. Het vraagt het één keer voordat het de cloud gebruikt.",
+      "screenLabel": "Een mailthread met 40 berichten. Een suggestie biedt aan die samen te vatten; na ‘ja’ verschijnt een korte samenvatting."
     }
   },
   "getStarted": {
@@ -1728,7 +1745,9 @@
           "‘Laat deze niet meer zien’ om dat soort uit te zetten.",
           "‘Niet hier’ om het in deze app te stoppen."
         ],
-        "hint": "Beantwoord een suggestie hardop."
+        "hint": "Beantwoord een suggestie hardop.",
+        "off": "Ze staan nu uit.",
+        "turnOn": "Zet ze aan in Privacy"
       },
       "meetings": {
         "title": "Vergaderingen",

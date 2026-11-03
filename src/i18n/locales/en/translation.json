@@ -83,8 +83,8 @@
       "progress": "Step {{step}} of {{count}}"
     },
     "welcome": {
-      "title": "Which languages do you speak?",
-      "subtitle": "Pick every one you'll use with {{appName}}. You can change this later.",
+      "title": "Your desktop colleague.",
+      "subtitle": "You talk; it writes, answers, acts and nudges you. Pick every language you'll speak.",
       "languagesLabel": "Languages",
       "noMatch": "No match for “{{query}}”. More languages are in settings.",
       "appLanguage": "App language",
@@ -142,16 +142,16 @@
       "onDisk": "Already on this computer"
     },
     "demo": {
-      "title": "Talk in any app, with one shortcut",
-      "hold": "<0>Click where you’d type.</0> <1>Hold your shortcut and talk.</1> <2>Let go, and your words appear.</2>",
-      "tap": "<0>Click where you’d type.</0> <1>Tap your shortcut and talk.</1> <2>Tap again, and your words appear.</2>",
+      "title": "Talk to it in any app, with one shortcut",
+      "hold": "<0>Click where you’d type.</0> <1>Hold your shortcut and talk.</1> <2>Let go, and it types for you.</2>",
+      "tap": "<0>Click where you’d type.</0> <1>Tap your shortcut and talk.</1> <2>Tap again, and it types for you.</2>",
       "apps": {
         "messages": "Messages",
         "notes": "Notes"
       },
       "chat": "Are you still coming tonight?",
       "noteTitle": "Weekend plans",
-      "screenLabel": "A laptop: someone clicks into an app, presses the shortcut and talks, and the words appear where they clicked.",
+      "screenLabel": "A laptop: someone presses the shortcut and talks. The agent types for them, answers, acts, remembers, and offers help on its own.",
       "change": "Change",
       "yourShortcut": "Your shortcut is",
       "pressKeys": "Press the new keys",
@@ -178,12 +178,17 @@
           "sentence": "<0>Forgot something?</0> <1>Hold your shortcut and ask.</1> <2>It remembers.</2>",
           "said": "What did Ana say about the venue?",
           "reply": "She booked Rosa's for Saturday at 8."
+        },
+        "offer": {
+          "head": "Suggestion",
+          "sentence": "<0>It notices, too.</0> <1>When it can help, it offers.</1> <2>Say “yes”, and it's done.</2>",
+          "reply": "Added to Saturday: picnic in the park."
         }
       }
     },
     "try": {
       "title": "Give it a try!",
-      "subtitle": "{{appName}}'s in the corner to help walk you through it",
+      "subtitle": "Talk, and {{appName}} answers you from the corner",
       "noteLabel": "Note",
       "placeholder": "New note",
       "hold": "Hold <keys/> and talk.",
@@ -213,9 +218,9 @@
       "gotIt": "Got every word: “{{quote}}”"
     },
     "done": {
-      "title": "You're all set",
-      "subMac": "{{appName}} lives in your menu bar. Hold or tap <keys/> in any app to talk.",
-      "subTray": "{{appName}} lives in your system tray. Hold or tap <keys/> in any app to talk.",
+      "title": "Your new colleague is ready",
+      "subMac": "{{appName}} lives in your menu bar. Hold or tap <keys/> in any app to talk to it.",
+      "subTray": "{{appName}} lives in your system tray. Hold or tap <keys/> in any app to talk to it.",
       "hint": "You can change these later in Settings",
       "highFiveLabel": "High five",
       "atLogin": "Start {{appName}} when I log in",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Helpful",
       "down": "Not helpful"
-    }
+    },
+    "firstSuggestionTip": "Your first suggestion. Say “yes”, “not now” or “don't show me these”. It learns."
   },
   "privacy": {
     "title": "Privacy",
@@ -1629,7 +1635,7 @@
     "start": "Get started",
     "meet": {
       "title": "Meet the agent",
-      "description": "Hold your shortcut and talk. {{appName}} figures out the rest."
+      "description": "Talk to it like a colleague, or let it offer help when it spots a moment."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Listens on this computer only",
         "screen_memory": "Stays on this computer, encrypted"
       }
+    },
+    "offers": {
+      "title": "It offers help, too",
+      "description": "When it can help, like with a long thread or an error, it offers once. Say “yes” or “not now”, or ignore it. It learns.",
+      "app": "Mail",
+      "subject": "Q3 launch plan",
+      "count": "40 messages",
+      "summaryHead": "Thread summary",
+      "summary": "Launch moves to Thursday. Sam owns the deck, and Ana books the room.",
+      "noOnDevice": "Without Apple Intelligence, simple rules decide on this computer. It asks once before using the cloud.",
+      "screenLabel": "A mail thread with 40 messages. A suggestion offers to summarise it; after “yes”, a short summary appears."
     }
   },
   "getStarted": {
@@ -1728,7 +1745,9 @@
           "“Don't show me these” to turn that kind off.",
           "“Not here” to stop it in this app."
         ],
-        "hint": "Answer a suggestion out loud."
+        "hint": "Answer a suggestion out loud.",
+        "off": "They're off for now.",
+        "turnOn": "Turn them on in Privacy"
       },
       "meetings": {
         "title": "Meetings",

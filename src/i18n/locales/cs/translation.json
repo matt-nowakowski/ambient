@@ -83,8 +83,8 @@
       "progress": "Krok {{step}} z {{count}}"
     },
     "welcome": {
-      "title": "Jakými jazyky mluvíte?",
-      "subtitle": "Vyberte všechny, které budete s aplikací {{appName}} používat. Později to můžete změnit.",
+      "title": "Váš kolega na ploše.",
+      "subtitle": "{{appName}} je kolega na vaší ploše, se kterým mluvíte. Vyberte všechny jazyky, které budete používat.",
       "languagesLabel": "Jazyky",
       "noMatch": "Pro „{{query}}“ nic nenalezeno. Další jazyky najdete v nastavení.",
       "appLanguage": "Jazyk aplikace",
@@ -144,16 +144,16 @@
       "onDisk": "Už je v tomto počítači"
     },
     "demo": {
-      "title": "Mluvte v jakékoli aplikaci jedinou zkratkou",
-      "hold": "<0>Klikněte tam, kam byste psali.</0> <1>Podržte zkratku a mluvte.</1> <2>Pusťte ji a vaše slova se objeví.</2>",
-      "tap": "<0>Klikněte tam, kam byste psali.</0> <1>Klepněte na zkratku a mluvte.</1> <2>Klepněte znovu a vaše slova se objeví.</2>",
+      "title": "Mluvte s ním v jakékoli aplikaci jedinou zkratkou",
+      "hold": "<0>Klikněte tam, kam byste psali.</0> <1>Podržte zkratku a mluvte.</1> <2>Pusťte ji a napíše to za vás.</2>",
+      "tap": "<0>Klikněte tam, kam byste psali.</0> <1>Klepněte na zkratku a mluvte.</1> <2>Klepněte znovu a napíše to za vás.</2>",
       "apps": {
         "messages": "Zprávy",
         "notes": "Poznámky"
       },
       "chat": "Přijdeš dneska večer?",
       "noteTitle": "Plány na víkend",
-      "screenLabel": "Notebook: někdo klikne do aplikace, stiskne zkratku, mluví a slova se objeví tam, kam klikl.",
+      "screenLabel": "Notebook: někdo stiskne zkratku a mluví. Agent za něj píše, odpovídá, jedná, pamatuje si a sám nabízí pomoc.",
       "change": "Změnit",
       "yourShortcut": "Vaše zkratka je",
       "pressKeys": "Stiskněte nové klávesy",
@@ -180,12 +180,17 @@
           "sentence": "<0>Něco jste zapomněli?</0> <1>Podržte zkratku a zeptejte se.</1> <2>Pamatuje si to.</2>",
           "said": "Co říkala Ana o místě?",
           "reply": "Zamluvila Rosa's na sobotu na 20:00."
+        },
+        "offer": {
+          "head": "Návrh",
+          "sentence": "<0>Také si všímá.</0> <1>Když může pomoct, nabídne to.</1> <2>Řekněte „ano“ a je hotovo.</2>",
+          "reply": "Přidáno na sobotu: piknik v parku."
         }
       }
     },
     "try": {
       "title": "Zkuste to!",
-      "subtitle": "{{appName}} vás v rohu provede",
+      "subtitle": "Mluvte a {{appName}} vám odpoví z rohu",
       "noteLabel": "Poznámka",
       "placeholder": "Nová poznámka",
       "hold": "Podržte <keys/> a mluvte.",
@@ -215,9 +220,9 @@
       "gotIt": "Mám každé slovo: „{{quote}}“"
     },
     "done": {
-      "title": "Vše je připraveno",
-      "subMac": "{{appName}} najdete v řádku nabídek. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
-      "subTray": "{{appName}} najdete v oznamovací oblasti. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte.",
+      "title": "Váš nový kolega je připraven",
+      "subMac": "{{appName}} najdete v řádku nabídek. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte s ním.",
+      "subTray": "{{appName}} najdete v oznamovací oblasti. Podržte nebo klepněte na <keys/> v libovolné aplikaci a mluvte s ním.",
       "hint": "Tohle můžete později změnit v Nastavení",
       "highFiveLabel": "Plácnout si",
       "atLogin": "Spustit {{appName}} po přihlášení",
@@ -1361,7 +1366,8 @@
     "rate": {
       "up": "Užitečné",
       "down": "Neužitečné"
-    }
+    },
+    "firstSuggestionTip": "Váš první návrh. Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“. Učí se."
   },
   "privacy": {
     "title": "Soukromí",
@@ -1653,7 +1659,7 @@
     "start": "Začít",
     "meet": {
       "title": "Seznamte se s agentem",
-      "description": "Podržte zkratku a mluvte. {{appName}} zařídí zbytek."
+      "description": "Mluvte s ním jako s kolegou, nebo ať nabídne pomoc, když se to hodí."
     },
     "modes": {
       "write": {
@@ -1694,6 +1700,17 @@
         "wake_word": "Poslouchá jen na tomto počítači",
         "screen_memory": "Zůstává zašifrované na tomto počítači"
       }
+    },
+    "offers": {
+      "title": "Nabízí i pomoc",
+      "description": "Když může pomoct, třeba s dlouhým vláknem nebo chybou, jednou to nabídne. Řekněte „ano“ nebo „teď ne“, nebo to ignorujte. Učí se.",
+      "app": "Pošta",
+      "subject": "Plán spuštění na Q3",
+      "count": "40 zpráv",
+      "summaryHead": "Shrnutí vlákna",
+      "summary": "Spuštění se přesouvá na čtvrtek. Sam má na starosti prezentaci a Ana zamluví místnost.",
+      "noOnDevice": "Bez Apple Intelligence rozhodují na tomto počítači jednoduchá pravidla. Před použitím cloudu se jednou zeptá.",
+      "screenLabel": "E-mailové vlákno se 40 zprávami. Návrh nabídne jeho shrnutí; po „ano“ se objeví krátké shrnutí."
     }
   },
   "getStarted": {
@@ -1752,7 +1769,9 @@
           "„Tyhle mi neukazuj“ pro vypnutí tohoto druhu.",
           "„Tady ne“ pro vypnutí v této aplikaci."
         ],
-        "hint": "Odpovězte na návrh nahlas."
+        "hint": "Odpovězte na návrh nahlas.",
+        "off": "Teď jsou vypnuté.",
+        "turnOn": "Zapněte je v Soukromí"
       },
       "meetings": {
         "title": "Schůzky",

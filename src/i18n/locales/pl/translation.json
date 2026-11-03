@@ -83,8 +83,8 @@
       "progress": "Krok {{step}} z {{count}}"
     },
     "welcome": {
-      "title": "W jakich językach mówisz?",
-      "subtitle": "Wybierz wszystkie, których użyjesz z {{appName}}. Możesz to później zmienić.",
+      "title": "Twój współpracownik na pulpicie.",
+      "subtitle": "Ty mówisz, a on pisze, odpowiada, działa i daje znać, gdy coś zauważy. Wybierz wszystkie języki, w których będziesz mówić.",
       "languagesLabel": "Języki",
       "noMatch": "Brak wyników dla „{{query}}”. Więcej języków znajdziesz w ustawieniach.",
       "appLanguage": "Język aplikacji",
@@ -144,16 +144,16 @@
       "onDisk": "Już na tym komputerze"
     },
     "demo": {
-      "title": "Mów w dowolnej aplikacji, jednym skrótem",
-      "hold": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Przytrzymaj skrót i mów.</1> <2>Puść, a Twoje słowa się pojawią.</2>",
-      "tap": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Naciśnij skrót i mów.</1> <2>Naciśnij ponownie, a Twoje słowa się pojawią.</2>",
+      "title": "Rozmawiaj z nim w dowolnej aplikacji, jednym skrótem",
+      "hold": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Przytrzymaj skrót i mów.</1> <2>Puść, a napisze za Ciebie.</2>",
+      "tap": "<0>Kliknij tam, gdzie chcesz pisać.</0> <1>Naciśnij skrót i mów.</1> <2>Naciśnij ponownie, a napisze za Ciebie.</2>",
       "apps": {
         "messages": "Wiadomości",
         "notes": "Notatki"
       },
       "chat": "Przyjdziesz dziś wieczorem?",
       "noteTitle": "Plany na weekend",
-      "screenLabel": "Laptop: ktoś klika w aplikację, naciska skrót i mówi, a słowa pojawiają się tam, gdzie kliknął.",
+      "screenLabel": "Laptop: ktoś naciska skrót i mówi. Agent pisze za tę osobę, odpowiada, działa, pamięta i sam proponuje pomoc.",
       "change": "Zmień",
       "yourShortcut": "Twój skrót to",
       "pressKeys": "Naciśnij nowe klawisze",
@@ -180,12 +180,17 @@
           "sentence": "<0>Coś umknęło?</0> <1>Przytrzymaj skrót i zapytaj.</1> <2>Wszystko pamięta.</2>",
           "said": "Co Ana mówiła o lokalu?",
           "reply": "Zarezerwowała Rosa's na sobotę na 20:00."
+        },
+        "offer": {
+          "head": "Sugestia",
+          "sentence": "<0>Sam też zauważa.</0> <1>Gdy może pomóc, proponuje.</1> <2>Powiedz „tak” i gotowe.</2>",
+          "reply": "Dodano do soboty: piknik w parku."
         }
       }
     },
     "try": {
       "title": "Spróbuj!",
-      "subtitle": "{{appName}} czeka w rogu i pomoże Ci przejść przez to krok po kroku",
+      "subtitle": "Mów, a {{appName}} odpowie Ci z rogu ekranu",
       "noteLabel": "Notatka",
       "placeholder": "Nowa notatka",
       "hold": "Przytrzymaj <keys/> i mów.",
@@ -215,9 +220,9 @@
       "gotIt": "Mam każde słowo: „{{quote}}”"
     },
     "done": {
-      "title": "Wszystko gotowe",
-      "subMac": "{{appName}} czeka na pasku menu. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby mówić.",
-      "subTray": "{{appName}} czeka w zasobniku systemowym. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby mówić.",
+      "title": "Twój nowy współpracownik jest gotowy",
+      "subMac": "{{appName}} czeka na pasku menu. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby z nim rozmawiać.",
+      "subTray": "{{appName}} czeka w zasobniku systemowym. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby z nim rozmawiać.",
       "hint": "Możesz to później zmienić w Ustawieniach",
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
@@ -1361,7 +1366,8 @@
     "rate": {
       "up": "Pomocne",
       "down": "Niepomocne"
-    }
+    },
+    "firstSuggestionTip": "Twoja pierwsza sugestia. Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”. Uczy się."
   },
   "privacy": {
     "title": "Prywatność",
@@ -1653,7 +1659,7 @@
     "start": "Zaczynamy",
     "meet": {
       "title": "Poznaj agenta",
-      "description": "Przytrzymaj skrót i mów. {{appName}} zajmie się resztą."
+      "description": "Rozmawiaj z nim jak ze współpracownikiem lub pozwól mu samemu proponować pomoc."
     },
     "modes": {
       "write": {
@@ -1694,6 +1700,17 @@
         "wake_word": "Słucha tylko na tym komputerze",
         "screen_memory": "Zostaje na tym komputerze, szyfrowane"
       }
+    },
+    "offers": {
+      "title": "Sam też proponuje pomoc",
+      "description": "Gdy może pomóc, np. przy długim wątku albo błędzie, proponuje to raz. Powiedz „tak” albo „nie teraz” lub to zignoruj. Uczy się.",
+      "app": "Poczta",
+      "subject": "Plan premiery na Q3",
+      "count": "40 wiadomości",
+      "summaryHead": "Podsumowanie wątku",
+      "summary": "Premiera przesuwa się na czwartek. Sam przygotowuje prezentację, Ana rezerwuje salę.",
+      "noOnDevice": "Bez Apple Intelligence decydują proste reguły na tym komputerze. Przed użyciem chmury zapyta raz.",
+      "screenLabel": "Wątek w poczcie z 40 wiadomościami. Sugestia proponuje podsumowanie; po „tak” pojawia się krótkie podsumowanie."
     }
   },
   "getStarted": {
@@ -1752,7 +1769,9 @@
           "„Nie pokazuj mi tego”, aby wyłączyć ten rodzaj.",
           "„Nie tutaj”, aby wyłączyć ją w tej aplikacji."
         ],
-        "hint": "Odpowiedz na sugestię na głos."
+        "hint": "Odpowiedz na sugestię na głos.",
+        "off": "Na razie są wyłączone.",
+        "turnOn": "Włącz je w sekcji Prywatność"
       },
       "meetings": {
         "title": "Spotkania",

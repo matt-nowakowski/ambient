@@ -83,8 +83,8 @@
       "progress": "Passo {{step}} di {{count}}"
     },
     "welcome": {
-      "title": "Quali lingue parli?",
-      "subtitle": "Scegli tutte quelle che userai con {{appName}}. Puoi cambiarle in seguito.",
+      "title": "Il tuo collega sul desktop.",
+      "subtitle": "Tu parli; lui scrive, risponde, agisce e ti avvisa. Scegli tutte le lingue che parlerai.",
       "languagesLabel": "Lingue",
       "noMatch": "Nessun risultato per «{{query}}». Altre lingue sono nelle impostazioni.",
       "appLanguage": "Lingua dell'app",
@@ -143,16 +143,16 @@
       "onDisk": "Già su questo computer"
     },
     "demo": {
-      "title": "Parla in qualsiasi app, con una sola scorciatoia",
-      "hold": "<0>Clicca dove scriveresti.</0> <1>Tieni premuta la scorciatoia e parla.</1> <2>Rilascia e le tue parole appaiono.</2>",
-      "tap": "<0>Clicca dove scriveresti.</0> <1>Premi la scorciatoia e parla.</1> <2>Premi di nuovo e le tue parole appaiono.</2>",
+      "title": "Parlagli in qualsiasi app, con una sola scorciatoia",
+      "hold": "<0>Clicca dove scriveresti.</0> <1>Tieni premuta la scorciatoia e parla.</1> <2>Rilascia e scrive per te.</2>",
+      "tap": "<0>Clicca dove scriveresti.</0> <1>Premi la scorciatoia e parla.</1> <2>Premi di nuovo e scrive per te.</2>",
       "apps": {
         "messages": "Messaggi",
         "notes": "Note"
       },
       "chat": "Vieni ancora stasera?",
       "noteTitle": "Programmi per il weekend",
-      "screenLabel": "Un portatile: qualcuno clicca in un'app, preme la scorciatoia e parla, e le parole appaiono dove ha cliccato.",
+      "screenLabel": "Un portatile: qualcuno preme la scorciatoia e parla. L'agente scrive al suo posto, risponde, agisce, ricorda e offre aiuto di sua iniziativa.",
       "change": "Cambia",
       "yourShortcut": "La tua scorciatoia è",
       "pressKeys": "Premi i nuovi tasti",
@@ -179,12 +179,17 @@
           "sentence": "<0>Hai dimenticato qualcosa?</0> <1>Tieni premuta la scorciatoia e chiedi.</1> <2>Se lo ricorda.</2>",
           "said": "Cosa ha detto Ana sul locale?",
           "reply": "Ha prenotato da Rosa per sabato alle 20."
+        },
+        "offer": {
+          "head": "Suggerimento",
+          "sentence": "<0>E si accorge delle cose.</0> <1>Quando può aiutarti, si offre.</1> <2>Di' «sì» ed è fatto.</2>",
+          "reply": "Aggiunto a sabato: picnic al parco."
         }
       }
     },
     "try": {
       "title": "Provaci!",
-      "subtitle": "{{appName}} è nell'angolo per guidarti passo passo",
+      "subtitle": "Parla e {{appName}} ti risponde dall'angolo",
       "noteLabel": "Nota",
       "placeholder": "Nuova nota",
       "hold": "Tieni premuto <keys/> e parla.",
@@ -214,9 +219,9 @@
       "gotIt": "Ho capito ogni parola: «{{quote}}»"
     },
     "done": {
-      "title": "È tutto pronto",
-      "subMac": "{{appName}} si trova nella barra dei menu. In qualsiasi app, tieni premuto <keys/> o premilo una volta per parlare.",
-      "subTray": "{{appName}} si trova nell'area di notifica. In qualsiasi app, tieni premuto <keys/> o premilo una volta per parlare.",
+      "title": "Il tuo nuovo collega è pronto",
+      "subMac": "{{appName}} si trova nella barra dei menu. In qualsiasi app, tieni premuto <keys/> o premilo una volta per parlargli.",
+      "subTray": "{{appName}} si trova nell'area di notifica. In qualsiasi app, tieni premuto <keys/> o premilo una volta per parlargli.",
       "hint": "Puoi cambiare queste scelte più tardi nelle Impostazioni",
       "highFiveLabel": "Batti il cinque",
       "atLogin": "Avvia {{appName}} quando accedo",
@@ -1353,7 +1358,8 @@
     "rate": {
       "up": "Utile",
       "down": "Non utile"
-    }
+    },
+    "firstSuggestionTip": "Il tuo primo suggerimento. Di' «sì», «non ora» o «non mostrarmeli». Impara."
   },
   "privacy": {
     "title": "Privacy",
@@ -1641,7 +1647,7 @@
     "start": "Inizia",
     "meet": {
       "title": "Ecco l'agente",
-      "description": "Tieni premuta la scorciatoia e parla. {{appName}} pensa al resto."
+      "description": "Parlagli come a un collega, o lascia che ti offra aiuto al momento giusto."
     },
     "modes": {
       "write": {
@@ -1682,6 +1688,17 @@
         "wake_word": "Ascolta solo su questo computer",
         "screen_memory": "Resta su questo computer, cifrato"
       }
+    },
+    "offers": {
+      "title": "Offre anche il suo aiuto",
+      "description": "Quando può aiutarti, per esempio con una lunga conversazione o un errore, te lo offre una volta. Di' «sì» o «non ora», oppure ignoralo. Impara.",
+      "app": "Mail",
+      "subject": "Piano di lancio Q3",
+      "count": "40 messaggi",
+      "summaryHead": "Riepilogo della conversazione",
+      "summary": "Il lancio slitta a giovedì. Sam prepara le slide e Ana prenota la sala.",
+      "noOnDevice": "Senza Apple Intelligence, decidono semplici regole su questo computer. Chiede una volta prima di usare il cloud.",
+      "screenLabel": "Una conversazione email con 40 messaggi. Un suggerimento propone di riassumerla; dopo «sì», compare un breve riepilogo."
     }
   },
   "getStarted": {
@@ -1740,7 +1757,9 @@
           "«Non mostrarmeli» per disattivare quel tipo.",
           "«Non qui» per fermarlo in questa app."
         ],
-        "hint": "Rispondi a un suggerimento a voce."
+        "hint": "Rispondi a un suggerimento a voce.",
+        "off": "Per ora sono disattivati.",
+        "turnOn": "Attivali in Privacy"
       },
       "meetings": {
         "title": "Riunioni",

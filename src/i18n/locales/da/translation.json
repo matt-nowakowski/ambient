@@ -83,8 +83,8 @@
       "progress": "Trin {{step}} af {{count}}"
     },
     "welcome": {
-      "title": "Hvilke sprog taler du?",
-      "subtitle": "Vælg alle dem, du vil bruge med {{appName}}. Du kan ændre det senere.",
+      "title": "Din kollega på skrivebordet.",
+      "subtitle": "{{appName}} er en kollega på dit skrivebord, som du taler med. Vælg alle de sprog, du vil bruge.",
       "languagesLabel": "Sprog",
       "noMatch": "Intet resultat for »{{query}}«. Flere sprog findes i indstillingerne.",
       "appLanguage": "Appens sprog",
@@ -142,16 +142,16 @@
       "onDisk": "Allerede på computeren"
     },
     "demo": {
-      "title": "Tal i enhver app med én genvej",
-      "hold": "<0>Klik dér, hvor du vil skrive.</0> <1>Hold din genvej nede, og tal.</1> <2>Slip, og dine ord dukker op.</2>",
-      "tap": "<0>Klik dér, hvor du vil skrive.</0> <1>Tryk på din genvej, og tal.</1> <2>Tryk igen, og dine ord dukker op.</2>",
+      "title": "Tal med den i enhver app med én genvej",
+      "hold": "<0>Klik dér, hvor du vil skrive.</0> <1>Hold din genvej nede, og tal.</1> <2>Slip, og den skriver for dig.</2>",
+      "tap": "<0>Klik dér, hvor du vil skrive.</0> <1>Tryk på din genvej, og tal.</1> <2>Tryk igen, og den skriver for dig.</2>",
       "apps": {
         "messages": "Beskeder",
         "notes": "Noter"
       },
       "chat": "Kommer du stadig i aften?",
       "noteTitle": "Weekendplaner",
-      "screenLabel": "En bærbar computer: Nogen klikker ind i en app, trykker på genvejen og taler, og ordene dukker op, hvor der blev klikket.",
+      "screenLabel": "En bærbar computer: Nogen trykker på genvejen og taler. Agenten skriver for dem, svarer, handler, husker og tilbyder hjælp af sig selv.",
       "change": "Skift",
       "yourShortcut": "Din genvej er",
       "pressKeys": "Tryk på de nye taster",
@@ -178,12 +178,17 @@
           "sentence": "<0>Glemt noget?</0> <1>Hold din genvej nede, og spørg.</1> <2>Den husker det.</2>",
           "said": "Hvad sagde Ana om stedet?",
           "reply": "Hun har booket Rosa's lørdag kl. 20."
+        },
+        "offer": {
+          "head": "Forslag",
+          "sentence": "<0>Den lægger også mærke til ting.</0> <1>Når den kan hjælpe, tilbyder den det.</1> <2>Sig »ja«, og så er det gjort.</2>",
+          "reply": "Tilføjet lørdag: picnic i parken."
         }
       }
     },
     "try": {
       "title": "Giv det et forsøg!",
-      "subtitle": "{{appName}} er i hjørnet og hjælper dig igennem",
+      "subtitle": "Tal, og {{appName}} svarer dig fra hjørnet",
       "noteLabel": "Note",
       "placeholder": "Ny note",
       "hold": "Hold <keys/> nede, og tal.",
@@ -213,9 +218,9 @@
       "gotIt": "Fik hvert et ord: »{{quote}}«"
     },
     "done": {
-      "title": "Så er du klar",
-      "subMac": "{{appName}} bor i din menulinje. Hold eller tryk på <keys/> i en hvilken som helst app for at tale.",
-      "subTray": "{{appName}} bor i meddelelsesområdet. Hold eller tryk på <keys/> i en hvilken som helst app for at tale.",
+      "title": "Din nye kollega er klar",
+      "subMac": "{{appName}} bor i din menulinje. Hold eller tryk på <keys/> i en hvilken som helst app for at tale med den.",
+      "subTray": "{{appName}} bor i meddelelsesområdet. Hold eller tryk på <keys/> i en hvilken som helst app for at tale med den.",
       "hint": "Du kan ændre disse senere i Indstillinger",
       "highFiveLabel": "Highfive",
       "atLogin": "Start {{appName}}, når jeg logger ind",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Nyttigt",
       "down": "Ikke nyttigt"
-    }
+    },
+    "firstSuggestionTip": "Dit første forslag. Sig »ja«, »ikke nu« eller »vis mig ikke disse«. Den lærer."
   },
   "privacy": {
     "title": "Privatliv",
@@ -1629,7 +1635,7 @@
     "start": "Kom i gang",
     "meet": {
       "title": "Mød agenten",
-      "description": "Hold din genvej nede, og tal. {{appName}} klarer resten."
+      "description": "Tal med den som med en kollega, eller lad den tilbyde hjælp, når det passer."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Lytter kun på denne computer",
         "screen_memory": "Bliver krypteret på denne computer"
       }
+    },
+    "offers": {
+      "title": "Den tilbyder også hjælp",
+      "description": "Når den kan hjælpe, fx med en lang tråd eller en fejl, tilbyder den det én gang. Sig »ja« eller »ikke nu«, eller ignorer det. Den lærer.",
+      "app": "Mail",
+      "subject": "Lanceringsplan for Q3",
+      "count": "40 beskeder",
+      "summaryHead": "Opsummering af tråd",
+      "summary": "Lanceringen rykkes til torsdag. Sam står for præsentationen, og Ana booker lokalet.",
+      "noOnDevice": "Uden Apple Intelligence afgør enkle regler det på denne computer. Den spørger én gang, før den bruger skyen.",
+      "screenLabel": "En mailtråd med 40 beskeder. Et forslag tilbyder at opsummere den; efter »ja« vises en kort opsummering."
     }
   },
   "getStarted": {
@@ -1728,7 +1745,9 @@
           "»Vis mig ikke disse« for at slå den slags fra.",
           "»Ikke her« for at stoppe det i denne app."
         ],
-        "hint": "Svar på et forslag højt."
+        "hint": "Svar på et forslag højt.",
+        "off": "De er slået fra lige nu.",
+        "turnOn": "Slå dem til under Privatliv"
       },
       "meetings": {
         "title": "Møder",

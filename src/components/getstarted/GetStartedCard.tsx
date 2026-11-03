@@ -38,7 +38,12 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
   const finished = steps.every((s) => done.includes(s));
   if (dismissed || finished)
     return (
-      <TrySaying open={sayOpen} onOpenChange={setSayOpen} group={sayGroup} />
+      <TrySaying
+        open={sayOpen}
+        onOpenChange={setSayOpen}
+        group={sayGroup}
+        onOpenPrivacy={onOpenPrivacy}
+      />
     );
 
   const count = steps.filter((s) => done.includes(s)).length;
@@ -118,7 +123,12 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
           {t("getStarted.replayTour")}
         </button>
       </div>
-      <TrySaying open={sayOpen} onOpenChange={setSayOpen} group={sayGroup} />
+      <TrySaying
+        open={sayOpen}
+        onOpenChange={setSayOpen}
+        group={sayGroup}
+        onOpenPrivacy={onOpenPrivacy}
+      />
     </section>
   );
 };

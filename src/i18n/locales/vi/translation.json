@@ -83,8 +83,8 @@
       "progress": "Bước {{step}} / {{count}}"
     },
     "welcome": {
-      "title": "Bạn nói những ngôn ngữ nào?",
-      "subtitle": "Chọn mọi ngôn ngữ bạn sẽ dùng với {{appName}}. Bạn có thể đổi sau.",
+      "title": "Đồng nghiệp trên màn hình của bạn.",
+      "subtitle": "Bạn nói; nó viết, trả lời, hành động và nhắc bạn. Chọn mọi ngôn ngữ bạn sẽ nói.",
       "languagesLabel": "Ngôn ngữ",
       "noMatch": "Không có kết quả cho “{{query}}”. Có thêm ngôn ngữ trong cài đặt.",
       "appLanguage": "Ngôn ngữ ứng dụng",
@@ -142,16 +142,16 @@
       "onDisk": "Đã có trên máy này"
     },
     "demo": {
-      "title": "Nói trong mọi ứng dụng, chỉ với một phím tắt",
-      "hold": "<0>Nhấp vào nơi bạn muốn gõ.</0> <1>Giữ phím tắt và nói.</1> <2>Thả ra, và lời bạn nói sẽ hiện lên.</2>",
-      "tap": "<0>Nhấp vào nơi bạn muốn gõ.</0> <1>Nhấn phím tắt và nói.</1> <2>Nhấn lại, và lời bạn nói sẽ hiện lên.</2>",
+      "title": "Trò chuyện với nó trong mọi ứng dụng, chỉ với một phím tắt",
+      "hold": "<0>Nhấp vào nơi bạn muốn gõ.</0> <1>Giữ phím tắt và nói.</1> <2>Thả ra, và nó gõ giúp bạn.</2>",
+      "tap": "<0>Nhấp vào nơi bạn muốn gõ.</0> <1>Nhấn phím tắt và nói.</1> <2>Nhấn lại, và nó gõ giúp bạn.</2>",
       "apps": {
         "messages": "Tin nhắn",
         "notes": "Ghi chú"
       },
       "chat": "Tối nay bạn vẫn đến chứ?",
       "noteTitle": "Kế hoạch cuối tuần",
-      "screenLabel": "Một chiếc laptop: ai đó nhấp vào một ứng dụng, nhấn phím tắt và nói, rồi chữ hiện ra ở nơi họ đã nhấp.",
+      "screenLabel": "Một chiếc laptop: ai đó nhấn phím tắt và nói. Tác nhân gõ giúp họ, trả lời, hành động, ghi nhớ và tự đề nghị giúp đỡ.",
       "change": "Thay đổi",
       "yourShortcut": "Phím tắt của bạn là",
       "pressKeys": "Nhấn các phím mới",
@@ -178,12 +178,17 @@
           "sentence": "<0>Quên điều gì?</0> <1>Giữ phím tắt và hỏi.</1> <2>Nó nhớ hết.</2>",
           "said": "Ana nói gì về địa điểm?",
           "reply": "Cô ấy đã đặt Rosa's lúc 20:00 thứ Bảy."
+        },
+        "offer": {
+          "head": "Gợi ý",
+          "sentence": "<0>Nó còn tự để ý nữa.</0> <1>Khi giúp được, nó sẽ đề nghị.</1> <2>Nói “có” là xong.</2>",
+          "reply": "Đã thêm vào thứ Bảy: dã ngoại trong công viên."
         }
       }
     },
     "try": {
       "title": "Thử xem nào!",
-      "subtitle": "{{appName}} ở ngay góc màn hình để hướng dẫn bạn",
+      "subtitle": "Hãy nói, và {{appName}} sẽ trả lời bạn từ góc màn hình",
       "noteLabel": "Ghi chú",
       "placeholder": "Ghi chú mới",
       "hold": "Giữ <keys/> và nói.",
@@ -213,9 +218,9 @@
       "gotIt": "Nghe rõ từng chữ: “{{quote}}”"
     },
     "done": {
-      "title": "Mọi thứ đã sẵn sàng",
-      "subMac": "{{appName}} nằm trên thanh menu. Giữ hoặc nhấn <keys/> trong bất kỳ ứng dụng nào để nói.",
-      "subTray": "{{appName}} nằm trong khay hệ thống. Giữ hoặc nhấn <keys/> trong bất kỳ ứng dụng nào để nói.",
+      "title": "Đồng nghiệp mới của bạn đã sẵn sàng",
+      "subMac": "{{appName}} nằm trên thanh menu. Giữ hoặc nhấn <keys/> trong bất kỳ ứng dụng nào để trò chuyện với nó.",
+      "subTray": "{{appName}} nằm trong khay hệ thống. Giữ hoặc nhấn <keys/> trong bất kỳ ứng dụng nào để trò chuyện với nó.",
       "hint": "Bạn có thể thay đổi những mục này sau trong Cài đặt",
       "highFiveLabel": "Đập tay",
       "atLogin": "Khởi động {{appName}} khi tôi đăng nhập",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Hữu ích",
       "down": "Không hữu ích"
-    }
+    },
+    "firstSuggestionTip": "Gợi ý đầu tiên của bạn. Nói “có”, “để sau” hoặc “đừng hiện những cái này”. Nó sẽ học."
   },
   "privacy": {
     "title": "Quyền riêng tư",
@@ -1629,7 +1635,7 @@
     "start": "Bắt đầu",
     "meet": {
       "title": "Làm quen với tác nhân",
-      "description": "Giữ phím tắt và nói. {{appName}} lo phần còn lại."
+      "description": "Trò chuyện với nó như đồng nghiệp, hoặc để nó tự đề nghị giúp đúng lúc."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Chỉ nghe trên máy tính này",
         "screen_memory": "Mã hóa, chỉ trên máy tính này"
       }
+    },
+    "offers": {
+      "title": "Nó còn chủ động giúp nữa",
+      "description": "Khi có thể giúp, như với một chuỗi thư dài hay một lỗi, nó đề nghị một lần. Nói “có” hoặc “để sau”, hoặc cứ bỏ qua. Nó sẽ học.",
+      "app": "Thư",
+      "subject": "Kế hoạch ra mắt Q3",
+      "count": "40 tin nhắn",
+      "summaryHead": "Tóm tắt chuỗi thư",
+      "summary": "Buổi ra mắt dời sang thứ Năm. Sam lo phần slide, còn Ana đặt phòng.",
+      "noOnDevice": "Khi không có Apple Intelligence, các quy tắc đơn giản sẽ quyết định ngay trên máy tính này. Nó sẽ hỏi một lần trước khi dùng đám mây.",
+      "screenLabel": "Một chuỗi thư có 40 tin nhắn. Một gợi ý đề nghị tóm tắt chuỗi thư; sau khi nói “có”, một bản tóm tắt ngắn hiện ra."
     }
   },
   "getStarted": {
@@ -1714,10 +1731,7 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": [
-          "Hôm qua tôi đã nói gì về giá?",
-          "Tìm bản trình bày Q3."
-        ],
+        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {
@@ -1728,7 +1742,9 @@
           "“Đừng hiện những cái này” để tắt loại đó.",
           "“Không phải ở đây” để dừng trong ứng dụng này."
         ],
-        "hint": "Trả lời một gợi ý bằng giọng nói."
+        "hint": "Trả lời một gợi ý bằng giọng nói.",
+        "off": "Hiện chúng đang tắt.",
+        "turnOn": "Bật trong Quyền riêng tư"
       },
       "meetings": {
         "title": "Cuộc họp",

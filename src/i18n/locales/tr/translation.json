@@ -83,8 +83,8 @@
       "progress": "Adım {{step}} / {{count}}"
     },
     "welcome": {
-      "title": "Hangi dilleri konuşuyorsunuz?",
-      "subtitle": "{{appName}} ile kullanacağınız tüm dilleri seçin. Bunu daha sonra değiştirebilirsiniz.",
+      "title": "Masaüstündeki iş arkadaşınız.",
+      "subtitle": "Siz konuşursunuz; o yazar, yanıtlar, harekete geçer ve size hatırlatır. Konuşacağınız tüm dilleri seçin.",
       "languagesLabel": "Diller",
       "noMatch": "“{{query}}” için sonuç yok. Daha fazla dil ayarlarda.",
       "appLanguage": "Uygulama dili",
@@ -142,16 +142,16 @@
       "onDisk": "Bu bilgisayarda zaten var"
     },
     "demo": {
-      "title": "Tek kısayolla her uygulamada konuşun",
-      "hold": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuzu basılı tutup konuşun.</1> <2>Bırakın, sözcükleriniz belirsin.</2>",
-      "tap": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuza dokunup konuşun.</1> <2>Tekrar dokunun, sözcükleriniz belirsin.</2>",
+      "title": "Tek kısayolla her uygulamada onunla konuşun",
+      "hold": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuzu basılı tutup konuşun.</1> <2>Bırakın, sizin yerinize yazsın.</2>",
+      "tap": "<0>Yazacağınız yere tıklayın.</0> <1>Kısayolunuza dokunup konuşun.</1> <2>Tekrar dokunun, sizin yerinize yazsın.</2>",
       "apps": {
         "messages": "Mesajlar",
         "notes": "Notlar"
       },
       "chat": "Bu akşam hâlâ geliyor musun?",
       "noteTitle": "Hafta sonu planları",
-      "screenLabel": "Bir dizüstü bilgisayar: biri bir uygulamaya tıklıyor, kısayola basıp konuşuyor ve sözcükler tıkladığı yerde beliriyor.",
+      "screenLabel": "Bir dizüstü bilgisayar: biri kısayola basıp konuşuyor. Aracı onun yerine yazıyor, yanıtlıyor, harekete geçiyor, hatırlıyor ve kendiliğinden yardım öneriyor.",
       "change": "Değiştir",
       "yourShortcut": "Kısayolunuz",
       "pressKeys": "Yeni tuşlara basın",
@@ -178,12 +178,17 @@
           "sentence": "<0>Bir şey mi unuttunuz?</0> <1>Kısayolunuzu basılı tutup sorun.</1> <2>O hatırlar.</2>",
           "said": "Ana mekân hakkında ne dedi?",
           "reply": "Cumartesi 20.00 için Rosa’s’ta yer ayırttı."
+        },
+        "offer": {
+          "head": "Öneri",
+          "sentence": "<0>Kendisi de fark eder.</0> <1>Yardım edebileceğinde önerir.</1> <2>“Evet” deyin, iş tamam.</2>",
+          "reply": "Cumartesiye eklendi: parkta piknik."
         }
       }
     },
     "try": {
       "title": "Bir deneyin!",
-      "subtitle": "{{appName}} köşede, size yol göstermek için hazır",
+      "subtitle": "Konuşun, {{appName}} köşeden size yanıt versin",
       "noteLabel": "Not",
       "placeholder": "Yeni not",
       "hold": "<keys/> tuşlarını basılı tutun ve konuşun.",
@@ -213,9 +218,9 @@
       "gotIt": "Her sözcük alındı: “{{quote}}”"
     },
     "done": {
-      "title": "Hazırsınız",
-      "subMac": "{{appName}} menü çubuğunuzda durur. Konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
-      "subTray": "{{appName}} sistem tepsinizde durur. Konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
+      "title": "Yeni iş arkadaşınız hazır",
+      "subMac": "{{appName}} menü çubuğunuzda durur. Onunla konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
+      "subTray": "{{appName}} sistem tepsinizde durur. Onunla konuşmak için herhangi bir uygulamada <keys/> tuşunu basılı tutun veya dokunun.",
       "hint": "Bunları daha sonra Ayarlar’dan değiştirebilirsiniz",
       "highFiveLabel": "Çak bir beşlik",
       "atLogin": "Oturum açtığımda {{appName}} uygulamasını başlat",
@@ -1345,7 +1350,8 @@
     "rate": {
       "up": "Faydalı",
       "down": "Faydalı değil"
-    }
+    },
+    "firstSuggestionTip": "İlk öneriniz. “Evet”, “şimdi değil” veya “bunları gösterme” deyin. Öğrenir."
   },
   "privacy": {
     "title": "Gizlilik",
@@ -1629,7 +1635,7 @@
     "start": "Başlayın",
     "meet": {
       "title": "Aracıyla tanışın",
-      "description": "Kısayolunuzu basılı tutun ve konuşun. Gerisini {{appName}} halleder."
+      "description": "Onunla bir iş arkadaşı gibi konuşun ya da yeri gelince yardım önersin."
     },
     "modes": {
       "write": {
@@ -1670,6 +1676,17 @@
         "wake_word": "Yalnızca bu bilgisayarda dinler",
         "screen_memory": "Bu bilgisayarda şifreli kalır"
       }
+    },
+    "offers": {
+      "title": "Kendisi de yardım önerir",
+      "description": "Uzun bir yazışma ya da bir hata gibi yardımcı olabileceği bir durumda bir kez önerir. “Evet” ya da “şimdi değil” deyin veya görmezden gelin. Öğrenir.",
+      "app": "Posta",
+      "subject": "3. çeyrek lansman planı",
+      "count": "40 mesaj",
+      "summaryHead": "Yazışma özeti",
+      "summary": "Lansman perşembeye kaydı. Sunumdan Sam sorumlu, odayı Ana ayırtıyor.",
+      "noOnDevice": "Apple Intelligence olmadan, kararı bu bilgisayarda basit kurallar verir. Bulutu kullanmadan önce bir kez sorar.",
+      "screenLabel": "40 mesajlık bir e-posta yazışması. Bir öneri yazışmayı özetlemeyi teklif ediyor; “evet” denince kısa bir özet beliriyor."
     }
   },
   "getStarted": {
@@ -1728,7 +1745,9 @@
           "O türü kapatmak için “bunları gösterme”.",
           "Bu uygulamada durdurmak için “burada değil”."
         ],
-        "hint": "Bir öneriyi sesli yanıtlayın."
+        "hint": "Bir öneriyi sesli yanıtlayın.",
+        "off": "Şu an kapalılar.",
+        "turnOn": "Gizlilik bölümünden açın"
       },
       "meetings": {
         "title": "Toplantılar",
