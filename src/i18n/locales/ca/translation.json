@@ -1042,7 +1042,7 @@
       "remove": "Elimina",
       "activating": "S'està activant…",
       "paste": "Enganxa",
-      "pasteFailed": "No s’ha pogut llegir el porta-retalls. Enganxeu amb ⌘V.",
+      "pasteFailed": "No s’ha pogut llegir el porta-retalls. Enganxeu amb {{keys}}.",
       "holder": "Sessió iniciada com a",
       "renewsLabel": "Es renova",
       "copied": "Copiat",

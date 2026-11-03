@@ -195,7 +195,7 @@
       "doneHold": "High five! That's holding.",
       "doneHoldNext": "Next, the hands-free way.",
       "doneTap": "Up top! That's tapping.",
-      "doneTapNext": "Now try holding them while you talk.",
+      "doneTapNext": "Now try holding the keys while you talk.",
       "giveFive": "You got it! Give me five",
       "highFive": "High five",
       "slowLine": "{{name}} took {{wait}} on this computer. <faster>Try a faster model</faster>",
@@ -654,7 +654,7 @@
     },
     "postProcessing": {
       "hotkey": {
-        "title": "Hotkey"
+        "title": "Shortcut"
       }
     },
     "history": {
@@ -1028,7 +1028,7 @@
     "proFeatures": {
       "polish": "AI polish on every dictation",
       "onDevice": "On-device polish with Apple Intelligence",
-      "agent": "The ambient agent as it ships",
+      "agent": "The {{appName}} agent, with every new feature as it ships",
       "priority": "Priority support"
     },
     "card": {
