@@ -526,6 +526,13 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
         true,
         None::<&str>,
     )?;
+    // English when a locale hasn't translated it yet (build.rs emits "").
+    let feedback_label = if strings.send_feedback.is_empty() {
+        get_tray_translations(Some("en".to_string())).send_feedback
+    } else {
+        strings.send_feedback.clone()
+    };
+    let feedback_i = MenuItem::with_id(app, "send_feedback", &feedback_label, true, None::<&str>)?;
     let quit_i = MenuItem::with_id(app, "quit", &strings.quit, true, quit_accelerator)?;
     let separator = || PredefinedMenuItem::separator(app);
 
@@ -541,6 +548,7 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
                 &copy_last_transcript_i,
                 &separator()?,
                 &settings_i,
+                &feedback_i,
                 &check_updates_i,
                 &separator()?,
                 &quit_i,
@@ -583,6 +591,7 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
                 &unload_model_i,
                 &separator()?,
                 &settings_i,
+                &feedback_i,
                 &check_updates_i,
                 &separator()?,
                 &quit_i,

@@ -52,12 +52,20 @@ fn status(app: &AppHandle, key: &str, tone: HudTone, undo: bool) {
 }
 
 pub async fn run(app: AppHandle, action: Action) {
+    let kind = match &action {
+        Action::Reminder { .. } => Some("reminder"),
+        Action::CalendarEvent { .. } => Some("calendar"),
+        Action::OpenApp { .. } => Some("open_app"),
+        Action::Shortcut { .. } => Some("shortcut"),
+        _ => None,
+    };
     let outcome = tauri::async_runtime::spawn_blocking({
         let app = app.clone();
         move || perform(&app, action)
     })
     .await
     .unwrap_or_else(|_| Err("hud.status.failed".into()));
+    crate::telemetry::act(kind, &outcome);
     match outcome {
         Ok(key) => {
             let undo = cfg!(target_os = "macos")

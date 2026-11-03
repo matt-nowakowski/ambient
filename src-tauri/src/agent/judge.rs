@@ -34,6 +34,8 @@ pub const MIN_CONFIDENCE: f32 = 0.7;
 /// The most window text handed to the judge (Apple's model has a ~4k-token
 /// window, shared with the prompt and reply).
 pub const MAX_TEXT: usize = 3500;
+/// Default only: the live value is `remote_config::agent_config().judge_timeout`.
+#[allow(dead_code)]
 pub const TIMEOUT: Duration = Duration::from_secs(4);
 const MAX_TITLE: usize = 60;
 
@@ -120,7 +122,9 @@ pub fn parse_verdict(reply: &str) -> Option<Verdict> {
 
 /// Whether a verdict earns an offer.
 pub fn worth_offering(v: &Verdict) -> bool {
-    v.help && v.confidence >= MIN_CONFIDENCE && (v.kind != "other" || !v.title.is_empty())
+    v.help
+        && v.confidence >= crate::remote_config::agent_config().min_confidence_for(&v.kind)
+        && (v.kind != "other" || !v.title.is_empty())
 }
 
 /// Why the judge gave no verdict.
@@ -184,7 +188,9 @@ pub fn route(
 
 // ── Cloud judge ─────────────────────────────────────────────────────────────
 
-/// The whole cloud round trip, server model call included.
+/// The whole cloud round trip, server model call included. The default:
+/// the remote agent config may tune it (`judge.cloud_timeout_ms`).
+#[allow(dead_code)]
 pub const CLOUD_TIMEOUT: Duration = Duration::from_secs(7);
 /// After the server says no (cap reached, not Pro), don't ask again for this long.
 const CLOUD_COOLDOWN: Duration = Duration::from_secs(3600);
@@ -193,7 +199,8 @@ static CLOUD_PAUSED: Mutex<Option<Instant>> = Mutex::new(None);
 static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
     reqwest::Client::builder()
         .connect_timeout(Duration::from_secs(4))
-        .timeout(CLOUD_TIMEOUT)
+        // The upper bound of the tunable round trip (remote_config).
+        .timeout(Duration::from_secs(12))
         .build()
         .unwrap_or_default()
 });
@@ -281,7 +288,8 @@ pub fn judge_cloud(
             .header("Content-Type", "application/json")
             .body(body)
             .send();
-        let res = match tokio::time::timeout(CLOUD_TIMEOUT, send).await {
+        let limit = crate::remote_config::agent_config().judge_cloud_timeout;
+        let res = match tokio::time::timeout(limit, send).await {
             Err(_) => return Err(JudgeError::TimedOut),
             Ok(Err(e)) if e.is_timeout() => return Err(JudgeError::TimedOut),
             Ok(Err(_)) => return Err(JudgeError::Offline),
@@ -326,7 +334,7 @@ pub fn judge(
             let _ = tx.send(on_device(&system, &user));
         })
         .map_err(|_| JudgeError::Failed)?;
-    match rx.recv_timeout(TIMEOUT) {
+    match rx.recv_timeout(crate::remote_config::agent_config().judge_timeout) {
         Ok(Some(reply)) => parse_verdict(&reply).ok_or(JudgeError::Unparsable),
         Ok(None) => Err(JudgeError::Failed),
         Err(mpsc::RecvTimeoutError::Timeout) => Err(JudgeError::TimedOut),

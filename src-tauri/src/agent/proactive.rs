@@ -634,6 +634,11 @@ pub fn consider_in_background(app: &AppHandle, snap: ContextSnapshot, per_hour: 
 
 /// Why nothing can be offered right now, before spending a judgement.
 fn blocked(app: &AppHandle, kind: Kind, bundle: &str, key: &str, per_hour: u32) -> Option<String> {
+    // The remote agent config can only lower the user's hourly limit.
+    let per_hour = per_hour.min(crate::remote_config::agent_config().hourly_budget);
+    if let Some(why) = crate::remote_config::holds_back(kind.name(), bundle) {
+        return Some(why);
+    }
     if muted(app, kind, bundle) {
         return Some(format!("{} muted (off, or not in this app)", kind.name()));
     }
@@ -750,6 +755,11 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         return;
     } else {
         let started = Instant::now();
+        let engine = if route == super::judge::Route::Cloud {
+            "cloud"
+        } else {
+            "device"
+        };
         let text = redact(text_raw).0;
         let verdict = if route == super::judge::Route::Cloud {
             let kinds = allowed_judge_kinds(app, &bundle);
@@ -786,6 +796,7 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         };
         match verdict {
             Ok(v) => {
+                crate::telemetry::judge_run(engine, "ok", started.elapsed());
                 let worth = super::judge::worth_offering(&v);
                 log::debug!(
                     "proactive: {bundle} title[{tag}] judge said help={} kind={} confidence={:.2} (threshold {:.2}) in {}ms: {}",
@@ -802,16 +813,20 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
                         Some(k) if k != Kind::Help => (k, None),
                         _ => (Kind::Help, Some(v.title)),
                     };
+                    crate::telemetry::next_offer_judge(engine);
                     offer_for(app, &snap, kind, title, key, per_hour);
                 } else if worth {
                     log::debug!("proactive: the user moved on while the judge thought");
                 }
                 return;
             }
-            Err(e) => log::debug!(
-                "proactive: judge failed ({e:?}) after {}ms; using broader rules",
-                started.elapsed().as_millis()
-            ),
+            Err(e) => {
+                crate::telemetry::judge_failed(engine, e, started.elapsed());
+                log::debug!(
+                    "proactive: judge failed ({e:?}) after {}ms; using broader rules",
+                    started.elapsed().as_millis()
+                )
+            }
         }
     }
 
@@ -972,6 +987,8 @@ fn offer(
         st.shown.len()
     );
     let id = format!("{ID_PREFIX}{}", chrono::Utc::now().timestamp_millis());
+    crate::telemetry::suggestion_offered(&id, kind.name(), bundle);
+    crate::remote_config::note_offered(kind.name(), bundle);
     st.seen.insert(key, Instant::now());
     st.shown.push_back(Instant::now());
     st.pending.clear();
@@ -1014,6 +1031,7 @@ pub fn on_action(app: &AppHandle, id: &str, action: &str) {
     let Some(pending) = st.pending.remove(id) else {
         return;
     };
+    crate::telemetry::suggestion_result(pending.kind.name(), action);
     match action {
         "dismiss" => {
             let entry = st.dismissed.entry(pending.kind).or_insert((0, None));
@@ -1701,6 +1719,7 @@ fn apply_feedback(app: &AppHandle, answer: &str) -> bool {
     let Some((id, kind, bundle)) = pending else {
         return false;
     };
+    crate::telemetry::reply_by_voice(matches!(answer, "never" | "not_here"));
     match answer {
         "yes" => {
             hud::hide(app);

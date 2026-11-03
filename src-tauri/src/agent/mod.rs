@@ -779,20 +779,23 @@ pub fn draft_instead_of_paste(app: &AppHandle, text: &str) -> bool {
     if state != Some(false) || !focus_is_reliable(&bundle) || bundle == env!("BRAND_IDENTIFIER") {
         return false;
     }
-    show_draft(app, "hud.draft.title", text.to_string(), false);
+    let id = show_draft(app, "hud.draft.title", text.to_string(), false);
+    crate::telemetry::did_you_mean_shown(&id);
     true
 }
 
-fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) {
+fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) -> String {
+    let id = format!("draft-{}", chrono::Utc::now().timestamp_millis());
     crate::hud::show(
         app,
         crate::hud::HudContent::Draft {
-            id: format!("draft-{}", chrono::Utc::now().timestamp_millis()),
+            id: id.clone(),
             title: title.into(),
             text,
             editable,
         },
     );
+    id
 }
 
 /// A finished draft the user asked for by voice: typed where the cursor is;

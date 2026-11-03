@@ -90,6 +90,8 @@ pub enum HudContent {
     },
     /// "What can I say?": examples from the help sheet.
     Help,
+    /// Meeting notes are ready (meeting/deliver.rs): Open, Copy, Email to me.
+    MeetingNotes(crate::meeting::deliver::NotesCard),
 }
 
 impl HudContent {
@@ -103,6 +105,7 @@ impl HudContent {
             HudContent::Listening { .. } => "listening",
             HudContent::Draft { .. } => "draft",
             HudContent::Help => "help",
+            HudContent::MeetingNotes(_) => "meeting_notes",
         }
     }
 
@@ -112,6 +115,7 @@ impl HudContent {
             | HudContent::Suggestion { id, .. }
             | HudContent::Steps { id, .. }
             | HudContent::Draft { id, .. } => id.clone(),
+            HudContent::MeetingNotes(n) => n.id.clone(),
             _ => String::new(),
         }
     }
@@ -359,6 +363,7 @@ pub fn show(app: &AppHandle, content: HudContent) {
             return;
         }
     }
+    crate::feedback::note_card(&content);
     GENERATION.fetch_add(1, Ordering::SeqCst);
     if let Ok(mut g) = CURRENT.lock() {
         *g = Some(content.clone());
@@ -561,9 +566,10 @@ fn on_click_outside(card: &HudContent) -> ClickOutside {
     match card {
         // An answer with nothing in it yet is still "Thinking…".
         HudContent::Answer { text, done, .. } if text.is_empty() && !done => ClickOutside::Ignore,
-        HudContent::Answer { .. } | HudContent::Help | HudContent::Suggestion { .. } => {
-            ClickOutside::Dismiss
-        }
+        HudContent::Answer { .. }
+        | HudContent::Help
+        | HudContent::Suggestion { .. }
+        | HudContent::MeetingNotes(_) => ClickOutside::Dismiss,
         HudContent::Draft { .. } => ClickOutside::DismissUnlessFocused,
         HudContent::Listening { .. } | HudContent::Steps { .. } | HudContent::Status { .. } => {
             ClickOutside::Ignore
@@ -763,6 +769,12 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
         "dismiss" => {
             remember_dismissed(&id);
             hide(&app);
+        }
+        // 👍/👎 on an answer or suggestion: counted (and 👎 opens feedback),
+        // without touching the card's own flow.
+        "rate_up" | "rate_down" => {
+            crate::feedback::on_rate(&app, &id, action == "rate_up");
+            return;
         }
         "undo" => {
             let ok = crate::agent::act::undo_last();
