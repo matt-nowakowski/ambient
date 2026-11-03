@@ -63,6 +63,8 @@ export type Summary = {
     weeklyActiveFree: number;
     freeUsesThisWeek: number;
     paying: number;
+    /** Active $0 (friends-and-family) subscriptions, not counted as paying. */
+    complimentary: number;
     trialing: number;
     newPaying30: number;
     mrr: number;
@@ -413,6 +415,7 @@ export async function buildSummary(period: Period, need: Need = {}): Promise<Sum
       weeklyActiveFree: freeActive,
       freeUsesThisWeek: db.ok ? db.freeUsesThisWeek : 0,
       paying,
+      complimentary: polar.ok ? polar.complimentary : 0,
       trialing: polar.ok ? polar.trialingSubscriptions : 0,
       newPaying30: polar.ok ? polar.newPaying30 : 0,
       mrr,

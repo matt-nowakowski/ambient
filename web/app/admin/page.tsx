@@ -241,7 +241,7 @@ function Kpis({ s }: { s: Summary }) {
         label="Paying customers"
         value={k.paying}
         fmt="int"
-        foot={`${k.newPaying30} new in 30 days · ${k.churned.cancelling} cancelling`}
+        foot={`${k.newPaying30} new in 30 days · ${k.churned.cancelling} cancelling${k.complimentary ? ` · ${k.complimentary} friends & family` : ""}`}
         spark={s.revenueMonths.map((m) => m.newPaying)}
       />
       <Kpi
