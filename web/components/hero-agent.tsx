@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Card, useReducedMotionPref, white } from "./agent-demo";
 import { spring } from "./motion";
 import { Orb } from "./orb/Orb";
-import { MailWindow, type MailMessage } from "./mail-window";
+import { MailWindow, type InboxRow, type MailMessage } from "./mail-window";
 import { OrbIcon, orbIconSize } from "./orb-icon";
 
 /**
@@ -42,7 +42,7 @@ const firstStep = (b: Beat) => STEPS.findIndex((s) => s.beat === b);
 const stillStep = (b: Beat) => (b === "nudge" ? STEPS.findIndex((s) => s.kind === "offer") : lastStep(b));
 
 /** Ambient's cards sit at the bottom right, clear of the email and above the pill. */
-const CARD = "absolute bottom-[72px] left-4 right-4 sm:left-auto sm:right-5 sm:w-[300px]";
+const CARD = "absolute bottom-[72px] left-4 right-4 sm:left-auto sm:right-5 sm:w-[290px]";
 
 const THREAD: MailMessage[] = [
   {
@@ -52,6 +52,14 @@ const THREAD: MailMessage[] = [
     lines: ["Thanks for the deck, it reads well. Can we walk through it on Thursday at 3pm?"],
     signoff: "Ana",
   },
+];
+
+const INBOX: InboxRow[] = [
+  { from: "Ana Ruiz", subject: "Re: Launch review", preview: "Thanks for the deck, it reads well.", time: "9:40", unread: true },
+  { from: "Priya Shah", subject: "Press kit", preview: "Draft attached for Friday.", time: "9:02", unread: true },
+  { from: "Tom Berg", subject: "Pricing page", preview: "Signed off, ship it.", time: "Mon" },
+  { from: "Sam Lee", subject: "Offsite", preview: "Three venue options below.", time: "Fri" },
+  { from: "Priya Shah", subject: "Q3 numbers", preview: "Can you send them over?", time: "Thu" },
 ];
 
 const REPLY = "Hi Ana, Thursday at 3 works for me. See you then.";
@@ -95,7 +103,7 @@ export function HeroAgent() {
         waiting on a reply and offers to help; you say “yes, tell her Thursday works” and the reply is written for you.
       </p>
       <div aria-hidden="true">
-        <MailWindow subject="Re: Launch review" messages={THREAD} heightClass="h-[440px] sm:h-[390px]">
+        <MailWindow subject="Re: Launch review" messages={THREAD} inbox={INBOX} heightClass="h-[440px] sm:h-[400px]">
           {/* The reply it writes for you */}
           <AnimatePresence>
             {step.kind === "reply" ? (
@@ -105,7 +113,7 @@ export function HeroAgent() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={spring}
-                className="mt-4 overflow-hidden rounded-[14px] ring-[0.5px] ring-border-strong sm:max-w-[58%]"
+                className="mt-4 overflow-hidden rounded-[14px] ring-[0.5px] ring-border-strong sm:max-w-[85%]"
               >
                 <p className="flex items-center gap-1.5 border-b border-border px-4 py-2 text-[11.5px] text-subtle">
                   <span className="text-muted">To:</span> Ana

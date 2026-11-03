@@ -1,10 +1,21 @@
 import type { ReactNode } from "react";
 
 /** A message in the thread: who, when, what. The last one is open; earlier ones fold to a line. */
-export type MailMessage = { from: string; email: string; time: string; lines: ReactNode[]; signoff?: string };
+export type MailMessage = {
+  from: string;
+  email: string;
+  time: string;
+  lines: ReactNode[];
+  signoff?: string;
+};
 
 const icon = "size-[15px] stroke-current";
-const stroke = { fill: "none", strokeWidth: 1.3, strokeLinecap: "round", strokeLinejoin: "round" } as const;
+const stroke = {
+  fill: "none",
+  strokeWidth: 1.3,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+} as const;
 
 /** Archive, trash, reply, forward, and a search field: the mail toolbar. */
 function Toolbar() {
@@ -21,11 +32,19 @@ function Toolbar() {
       <svg viewBox="0 0 16 16" {...stroke} className={icon}>
         <path d="M6.5 4 2.5 8l4 4M2.5 8h7a4 4 0 0 1 4 4" />
       </svg>
-      <svg viewBox="0 0 16 16" {...stroke} className={`${icon} hidden sm:block`}>
+      <svg
+        viewBox="0 0 16 16"
+        {...stroke}
+        className={`${icon} hidden sm:block`}
+      >
         <path d="M9.5 4l4 4-4 4M13.5 8h-7a4 4 0 0 0-4 4" />
       </svg>
       <span className="ml-1 hidden h-7 w-[132px] items-center gap-1.5 rounded-[8px] bg-foreground/[0.045] px-2 text-[11.5px] sm:flex">
-        <svg viewBox="0 0 16 16" {...stroke} className="size-[12px] stroke-current">
+        <svg
+          viewBox="0 0 16 16"
+          {...stroke}
+          className="size-[12px] stroke-current"
+        >
           <circle cx="7" cy="7" r="4.25" />
           <path d="m10.2 10.2 3.3 3.3" />
         </svg>
@@ -35,21 +54,69 @@ function Toolbar() {
   );
 }
 
-/** The sender's initials, in a soft circle. */
-function Avatar({ name, small = false }: { name: string; small?: boolean }) {
+/** Soft two-tone avatars, the launch video's palette. */
+const TONES: Record<string, [string, string]> = {
+  Ana: ["#8fa9b8", "#c6d4de"],
+  Priya: ["#7d93c9", "#b9c8e6"],
+  Tom: ["#c99a8a", "#e8d2c8"],
+  Sam: ["#9aa3b5", "#d9d4cf"],
+};
+
+/** The sender's initials, on their tone. */
+function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md" }) {
   const initials = name
     .split(" ")
     .map((w) => w[0])
     .join("")
     .slice(0, 2);
+  const [a, b] = TONES[name.split(" ")[0]] ?? TONES.Sam;
   return (
     <span
-      className={`grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-foreground/[0.10] to-foreground/[0.04] font-normal text-foreground ${
-        small ? "size-6 text-[9.5px]" : "size-9 text-[12px]"
+      style={{ background: `linear-gradient(135deg, ${a}, ${b})` }}
+      className={`grid shrink-0 place-items-center rounded-full font-normal text-white ${
+        size === "sm" ? "size-6 text-[9.5px]" : "size-9 text-[12px]"
       }`}
     >
       {initials}
     </span>
+  );
+}
+
+/** A row in the message list. The first is the one open. */
+export type InboxRow = {
+  from: string;
+  subject: string;
+  preview: string;
+  time: string;
+  unread?: boolean;
+};
+
+function MessageList({ rows }: { rows: InboxRow[] }) {
+  return (
+    <ul className="hidden w-[38%] max-w-[230px] shrink-0 overflow-hidden border-r border-border p-2 sm:block">
+      {rows.map((r, i) => (
+        <li
+          key={i}
+          className={`relative rounded-[10px] py-2.5 pl-5 pr-3 ${i === 0 ? "bg-foreground/[0.05]" : ""}`}
+        >
+          {r.unread ? (
+            <span className="absolute left-2 top-[15px] size-[6px] rounded-full bg-[#7d93c9]" />
+          ) : null}
+          <div className="flex items-baseline gap-2">
+            <span className="truncate text-[12.5px] text-foreground">
+              {r.from}
+            </span>
+            <span className="ml-auto shrink-0 text-[10.5px] text-subtle tabular-nums">
+              {r.time}
+            </span>
+          </div>
+          <p className="truncate text-[11.5px] text-foreground/80">
+            {r.subject}
+          </p>
+          <p className="truncate text-[11.5px] text-subtle">{r.preview}</p>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -65,6 +132,7 @@ export function MailWindow({
   children,
   heightClass,
   narrow = false,
+  inbox,
 }: {
   subject: string;
   messages: MailMessage[];
@@ -73,6 +141,8 @@ export function MailWindow({
   heightClass: string;
   /** Keep the thread to the left half on wide screens, clear of a card at the top right. */
   narrow?: boolean;
+  /** A message list on the left, on wider screens, as a mail app shows it. */
+  inbox?: InboxRow[];
 }) {
   const earlier = messages.slice(0, -1);
   const open = messages[messages.length - 1];
@@ -89,39 +159,59 @@ export function MailWindow({
         </span>
         <Toolbar />
       </div>
-      <div className={`relative px-5 py-5 text-left text-[13.5px] font-light leading-[1.6] text-muted sm:px-6 ${heightClass}`}>
-        <div className={width}>
-          <p className="text-[17px] font-normal tracking-[-0.015em] text-foreground">{subject}</p>
+      <div className={`flex text-left ${heightClass}`}>
+        {inbox ? <MessageList rows={inbox} /> : null}
+        <div className="relative min-w-0 flex-1 px-5 py-5 text-[13.5px] font-light leading-[1.6] text-muted sm:px-6">
+          <div className={width}>
+            <p className="text-[17px] font-normal tracking-[-0.015em] text-foreground">
+              {subject}
+            </p>
 
-          {earlier.map((m, i) => (
-            <div key={i} className="mt-3 flex items-center gap-2.5 border-b border-border pb-3">
-              <Avatar name={m.from} small />
-              <span className="shrink-0 text-[12.5px] text-foreground">{m.from}</span>
-              <span className="min-w-0 truncate text-[12.5px] text-subtle">{m.lines.join(" ")}</span>
-              <span className="ml-auto shrink-0 pl-2 text-[11px] text-subtle tabular-nums">{m.time}</span>
-            </div>
-          ))}
-
-          <div className="mt-3 flex items-start gap-3">
-            <Avatar name={open.from} />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="truncate text-[13px] font-normal text-foreground">{open.from}</span>
-                <span className="ml-auto shrink-0 text-[11px] text-subtle tabular-nums">{open.time}</span>
+            {earlier.map((m, i) => (
+              <div
+                key={i}
+                className="mt-3 flex items-center gap-2.5 border-b border-border pb-3"
+              >
+                <Avatar name={m.from} size="sm" />
+                <span className="shrink-0 text-[12.5px] text-foreground">
+                  {m.from}
+                </span>
+                <span className="min-w-0 truncate text-[12.5px] text-subtle">
+                  {m.lines.join(" ")}
+                </span>
+                <span className="ml-auto shrink-0 pl-2 text-[11px] text-subtle tabular-nums">
+                  {m.time}
+                </span>
               </div>
-              <p className="truncate text-[11.5px] text-subtle">
-                {open.email} <span className="mx-1">·</span> To: Me
-              </p>
+            ))}
+
+            <div className="mt-3 flex items-start gap-3">
+              <Avatar name={open.from} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline gap-2">
+                  <span className="truncate text-[13px] font-normal text-foreground">
+                    {open.from}
+                  </span>
+                  <span className="ml-auto shrink-0 text-[11px] text-subtle tabular-nums">
+                    {open.time}
+                  </span>
+                </div>
+                <p className="truncate text-[11.5px] text-subtle">
+                  {open.email} <span className="mx-1">·</span> To: Me
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 space-y-2 text-foreground/85">
+              {open.lines.map((l, j) => (
+                <p key={j}>{l}</p>
+              ))}
+              {open.signoff ? (
+                <p className="text-muted">{open.signoff}</p>
+              ) : null}
             </div>
           </div>
-          <div className="mt-3 space-y-2 text-foreground/85">
-            {open.lines.map((l, j) => (
-              <p key={j}>{l}</p>
-            ))}
-            {open.signoff ? <p className="text-muted">{open.signoff}</p> : null}
-          </div>
+          {children}
         </div>
-        {children}
       </div>
     </div>
   );
