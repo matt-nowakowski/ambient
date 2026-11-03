@@ -1031,7 +1031,7 @@
       "remove": "Entfernen",
       "activating": "Wird aktiviert…",
       "paste": "Einfügen",
-      "pasteFailed": "Die Zwischenablage konnte nicht gelesen werden. Füge stattdessen mit ⌘V ein.",
+      "pasteFailed": "Die Zwischenablage konnte nicht gelesen werden. Füge stattdessen mit {{keys}} ein.",
       "holder": "Angemeldet als",
       "renewsLabel": "Verlängert am",
       "copied": "Kopiert",

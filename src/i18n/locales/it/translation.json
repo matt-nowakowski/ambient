@@ -1036,7 +1036,7 @@
       "remove": "Rimuovi",
       "activating": "Attivazione…",
       "paste": "Incolla",
-      "pasteFailed": "Impossibile leggere gli appunti. Incolla con ⌘V.",
+      "pasteFailed": "Impossibile leggere gli appunti. Incolla con {{keys}}.",
       "holder": "Accesso eseguito come",
       "renewsLabel": "Rinnovo",
       "copied": "Copiata",

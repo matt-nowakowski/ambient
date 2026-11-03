@@ -1041,7 +1041,7 @@
       "remove": "Usuń",
       "activating": "Aktywowanie…",
       "paste": "Wklej",
-      "pasteFailed": "Nie udało się odczytać schowka. Wklej za pomocą ⌘V.",
+      "pasteFailed": "Nie udało się odczytać schowka. Wklej za pomocą {{keys}}.",
       "holder": "Zalogowano jako",
       "renewsLabel": "Odnawia się",
       "copied": "Skopiowano",

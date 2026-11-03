@@ -1031,7 +1031,7 @@
       "remove": "Kaldır",
       "activating": "Etkinleştiriliyor…",
       "paste": "Yapıştır",
-      "pasteFailed": "Pano okunamadı. Bunun yerine ⌘V ile yapıştırın.",
+      "pasteFailed": "Pano okunamadı. Bunun yerine {{keys}} ile yapıştırın.",
       "holder": "Giriş yapılan hesap",
       "renewsLabel": "Yenilenme",
       "copied": "Kopyalandı",

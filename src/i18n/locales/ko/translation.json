@@ -1031,7 +1031,7 @@
       "remove": "제거",
       "activating": "활성화하는 중…",
       "paste": "붙여넣기",
-      "pasteFailed": "클립보드를 읽을 수 없습니다. 대신 ⌘V로 붙여넣으세요.",
+      "pasteFailed": "클립보드를 읽을 수 없습니다. 대신 {{keys}}로 붙여넣으세요.",
       "holder": "로그인 계정",
       "renewsLabel": "갱신일",
       "copied": "복사됨",

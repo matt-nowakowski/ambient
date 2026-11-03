@@ -1041,7 +1041,7 @@
       "remove": "Odebrat",
       "activating": "Aktivace…",
       "paste": "Vložit",
-      "pasteFailed": "Schránku se nepodařilo přečíst. Vložte místo toho pomocí ⌘V.",
+      "pasteFailed": "Schránku se nepodařilo přečíst. Vložte místo toho pomocí {{keys}}.",
       "holder": "Přihlášeno jako",
       "renewsLabel": "Obnovuje se",
       "copied": "Zkopírováno",

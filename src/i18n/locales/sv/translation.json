@@ -1031,7 +1031,7 @@
       "remove": "Ta bort",
       "activating": "Aktiverar…",
       "paste": "Klistra in",
-      "pasteFailed": "Det gick inte att läsa urklippet. Klistra in med ⌘V i stället.",
+      "pasteFailed": "Det gick inte att läsa urklippet. Klistra in med {{keys}} i stället.",
       "holder": "Inloggad som",
       "renewsLabel": "Förnyas",
       "copied": "Kopierad",

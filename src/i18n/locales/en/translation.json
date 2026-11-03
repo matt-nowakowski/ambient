@@ -1031,7 +1031,7 @@
       "remove": "Remove",
       "activating": "Activating…",
       "paste": "Paste",
-      "pasteFailed": "Couldn't read the clipboard. Paste with ⌘V instead.",
+      "pasteFailed": "Couldn't read the clipboard. Paste with {{keys}} instead.",
       "holder": "Signed in as",
       "renewsLabel": "Renews",
       "copied": "Copied",

@@ -1036,7 +1036,7 @@
       "remove": "Quitar",
       "activating": "Activando…",
       "paste": "Pegar",
-      "pasteFailed": "No se pudo leer el portapapeles. Pega con ⌘V.",
+      "pasteFailed": "No se pudo leer el portapapeles. Pega con {{keys}}.",
       "holder": "Sesión iniciada como",
       "renewsLabel": "Se renueva",
       "copied": "Copiada",

@@ -1031,7 +1031,7 @@
       "remove": "Verwijderen",
       "activating": "Activeren…",
       "paste": "Plakken",
-      "pasteFailed": "Kan het klembord niet lezen. Plak in plaats daarvan met ⌘V.",
+      "pasteFailed": "Kan het klembord niet lezen. Plak in plaats daarvan met {{keys}}.",
       "holder": "Ingelogd als",
       "renewsLabel": "Verlengt op",
       "copied": "Gekopieerd",

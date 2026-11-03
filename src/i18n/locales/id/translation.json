@@ -1031,7 +1031,7 @@
       "remove": "Hapus",
       "activating": "Mengaktifkan…",
       "paste": "Tempel",
-      "pasteFailed": "Tidak dapat membaca papan klip. Tempel dengan ⌘V.",
+      "pasteFailed": "Tidak dapat membaca papan klip. Tempel dengan {{keys}}.",
       "holder": "Masuk sebagai",
       "renewsLabel": "Diperpanjang",
       "copied": "Disalin",

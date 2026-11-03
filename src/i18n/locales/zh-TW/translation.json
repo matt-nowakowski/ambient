@@ -1031,7 +1031,7 @@
       "remove": "移除",
       "activating": "正在啟用…",
       "paste": "貼上",
-      "pasteFailed": "無法讀取剪貼簿。請改用 ⌘V 貼上。",
+      "pasteFailed": "無法讀取剪貼簿。請改用 {{keys}} 貼上。",
       "holder": "登入帳戶",
       "renewsLabel": "續訂日期",
       "copied": "已複製",

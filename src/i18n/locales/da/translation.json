@@ -1031,7 +1031,7 @@
       "remove": "Fjern",
       "activating": "Aktiverer…",
       "paste": "Indsæt",
-      "pasteFailed": "Kunne ikke læse udklipsholderen. Indsæt med ⌘V i stedet.",
+      "pasteFailed": "Kunne ikke læse udklipsholderen. Indsæt med {{keys}} i stedet.",
       "holder": "Logget ind som",
       "renewsLabel": "Fornyes",
       "copied": "Kopieret",

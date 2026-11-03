@@ -1036,7 +1036,7 @@
       "remove": "Supprimer",
       "activating": "Activation…",
       "paste": "Coller",
-      "pasteFailed": "Impossible de lire le presse-papiers. Collez avec ⌘V à la place.",
+      "pasteFailed": "Impossible de lire le presse-papiers. Collez avec {{keys}} à la place.",
       "holder": "Connecté en tant que",
       "renewsLabel": "Renouvellement",
       "copied": "Copiée",

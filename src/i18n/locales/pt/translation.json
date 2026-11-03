@@ -1036,7 +1036,7 @@
       "remove": "Remover",
       "activating": "Ativando…",
       "paste": "Colar",
-      "pasteFailed": "Não foi possível ler a área de transferência. Cole com ⌘V.",
+      "pasteFailed": "Não foi possível ler a área de transferência. Cole com {{keys}}.",
       "holder": "Conectado como",
       "renewsLabel": "Renova em",
       "copied": "Copiada",

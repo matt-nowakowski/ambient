@@ -1031,7 +1031,7 @@
       "remove": "Xóa",
       "activating": "Đang kích hoạt…",
       "paste": "Dán",
-      "pasteFailed": "Không đọc được bộ nhớ tạm. Hãy dán bằng ⌘V.",
+      "pasteFailed": "Không đọc được bộ nhớ tạm. Hãy dán bằng {{keys}}.",
       "holder": "Đã đăng nhập với",
       "renewsLabel": "Gia hạn",
       "copied": "Đã sao chép",

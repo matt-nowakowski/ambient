@@ -12,13 +12,8 @@ use crate::settings::{get_settings, write_settings};
 
 pub const LABEL: &str = "intro";
 
-/// First launch: onboarding not done and the intro not yet seen. Skipped on
-/// Linux, where window transparency depends on the compositor and could show
-/// a black screen instead of the veil.
+/// First launch: onboarding not done and the intro not yet seen.
 pub fn should_play(app: &AppHandle) -> bool {
-    if cfg!(target_os = "linux") {
-        return false;
-    }
     let s = get_settings(app);
     !s.onboarding_completed && !s.intro_seen
 }
@@ -26,9 +21,6 @@ pub fn should_play(app: &AppHandle) -> bool {
 /// Cover the screen with the intro. Returns false if it couldn't be shown
 /// (the caller then shows the main window straight away).
 pub fn play(app: &AppHandle) -> bool {
-    if cfg!(target_os = "linux") {
-        return false;
-    }
     if app.get_webview_window(LABEL).is_some() {
         return true;
     }
@@ -38,20 +30,31 @@ pub fn play(app: &AppHandle) -> bool {
     let scale = monitor.scale_factor();
     let pos = monitor.position().to_logical::<f64>(scale);
     let size = monitor.size().to_logical::<f64>(scale);
-    let built =
+    // Without a compositor (some X11 Linux setups) a transparent window draws
+    // black: build an opaque one and let the page paint its own backdrop.
+    let transparent = transparency_available();
+    let builder =
         WebviewWindowBuilder::new(app, LABEL, WebviewUrl::App("src/intro/index.html".into()))
             .title(env!("BRAND_NAME"))
             .position(pos.x, pos.y)
             .inner_size(size.width, size.height)
             .decorations(false)
-            .transparent(true)
+            .transparent(transparent)
             .shadow(false)
             .always_on_top(true)
             .skip_taskbar(true)
             .resizable(false)
             .focused(true)
-            .visible(true)
-            .build();
+            .visible(true);
+    let builder = if transparent {
+        builder
+    } else {
+        builder.initialization_script("window.__INTRO_SOLID__ = true;")
+    };
+    // Wayland ignores window positions: cover the screen as fullscreen.
+    #[cfg(target_os = "linux")]
+    let builder = builder.fullscreen(true);
+    let built = builder.build();
     match built {
         Ok(window) => {
             // A menu-bar-only (Accessory) app can't bring a new window to the
@@ -66,11 +69,12 @@ pub fn play(app: &AppHandle) -> bool {
             let _ = window.set_always_on_top(true);
             let _ = window.set_focus();
             log::info!(
-                "intro shown at ({:.0},{:.0}) {:.0}x{:.0}, visible={:?}",
+                "intro shown at ({:.0},{:.0}) {:.0}x{:.0}, transparent={}, visible={:?}",
                 pos.x,
                 pos.y,
                 size.width,
                 size.height,
+                transparent,
                 window.is_visible()
             );
             true
@@ -79,6 +83,20 @@ pub fn play(app: &AppHandle) -> bool {
             log::warn!("intro window failed: {e}");
             false
         }
+    }
+}
+
+/// Whether a transparent window shows the desktop through it. Always on
+/// macOS and Windows; on Linux only with a compositing window manager
+/// (Wayland always composites).
+fn transparency_available() -> bool {
+    #[cfg(target_os = "linux")]
+    {
+        gtk::gdk::Screen::default().is_some_and(|s| s.is_composited())
+    }
+    #[cfg(not(target_os = "linux"))]
+    {
+        true
     }
 }
 
