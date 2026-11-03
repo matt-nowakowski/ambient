@@ -240,6 +240,15 @@ body:has([data-admin-root]) #main {
 .admin-seg a:hover {
   color: var(--a-ink);
 }
+/* No ring after a click; keyboard focus gets one drawn inside the pill, since
+   the scrolling bar would clip (or a browser would overhang) an outer ring. */
+.admin-seg a:focus {
+  outline: none;
+}
+.admin-seg a:focus-visible {
+  outline: 1.5px solid var(--a-ink-2);
+  outline-offset: -1.5px;
+}
 .admin-seg a[aria-current="page"] {
   background: var(--toggle-pill);
   color: var(--a-ink);
