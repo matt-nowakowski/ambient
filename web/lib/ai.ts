@@ -291,8 +291,15 @@ export const FAIR_USE = {
   suggest: 150,
   // Meeting notes emailed to the account (/api/meetings/email), per recipient.
   meeting_email: 20,
+  // Free only: the agent router's tiny "what did they mean?" calls. They run in
+  // the background, so they don't spend Free's weekly AI uses; this daily cap
+  // (plus ROUTE_MAX_TOKENS) keeps them from being worth abusing.
+  route: 300,
 } as const;
-const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40, meeting_email: 5 } as const;
+const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40, meeting_email: 5, route: 60 } as const;
+
+/** Output cap for router completions: a short JSON verdict, nothing more. */
+export const ROUTE_MAX_TOKENS = 120;
 
 type FairKind = keyof typeof FAIR_USE;
 const local = new Map<string, { day: string; count: number; synced: number }>();

@@ -10,6 +10,7 @@ import {
   refundFreePolish,
   usagePlan,
   withinFairUse,
+  ROUTE_MAX_TOKENS,
 } from "@/lib/ai";
 import { recordUsage, scheduleUsageFlush, tokensFrom } from "@/lib/usage";
 
@@ -39,8 +40,18 @@ export async function POST(req: Request) {
     return error(429, "fair_use", "Today's fair-use limit is reached. It resets at midnight UTC.");
   }
 
+  // The agent router's background "what did they mean?" calls: always short,
+  // and on Free they have their own daily cap instead of the weekly AI uses.
+  const kind = completionKind(messages);
+  if (kind === "ai_route") {
+    body = { ...body, max_tokens: Math.min(Number(body.max_tokens) || ROUTE_MAX_TOKENS, ROUTE_MAX_TOKENS) };
+    if (auth.kind === "free" && !(await withinFairUse(auth.subject, "route"))) {
+      return error(429, "fair_use", "Today's limit for understanding requests is reached. It resets at midnight UTC.");
+    }
+  }
+
   // Free gets a weekly allowance, counted before the call and refunded on failure.
-  if (auth.kind === "free" && !(await consumeFreePolish(auth.subject))) {
+  if (auth.kind === "free" && kind !== "ai_route" && !(await consumeFreePolish(auth.subject))) {
     return error(429, "weekly_limit", "This week's free AI polish is used up. Upgrade to Pro for unlimited polish.");
   }
 
@@ -51,7 +62,7 @@ export async function POST(req: Request) {
       outputChars: String(data.choices?.[0]?.message?.content ?? "").length,
     });
     recordUsage({
-      kind: completionKind(messages),
+      kind,
       plan: usagePlan(auth),
       subject: auth.subject,
       inputTokens: tokens.input,
@@ -61,7 +72,7 @@ export async function POST(req: Request) {
     return Response.json(data);
   } catch (err) {
     console.error("[ai] completion failed", err);
-    if (auth.kind === "free") await refundFreePolish(auth.subject).catch(() => {});
+    if (auth.kind === "free" && kind !== "ai_route") await refundFreePolish(auth.subject).catch(() => {});
     return error(502, "upstream_failed");
   }
 }

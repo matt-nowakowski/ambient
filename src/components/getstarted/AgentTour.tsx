@@ -59,6 +59,15 @@ export const AgentTour: React.FC = () => {
   const { status } = usePlan();
   const paid = status ? isPaid(status) : false;
   const screenAgent = hasScreenAgent(os);
+  // Free's weekly suggestion limit, for the switch's hint.
+  const [freeSuggestions, setFreeSuggestions] = useState<number | null>(null);
+  useEffect(() => {
+    if (!tourOpen || paid) return;
+    commands
+      .getUsageToday()
+      .then((u) => setFreeSuggestions(u.suggestions_limit ?? null))
+      .catch(() => {});
+  }, [tourOpen, paid]);
   const [step, setStep] = useState<TourStep>(0);
   const agent = getSetting("agent");
   const [picked, setPicked] = useState<Record<Capability, boolean>>({
@@ -265,21 +274,23 @@ export const AgentTour: React.FC = () => {
                       {t("privacy.capabilities.proactive.title")}
                     </p>
                     <p className="truncate text-small text-ink-3">
-                      {paid
-                        ? t("tour.choose.caps.proactive")
-                        : t("tour.choose.proOnly")}
+                      {t("tour.choose.caps.proactive")}
+                      {!paid &&
+                        freeSuggestions != null &&
+                        ` · ${t("privacy.free.perWeek", { limit: freeSuggestions })}`}
                     </p>
                   </div>
                 </div>
                 <Switch
                   checked={picked.proactive}
-                  disabled={!paid || !agent}
+                  disabled={!agent}
                   ariaLabelledBy="tour-offers-switch"
                   onChange={setProactive}
                 />
               </div>
               {/* No Apple Intelligence: say what decides, and when the
                   cloud would (see judge::route and the one-time offer). */}
+              {/* Free never uses the cloud judge (Pro), so the note is Pro's. */}
               {paid && os !== "macos" && (
                 <p className="mt-2 flex items-start gap-1.5 border-t-[0.5px] border-glass-edge pt-2 text-small text-ink-3">
                   <Info
