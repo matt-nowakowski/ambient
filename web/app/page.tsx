@@ -1,72 +1,67 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Fragment } from "react";
 import { AgentDemo } from "@/components/agent-demo";
-import { DownloadButton } from "@/components/download-picker";
 import { AmbientPreview } from "@/components/ambient-preview";
-import { Compare } from "@/components/compare";
+import { DownloadButton } from "@/components/download-picker";
 import { Faq } from "@/components/faq";
-import { faqs } from "@/lib/faqs";
-import { HeroDemo } from "@/components/hero-demo";
+import { RevealLines } from "@/components/hero-copy";
+import { HeroAgent } from "@/components/hero-agent";
+import { JsonLd } from "@/components/json-ld";
 import { LaunchVideo, videoSource } from "@/components/launch-video";
-import { NothingToConnect } from "@/components/nothing-to-connect";
-import { RevealLines, SwapWord } from "@/components/hero-copy";
 import { Mark } from "@/components/logo";
-import { LiftCard, Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { type OrbVariant } from "@/components/orb/Orb";
 import { OrbIcon } from "@/components/orb-icon";
 import { Pricing } from "@/components/pricing";
-import { TrustHighlights, TrustList } from "@/components/trust";
-import { Arrow, ButtonLink, Container, Eyebrow, SectionHeading } from "@/components/ui";
+import { TrustPromises } from "@/components/trust";
+import { Arrow, ButtonLink, Container, SectionHeading } from "@/components/ui";
+import { WriteDemo } from "@/components/write-demo";
 import { brand } from "@/lib/brand";
 import {
   agent,
-  agentModes,
   apps,
-  comingSoon,
   competitors,
+  comingSoonChip,
   description,
-  features,
-  heroLead,
-  heroOutcomes,
+  heroEyebrow,
   heroSub,
+  heroTitle,
   launchVideo,
-  macFirst,
   meetings,
   suggestions,
   trust,
+  writing,
 } from "@/lib/content";
+import { homeFaqs } from "@/lib/faqs";
+import { nothingToConnect } from "@/lib/guide";
 import { pageMetadata } from "@/lib/seo";
 import { faqPageLd, softwareApplicationLd } from "@/lib/structured-data";
-import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = pageMetadata({ description, path: "/" });
+
+/** Space above each section. */
+const pad = "pt-20 sm:pt-20";
+/** A small glass chip: a capability in two to four words. */
+const chip = "glass inline-flex h-8 items-center rounded-full px-3.5 text-[12.5px] text-muted";
 
 export default function Home() {
   const video = launchVideo && videoSource(launchVideo.horizontal.url) ? launchVideo : null;
   return (
     <>
       <JsonLd data={softwareApplicationLd()} />
-      <JsonLd data={faqPageLd(faqs)} />
-      {/* Hero */}
+      <JsonLd data={faqPageLd(homeFaqs)} />
+      {/* Hero: a live agent you talk to, that nudges you */}
       <section>
         <Container className="pb-20 pt-14 sm:pb-28 sm:pt-20">
           <div className="mx-auto max-w-3xl text-center">
             <Reveal className="flex justify-center">
               <span className="glass inline-flex h-7 items-center gap-2 rounded-full pl-2 pr-3.5">
                 <OrbIcon variant="C2" footprint={11} />
-                <span className="eyebrow">A voice agent for your computer</span>
+                <span className="eyebrow">{heroEyebrow}</span>
               </span>
             </Reveal>
             <h1 className="mt-8 text-balance text-[46px] font-extralight leading-[1.02] tracking-[-0.05em] sm:text-[76px]">
-              <RevealLines
-                lines={[
-                  heroLead,
-                  <Fragment key="outcome">
-                    It’s <SwapWord words={heroOutcomes} interval={2600} />
-                  </Fragment>,
-                ]}
-              />
+              <RevealLines lines={[...heroTitle]} />
             </h1>
             <Reveal delay={0.25}>
               <p className="mx-auto mt-7 max-w-[480px] text-pretty text-[15px] leading-relaxed text-muted">
@@ -78,13 +73,12 @@ export default function Home() {
                   {video ? "Learn more" : "See pricing"}
                 </ButtonLink>
               </div>
-              <p className="eyebrow mt-6">macOS, Windows and Linux · Agent in beta on Windows and Linux</p>
+              <p className="eyebrow mt-6 text-balance">macOS, Windows and Linux · Agent in beta on Windows and Linux</p>
             </Reveal>
           </div>
 
           <Reveal delay={0.35} className="mx-auto mt-16 max-w-[640px] sm:mt-20">
-            <HeroDemo />
-            <p className="eyebrow mt-4 text-center !text-subtle">Shown with optional AI polish</p>
+            <HeroAgent />
           </Reveal>
         </Container>
       </section>
@@ -106,24 +100,34 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Voice agent: write / answer / act / recall */}
+      {/* Talk to it: write / answer / act / recall, nothing to connect, computer use next */}
       <section id="agent" aria-labelledby="agent-heading">
-        <Container className="pt-28 sm:pt-36">
+        <Container className={pad}>
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
             <Reveal>
               <SectionHeading id="agent-heading" eyebrow={agent.eyebrow} title={agent.title} sub={agent.body} />
-              <Stagger className="mt-9">
-                {agentModes.map((m) => (
-                  <StaggerItem key={m.k} className="flex gap-4 border-t border-border py-4">
-                    <span className="w-[72px] shrink-0 text-[13.5px] text-foreground">{m.k}</span>
-                    <span className="text-[13.5px] text-muted">{m.body}</span>
-                  </StaggerItem>
+              <div className="mt-8 flex flex-wrap items-center gap-2">
+                <span className="glass-strong inline-flex h-8 items-center gap-2 rounded-full pl-2.5 pr-3.5 text-[12.5px] text-foreground">
+                  <OrbIcon variant="C2" footprint={11} />
+                  {nothingToConnect.title.replace(/\.$/, "")}
+                </span>
+                {nothingToConnect.sources.map((src) => (
+                  <span key={src.k} className={chip}>
+                    {src.k}
+                  </span>
                 ))}
-              </Stagger>
-              <p className="border-t border-border pt-4 text-[13.5px] text-muted">{agent.handsFree}</p>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <span className={chip}>{agent.handsFreeChip}</span>
+                <span className={chip}>
+                  <span className="t-shimmer" data-text={comingSoonChip}>
+                    {comingSoonChip}
+                  </span>
+                </span>
+              </div>
               <Link
                 href="/docs/getting-started"
-                className="mt-6 inline-flex items-center gap-2 text-[13.5px] text-foreground underline-offset-4 hover:underline"
+                className="mt-7 inline-flex items-center gap-2 text-[13.5px] text-foreground underline-offset-4 hover:underline"
               >
                 See what you can say <Arrow />
               </Link>
@@ -137,8 +141,8 @@ export default function Home() {
 
       {/* Launch video: renders nothing until a URL is set in lib/content.ts */}
       {video ? (
-        <section id="video" aria-label={video.title}>
-          <Container className="pt-28 sm:pt-36">
+        <section id="video" aria-label={video.title} className="scroll-mt-20">
+          <Container className={pad}>
             <Reveal className="mx-auto max-w-[880px]">
               <LaunchVideo video={video} />
             </Reveal>
@@ -146,30 +150,50 @@ export default function Home() {
         </section>
       ) : null}
 
-      {/* Nothing to connect */}
-      <section id="nothing-to-connect" aria-labelledby="connect-heading">
-        <Container className="pt-20 sm:pt-24">
-          <Reveal>
-            <NothingToConnect />
-          </Reveal>
+      {/* It nudges you: suggestions */}
+      <section id="suggestions" aria-labelledby="suggestions-heading">
+        <Container className={pad}>
+          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+            <Reveal>
+              <SectionHeading
+                id="suggestions-heading"
+                eyebrow={suggestions.eyebrow}
+                title={suggestions.title}
+                sub={suggestions.short}
+              />
+              <Stagger className="mt-8 flex flex-wrap gap-2">
+                {suggestions.chips.map((c) => (
+                  <StaggerItem key={c} className={chip}>
+                    {c}
+                  </StaggerItem>
+                ))}
+              </Stagger>
+              <p className="mt-6 flex items-center gap-2.5 text-[13px] text-subtle">
+                <OrbIcon variant="B1" footprint={11} />
+                {suggestions.promiseShort}
+              </p>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <AmbientPreview preset="suggestion" loop />
+            </Reveal>
+          </div>
         </Container>
       </section>
 
       {/* Meetings */}
       <section id="meetings" aria-labelledby="meetings-heading">
-        <Container className="pt-28 sm:pt-36">
+        <Container className={pad}>
           <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
             <Reveal delay={0.15} className="order-last lg:order-first">
               <AmbientPreview preset="meeting" />
-              <p className="eyebrow mt-4 text-center !text-subtle">A live nudge during a call</p>
             </Reveal>
             <Reveal>
               <SectionHeading id="meetings-heading" eyebrow={meetings.eyebrow} title={meetings.title} sub={meetings.body} />
-              <Stagger className="mt-9">
-                {meetings.points.map((p) => (
-                  <StaggerItem key={p.k} className="flex gap-4 border-t border-border py-4">
-                    <span className="w-[112px] shrink-0 text-[13.5px] text-foreground">{p.k}</span>
-                    <span className="text-[13.5px] text-muted">{p.v}</span>
+              <Stagger className="mt-8 grid gap-2 sm:grid-cols-2">
+                {meetings.chips.map((c) => (
+                  <StaggerItem key={c.k} className="glass flex h-11 items-center gap-2.5 rounded-[14px] px-3.5 text-[13px] text-foreground">
+                    <OrbIcon variant={c.orb as OrbVariant} footprint={12} />
+                    {c.k}
                   </StaggerItem>
                 ))}
               </Stagger>
@@ -178,169 +202,93 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Suggestions */}
-      <section id="suggestions" aria-labelledby="suggestions-heading">
-        <Container className="pt-28 sm:pt-36">
+      {/* Writing: dictation as an assistant, free */}
+      <section id="features" aria-labelledby="features-heading">
+        <Container className={pad}>
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
             <Reveal>
-              <SectionHeading
-                id="suggestions-heading"
-                eyebrow={suggestions.eyebrow}
-                title={suggestions.title}
-                sub={suggestions.body}
-              />
-              <ul className="mt-8 space-y-2 text-[13.5px] text-muted">
-                {suggestions.examples.map((e) => (
-                  <li key={e} className="flex gap-3">
-                    <span className="mt-[9px] size-1 shrink-0 rounded-full bg-foreground/40" />
-                    {e}
-                  </li>
+              <SectionHeading id="features-heading" eyebrow={writing.eyebrow} title={writing.title} sub={writing.body} />
+              <div className="mt-8 flex flex-wrap gap-2">
+                {writing.chips.map((c) => (
+                  <span key={c} className={chip}>
+                    {c}
+                  </span>
                 ))}
-              </ul>
-              <p className="mt-6 text-[13.5px] text-foreground">{suggestions.promise}</p>
+              </div>
+              <Link
+                href="/features"
+                className="mt-7 inline-flex items-center gap-2 text-[13.5px] text-foreground underline-offset-4 hover:underline"
+              >
+                See everything it does <Arrow />
+              </Link>
             </Reveal>
             <Reveal delay={0.15}>
-              <AmbientPreview preset="suggestion" />
-              <p className="eyebrow mt-4 text-center !text-subtle">A suggestion from an email thread</p>
+              <WriteDemo />
+              <p className="eyebrow mt-4 text-center !text-subtle">{writing.caption}</p>
             </Reveal>
           </div>
         </Container>
       </section>
 
-      {/* Coming soon: computer use */}
-      <section id="computer-use" aria-labelledby="computer-use-heading">
-        <Container className="pt-28 sm:pt-36">
-          <Reveal className="glass rounded-[24px] p-6 sm:p-10">
-            <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-              <div>
-                <Eyebrow>
-                  <span className="t-shimmer" data-text={comingSoon.label}>
-                    {comingSoon.label}
-                  </span>
-                </Eyebrow>
-                <h2
-                  id="computer-use-heading"
-                  className="mt-4 text-balance text-[30px] font-light leading-[1.1] tracking-[-0.035em] sm:text-[40px]"
-                >
-                  {comingSoon.title}
-                </h2>
-                <p className="mt-4 text-pretty text-[15px] leading-relaxed text-muted">{comingSoon.body}</p>
-                <ul className="mt-6 space-y-2">
-                  {comingSoon.examples.map((e) => (
-                    <li key={e} className="text-[15px] text-foreground">
-                      “{e}”
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <dl className="grid content-start gap-x-10 sm:grid-cols-2">
-                {comingSoon.points.map((p, i) => (
-                  <div
-                    key={p.k}
-                    className={`flex flex-col gap-1 py-4 ${i > 0 ? "border-t border-border" : ""} ${i === 1 ? "sm:border-t-0" : ""}`}
-                  >
-                    <dt className="text-[14px] text-foreground">{p.k}</dt>
-                    <dd className="text-[13.5px] leading-relaxed text-muted">{p.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </Reveal>
-        </Container>
-      </section>
-
-
-      {/* Trust */}
+      {/* Privacy */}
       <section id="privacy-promise" aria-labelledby="trust-heading">
-        <Container className="pt-28 sm:pt-36">
-          <Reveal>
-            <SectionHeading id="trust-heading" eyebrow={trust.eyebrow} title={trust.title} sub={trust.body} />
-          </Reveal>
-          <div className="mt-10">
-            <TrustHighlights />
+        <Container className={pad}>
+          <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
+            <Reveal>
+              <SectionHeading id="trust-heading" eyebrow={trust.eyebrow} title={trust.short.title} sub={trust.short.body} />
+              <Link
+                href="/privacy"
+                className="mt-7 inline-flex items-center gap-2 text-[13.5px] text-foreground underline-offset-4 hover:underline"
+              >
+                How we handle your data <Arrow />
+              </Link>
+            </Reveal>
+            <TrustPromises />
           </div>
-          <div className="mt-3">
-            <TrustList />
-          </div>
-          <Reveal className="mt-6 text-[13px] text-subtle">{macFirst}</Reveal>
-        </Container>
-      </section>
-
-      {/* Free dictation */}
-      <section id="features" aria-labelledby="features-heading">
-        <Container className="pt-28 sm:pt-36">
-          <Reveal>
-            <SectionHeading
-              id="features-heading"
-              eyebrow="Dictation, free forever"
-              title="Talk the way you think. Read it the way you’d write it."
-              sub="Hold a key, talk, let go. The words appear where you’re typing."
-            />
-          </Reveal>
-          <Stagger className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((f, i) => (
-              <LiftCard key={f.title} className="glass flex min-h-[188px] flex-col rounded-[22px] p-6">
-                <div className="flex items-center justify-between">
-                  <OrbIcon variant={f.orb as OrbVariant} footprint={18} />
-                  <span className="eyebrow !text-subtle">{String(i + 1).padStart(2, "0")}</span>
-                </div>
-                <h3 className="mt-auto pt-8 text-[15px] font-normal tracking-[-0.01em]">{f.title}</h3>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{f.body}</p>
-              </LiftCard>
-            ))}
-          </Stagger>
-          <Reveal className="mt-8 flex justify-center">
-            <ButtonLink href="/features" variant="glass">
-              Everything it does <Arrow />
-            </ButtonLink>
-          </Reveal>
-        </Container>
-      </section>
-
-      {/* Compare */}
-      <section id="compare" aria-labelledby="compare-heading">
-        <Container className="pt-28 sm:pt-36">
-          <Reveal>
-            <SectionHeading
-              id="compare-heading"
-              eyebrow="Compare"
-              title={`${brand.name}, ${competitors.join(" and ")}`}
-              sub="Where your voice goes, what’s free, and what each one costs and does."
-            />
-          </Reveal>
-          <Reveal delay={0.1} className="mt-10">
-            <Compare />
-          </Reveal>
         </Container>
       </section>
 
       {/* Pricing */}
       <section id="pricing" aria-labelledby="pricing-heading">
-        <Container className="pt-28 sm:pt-36">
+        <Container className={pad}>
           <Reveal>
             <SectionHeading
               id="pricing-heading"
               eyebrow="Pricing"
-              title="Free to start. Simple when you’re hooked."
-              sub="Dictation is free forever. Pro adds the agent."
+              title="Start free. Go unlimited."
               className="mx-auto text-center"
             />
           </Reveal>
-          <div className="mt-12">
-            <Pricing />
+          <div className="mt-10">
+            <Pricing compact />
           </div>
+          <p className="mt-6 text-center text-[13px] text-subtle">
+            <Link href="/pricing#compare" className="text-foreground underline-offset-4 hover:underline">
+              Compare with {competitors.join(" and ")}
+            </Link>
+            {" · "}
+            <Link href="/pricing#team" className="text-foreground underline-offset-4 hover:underline">
+              Team plan
+            </Link>
+          </p>
         </Container>
       </section>
 
       {/* FAQ */}
       <section id="faq" aria-labelledby="faq-heading">
-        <Container className="pt-28 sm:pt-36">
+        <Container className={pad}>
           <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
             <Reveal>
               <SectionHeading id="faq-heading" eyebrow="FAQ" title="Questions, answered." />
+              <Link
+                href="/pricing#faq"
+                className="mt-6 inline-flex items-center gap-2 text-[13.5px] text-foreground underline-offset-4 hover:underline"
+              >
+                More answers <Arrow />
+              </Link>
             </Reveal>
             <Reveal delay={0.1}>
-              <Faq items={faqs} />
+              <Faq items={homeFaqs} />
             </Reveal>
           </div>
         </Container>
@@ -348,18 +296,17 @@ export default function Home() {
 
       {/* Final CTA */}
       <section aria-labelledby="cta-heading">
-        <Container className="pt-28 sm:pt-36">
-          <Reveal className="glass flex flex-col items-center rounded-[28px] px-6 py-20 text-center sm:py-24">
-            <Mark size={56} />
-            <Eyebrow className="mt-8">{brand.name}</Eyebrow>
+        <Container className={pad}>
+          <Reveal className="glass flex flex-col items-center rounded-[28px] px-6 py-10 text-center sm:py-12">
+            <Mark size={44} />
             <h2
               id="cta-heading"
-              className="mt-4 max-w-xl text-balance text-[38px] font-extralight leading-[1.05] tracking-[-0.045em] sm:text-[56px]"
+              className="mt-6 max-w-xl text-balance text-[38px] font-extralight leading-[1.05] tracking-[-0.045em] sm:text-[56px]"
             >
-              Stop typing. Start talking.
+              Meet your new colleague.
             </h2>
-            <p className="mt-5 max-w-sm text-[15px] text-muted">
-              Free dictation on every platform. Try the agent free for {brand.trialDays} days, no card.
+            <p className="mt-5 max-w-md text-balance text-[15px] text-muted">
+              Free to start. Try Pro free for {brand.trialDays} days, no card.
             </p>
             <ButtonLink href="/download" size="lg" className="mt-9">
               Download {brand.name} <Arrow />

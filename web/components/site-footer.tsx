@@ -42,7 +42,7 @@ export function SiteFooter() {
             <div className="max-w-xs">
               <Logo size="md" />
               <p className="mt-4 text-[13px] leading-relaxed text-muted">
-                A private voice agent. Free dictation on macOS, Windows and Linux.
+                A live agent on your desktop. On macOS, Windows and Linux.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-14">
