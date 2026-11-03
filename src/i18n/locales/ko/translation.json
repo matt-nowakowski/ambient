@@ -1182,14 +1182,10 @@
       "interrupted": "답변이 중단되었습니다.",
       "opened": "열림",
       "searching": "브라우저에서 검색 중",
-      "reminderAdded": "미리 알림 추가됨",
-      "eventAdded": "캘린더에 추가됨",
       "shortcutRan": "단축어 실행됨",
       "cantDoYet": "아직 그 작업은 할 수 없습니다. 컴퓨터 제어 기능이 곧 제공됩니다.",
       "appNotFound": "해당 앱을 찾을 수 없습니다.",
-      "shortcutNotFound": "해당 단축어를 찾을 수 없습니다.",
       "automationNotFound": "그 이름의 시작 메뉴 바로 가기나 Power Automate 흐름을 찾지 못했어요.",
-      "calendarPermission": "먼저 시스템 설정에서 캘린더 및 미리 알림 접근을 허용하세요.",
       "undone": "실행 취소됨",
       "meetingStarted": "기록 중입니다. 참석자에게 알리세요.",
       "copied": "복사됨",
@@ -1203,7 +1199,9 @@
       "noWebResults": "지금은 웹을 검색할 수 없어 알고 있는 내용으로 답했어요.",
       "timeout": "너무 오래 걸렸어요. 다시 시도해 주세요.",
       "needsCloud": "클라우드가 필요하지만 인텔리전스가 “이 컴퓨터에서만”으로 설정되어 있습니다. 개인정보 보호에서 변경하세요.",
-      "cloudOfferOn": "클라우드 제안이 켜져 있습니다. 개인정보 보호에서 변경하세요."
+      "cloudOfferOn": "클라우드 제안이 켜져 있습니다. 개인정보 보호에서 변경하세요.",
+      "cloudUnavailable": "지금은 클라우드 제안을 사용할 수 없습니다.",
+      "cloudLimited": "클라우드 제안이 잠시 중지되었습니다: 오늘 한도에 도달했거나 Pro가 필요합니다."
     },
     "undo": "실행 취소",
     "close": "닫기",
@@ -1238,7 +1236,12 @@
       "translatePage": "이 페이지를 번역할까요?",
       "translate": "번역",
       "helpHere": "여기서 도와드릴 일이 있을까요?",
-      "help": "도와줘"
+      "help": "도와줘",
+      "summariseThreadCount": "메시지 {{count}}개짜리 이 스레드를 요약할까요?",
+      "replyTo": "{{name}}님에게 답장할까요?",
+      "reply": "답장",
+      "translatePageLang": "이 페이지의 언어: {{language}}. 번역할까요?",
+      "explainErrorWhat": "‘{{error}}’ 오류가 발생했습니다. 해결 방법을 볼까요?"
     },
     "nudge": {
       "findIt": "찾기",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "이걸 입력하려고 하셨나요?",
       "composed": "초안입니다.",
-      "focusHint": "텍스트 필드를 클릭하면 삽입할 수 있어요."
+      "focusHint": "텍스트 필드를 클릭하면 삽입할 수 있어요.",
+      "askInstead": "대신 {{appName}}에게 묻기"
     },
     "source": {
       "searchDrive": "Google Drive에서 검색",
       "searchGmail": "Gmail에서 검색"
     },
     "cloudOffer": "{{appName}}이(가) 창의 내용 일부를 가려서 서버로 보내, 이 컴퓨터에서 도움을 제안할 수 있습니다. 켤까요?",
+    "when": {
+      "today": "오늘 {{time}}",
+      "tomorrow": "내일 {{time}}",
+      "on": "{{day}} {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} 열림",
+      "appNotFound": "이 컴퓨터에서 ‘{{name}}’ 앱을 찾을 수 없습니다. 웹에서 검색할까요?",
+      "badLink": "링크가 올바르지 않아 보여서 열지 않았습니다. 대신 복사할 수 있습니다.",
+      "noBrowser": "브라우저를 열 수 없습니다.",
+      "reminderSetAt": "{{when}}에 미리 알림 설정됨: {{title}}",
+      "reminderSet": "미리 알림 추가됨: {{title}}",
+      "remindersPermission": "아직 미리 알림을 추가할 수 없습니다: {{appName}}에 미리 알림 접근 권한이 필요합니다. 시스템 설정에서 켜거나 지금은 복사해 두세요.",
+      "reminderFailed": "미리 알림에서 ‘{{title}}’을(를) 받지 않았습니다. 대신 캘린더에 추가하거나 복사할까요?",
+      "reminderNeedsTime": "{{os}}에서는 시간이 있는 미리 알림만 설정할 수 있습니다. ‘5시에 … 알려 줘’처럼 언제인지 말하거나 지금은 복사해 두세요.",
+      "reminderLinux": "이 Linux 시스템에서는 미리 알림을 설정할 수 없습니다: 알림 타이머(systemd 및 notify-send)가 없습니다. 대신 캘린더에 추가하거나 복사할까요?",
+      "reminderWindows": "Windows에서 알림을 예약할 수 없었습니다. 대신 캘린더에 추가하거나 복사할까요?",
+      "reminderNotificationsOff": "{{os}}에서 {{appName}} 알림이 꺼져 있어 미리 알림이 표시되지 않습니다. 대신 캘린더에 추가하거나 복사할까요?",
+      "eventNeedsTime": "‘{{title}}’이(가) 언제인지 알 수 없습니다. 날짜와 시간을 말하거나 지금은 복사해 두세요.",
+      "eventAdded": "{{when}}에 캘린더에 추가됨: {{title}}",
+      "calendarsPermission": "아직 일정을 추가할 수 없습니다: {{appName}}에 캘린더 접근 권한이 필요합니다. 시스템 설정에서 켜거나 지금은 복사해 두세요.",
+      "eventFailed": "캘린더에서 ‘{{title}}’을(를) 받지 않았습니다. 복사해서 직접 추가할 수 있습니다.",
+      "eventIcsOpened": "캘린더 앱에서 ‘{{title}}’({{when}})을(를) 열었습니다. 추가하려면 거기서 저장하세요.",
+      "noCalendarApp": "{{os}}에 연결된 캘린더 앱이 없어서 가져올 수 있는 캘린더 파일({{file}})을 저장했습니다.",
+      "shortcutRan": "‘{{name}}’ 실행됨",
+      "shortcutNotFound": "‘{{name}}’ 단축어를 찾을 수 없습니다. 만드는 방법을 알려 드릴까요?",
+      "cantDoYet": "아직 이 작업은 할 수 없습니다: {{what}}. 직접 하는 방법을 알려 드릴까요?",
+      "cantDoYetPlain": "아직 이 컴퓨터에서는 그 작업을 할 수 없습니다. 직접 하는 방법을 알려 드릴까요?",
+      "failed": "이번에는 잘 되지 않았습니다. 잠시 후 다시 시도하세요.",
+      "undoFailed": "실행 취소할 수 없었습니다. 앱에서 직접 삭제할 수 있습니다."
+    },
+    "offer": {
+      "searchWeb": "웹에서 검색",
+      "copyLink": "링크 복사",
+      "answerHere": "여기서 답하기",
+      "addToCalendar": "캘린더에 추가",
+      "openSettings": "설정 열기",
+      "showFile": "파일 보기",
+      "howTo": "방법 보기",
+      "showMeHow": "방법 보기"
+    },
+    "report": {
+      "title": "{{appName}} 팀에 보낼까요?",
+      "kinds": {
+        "bug": "버그",
+        "idea": "아이디어",
+        "other": "의견"
+      },
+      "diagnostics": "진단 정보 포함",
+      "diagnosticsHint": "(팀이 문제를 재현하는 데 도움이 됩니다)",
+      "send": "보내기",
+      "edit": "편집",
+      "cancel": "취소",
+      "editHint": "단축키를 누른 채 새 메시지를 말하세요.",
+      "voiceHint": "또는 ‘보내 줘’라고 말하세요",
+      "sent": "보냈습니다. 감사합니다. 팀에서 확인할게요.",
+      "failed": "지금은 보낼 수 없습니다. 복사해 두고 나중에 다시 시도할까요?",
+      "offer": "이 문제를 팀에 알릴까요?",
+      "offerAccept": "알리기"
+    },
     "notes": {
       "ready": "노트가 준비됐습니다",
       "actionItems": "할 일: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "받는 제안",
-      "description": "제안이 나타나면 “나중에”, “이런 건 보여 주지 마” 또는 “이 앱에서는 안 돼”라고 말하면 학습합니다. 언제든지 여기에서 변경하세요.",
-      "mutedIn": "{{apps}}에서 꺼짐",
       "kinds": {
         "summarise_thread": "긴 이메일 스레드 요약",
         "draft_reply": "답장 초안 작성",
@@ -1422,7 +1484,16 @@
         "translate_page": "다른 언어로 된 페이지 번역",
         "help_here": "기타 도움",
         "meeting_nudge": "회의 중 알림"
-      }
+      },
+      "learned": {
+        "title": "알려 주신 것",
+        "empty": "아직 없습니다. 제안을 거절하면 여기에 표시됩니다.",
+        "never": "표시 안 함: {{kind}}",
+        "notIn": "{{kind}}, {{app}}에서는 표시 안 함",
+        "undo": "실행 취소"
+      },
+      "teach": "제안이 나타나면 ‘지금은 말고’, ‘이런 건 보여 주지 마’, ‘이 앱에서는 말고’라고 말하세요. {{appName}}이(가) 기억합니다.",
+      "unknownKind": "제안 유형"
     },
     "macOnly": "현재 Mac 전용",
     "promises": {

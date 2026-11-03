@@ -159,12 +159,12 @@ bounds:
 | Key | Min | Max | Default |
 | --- | --- | --- | --- |
 | `kind.<kind>.enabled` | — | — | on |
-| `kind.<kind>.min_confidence` | 0.5 | 0.95 | 0.7 |
-| `kind.<kind>.cooldown_min` | 10 | 1440 | 60 |
-| `hourly_budget` | 1 | 10 | 3 |
-| `judge.timeout_ms` | 2000 | 10000 | 4000 |
+| `kind.<kind>.min_confidence` | 0.5 | 0.95 | 0.6 |
+| `kind.<kind>.cooldown_min` | 1 | 1440 | 3 |
+| `hourly_budget` | 1 | 20 | 10 |
+| `judge.timeout_ms` | 3000 | 15000 | 8000 |
 | `judge.cloud_timeout_ms` | 3000 | 12000 | 7000 |
-| `judge.min_confidence` | 0.5 | 0.95 | 0.7 |
+| `judge.min_confidence` | 0.5 | 0.95 | 0.6 |
 | `router.did_you_mean_bias` | 0 | 1 | 0.5 |
 | `answer.first_byte_timeout_ms` | 8000 | 40000 | 25000 |
 | `answer.idle_timeout_ms` | 5000 | 30000 | 20000 |

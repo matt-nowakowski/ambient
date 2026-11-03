@@ -1182,14 +1182,10 @@
       "interrupted": "回答已中斷。",
       "opened": "已開啟",
       "searching": "正在瀏覽器中搜尋",
-      "reminderAdded": "已加入提醒事項",
-      "eventAdded": "已加入行事曆",
       "shortcutRan": "已執行捷徑",
       "cantDoYet": "我還做不到這件事。電腦操控功能即將推出。",
       "appNotFound": "找不到該應用程式。",
-      "shortcutNotFound": "找不到該捷徑。",
       "automationNotFound": "找不到該名稱的「開始」功能表捷徑或 Power Automate 流程。",
-      "calendarPermission": "請先在系統設定中允許取用行事曆和提醒事項。",
       "undone": "已還原",
       "meetingStarted": "正在記錄。請告知與會者。",
       "copied": "已複製",
@@ -1203,7 +1199,9 @@
       "noWebResults": "暫時無法上網搜尋，以下內容根據我已知的資訊。",
       "timeout": "花太久了，請再試一次。",
       "needsCloud": "這需要雲端，但智慧功能已設為「僅在這台電腦上」。請在隱私中變更。",
-      "cloudOfferOn": "雲端建議已開啟。請在隱私中變更。"
+      "cloudOfferOn": "雲端建議已開啟。請在隱私中變更。",
+      "cloudUnavailable": "雲端建議目前無法使用。",
+      "cloudLimited": "雲端建議暫時停用：今天的上限已達到，或需要 Pro。"
     },
     "undo": "還原",
     "close": "關閉",
@@ -1238,7 +1236,12 @@
       "translatePage": "翻譯這個頁面？",
       "translate": "翻譯",
       "helpHere": "這裡有什麼需要幫忙的嗎？",
-      "help": "幫我"
+      "help": "幫我",
+      "summariseThreadCount": "要我摘要這個有 {{count}} 則訊息的對話串嗎？",
+      "replyTo": "回覆 {{name}}？",
+      "reply": "回覆",
+      "translatePageLang": "此頁面為{{language}}。要翻譯嗎？",
+      "explainErrorWhat": "出現「{{error}}」。想看看可能的解法嗎？"
     },
     "nudge": {
       "findIt": "尋找",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "你是想輸入這段文字嗎？",
       "composed": "這是你的草稿。",
-      "focusHint": "點一下文字欄位即可插入。"
+      "focusHint": "點一下文字欄位即可插入。",
+      "askInstead": "改問 {{appName}}"
     },
     "source": {
       "searchDrive": "在 Google 雲端硬碟中搜尋",
       "searchGmail": "在 Gmail 中搜尋"
     },
     "cloudOffer": "{{appName}} 可以將視窗內容的遮蔽片段傳送到其伺服器，藉此在這台電腦上建議提供協助。要開啟嗎？",
+    "when": {
+      "today": "今天 {{time}}",
+      "tomorrow": "明天 {{time}}",
+      "on": "{{day}} {{time}}"
+    },
+    "notice": {
+      "opened": "已開啟 {{name}}",
+      "appNotFound": "在這台電腦上找不到名為「{{name}}」的應用程式。要我在網路上搜尋嗎？",
+      "badLink": "這個連結看起來不對，所以我沒有開啟。你可以改為複製它。",
+      "noBrowser": "無法開啟你的瀏覽器。",
+      "reminderSetAt": "已設定提醒（{{when}}）：{{title}}",
+      "reminderSet": "已新增提醒：{{title}}",
+      "remindersPermission": "還無法新增提醒：{{appName}} 需要「提醒事項」的取用權限。請在「系統設定」中開啟，或先複製下來。",
+      "reminderFailed": "「提醒事項」沒有接受「{{title}}」。要改為加入行事曆，還是複製下來？",
+      "reminderNeedsTime": "在 {{os}} 上我只能設定有時間的提醒。請說出時間，例如「5 點提醒我……」，或先複製下來。",
+      "reminderLinux": "無法在這個 Linux 系統上設定提醒：它沒有通知計時器（systemd 和 notify-send）。要改為加入行事曆，還是複製下來？",
+      "reminderWindows": "Windows 不讓我排程通知。要改為加入行事曆，還是複製下來？",
+      "reminderNotificationsOff": "{{appName}} 在 {{os}} 上的通知已關閉，提醒不會顯示。要改為加入行事曆，還是複製下來？",
+      "eventNeedsTime": "我聽不出「{{title}}」是什麼時候。請說出日期和時間，或先複製下來。",
+      "eventAdded": "已加入行事曆（{{when}}）：{{title}}",
+      "calendarsPermission": "還無法新增活動：{{appName}} 需要「行事曆」的取用權限。請在「系統設定」中開啟，或先複製下來。",
+      "eventFailed": "行事曆沒有接受「{{title}}」。你可以複製後自行加入。",
+      "eventIcsOpened": "已在行事曆應用程式中開啟「{{title}}」（{{when}}）。在那裡儲存即可加入。",
+      "noCalendarApp": "{{os}} 上沒有連接行事曆應用程式，所以我儲存了可匯入的行事曆檔案（{{file}}）。",
+      "shortcutRan": "已執行「{{name}}」",
+      "shortcutNotFound": "找不到名為「{{name}}」的捷徑。想知道怎麼建立嗎？",
+      "cantDoYet": "我還做不到：{{what}}。要我教你自己操作嗎？",
+      "cantDoYetPlain": "我還無法在這台電腦上做到。要我教你自己操作嗎？",
+      "failed": "這次沒有成功。請稍後再試。",
+      "undoFailed": "無法復原這一項。你可以直接在該應用程式中移除。"
+    },
+    "offer": {
+      "searchWeb": "在網路上搜尋",
+      "copyLink": "複製連結",
+      "answerHere": "在此回答",
+      "addToCalendar": "加入行事曆",
+      "openSettings": "開啟設定",
+      "showFile": "顯示檔案",
+      "howTo": "教我怎麼做",
+      "showMeHow": "教我怎麼做"
+    },
+    "report": {
+      "title": "要傳送給 {{appName}} 團隊嗎？",
+      "kinds": {
+        "bug": "錯誤",
+        "idea": "想法",
+        "other": "意見回饋"
+      },
+      "diagnostics": "附上診斷資料",
+      "diagnosticsHint": "（協助團隊重現問題）",
+      "send": "傳送",
+      "edit": "編輯",
+      "cancel": "取消",
+      "editHint": "按住快捷鍵，說出新的內容。",
+      "voiceHint": "或說「送出」",
+      "sent": "已傳送。謝謝，團隊會看到的。",
+      "failed": "目前無法傳送。要複製下來稍後再試嗎？",
+      "offer": "要我把這個回報給團隊嗎？",
+      "offerAccept": "回報"
+    },
     "notes": {
       "ready": "你的筆記已準備好",
       "actionItems": "待辦事項：{{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "你收到的建議",
-      "description": "出現建議時，說「稍後再說」「別給我看這些」或「不要在這個應用程式」，它就會記住。可隨時在這裡更改。",
-      "mutedIn": "已在 {{apps}} 中關閉",
       "kinds": {
         "summarise_thread": "摘要長郵件對話",
         "draft_reply": "草擬回覆",
@@ -1422,7 +1484,16 @@
         "translate_page": "翻譯其他語言的頁面",
         "help_here": "其他你可能需要的協助",
         "meeting_nudge": "會議期間的提示"
-      }
+      },
+      "learned": {
+        "title": "你告訴我的事",
+        "empty": "目前沒有內容。你拒絕某個建議後，它會顯示在這裡。",
+        "never": "永不：{{kind}}",
+        "notIn": "{{kind}}，不在 {{app}} 中顯示",
+        "undo": "復原"
+      },
+      "teach": "建議出現時，說「現在不用」、「不要給我看這些」或「不要在這個應用程式」，{{appName}} 就會記住。",
+      "unknownKind": "某類建議"
     },
     "macOnly": "目前僅限 Mac",
     "promises": {

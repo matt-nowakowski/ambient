@@ -25,11 +25,11 @@
     "suggestion_offered": { "kind": "@suggestion_kind", "judge": ["device", "cloud", "rules"], "app_category": "@app_category" },
     "suggestion_result": { "kind": "@suggestion_kind", "outcome": ["accepted", "dismissed", "ignored", "muted"], "by": ["voice", "click", "timeout"] },
     "judge_run": { "engine": ["device", "cloud"], "outcome": ["ok", "unparsable", "timeout", "error"], "ms_bucket": "#ms" },
-    "route": { "route": ["write", "answer", "act", "recall", "compose", "help", "handled", "none"], "source": ["ask_key", "dictation_key", "wake"], "had_focus_field": "bool" },
+    "route": { "route": ["write", "answer", "act", "recall", "compose", "help", "report", "handled", "none"], "source": ["ask_key", "dictation_key", "wake"], "had_focus_field": "bool" },
     "did_you_mean_shown": {},
     "did_you_mean_result": { "result": ["typed", "asked", "dismissed"] },
     "answer_latency": { "first_card_ms_bucket": "#ms", "total_ms_bucket": "#ms", "web": "bool" },
-    "act": { "kind": ["reminder", "calendar", "open_app", "shortcut"], "outcome": ["ok", "fallback", "failed"], "platform": "@platform" },
+    "act": { "kind": ["reminder", "calendar", "open_app", "shortcut", "unsupported"], "outcome": ["ok", "fallback", "failed"], "platform": "@platform" },
     "error": {
       "area": ["download", "model", "transcription", "polish", "answer", "judge", "act", "meeting", "account", "audio", "update", "other"],
       "kind": ["offline", "timeout", "not_found", "disk_full", "checksum", "server", "limited", "permission", "unparsable", "failed"]

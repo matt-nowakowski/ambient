@@ -1182,14 +1182,10 @@
       "interrupted": "Yanıt kesildi.",
       "opened": "Açıldı",
       "searching": "Tarayıcınızda aranıyor",
-      "reminderAdded": "Anımsatıcı eklendi",
-      "eventAdded": "Takviminize eklendi",
       "shortcutRan": "Kestirme çalıştırıldı",
       "cantDoYet": "Bunu henüz yapamıyorum. Bilgisayar kullanımı yakında geliyor.",
       "appNotFound": "Bu uygulama bulunamadı.",
-      "shortcutNotFound": "Bu kestirme bulunamadı.",
       "automationNotFound": "Bu adda bir Başlat menüsü kısayolu veya Power Automate akışı bulunamadı.",
-      "calendarPermission": "Önce Sistem Ayarları’nda Takvimler ve Anımsatıcılar erişimine izin verin.",
       "undone": "Geri alındı",
       "meetingStarted": "Not alınıyor. Katılımcılara haber verin.",
       "copied": "Kopyalandı",
@@ -1203,7 +1199,9 @@
       "noWebResults": "Şu an web'de arama yapılamadı, bu yüzden bildiklerimle yanıtlıyorum.",
       "timeout": "Çok uzun sürdü. Tekrar deneyin.",
       "needsCloud": "Bu işlem için bulut gerekiyor, ancak Zekâ “Yalnızca bu bilgisayarda” olarak ayarlı. Bunu Gizlilik’ten değiştirin.",
-      "cloudOfferOn": "Buluttan öneriler açık. Bunu Gizlilik’ten değiştirin."
+      "cloudOfferOn": "Buluttan öneriler açık. Bunu Gizlilik’ten değiştirin.",
+      "cloudUnavailable": "Bulut önerileri şu anda kullanılamıyor.",
+      "cloudLimited": "Bulut önerileri şimdilik duraklatıldı: bugünkü sınıra ulaşıldı ya da Pro gerekiyor."
     },
     "undo": "Geri al",
     "close": "Kapat",
@@ -1238,7 +1236,12 @@
       "translatePage": "Bu sayfayı çevireyim mi?",
       "translate": "Çevir",
       "helpHere": "Burada yardımcı olabileceğim bir şey var mı?",
-      "help": "Yardım et"
+      "help": "Yardım et",
+      "summariseThreadCount": "{{count}} mesajlık bu yazışmayı özetleyeyim mi?",
+      "replyTo": "{{name}} kişisine yanıt verilsin mi?",
+      "reply": "Yanıtla",
+      "translatePageLang": "Bu sayfanın dili: {{language}}. Çevrilsin mi?",
+      "explainErrorWhat": "“{{error}}” hatası alındı. Olası çözümü göstereyim mi?"
     },
     "nudge": {
       "findIt": "Bul",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "Bunu mu yazmak istediniz?",
       "composed": "İşte taslağınız.",
-      "focusHint": "Eklemek için bir metin alanına tıklayın."
+      "focusHint": "Eklemek için bir metin alanına tıklayın.",
+      "askInstead": "Bunun yerine {{appName}} uygulamasına sor"
     },
     "source": {
       "searchDrive": "Google Drive'da ara",
       "searchGmail": "Gmail'de ara"
     },
     "cloudOffer": "{{appName}}, pencerenin kişisel verilerden arındırılmış bir parçasını sunucularına göndererek bu bilgisayarda yardım önerebilir. Açılsın mı?",
+    "when": {
+      "today": "bugün {{time}}",
+      "tomorrow": "yarın {{time}}",
+      "on": "{{day}} {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} açıldı",
+      "appNotFound": "Bu bilgisayarda “{{name}}” adlı bir uygulama bulamadım. Web'de aramamı ister misiniz?",
+      "badLink": "Bu bağlantı doğru görünmüyor, bu yüzden açmadım. Bunun yerine kopyalayabilirsiniz.",
+      "noBrowser": "Tarayıcınızı açamadım.",
+      "reminderSetAt": "Anımsatıcı kuruldu, {{when}}: {{title}}",
+      "reminderSet": "Anımsatıcı eklendi: {{title}}",
+      "remindersPermission": "Henüz anımsatıcı ekleyemiyorum: {{appName}} için Anımsatıcılar erişimi gerekiyor. Sistem Ayarları'ndan açın ya da şimdilik kopyalayın.",
+      "reminderFailed": "Anımsatıcılar “{{title}}” öğesini kabul etmedi. Bunun yerine takviminize ekleyeyim mi, yoksa kopyalayayım mı?",
+      "reminderNeedsTime": "{{os}} üzerinde yalnızca saatli anımsatıcı kurabiliyorum. Ne zaman olduğunu söyleyin, örneğin “bana saat 5'te … hatırlat”, ya da şimdilik kopyalayın.",
+      "reminderLinux": "Bu Linux sisteminde anımsatıcı kuramıyorum: bildirim zamanlayıcısı yok (systemd ve notify-send). Bunun yerine takviminize ekleyeyim mi, yoksa kopyalayayım mı?",
+      "reminderWindows": "Windows bildirim zamanlamama izin vermedi. Bunun yerine takviminize ekleyeyim mi, yoksa kopyalayayım mı?",
+      "reminderNotificationsOff": "{{os}} üzerinde {{appName}} bildirimleri kapalı, bu yüzden anımsatıcı görünmez. Bunun yerine takviminize ekleyeyim mi, yoksa kopyalayayım mı?",
+      "eventNeedsTime": "“{{title}}” ne zaman, anlayamadım. Günü ve saati söyleyin ya da şimdilik kopyalayın.",
+      "eventAdded": "Takviminize eklendi, {{when}}: {{title}}",
+      "calendarsPermission": "Henüz etkinlik ekleyemiyorum: {{appName}} için Takvimler erişimi gerekiyor. Sistem Ayarları'ndan açın ya da şimdilik kopyalayın.",
+      "eventFailed": "Takviminiz “{{title}}” öğesini kabul etmedi. Kopyalayıp kendiniz ekleyebilirsiniz.",
+      "eventIcsOpened": "“{{title}}” ({{when}}) takvim uygulamanızda açıldı. Eklemek için orada kaydedin.",
+      "noCalendarApp": "{{os}} üzerinde bağlı bir takvim uygulaması yok, bu yüzden içe aktarabileceğiniz bir takvim dosyası ({{file}}) kaydettim.",
+      "shortcutRan": "“{{name}}” çalıştırıldı",
+      "shortcutNotFound": "“{{name}}” adlı bir kestirme bulamadım. Nasıl oluşturulacağını öğrenmek ister misiniz?",
+      "cantDoYet": "Bunu henüz yapamıyorum: {{what}}. Kendiniz nasıl yapacağınızı göstereyim mi?",
+      "cantDoYetPlain": "Bunu bu bilgisayarda henüz yapamıyorum. Kendiniz nasıl yapacağınızı göstereyim mi?",
+      "failed": "Bu sefer olmadı. Birazdan tekrar deneyin.",
+      "undoFailed": "Bunu geri alamadım. Uygulamanın kendisinden kaldırabilirsiniz."
+    },
+    "offer": {
+      "searchWeb": "Web'de ara",
+      "copyLink": "Bağlantıyı kopyala",
+      "answerHere": "Burada yanıtla",
+      "addToCalendar": "Takvime ekle",
+      "openSettings": "Ayarları aç",
+      "showFile": "Dosyayı göster",
+      "howTo": "Nasıl yapılır",
+      "showMeHow": "Nasıl yapılır"
+    },
+    "report": {
+      "title": "Bu, {{appName}} ekibine gönderilsin mi?",
+      "kinds": {
+        "bug": "Hata",
+        "idea": "Fikir",
+        "other": "Geri bildirim"
+      },
+      "diagnostics": "Tanılama verilerini ekle",
+      "diagnosticsHint": "(ekibin sorunu yeniden oluşturmasına yardımcı olur)",
+      "send": "Gönder",
+      "edit": "Düzenle",
+      "cancel": "İptal",
+      "editHint": "Kısayolunuzu basılı tutun ve yeni mesajı söyleyin.",
+      "voiceHint": "Ya da “gönder” deyin",
+      "sent": "Gönderildi. Teşekkürler, ekip görecek.",
+      "failed": "Şu anda gönderilemedi. Kopyalayıp daha sonra tekrar denensin mi?",
+      "offer": "Bunu ekibe bildireyim mi?",
+      "offerAccept": "Bildir"
+    },
     "notes": {
       "ready": "Notların hazır",
       "actionItems": "Yapılacaklar: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "Aldığınız öneriler",
-      "description": "Bir öneri çıktığında “şimdi değil”, “bunları gösterme” veya “bu uygulamada değil” deyin, o da öğrenir. Bunu buradan istediğiniz zaman değiştirin.",
-      "mutedIn": "{{apps}} içinde kapalı",
       "kinds": {
         "summarise_thread": "Uzun e-posta yazışmalarını özetle",
         "draft_reply": "Yanıt taslakları yaz",
@@ -1422,7 +1484,16 @@
         "translate_page": "Başka dillerdeki sayfaları çevir",
         "help_here": "İstediğinizi düşündüğü diğer yardımlar",
         "meeting_nudge": "Toplantı sırasında hatırlatmalar"
-      }
+      },
+      "learned": {
+        "title": "Bana söyledikleriniz",
+        "empty": "Henüz bir şey yok. Bir öneriyi reddettiğinizde burada görünür.",
+        "never": "Asla: {{kind}}",
+        "notIn": "{{kind}}, {{app}} içinde değil",
+        "undo": "Geri al"
+      },
+      "teach": "Bir öneri göründüğünde “şimdi değil”, “bunları gösterme” ya da “bu uygulamada değil” deyin, {{appName}} bunu hatırlar.",
+      "unknownKind": "Bir öneri türü"
     },
     "macOnly": "Şimdilik yalnızca Mac’te",
     "promises": {

@@ -14,6 +14,7 @@ import {
   commands,
   type HudAnswerAction,
   type HudContent,
+  type HudOffer,
   type HudSource,
 } from "@/bindings";
 import { Orb } from "@/components/orb/Orb";
@@ -42,6 +43,17 @@ const HELP_GROUPS = [
   { key: "suggestions", count: 2 },
 ] as const;
 
+/** Seconds a notice stays: plain, with Undo, with alternatives to pick. */
+const NOTICE_TTL = { plain: 4, undo: 8, offers: 14 } as const;
+
+/** "2026-11-03T09:00" → a Date in local time. */
+const parseLocal = (s: string) => {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(s);
+  return m
+    ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5])
+    : new Date(Number.NaN);
+};
+
 /** Action kinds that act on the user's app and so lead the row. */
 const PRIMARY = new Set(["insert", "replace", "reply"]);
 
@@ -56,7 +68,7 @@ const ACTION_LABEL: Record<string, string> = {
 };
 
 export default function Hud() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const reduceMotion = useReducedMotion();
   const [content, setContent] = useState<HudContent | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
@@ -109,7 +121,7 @@ export default function Hud() {
     return () => ro.disconnect();
   }, [open]);
 
-  // Suggestions and status lines fade on their own.
+  // Suggestions, status lines and notices fade on their own.
   useEffect(() => {
     if (!content) return;
     const ttl =
@@ -119,9 +131,15 @@ export default function Hud() {
           ? content.undo
             ? 6
             : 3
-          : content.kind === "listening"
-            ? LISTENING_TTL
-            : null;
+          : content.kind === "notice"
+            ? (content.offers?.length ?? 0) > 0
+              ? NOTICE_TTL.offers
+              : content.undo
+                ? NOTICE_TTL.undo
+                : NOTICE_TTL.plain
+            : content.kind === "listening"
+              ? LISTENING_TTL
+              : null;
     if (ttl === null) return;
     const id = setTimeout(() => {
       if (content.kind === "suggestion") {
@@ -157,8 +175,12 @@ export default function Hud() {
         return;
       case "help":
       case "draft":
+      case "report":
       case "meeting_notes":
         return dismiss();
+      case "notice":
+        if ((content.offers?.length ?? 0) > 0 || content.undo) dismiss();
+        return;
       case "suggestion":
         // Clicked away from, not refused: no back-off for this kind.
         commands.hudAction(content.id, "expire", null);
@@ -167,6 +189,57 @@ export default function Hud() {
       default:
         return;
     }
+  };
+
+  /** Rust's variables, made readable: `lang` ("de") → `language`
+   * ("German"), `due` ("2026-11-03T09:00") → `when` ("9:00 tomorrow"). */
+  const fill = (vars?: Partial<{ [key in string]: string }>) => {
+    const out: Record<string, string> = {};
+    for (const [k, v] of Object.entries(vars ?? {})) {
+      if (v !== undefined) out[k] = v;
+    }
+    if (out.lang) {
+      try {
+        out.language =
+          new Intl.DisplayNames([i18n.language], { type: "language" }).of(
+            out.lang,
+          ) ?? out.lang;
+      } catch {
+        out.language = out.lang;
+      }
+    }
+    if (out.due) {
+      const d = parseLocal(out.due);
+      if (!Number.isNaN(d.getTime())) {
+        const time = d.toLocaleTimeString(i18n.language, {
+          hour: "numeric",
+          minute: "2-digit",
+        });
+        const today = new Date();
+        const startOf = (x: Date) =>
+          new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+        const days = Math.round((startOf(d) - startOf(today)) / 86_400_000);
+        out.when =
+          days === 0
+            ? t("hud.when.today", { time })
+            : days === 1
+              ? t("hud.when.tomorrow", { time })
+              : t("hud.when.on", {
+                  time,
+                  day: d.toLocaleDateString(i18n.language, {
+                    weekday: "long",
+                    month: "short",
+                    day: "numeric",
+                  }),
+                });
+      }
+    }
+    return out;
+  };
+
+  const runOffer = (id: string, o: HudOffer) => {
+    if (o.action === "copy") return copy(`offer-${o.label}`, o.value ?? "");
+    return commands.hudAction(id, o.action, o.value);
   };
 
   const copy = async (key: string, text: string) => {
@@ -353,6 +426,17 @@ export default function Hud() {
                   >
                     {copied === "copy" ? t("hud.copied") : t("hud.copy")}
                   </button>
+                  {/* Dictation with nowhere to go: maybe it was for Ambient. */}
+                  {content.title === "hud.draft.title" && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        commands.hudAction(content.id, "ask", content.text)
+                      }
+                    >
+                      {t("hud.draft.askInstead")}
+                    </button>
+                  )}
                   {!content.editable && (
                     <span className="hud-hint">{t("hud.draft.focusHint")}</span>
                   )}
@@ -395,7 +479,10 @@ export default function Hud() {
               <div className="hud-suggestion">
                 <Orb variant="C2" size={18} />
                 <span className="hud-suggestion-title">
-                  {t(content.title, { defaultValue: content.title })}
+                  {t(content.title, {
+                    defaultValue: content.title,
+                    ...fill(content.vars),
+                  })}
                 </span>
                 <button
                   type="button"
@@ -445,6 +532,131 @@ export default function Hud() {
                   </button>
                 )}
               </div>
+            )}
+
+            {content.kind === "notice" && (
+              <div className="hud-notice" data-tone={content.tone}>
+                <div className="hud-status" data-tone={content.tone}>
+                  <Orb
+                    variant={content.tone === "error" ? "M1" : "B1"}
+                    size={16}
+                  />
+                  <span>
+                    {t(content.text, {
+                      defaultValue: content.text,
+                      ...fill(content.vars),
+                    })}
+                  </span>
+                  {content.undo && !(content.offers?.length ?? 0) && (
+                    <button
+                      type="button"
+                      className="hud-undo"
+                      onClick={() =>
+                        commands.hudAction(content.id, "undo", null)
+                      }
+                    >
+                      {t("hud.undo")}
+                    </button>
+                  )}
+                </div>
+                {(content.offers?.length ?? 0) > 0 && (
+                  <footer className="hud-actions">
+                    {content.offers?.map((o, i) => (
+                      <button
+                        key={`${o.action}-${o.label}`}
+                        type="button"
+                        className={i === 0 ? "hud-primary" : undefined}
+                        onClick={() => runOffer(content.id, o)}
+                      >
+                        {copied === `offer-${o.label}`
+                          ? t("hud.copied")
+                          : t(o.label)}
+                      </button>
+                    ))}
+                    {content.undo && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          commands.hudAction(content.id, "undo", null)
+                        }
+                      >
+                        {t("hud.undo")}
+                      </button>
+                    )}
+                  </footer>
+                )}
+              </div>
+            )}
+
+            {content.kind === "report" && (
+              <>
+                <header className="hud-head">
+                  <Orb variant="C2" size={18} />
+                  <span className="hud-question">{t("hud.report.title")}</span>
+                  <span className="hud-report-kind">
+                    {t(`hud.report.kinds.${content.report_kind}`)}
+                  </span>
+                  <button
+                    type="button"
+                    className="hud-close"
+                    aria-label={t("hud.close")}
+                    onClick={dismiss}
+                  >
+                    <X width={13} height={13} />
+                  </button>
+                </header>
+                <blockquote className="hud-report-message">
+                  {content.editing ? (
+                    <span className="hud-faint">
+                      {t("hud.report.editHint")}
+                    </span>
+                  ) : (
+                    content.message
+                  )}
+                </blockquote>
+                <label className="hud-check">
+                  <input
+                    type="checkbox"
+                    checked={content.include_diagnostics}
+                    onChange={(e) => {
+                      const on = e.currentTarget.checked;
+                      setContent({ ...content, include_diagnostics: on });
+                      commands.hudAction(
+                        content.id,
+                        "diagnostics",
+                        on ? "true" : "false",
+                      );
+                    }}
+                  />
+                  <span>
+                    {t("hud.report.diagnostics")}
+                    <span className="hud-faint">
+                      {" "}
+                      {t("hud.report.diagnosticsHint")}
+                    </span>
+                  </span>
+                </label>
+                <footer className="hud-actions">
+                  <button
+                    type="button"
+                    className="hud-primary"
+                    disabled={content.editing}
+                    onClick={() => commands.hudAction(content.id, "send", null)}
+                  >
+                    {t("hud.report.send")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => commands.hudAction(content.id, "edit", null)}
+                  >
+                    {t("hud.report.edit")}
+                  </button>
+                  <button type="button" onClick={dismiss}>
+                    {t("hud.report.cancel")}
+                  </button>
+                  <span className="hud-hint">{t("hud.report.voiceHint")}</span>
+                </footer>
+              </>
             )}
 
             {content.kind === "meeting_notes" && (

@@ -1182,14 +1182,10 @@
       "interrupted": "Het antwoord werd onderbroken.",
       "opened": "Geopend",
       "searching": "Zoeken in je browser",
-      "reminderAdded": "Herinnering toegevoegd",
-      "eventAdded": "Toegevoegd aan je agenda",
       "shortcutRan": "Opdracht uitgevoerd",
       "cantDoYet": "Dat kan ik nog niet. Computerbediening komt binnenkort.",
       "appNotFound": "Kan die app niet vinden.",
-      "shortcutNotFound": "Kan die opdracht niet vinden.",
       "automationNotFound": "Geen snelkoppeling in het menu Start of Power Automate-flow met die naam gevonden.",
-      "calendarPermission": "Geef eerst toegang tot Agenda en Herinneringen in Systeeminstellingen.",
       "undone": "Ongedaan gemaakt",
       "meetingStarted": "Notities worden gemaakt. Laat het de anderen weten.",
       "copied": "Gekopieerd",
@@ -1203,7 +1199,9 @@
       "noWebResults": "Zoeken op het web lukte nu niet, dus dit is wat ik weet.",
       "timeout": "Dat duurde te lang. Probeer het opnieuw.",
       "needsCloud": "Dit heeft de cloud nodig, en Intelligence staat op ‘Alleen op deze computer’. Wijzig dit in Privacy.",
-      "cloudOfferOn": "Suggesties uit de cloud staan aan. Wijzig dit in Privacy."
+      "cloudOfferOn": "Suggesties uit de cloud staan aan. Wijzig dit in Privacy.",
+      "cloudUnavailable": "Cloudsuggesties zijn nu niet beschikbaar.",
+      "cloudLimited": "Cloudsuggesties zijn voorlopig gepauzeerd: de daglimiet is bereikt, of ze vereisen Pro."
     },
     "undo": "Ongedaan maken",
     "close": "Sluiten",
@@ -1238,7 +1236,12 @@
       "translatePage": "Deze pagina vertalen?",
       "translate": "Vertalen",
       "helpHere": "Kan ik hier ergens mee helpen?",
-      "help": "Help"
+      "help": "Help",
+      "summariseThreadCount": "Zal ik deze thread met {{count}} berichten samenvatten?",
+      "replyTo": "{{name}} antwoorden?",
+      "reply": "Beantwoorden",
+      "translatePageLang": "Deze pagina is in het {{language}}. Vertalen?",
+      "explainErrorWhat": "Fout ‘{{error}}’. Wil je de waarschijnlijke oplossing?"
     },
     "nudge": {
       "findIt": "Zoeken",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "Wilde je dit typen?",
       "composed": "Hier is je concept.",
-      "focusHint": "Klik in een tekstveld om het in te voegen."
+      "focusHint": "Klik in een tekstveld om het in te voegen.",
+      "askInstead": "Vraag het liever aan {{appName}}"
     },
     "source": {
       "searchDrive": "Zoeken in Google Drive",
       "searchGmail": "Zoeken in Gmail"
     },
     "cloudOffer": "{{appName}} kan hulp voorstellen op deze computer door een geschoond fragment van het venster naar zijn servers te sturen. Aanzetten?",
+    "when": {
+      "today": "vandaag om {{time}}",
+      "tomorrow": "morgen om {{time}}",
+      "on": "{{day}} om {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} geopend",
+      "appNotFound": "Ik kon geen app met de naam ‘{{name}}’ vinden op deze computer. Zal ik op internet zoeken?",
+      "badLink": "Die link ziet er niet goed uit, dus ik heb hem niet geopend. Je kunt hem wel kopiëren.",
+      "noBrowser": "Ik kon je browser niet openen.",
+      "reminderSetAt": "Herinnering ingesteld voor {{when}}: {{title}}",
+      "reminderSet": "Herinnering toegevoegd: {{title}}",
+      "remindersPermission": "Ik kan nog geen herinneringen toevoegen: {{appName}} heeft toegang tot Herinneringen nodig. Zet dit aan in Systeeminstellingen, of kopieer hem voorlopig.",
+      "reminderFailed": "Herinneringen accepteerde ‘{{title}}’ niet. Zal ik hem in je agenda zetten, of kopiëren?",
+      "reminderNeedsTime": "Op {{os}} kan ik alleen herinneringen met een tijd instellen. Zeg wanneer, zoals ‘herinner me om 5 uur aan …’, of kopieer hem voorlopig.",
+      "reminderLinux": "Ik kan geen herinneringen instellen op dit Linux-systeem: er is geen meldingstimer (systemd en notify-send). Zal ik hem in je agenda zetten, of kopiëren?",
+      "reminderWindows": "Windows liet me geen melding inplannen. Zal ik hem in je agenda zetten, of kopiëren?",
+      "reminderNotificationsOff": "Meldingen voor {{appName}} staan uit op {{os}}, dus een herinnering zou niet verschijnen. Zal ik hem in je agenda zetten, of kopiëren?",
+      "eventNeedsTime": "Ik kon niet opmaken wanneer ‘{{title}}’ is. Noem de dag en tijd, of kopieer het voorlopig.",
+      "eventAdded": "Aan je agenda toegevoegd voor {{when}}: {{title}}",
+      "calendarsPermission": "Ik kan nog geen afspraken toevoegen: {{appName}} heeft toegang tot Agenda's nodig. Zet dit aan in Systeeminstellingen, of kopieer het voorlopig.",
+      "eventFailed": "Je agenda accepteerde ‘{{title}}’ niet. Je kunt het kopiëren en zelf toevoegen.",
+      "eventIcsOpened": "‘{{title}}’ ({{when}}) geopend in je agenda-app. Sla het daar op om het toe te voegen.",
+      "noCalendarApp": "Er is geen agenda-app gekoppeld op {{os}}, dus ik heb een agendabestand ({{file}}) bewaard dat je kunt importeren.",
+      "shortcutRan": "‘{{name}}’ uitgevoerd",
+      "shortcutNotFound": "Ik kon geen opdracht met de naam ‘{{name}}’ vinden. Wil je weten hoe je er een maakt?",
+      "cantDoYet": "Dit kan ik nog niet: {{what}}. Zal ik je laten zien hoe je het zelf doet?",
+      "cantDoYetPlain": "Dat kan ik nog niet op deze computer. Zal ik je laten zien hoe je het zelf doet?",
+      "failed": "Dat lukte deze keer niet. Probeer het zo nog eens.",
+      "undoFailed": "Ik kon dat niet ongedaan maken. Je kunt het in de app zelf verwijderen."
+    },
+    "offer": {
+      "searchWeb": "Zoeken op internet",
+      "copyLink": "Link kopiëren",
+      "answerHere": "Hier antwoorden",
+      "addToCalendar": "Aan agenda toevoegen",
+      "openSettings": "Instellingen openen",
+      "showFile": "Bestand tonen",
+      "howTo": "Laat zien hoe",
+      "showMeHow": "Laat zien hoe"
+    },
+    "report": {
+      "title": "Dit naar het {{appName}}-team sturen?",
+      "kinds": {
+        "bug": "Bug",
+        "idea": "Idee",
+        "other": "Feedback"
+      },
+      "diagnostics": "Diagnostische gegevens meesturen",
+      "diagnosticsHint": "(helpt het team het na te bootsen)",
+      "send": "Versturen",
+      "edit": "Bewerken",
+      "cancel": "Annuleren",
+      "editHint": "Houd je sneltoets ingedrukt en zeg het nieuwe bericht.",
+      "voiceHint": "Of zeg ‘verstuur maar’",
+      "sent": "Verstuurd. Bedankt, het team gaat ernaar kijken.",
+      "failed": "Kon het nu niet versturen. Kopiëren en later opnieuw proberen?",
+      "offer": "Zal ik dit aan het team melden?",
+      "offerAccept": "Melden"
+    },
     "notes": {
       "ready": "Je notities zijn klaar",
       "actionItems": "Actiepunten: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "Suggesties die je krijgt",
-      "description": "Zeg ‘niet nu’, ‘laat deze niet meer zien’ of ‘niet in deze app’ als er een verschijnt, en het leert ervan. Wijzig het hier wanneer je wilt.",
-      "mutedIn": "Uit in {{apps}}",
       "kinds": {
         "summarise_thread": "Lange e-mailthreads samenvatten",
         "draft_reply": "Antwoorden opstellen",
@@ -1422,7 +1484,16 @@
         "translate_page": "Pagina's in andere talen vertalen",
         "help_here": "Andere hulp waarvan het denkt dat je die wilt",
         "meeting_nudge": "Tips tijdens vergaderingen"
-      }
+      },
+      "learned": {
+        "title": "Wat je me hebt verteld",
+        "empty": "Nog niets. Als je een suggestie afwijst, verschijnt die hier.",
+        "never": "Nooit: {{kind}}",
+        "notIn": "{{kind}}, niet in {{app}}",
+        "undo": "Ongedaan maken"
+      },
+      "teach": "Zeg bij een suggestie ‘nu niet’, ‘laat me deze niet zien’ of ‘niet in deze app’, en {{appName}} onthoudt het.",
+      "unknownKind": "Een soort suggestie"
     },
     "macOnly": "Voorlopig alleen op Mac",
     "promises": {

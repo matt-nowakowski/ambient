@@ -48,3 +48,12 @@ public func freeAppleLLMResponse(_ response: UnsafeMutablePointer<AppleLLMRespon
 public func ambientClassifyRoute(_ text: UnsafePointer<CChar>) -> UnsafeMutablePointer<CChar>? {
     return nil
 }
+
+@_cdecl("ambient_judge_window")
+public func ambientJudgeWindow(
+    _ instructions: UnsafePointer<CChar>,
+    _ input: UnsafePointer<CChar>,
+    _ timeoutMs: Int32
+) -> UnsafeMutablePointer<CChar>? {
+    return strdup("{\"error\":\"unavailable\"}")
+}

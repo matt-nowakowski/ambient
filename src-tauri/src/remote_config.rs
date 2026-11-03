@@ -8,9 +8,9 @@
 //! Callers read [`agent_config()`]. Bounds and defaults mirror
 //! `web/lib/agent/config-schema.json` (a test checks they agree).
 
-use std::collections::{BTreeMap, HashMap};
-use std::sync::{Arc, Mutex, RwLock};
-use std::time::{Duration, Instant};
+use std::collections::BTreeMap;
+use std::sync::{Arc, RwLock};
+use std::time::Duration;
 
 use once_cell::sync::Lazy;
 use serde_json::Value;
@@ -23,12 +23,14 @@ const SCHEMA: u64 = 1;
 
 /// (min, max, default) for each tunable. Never widen these from the server.
 pub mod bounds {
-    pub const KIND_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.7);
-    pub const KIND_COOLDOWN_MIN: (f64, f64, f64) = (10.0, 1440.0, 60.0);
-    pub const HOURLY_BUDGET: (f64, f64, f64) = (1.0, 10.0, 3.0);
-    pub const JUDGE_TIMEOUT_MS: (f64, f64, f64) = (2000.0, 10000.0, 4000.0);
+    pub const KIND_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.6);
+    /// After a kind is offered in an app, that app gets no other offer for
+    /// this many minutes (`agent::budget`).
+    pub const KIND_COOLDOWN_MIN: (f64, f64, f64) = (1.0, 1440.0, 3.0);
+    pub const HOURLY_BUDGET: (f64, f64, f64) = (1.0, 20.0, 10.0);
+    pub const JUDGE_TIMEOUT_MS: (f64, f64, f64) = (3000.0, 15000.0, 8000.0);
     pub const JUDGE_CLOUD_TIMEOUT_MS: (f64, f64, f64) = (3000.0, 12000.0, 7000.0);
-    pub const JUDGE_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.7);
+    pub const JUDGE_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.6);
     pub const ROUTER_DID_YOU_MEAN_BIAS: (f64, f64, f64) = (0.0, 1.0, 0.5);
     pub const ANSWER_FIRST_BYTE_TIMEOUT_MS: (f64, f64, f64) = (8000.0, 40000.0, 25000.0);
     pub const ANSWER_IDLE_TIMEOUT_MS: (f64, f64, f64) = (5000.0, 30000.0, 20000.0);
@@ -60,8 +62,12 @@ pub struct AgentConfig {
     pub judge_timeout: Duration,
     pub judge_cloud_timeout: Duration,
     pub judge_min_confidence: f32,
-    /// 0 = never doubt a dictation, 1 = doubt eagerly. Not wired yet (see
-    /// the module docs in the report); 0.5 is today's behaviour.
+    /// How eagerly speech with no text field focused is doubted as
+    /// dictation and sent to the agent instead of "Did you mean to type
+    /// this?" (`router::decide`): low = only clear commands go to the agent,
+    /// 0.5 = any request or question does (prose is the router's call),
+    /// high = everything does. The tuner raises it when too many requests
+    /// end on that card.
     pub did_you_mean_bias: f32,
     pub answer_first_byte_timeout: Duration,
     pub answer_idle_timeout: Duration,
@@ -193,39 +199,6 @@ fn known_kind(name: &str) -> bool {
             .any(|k| k.name() == name)
 }
 
-// ── per-app cooldown ──────────────────────────────────────────────────────
-
-static LAST_OFFERED: Lazy<Mutex<HashMap<(String, String), Instant>>> =
-    Lazy::new(|| Mutex::new(HashMap::new()));
-
-/// Why `kind` can't be offered in `bundle` now (turned off remotely, or its
-/// per-app cooldown hasn't passed), or None.
-pub fn holds_back(kind: &str, bundle: &str) -> Option<String> {
-    let k = agent_config().kind(kind);
-    if !k.enabled {
-        return Some(format!("{kind} is paused by the agent config"));
-    }
-    let g = LAST_OFFERED.lock().ok()?;
-    let last = g.get(&(kind.to_string(), bundle.to_string()))?;
-    (last.elapsed() < k.cooldown).then(|| {
-        format!(
-            "{kind} cooldown in this app ({} of {} min)",
-            last.elapsed().as_secs() / 60,
-            k.cooldown.as_secs() / 60
-        )
-    })
-}
-
-/// `kind` was just offered in `bundle`.
-pub fn note_offered(kind: &str, bundle: &str) {
-    if let Ok(mut g) = LAST_OFFERED.lock() {
-        if g.len() > 500 {
-            g.retain(|_, t| t.elapsed() < Duration::from_secs(24 * 3600));
-        }
-        g.insert((kind.to_string(), bundle.to_string()), Instant::now());
-    }
-}
-
 // ── fetching ──────────────────────────────────────────────────────────────
 
 fn cache_path(app: &AppHandle) -> Option<std::path::PathBuf> {
@@ -304,13 +277,14 @@ mod tests {
     #[test]
     fn defaults_stand_without_a_config() {
         let c = agent_config();
-        assert_eq!(c.hourly_budget, 3);
-        assert_eq!(c.judge_timeout, Duration::from_secs(4));
+        assert_eq!(c.hourly_budget, 10);
+        assert_eq!(c.judge_timeout, Duration::from_secs(8));
         assert_eq!(c.judge_cloud_timeout, Duration::from_secs(7));
         assert_eq!(c.answer_first_byte_timeout, Duration::from_secs(25));
         assert_eq!(c.answer_idle_timeout, Duration::from_secs(20));
-        assert!((c.min_confidence_for("draft_reply") - 0.7).abs() < 1e-6);
+        assert!((c.min_confidence_for("draft_reply") - 0.6).abs() < 1e-6);
         assert!(c.kind("summarise_thread").enabled);
+        assert_eq!(c.kind("draft_reply").cooldown, Duration::from_secs(180));
     }
 
     #[test]
@@ -323,8 +297,8 @@ mod tests {
             "surprise":{"x":1}}"#,
         )
         .unwrap();
-        assert_eq!(c.hourly_budget, 10);
-        assert_eq!(c.judge_timeout, Duration::from_millis(2000));
+        assert_eq!(c.hourly_budget, 20);
+        assert_eq!(c.judge_timeout, Duration::from_millis(3000));
         assert_eq!(c.judge_cloud_timeout, Duration::from_millis(7000)); // not a number → default
         assert!((c.judge_min_confidence - 0.5).abs() < 1e-6);
         assert!((c.did_you_mean_bias - 1.0).abs() < 1e-6);
@@ -333,7 +307,7 @@ mod tests {
         let k = c.kind("summarise_thread");
         assert!(!k.enabled);
         assert!((k.min_confidence - 0.95).abs() < 1e-6);
-        assert_eq!(k.cooldown, Duration::from_secs(600));
+        assert_eq!(k.cooldown, Duration::from_secs(60));
         assert!(!c.kinds.contains_key("launch_missiles"));
         // The judge's "other" is the help_here kind.
         assert!((c.min_confidence_for("draft_reply") - 0.5).abs() < 1e-6);
@@ -375,12 +349,5 @@ mod tests {
         for k in v["kinds"].as_array().unwrap() {
             assert!(known_kind(k.as_str().unwrap()), "{k}");
         }
-    }
-
-    #[test]
-    fn cooldown_holds_back_per_app() {
-        note_offered("explain_error", "com.apple.Safari");
-        assert!(holds_back("explain_error", "com.apple.Safari").is_some());
-        assert!(holds_back("explain_error", "com.google.Chrome").is_none());
     }
 }

@@ -1182,14 +1182,10 @@
       "interrupted": "Câu trả lời đã bị gián đoạn.",
       "opened": "Đã mở",
       "searching": "Đang tìm kiếm trong trình duyệt",
-      "reminderAdded": "Đã thêm lời nhắc",
-      "eventAdded": "Đã thêm vào lịch của bạn",
       "shortcutRan": "Đã chạy phím tắt",
       "cantDoYet": "Tôi chưa làm được việc đó. Tính năng điều khiển máy tính sắp ra mắt.",
       "appNotFound": "Không tìm thấy ứng dụng đó.",
-      "shortcutNotFound": "Không tìm thấy phím tắt đó.",
       "automationNotFound": "Không tìm thấy lối tắt trong menu Start hay luồng Power Automate nào có tên đó.",
-      "calendarPermission": "Hãy cho phép truy cập Lịch và Lời nhắc trong Cài đặt hệ thống trước.",
       "undone": "Đã hoàn tác",
       "meetingStarted": "Đang ghi chú. Hãy báo cho mọi người.",
       "copied": "Đã sao chép",
@@ -1203,7 +1199,9 @@
       "noWebResults": "Hiện không tìm được trên web, nên đây là từ những gì tôi biết.",
       "timeout": "Mất quá lâu. Hãy thử lại.",
       "needsCloud": "Việc này cần đám mây, và Trí tuệ đang được đặt ở “Chỉ trên máy tính này”. Hãy đổi trong Quyền riêng tư.",
-      "cloudOfferOn": "Gợi ý từ đám mây đang bật. Hãy đổi trong Quyền riêng tư."
+      "cloudOfferOn": "Gợi ý từ đám mây đang bật. Hãy đổi trong Quyền riêng tư.",
+      "cloudUnavailable": "Gợi ý trên đám mây hiện không khả dụng.",
+      "cloudLimited": "Gợi ý trên đám mây đang tạm dừng: đã đạt giới hạn hôm nay hoặc cần gói Pro."
     },
     "undo": "Hoàn tác",
     "close": "Đóng",
@@ -1238,7 +1236,12 @@
       "translatePage": "Dịch trang này?",
       "translate": "Dịch",
       "helpHere": "Tôi có thể giúp gì ở đây không?",
-      "help": "Giúp"
+      "help": "Giúp",
+      "summariseThreadCount": "Tóm tắt chuỗi {{count}} tin nhắn này nhé?",
+      "replyTo": "Trả lời {{name}}?",
+      "reply": "Trả lời",
+      "translatePageLang": "Trang này bằng {{language}}. Dịch nhé?",
+      "explainErrorWhat": "Gặp lỗi “{{error}}”. Bạn muốn xem cách khắc phục khả dĩ không?"
     },
     "nudge": {
       "findIt": "Tìm",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "Bạn có định gõ nội dung này không?",
       "composed": "Đây là bản nháp của bạn.",
-      "focusHint": "Nhấp vào một ô văn bản để chèn."
+      "focusHint": "Nhấp vào một ô văn bản để chèn.",
+      "askInstead": "Hỏi {{appName}} thay vào đó"
     },
     "source": {
       "searchDrive": "Tìm trong Google Drive",
       "searchGmail": "Tìm trong Gmail"
     },
     "cloudOffer": "{{appName}} có thể gợi ý trợ giúp trên máy tính này bằng cách gửi một đoạn đã ẩn thông tin của cửa sổ đến máy chủ của mình. Bật chứ?",
+    "when": {
+      "today": "{{time}} hôm nay",
+      "tomorrow": "{{time}} ngày mai",
+      "on": "{{time}} {{day}}"
+    },
+    "notice": {
+      "opened": "Đã mở {{name}}",
+      "appNotFound": "Tôi không tìm thấy ứng dụng nào tên “{{name}}” trên máy tính này. Bạn có muốn tôi tìm trên web không?",
+      "badLink": "Liên kết đó có vẻ không đúng nên tôi không mở. Bạn có thể sao chép nó.",
+      "noBrowser": "Tôi không mở được trình duyệt của bạn.",
+      "reminderSetAt": "Đã đặt lời nhắc lúc {{when}}: {{title}}",
+      "reminderSet": "Đã thêm lời nhắc: {{title}}",
+      "remindersPermission": "Tôi chưa thể thêm lời nhắc: {{appName}} cần quyền truy cập Lời nhắc. Hãy bật trong Cài đặt hệ thống, hoặc tạm thời sao chép lại.",
+      "reminderFailed": "Lời nhắc không nhận “{{title}}”. Bạn muốn tôi thêm vào lịch hay sao chép lại?",
+      "reminderNeedsTime": "Trên {{os}}, tôi chỉ đặt được lời nhắc có giờ. Hãy nói thời gian, ví dụ “nhắc tôi lúc 5 giờ …”, hoặc tạm thời sao chép lại.",
+      "reminderLinux": "Tôi không thể đặt lời nhắc trên hệ thống Linux này: không có bộ hẹn giờ thông báo (systemd và notify-send). Bạn muốn tôi thêm vào lịch hay sao chép lại?",
+      "reminderWindows": "Windows không cho tôi lên lịch thông báo. Bạn muốn tôi thêm vào lịch hay sao chép lại?",
+      "reminderNotificationsOff": "Thông báo của {{appName}} đang tắt trên {{os}}, nên lời nhắc sẽ không hiện. Bạn muốn tôi thêm vào lịch hay sao chép lại?",
+      "eventNeedsTime": "Tôi không rõ “{{title}}” diễn ra khi nào. Hãy nói ngày và giờ, hoặc tạm thời sao chép lại.",
+      "eventAdded": "Đã thêm vào lịch lúc {{when}}: {{title}}",
+      "calendarsPermission": "Tôi chưa thể thêm sự kiện: {{appName}} cần quyền truy cập Lịch. Hãy bật trong Cài đặt hệ thống, hoặc tạm thời sao chép lại.",
+      "eventFailed": "Lịch của bạn không nhận “{{title}}”. Bạn có thể sao chép và tự thêm.",
+      "eventIcsOpened": "Đã mở “{{title}}” ({{when}}) trong ứng dụng lịch. Hãy lưu ở đó để thêm.",
+      "noCalendarApp": "Không có ứng dụng lịch nào được kết nối trên {{os}}, nên tôi đã lưu một tệp lịch ({{file}}) để bạn nhập.",
+      "shortcutRan": "Đã chạy “{{name}}”",
+      "shortcutNotFound": "Tôi không tìm thấy phím tắt nào tên “{{name}}”. Bạn muốn biết cách tạo không?",
+      "cantDoYet": "Tôi chưa làm được việc này: {{what}}. Bạn có muốn tôi chỉ cách tự làm không?",
+      "cantDoYetPlain": "Tôi chưa làm được việc đó trên máy tính này. Bạn có muốn tôi chỉ cách tự làm không?",
+      "failed": "Lần này không thành công. Hãy thử lại sau giây lát.",
+      "undoFailed": "Tôi không hoàn tác được. Bạn có thể xóa trực tiếp trong ứng dụng."
+    },
+    "offer": {
+      "searchWeb": "Tìm trên web",
+      "copyLink": "Sao chép liên kết",
+      "answerHere": "Trả lời tại đây",
+      "addToCalendar": "Thêm vào lịch",
+      "openSettings": "Mở Cài đặt",
+      "showFile": "Hiện tệp",
+      "howTo": "Chỉ tôi cách làm",
+      "showMeHow": "Chỉ tôi cách làm"
+    },
+    "report": {
+      "title": "Gửi cho nhóm {{appName}}?",
+      "kinds": {
+        "bug": "Lỗi",
+        "idea": "Ý tưởng",
+        "other": "Góp ý"
+      },
+      "diagnostics": "Kèm thông tin chẩn đoán",
+      "diagnosticsHint": "(giúp nhóm tái hiện lỗi)",
+      "send": "Gửi",
+      "edit": "Sửa",
+      "cancel": "Hủy",
+      "editHint": "Giữ phím tắt và nói tin nhắn mới.",
+      "voiceHint": "Hoặc nói “gửi đi”",
+      "sent": "Đã gửi. Cảm ơn, nhóm sẽ xem.",
+      "failed": "Hiện không gửi được. Sao chép và thử lại sau nhé?",
+      "offer": "Bạn có muốn tôi báo việc này cho nhóm không?",
+      "offerAccept": "Báo cáo"
+    },
     "notes": {
       "ready": "Ghi chú của bạn đã sẵn sàng",
       "actionItems": "Việc cần làm: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "Gợi ý bạn nhận được",
-      "description": "Khi có gợi ý, hãy nói “để sau”, “đừng hiện những cái này” hoặc “không trong ứng dụng này”, và nó sẽ học. Thay đổi ở đây bất cứ lúc nào.",
-      "mutedIn": "Tắt trong {{apps}}",
       "kinds": {
         "summarise_thread": "Tóm tắt chuỗi email dài",
         "draft_reply": "Soạn thư trả lời",
@@ -1422,7 +1484,16 @@
         "translate_page": "Dịch trang bằng ngôn ngữ khác",
         "help_here": "Trợ giúp khác mà nó cho là bạn cần",
         "meeting_nudge": "Nhắc nhở trong cuộc họp"
-      }
+      },
+      "learned": {
+        "title": "Những gì bạn đã dặn tôi",
+        "empty": "Chưa có gì. Khi bạn từ chối một gợi ý, nó sẽ hiện ở đây.",
+        "never": "Không bao giờ: {{kind}}",
+        "notIn": "{{kind}}, không hiện trong {{app}}",
+        "undo": "Hoàn tác"
+      },
+      "teach": "Khi một gợi ý xuất hiện, hãy nói “không phải bây giờ”, “đừng hiện mấy cái này” hoặc “không trong ứng dụng này”, và {{appName}} sẽ ghi nhớ.",
+      "unknownKind": "Một loại gợi ý"
     },
     "macOnly": "Hiện chỉ có trên Mac",
     "promises": {

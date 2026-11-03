@@ -138,6 +138,10 @@ export const showError = (
 ) => {
   logError(context, raw);
   const kind = errorKind(raw);
+  // Counted as { area, kind } only (if usage counts are on); never the text.
+  commands.recordUiError(context, kind).catch(() => {
+    // Counting must never throw into the caller.
+  });
   const action =
     kind === "permission" && options.openSettings
       ? {

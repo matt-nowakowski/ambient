@@ -1190,14 +1190,10 @@
       "interrupted": "La resposta s'ha interromput.",
       "opened": "Obert",
       "searching": "Cercant al navegador",
-      "reminderAdded": "Recordatori afegit",
-      "eventAdded": "Afegit al calendari",
       "shortcutRan": "Drecera executada",
       "cantDoYet": "Encara no puc fer això. El control de l'ordinador arribarà aviat.",
       "appNotFound": "No s'ha trobat aquesta aplicació.",
-      "shortcutNotFound": "No s'ha trobat aquesta drecera.",
       "automationNotFound": "No he trobat cap drecera del menú Inici ni cap flux de Power Automate amb aquest nom.",
-      "calendarPermission": "Primer permeteu l'accés a Calendari i Recordatoris a Configuració del sistema.",
       "undone": "Desfet",
       "meetingStarted": "Prenent notes. Aviseu els participants.",
       "copied": "Copiat",
@@ -1211,7 +1207,9 @@
       "noWebResults": "Ara no he pogut cercar al web, així que això és el que sé.",
       "timeout": "Ha trigat massa. Torna-ho a provar.",
       "needsCloud": "Això necessita el núvol, i la Intel·ligència està configurada a «Només en aquest ordinador». Canvieu-ho a Privadesa.",
-      "cloudOfferOn": "Els suggeriments des del núvol estan activats. Canvieu-ho a Privadesa."
+      "cloudOfferOn": "Els suggeriments des del núvol estan activats. Canvieu-ho a Privadesa.",
+      "cloudUnavailable": "Els suggeriments al núvol no estan disponibles ara mateix.",
+      "cloudLimited": "Els suggeriments al núvol estan en pausa de moment: s'ha arribat al límit d'avui o requereixen Pro."
     },
     "undo": "Desfés",
     "close": "Tanca",
@@ -1246,7 +1244,12 @@
       "translatePage": "Tradueixo aquesta pàgina?",
       "translate": "Tradueix",
       "helpHere": "Et puc ajudar amb alguna cosa aquí?",
-      "help": "Ajuda'm"
+      "help": "Ajuda'm",
+      "summariseThreadCount": "Voleu que resumeixi aquest fil de {{count}} missatges?",
+      "replyTo": "Respondre a {{name}}?",
+      "reply": "Respon",
+      "translatePageLang": "Aquesta pàgina és en {{language}}. La tradueixo?",
+      "explainErrorWhat": "Error «{{error}}». Voleu la solució probable?"
     },
     "nudge": {
       "findIt": "Troba-ho",
@@ -1268,13 +1271,74 @@
     "draft": {
       "title": "Volies escriure això?",
       "composed": "Aquí tens l'esborrany.",
-      "focusHint": "Fes clic en un camp de text per inserir-lo."
+      "focusHint": "Fes clic en un camp de text per inserir-lo.",
+      "askInstead": "Pregunteu-ho a {{appName}}"
     },
     "source": {
       "searchDrive": "Cerca a Google Drive",
       "searchGmail": "Cerca a Gmail"
     },
     "cloudOffer": "El {{appName}} pot suggerir ajuda en aquest ordinador enviant als seus servidors un fragment censurat de la finestra. Voleu activar-ho?",
+    "when": {
+      "today": "avui a les {{time}}",
+      "tomorrow": "demà a les {{time}}",
+      "on": "{{day}} a les {{time}}"
+    },
+    "notice": {
+      "opened": "S'ha obert {{name}}",
+      "appNotFound": "No he trobat cap aplicació anomenada «{{name}}» en aquest ordinador. Voleu que la busqui al web?",
+      "badLink": "Aquest enllaç no sembla correcte, així que no l'he obert. El podeu copiar.",
+      "noBrowser": "No he pogut obrir el navegador.",
+      "reminderSetAt": "Recordatori programat per a {{when}}: {{title}}",
+      "reminderSet": "Recordatori afegit: {{title}}",
+      "remindersPermission": "Encara no puc afegir recordatoris: {{appName}} necessita accés a Recordatoris. Activeu-lo a Configuració del Sistema, o copieu-lo de moment.",
+      "reminderFailed": "Recordatoris no ha acceptat «{{title}}». Voleu que l'afegeixi al calendari, o que el copiï?",
+      "reminderNeedsTime": "A {{os}} només puc crear recordatoris amb hora. Digueu quan, per exemple «recorda'm a les 5 que…», o copieu-lo de moment.",
+      "reminderLinux": "No puc crear recordatoris en aquest sistema Linux: no té temporitzador de notificacions (systemd i notify-send). Voleu que l'afegeixi al calendari, o que el copiï?",
+      "reminderWindows": "Windows no m'ha deixat programar una notificació. Voleu que l'afegeixi al calendari, o que el copiï?",
+      "reminderNotificationsOff": "Les notificacions de {{appName}} estan desactivades a {{os}}, així que el recordatori no es veuria. Voleu que l'afegeixi al calendari, o que el copiï?",
+      "eventNeedsTime": "No he entès quan és «{{title}}». Digueu el dia i l'hora, o copieu-ho de moment.",
+      "eventAdded": "Afegit al calendari per a {{when}}: {{title}}",
+      "calendarsPermission": "Encara no puc afegir esdeveniments: {{appName}} necessita accés a Calendaris. Activeu-lo a Configuració del Sistema, o copieu-lo de moment.",
+      "eventFailed": "El calendari no ha acceptat «{{title}}». El podeu copiar i afegir pel vostre compte.",
+      "eventIcsOpened": "S'ha obert «{{title}}» ({{when}}) a l'aplicació de calendari. Deseu-lo allà per afegir-lo.",
+      "noCalendarApp": "No hi ha cap aplicació de calendari connectada a {{os}}, així que he desat un fitxer de calendari ({{file}}) que podeu importar.",
+      "shortcutRan": "S'ha executat «{{name}}»",
+      "shortcutNotFound": "No he trobat cap drecera anomenada «{{name}}». Voleu saber com crear-ne una?",
+      "cantDoYet": "Encara no sé fer això: {{what}}. Voleu que us mostri com fer-ho pel vostre compte?",
+      "cantDoYetPlain": "Encara no puc fer això en aquest ordinador. Voleu que us mostri com fer-ho pel vostre compte?",
+      "failed": "Aquesta vegada no ha funcionat. Torneu-ho a provar d'aquí a un moment.",
+      "undoFailed": "No he pogut desfer-ho. Ho podeu eliminar des de la mateixa aplicació."
+    },
+    "offer": {
+      "searchWeb": "Cerca al web",
+      "copyLink": "Copia l'enllaç",
+      "answerHere": "Respon aquí",
+      "addToCalendar": "Afegeix al calendari",
+      "openSettings": "Obre la configuració",
+      "showFile": "Mostra el fitxer",
+      "howTo": "Mostra com es fa",
+      "showMeHow": "Mostra com es fa"
+    },
+    "report": {
+      "title": "Voleu enviar això a l'equip de {{appName}}?",
+      "kinds": {
+        "bug": "Error",
+        "idea": "Idea",
+        "other": "Comentaris"
+      },
+      "diagnostics": "Inclou diagnòstics",
+      "diagnosticsHint": "(ajuda l'equip a reproduir-ho)",
+      "send": "Envia",
+      "edit": "Edita",
+      "cancel": "Cancel·la",
+      "editHint": "Manteniu premuda la drecera i digueu el missatge nou.",
+      "voiceHint": "O digueu «envia-ho»",
+      "sent": "Enviat. Gràcies, l'equip ho veurà.",
+      "failed": "No s'ha pogut enviar ara. Voleu copiar-ho i tornar-ho a provar més tard?",
+      "offer": "Voleu que ho comuniqui a l'equip?",
+      "offerAccept": "Informa"
+    },
     "notes": {
       "ready": "Les teves notes estan a punt",
       "actionItems": "Tasques: {{n}}",
@@ -1414,8 +1478,6 @@
     },
     "suggestions": {
       "title": "Suggeriments que rebeu",
-      "description": "Digueu «ara no», «no me'ls mostris» o «en aquesta aplicació no» quan n'aparegui un, i n'aprèn. Canvieu-ho aquí quan vulgueu.",
-      "mutedIn": "Desactivat a {{apps}}",
       "kinds": {
         "summarise_thread": "Resumir fils de correu llargs",
         "draft_reply": "Redactar respostes",
@@ -1433,7 +1495,16 @@
         "translate_page": "Traduir pàgines en altres idiomes",
         "help_here": "Altres ajudes que creu que voldríeu",
         "meeting_nudge": "Avisos durant les reunions"
-      }
+      },
+      "learned": {
+        "title": "El que m'heu dit",
+        "empty": "Encara res. Quan rebutgeu un suggeriment, apareixerà aquí.",
+        "never": "Mai: {{kind}}",
+        "notIn": "{{kind}}, no a {{app}}",
+        "undo": "Desfés"
+      },
+      "teach": "Quan aparegui un suggeriment, digueu «ara no», «no me'n mostris» o «no en aquesta aplicació», i {{appName}} ho recordarà.",
+      "unknownKind": "Un tipus de suggeriment"
     },
     "macOnly": "De moment, només al Mac",
     "days_many": "{{count}} dies",

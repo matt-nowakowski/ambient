@@ -1182,14 +1182,10 @@
       "interrupted": "回答被中断。",
       "opened": "已打开",
       "searching": "正在浏览器中搜索",
-      "reminderAdded": "已添加提醒事项",
-      "eventAdded": "已添加到日历",
       "shortcutRan": "快捷指令已运行",
       "cantDoYet": "我暂时还做不到。电脑操控功能即将推出。",
       "appNotFound": "找不到该应用。",
-      "shortcutNotFound": "找不到该快捷指令。",
       "automationNotFound": "找不到该名称的“开始”菜单快捷方式或 Power Automate 流。",
-      "calendarPermission": "请先在系统设置中允许访问日历和提醒事项。",
       "undone": "已撤销",
       "meetingStarted": "正在记录。请告知参会者。",
       "copied": "已复制",
@@ -1203,7 +1199,9 @@
       "noWebResults": "暂时无法联网搜索，以下内容基于我已知的信息。",
       "timeout": "耗时太久，请重试。",
       "needsCloud": "这需要云端，但智能已设为“仅在这台电脑上”。请在隐私中更改。",
-      "cloudOfferOn": "云端建议已开启。请在隐私中更改。"
+      "cloudOfferOn": "云端建议已开启。请在隐私中更改。",
+      "cloudUnavailable": "云端建议暂时不可用。",
+      "cloudLimited": "云端建议已暂停：今天的次数已用完，或需要 Pro。"
     },
     "undo": "撤销",
     "close": "关闭",
@@ -1238,7 +1236,12 @@
       "translatePage": "翻译此页面？",
       "translate": "翻译",
       "helpHere": "这里有什么需要帮忙的吗？",
-      "help": "帮我"
+      "help": "帮我",
+      "summariseThreadCount": "要我总结这个包含 {{count}} 条消息的对话吗？",
+      "replyTo": "回复 {{name}}？",
+      "reply": "回复",
+      "translatePageLang": "此页面为{{language}}。要翻译吗？",
+      "explainErrorWhat": "出现“{{error}}”。想看看可能的解决方法吗？"
     },
     "nudge": {
       "findIt": "查找",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "你是想输入这段文字吗？",
       "composed": "这是你的草稿。",
-      "focusHint": "点击一个文本框即可插入。"
+      "focusHint": "点击一个文本框即可插入。",
+      "askInstead": "改为询问 {{appName}}"
     },
     "source": {
       "searchDrive": "在 Google 云端硬盘中搜索",
       "searchGmail": "在 Gmail 中搜索"
     },
     "cloudOffer": "{{appName}} 可以将窗口内容的脱敏片段发送到其服务器，从而在这台电脑上建议提供帮助。要开启吗？",
+    "when": {
+      "today": "今天 {{time}}",
+      "tomorrow": "明天 {{time}}",
+      "on": "{{day}} {{time}}"
+    },
+    "notice": {
+      "opened": "已打开 {{name}}",
+      "appNotFound": "在这台电脑上找不到名为“{{name}}”的应用。要我在网上搜索吗？",
+      "badLink": "这个链接看起来不对，所以我没有打开。你可以改为复制它。",
+      "noBrowser": "无法打开你的浏览器。",
+      "reminderSetAt": "已设置提醒（{{when}}）：{{title}}",
+      "reminderSet": "已添加提醒：{{title}}",
+      "remindersPermission": "暂时无法添加提醒：{{appName}} 需要访问“提醒事项”的权限。请在系统设置中开启，或先复制下来。",
+      "reminderFailed": "“提醒事项”未接受“{{title}}”。要改为添加到日历，还是复制下来？",
+      "reminderNeedsTime": "在 {{os}} 上我只能设置带时间的提醒。请说出时间，比如“5 点提醒我……”，或先复制下来。",
+      "reminderLinux": "无法在这个 Linux 系统上设置提醒：它没有通知计时器（systemd 和 notify-send）。要改为添加到日历，还是复制下来？",
+      "reminderWindows": "Windows 不允许我安排通知。要改为添加到日历，还是复制下来？",
+      "reminderNotificationsOff": "{{appName}} 在 {{os}} 上的通知已关闭，提醒不会显示。要改为添加到日历，还是复制下来？",
+      "eventNeedsTime": "我没听出“{{title}}”是什么时候。请说出日期和时间，或先复制下来。",
+      "eventAdded": "已添加到日历（{{when}}）：{{title}}",
+      "calendarsPermission": "暂时无法添加日程：{{appName}} 需要访问“日历”的权限。请在系统设置中开启，或先复制下来。",
+      "eventFailed": "日历未接受“{{title}}”。你可以复制后自己添加。",
+      "eventIcsOpened": "已在日历应用中打开“{{title}}”（{{when}}）。在那里保存即可添加。",
+      "noCalendarApp": "{{os}} 上没有连接日历应用，所以我保存了一个可导入的日历文件（{{file}}）。",
+      "shortcutRan": "已运行“{{name}}”",
+      "shortcutNotFound": "找不到名为“{{name}}”的快捷指令。想知道怎么创建吗？",
+      "cantDoYet": "我暂时还做不到：{{what}}。要我教你自己操作吗？",
+      "cantDoYetPlain": "我暂时还无法在这台电脑上做到。要我教你自己操作吗？",
+      "failed": "这次没有成功。请稍后再试。",
+      "undoFailed": "无法撤销这一项。你可以在该应用中直接删除。"
+    },
+    "offer": {
+      "searchWeb": "在网上搜索",
+      "copyLink": "复制链接",
+      "answerHere": "在此回答",
+      "addToCalendar": "添加到日历",
+      "openSettings": "打开设置",
+      "showFile": "显示文件",
+      "howTo": "教我怎么做",
+      "showMeHow": "教我怎么做"
+    },
+    "report": {
+      "title": "发送给 {{appName}} 团队？",
+      "kinds": {
+        "bug": "问题",
+        "idea": "想法",
+        "other": "反馈"
+      },
+      "diagnostics": "附带诊断信息",
+      "diagnosticsHint": "（帮助团队复现问题）",
+      "send": "发送",
+      "edit": "编辑",
+      "cancel": "取消",
+      "editHint": "按住快捷键，说出新的内容。",
+      "voiceHint": "或者说“发送”",
+      "sent": "已发送。谢谢，团队会看到的。",
+      "failed": "暂时无法发送。复制下来稍后再试？",
+      "offer": "要我把这个报告给团队吗？",
+      "offerAccept": "报告"
+    },
     "notes": {
       "ready": "你的笔记已准备好",
       "actionItems": "待办事项：{{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "你收到的建议",
-      "description": "出现建议时，说“以后再说”“别给我看这些”或“不要在这个应用里”，它就会记住。可随时在这里更改。",
-      "mutedIn": "已在 {{apps}} 中关闭",
       "kinds": {
         "summarise_thread": "总结长邮件对话",
         "draft_reply": "起草回复",
@@ -1422,7 +1484,16 @@
         "translate_page": "翻译其他语言的页面",
         "help_here": "其他你可能需要的帮助",
         "meeting_nudge": "会议期间的提示"
-      }
+      },
+      "learned": {
+        "title": "你告诉我的",
+        "empty": "暂无内容。你拒绝某个建议后，它会显示在这里。",
+        "never": "永不：{{kind}}",
+        "notIn": "{{kind}}，不在 {{app}} 中显示",
+        "undo": "撤销"
+      },
+      "teach": "建议出现时，说“现在不用”“别给我看这些”或“不要在这个应用里”，{{appName}} 就会记住。",
+      "unknownKind": "某类建议"
     },
     "macOnly": "目前仅限 Mac",
     "promises": {

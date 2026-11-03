@@ -525,6 +525,8 @@ fn on_hud_action(id: &str, action: &str) {
     }
     let result = match action {
         "insert" | "copy" => "typed",
+        // "Ask Ambient instead".
+        "ask" => "asked",
         "dismiss" | "expire" => "dismissed",
         _ => return,
     };
@@ -549,16 +551,12 @@ pub fn answer_latency(first: Option<Duration>, total: Duration, web: bool) {
     );
 }
 
-/// An action the agent took. `kind`: reminder, calendar, open_app, shortcut.
-/// `result` is the i18n key of the status line it showed.
-pub fn act(kind: Option<&'static str>, result: &Result<String, String>) {
+/// An action the agent took. `kind`: reminder, calendar, open_app, shortcut,
+/// unsupported. `outcome`: ok, fallback (done another way, or an
+/// alternative offered: an .ics instead of a reminder), failed.
+pub fn act(kind: Option<&'static str>, outcome: &'static str) {
     let Some(kind) = kind else {
         return;
-    };
-    let outcome = match result {
-        Ok(key) if key.contains("ics") || key.contains("allback") => "fallback",
-        Ok(_) => "ok",
-        Err(_) => "failed",
     };
     record(
         "act",
@@ -568,7 +566,7 @@ pub fn act(kind: Option<&'static str>, result: &Result<String, String>) {
             ("platform", P::S(os_family())),
         ],
     );
-    if result.is_err() {
+    if outcome == "failed" {
         error("act", "failed");
     }
 }
@@ -576,6 +574,35 @@ pub fn act(kind: Option<&'static str>, result: &Result<String, String>) {
 /// A failure, by area and kind (see the schema's lists).
 pub fn error(area: &'static str, kind: &'static str) {
     record("error", &[("area", P::S(area)), ("kind", P::S(kind))]);
+}
+
+/// A failure toast the UI showed (`src/lib/errors.ts` `showError`): its
+/// context and friendly kind, mapped onto the schema's `error` event. Only
+/// these fixed names are counted; anything else is ignored.
+#[tauri::command]
+#[specta::specta]
+pub fn record_ui_error(context: String, kind: String) {
+    let area = match context.as_str() {
+        "download" => "download",
+        "model" => "model",
+        "transcription" | "file" => "transcription",
+        "recording" => "audio",
+        "signIn" | "billing" => "account",
+        "update" => "update",
+        "meeting" => "meeting",
+        _ => "other",
+    };
+    let kind = match kind.as_str() {
+        "offline" => "offline",
+        "timeout" => "timeout",
+        "notFound" => "not_found",
+        "diskFull" => "disk_full",
+        "checksum" => "checksum",
+        "permission" => "permission",
+        "server" => "server",
+        _ => "failed",
+    };
+    error(area, kind);
 }
 
 /// The error kind behind an i18n status key or error message, coarsely.

@@ -1182,14 +1182,10 @@
       "interrupted": "Svaret avbröts.",
       "opened": "Öppnad",
       "searching": "Söker i din webbläsare",
-      "reminderAdded": "Påminnelse tillagd",
-      "eventAdded": "Tillagd i din kalender",
       "shortcutRan": "Genvägen kördes",
       "cantDoYet": "Det kan jag inte göra än. Datorstyrning kommer snart.",
       "appNotFound": "Kunde inte hitta den appen.",
-      "shortcutNotFound": "Kunde inte hitta den genvägen.",
       "automationNotFound": "Hittade ingen genväg i Start-menyn eller något Power Automate-flöde med det namnet.",
-      "calendarPermission": "Tillåt först åtkomst till Kalender och Påminnelser i Systeminställningar.",
       "undone": "Ångrat",
       "meetingStarted": "Antecknar. Berätta det för de andra.",
       "copied": "Kopierad",
@@ -1203,7 +1199,9 @@
       "noWebResults": "Kunde inte söka på webben just nu, så det här är vad jag vet.",
       "timeout": "Det tog för lång tid. Försök igen.",
       "needsCloud": "Det här kräver molnet, och Intelligence är inställt på ”Bara på den här datorn”. Ändra det under Integritet.",
-      "cloudOfferOn": "Förslag från molnet är på. Ändra det under Integritet."
+      "cloudOfferOn": "Förslag från molnet är på. Ändra det under Integritet.",
+      "cloudUnavailable": "Molnförslag är inte tillgängliga just nu.",
+      "cloudLimited": "Molnförslag är pausade tills vidare: dagens gräns är nådd, eller så kräver de Pro."
     },
     "undo": "Ångra",
     "close": "Stäng",
@@ -1238,7 +1236,12 @@
       "translatePage": "Översätta sidan?",
       "translate": "Översätt",
       "helpHere": "Kan jag hjälpa till med något här?",
-      "help": "Hjälp"
+      "help": "Hjälp",
+      "summariseThreadCount": "Vill du att jag sammanfattar den här tråden med {{count}} meddelanden?",
+      "replyTo": "Svara {{name}}?",
+      "reply": "Svara",
+      "translatePageLang": "Sidan är på {{language}}. Översätta den?",
+      "explainErrorWhat": "Felet ”{{error}}”. Vill du ha den troliga lösningen?"
     },
     "nudge": {
       "findIt": "Hitta",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "Menade du att skriva det här?",
       "composed": "Här är ditt utkast.",
-      "focusHint": "Klicka i ett textfält för att infoga det."
+      "focusHint": "Klicka i ett textfält för att infoga det.",
+      "askInstead": "Fråga {{appName}} i stället"
     },
     "source": {
       "searchDrive": "Sök i Google Drive",
       "searchGmail": "Sök i Gmail"
     },
     "cloudOffer": "{{appName}} kan föreslå hjälp på den här datorn genom att skicka ett maskerat utdrag av fönstret till sina servrar. Slå på?",
+    "when": {
+      "today": "i dag kl. {{time}}",
+      "tomorrow": "i morgon kl. {{time}}",
+      "on": "{{day}} kl. {{time}}"
+    },
+    "notice": {
+      "opened": "Öppnade {{name}}",
+      "appNotFound": "Jag hittade ingen app som heter ”{{name}}” på den här datorn. Vill du att jag söker efter den på webben?",
+      "badLink": "Länken ser inte rätt ut, så jag öppnade den inte. Du kan kopiera den i stället.",
+      "noBrowser": "Jag kunde inte öppna din webbläsare.",
+      "reminderSetAt": "Påminnelse inställd till {{when}}: {{title}}",
+      "reminderSet": "Påminnelse tillagd: {{title}}",
+      "remindersPermission": "Jag kan inte lägga till påminnelser än: {{appName}} behöver åtkomst till Påminnelser. Slå på det i Systeminställningar, eller kopiera den så länge.",
+      "reminderFailed": "Påminnelser godtog inte ”{{title}}”. Vill du att jag lägger till den i kalendern i stället, eller kopierar den?",
+      "reminderNeedsTime": "På {{os}} kan jag bara ställa in påminnelser med en tid. Säg när, till exempel ”påminn mig klockan 5 om …”, eller kopiera den så länge.",
+      "reminderLinux": "Jag kan inte ställa in påminnelser på det här Linux-systemet: det saknar en aviseringstimer (systemd och notify-send). Vill du att jag lägger till den i kalendern i stället, eller kopierar den?",
+      "reminderWindows": "Windows lät mig inte schemalägga en avisering. Vill du att jag lägger till den i kalendern i stället, eller kopierar den?",
+      "reminderNotificationsOff": "Aviseringar är avstängda för {{appName}} på {{os}}, så en påminnelse skulle inte synas. Vill du att jag lägger till den i kalendern i stället, eller kopierar den?",
+      "eventNeedsTime": "Jag kunde inte avgöra när ”{{title}}” är. Säg dag och tid, eller kopiera den så länge.",
+      "eventAdded": "Tillagt i kalendern {{when}}: {{title}}",
+      "calendarsPermission": "Jag kan inte lägga till händelser än: {{appName}} behöver åtkomst till Kalendrar. Slå på det i Systeminställningar, eller kopiera den så länge.",
+      "eventFailed": "Kalendern godtog inte ”{{title}}”. Du kan kopiera den och lägga till den själv.",
+      "eventIcsOpened": "Öppnade ”{{title}}” ({{when}}) i din kalenderapp. Spara den där för att lägga till den.",
+      "noCalendarApp": "Ingen kalenderapp är ansluten på {{os}}, så jag sparade en kalenderfil ({{file}}) som du kan importera.",
+      "shortcutRan": "Körde ”{{name}}”",
+      "shortcutNotFound": "Jag hittade ingen genväg som heter ”{{name}}”. Vill du veta hur du skapar en?",
+      "cantDoYet": "Det här kan jag inte än: {{what}}. Vill du att jag visar hur du gör det själv?",
+      "cantDoYetPlain": "Det kan jag inte göra på den här datorn än. Vill du att jag visar hur du gör det själv?",
+      "failed": "Det fungerade inte den här gången. Försök igen om en stund.",
+      "undoFailed": "Jag kunde inte ångra det. Du kan ta bort det i själva appen."
+    },
+    "offer": {
+      "searchWeb": "Sök på webben",
+      "copyLink": "Kopiera länk",
+      "answerHere": "Svara här",
+      "addToCalendar": "Lägg till i kalender",
+      "openSettings": "Öppna Inställningar",
+      "showFile": "Visa fil",
+      "howTo": "Visa hur",
+      "showMeHow": "Visa hur"
+    },
+    "report": {
+      "title": "Skicka detta till {{appName}}-teamet?",
+      "kinds": {
+        "bug": "Bugg",
+        "idea": "Idé",
+        "other": "Feedback"
+      },
+      "diagnostics": "Inkludera diagnostik",
+      "diagnosticsHint": "(hjälper teamet att återskapa det)",
+      "send": "Skicka",
+      "edit": "Redigera",
+      "cancel": "Avbryt",
+      "editHint": "Håll ned kortkommandot och säg det nya meddelandet.",
+      "voiceHint": "Eller säg ”skicka det”",
+      "sent": "Skickat. Tack, teamet kommer att se det.",
+      "failed": "Kunde inte skicka just nu. Kopiera och försöka igen senare?",
+      "offer": "Vill du att jag rapporterar det här till teamet?",
+      "offerAccept": "Rapportera"
+    },
     "notes": {
       "ready": "Dina anteckningar är klara",
       "actionItems": "Att göra: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "Förslag du får",
-      "description": "Säg ”inte nu”, ”visa inte sådana” eller ”inte i den här appen” när ett förslag dyker upp, så lär den sig. Ändra det här när du vill.",
-      "mutedIn": "Av i {{apps}}",
       "kinds": {
         "summarise_thread": "Sammanfatta långa mejltrådar",
         "draft_reply": "Skriva utkast till svar",
@@ -1422,7 +1484,16 @@
         "translate_page": "Översätt sidor på andra språk",
         "help_here": "Annan hjälp som den tror att du vill ha",
         "meeting_nudge": "Påminnelser under möten"
-      }
+      },
+      "learned": {
+        "title": "Det du har sagt till mig",
+        "empty": "Inget än. När du tackar nej till ett förslag visas det här.",
+        "never": "Aldrig: {{kind}}",
+        "notIn": "{{kind}}, inte i {{app}}",
+        "undo": "Ångra"
+      },
+      "teach": "När ett förslag dyker upp, säg ”inte nu”, ”visa inte sådana här” eller ”inte i den här appen”, så kommer {{appName}} ihåg det.",
+      "unknownKind": "En typ av förslag"
     },
     "macOnly": "Endast på Mac än så länge",
     "promises": {

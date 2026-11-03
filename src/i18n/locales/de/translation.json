@@ -1182,14 +1182,10 @@
       "interrupted": "Die Antwort wurde unterbrochen.",
       "opened": "Geöffnet",
       "searching": "Suche im Browser",
-      "reminderAdded": "Erinnerung hinzugefügt",
-      "eventAdded": "Zum Kalender hinzugefügt",
       "shortcutRan": "Kurzbefehl ausgeführt",
       "cantDoYet": "Das kann ich noch nicht. Computersteuerung kommt bald.",
       "appNotFound": "Diese App wurde nicht gefunden.",
-      "shortcutNotFound": "Dieser Kurzbefehl wurde nicht gefunden.",
       "automationNotFound": "Keine Startmenü-Verknüpfung und kein Power-Automate-Flow mit diesem Namen gefunden.",
-      "calendarPermission": "Erlaube zuerst den Zugriff auf Kalender und Erinnerungen in den Systemeinstellungen.",
       "undone": "Rückgängig gemacht",
       "meetingStarted": "Notizen werden erstellt. Sag den anderen Bescheid.",
       "copied": "Kopiert",
@@ -1203,7 +1199,9 @@
       "noWebResults": "Die Websuche hat gerade nicht geklappt, daher ist das aus meinem Wissen.",
       "timeout": "Das hat zu lange gedauert. Versuch es noch einmal.",
       "needsCloud": "Dafür braucht es die Cloud, aber die KI ist auf „Nur auf diesem Computer“ gestellt. Ändere das unter Datenschutz.",
-      "cloudOfferOn": "Vorschläge aus der Cloud sind aktiv. Ändere das unter Datenschutz."
+      "cloudOfferOn": "Vorschläge aus der Cloud sind aktiv. Ändere das unter Datenschutz.",
+      "cloudUnavailable": "Cloud-Vorschläge sind gerade nicht verfügbar.",
+      "cloudLimited": "Cloud-Vorschläge sind vorerst pausiert: Das Tageslimit ist erreicht oder sie erfordern Pro."
     },
     "undo": "Rückgängig",
     "close": "Schließen",
@@ -1238,7 +1236,12 @@
       "translatePage": "Diese Seite übersetzen?",
       "translate": "Übersetzen",
       "helpHere": "Kann ich hier bei etwas helfen?",
-      "help": "Helfen"
+      "help": "Helfen",
+      "summariseThreadCount": "Soll ich diesen Thread mit {{count}} Nachrichten zusammenfassen?",
+      "replyTo": "{{name}} antworten?",
+      "reply": "Antworten",
+      "translatePageLang": "Diese Seite ist auf {{language}}. Übersetzen?",
+      "explainErrorWhat": "Fehler „{{error}}“. Willst du die wahrscheinliche Lösung?"
     },
     "nudge": {
       "findIt": "Finden",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "Wolltest du das tippen?",
       "composed": "Hier ist dein Entwurf.",
-      "focusHint": "Klicke in ein Textfeld, um ihn einzufügen."
+      "focusHint": "Klicke in ein Textfeld, um ihn einzufügen.",
+      "askInstead": "Stattdessen {{appName}} fragen"
     },
     "source": {
       "searchDrive": "In Google Drive suchen",
       "searchGmail": "In Gmail suchen"
     },
     "cloudOffer": "{{appName}} kann auf diesem Computer Hilfe vorschlagen, indem es einen geschwärzten Ausschnitt des Fensters an seine Server sendet. Aktivieren?",
+    "when": {
+      "today": "heute um {{time}}",
+      "tomorrow": "morgen um {{time}}",
+      "on": "{{day}} um {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} geöffnet",
+      "appNotFound": "Ich habe keine App namens „{{name}}“ auf diesem Computer gefunden. Soll ich im Web danach suchen?",
+      "badLink": "Dieser Link sieht nicht richtig aus, deshalb habe ich ihn nicht geöffnet. Du kannst ihn stattdessen kopieren.",
+      "noBrowser": "Ich konnte deinen Browser nicht öffnen.",
+      "reminderSetAt": "Erinnerung für {{when}} gestellt: {{title}}",
+      "reminderSet": "Erinnerung hinzugefügt: {{title}}",
+      "remindersPermission": "Ich kann noch keine Erinnerungen hinzufügen: {{appName}} braucht Zugriff auf Erinnerungen. Schalte ihn in den Systemeinstellungen ein oder kopiere sie fürs Erste.",
+      "reminderFailed": "Erinnerungen hat „{{title}}“ nicht angenommen. Soll ich es stattdessen in deinen Kalender eintragen oder kopieren?",
+      "reminderNeedsTime": "Unter {{os}} kann ich Erinnerungen nur mit Uhrzeit stellen. Sag, wann, z. B. „erinnere mich um 5 an …“, oder kopiere sie fürs Erste.",
+      "reminderLinux": "Auf diesem Linux-System kann ich keine Erinnerungen stellen: Es fehlt ein Benachrichtigungs-Timer (systemd und notify-send). Soll ich sie stattdessen in deinen Kalender eintragen oder kopieren?",
+      "reminderWindows": "Windows hat mich keine Benachrichtigung planen lassen. Soll ich sie stattdessen in deinen Kalender eintragen oder kopieren?",
+      "reminderNotificationsOff": "Benachrichtigungen für {{appName}} sind unter {{os}} aus, also würde keine Erinnerung erscheinen. Soll ich sie stattdessen in deinen Kalender eintragen oder kopieren?",
+      "eventNeedsTime": "Ich konnte nicht erkennen, wann „{{title}}“ ist. Nenne Tag und Uhrzeit oder kopiere es fürs Erste.",
+      "eventAdded": "Für {{when}} in deinen Kalender eingetragen: {{title}}",
+      "calendarsPermission": "Ich kann noch keine Termine hinzufügen: {{appName}} braucht Zugriff auf Kalender. Schalte ihn in den Systemeinstellungen ein oder kopiere den Termin fürs Erste.",
+      "eventFailed": "Dein Kalender hat „{{title}}“ nicht angenommen. Du kannst es kopieren und selbst eintragen.",
+      "eventIcsOpened": "„{{title}}“ ({{when}}) in deiner Kalender-App geöffnet. Speichere es dort, um es hinzuzufügen.",
+      "noCalendarApp": "Unter {{os}} ist keine Kalender-App verbunden, deshalb habe ich eine Kalenderdatei ({{file}}) gespeichert, die du importieren kannst.",
+      "shortcutRan": "„{{name}}“ ausgeführt",
+      "shortcutNotFound": "Ich habe keinen Kurzbefehl namens „{{name}}“ gefunden. Willst du wissen, wie du einen erstellst?",
+      "cantDoYet": "Das kann ich noch nicht: {{what}}. Soll ich dir zeigen, wie du es selbst machst?",
+      "cantDoYetPlain": "Das kann ich auf diesem Computer noch nicht. Soll ich dir zeigen, wie du es selbst machst?",
+      "failed": "Das hat diesmal nicht geklappt. Versuch es gleich noch einmal.",
+      "undoFailed": "Das konnte ich nicht rückgängig machen. Du kannst es direkt in der App entfernen."
+    },
+    "offer": {
+      "searchWeb": "Im Web suchen",
+      "copyLink": "Link kopieren",
+      "answerHere": "Hier antworten",
+      "addToCalendar": "Zum Kalender",
+      "openSettings": "Einstellungen öffnen",
+      "showFile": "Datei zeigen",
+      "howTo": "Zeig mir, wie",
+      "showMeHow": "Zeig mir, wie"
+    },
+    "report": {
+      "title": "An das {{appName}}-Team senden?",
+      "kinds": {
+        "bug": "Fehler",
+        "idea": "Idee",
+        "other": "Feedback"
+      },
+      "diagnostics": "Diagnosedaten anhängen",
+      "diagnosticsHint": "(hilft dem Team, es nachzustellen)",
+      "send": "Senden",
+      "edit": "Bearbeiten",
+      "cancel": "Abbrechen",
+      "editHint": "Halte dein Tastenkürzel gedrückt und sprich die neue Nachricht.",
+      "voiceHint": "Oder sag „abschicken“",
+      "sent": "Gesendet. Danke, das Team sieht es sich an.",
+      "failed": "Konnte es gerade nicht senden. Kopieren und später erneut versuchen?",
+      "offer": "Soll ich das dem Team melden?",
+      "offerAccept": "Melden"
+    },
     "notes": {
       "ready": "Deine Notizen sind fertig",
       "actionItems": "Aufgaben: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "Vorschläge, die du bekommst",
-      "description": "Sag „nicht jetzt“, „zeig mir das nicht mehr“ oder „nicht in dieser App“, wenn einer erscheint, und es lernt dazu. Du kannst das hier jederzeit ändern.",
-      "mutedIn": "Aus in {{apps}}",
       "kinds": {
         "summarise_thread": "Lange E-Mail-Threads zusammenfassen",
         "draft_reply": "Antworten entwerfen",
@@ -1422,7 +1484,16 @@
         "translate_page": "Seiten in anderen Sprachen übersetzen",
         "help_here": "Weitere Hilfe, die du vielleicht brauchst",
         "meeting_nudge": "Hinweise während Meetings"
-      }
+      },
+      "learned": {
+        "title": "Was du mir gesagt hast",
+        "empty": "Noch nichts. Wenn du einen Vorschlag ablehnst, erscheint er hier.",
+        "never": "Nie: {{kind}}",
+        "notIn": "{{kind}}, nicht in {{app}}",
+        "undo": "Rückgängig"
+      },
+      "teach": "Wenn ein Vorschlag erscheint, sag „nicht jetzt“, „zeig mir so was nicht“ oder „nicht in dieser App“, und {{appName}} merkt es sich.",
+      "unknownKind": "Eine Art von Vorschlag"
     },
     "macOnly": "Vorerst nur auf dem Mac",
     "promises": {

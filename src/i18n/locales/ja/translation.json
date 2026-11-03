@@ -1182,14 +1182,10 @@
       "interrupted": "回答が中断されました。",
       "opened": "開きました",
       "searching": "ブラウザで検索中",
-      "reminderAdded": "リマインダーを追加しました",
-      "eventAdded": "カレンダーに追加しました",
       "shortcutRan": "ショートカットを実行しました",
       "cantDoYet": "まだそれはできません。コンピュータ操作は近日対応予定です。",
       "appNotFound": "そのアプリが見つかりませんでした。",
-      "shortcutNotFound": "そのショートカットが見つかりませんでした。",
       "automationNotFound": "その名前のスタートメニューのショートカットや Power Automate フローが見つかりませんでした。",
-      "calendarPermission": "まずシステム設定でカレンダーとリマインダーへのアクセスを許可してください。",
       "undone": "取り消しました",
       "meetingStarted": "メモを取っています。参加者に知らせてください。",
       "copied": "コピーしました",
@@ -1203,7 +1199,9 @@
       "noWebResults": "今はウェブ検索ができなかったため、知っている範囲で答えています。",
       "timeout": "時間がかかりすぎました。もう一度お試しください。",
       "needsCloud": "これにはクラウドが必要ですが、インテリジェンスは「このコンピュータのみ」に設定されています。プライバシーで変更できます。",
-      "cloudOfferOn": "クラウドからの提案がオンです。プライバシーで変更できます。"
+      "cloudOfferOn": "クラウドからの提案がオンです。プライバシーで変更できます。",
+      "cloudUnavailable": "クラウドの提案は現在利用できません。",
+      "cloudLimited": "クラウドの提案は一時停止中です：今日の上限に達したか、Proが必要です。"
     },
     "undo": "取り消す",
     "close": "閉じる",
@@ -1238,7 +1236,12 @@
       "translatePage": "このページを翻訳しますか？",
       "translate": "翻訳",
       "helpHere": "ここで何かお手伝いしましょうか？",
-      "help": "手伝う"
+      "help": "手伝う",
+      "summariseThreadCount": "この{{count}}件のメッセージのスレッドを要約しましょうか？",
+      "replyTo": "{{name}}さんに返信しますか？",
+      "reply": "返信",
+      "translatePageLang": "このページは{{language}}です。翻訳しますか？",
+      "explainErrorWhat": "「{{error}}」が出ました。考えられる解決策を見ますか？"
     },
     "nudge": {
       "findIt": "探す",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "これを入力するつもりでしたか？",
       "composed": "下書きです。",
-      "focusHint": "テキストフィールドをクリックすると挿入できます。"
+      "focusHint": "テキストフィールドをクリックすると挿入できます。",
+      "askInstead": "代わりに{{appName}}に聞く"
     },
     "source": {
       "searchDrive": "Google ドライブで検索",
       "searchGmail": "Gmail で検索"
     },
     "cloudOffer": "{{appName}}は、ウィンドウの内容を伏せた一部をサーバーに送信して、このコンピュータでの手助けを提案できます。オンにしますか？",
+    "when": {
+      "today": "今日 {{time}}",
+      "tomorrow": "明日 {{time}}",
+      "on": "{{day}} {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}}を開きました",
+      "appNotFound": "このコンピュータに「{{name}}」というアプリが見つかりませんでした。Webで検索しましょうか？",
+      "badLink": "このリンクは正しくないようなので、開きませんでした。代わりにコピーできます。",
+      "noBrowser": "ブラウザを開けませんでした。",
+      "reminderSetAt": "{{when}}にリマインダーを設定しました：{{title}}",
+      "reminderSet": "リマインダーを追加しました：{{title}}",
+      "remindersPermission": "まだリマインダーを追加できません：{{appName}}にリマインダーへのアクセスが必要です。システム設定でオンにするか、今はコピーしてください。",
+      "reminderFailed": "リマインダーに「{{title}}」を追加できませんでした。代わりにカレンダーに追加するか、コピーしましょうか？",
+      "reminderNeedsTime": "{{os}}では時刻付きのリマインダーしか設定できません。「5時に…をリマインドして」のように時刻を伝えるか、今はコピーしてください。",
+      "reminderLinux": "このLinuxシステムではリマインダーを設定できません：通知タイマー（systemdとnotify-send）がありません。代わりにカレンダーに追加するか、コピーしましょうか？",
+      "reminderWindows": "Windowsで通知をスケジュールできませんでした。代わりにカレンダーに追加するか、コピーしましょうか？",
+      "reminderNotificationsOff": "{{os}}で{{appName}}の通知がオフになっているため、リマインダーが表示されません。代わりにカレンダーに追加するか、コピーしましょうか？",
+      "eventNeedsTime": "「{{title}}」がいつなのかわかりませんでした。日付と時刻を伝えるか、今はコピーしてください。",
+      "eventAdded": "カレンダーに追加しました（{{when}}）：{{title}}",
+      "calendarsPermission": "まだ予定を追加できません：{{appName}}にカレンダーへのアクセスが必要です。システム設定でオンにするか、今はコピーしてください。",
+      "eventFailed": "カレンダーに「{{title}}」を追加できませんでした。コピーしてご自身で追加できます。",
+      "eventIcsOpened": "「{{title}}」（{{when}}）をカレンダーアプリで開きました。追加するにはそこで保存してください。",
+      "noCalendarApp": "{{os}}に接続されたカレンダーアプリがないため、インポートできるカレンダーファイル（{{file}}）を保存しました。",
+      "shortcutRan": "「{{name}}」を実行しました",
+      "shortcutNotFound": "「{{name}}」というショートカットが見つかりませんでした。作り方を知りたいですか？",
+      "cantDoYet": "まだこれはできません：{{what}}。自分でやる方法をお見せしましょうか？",
+      "cantDoYetPlain": "このコンピュータではまだそれができません。自分でやる方法をお見せしましょうか？",
+      "failed": "今回はうまくいきませんでした。少ししてからもう一度お試しください。",
+      "undoFailed": "元に戻せませんでした。アプリ内で直接削除できます。"
+    },
+    "offer": {
+      "searchWeb": "Webで検索",
+      "copyLink": "リンクをコピー",
+      "answerHere": "ここで回答",
+      "addToCalendar": "カレンダーに追加",
+      "openSettings": "設定を開く",
+      "showFile": "ファイルを表示",
+      "howTo": "やり方を見る",
+      "showMeHow": "やり方を見る"
+    },
+    "report": {
+      "title": "{{appName}}チームに送信しますか？",
+      "kinds": {
+        "bug": "バグ",
+        "idea": "アイデア",
+        "other": "フィードバック"
+      },
+      "diagnostics": "診断情報を含める",
+      "diagnosticsHint": "（チームが再現しやすくなります）",
+      "send": "送信",
+      "edit": "編集",
+      "cancel": "キャンセル",
+      "editHint": "ショートカットを押したまま、新しいメッセージを話してください。",
+      "voiceHint": "または「送信して」と言う",
+      "sent": "送信しました。ありがとうございます、チームが確認します。",
+      "failed": "今は送信できませんでした。コピーして後でもう一度試しますか？",
+      "offer": "これをチームに報告しましょうか？",
+      "offerAccept": "報告"
+    },
     "notes": {
       "ready": "メモの準備ができました",
       "actionItems": "アクション項目：{{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "受け取る提案",
-      "description": "提案が表示されたときに「今はいい」「これは表示しないで」「このアプリではやめて」と言うと学習します。ここでいつでも変更できます。",
-      "mutedIn": "{{apps}}ではオフ",
       "kinds": {
         "summarise_thread": "長いメールのスレッドを要約",
         "draft_reply": "返信を下書き",
@@ -1422,7 +1484,16 @@
         "translate_page": "他の言語のページを翻訳",
         "help_here": "その他の手伝い",
         "meeting_nudge": "会議中のヒント"
-      }
+      },
+      "learned": {
+        "title": "あなたが教えてくれたこと",
+        "empty": "まだありません。提案を断ると、ここに表示されます。",
+        "never": "表示しない：{{kind}}",
+        "notIn": "{{kind}}（{{app}}では表示しない）",
+        "undo": "元に戻す"
+      },
+      "teach": "提案が表示されたら「今はいい」「これは表示しないで」「このアプリではやめて」と言えば、{{appName}}が覚えます。",
+      "unknownKind": "提案の種類"
     },
     "macOnly": "現在はMacのみ",
     "promises": {

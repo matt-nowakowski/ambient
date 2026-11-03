@@ -1190,14 +1190,10 @@
       "interrupted": "A resposta foi interrompida.",
       "opened": "Aberto",
       "searching": "Pesquisando no seu navegador",
-      "reminderAdded": "Lembrete adicionado",
-      "eventAdded": "Adicionado ao seu calendário",
       "shortcutRan": "Atalho executado",
       "cantDoYet": "Ainda não consigo fazer isso. O controle do computador chega em breve.",
       "appNotFound": "Não foi possível encontrar esse app.",
-      "shortcutNotFound": "Não foi possível encontrar esse atalho.",
       "automationNotFound": "Não encontrei nenhum atalho do menu Iniciar nem fluxo do Power Automate com esse nome.",
-      "calendarPermission": "Primeiro permita o acesso a Calendário e Lembretes nos Ajustes do Sistema.",
       "undone": "Desfeito",
       "meetingStarted": "Anotando. Avise os participantes.",
       "copied": "Copiado",
@@ -1211,7 +1207,9 @@
       "noWebResults": "Não foi possível pesquisar na web agora, por isso isto é o que sei.",
       "timeout": "Demorou demasiado. Tente novamente.",
       "needsCloud": "Isso precisa da nuvem, e a inteligência está em “Somente neste computador”. Mude em Privacidade.",
-      "cloudOfferOn": "As sugestões da nuvem estão ativadas. Mude em Privacidade."
+      "cloudOfferOn": "As sugestões da nuvem estão ativadas. Mude em Privacidade.",
+      "cloudUnavailable": "As sugestões na nuvem estão indisponíveis no momento.",
+      "cloudLimited": "As sugestões na nuvem estão pausadas por enquanto: o limite de hoje foi atingido ou elas exigem o Pro."
     },
     "undo": "Desfazer",
     "close": "Fechar",
@@ -1246,7 +1244,12 @@
       "translatePage": "Traduzir esta página?",
       "translate": "Traduzir",
       "helpHere": "Posso ajudar com algo aqui?",
-      "help": "Ajudar"
+      "help": "Ajudar",
+      "summariseThreadCount": "Quer que eu resuma esta conversa de {{count}} mensagens?",
+      "replyTo": "Responder a {{name}}?",
+      "reply": "Responder",
+      "translatePageLang": "Esta página está em {{language}}. Traduzir?",
+      "explainErrorWhat": "Deu “{{error}}”. Quer a provável solução?"
     },
     "nudge": {
       "findIt": "Encontrar",
@@ -1268,13 +1271,74 @@
     "draft": {
       "title": "Queria digitar isto?",
       "composed": "Aqui está o rascunho.",
-      "focusHint": "Clique num campo de texto para o inserir."
+      "focusHint": "Clique num campo de texto para o inserir.",
+      "askInstead": "Perguntar ao {{appName}}"
     },
     "source": {
       "searchDrive": "Pesquisar no Google Drive",
       "searchGmail": "Pesquisar no Gmail"
     },
     "cloudOffer": "O {{appName}} pode sugerir ajuda neste computador enviando aos servidores dele um trecho editado da janela. Ativar?",
+    "when": {
+      "today": "hoje às {{time}}",
+      "tomorrow": "amanhã às {{time}}",
+      "on": "{{day}} às {{time}}"
+    },
+    "notice": {
+      "opened": "{{name}} aberto",
+      "appNotFound": "Não encontrei um app chamado “{{name}}” neste computador. Quer que eu pesquise na web?",
+      "badLink": "Esse link não parece certo, então não o abri. Você pode copiá-lo.",
+      "noBrowser": "Não consegui abrir seu navegador.",
+      "reminderSetAt": "Lembrete criado para {{when}}: {{title}}",
+      "reminderSet": "Lembrete adicionado: {{title}}",
+      "remindersPermission": "Ainda não posso adicionar lembretes: o {{appName}} precisa de acesso aos Lembretes. Ative em Ajustes do Sistema ou copie por enquanto.",
+      "reminderFailed": "O app Lembretes não aceitou “{{title}}”. Quer que eu adicione ao seu calendário ou copie?",
+      "reminderNeedsTime": "No {{os}}, só consigo criar lembretes com horário. Diga quando, como “me lembre às 5 de …”, ou copie por enquanto.",
+      "reminderLinux": "Não consigo criar lembretes neste sistema Linux: ele não tem um temporizador de notificações (systemd e notify-send). Quer que eu adicione ao seu calendário ou copie?",
+      "reminderWindows": "O Windows não me deixou agendar uma notificação. Quer que eu adicione ao seu calendário ou copie?",
+      "reminderNotificationsOff": "As notificações do {{appName}} estão desativadas no {{os}}, então o lembrete não apareceria. Quer que eu adicione ao seu calendário ou copie?",
+      "eventNeedsTime": "Não entendi quando é “{{title}}”. Diga o dia e o horário, ou copie por enquanto.",
+      "eventAdded": "Adicionado ao seu calendário para {{when}}: {{title}}",
+      "calendarsPermission": "Ainda não posso adicionar eventos: o {{appName}} precisa de acesso aos Calendários. Ative em Ajustes do Sistema ou copie por enquanto.",
+      "eventFailed": "Seu calendário não aceitou “{{title}}”. Você pode copiar e adicionar por conta própria.",
+      "eventIcsOpened": "Abri “{{title}}” ({{when}}) no seu app de calendário. Salve lá para adicionar.",
+      "noCalendarApp": "Nenhum app de calendário está conectado no {{os}}, então salvei um arquivo de calendário ({{file}}) que você pode importar.",
+      "shortcutRan": "“{{name}}” executado",
+      "shortcutNotFound": "Não encontrei um atalho chamado “{{name}}”. Quer saber como criar um?",
+      "cantDoYet": "Ainda não sei fazer isto: {{what}}. Quer que eu mostre como fazer você mesmo?",
+      "cantDoYetPlain": "Ainda não consigo fazer isso neste computador. Quer que eu mostre como fazer você mesmo?",
+      "failed": "Não funcionou desta vez. Tente de novo em instantes.",
+      "undoFailed": "Não consegui desfazer isso. Você pode remover no próprio app."
+    },
+    "offer": {
+      "searchWeb": "Pesquisar na web",
+      "copyLink": "Copiar link",
+      "answerHere": "Responder aqui",
+      "addToCalendar": "Adicionar ao calendário",
+      "openSettings": "Abrir Ajustes",
+      "showFile": "Mostrar arquivo",
+      "howTo": "Mostre como",
+      "showMeHow": "Mostre como"
+    },
+    "report": {
+      "title": "Enviar isto para a equipe do {{appName}}?",
+      "kinds": {
+        "bug": "Bug",
+        "idea": "Ideia",
+        "other": "Feedback"
+      },
+      "diagnostics": "Incluir diagnóstico",
+      "diagnosticsHint": "(ajuda a equipe a reproduzir)",
+      "send": "Enviar",
+      "edit": "Editar",
+      "cancel": "Cancelar",
+      "editHint": "Mantenha seu atalho pressionado e diga a nova mensagem.",
+      "voiceHint": "Ou diga “enviar”",
+      "sent": "Enviado. Obrigado, a equipe vai ver.",
+      "failed": "Não foi possível enviar agora. Copiar e tentar mais tarde?",
+      "offer": "Quer que eu relate isso à equipe?",
+      "offerAccept": "Relatar"
+    },
     "notes": {
       "ready": "Suas notas estão prontas",
       "actionItems": "Tarefas: {{n}}",
@@ -1414,8 +1478,6 @@
     },
     "suggestions": {
       "title": "Sugestões que você recebe",
-      "description": "Diga “agora não”, “não me mostre isso” ou “não neste app” quando uma aparecer, e ele aprende. Mude isso aqui quando quiser.",
-      "mutedIn": "Desativado em {{apps}}",
       "kinds": {
         "summarise_thread": "Resumir conversas longas de e-mail",
         "draft_reply": "Rascunhar respostas",
@@ -1433,7 +1495,16 @@
         "translate_page": "Traduzir páginas noutras línguas",
         "help_here": "Outras ajudas que ele acha que você quer",
         "meeting_nudge": "Lembretes durante reuniões"
-      }
+      },
+      "learned": {
+        "title": "O que você me disse",
+        "empty": "Nada ainda. Quando você recusar uma sugestão, ela aparece aqui.",
+        "never": "Nunca: {{kind}}",
+        "notIn": "{{kind}}, não no {{app}}",
+        "undo": "Desfazer"
+      },
+      "teach": "Quando uma sugestão aparecer, diga “agora não”, “não me mostre isso” ou “não neste app”, e o {{appName}} lembra.",
+      "unknownKind": "Um tipo de sugestão"
     },
     "macOnly": "Por enquanto, só no Mac",
     "days_many": "{{count}} dias",

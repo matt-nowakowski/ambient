@@ -676,7 +676,7 @@ impl Default for AgentSettings {
             on_device_only: false,
             on_device_when_possible: false,
             paused_until: None,
-            suggestions_per_hour: 3,
+            suggestions_per_hour: crate::agent::budget::HOURLY_CAP,
             suggestion_prefs: Default::default(),
         }
     }

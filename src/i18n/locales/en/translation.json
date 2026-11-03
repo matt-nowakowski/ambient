@@ -1182,14 +1182,10 @@
       "interrupted": "The answer was interrupted.",
       "opened": "Opened",
       "searching": "Searching in your browser",
-      "reminderAdded": "Reminder added",
-      "eventAdded": "Added to your calendar",
       "shortcutRan": "Shortcut ran",
       "cantDoYet": "I can't do that yet. Computer use is coming soon.",
       "appNotFound": "Couldn't find that app.",
-      "shortcutNotFound": "Couldn't find that Shortcut.",
       "automationNotFound": "Couldn't find a Start menu shortcut or Power Automate flow with that name.",
-      "calendarPermission": "Allow Calendars and Reminders access in System Settings first.",
       "undone": "Undone",
       "meetingStarted": "Taking notes. Let people know.",
       "copied": "Copied",
@@ -1203,7 +1199,9 @@
       "noWebResults": "Couldn't search the web just now, so this is from what I know.",
       "timeout": "That took too long. Try again.",
       "needsCloud": "This needs the cloud, and Intelligence is set to “On this computer only”. Change it in Privacy.",
-      "cloudOfferOn": "Suggestions from the cloud are on. Change it in Privacy."
+      "cloudOfferOn": "Suggestions from the cloud are on. Change it in Privacy.",
+      "cloudUnavailable": "Cloud suggestions are unavailable right now.",
+      "cloudLimited": "Cloud suggestions are paused for now: today's limit is reached, or they need Pro."
     },
     "undo": "Undo",
     "close": "Close",
@@ -1238,7 +1236,12 @@
       "translatePage": "Translate this page?",
       "translate": "Translate",
       "helpHere": "Anything I can help with here?",
-      "help": "Help"
+      "help": "Help",
+      "summariseThreadCount": "Want me to summarise this {{count}}-message thread?",
+      "replyTo": "Reply to {{name}}?",
+      "reply": "Reply",
+      "translatePageLang": "This page is in {{language}}. Translate it?",
+      "explainErrorWhat": "Hit “{{error}}”. Want the likely fix?"
     },
     "nudge": {
       "findIt": "Find it",
@@ -1260,13 +1263,74 @@
     "draft": {
       "title": "Did you mean to type this?",
       "composed": "Here's your draft.",
-      "focusHint": "Click into a text field to insert it."
+      "focusHint": "Click into a text field to insert it.",
+      "askInstead": "Ask {{appName}} instead"
     },
     "source": {
       "searchDrive": "Search Google Drive",
       "searchGmail": "Search Gmail"
     },
     "cloudOffer": "{{appName}} can suggest help on this computer by sending a redacted snippet of the window to its servers. Turn on?",
+    "when": {
+      "today": "{{time}} today",
+      "tomorrow": "{{time}} tomorrow",
+      "on": "{{time}} on {{day}}"
+    },
+    "notice": {
+      "opened": "Opened {{name}}",
+      "appNotFound": "I couldn't find an app called “{{name}}” on this computer. Want me to search the web for it?",
+      "badLink": "That link doesn't look right, so I didn't open it. You can copy it instead.",
+      "noBrowser": "I couldn't open your browser.",
+      "reminderSetAt": "Reminder set for {{when}}: {{title}}",
+      "reminderSet": "Reminder added: {{title}}",
+      "remindersPermission": "I can't add reminders yet: {{appName}} needs access to Reminders. Turn it on in System Settings, or copy it for now.",
+      "reminderFailed": "Reminders didn't accept “{{title}}”. Want me to add it to your calendar instead, or copy it?",
+      "reminderNeedsTime": "On {{os}} I can only set reminders with a time. Say when, like “remind me at 5 to …”, or copy it for now.",
+      "reminderLinux": "I can't set reminders on this Linux system: it has no notification timer (systemd and notify-send). Want me to add it to your calendar instead, or copy it?",
+      "reminderWindows": "Windows didn't let me schedule a notification. Want me to add it to your calendar instead, or copy it?",
+      "reminderNotificationsOff": "Notifications are off for {{appName}} on {{os}}, so a reminder wouldn't show. Want me to add it to your calendar instead, or copy it?",
+      "eventNeedsTime": "I couldn't tell when “{{title}}” is. Say the day and time, or copy it for now.",
+      "eventAdded": "Added to your calendar for {{when}}: {{title}}",
+      "calendarsPermission": "I can't add events yet: {{appName}} needs access to Calendars. Turn it on in System Settings, or copy it for now.",
+      "eventFailed": "Your calendar didn't accept “{{title}}”. You can copy it and add it yourself.",
+      "eventIcsOpened": "Opened “{{title}}” ({{when}}) in your calendar app. Save it there to add it.",
+      "noCalendarApp": "No calendar app is connected on {{os}}, so I saved a calendar file ({{file}}) you can import.",
+      "shortcutRan": "Ran “{{name}}”",
+      "shortcutNotFound": "I couldn't find a Shortcut called “{{name}}”. Want to know how to make one?",
+      "cantDoYet": "I can't {{what}} yet. Want me to show you how to do it yourself?",
+      "cantDoYetPlain": "I can't do that on this computer yet. Want me to show you how to do it yourself?",
+      "failed": "That didn't work this time. Try again in a moment.",
+      "undoFailed": "I couldn't undo that one. You can remove it in the app itself."
+    },
+    "offer": {
+      "searchWeb": "Search the web",
+      "copyLink": "Copy link",
+      "answerHere": "Answer here",
+      "addToCalendar": "Add to calendar",
+      "openSettings": "Open Settings",
+      "showFile": "Show file",
+      "howTo": "Show me how",
+      "showMeHow": "Show me how"
+    },
+    "report": {
+      "title": "Send this to the {{appName}} team?",
+      "kinds": {
+        "bug": "Bug",
+        "idea": "Idea",
+        "other": "Feedback"
+      },
+      "diagnostics": "Include diagnostics",
+      "diagnosticsHint": "(helps the team reproduce it)",
+      "send": "Send",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "editHint": "Hold your shortcut and say the new message.",
+      "voiceHint": "Or say “send it”",
+      "sent": "Sent. Thanks, the team will see it.",
+      "failed": "Couldn't send it right now. Copy it and try again later?",
+      "offer": "Want me to report this to the team?",
+      "offerAccept": "Report"
+    },
     "notes": {
       "ready": "Your notes are ready",
       "actionItems": "Action items: {{n}}",
@@ -1403,8 +1467,6 @@
     },
     "suggestions": {
       "title": "Suggestions you get",
-      "description": "Say “not now”, “don't show me these” or “not in this app” when one appears, and it learns. Change it here any time.",
-      "mutedIn": "Off in {{apps}}",
       "kinds": {
         "summarise_thread": "Summarise long email threads",
         "draft_reply": "Draft replies",
@@ -1422,7 +1484,16 @@
         "translate_page": "Translate pages in other languages",
         "help_here": "Other help it thinks you'd want",
         "meeting_nudge": "Nudges during meetings"
-      }
+      },
+      "learned": {
+        "title": "What you've told me",
+        "empty": "Nothing yet. When you turn a suggestion down, it shows up here.",
+        "never": "Never: {{kind}}",
+        "notIn": "{{kind}}, not in {{app}}",
+        "undo": "Undo"
+      },
+      "teach": "When a suggestion appears, say “not now”, “don't show me these” or “not in this app”, and {{appName}} remembers.",
+      "unknownKind": "A type of suggestion"
     },
     "macOnly": "Mac only for now",
     "promises": {

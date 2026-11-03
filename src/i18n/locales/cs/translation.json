@@ -1198,14 +1198,10 @@
       "interrupted": "Odpověď byla přerušena.",
       "opened": "Otevřeno",
       "searching": "Hledání v prohlížeči",
-      "reminderAdded": "Připomínka přidána",
-      "eventAdded": "Přidáno do kalendáře",
       "shortcutRan": "Zkratka spuštěna",
       "cantDoYet": "To zatím neumím. Ovládání počítače brzy přibude.",
       "appNotFound": "Tuto aplikaci se nepodařilo najít.",
-      "shortcutNotFound": "Tuto zkratku se nepodařilo najít.",
       "automationNotFound": "Nenašel jsem zástupce v nabídce Start ani tok Power Automate s tímto názvem.",
-      "calendarPermission": "Nejdřív povolte přístup ke Kalendáři a Připomínkám v Nastavení systému.",
       "undone": "Vráceno zpět",
       "meetingStarted": "Dělám poznámky. Dejte ostatním vědět.",
       "copied": "Zkopírováno",
@@ -1219,7 +1215,9 @@
       "noWebResults": "Teď se nepodařilo hledat na webu, takže odpovídám z toho, co vím.",
       "timeout": "Trvalo to příliš dlouho. Zkuste to znovu.",
       "needsCloud": "Tohle potřebuje cloud a Inteligence je nastavená na „Jen na tomto počítači“. Změňte to v Soukromí.",
-      "cloudOfferOn": "Návrhy z cloudu jsou zapnuté. Změňte to v Soukromí."
+      "cloudOfferOn": "Návrhy z cloudu jsou zapnuté. Změňte to v Soukromí.",
+      "cloudUnavailable": "Cloudové návrhy teď nejsou dostupné.",
+      "cloudLimited": "Cloudové návrhy jsou zatím pozastavené: dnešní limit je vyčerpán, nebo vyžadují Pro."
     },
     "undo": "Zpět",
     "close": "Zavřít",
@@ -1254,7 +1252,12 @@
       "translatePage": "Přeložit tuto stránku?",
       "translate": "Přeložit",
       "helpHere": "Můžu tu s něčím pomoct?",
-      "help": "Pomoz"
+      "help": "Pomoz",
+      "summariseThreadCount": "Mám shrnout toto vlákno o {{count}} zprávách?",
+      "replyTo": "Odpovědět: {{name}}?",
+      "reply": "Odpovědět",
+      "translatePageLang": "Jazyk stránky: {{language}}. Přeložit?",
+      "explainErrorWhat": "Chyba „{{error}}“. Chcete pravděpodobné řešení?"
     },
     "nudge": {
       "findIt": "Najít",
@@ -1276,13 +1279,74 @@
     "draft": {
       "title": "Chtěli jste napsat tohle?",
       "composed": "Tady je koncept.",
-      "focusHint": "Klikněte do textového pole a vložte ho."
+      "focusHint": "Klikněte do textového pole a vložte ho.",
+      "askInstead": "Zeptat se raději aplikace {{appName}}"
     },
     "source": {
       "searchDrive": "Hledat na Disku Google",
       "searchGmail": "Hledat v Gmailu"
     },
     "cloudOffer": "{{appName}} může navrhovat pomoc na tomto počítači tak, že na své servery odešle začerněný výřez okna. Zapnout?",
+    "when": {
+      "today": "dnes v {{time}}",
+      "tomorrow": "zítra v {{time}}",
+      "on": "{{day}} v {{time}}"
+    },
+    "notice": {
+      "opened": "Otevřeno: {{name}}",
+      "appNotFound": "Na tomto počítači jsem nenašel aplikaci „{{name}}“. Mám ji vyhledat na webu?",
+      "badLink": "Ten odkaz nevypadá správně, proto jsem ho neotevřel. Můžete ho místo toho zkopírovat.",
+      "noBrowser": "Nepodařilo se otevřít prohlížeč.",
+      "reminderSetAt": "Připomínka nastavena na {{when}}: {{title}}",
+      "reminderSet": "Připomínka přidána: {{title}}",
+      "remindersPermission": "Připomínky zatím nemůžu přidat: {{appName}} potřebuje přístup k Připomínkám. Zapněte ho v Nastavení systému, nebo text zatím zkopírujte.",
+      "reminderFailed": "Připomínky nepřijaly „{{title}}“. Mám to místo toho přidat do kalendáře, nebo zkopírovat?",
+      "reminderNeedsTime": "V systému {{os}} umím nastavit připomínky jen s časem. Řekněte kdy, třeba „připomeň mi v 5, abych …“, nebo text zatím zkopírujte.",
+      "reminderLinux": "V tomto systému Linux nemůžu nastavit připomínky: chybí časovač oznámení (systemd a notify-send). Mám to místo toho přidat do kalendáře, nebo zkopírovat?",
+      "reminderWindows": "Windows mi nedovolil naplánovat oznámení. Mám to místo toho přidat do kalendáře, nebo zkopírovat?",
+      "reminderNotificationsOff": "Oznámení pro {{appName}} jsou v systému {{os}} vypnutá, takže by se připomínka nezobrazila. Mám to místo toho přidat do kalendáře, nebo zkopírovat?",
+      "eventNeedsTime": "Nepoznal jsem, kdy je „{{title}}“. Řekněte den a čas, nebo text zatím zkopírujte.",
+      "eventAdded": "Přidáno do kalendáře na {{when}}: {{title}}",
+      "calendarsPermission": "Události zatím nemůžu přidat: {{appName}} potřebuje přístup ke Kalendářům. Zapněte ho v Nastavení systému, nebo text zatím zkopírujte.",
+      "eventFailed": "Kalendář nepřijal „{{title}}“. Můžete to zkopírovat a přidat sami.",
+      "eventIcsOpened": "„{{title}}“ ({{when}}) otevřeno v aplikaci kalendáře. Uložte to tam, aby se to přidalo.",
+      "noCalendarApp": "V systému {{os}} není připojená žádná aplikace kalendáře, proto jsem uložil soubor kalendáře ({{file}}), který můžete importovat.",
+      "shortcutRan": "Spuštěno: „{{name}}“",
+      "shortcutNotFound": "Nenašel jsem zkratku s názvem „{{name}}“. Chcete vědět, jak ji vytvořit?",
+      "cantDoYet": "Tohle zatím neumím: {{what}}. Mám vám ukázat, jak to udělat sami?",
+      "cantDoYetPlain": "Tohle na tomto počítači zatím neumím. Mám vám ukázat, jak to udělat sami?",
+      "failed": "Tentokrát to nevyšlo. Zkuste to za chvíli znovu.",
+      "undoFailed": "Tohle se mi nepodařilo vrátit. Můžete to odstranit přímo v aplikaci."
+    },
+    "offer": {
+      "searchWeb": "Hledat na webu",
+      "copyLink": "Kopírovat odkaz",
+      "answerHere": "Odpovědět zde",
+      "addToCalendar": "Přidat do kalendáře",
+      "openSettings": "Otevřít Nastavení",
+      "showFile": "Zobrazit soubor",
+      "howTo": "Ukázat jak",
+      "showMeHow": "Ukázat jak"
+    },
+    "report": {
+      "title": "Odeslat to týmu {{appName}}?",
+      "kinds": {
+        "bug": "Chyba",
+        "idea": "Nápad",
+        "other": "Zpětná vazba"
+      },
+      "diagnostics": "Přiložit diagnostiku",
+      "diagnosticsHint": "(pomůže týmu problém zopakovat)",
+      "send": "Odeslat",
+      "edit": "Upravit",
+      "cancel": "Zrušit",
+      "editHint": "Podržte zkratku a řekněte novou zprávu.",
+      "voiceHint": "Nebo řekněte „pošli to“",
+      "sent": "Odesláno. Díky, tým to uvidí.",
+      "failed": "Teď se to nepodařilo odeslat. Zkopírovat a zkusit to později?",
+      "offer": "Mám to nahlásit týmu?",
+      "offerAccept": "Nahlásit"
+    },
     "notes": {
       "ready": "Vaše poznámky jsou hotové",
       "actionItems": "Úkoly: {{n}}",
@@ -1425,8 +1489,6 @@
     },
     "suggestions": {
       "title": "Návrhy, které dostáváte",
-      "description": "Když se nějaký objeví, řekněte „teď ne“, „tyhle mi neukazuj“ nebo „ne v této aplikaci“ a naučí se to. Změnit to můžete kdykoli tady.",
-      "mutedIn": "Vypnuto v: {{apps}}",
       "kinds": {
         "summarise_thread": "Shrnovat dlouhá e-mailová vlákna",
         "draft_reply": "Navrhovat odpovědi",
@@ -1444,7 +1506,16 @@
         "translate_page": "Překlad stránek v jiných jazycích",
         "help_here": "Další pomoc, o které si myslí, že ji budete chtít",
         "meeting_nudge": "Připomínky během schůzek"
-      }
+      },
+      "learned": {
+        "title": "Co jste mi řekli",
+        "empty": "Zatím nic. Když návrh odmítnete, objeví se tady.",
+        "never": "Nikdy: {{kind}}",
+        "notIn": "{{kind}}, ne v {{app}}",
+        "undo": "Vrátit"
+      },
+      "teach": "Když se objeví návrh, řekněte „teď ne“, „tohle mi neukazuj“ nebo „ne v této aplikaci“ a {{appName}} si to zapamatuje.",
+      "unknownKind": "Typ návrhu"
     },
     "macOnly": "Zatím jen pro Mac",
     "days_few": "{{count}} dny",

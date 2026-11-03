@@ -41,23 +41,23 @@ const pub = toPublic(defaults(), new Date("2026-11-02T00:00:00Z"));
 check(
   "public config shape",
   pub.schema === 1 &&
-    pub.hourly_budget === 3 &&
-    pub.judge.timeout_ms === 4000 &&
+    pub.hourly_budget === 10 &&
+    pub.judge.timeout_ms === 8000 &&
     pub.judge.cloud_timeout_ms === 7000 &&
-    pub.judge.min_confidence === 0.7 &&
+    pub.judge.min_confidence === 0.6 &&
     pub.router.did_you_mean_bias === 0.5 &&
     pub.answer.first_byte_timeout_ms === 25000 &&
     pub.answer.idle_timeout_ms === 20000 &&
     pub.search.timeout_ms === 6000 &&
     Object.keys(pub.kinds).length === KINDS.length &&
     pub.kinds.draft_reply.enabled === true &&
-    pub.kinds.draft_reply.min_confidence === 0.7 &&
-    pub.kinds.draft_reply.cooldown_min === 60 &&
+    pub.kinds.draft_reply.min_confidence === 0.6 &&
+    pub.kinds.draft_reply.cooldown_min === 3 &&
     pub.generated_at === "2026-11-02T00:00:00.000Z",
 );
 
 // ── Clamping ──────────────────────────────────────────────────────────
-check("clamped to max", clampValue("judge.timeout_ms", 999_999) === 10_000);
+check("clamped to max", clampValue("judge.timeout_ms", 999_999) === 15_000);
 check("clamped to min", clampValue("hourly_budget", 0) === 1);
 check("integers rounded", clampValue("kind.draft_reply.cooldown_min", 61.6) === 62);
 check("fractions keep two decimals", clampValue("judge.min_confidence", 0.7345) === 0.73);
@@ -67,14 +67,14 @@ check("unknown kind ignored", clampValue("kind.make_coffee.enabled", true) === n
 check("wrong type ignored", clampValue("hourly_budget", "5") === null && clampValue("kind.draft_reply.enabled", 1) === null);
 check("NaN / Infinity ignored", clampValue("hourly_budget", NaN) === null && clampValue("hourly_budget", Infinity) === null);
 const clean = sanitize({ hourly_budget: 50, nonsense: 1, "kind.draft_reply.enabled": false });
-check("sanitize keeps known, clamps, drops unknown", clean.hourly_budget === 10 && clean["kind.draft_reply.enabled"] === false && !("nonsense" in clean));
+check("sanitize keeps known, clamps, drops unknown", clean.hourly_budget === 20 && clean["kind.draft_reply.enabled"] === false && !("nonsense" in clean));
 
 // ── Precedence: manual > auto > default ───────────────────────────────
 const r = resolve({ hourly_budget: 5, "judge.timeout_ms": 6000 }, { hourly_budget: 2 });
 check("manual wins over auto", r.values.hourly_budget === 2 && r.sources.hourly_budget === "manual");
 check("auto wins over default", r.values["judge.timeout_ms"] === 6000 && r.sources["judge.timeout_ms"] === "auto");
 check("default otherwise", r.values["answer.idle_timeout_ms"] === 20000 && r.sources["answer.idle_timeout_ms"] === "default");
-check("manual is clamped too", resolve({}, { "judge.timeout_ms": 1 }).values["judge.timeout_ms"] === 2000);
+check("manual is clamped too", resolve({}, { "judge.timeout_ms": 1 }).values["judge.timeout_ms"] === 3000);
 
 // ── Tuning rules ──────────────────────────────────────────────────────
 const base: TuneStats = { kinds: {}, judge: {}, route: { total: 0, didYouMean: 0 } };
@@ -83,14 +83,14 @@ const d = defaults();
 const keys = (cs: { key: string }[]) => cs.map((c) => c.key).sort().join(",");
 
 let c = tune(d, stats({ kinds: { help_here: { offered: 60, accepted: 6 } } }));
-check("<15% over ≥50 offers → +0.05 min confidence", c.length === 1 && c[0].key === "kind.help_here.min_confidence" && c[0].new === 0.75 && c[0].old === 0.7);
+check("<15% over ≥50 offers → +0.05 min confidence", c.length === 1 && c[0].key === "kind.help_here.min_confidence" && c[0].new === 0.65 && c[0].old === 0.6);
 check("the change carries its reason and numbers", /10%/.test(c[0].reason) && c[0].stats.offered === 60 && c[0].stats.accepted === 6);
 
 c = tune(d, stats({ kinds: { help_here: { offered: 49, accepted: 0 } } }));
 check("low acceptance under the minimum sample → no change", c.length === 0);
 
 c = tune({ ...d, "kind.help_here.min_confidence": 0.95 }, stats({ kinds: { help_here: { offered: 60, accepted: 6 } } }));
-check("confidence at its ceiling → longer cooldown (×1.5)", c.length === 1 && c[0].key === "kind.help_here.cooldown_min" && c[0].new === 90);
+check("confidence at its ceiling → longer cooldown (×1.5)", c.length === 1 && c[0].key === "kind.help_here.cooldown_min" && c[0].new === 5);
 
 c = tune({ ...d, "kind.help_here.min_confidence": 0.95, "kind.help_here.cooldown_min": 1440 }, stats({ kinds: { help_here: { offered: 60, accepted: 6 } } }));
 check("both at their bounds → no change", c.length === 0);
@@ -105,16 +105,16 @@ c = tune({ ...d, "kind.price_check.enabled": false }, stats({ kinds: { price_che
 check("an already disabled kind isn't touched", c.length === 0);
 
 c = tune(d, stats({ kinds: { summarise_thread: { offered: 80, accepted: 48 } } }));
-check("≥50% over ≥50 offers → −0.02 min confidence", c.length === 1 && c[0].key === "kind.summarise_thread.min_confidence" && c[0].new === 0.68);
+check("≥50% over ≥50 offers → −0.02 min confidence", c.length === 1 && c[0].key === "kind.summarise_thread.min_confidence" && c[0].new === 0.58);
 
 c = tune({ ...d, "kind.summarise_thread.min_confidence": 0.5 }, stats({ kinds: { summarise_thread: { offered: 80, accepted: 48 } } }));
-check("confidence at its floor → shorter cooldown (÷1.25)", c.length === 1 && c[0].key === "kind.summarise_thread.cooldown_min" && c[0].new === 48);
+check("confidence at its floor → shorter cooldown (÷1.25)", c.length === 1 && c[0].key === "kind.summarise_thread.cooldown_min" && c[0].new === 2);
 
 c = tune(d, stats({ kinds: { summarise_thread: { offered: 80, accepted: 20 } } }));
 check("25–50% acceptance → no change", c.length === 0);
 
 c = tune(d, stats({ judge: { device: { runs: 100, timeouts: 25 }, cloud: { runs: 100, timeouts: 10 } } }));
-check("device judge timeouts >20% over ≥50 runs → +1000 ms", c.length === 1 && c[0].key === "judge.timeout_ms" && c[0].new === 5000);
+check("device judge timeouts >20% over ≥50 runs → +1000 ms", c.length === 1 && c[0].key === "judge.timeout_ms" && c[0].new === 9000);
 
 c = tune(d, stats({ judge: { cloud: { runs: 60, timeouts: 30 } } }));
 check("cloud judge → cloud timeout", c.length === 1 && c[0].key === "judge.cloud_timeout_ms" && c[0].new === 8000);
@@ -122,7 +122,7 @@ check("cloud judge → cloud timeout", c.length === 1 && c[0].key === "judge.clo
 c = tune(d, stats({ judge: { device: { runs: 40, timeouts: 30 } } }));
 check("judge timeouts under the minimum runs → no change", c.length === 0);
 
-c = tune({ ...d, "judge.timeout_ms": 10_000 }, stats({ judge: { device: { runs: 100, timeouts: 50 } } }));
+c = tune({ ...d, "judge.timeout_ms": 15_000 }, stats({ judge: { device: { runs: 100, timeouts: 50 } } }));
 check("judge timeout at its ceiling → no change", c.length === 0);
 
 c = tune(d, stats({ route: { total: 200, didYouMean: 60 } }));

@@ -557,57 +557,83 @@ pub(crate) async fn process_transcription_output(
     // Voice agent routing: only phrases that look like a request pay for the
     // router call, and its "write" result doubles as the polish.
     let ask = mode == OutputMode::Ask;
-    // Saying "yes", "not now" or "don't show me these" while a suggestion is
-    // up answers the suggestion instead of typing.
-    if mode != OutputMode::File
-        && crate::agent::proactive::handle_voice_feedback(app, transcription).await
-    {
-        return ProcessedTranscription {
-            final_text: String::new(),
-            post_processed_text: None,
-            post_process_prompt: None,
-            agent_route: Some(crate::agent::router::Route::Handled),
-            offer_search: None,
-        };
+    use crate::agent::router::{self, Action, Route};
+    let handled = || ProcessedTranscription {
+        final_text: String::new(),
+        post_processed_text: None,
+        post_process_prompt: None,
+        agent_route: Some(Route::Handled),
+        offer_search: None,
+    };
+    if mode != OutputMode::File {
+        // A report card is up: "send it", "cancel", or (after Edit) the new
+        // message.
+        if crate::agent::report::handle_voice(app, transcription) {
+            return handled();
+        }
+        // Saying "yes", "not now" or "don't show me these" while a
+        // suggestion is up answers the suggestion instead of typing.
+        if crate::agent::proactive::handle_voice_feedback(app, transcription).await {
+            return handled();
+        }
     }
-    let cues = crate::agent::router::cues_cover(&settings.spoken_languages);
+    let cues = router::cues_cover(&settings.spoken_languages);
     // An answer card is up: what's said next may be a follow-up to it.
     let follow_up = mode == OutputMode::Dictation && crate::hud::showing_answer();
-    let help = crate::agent::router::is_help_request(transcription);
-    let compose = crate::agent::router::compose_request(transcription);
-    let compose_maybe = compose.is_none() && crate::agent::router::compose_maybe(transcription);
-    if compose.is_some() || compose_maybe {
+    let help = router::is_help_request(transcription);
+    let compose_first = crate::agent::compose::compose_intent(transcription);
+    let compose_maybe = compose_first == crate::agent::compose::ComposeIntent::Maybe;
+    let compose_yes = !compose_maybe && compose_first != crate::agent::compose::ComposeIntent::No;
+    if compose_yes || compose_maybe {
         debug!(
             "compose first pass: {}",
-            if compose.is_some() {
+            if compose_yes {
                 "yes"
             } else {
                 "maybe (router decides)"
             }
         );
     }
-    let routable = ask
-        || (mode == OutputMode::Dictation
-            && settings.agent.routing
-            && (crate::agent::router::looks_like_request(transcription)
+    let reminder =
+        crate::agent::when::reminder_request(transcription, chrono::Local::now().naive_local());
+    let report = crate::agent::report::report_intent(transcription);
+    let agent_on = mode == OutputMode::Dictation && settings.agent.routing;
+    let cued = ask
+        || (agent_on
+            && (router::looks_like_request(transcription)
                 || help
-                || compose.is_some()
+                || compose_yes
                 || compose_maybe
+                || reminder.is_some()
+                || report.is_some()
                 || follow_up
                 || (!cues && post_process)));
-    let place = if routable {
-        tauri::async_runtime::spawn_blocking(crate::agent::router::place)
+    // Where the user is: needed to route, and to know whether there's a
+    // text field at all (with none, speech is for the agent by default).
+    let place = if cued || agent_on {
+        tauri::async_runtime::spawn_blocking(router::place)
             .await
             .unwrap_or_default()
     } else {
         Default::default()
     };
+    let no_field = place.no_field;
     // Typing a prompt into ChatGPT/Claude is writing, however it sounds.
-    let routable =
-        routable && (ask || !crate::agent::router::always_write_here(&place, transcription));
-    let agent_route = |route: crate::agent::router::Route| {
-        let name = crate::agent::router::route_name(Some(&route));
-        crate::telemetry::route(name, ask, place.editable);
+    let routable = (cued || (agent_on && no_field))
+        && (ask || !router::always_write_here(&place, transcription));
+    let sounds = router::sounds_like_request(transcription);
+    let strong = router::strong_request(transcription);
+    if agent_on || ask {
+        debug!(
+            "route inputs: no_field={no_field} editable={} messaging={} sounds_like_request={sounds} strong={strong} reminder={} report={} follow_up={follow_up}",
+            place.editable,
+            place.is_messaging(),
+            reminder.is_some(),
+            report.as_ref().map_or("none", |r| if r.explicit { "explicit" } else { "vague" }),
+        );
+    }
+    let agent_route = |route: Route| {
+        crate::telemetry::route(router::route_name(Some(&route)), ask, place.editable);
         ProcessedTranscription {
             final_text: String::new(),
             post_processed_text: None,
@@ -616,19 +642,34 @@ pub(crate) async fn process_transcription_output(
             offer_search: None,
         }
     };
+    let decision = router::decide(
+        transcription,
+        &router::Situation {
+            no_field,
+            editable: place.editable,
+            messaging: place.is_messaging(),
+            ai_chat: place.is_ai_chat(),
+            ask,
+            follow_up,
+            did_you_mean_bias: crate::remote_config::agent_config().did_you_mean_bias,
+        },
+        chrono::Local::now().naive_local(),
+    );
     if routable && !is_blank_transcription(transcription) {
-        // Decided here, with no model call: "what can I say?" and "reply
-        // here saying …" (drafted, never typed word for word).
-        if help {
-            return agent_route(crate::agent::router::Route::Help);
+        // Right after an answer, "that's wrong": offer to report it.
+        if (follow_up || no_field || ask)
+            && crate::agent::report::offer_after_answer(app, transcription)
+        {
+            return handled();
         }
-        if let Some(instruction) = compose {
-            return agent_route(crate::agent::router::Route::Compose(instruction));
+        // Decided here, with no model call: "what can I say?", "reply here
+        // saying …" (drafted, never typed word for word), "remind me
+        // tomorrow morning to …", "report a bug: …".
+        if let Some(route) = decision.route {
+            return agent_route(route);
         }
     }
-    // Certainly for the agent: the Ask key, or a follow-up while the answer
-    // card is up and no text field has focus.
-    let to_agent = ask || (follow_up && !place.editable);
+    let to_agent = decision.to_agent;
     if routable && to_agent && !is_blank_transcription(transcription) {
         // Show it was heard straight away, and read the screen while the
         // router decides.
@@ -641,7 +682,7 @@ pub(crate) async fn process_transcription_output(
         crate::agent::answer::prefetch_screen(app);
         if crate::agent::llm::target(app).is_none() {
             // No model to route with: answer it (the server says why if it can't).
-            return agent_route(crate::agent::router::Route::Answer {
+            return agent_route(Route::Answer {
                 query: transcription.to_string(),
                 needs_web: false,
                 about_screen: false,
@@ -657,26 +698,29 @@ pub(crate) async fn process_transcription_output(
         } else {
             String::new()
         };
-        let previous =
-            (ask || follow_up || crate::agent::router::looks_like_request(transcription))
-                .then(crate::agent::answer::last_turn)
-                .flatten();
-        let routed =
-            crate::agent::router::route(app, transcription, &rules, &place, to_agent, previous)
-                .await;
-        // Ask never types: if the router still said "write", answer it instead.
+        let previous = (ask || follow_up || sounds)
+            .then(crate::agent::answer::last_turn)
+            .flatten();
+        let routed = router::route(app, transcription, &rules, &place, to_agent, previous).await;
+        // Never typed when it's for the agent: if the router still said
+        // "write" (or couldn't say), answer it instead.
         let routed = match routed {
-            Some(crate::agent::router::Route::Write(_)) | None if to_agent => {
-                Some(crate::agent::router::Route::Answer {
-                    query: transcription.to_string(),
-                    needs_web: false,
-                    about_screen: false,
-                })
+            Some(Route::Write(_)) | None if to_agent => Some(Route::Answer {
+                query: transcription.to_string(),
+                needs_web: false,
+                about_screen: false,
+            }),
+            // The router's reminder without a time: the words may have one.
+            Some(Route::Act(Action::Reminder { title, due: None })) => {
+                Some(Route::Act(Action::Reminder {
+                    title,
+                    due: reminder.as_ref().and_then(|r| r.due_string()),
+                }))
             }
             other => other,
         };
         match routed {
-            Some(crate::agent::router::Route::Write(text)) => {
+            Some(Route::Write(text)) => {
                 if post_process {
                     let text = keep_custom_spellings(&settings, text);
                     post_processed_text = Some(text.clone());
@@ -684,12 +728,16 @@ pub(crate) async fn process_transcription_output(
                     final_text = text;
                 }
                 // Only where a search is plausible: not when writing to people
-                // (messaging, email, docs) or prompting an AI assistant.
+                // (messaging, email, docs) or prompting an AI assistant, and
+                // not with no field (that card offers "Ask instead").
                 let question = transcription.trim_end().ends_with('?')
-                    || crate::agent::router::starts_like_question(transcription);
-                let offer_search =
-                    (!to_agent && question && !place.is_messaging() && !place.is_ai_chat())
-                        .then(|| transcription.trim().to_string());
+                    || router::starts_like_question(transcription);
+                let offer_search = (!to_agent
+                    && !no_field
+                    && question
+                    && !place.is_messaging()
+                    && !place.is_ai_chat())
+                .then(|| transcription.trim().to_string());
                 crate::telemetry::route("write", ask, place.editable);
                 crate::telemetry::dictation(post_processed_text.is_some(), started.elapsed());
                 return ProcessedTranscription {

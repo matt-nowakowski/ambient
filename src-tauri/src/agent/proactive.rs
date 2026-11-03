@@ -11,7 +11,7 @@
 //! agent. Rate-limited, backs off on dismissals, and never interrupts a
 //! recording, a meeting or another HUD card.
 
-use std::collections::{HashMap, VecDeque};
+use std::collections::{BTreeMap, HashMap, VecDeque};
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
 
@@ -25,8 +25,8 @@ use crate::hud::{self, HudContent};
 
 pub const ID_PREFIX: &str = "suggest-";
 const TEXT_CHARS: usize = 8000;
-const WINDOW_REPEAT: Duration = Duration::from_secs(60 * 60);
-const BACKOFF: Duration = Duration::from_secs(24 * 60 * 60);
+/// The judge's summary offers need at least this much text on screen.
+const MIN_SUMMARY_CHARS: usize = 2500;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Kind {
@@ -101,6 +101,51 @@ impl Kind {
         }
     }
 
+    /// How much an offer of this kind is worth when several rules fire on
+    /// one window: summarising a long thread beats drafting a reply, which
+    /// beats a date in it.
+    pub fn priority(self) -> u8 {
+        match self {
+            Kind::SummariseThread => 100,
+            Kind::MeetingPrep => 95,
+            Kind::ExplainError => 90,
+            Kind::FixFormula => 88,
+            Kind::ReviewCode => 85,
+            Kind::DraftReply => 80,
+            Kind::AddToCalendar => 70,
+            Kind::TightenDraft => 65,
+            Kind::CommitMessage => 60,
+            Kind::AnswerSearch => 58,
+            Kind::TranslatePage => 55,
+            Kind::SummarisePage => 50,
+            Kind::FillForm => 45,
+            Kind::PriceCheck => 40,
+            Kind::Help => 30,
+        }
+    }
+
+    /// The concrete offer when there's something to name ("Want me to
+    /// summarise this 40-message thread?", "Reply to Ana?", "This page is in
+    /// German. Translate it?"); else the kind's plain wording.
+    fn title_key_with(self, vars: &BTreeMap<String, String>) -> &'static str {
+        match self {
+            Kind::SummariseThread if vars.contains_key("count") => {
+                "hud.suggest.summariseThreadCount"
+            }
+            Kind::DraftReply if vars.contains_key("name") => "hud.suggest.replyTo",
+            Kind::TranslatePage if vars.contains_key("lang") => "hud.suggest.translatePageLang",
+            Kind::ExplainError if vars.contains_key("error") => "hud.suggest.explainErrorWhat",
+            _ => self.title_key(),
+        }
+    }
+
+    fn accept_key_with(self, vars: &BTreeMap<String, String>) -> &'static str {
+        match self {
+            Kind::DraftReply if vars.contains_key("name") => "hud.suggest.reply",
+            _ => self.accept_key(),
+        }
+    }
+
     fn title_key(self) -> &'static str {
         match self {
             Kind::SummariseThread => "hud.suggest.summariseThread",
@@ -148,15 +193,14 @@ struct Pending {
     header: String,
     /// The user's own draft (TightenDraft), or the product title (PriceCheck).
     focus: String,
+    /// What the offer named ("name" of the person to reply to, …).
+    vars: BTreeMap<String, String>,
 }
 
 #[derive(Default)]
 struct State {
-    shown: VecDeque<Instant>,
-    /// Window keys already offered, so the same thread isn't offered twice.
-    seen: HashMap<String, Instant>,
-    /// Dismissals per kind; two in a row back that kind off for a day.
-    dismissed: HashMap<Kind, (u32, Option<Instant>)>,
+    /// How often suggestions may interrupt (see `budget`).
+    budget: super::budget::Budget,
     pending: HashMap<String, Pending>,
     /// Recent web searches (time, query), to notice rephrasing.
     searches: VecDeque<(Instant, String)>,
@@ -405,16 +449,111 @@ fn is_webmail(url: &str) -> bool {
         || url.contains("app.superhuman.com")
 }
 
-/// Pick at most one suggestion for this window, by heuristics only.
+/// The most valuable suggestion for this window, by heuristics only.
+#[cfg(test)]
 fn classify(snap: &ContextSnapshot) -> Option<Kind> {
+    candidates(snap).into_iter().next()
+}
+
+/// The mail list rather than a message: "Inbox (3) - … - Gmail".
+fn is_mail_list(title: &str, url: &str) -> bool {
+    let t = title.trim_start();
+    [
+        "Inbox", "Starred", "Sent", "Drafts", "All Mail", "Spam", "Trash",
+    ]
+    .iter()
+    .any(|p| t.starts_with(p) && t[p.len()..].trim_start().starts_with(['(', '-']))
+        || url.ends_with("#inbox")
+        || url.ends_with("#starred")
+        || url.ends_with("#sent")
+}
+
+/// Gmail's "(2 days ago)" stamp, Mail's "From:" header.
+static AGO: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?i)\(\d+\s+(?:minutes?|hours?|days?|weeks?|months?)\s+ago\)|\(now\)|\(just now\)")
+        .expect("ago")
+});
+static FROM_LINE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?im)^\s*from:\s*(.+)$").expect("from line"));
+static EMAIL_ONLY: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"^\s*<?[\w.+-]+@[\w-]+(?:\.[\w-]+)+>?\s*$").expect("email only"));
+
+/// A person's name as shown, cleaned to a short form for "Reply to Ana?".
+fn short_name(raw: &str) -> Option<String> {
+    let name = raw
+        .split('<')
+        .next()
+        .unwrap_or(raw)
+        .trim()
+        .trim_matches('"')
+        .trim();
+    if name.is_empty() || name.contains('@') || name.chars().count() > 40 {
+        return None;
+    }
+    let lower = name.to_lowercase();
+    if lower == "me" || lower.starts_with("me ") || lower == "you" {
+        return None;
+    }
+    let first = name.split_whitespace().next()?;
+    if !first.chars().next().is_some_and(char::is_alphabetic) {
+        return None;
+    }
+    Some(first.trim_end_matches(',').to_string())
+}
+
+/// Who sent the latest message in the thread on screen, when it's someone
+/// else's and not yet answered (the user's own reply would be last). Gmail
+/// lays each message out as name, address, "Mon, Oct 3, 10:14 AM (2 days
+/// ago)", "to me"; Mail as "From: Ana Lopez <ana@x.com>".
+pub(crate) fn latest_sender(text: &str) -> Option<String> {
+    let lines: Vec<&str> = text.lines().collect();
+    if let Some(i) = lines.iter().rposition(|l| AGO.is_match(l)) {
+        let mut j = i;
+        let mut name = None;
+        while j > 0 && i - j < 3 {
+            j -= 1;
+            let l = lines[j].trim();
+            if l.is_empty() || EMAIL_ONLY.is_match(l) {
+                continue;
+            }
+            name = Some(l);
+            break;
+        }
+        let to = lines
+            .get(i + 1)
+            .map(|l| l.trim().to_lowercase())
+            .unwrap_or_default();
+        // "to me", "to me, Sam": addressed to the user. "to Ana": the user wrote it.
+        if !to.is_empty() && to.starts_with("to ") && !to.contains("me") {
+            return None;
+        }
+        return name.and_then(short_name);
+    }
+    FROM_LINE
+        .captures_iter(text)
+        .last()
+        .and_then(|c| c.get(1))
+        .and_then(|m| short_name(m.as_str()))
+}
+
+/// Every precise rule that fires on this window, most valuable first.
+fn candidates(snap: &ContextSnapshot) -> Vec<Kind> {
+    let mut out = rules_fired(snap);
+    out.sort_by_key(|k| std::cmp::Reverse(k.priority()));
+    out.dedup();
+    out
+}
+
+fn rules_fired(snap: &ContextSnapshot) -> Vec<Kind> {
+    let mut out = Vec::new();
     let text = snap.text.as_deref().unwrap_or("");
     let bundle = snap.app.bundle_id.as_str();
     let url = snap.url.as_deref().unwrap_or("");
-    // Writing comes first: a long draft in the focused field.
+    // A long draft in the focused field.
     if snap.editable && WRITING_APPS.contains(&bundle) {
         let draft = snap.focused_text.as_deref().unwrap_or("");
         if draft.split_whitespace().count() >= 80 {
-            return Some(Kind::TightenDraft);
+            out.push(Kind::TightenDraft);
         }
     }
     if CHAT_APPS.contains(&bundle) {
@@ -428,11 +567,11 @@ fn classify(snap: &ContextSnapshot) -> Option<Kind> {
             .rev()
             .collect();
         if mentions_date(&tail) {
-            return Some(Kind::AddToCalendar);
+            out.push(Kind::AddToCalendar);
         }
     }
     if BROWSERS.contains(&bundle) && BUY.is_match(text) && PRICE.is_match(text) {
-        return Some(Kind::PriceCheck);
+        out.push(Kind::PriceCheck);
     }
     // Code review: a PR/MR or a diff page.
     if BROWSERS.contains(&bundle)
@@ -440,46 +579,95 @@ fn classify(snap: &ContextSnapshot) -> Option<Kind> {
             || url.contains("gitlab.") && url.contains("/merge_requests/")
             || url.contains("bitbucket.org/") && url.contains("/pull-requests/"))
     {
-        return Some(Kind::ReviewCode);
+        out.push(Kind::ReviewCode);
     }
     // A diff in the terminal: offer the commit message.
     if DEV_APPS.contains(&bundle) && DIFF.find_iter(text).count() >= 2 && !ERROR.is_match(text) {
-        return Some(Kind::CommitMessage);
+        out.push(Kind::CommitMessage);
     }
     let sheet = SHEET_APPS.contains(&bundle) || url.contains("docs.google.com/spreadsheets");
     if sheet && SHEET_ERROR.is_match(text) {
-        return Some(Kind::FixFormula);
+        out.push(Kind::FixFormula);
     }
     let mail = MAIL_APPS.contains(&bundle)
         || (BROWSERS.contains(&bundle)
             && (is_webmail(url) || is_webmail_title(&snap.window_title)));
     if mail {
-        // A long thread outranks a date in it: the summary covers the date.
+        // The inbox list mentions dates and questions from many threads:
+        // nothing there is "this" thread.
+        if is_mail_list(&snap.window_title, url) {
+            return out;
+        }
+        // All that fire; priority puts a long thread's summary first (it
+        // covers the date and the question).
         let messages = thread_messages(text);
         if messages >= LONG_THREAD || text.len() > 4000 {
-            return Some(Kind::SummariseThread);
+            out.push(Kind::SummariseThread);
+        }
+        // The latest message is someone else's: offer to reply to them.
+        if messages >= 1 && (latest_sender(text).is_some() || text.contains('?')) {
+            out.push(Kind::DraftReply);
         }
         if mentions_date(text) {
-            return Some(Kind::AddToCalendar);
+            out.push(Kind::AddToCalendar);
         }
-        if messages >= 1 && text.contains('?') {
-            return Some(Kind::DraftReply);
-        }
-        return None;
+        return out;
     }
-    if DEV_APPS.contains(&bundle) || BROWSERS.contains(&bundle) {
-        if ERROR.is_match(text) {
-            return Some(Kind::ExplainError);
-        }
+    if (DEV_APPS.contains(&bundle) || BROWSERS.contains(&bundle)) && ERROR.is_match(text) {
+        out.push(Kind::ExplainError);
     }
     if BROWSERS.contains(&bundle) && text.len() > 5000 {
         // Long prose, not a feed or a search page: mostly long lines.
         let long_lines = text.lines().filter(|l| l.len() > 160).count();
         if long_lines >= 8 {
-            return Some(Kind::SummarisePage);
+            out.push(Kind::SummarisePage);
         }
     }
-    None
+    out
+}
+
+/// The first line of the error on screen, short ("TypeError: x is null").
+fn error_line(text: &str) -> Option<String> {
+    let m = ERROR.find(text)?;
+    let start = text[..m.start()].rfind('\n').map_or(0, |i| i + 1);
+    let end = text[m.start()..]
+        .find('\n')
+        .map_or(text.len(), |i| m.start() + i);
+    let line = text[start..end].trim();
+    let line: String = line.chars().take(48).collect();
+    let line = line.trim().trim_end_matches([':', ',']).to_string();
+    (line.chars().count() >= 6).then_some(line)
+}
+
+/// What a suggestion can name, so it reads like a colleague's offer.
+fn vars_for(kind: Kind, snap: &ContextSnapshot) -> BTreeMap<String, String> {
+    let text = snap.text.as_deref().unwrap_or("");
+    let mut v = BTreeMap::new();
+    match kind {
+        Kind::SummariseThread => {
+            let n = thread_messages(text);
+            if n >= LONG_THREAD {
+                v.insert("count".into(), n.to_string());
+            }
+        }
+        Kind::DraftReply => {
+            if let Some(name) = latest_sender(text) {
+                v.insert("name".into(), name);
+            }
+        }
+        Kind::TranslatePage => {
+            if let Some(lang) = page_language(text) {
+                v.insert("lang".into(), lang);
+            }
+        }
+        Kind::ExplainError => {
+            if let Some(line) = error_line(&redact(text).0) {
+                v.insert("error".into(), line);
+            }
+        }
+        _ => {}
+    }
+    v
 }
 
 // ── Broader rules: used when the on-device judge can't run ─────────────────
@@ -632,36 +820,56 @@ pub fn consider_in_background(app: &AppHandle, snap: ContextSnapshot, per_hour: 
     }
 }
 
-/// Why nothing can be offered right now, before spending a judgement.
-fn blocked(app: &AppHandle, kind: Kind, bundle: &str, key: &str, per_hour: u32) -> Option<String> {
-    // The remote agent config can only lower the user's hourly limit.
-    let per_hour = per_hour.min(crate::remote_config::agent_config().hourly_budget);
-    if let Some(why) = crate::remote_config::holds_back(kind.name(), bundle) {
-        return Some(why);
+/// Why `kind` can't be offered here right now, and whether that holds for
+/// every kind in this app (an app cooldown, the hourly cap), before
+/// spending a judgement. The remote agent config can pause a kind, sets
+/// the hourly budget (the user's own limit can only lower it) and each
+/// kind's cooldown in an app after it's offered.
+fn blocked(
+    app: &AppHandle,
+    kind: Kind,
+    bundle: &str,
+    key: &str,
+    per_hour: u32,
+) -> Option<(String, bool)> {
+    if !crate::remote_config::agent_config()
+        .kind(kind.name())
+        .enabled
+    {
+        return Some((
+            format!("{} is paused by the agent config", kind.name()),
+            false,
+        ));
     }
+    let per_hour = hourly_budget(per_hour);
     if muted(app, kind, bundle) {
-        return Some(format!("{} muted (off, or not in this app)", kind.name()));
+        return Some((
+            format!("{} muted (off, or not in this app)", kind.name()),
+            false,
+        ));
     }
     let mut st = STATE
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
-    st.shown.retain(|t| t.elapsed() < Duration::from_secs(3600));
-    st.seen.retain(|_, t| t.elapsed() < WINDOW_REPEAT);
-    if st.shown.len() as u32 >= per_hour {
-        return Some(format!(
-            "rate limit ({} shown this hour, limit {per_hour})",
-            st.shown.len()
-        ));
+    st.budget
+        .check(kind, bundle, key, per_hour, Instant::now())
+        .err()
+        .map(|b| (b.describe(), b.is_global()))
+}
+
+/// Builds before 0.1.6 stored 3 as everyone's limit; nobody chose it (it
+/// has no control), so it doesn't hold the new budget down.
+const LEGACY_PER_HOUR: u32 = 3;
+
+/// Suggestions an hour: the agent config's budget (default 10), lowered by
+/// the user's own limit when they set one.
+fn hourly_budget(setting: u32) -> u32 {
+    let remote = crate::remote_config::agent_config().hourly_budget;
+    if setting == 0 || setting == LEGACY_PER_HOUR {
+        remote
+    } else {
+        setting.min(remote)
     }
-    if st.seen.contains_key(key) {
-        return Some("already offered for this window".into());
-    }
-    if let Some((_, Some(until))) = st.dismissed.get(&kind) {
-        if until.elapsed() < BACKOFF {
-            return Some(format!("{} backed off after dismissals", kind.name()));
-        }
-    }
-    None
 }
 
 /// Called by the agent loop once the user has stayed on a window a while.
@@ -699,6 +907,7 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
                 String::new(),
                 q,
                 None,
+                BTreeMap::new(),
                 per_hour,
             );
         }
@@ -708,13 +917,29 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
     let text_raw = snap.text.as_deref().unwrap_or("");
     let messages = thread_messages(text_raw);
 
-    // 1. The precise rules.
-    if let Some(kind) = classify(&snap) {
+    // 1. The precise rules, most valuable first: the first that isn't
+    //    muted, a repeat for this window or backed off is offered.
+    let fired = candidates(&snap);
+    if !fired.is_empty() {
         log::debug!(
-            "proactive: {bundle} title[{tag}] rule fired: {} (text_chars={text_len}, thread_messages={messages}, long_thread_at={LONG_THREAD})",
-            kind.name()
+            "proactive: {bundle} title[{tag}] rules fired: {} (text_chars={text_len}, thread_messages={messages}, long_thread_at={LONG_THREAD})",
+            fired.iter().map(|k| k.name()).collect::<Vec<_>>().join(", ")
         );
-        offer_for(app, &snap, kind, None, key, per_hour);
+        for kind in fired {
+            match blocked(app, kind, &bundle, &key, per_hour) {
+                None => {
+                    offer_for(app, &snap, kind, None, key, per_hour);
+                    return;
+                }
+                Some((why, global)) => {
+                    log::debug!("proactive: not offering {}: {why}", kind.name());
+                    if global {
+                        defer_if_cooling(app, &bundle, &key, per_hour);
+                        return;
+                    }
+                }
+            }
+        }
         return;
     }
 
@@ -741,12 +966,17 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
             super::judge::Route::Rules
         };
     }
+    log::debug!(
+        "proactive: {bundle} title[{tag}] no rule fired; judge route {route:?} (Intelligence {:?}, on-device model: {on_device}, cloud offer {:?})",
+        settings.agent.intelligence,
+        settings.agent.cloud_suggestions
+    );
     if route == super::judge::Route::Rules {
         log::debug!(
             "proactive: judge unavailable here ({:?}, on-device model: {on_device}); using broader rules",
             settings.agent.intelligence
         );
-    } else if let Some(why) = blocked(app, Kind::Help, &bundle, &key, per_hour) {
+    } else if let Some((why, _)) = blocked(app, Kind::Help, &bundle, &key, per_hour) {
         // Nothing could be shown anyway: don't spend the judgement.
         log::debug!("proactive: {bundle} title[{tag}] judge skipped: {why}");
         return;
@@ -764,14 +994,27 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         let verdict = if route == super::judge::Route::Cloud {
             let kinds = allowed_judge_kinds(app, &bundle);
             let title = redact(&snap.window_title).0;
-            match super::judge::judge_cloud(
+            let cloud = super::judge::judge_cloud(
                 app,
                 &snap.app.name,
                 &title,
                 &text,
                 &kinds,
                 &settings.app_language,
-            ) {
+            );
+            log::debug!(
+                "proactive: {bundle} title[{tag}] cloud judgement: {} in {}ms",
+                match &cloud {
+                    Ok(v) => format!(
+                        "help={} kind={} confidence={:.2}",
+                        v.help, v.kind, v.confidence
+                    ),
+                    Err(e) => format!("error {e:?}"),
+                },
+                started.elapsed().as_millis()
+            );
+            cloud_outcome(app, cloud.as_ref().err().copied());
+            match cloud {
                 // Network trouble: Apple Intelligence can still judge here.
                 Err(
                     e @ (super::judge::JudgeError::Offline | super::judge::JudgeError::TimedOut),
@@ -797,21 +1040,31 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         match verdict {
             Ok(v) => {
                 crate::telemetry::judge_run(engine, "ok", started.elapsed());
-                let worth = super::judge::worth_offering(&v);
+                // A summary of a short window isn't worth an interruption,
+                // whatever the judge says (Apple's model is eager here).
+                let short_summary =
+                    matches!(v.kind.as_str(), "summarise_page" | "summarise_thread")
+                        && text_len < MIN_SUMMARY_CHARS;
+                let worth = super::judge::worth_offering(&v) && !short_summary;
                 log::debug!(
                     "proactive: {bundle} title[{tag}] judge said help={} kind={} confidence={:.2} (threshold {:.2}) in {}ms: {}",
                     v.help,
                     v.kind,
                     v.confidence,
-                    super::judge::MIN_CONFIDENCE,
+                    crate::remote_config::agent_config().min_confidence_for(&v.kind),
                     started.elapsed().as_millis(),
                     if worth { "offering" } else { "no offer" }
                 );
                 if worth && still_there(&snap) {
-                    let (kind, title) = match Kind::from_name(&v.kind) {
-                        // The kind's own wording (translated) for kinds we know.
-                        Some(k) if k != Kind::Help => (k, None),
-                        _ => (Kind::Help, Some(v.title)),
+                    // The judge's own concrete question ("Want me to
+                    // summarise this 40-message thread?"), in the user's
+                    // language; the kind's wording if it gave none.
+                    let title = Some(v.title).filter(|t| {
+                        !t.trim().is_empty() && super::judge::title_grounded(t, text_raw)
+                    });
+                    let kind = match Kind::from_name(&v.kind) {
+                        Some(k) => k,
+                        None => Kind::Help,
                     };
                     crate::telemetry::next_offer_judge(engine);
                     offer_for(app, &snap, kind, title, key, per_hour);
@@ -845,6 +1098,77 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
             "proactive: {bundle} title[{tag}] nothing to offer (text_chars={text_len}, thread_messages={messages}, long_thread_at={LONG_THREAD})"
         ),
     }
+}
+
+/// A window whose offer waited for its app's cooldown: looked at again
+/// once the cooldown ends, if the user is still on it (so a long thread
+/// opened right after a reply offer still gets its summary).
+static DEFERRED: Mutex<Option<(String, Instant)>> = Mutex::new(None);
+
+fn defer_if_cooling(app: &AppHandle, bundle: &str, key: &str, per_hour: u32) {
+    let _ = app;
+    let left = STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .budget
+        .check_app(bundle, hourly_budget(per_hour), Instant::now());
+    if let Err(super::budget::Block::AppCooldown { secs_left }) = left {
+        log::debug!("proactive: will look at this window again in {secs_left}s");
+        if let Ok(mut g) = DEFERRED.lock() {
+            *g = Some((
+                key.to_string(),
+                Instant::now() + Duration::from_secs(secs_left + 1),
+            ));
+        }
+    }
+}
+
+/// The agent loop asks: should this already-considered window (`bundle|title`)
+/// be looked at again now?
+pub fn deferred_due(key: &str) -> bool {
+    let Ok(mut g) = DEFERRED.lock() else {
+        return false;
+    };
+    match g.as_ref() {
+        Some((k, at)) if k == key && Instant::now() >= *at => {
+            *g = None;
+            true
+        }
+        _ => false,
+    }
+}
+
+/// Set once "Cloud suggestions are unavailable right now" has been said;
+/// cleared when the cloud answers again, so a later outage is said again.
+static CLOUD_DOWN_SAID: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// After a cloud judgement: on failure, say so once in the HUD instead of
+/// nothing (the user chose the cloud and would otherwise see silence).
+fn cloud_outcome(app: &AppHandle, error: Option<super::judge::JudgeError>) {
+    use std::sync::atomic::Ordering;
+    let Some(e) = error else {
+        CLOUD_DOWN_SAID.store(false, Ordering::SeqCst);
+        return;
+    };
+    if CLOUD_DOWN_SAID.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    log::info!("proactive: cloud suggestions unavailable ({e:?}); telling the user once");
+    if hud::is_visible() {
+        return;
+    }
+    let key = match e {
+        super::judge::JudgeError::Limited => "hud.status.cloudLimited",
+        _ => "hud.status.cloudUnavailable",
+    };
+    hud::show(
+        app,
+        HudContent::Status {
+            text: key.into(),
+            tone: hud::HudTone::Neutral,
+            undo: false,
+        },
+    );
 }
 
 /// The user is still on the window that was judged, and nothing else is up.
@@ -889,8 +1213,8 @@ fn offer_cloud(app: &AppHandle, key: String) {
     STATE
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner)
-        .seen
-        .insert(key, Instant::now());
+        .budget
+        .mark_offered(Kind::Help, &key, Instant::now());
     log::info!("proactive: offering cloud suggestions (once)");
     hud::show(
         app,
@@ -899,6 +1223,7 @@ fn offer_cloud(app: &AppHandle, key: String) {
             title: "hud.cloudOffer".into(),
             // Empty: the card's plain "Yes".
             accept_label: String::new(),
+            vars: Default::default(),
         },
     );
 }
@@ -949,6 +1274,7 @@ fn offer_for(
         header,
         focus,
         title,
+        vars_for(kind, snap),
         per_hour,
     );
 }
@@ -972,25 +1298,30 @@ fn offer(
     header: String,
     focus: String,
     title: Option<String>,
+    vars: BTreeMap<String, String>,
     per_hour: u32,
 ) {
-    if let Some(why) = blocked(app, kind, bundle, &key, per_hour) {
+    if let Some((why, _)) = blocked(app, kind, bundle, &key, per_hour) {
         log::debug!("proactive: not offering {}: {why}", kind.name());
         return;
     }
     let mut st = STATE
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
+    let now = Instant::now();
     log::debug!(
-        "proactive: offering {} in {bundle} ({} shown this hour, limit {per_hour})",
+        "proactive: offering {} in {bundle} ({} shown this hour, cap {}; names {})",
         kind.name(),
-        st.shown.len()
+        st.budget.shown_this_hour(),
+        st.budget.cap(hourly_budget(per_hour)),
+        vars.keys().cloned().collect::<Vec<_>>().join(",")
     );
     let id = format!("{ID_PREFIX}{}", chrono::Utc::now().timestamp_millis());
     crate::telemetry::suggestion_offered(&id, kind.name(), bundle);
-    crate::remote_config::note_offered(kind.name(), bundle);
-    st.seen.insert(key, Instant::now());
-    st.shown.push_back(Instant::now());
+    let cooldown = crate::remote_config::agent_config()
+        .kind(kind.name())
+        .cooldown;
+    st.budget.record_shown(kind, bundle, &key, cooldown, now);
     st.pending.clear();
     st.pending.insert(
         id.clone(),
@@ -1000,6 +1331,7 @@ fn offer(
             text,
             header,
             focus,
+            vars: vars.clone(),
         },
     );
     drop(st);
@@ -1007,12 +1339,14 @@ fn offer(
         app,
         HudContent::Suggestion {
             id,
-            // The judge's own words for "help here" (already in the user's
-            // language); otherwise the kind's i18n key.
+            // The judge's own words (already a concrete question in the
+            // user's language); otherwise the kind's i18n key, naming what
+            // it can (the thread's length, who to reply to, the language).
             title: title
                 .filter(|t| !t.trim().is_empty())
-                .unwrap_or_else(|| kind.title_key().into()),
-            accept_label: kind.accept_key().into(),
+                .unwrap_or_else(|| kind.title_key_with(&vars).into()),
+            accept_label: kind.accept_key_with(&vars).into(),
+            vars,
         },
     );
     // "Yes" / "not now" by voice while it's up, without the shortcut.
@@ -1034,23 +1368,59 @@ pub fn on_action(app: &AppHandle, id: &str, action: &str) {
     crate::telemetry::suggestion_result(pending.kind.name(), action);
     match action {
         "dismiss" => {
-            let entry = st.dismissed.entry(pending.kind).or_insert((0, None));
-            entry.0 += 1;
-            if entry.0 >= 2 {
-                *entry = (0, Some(Instant::now()));
-            }
+            log::debug!(
+                "proactive: {} dismissed in {}",
+                pending.kind.name(),
+                pending.bundle
+            );
+            st.budget
+                .record_dismissed(pending.kind, &pending.bundle, Instant::now());
         }
         "accept" => {
-            st.dismissed.remove(&pending.kind);
+            log::debug!("proactive: {} accepted", pending.kind.name());
+            st.budget.record_accepted(pending.kind);
             drop(st);
             super::milestone(app, "suggestion");
-            run(app.clone(), pending);
+            run(app.clone(), pending, None);
         }
         _ => {} // expired: no signal either way
     }
 }
 
-fn run(app: AppHandle, p: Pending) {
+/// "Yes, say it's all good": accept a reply suggestion with what to say.
+fn accept_with(app: &AppHandle, id: &str, content: &str) {
+    let mut st = STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    let Some(pending) = st.pending.remove(id) else {
+        return;
+    };
+    log::debug!("proactive: {} accepted with content", pending.kind.name());
+    crate::telemetry::suggestion_result(pending.kind.name(), "accept");
+    st.budget.record_accepted(pending.kind);
+    drop(st);
+    super::milestone(app, "suggestion");
+    run(app.clone(), pending, Some(content.to_string()));
+}
+
+fn run(app: AppHandle, p: Pending, content: Option<String>) {
+    // A reply is drafted from the thread on screen, then typed into the
+    // reply box (opened if needed), like "reply saying …" by voice.
+    if p.kind == Kind::DraftReply || (content.is_some() && p.kind == Kind::SummariseThread) {
+        let to = p
+            .vars
+            .get("name")
+            .map(|n| format!(" to {n}"))
+            .unwrap_or_default();
+        let instruction = match content {
+            Some(c) => format!("reply{to} saying {c}"),
+            None => format!(
+                "Draft my reply{to} to the latest message in this thread. Keep it short; only the email body."
+            ),
+        };
+        super::handle(&app, super::router::Route::Compose(instruction));
+        return;
+    }
     tauri::async_runtime::spawn(async move {
         let context = format!("{}\n{}", p.header, p.text);
         match p.kind {
@@ -1240,13 +1610,15 @@ mod tests {
 
     #[test]
     fn spots_dates_threads_errors() {
+        // An unanswered message with a date: the reply first (it can
+        // confirm the date), then the calendar.
         assert_eq!(
-            classify(&snap(
+            candidates(&snap(
                 "com.apple.mail",
                 "",
                 "From: Ana\nCan we do Friday at 3pm instead?"
             )),
-            Some(Kind::AddToCalendar)
+            vec![Kind::DraftReply, Kind::AddToCalendar]
         );
         assert_eq!(
             classify(&snap(
@@ -1461,6 +1833,126 @@ mod tests {
     }
 
     #[test]
+    fn yes_with_what_to_say() {
+        assert_eq!(
+            reply_content("yes, say it's all good").as_deref(),
+            Some("it's all good")
+        );
+        assert_eq!(
+            reply_content("Yes, tell them Thursday works.").as_deref(),
+            Some("Thursday works")
+        );
+        assert_eq!(
+            reply_content("sure, let them know we're in").as_deref(),
+            Some("we're in")
+        );
+        assert_eq!(
+            reply_content("yeah reply saying thanks, see you then").as_deref(),
+            Some("thanks, see you then")
+        );
+        assert_eq!(
+            reply_content("yes ask them if Friday works").as_deref(),
+            Some("ask them if Friday works")
+        );
+        assert_eq!(reply_content("yes"), None);
+        assert_eq!(reply_content("yes please"), None);
+        assert_eq!(reply_content("say it's all good"), None);
+    }
+
+    #[test]
+    fn email_moments_name_the_sender_and_rank_the_summary_first() {
+        // Gmail, one message from Ana to the user: "Reply to Ana?".
+        let one = "Re: Launch\nAna Lopez\n<ana@bingx.com>\nMon, Nov 2, 10:14 AM (2 hours ago)\nto me\nCan you confirm the date?\n";
+        assert_eq!(latest_sender(one).as_deref(), Some("Ana"));
+        let s = ContextSnapshot {
+            window_title: "Re: Launch - sam@acme.com - Acme Mail".into(),
+            ..snap("company.thebrowser.Browser", "", one)
+        };
+        assert_eq!(classify(&s), Some(Kind::DraftReply));
+        assert_eq!(
+            vars_for(Kind::DraftReply, &s)
+                .get("name")
+                .map(String::as_str),
+            Some("Ana")
+        );
+        // The user's own reply is last: nothing to answer.
+        let answered =
+            format!("{one}me\nMon, Nov 2, 11:00 AM (1 hour ago)\nto Ana\nConfirmed, thanks.\n");
+        assert_eq!(latest_sender(&answered), None);
+        // Apple Mail's headers.
+        assert_eq!(
+            latest_sender(
+                "From: Ben Ito <ben@x.com>\nTo: Sam\nHi\nFrom: Ana Lopez <ana@x.com>\nTo: Sam\nOk?"
+            )
+            .as_deref(),
+            Some("Ana")
+        );
+        // A long thread with an unanswered last message and a date: the
+        // summary first, then the reply, then the date.
+        let mut long = String::from("Re: Q4 pricing\n");
+        for i in 0..5 {
+            long.push_str(&format!("Person {i}\n<p{i}@x.com>\nMon, Oct {}, 10:14 AM (2 days ago)\nto me\nSee below, Friday at 3pm?\n", i + 1));
+        }
+        let s = ContextSnapshot {
+            window_title: "Re: Q4 pricing - sam@gmail.com - Gmail".into(),
+            ..snap("com.google.Chrome", "", &long)
+        };
+        assert_eq!(
+            candidates(&s),
+            vec![Kind::SummariseThread, Kind::DraftReply, Kind::AddToCalendar]
+        );
+        assert_eq!(
+            vars_for(Kind::SummariseThread, &s)
+                .get("count")
+                .map(String::as_str),
+            Some("5")
+        );
+        // The inbox list is not a thread.
+        let inbox = ContextSnapshot {
+            window_title: "Inbox (3) - sam@gmail.com - Gmail".into(),
+            ..snap("com.google.Chrome", "", &long)
+        };
+        assert_eq!(classify(&inbox), None);
+    }
+
+    /// From the log: a 61-message Gmail thread in Arc (title "Re: …", no
+    /// URL) fired summarise_thread; it must win over a reply and a date.
+    #[test]
+    fn the_61_message_thread_from_the_log() {
+        let mut text = String::from("Re: Vault migration\nInbox\n");
+        for i in 0..58 {
+            text.push_str(&format!(
+                "Person {i}\nThanks, more soon\nOct {}\n",
+                1 + i % 28
+            ));
+        }
+        text.push_str(
+            "Ana Lopez\n<ana@x.com>\n10:14 AM (2 hours ago)\nto me\nCan we ship Friday at 3pm?\n",
+        );
+        let s = ContextSnapshot {
+            window_title: "Re: Vault migration - sam@acme.com - Acme Mail".into(),
+            ..snap("company.thebrowser.Browser", "", &text)
+        };
+        let c = candidates(&s);
+        assert_eq!(c.first(), Some(&Kind::SummariseThread), "{c:?}");
+        assert!(c.contains(&Kind::DraftReply));
+    }
+
+    #[test]
+    fn errors_are_named() {
+        let s = snap(
+            "com.apple.Terminal",
+            "",
+            "$ npm test\nFAIL src/a.test.ts\nTypeError: Cannot read properties of null (reading 'id')\n",
+        );
+        let v = vars_for(Kind::ExplainError, &s);
+        assert!(
+            v.get("error").is_some_and(|e| e.chars().count() <= 48),
+            "{v:?}"
+        );
+    }
+
+    #[test]
     fn reads_search_queries() {
         assert_eq!(
             search_query("https://www.google.com/search?q=rust+borrow+checker%20error&oq=x")
@@ -1569,6 +2061,7 @@ pub fn consider_calendar(app: &AppHandle, per_hour: u32) {
             e.title.clone(),
             e.title,
             None,
+            BTreeMap::new(),
             per_hour,
         );
         return;
@@ -1577,11 +2070,11 @@ pub fn consider_calendar(app: &AppHandle, per_hour: u32) {
 
 // ── answering a suggestion by voice, and learning from it ─────────────────
 
-static YES: Lazy<Regex> = Lazy::new(|| {
+pub(crate) static YES: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?i)^\s*(?:(?:yes|yeah|yep|yup|sure|ok(?:ay)?|go ahead|do it|please|sounds good|why not|thanks|thank you)\b[\s.!,]*)+$")
         .expect("yes")
 });
-static NO: Lazy<Regex> = Lazy::new(|| {
+pub(crate) static NO: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?i)^\s*(?:(?:no|nope|nah|not now|later|skip|dismiss|not right now|thanks|thank you)\b[\s.!,]*)+$")
         .expect("no")
 });
@@ -1653,18 +2146,25 @@ async fn classify_feedback(app: &AppHandle, t: &str) -> Option<&'static str> {
 
 /// A suggestion or meeting nudge is on screen, waiting for an answer.
 pub fn awaiting_reply() -> bool {
-    hud::is_visible()
-        && (crate::meeting::pending_nudge().is_some()
-            || !STATE
-                .lock()
-                .unwrap_or_else(std::sync::PoisonError::into_inner)
-                .pending
-                .is_empty())
+    super::report::awaiting()
+        || hud::is_visible()
+            && (crate::meeting::pending_nudge().is_some()
+                || !STATE
+                    .lock()
+                    .unwrap_or_else(std::sync::PoisonError::into_inner)
+                    .pending
+                    .is_empty())
 }
 
 /// Hands-free reply to a suggestion (heard without a shortcut, on this Mac):
 /// only clear English answers count, and nothing is sent anywhere to decide.
 pub fn handle_spoken_reply(app: &AppHandle, transcript: &str) -> bool {
+    if super::report::handle_voice(app, transcript) {
+        return true;
+    }
+    if reply_with_content(app, transcript) {
+        return true;
+    }
     let t = transcript.trim();
     if !awaiting_reply() || t.split_whitespace().count() > 8 {
         return false;
@@ -1678,7 +2178,64 @@ pub fn handle_spoken_reply(app: &AppHandle, transcript: &str) -> bool {
     }
 }
 
+/// "Yes, say it's all good" / "yes, tell them Thursday works" while a
+/// reply (or thread) suggestion is up: accept it with that content, which
+/// drafts the reply and types it into the reply box.
+static YES_WITH: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?ix)^\s*(?:yes|yeah|yep|yup|sure|ok(?:ay)?|please|go\s+ahead)\b[\s,.!]*(?:please[\s,]+)?(?:and[\s,]+)?(?P<rest>(?:say|saying|tell|reply|respond|answer|let\s+(?:them|him|her)\s+know|ask|thank|write\s+back)\b.+)$")
+        .expect("yes with")
+});
+
+/// What to say in the reply, from "yes, say it's all good".
+pub(crate) fn reply_content(t: &str) -> Option<String> {
+    let c = YES_WITH.captures(t.trim())?;
+    let rest = c.name("rest")?.as_str().trim();
+    // "say that …", "tell them that …", "saying …": keep only the content.
+    static LEAD: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(r"(?i)^(?:say(?:ing)?|tell(?:ing)?\s+(?:them|him|her|everyone|\w+)|reply(?:ing)?(?:\s+saying)?|respond(?:ing)?(?:\s+saying)?|answer(?:ing)?|let\s+(?:them|him|her)\s+know|write\s+back(?:\s+saying)?)\s*(?:that\s+)?[,:]?\s*")
+            .expect("lead")
+    });
+    let content = LEAD
+        .replace(rest, "")
+        .trim()
+        .trim_end_matches(['.', '!'])
+        .to_string();
+    // "Ask them…", "thank them…": the instruction is the content.
+    let content = if content.is_empty()
+        || rest.to_lowercase().starts_with("ask")
+        || rest.to_lowercase().starts_with("thank")
+    {
+        rest.to_string()
+    } else {
+        content
+    };
+    (!content.is_empty()).then_some(content)
+}
+
+fn reply_with_content(app: &AppHandle, transcript: &str) -> bool {
+    let Some(content) = reply_content(transcript) else {
+        return false;
+    };
+    let pending = STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .pending
+        .iter()
+        .find(|(_, p)| matches!(p.kind, Kind::DraftReply | Kind::SummariseThread))
+        .map(|(id, _)| id.clone());
+    let Some(id) = pending.filter(|_| hud::is_visible()) else {
+        return false;
+    };
+    hud::hide(app);
+    crate::telemetry::reply_by_voice(false);
+    accept_with(app, &id, &content);
+    true
+}
+
 pub async fn handle_voice_feedback(app: &AppHandle, transcript: &str) -> bool {
+    if reply_with_content(app, transcript) {
+        return true;
+    }
     let t = transcript.trim();
     if t.split_whitespace().count() > 14 || !awaiting_reply() {
         return false;

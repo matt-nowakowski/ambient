@@ -136,6 +136,12 @@ windows = { version = "0.61.3", features = [
   "Win32_UI_Input_KeyboardAndMouse",
   "Win32_UI_Shell",
   "Win32_UI_WindowsAndMessaging",
+  # Reminders: scheduled toast notifications (WinRT).
+  "Data_Xml_Dom",
+  "Foundation",
+  "Foundation_Collections",
+  "UI_Notifications",
+  "Win32_System_WinRT",
 ] }
 winreg = "0.55"
 # Meetings: the call's audio, by WASAPI loopback on the default output

@@ -4,15 +4,20 @@
 
 pub mod act;
 pub mod answer;
+pub mod budget;
 pub mod compose;
 pub mod judge;
 #[cfg(any(target_os = "linux", test))]
 pub(crate) mod linux;
 pub mod llm;
+pub mod notice;
 pub mod personal;
 pub mod proactive;
+pub mod reminders;
+pub mod report;
 pub mod router;
 pub mod wake;
+pub mod when;
 
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -143,6 +148,11 @@ fn listen_for_offer(app: &AppHandle) {
         let Ok(action) = serde_json::from_str::<crate::hud::HudActionEvent>(event.payload()) else {
             return;
         };
+        // Click outside a report card or the "report this?" offer.
+        if action.id.starts_with(report::CARD_PREFIX) {
+            report::on_action(&handle, &action.id, &action.action, None);
+            return;
+        }
         if action.id.starts_with(CHIP_PREFIX) {
             on_chip_action(&handle, &action.id, &action.action);
             return;
@@ -294,6 +304,7 @@ fn run(app: AppHandle) {
                     id: MEETING_OFFER_ID.into(),
                     title: "hud.meetingOffer".into(),
                     accept_label: "hud.takeNotes".into(),
+                    vars: Default::default(),
                 },
             );
         }
@@ -324,7 +335,9 @@ fn run(app: AppHandle) {
                     if !dwelled {
                         log::trace!("proactive: not dwelled yet on {}", front.bundle_id);
                         None
-                    } else if considered.as_ref() == Some(&key) {
+                    } else if considered.as_ref() == Some(&key)
+                        && !proactive::deferred_due(&format!("{}|{}", front.bundle_id, key.1))
+                    {
                         log::trace!("proactive: already considered this window");
                         None
                     } else if crate::hud::is_visible() {
@@ -466,13 +479,17 @@ pub fn handle(app: &AppHandle, route: Route) {
         Route::Act(_) => milestone(app, "action"),
         Route::Recall(_) => milestone(app, "recall"),
         Route::Compose(_) => milestone(app, "answer"),
-        Route::Write(_) | Route::Help | Route::Handled => {}
+        Route::Write(_) | Route::Help | Route::Handled | Route::Report(_) => {}
     }
+    log::debug!("agent: handling {}", router::route_name(Some(&route)));
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
         match route {
             Route::Write(_) | Route::Handled => {}
             Route::Help => crate::hud::show(&app, crate::hud::HudContent::Help),
+            // "Send this to the team?": nothing leaves until Send. A report
+            // with diagnostics on carries the last answer (feedback::submit).
+            Route::Report(intent) => report::show(&app, intent),
             // Draft from the instruction and what's on screen (the thread
             // being replied to), then insert it or offer it.
             Route::Compose(instruction) => {
@@ -739,7 +756,7 @@ const RICH_EDITORS: &[&str] = &[
 /// (web pages) and Apple's own apps. Elsewhere (canvas apps, GPU terminals,
 /// games) a "not a text field" reading can be wrong, so dictation is typed
 /// as before.
-fn focus_is_reliable(bundle: &str) -> bool {
+pub(crate) fn focus_is_reliable(bundle: &str) -> bool {
     BROWSERS.contains(&bundle)
         || (bundle.starts_with("com.apple.") && bundle != "com.apple.Terminal")
 }
@@ -955,6 +972,65 @@ pub fn reply_with(app: &AppHandle, text: String) {
     });
 }
 
+// ── "Ask Ambient instead" ────────────────────────────────────────────────
+
+/// "Did you mean to type this?" → "Ask Ambient instead": the same words, as
+/// if said with the Ask key (never typed).
+pub fn ask_instead(app: &AppHandle, text: String) {
+    let text = text.trim().to_string();
+    if text.is_empty() {
+        return;
+    }
+    crate::hud::show(
+        app,
+        crate::hud::HudContent::Listening {
+            heard: text.clone(),
+        },
+    );
+    answer::prefetch_screen(app);
+    let app = app.clone();
+    tauri::async_runtime::spawn(async move {
+        let route = route_for_agent(&app, &text).await;
+        crate::telemetry::route(router::route_name(Some(&route)), true, false);
+        handle(&app, route);
+    });
+}
+
+/// Route words that are certainly for the agent: the first passes, then
+/// the router told never to write; an answer when it can't decide.
+pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
+    if router::is_help_request(text) {
+        return Route::Help;
+    }
+    if let Some(r) = report::report_intent(text) {
+        return Route::Report(r);
+    }
+    if let Some(r) = when::reminder_request(text, chrono::Local::now().naive_local()) {
+        return Route::Act(router::Action::Reminder {
+            due: r.due_string(),
+            title: r.title,
+        });
+    }
+    if let compose::ComposeIntent::Yes(i) = compose::compose_intent(text) {
+        return Route::Compose(i);
+    }
+    let answer = || Route::Answer {
+        query: text.to_string(),
+        needs_web: false,
+        about_screen: false,
+    };
+    if llm::target(app).is_none() {
+        return answer();
+    }
+    let place = tauri::async_runtime::spawn_blocking(router::place)
+        .await
+        .unwrap_or_default();
+    match router::route(app, text, "", &place, true, answer::last_turn()).await {
+        Some(Route::Write(_)) | None => answer(),
+        Some(r) => r,
+    }
+}
+
 // ── "Search this instead?" ───────────────────────────────────────────────
 
 pub const CHIP_PREFIX: &str = "chip-";
@@ -976,6 +1052,7 @@ pub fn offer_search_instead(app: &AppHandle, text: &str) {
             id,
             title: "hud.chip.searchInstead".into(),
             accept_label: "hud.chip.search".into(),
+            vars: Default::default(),
         },
     );
 }

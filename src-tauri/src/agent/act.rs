@@ -3,34 +3,25 @@
 //! reversible or harmless, so it runs straight away and the HUD offers Undo
 //! where it applies. Multi-step computer use (P4) will add confirmation for
 //! irreversible steps.
+//!
+//! Every outcome is a notice that says what was done ("Reminder set for 9:00
+//! tomorrow: fix the vault"), or why it couldn't be and what can be done
+//! instead ("No calendar app is connected on Windows. I saved a calendar
+//! file for you."). Never a silent nothing.
 
 use std::sync::Mutex;
 
+use chrono::NaiveDateTime;
 use serde::Deserialize;
 use tauri::AppHandle;
 use tauri_plugin_opener::OpenerExt;
 
+use super::notice::{offer, Notice};
 use super::router::Action;
-use crate::hud::{self, HudContent, HudTone};
+use super::when;
 
-/// Marks a created item that is an .ics file to open (Windows/Linux).
-const ICS_PREFIX: &str = "ics:";
-
-/// Open an .ics file in the default calendar app, or remember a native id for Undo.
-fn created(app: &AppHandle, id: String) -> Result<(), String> {
-    match id.strip_prefix(ICS_PREFIX) {
-        Some(path) => app
-            .opener()
-            .open_path(path, None::<&str>)
-            .map_err(|_| "hud.status.failed".to_string()),
-        None => {
-            remember(id);
-            Ok(())
-        }
-    }
-}
-
-/// The last thing created, for the HUD's Undo.
+/// The last thing created, for the HUD's Undo: an EventKit id on macOS,
+/// `systemd:<unit>` on Linux, `toast:<id>` on Windows.
 static LAST_CREATED: Mutex<Option<String>> = Mutex::new(None);
 
 #[derive(Deserialize)]
@@ -40,15 +31,15 @@ struct NativeResult {
     detail: String,
 }
 
-fn status(app: &AppHandle, key: &str, tone: HudTone, undo: bool) {
-    hud::show(
-        app,
-        HudContent::Status {
-            text: key.to_string(),
-            tone,
-            undo,
-        },
-    );
+/// This computer's OS, for "… on Windows" (not translated: a name).
+pub fn os_name() -> &'static str {
+    if cfg!(target_os = "macos") {
+        "macOS"
+    } else if cfg!(target_os = "windows") {
+        "Windows"
+    } else {
+        "Linux"
+    }
 }
 
 pub async fn run(app: AppHandle, action: Action) {
@@ -57,66 +48,273 @@ pub async fn run(app: AppHandle, action: Action) {
         Action::CalendarEvent { .. } => Some("calendar"),
         Action::OpenApp { .. } => Some("open_app"),
         Action::Shortcut { .. } => Some("shortcut"),
+        Action::Unsupported { .. } => Some("unsupported"),
         _ => None,
     };
-    let outcome = tauri::async_runtime::spawn_blocking({
+    let notice = tauri::async_runtime::spawn_blocking({
         let app = app.clone();
         move || perform(&app, action)
     })
     .await
-    .unwrap_or_else(|_| Err("hud.status.failed".into()));
-    crate::telemetry::act(kind, &outcome);
-    match outcome {
-        Ok(key) => {
-            let undo = cfg!(target_os = "macos")
-                && matches!(
-                    key.as_str(),
-                    "hud.status.reminderAdded" | "hud.status.eventAdded"
-                );
-            status(&app, &key, HudTone::Success, undo)
-        }
-        Err(key) => status(&app, &key, HudTone::Error, false),
-    }
+    .unwrap_or_else(|_| Notice::cant("hud.notice.failed"));
+    crate::telemetry::act(kind, notice.outcome());
+    notice.show(&app);
 }
 
-/// Ok(i18n key of the success line) or Err(i18n key of the error line).
-fn perform(app: &AppHandle, action: Action) -> Result<String, String> {
+/// What happened, as the notice to show.
+fn perform(app: &AppHandle, action: Action) -> Notice {
     match action {
-        Action::OpenApp { name } => open_app(&name).map(|_| "hud.status.opened".into()),
+        Action::OpenApp { name } => match open_app(&name) {
+            Ok(()) => Notice::done("hud.notice.opened").var("name", name),
+            Err(_) => Notice::cant("hud.notice.appNotFound")
+                .var("name", name.clone())
+                .offer_action(
+                    "hud.offer.searchWeb",
+                    &Action::WebSearch {
+                        query: format!("{name} app"),
+                    },
+                ),
+        },
         Action::OpenUrl { url } => {
             if !(url.starts_with("https://") || url.starts_with("http://")) {
-                return Err("hud.status.failed".into());
+                return Notice::cant("hud.notice.badLink").offer(offer::COPY, "hud.copy", url);
             }
-            app.opener()
-                .open_url(&url, None::<&str>)
-                .map(|_| "hud.status.opened".into())
-                .map_err(|_| "hud.status.failed".into())
+            match app.opener().open_url(&url, None::<&str>) {
+                Ok(()) => Notice::done("hud.status.opened"),
+                Err(_) => Notice::cant("hud.notice.noBrowser").offer(
+                    offer::COPY,
+                    "hud.offer.copyLink",
+                    url,
+                ),
+            }
         }
         Action::WebSearch { query } => {
             let url = format!("https://www.google.com/search?q={}", urlencode(&query));
-            app.opener()
-                .open_url(&url, None::<&str>)
-                .map(|_| "hud.status.searching".into())
-                .map_err(|_| "hud.status.failed".into())
+            match app.opener().open_url(&url, None::<&str>) {
+                Ok(()) => Notice::done("hud.status.searching"),
+                // No browser: answer it here instead.
+                Err(_) => Notice::cant("hud.notice.noBrowser").offer(
+                    offer::ANSWER,
+                    "hud.offer.answerHere",
+                    query,
+                ),
+            }
         }
-        Action::Reminder { title, due } => native::reminder(&title, due.as_deref().unwrap_or(""))
-            .and_then(|id| created(app, id))
-            .map(|_| "hud.status.reminderAdded".into()),
+        Action::Reminder { title, due } => {
+            let due = due.as_deref().and_then(when::parse_due);
+            reminder(&title, due)
+        }
         Action::CalendarEvent {
             title,
             start,
             end,
             location,
-        } => native::event(
-            &title,
-            &start,
-            end.as_deref().unwrap_or(""),
-            location.as_deref().unwrap_or(""),
-        )
-        .and_then(|id| created(app, id))
-        .map(|_| "hud.status.eventAdded".into()),
-        Action::Shortcut { name } => run_shortcut(&name).map(|_| "hud.status.shortcutRan".into()),
-        Action::Unsupported { .. } => Err("hud.status.cantDoYet".into()),
+        } => match when::parse_due(&start) {
+            Some(s) => event(
+                app,
+                &title,
+                &s,
+                end.as_deref().and_then(when::parse_due).as_ref(),
+                location.as_deref().unwrap_or(""),
+            ),
+            // No time we can read: say so, and keep what was asked.
+            None => Notice::cant("hud.notice.eventNeedsTime")
+                .var("title", title.clone())
+                .offer(offer::COPY, "hud.copy", title),
+        },
+        Action::Shortcut { name } => match run_shortcut(&name) {
+            Ok(()) => Notice::done("hud.notice.shortcutRan").var("name", name),
+            Err(key) => Notice::cant(&key).var("name", name.clone()).offer(
+                offer::ANSWER,
+                "hud.offer.howTo",
+                format!(
+                    "How do I make an automation called \"{name}\" on {}?",
+                    os_name()
+                ),
+            ),
+        },
+        Action::Unsupported { description } => {
+            let what = description.trim().to_string();
+            Notice::cant(if what.is_empty() {
+                "hud.notice.cantDoYetPlain"
+            } else {
+                "hud.notice.cantDoYet"
+            })
+            .var("what", what.clone())
+            .offer(
+                offer::ANSWER,
+                "hud.offer.showMeHow",
+                format!(
+                    "I asked my assistant to: {what}. It can't do that on my computer yet. Tell me briefly how to do it myself on {}.",
+                    os_name()
+                ),
+            )
+        }
+    }
+}
+
+/// A reminder: done, with the time it'll fire, or the fallback and why.
+fn reminder(title: &str, due: Option<NaiveDateTime>) -> Notice {
+    let set = |id: String| {
+        remember(id);
+        let n = match &due {
+            Some(d) => Notice::done("hud.notice.reminderSetAt").var("due", when::format_due(d)),
+            None => Notice::done("hud.notice.reminderSet"),
+        };
+        n.var("title", title).undo(true)
+    };
+    let as_event = |d: &NaiveDateTime| Action::CalendarEvent {
+        title: title.to_string(),
+        start: when::format_due(d),
+        end: None,
+        location: None,
+    };
+
+    #[cfg(target_os = "macos")]
+    {
+        let due_s = due.as_ref().map(when::format_due).unwrap_or_default();
+        match native::reminder(title, &due_s) {
+            Ok(id) => set(id),
+            Err(native::Fail::NoPermission) => Notice::cant("hud.notice.remindersPermission")
+                .var("title", title)
+                .offer(offer::SETTINGS, "hud.offer.openSettings", "reminders")
+                .offer(offer::COPY, "hud.copy", title),
+            Err(native::Fail::Other) => {
+                let n = Notice::cant("hud.notice.reminderFailed").var("title", title);
+                let n = match &due {
+                    Some(d) => n.offer_action("hud.offer.addToCalendar", &as_event(d)),
+                    None => n,
+                };
+                n.offer(offer::COPY, "hud.copy", title)
+            }
+        }
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
+        // Without a time there's nothing to schedule: ask for one.
+        let Some(d) = due else {
+            return Notice::cant("hud.notice.reminderNeedsTime")
+                .var("title", title)
+                .var("os", os_name())
+                .offer(offer::COPY, "hud.copy", title);
+        };
+        match super::reminders::schedule(title, &d) {
+            Ok(id) => set(id),
+            Err(why) => {
+                log::debug!("reminder: falling back from the OS scheduler ({why:?})");
+                let key = match why {
+                    super::reminders::Unavailable::NotificationsOff => {
+                        "hud.notice.reminderNotificationsOff"
+                    }
+                    _ if cfg!(target_os = "linux") => "hud.notice.reminderLinux",
+                    _ => "hud.notice.reminderWindows",
+                };
+                // "Can't here; add it to your calendar instead, or copy it?"
+                Notice::cant(key)
+                    .var("title", title)
+                    .var("due", when::format_due(&d))
+                    .offer_action("hud.offer.addToCalendar", &as_event(&d))
+                    .offer(offer::COPY, "hud.copy", title)
+            }
+        }
+    }
+}
+
+/// A calendar event: in Calendar on macOS; elsewhere an .ics file opened in
+/// the default calendar app, or saved when there is none.
+fn event(
+    app: &AppHandle,
+    title: &str,
+    start: &NaiveDateTime,
+    end: Option<&NaiveDateTime>,
+    location: &str,
+) -> Notice {
+    #[cfg(target_os = "macos")]
+    {
+        let _ = app;
+        let fmt = |d: &NaiveDateTime| when::format_due(d);
+        match native::event(
+            title,
+            &fmt(start),
+            &end.map(fmt).unwrap_or_default(),
+            location,
+        ) {
+            Ok(id) => {
+                remember(id);
+                Notice::done("hud.notice.eventAdded")
+                    .var("title", title)
+                    .var("due", fmt(start))
+                    .undo(true)
+            }
+            Err(native::Fail::NoPermission) => Notice::cant("hud.notice.calendarsPermission")
+                .offer(offer::SETTINGS, "hud.offer.openSettings", "calendars")
+                .offer(offer::COPY, "hud.copy", title),
+            Err(native::Fail::Other) => Notice::cant("hud.notice.eventFailed")
+                .var("title", title)
+                .offer(offer::COPY, "hud.copy", title),
+        }
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
+        let uid = format!(
+            "{}-{}",
+            env!("BRAND_SLUG"),
+            chrono::Utc::now().timestamp_millis()
+        );
+        let body = super::reminders::ics(&uid, title, start, end, location, false);
+        let Some(path) = save_ics(app, title, &body) else {
+            return Notice::cant("hud.notice.eventFailed")
+                .var("title", title)
+                .offer(offer::COPY, "hud.copy", title);
+        };
+        match app
+            .opener()
+            .open_path(path.display().to_string(), None::<&str>)
+        {
+            Ok(()) => Notice::done("hud.notice.eventIcsOpened")
+                .var("title", title)
+                .var("due", when::format_due(start)),
+            // Nothing handles .ics: say so, and where the file is.
+            Err(e) => {
+                log::debug!("calendar: no app opened the .ics: {e}");
+                let folder = path
+                    .parent()
+                    .map(|p| p.display().to_string())
+                    .unwrap_or_default();
+                Notice::cant("hud.notice.noCalendarApp")
+                    .var("os", os_name())
+                    .var(
+                        "file",
+                        path.file_name()
+                            .map(|f| f.to_string_lossy().to_string())
+                            .unwrap_or_default(),
+                    )
+                    .offer(offer::OPEN_FILE, "hud.offer.showFile", folder)
+                    .offer(offer::COPY, "hud.copy", title)
+            }
+        }
+    }
+}
+
+/// Save an .ics where the user can find it again (Downloads), else temp.
+#[cfg(not(target_os = "macos"))]
+fn save_ics(app: &AppHandle, title: &str, body: &str) -> Option<std::path::PathBuf> {
+    use tauri::Manager;
+    let dir = app
+        .path()
+        .download_dir()
+        .ok()
+        .filter(|d| d.is_dir())
+        .unwrap_or_else(std::env::temp_dir);
+    let path = dir.join(super::reminders::ics_file_name(title));
+    match std::fs::write(&path, body) {
+        Ok(()) => Some(path),
+        Err(e) => {
+            log::warn!("calendar: couldn't save the .ics: {e}");
+            None
+        }
     }
 }
 
@@ -131,7 +329,14 @@ pub fn undo_last() -> bool {
     let Some(id) = LAST_CREATED.lock().ok().and_then(|mut g| g.take()) else {
         return false;
     };
-    native::delete(&id)
+    #[cfg(target_os = "macos")]
+    {
+        native::delete(&id)
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        super::reminders::cancel(&id)
+    }
 }
 
 fn urlencode(s: &str) -> String {
@@ -170,7 +375,7 @@ fn run_shortcut(name: &str) -> Result<(), String> {
     if ok {
         Ok(())
     } else {
-        Err("hud.status.shortcutNotFound".into())
+        Err("hud.notice.shortcutNotFound".into())
     }
 }
 
@@ -249,13 +454,19 @@ mod native {
         fn ambient_delete_item(id: *const c_char) -> bool;
     }
 
+    /// Why EventKit said no.
+    pub enum Fail {
+        NoPermission,
+        Other,
+    }
+
     fn c(s: &str) -> CString {
         CString::new(s.replace('\0', "")).unwrap_or_default()
     }
 
-    fn take(ptr: *mut c_char) -> Result<String, String> {
+    fn take(ptr: *mut c_char) -> Result<String, Fail> {
         if ptr.is_null() {
-            return Err("hud.status.failed".into());
+            return Err(Fail::Other);
         }
         // SAFETY: strdup'd by Swift, freed here.
         let parsed: Option<NativeResult> = unsafe { CStr::from_ptr(ptr) }
@@ -265,17 +476,21 @@ mod native {
         unsafe { ambient_free(ptr) };
         match parsed {
             Some(r) if r.ok => Ok(r.detail),
-            Some(r) if r.detail == "no_permission" => Err("hud.status.calendarPermission".into()),
-            _ => Err("hud.status.failed".into()),
+            Some(r) if r.detail == "no_permission" => Err(Fail::NoPermission),
+            Some(r) => {
+                log::debug!("eventkit: {}", r.detail);
+                Err(Fail::Other)
+            }
+            None => Err(Fail::Other),
         }
     }
 
-    pub fn reminder(title: &str, due: &str) -> Result<String, String> {
+    pub fn reminder(title: &str, due: &str) -> Result<String, Fail> {
         let (t, d) = (c(title), c(due));
         take(unsafe { ambient_create_reminder(t.as_ptr(), d.as_ptr()) })
     }
 
-    pub fn event(title: &str, start: &str, end: &str, location: &str) -> Result<String, String> {
+    pub fn event(title: &str, start: &str, end: &str, location: &str) -> Result<String, Fail> {
         let (t, s, e, l) = (c(title), c(start), c(end), c(location));
         take(unsafe { ambient_create_event(t.as_ptr(), s.as_ptr(), e.as_ptr(), l.as_ptr()) })
     }
@@ -283,66 +498,5 @@ mod native {
     pub fn delete(id: &str) -> bool {
         let i = c(id);
         unsafe { ambient_delete_item(i.as_ptr()) }
-    }
-}
-
-/// Windows and Linux: no shared calendar API, so write a standard .ics file
-/// and open it; the default calendar app (Outlook, Calendar, Thunderbird,
-/// GNOME Calendar…) imports it. Undo isn't possible after that.
-#[cfg(not(target_os = "macos"))]
-mod native {
-    use super::ICS_PREFIX;
-
-    fn stamp(local: &str) -> Option<String> {
-        let dt = chrono::NaiveDateTime::parse_from_str(local, "%Y-%m-%dT%H:%M").ok()?;
-        Some(dt.format("%Y%m%dT%H%M00").to_string())
-    }
-
-    fn escape(s: &str) -> String {
-        s.replace('\\', "\\\\")
-            .replace(';', "\\;")
-            .replace(',', "\\,")
-            .replace('\n', "\\n")
-    }
-
-    fn open_ics(body: String) -> Result<String, String> {
-        let uid = format!("ambient-{}", chrono::Utc::now().timestamp_millis());
-        let ics = format!(
-            "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Ambient//EN\r\n{body}END:VCALENDAR\r\n"
-        )
-        .replace("UID:", &format!("UID:{uid}"));
-        let path = std::env::temp_dir().join(format!("{uid}.ics"));
-        std::fs::write(&path, ics).map_err(|_| "hud.status.failed".to_string())?;
-        // The caller opens it with the default calendar app.
-        Ok(format!("{ICS_PREFIX}{}", path.display()))
-    }
-
-    pub fn reminder(title: &str, due: &str) -> Result<String, String> {
-        let start = stamp(due).ok_or("hud.status.failed")?;
-        open_ics(format!(
-            "BEGIN:VEVENT\r\nUID:\r\nDTSTART:{start}\r\nDURATION:PT15M\r\nSUMMARY:{}\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nTRIGGER:PT0M\r\nDESCRIPTION:{}\r\nEND:VALARM\r\nEND:VEVENT\r\n",
-            escape(title),
-            escape(title)
-        ))
-    }
-
-    pub fn event(title: &str, start: &str, end: &str, location: &str) -> Result<String, String> {
-        let s = stamp(start).ok_or("hud.status.failed")?;
-        let e = stamp(end)
-            .map(|e| format!("DTEND:{e}\r\n"))
-            .unwrap_or_else(|| "DURATION:PT1H\r\n".into());
-        let loc = if location.is_empty() {
-            String::new()
-        } else {
-            format!("LOCATION:{}\r\n", escape(location))
-        };
-        open_ics(format!(
-            "BEGIN:VEVENT\r\nUID:\r\nDTSTART:{s}\r\n{e}SUMMARY:{}\r\n{loc}END:VEVENT\r\n",
-            escape(title)
-        ))
-    }
-
-    pub fn delete(_: &str) -> bool {
-        false
     }
 }

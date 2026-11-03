@@ -1198,14 +1198,10 @@
       "interrupted": "Odpowiedź została przerwana.",
       "opened": "Otwarto",
       "searching": "Wyszukiwanie w przeglądarce",
-      "reminderAdded": "Dodano przypomnienie",
-      "eventAdded": "Dodano do kalendarza",
       "shortcutRan": "Wykonano skrót",
       "cantDoYet": "Jeszcze tego nie potrafię. Sterowanie komputerem już wkrótce.",
       "appNotFound": "Nie znaleziono tej aplikacji.",
-      "shortcutNotFound": "Nie znaleziono tego skrótu.",
       "automationNotFound": "Nie znaleziono skrótu w menu Start ani przepływu Power Automate o tej nazwie.",
-      "calendarPermission": "Najpierw zezwól na dostęp do Kalendarza i Przypomnień w Ustawieniach systemowych.",
       "undone": "Cofnięto",
       "meetingStarted": "Notuję. Daj znać pozostałym.",
       "copied": "Skopiowano",
@@ -1219,7 +1215,9 @@
       "noWebResults": "Nie udało się teraz przeszukać sieci, więc to odpowiedź z mojej wiedzy.",
       "timeout": "Trwało to zbyt długo. Spróbuj ponownie.",
       "needsCloud": "To wymaga chmury, a Inteligencja jest ustawiona na „Tylko na tym komputerze”. Zmień to w sekcji Prywatność.",
-      "cloudOfferOn": "Sugestie z chmury są włączone. Zmień to w sekcji Prywatność."
+      "cloudOfferOn": "Sugestie z chmury są włączone. Zmień to w sekcji Prywatność.",
+      "cloudUnavailable": "Sugestie w chmurze są teraz niedostępne.",
+      "cloudLimited": "Sugestie w chmurze są na razie wstrzymane: dzisiejszy limit został osiągnięty albo wymagają Pro."
     },
     "undo": "Cofnij",
     "close": "Zamknij",
@@ -1254,7 +1252,12 @@
       "translatePage": "Przetłumaczyć tę stronę?",
       "translate": "Przetłumacz",
       "helpHere": "Mogę w czymś tu pomóc?",
-      "help": "Pomóż"
+      "help": "Pomóż",
+      "summariseThreadCount": "Podsumować ten wątek ({{count}} wiadomości)?",
+      "replyTo": "Odpowiedzieć: {{name}}?",
+      "reply": "Odpowiedz",
+      "translatePageLang": "Ta strona jest w języku: {{language}}. Przetłumaczyć?",
+      "explainErrorWhat": "Błąd „{{error}}”. Pokazać prawdopodobne rozwiązanie?"
     },
     "nudge": {
       "findIt": "Znajdź",
@@ -1276,13 +1279,74 @@
     "draft": {
       "title": "Czy chodziło ci o wpisanie tego?",
       "composed": "Oto twój szkic.",
-      "focusHint": "Kliknij pole tekstowe, aby go wstawić."
+      "focusHint": "Kliknij pole tekstowe, aby go wstawić.",
+      "askInstead": "Zapytaj zamiast tego {{appName}}"
     },
     "source": {
       "searchDrive": "Szukaj na Dysku Google",
       "searchGmail": "Szukaj w Gmailu"
     },
     "cloudOffer": "{{appName}} może podpowiadać pomoc na tym komputerze, wysyłając na swoje serwery fragment okna z ukrytymi poufnymi danymi. Włączyć?",
+    "when": {
+      "today": "dziś o {{time}}",
+      "tomorrow": "jutro o {{time}}",
+      "on": "{{day}} o {{time}}"
+    },
+    "notice": {
+      "opened": "Otwarto {{name}}",
+      "appNotFound": "Nie znaleziono na tym komputerze aplikacji o nazwie „{{name}}”. Poszukać jej w internecie?",
+      "badLink": "Ten link nie wygląda poprawnie, więc go nie otwarto. Możesz go skopiować.",
+      "noBrowser": "Nie udało się otworzyć przeglądarki.",
+      "reminderSetAt": "Przypomnienie ustawione na {{when}}: {{title}}",
+      "reminderSet": "Dodano przypomnienie: {{title}}",
+      "remindersPermission": "Nie mogę jeszcze dodawać przypomnień: {{appName}} potrzebuje dostępu do Przypomnień. Włącz go w Ustawieniach systemowych albo na razie skopiuj przypomnienie.",
+      "reminderFailed": "Przypomnienia nie przyjęły „{{title}}”. Dodać to do kalendarza czy skopiować?",
+      "reminderNeedsTime": "W systemie {{os}} mogę ustawiać przypomnienia tylko z godziną. Powiedz kiedy, np. „przypomnij mi o 5, żeby…”, albo na razie je skopiuj.",
+      "reminderLinux": "Nie mogę ustawiać przypomnień w tym systemie Linux: brakuje timera powiadomień (systemd i notify-send). Dodać to do kalendarza czy skopiować?",
+      "reminderWindows": "Windows nie pozwolił zaplanować powiadomienia. Dodać to do kalendarza czy skopiować?",
+      "reminderNotificationsOff": "Powiadomienia {{appName}} są wyłączone w systemie {{os}}, więc przypomnienie by się nie pokazało. Dodać to do kalendarza czy skopiować?",
+      "eventNeedsTime": "Nie wiem, kiedy jest „{{title}}”. Podaj dzień i godzinę albo na razie to skopiuj.",
+      "eventAdded": "Dodano do kalendarza na {{when}}: {{title}}",
+      "calendarsPermission": "Nie mogę jeszcze dodawać wydarzeń: {{appName}} potrzebuje dostępu do Kalendarzy. Włącz go w Ustawieniach systemowych albo na razie skopiuj wydarzenie.",
+      "eventFailed": "Kalendarz nie przyjął „{{title}}”. Możesz to skopiować i dodać samodzielnie.",
+      "eventIcsOpened": "Otwarto „{{title}}” ({{when}}) w aplikacji kalendarza. Zapisz tam, aby dodać.",
+      "noCalendarApp": "W systemie {{os}} nie połączono żadnej aplikacji kalendarza, więc zapisano plik kalendarza ({{file}}), który możesz zaimportować.",
+      "shortcutRan": "Uruchomiono „{{name}}”",
+      "shortcutNotFound": "Nie znaleziono skrótu o nazwie „{{name}}”. Chcesz wiedzieć, jak go utworzyć?",
+      "cantDoYet": "Tego jeszcze nie potrafię: {{what}}. Pokazać ci, jak zrobić to samodzielnie?",
+      "cantDoYetPlain": "Nie mogę jeszcze tego zrobić na tym komputerze. Pokazać ci, jak zrobić to samodzielnie?",
+      "failed": "Tym razem się nie udało. Spróbuj ponownie za chwilę.",
+      "undoFailed": "Nie udało się tego cofnąć. Możesz to usunąć bezpośrednio w aplikacji."
+    },
+    "offer": {
+      "searchWeb": "Szukaj w internecie",
+      "copyLink": "Kopiuj link",
+      "answerHere": "Odpowiedz tutaj",
+      "addToCalendar": "Dodaj do kalendarza",
+      "openSettings": "Otwórz Ustawienia",
+      "showFile": "Pokaż plik",
+      "howTo": "Pokaż jak",
+      "showMeHow": "Pokaż jak"
+    },
+    "report": {
+      "title": "Wysłać to zespołowi {{appName}}?",
+      "kinds": {
+        "bug": "Błąd",
+        "idea": "Pomysł",
+        "other": "Opinia"
+      },
+      "diagnostics": "Dołącz diagnostykę",
+      "diagnosticsHint": "(pomaga zespołowi odtworzyć problem)",
+      "send": "Wyślij",
+      "edit": "Edytuj",
+      "cancel": "Anuluj",
+      "editHint": "Przytrzymaj skrót i powiedz nową wiadomość.",
+      "voiceHint": "Albo powiedz „wyślij”",
+      "sent": "Wysłano. Dzięki, zespół to zobaczy.",
+      "failed": "Nie udało się teraz wysłać. Skopiować i spróbować później?",
+      "offer": "Zgłosić to zespołowi?",
+      "offerAccept": "Zgłoś"
+    },
     "notes": {
       "ready": "Twoje notatki są gotowe",
       "actionItems": "Zadania: {{n}}",
@@ -1425,8 +1489,6 @@
     },
     "suggestions": {
       "title": "Otrzymywane sugestie",
-      "description": "Gdy pojawi się sugestia, powiedz „nie teraz”, „nie pokazuj mi tego” albo „nie w tej aplikacji”, a się nauczy. Zmienisz to tutaj w każdej chwili.",
-      "mutedIn": "Wyłączone w: {{apps}}",
       "kinds": {
         "summarise_thread": "Podsumowywanie długich wątków e-mail",
         "draft_reply": "Szkice odpowiedzi",
@@ -1444,7 +1506,16 @@
         "translate_page": "Tłumaczenie stron w innych językach",
         "help_here": "Inna pomoc, jakiej według niej potrzebujesz",
         "meeting_nudge": "Podpowiedzi podczas spotkań"
-      }
+      },
+      "learned": {
+        "title": "Twoje wskazówki dla mnie",
+        "empty": "Jeszcze nic. Gdy odrzucisz sugestię, pojawi się tutaj.",
+        "never": "Nigdy: {{kind}}",
+        "notIn": "{{kind}}, nie w {{app}}",
+        "undo": "Cofnij"
+      },
+      "teach": "Gdy pojawi się sugestia, powiedz „nie teraz”, „nie pokazuj mi tego” albo „nie w tej aplikacji”, a {{appName}} to zapamięta.",
+      "unknownKind": "Rodzaj sugestii"
     },
     "macOnly": "Na razie tylko na Macu",
     "days_few": "{{count}} dni",

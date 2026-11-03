@@ -820,6 +820,14 @@ async changeTelemetrySetting(enabled: boolean) : Promise<Result<null, string>> {
 }
 },
 /**
+ * A failure toast the UI showed (`src/lib/errors.ts` `showError`): its
+ * context and friendly kind, mapped onto the schema's `error` event. Only
+ * these fixed names are counted; anything else is ignored.
+ */
+async recordUiError(context: string, kind: string) : Promise<void> {
+    await TAURI_INVOKE("record_ui_error", { context, kind });
+},
+/**
  * Exactly what Send would send, pretty-printed.
  */
 async feedbackPreview(input: FeedbackInput) : Promise<string> {
@@ -1682,9 +1690,11 @@ export type HudContent =
  */
 { kind: "answer"; id: string; question: string; text: string; sources: HudSource[]; done: boolean; replace: boolean; actions: HudAnswerAction[]; note: string | null } | 
 /**
- * A proactive suggestion: one line, accept or dismiss.
+ * A proactive suggestion: one line, accept or dismiss. `title` is an
+ * i18n key (or the judge's own words); `vars` fill its placeholders
+ * (`count`, `name`, `error`; `lang` is a language code the HUD names).
  */
-{ kind: "suggestion"; id: string; title: string; accept_label: string } | 
+{ kind: "suggestion"; id: string; title: string; accept_label: string; vars?: Partial<{ [key in string]: string }> } | 
 /**
  * A short status line ("Searching…", "Added to Calendar"). `text` is an
  * i18n key. `undo` offers an Undo button that sends the `undo` action.
@@ -1707,11 +1717,32 @@ export type HudContent =
 /**
  * "What can I say?": examples from the help sheet.
  */
-{ kind: "help" } | 
+{ kind: "help" } |
+/**
+ * What the agent did, or why it couldn't, with what it can do instead:
+ * "Reminder set for 9:00 tomorrow: fix the vault" (Undo), or "I can't
+ * set reminders on Linux yet. Add it to your calendar instead?" (Add to
+ * calendar, Copy). `text` is an i18n key; `vars` fill it (`due` is a
+ * local "YYYY-MM-DDTHH:MM" the HUD turns into "9:00 tomorrow").
+ */
+{ kind: "notice"; id: string; text: string; vars?: Partial<{ [key in string]: string }>; tone: HudTone; undo: boolean; offers?: HudOffer[] } |
+/**
+ * "Send this to the team?": a bug report or feedback said by voice,
+ * with the message as heard, an "Include diagnostics" switch (off by
+ * default) and Send / Edit / Cancel. `report_kind` is `bug`, `idea` or
+ * `other`; `editing` means the next thing said replaces the message.
+ */
+{ kind: "report"; id: string; report_kind: string; message: string; include_diagnostics: boolean; editing: boolean } | 
 /**
  * Meeting notes are ready (meeting/deliver.rs): Open, Copy, Email to me.
  */
 ({ kind: "meeting_notes" } & NotesCard)
+/**
+ * A button on a notice: an alternative the agent can do instead. `label`
+ * is an i18n key; `copy` is handled by the HUD itself (it copies `value`),
+ * anything else is sent back as a `hud_action` with the notice's id.
+ */
+export type HudOffer = { action: string; label: string; value: string | null }
 /**
  * The "Your notes are ready" card.
  */
