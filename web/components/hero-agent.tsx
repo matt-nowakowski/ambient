@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Card, useReducedMotionPref, white } from "./agent-demo";
 import { spring } from "./motion";
 import { Orb } from "./orb/Orb";
+import { MailWindow, type MailMessage } from "./mail-window";
 import { OrbIcon, orbIconSize } from "./orb-icon";
 
 /**
@@ -39,6 +40,16 @@ const lastStep = (b: Beat) => STEPS.length - 1 - [...STEPS].reverse().findIndex(
 const firstStep = (b: Beat) => STEPS.findIndex((s) => s.beat === b);
 /** With reduced motion, each beat holds one still: the answer, the action, and the offer itself. */
 const stillStep = (b: Beat) => (b === "nudge" ? STEPS.findIndex((s) => s.kind === "offer") : lastStep(b));
+
+const THREAD: MailMessage[] = [
+  {
+    from: "Ana Ruiz",
+    email: "ana@northwind.co",
+    time: "9:40 AM",
+    lines: ["Thanks for the deck, it reads well. Can we walk through it on Thursday at 3pm?"],
+    signoff: "Ana",
+  },
+];
 
 const REPLY = "Hi Ana, Thursday at 3 works for me. See you then.";
 
@@ -80,33 +91,28 @@ export function HeroAgent() {
         say “add the launch review on Thursday at 3” and it adds the event to your calendar. Then it notices Ana is
         waiting on a reply and offers to help; you say “yes, tell her Thursday works” and the reply is written for you.
       </p>
-      <div aria-hidden="true" className="glass-strong overflow-hidden rounded-[24px]">
-        <div className="flex h-11 items-center gap-2 border-b border-border px-4">
-          <span className="size-[11px] rounded-full bg-foreground/10" />
-          <span className="size-[11px] rounded-full bg-foreground/10" />
-          <span className="size-[11px] rounded-full bg-foreground/10" />
-          <span className="eyebrow ml-3 truncate">Mail · Re: Launch review</span>
-        </div>
-        <div className="relative h-[360px] px-5 py-5 text-left text-[14px] font-light leading-[1.7] text-muted sm:h-[330px] sm:px-6">
-          <p className="text-foreground">Re: Launch review</p>
-          <ul className="mt-2 space-y-0.5 sm:max-w-[52%]">
-            <li>Ana: Thanks for the deck, it reads well.</li>
-            <li>Ana: Can we walk through it on Thursday at 3pm?</li>
-          </ul>
-
+      <div aria-hidden="true">
+        <MailWindow subject="Re: Launch review" messages={THREAD} heightClass="h-[400px] sm:h-[370px]" narrow>
           {/* The reply it writes for you */}
           <AnimatePresence>
             {step.kind === "reply" ? (
-              <motion.p
+              <motion.div
                 key="reply"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="mt-4 rounded-[14px] px-4 py-3 text-foreground ring-[0.5px] ring-border-strong sm:max-w-[60%]"
+                transition={spring}
+                className="mt-4 overflow-hidden rounded-[14px] ring-[0.5px] ring-border-strong sm:max-w-[62%]"
               >
-                <Typed text={REPLY} instant={reduced} />
-                <span className="caret ml-px inline-block h-[1.05em] w-px translate-y-[3px] bg-foreground" />
-              </motion.p>
+                <p className="flex items-center gap-1.5 border-b border-border px-4 py-2 text-[11.5px] text-subtle">
+                  <span className="text-muted">To:</span> Ana
+                  <span className="ml-auto">Re: Launch review</span>
+                </p>
+                <p className="min-h-[3.4em] px-4 py-2.5 text-foreground">
+                  <Typed text={REPLY} instant={reduced} />
+                  <span className="caret ml-px inline-block h-[1.05em] w-px translate-y-[3px] bg-foreground" />
+                </p>
+              </motion.div>
             ) : null}
           </AnimatePresence>
 
@@ -191,7 +197,7 @@ export function HeroAgent() {
               ) : null}
             </AnimatePresence>
           </div>
-        </div>
+        </MailWindow>
       </div>
 
       <div className="mt-4 flex justify-center">

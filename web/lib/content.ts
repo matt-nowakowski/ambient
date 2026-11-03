@@ -194,7 +194,7 @@ export const trust = {
 };
 
 /** The landing page's one-line mention of what's next. */
-export const comingSoonChip = "Coming soon: it uses your apps for you";
+export const comingSoonChip = "Soon: it uses your apps";
 
 export const comingSoon = {
   label: "Coming soon · computer use",
@@ -331,6 +331,7 @@ export const tiers = {
   },
   team: {
     name: "Team",
+    tagline: "For the whole team.",
     perUser: brand.pricing.teamYearlyPerUser,
     note: "Billed annually.",
     features: ["Everything in Pro", "Centralized billing & invoicing", "Pro for every seat"],

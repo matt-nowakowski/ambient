@@ -41,6 +41,12 @@ export const metadata: Metadata = pageMetadata({ description, path: "/" });
 
 /** Space above each section. */
 const pad = "pt-20 sm:pt-20";
+/** "Your open windows" → "Open windows", "Calendar and Reminders" → "Calendar": chip-length. */
+const shortSource = (k: string) => {
+  const s = k.replace(/^Your /, "").replace(/ and .*$/, "");
+  return s[0].toUpperCase() + s.slice(1);
+};
+
 /** A small glass chip: a capability in two to four words. */
 const chip = "glass inline-flex h-8 items-center rounded-full px-3.5 text-[12.5px] text-muted";
 
@@ -106,6 +112,7 @@ export default function Home() {
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
             <Reveal>
               <SectionHeading id="agent-heading" eyebrow={agent.eyebrow} title={agent.title} sub={agent.body} />
+              {/* One wrap of short chips: what it uses, then hands-free and what's next. */}
               <div className="mt-8 flex flex-wrap items-center gap-2">
                 <span className="glass-strong inline-flex h-8 items-center gap-2 rounded-full pl-2.5 pr-3.5 text-[12.5px] text-foreground">
                   <OrbIcon variant="C2" footprint={11} />
@@ -113,11 +120,9 @@ export default function Home() {
                 </span>
                 {nothingToConnect.sources.map((src) => (
                   <span key={src.k} className={chip}>
-                    {src.k}
+                    {shortSource(src.k)}
                   </span>
                 ))}
-              </div>
-              <div className="mt-2 flex flex-wrap gap-2">
                 <span className={chip}>{agent.handsFreeChip}</span>
                 <span className={chip}>
                   <span className="t-shimmer" data-text={comingSoonChip}>
@@ -265,10 +270,6 @@ export default function Home() {
           <p className="mt-6 text-center text-[13px] text-subtle">
             <Link href="/pricing#compare" className="text-foreground underline-offset-4 hover:underline">
               Compare with {competitors.join(" and ")}
-            </Link>
-            {" · "}
-            <Link href="/pricing#team" className="text-foreground underline-offset-4 hover:underline">
-              Team plan
             </Link>
           </p>
         </Container>

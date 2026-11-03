@@ -16,7 +16,7 @@ type Interval = "month" | "year";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-/** `compact`: Free and Pro only, with their short lists (the landing page). */
+/** `compact`: the short lists (the landing page). */
 export function Pricing({ headingLevel = "h3", compact = false }: { headingLevel?: "h2" | "h3"; compact?: boolean }) {
   const [interval, setBillingInterval] = useState<Interval>("year");
   const [toast, setToast] = useState<string | null>(null);
@@ -30,7 +30,7 @@ export function Pricing({ headingLevel = "h3", compact = false }: { headingLevel
         <IntervalToggle value={interval} onChange={setBillingInterval} savePct={savePct} />
       </div>
 
-      <Stagger className={`mt-10 grid gap-4 ${compact ? "mx-auto max-w-[760px] md:grid-cols-2" : "lg:grid-cols-3"}`}>
+      <Stagger className={`mt-10 grid gap-4 ${compact ? "mx-auto max-w-[1080px] md:grid-cols-3" : "lg:grid-cols-3"}`}>
         <Tier
           H={H}
           compact={compact}
@@ -64,10 +64,11 @@ export function Pricing({ headingLevel = "h3", compact = false }: { headingLevel
           features={compact ? tiers.pro.key : tiers.pro.features}
           cta={<CheckoutButton interval={interval} onError={setToast} />}
         />
-        {compact ? null : (
         <Tier
           H={H}
+          compact={compact}
           name="Team"
+          tagline={tiers.team.tagline}
           orb="S2"
           price="Custom"
           unit="for 5+ people"
@@ -79,7 +80,6 @@ export function Pricing({ headingLevel = "h3", compact = false }: { headingLevel
             </a>
           }
         />
-        )}
       </Stagger>
 
       <Toast message={toast} onClose={() => setToast(null)} />
@@ -220,10 +220,11 @@ function Tier({
         <div className="flex items-center gap-2.5">
           <OrbIcon variant={orb} footprint={13} />
           <H className="text-[15px] font-normal">{name}</H>
-          {tagline ? <span className="text-[13px] text-muted">{tagline}</span> : null}
         </div>
         {featured ? <span className="eyebrow">Most popular</span> : null}
       </div>
+      {/* Its own line, so every card's price starts at the same height. */}
+      {tagline ? <p className="mt-1.5 text-[13px] text-muted">{tagline}</p> : null}
       <p className={`${compact ? "mt-5" : "mt-8"} flex items-baseline gap-2`}>
         <span className="text-[48px] font-extralight leading-none tracking-[-0.05em] tabular-nums">
           {typeof price === "number" ? <PopNumber value={price} /> : price}

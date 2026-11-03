@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
 import { useReducedMotionPref, white } from "./agent-demo";
 import { Orb, type OrbVariant } from "./orb/Orb";
+import { MailWindow, type MailMessage } from "./mail-window";
 import { OrbIcon, orbIconSize } from "./orb-icon";
 import { spring } from "./motion";
 
@@ -13,6 +14,8 @@ type PreviewProps = {
   /** First line, shown in the foreground colour. */
   heading: string;
   lines: ReactNode[];
+  /** Show it as a mail window with this thread (then `lines` is unused). */
+  thread?: MailMessage[];
   /** The one-line offer in the HUD bubble. */
   offer: string;
   meta: string;
@@ -33,7 +36,7 @@ const NEXT: Record<Stage, Stage> = { idle: "offer", offer: "say", say: "done", d
  * and suggestions look in the app. Illustrative mock, not a screenshot.
  */
 export function AmbientPreview({ preset, loop = false }: { preset: "meeting" | "suggestion"; loop?: boolean }) {
-  const { window: title, heading, lines, offer, meta, accept, orb = "S1", say, result } = presets[preset];
+  const { window: title, heading, lines, thread, offer, meta, accept, orb = "S1", say, result } = presets[preset];
   const [open, setOpen] = useState(true);
   const [stage, setStage] = useState<Stage>("offer");
   const reduced = useReducedMotionPref();
@@ -54,27 +57,8 @@ export function AmbientPreview({ preset, loop = false }: { preset: "meeting" | "
 
   const showBubble = looping ? stage === "offer" : open;
 
-  return (
-    <div aria-hidden="true" className="glass-strong relative overflow-hidden rounded-[24px]">
-      <div className="flex h-11 items-center gap-2 border-b border-border px-4">
-        <span className="size-[11px] rounded-full bg-foreground/10" />
-        <span className="size-[11px] rounded-full bg-foreground/10" />
-        <span className="size-[11px] rounded-full bg-foreground/10" />
-        <span className="eyebrow ml-3 truncate">{title}</span>
-      </div>
-      <div className="relative h-[370px] px-6 py-6 text-[14px] font-light leading-[1.7] text-muted sm:h-[310px]">
-        <p className="text-foreground">{heading}</p>
-        <ul className="mt-3 space-y-1">
-          {lines.map((l, i) => (
-            <li key={i} className={i === lines.length - 1 ? "text-foreground" : undefined}>
-              {l}
-              {i === lines.length - 1 ? (
-                <span className="caret ml-px inline-block h-[1.05em] w-px translate-y-[3px] bg-foreground" />
-              ) : null}
-            </li>
-          ))}
-        </ul>
-
+  const overlays = (
+    <>
         <AnimatePresence>
           {showBubble ? (
             <motion.div
@@ -151,6 +135,42 @@ export function AmbientPreview({ preset, loop = false }: { preset: "meeting" | "
             </div>
           </>
         ) : null}
+    </>
+  );
+
+  // Both are the same height, with room between the last line and the bubble.
+  const height = "h-[400px] sm:h-[360px]";
+  if (thread) {
+    return (
+      <div aria-hidden="true">
+        <MailWindow subject={heading} messages={thread} heightClass={height}>
+          {overlays}
+        </MailWindow>
+      </div>
+    );
+  }
+
+  return (
+    <div aria-hidden="true" className="glass-strong relative overflow-hidden rounded-[24px]">
+      <div className="flex h-11 items-center gap-2 border-b border-border px-4">
+        <span className="size-[11px] rounded-full bg-foreground/10" />
+        <span className="size-[11px] rounded-full bg-foreground/10" />
+        <span className="size-[11px] rounded-full bg-foreground/10" />
+        <span className="eyebrow ml-3 truncate">{title}</span>
+      </div>
+      <div className={`relative px-6 py-6 text-[14px] font-light leading-[1.7] text-muted ${height}`}>
+        <p className="text-foreground">{heading}</p>
+        <ul className="mt-3 space-y-1">
+          {lines.map((l, i) => (
+            <li key={i} className={i === lines.length - 1 ? "text-foreground" : undefined}>
+              {l}
+              {i === lines.length - 1 ? (
+                <span className="caret ml-px inline-block h-[1.05em] w-px translate-y-[3px] bg-foreground" />
+              ) : null}
+            </li>
+          ))}
+        </ul>
+        {overlays}
       </div>
     </div>
   );
@@ -176,10 +196,16 @@ const meetingPreview: PreviewProps = {
 const suggestionPreview: PreviewProps = {
   window: "Mail · Re: Launch review",
   heading: "Re: Launch review",
-  lines: [
-    "Ana: Thanks for the deck, it reads well.",
-    "Ana: Two small notes on the pricing slide.",
-    "Ana: Can we walk through it on Thursday at 3pm?",
+  lines: [],
+  thread: [
+    { from: "Ana Ruiz", email: "ana@northwind.co", time: "9:12 AM", lines: ["Thanks for the deck, it reads well. Two small notes on pricing."] },
+    {
+      from: "Ana Ruiz",
+      email: "ana@northwind.co",
+      time: "9:40 AM",
+      lines: ["Can we walk through it on Thursday at 3pm?"],
+      signoff: "Ana",
+    },
   ],
   offer: "Add “Launch review” on Thursday at 3pm to your calendar?",
   meta: "Spotted on this computer · nothing sent",
