@@ -292,6 +292,7 @@ span.orb-dark{display:none;}
 [data-ogsc] .page{background:#0b0b0d !important;}
 [data-ogsc] .card{background:#141418 !important;}
 [data-ogsc] .ink{color:#f0f0f2 !important;}
+[data-ogsc] .lic,[data-ogsb] .lic{background-color:#242428 !important;background-image:url('${asset}/email/card-dark.jpg') !important;border-color:#2f2f36 !important;}
 [data-ogsc] .muted{color:#a9a9b1 !important;}
 [data-ogsc] .link,[data-ogsc] .eyebrow{color:#a9b5f0 !important;}
 [data-ogsc] .btn-text{color:#0a0a0a !important;}
