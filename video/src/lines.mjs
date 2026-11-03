@@ -1,13 +1,13 @@
 // The voiceover: short fragments, each its own file so it can sit on a beat (see script.md).
 export const LINES = {
-  colleague: "Your desktop colleague.",
+  colleague: "Say hi to your new desktop colleague.",
   talk: "You talk.",
   writes: "It writes.",
   answers: "It answers.",
   acts: "It acts.",
   remembers: "It remembers.",
   nudges: "It nudges you.",
-  hey: "Or just say: Hey Ambient.",
+  hey: "Hands-free, too: Hey Ambient.",
   notes: "Notes for every call.",
   nobot: "No bot.",
   anyapp: "In any app.",
