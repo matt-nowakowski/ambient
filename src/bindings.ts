@@ -2285,11 +2285,11 @@ search: number; ai_limit: number; search_limit: number;
 /**
  * Meetings started this month, and Free's monthly limit (None when unlimited).
  */
-meetings: number; meetings_limit: number | null;
+meetings: number; meetings_limit: number | null; 
 /**
  * Suggestions offered this week, and Free's weekly limit (None when unlimited).
  */
-suggestions: number; suggestions_limit: number | null;
+suggestions: number; suggestions_limit: number | null; 
 /**
  * How long Free's screen memory keeps things, in hours (None on paid plans).
  */
@@ -2299,15 +2299,15 @@ export type WindowsMicrophonePermissionStatus = { supported: boolean; overall_ac
 /**
  * The Writing setting.
  */
-export type WritingMode =
+export type WritingMode = 
 /**
  * Per utterance: as said, polished, or written for you.
  */
-"smart" |
+"smart" | 
 /**
  * Always the words as said (light punctuation and casing only).
  */
-"as_said" |
+"as_said" | 
 /**
  * Always polished (AI polish on every dictation).
  */
@@ -2315,15 +2315,15 @@ export type WritingMode =
 /**
  * Reverts of smart writing in one app.
  */
-export type WritingPref = {
+export type WritingPref = { 
 /**
  * The app's name, for the Privacy Center.
  */
-app_name: string;
+app_name: string; 
 /**
  * "Written for you" turned back into the user's words.
  */
-written_reverts: number;
+written_reverts: number; 
 /**
  * "Polished" turned back into the user's words.
  */
