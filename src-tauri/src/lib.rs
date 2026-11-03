@@ -1281,6 +1281,9 @@ pub fn run(cli_args: CliArgs) {
             tauri::WindowEvent::Focused(true) if window.label() == "main" => {
                 plan::on_main_window_focus(window.app_handle());
             }
+            tauri::WindowEvent::Focused(false) if window.label() == "main" => {
+                intro::on_main_focus_lost(window.app_handle());
+            }
             tauri::WindowEvent::ThemeChanged(theme) => {
                 log::info!("Theme changed to: {:?}", theme);
                 // Re-apply the current tray state with the new theme's icon set

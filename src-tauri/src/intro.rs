@@ -2,6 +2,8 @@
 //! whole screen plays the brand moment, then closes and the main window
 //! fades in. Once per install; replayable from Settings > About.
 
+use std::sync::atomic::{AtomicBool, Ordering};
+
 use serde::Serialize;
 use specta::Type;
 use tauri::{AppHandle, Manager, WebviewUrl, WebviewWindowBuilder};
@@ -113,9 +115,21 @@ pub fn intro_target(app: AppHandle) -> Option<IntroTarget> {
     })
 }
 
+/// Set while the main window is held in front after the intro hands over;
+/// cleared (and the window made a normal one again) the first time the user
+/// leaves it.
+static HOLDING_FRONT: AtomicBool = AtomicBool::new(false);
+
 /// The intro reports it has finished (or was skipped): bring in the main
 /// window in front of everything, then close the intro over it, and remember
 /// it was seen.
+///
+/// The main window stays above other apps' windows until the user leaves it
+/// (see [`on_main_focus_lost`]). Dropping that level after a fixed 120 ms, as
+/// before, let it fall behind whatever app was active whenever Ambient itself
+/// hadn't become the active app yet (a first launch from the disk image or
+/// past the Gatekeeper prompt): macOS 14+ may decline a background app's
+/// activation request, so the window ended up at normal level, behind.
 #[tauri::command]
 #[specta::specta]
 pub fn intro_finished(app: AppHandle) {
@@ -126,8 +140,7 @@ pub fn intro_finished(app: AppHandle) {
     }
     crate::show_main_window(&app);
     if let Some(main) = app.get_webview_window("main") {
-        // Front of every other app's windows on this first open, then a
-        // normal window again.
+        HOLDING_FRONT.store(true, Ordering::SeqCst);
         let _ = main.set_always_on_top(true);
         let _ = main.set_focus();
         let handle = app.clone();
@@ -140,16 +153,57 @@ pub fn intro_finished(app: AppHandle) {
                         let _ = w.close();
                     }
                     if let Some(main) = handle.get_webview_window("main") {
-                        let _ = main.set_always_on_top(false);
+                        // Closing the key intro window: hand key status to
+                        // the main window and ask again to be the active app.
                         let _ = main.set_focus();
+                        activate_app();
                     }
                 }
             });
+            // Activation is asynchronous; if the window still isn't key, ask
+            // once more. It stays in front either way.
+            std::thread::sleep(std::time::Duration::from_millis(500));
+            if let Some(main) = handle.get_webview_window("main") {
+                let focused = main.is_focused().unwrap_or(false);
+                log::info!(
+                    "intro handed over: main visible={:?} focused={}",
+                    main.is_visible(),
+                    focused
+                );
+                if !focused {
+                    let _ = main.set_focus();
+                    let _ = handle.run_on_main_thread(activate_app);
+                }
+            }
         });
         return;
     }
     if let Some(w) = app.get_webview_window(LABEL) {
         let _ = w.close();
+    }
+}
+
+/// The main window lost focus: if it was being held in front after the intro,
+/// the user has left it, so it becomes a normal window again.
+pub fn on_main_focus_lost(app: &AppHandle) {
+    if HOLDING_FRONT.swap(false, Ordering::SeqCst) {
+        if let Some(main) = app.get_webview_window("main") {
+            let _ = main.set_always_on_top(false);
+        }
+        log::info!("intro hold released: the user left the main window");
+    }
+}
+
+/// Ask macOS to make Ambient the active app (main thread only).
+fn activate_app() {
+    #[cfg(target_os = "macos")]
+    {
+        use objc2_app_kit::{NSApplicationActivationOptions, NSRunningApplication};
+        #[allow(deprecated)]
+        let _ = NSRunningApplication::currentApplication().activateWithOptions(
+            NSApplicationActivationOptions::ActivateAllWindows
+                | NSApplicationActivationOptions::ActivateIgnoringOtherApps,
+        );
     }
 }
 
