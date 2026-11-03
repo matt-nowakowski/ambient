@@ -7,10 +7,12 @@ export const metadata = guideMetadata("privacy");
 
 const switches = [
   { k: "Read what you ask about", v: "Reads the window in front when you ask, searches your open windows, and keeps the last two minutes in memory." },
-  { k: "Remember what you’ve seen", v: "Saves window text on your computer, encrypted, for recall. Never uploaded. 7 days by default." },
-  { k: "Offer suggestions", v: "Spots moments worth a next step. Decided on your computer, or by the cloud if you turn that on." },
+  { k: "Remember what you’ve seen", v: "Saves window text on your computer, encrypted, for recall. Never uploaded. 24 hours on Free, 7 days by default on Pro." },
+  { k: "Offer suggestions", v: "Spots moments worth a next step. Decided on your computer, or by the cloud if you choose (Pro)." },
+  { k: "Hands-free", v: `Listens on your computer for “Hey ${brand.name}”. Nothing is sent until you say it.` },
+  { k: "Share anonymous usage counts", v: "Counts and timings only, never what you say, type or see." },
   { k: "Meeting notes", v: "Listens to your microphone and the call while notes are on." },
-  { k: "Intelligence", v: "Where the AI runs: Automatic, On this computer only (nothing sent), or Cloud." },
+  { k: "Intelligence", v: "Where the AI runs: Automatic (default), On this computer only (nothing sent), or Cloud." },
 ] as const;
 
 const never = [
@@ -26,6 +28,7 @@ const check = [
   { k: `What ${brand.name} sees`, v: "Click Preview, switch to any window, and see exactly what it would read after redaction." },
   { k: "Requests that left this computer", v: "Every request and exactly what it sent. Kept 30 days." },
   { k: "What’s stored", v: "Screen memory by app. Delete one app’s, or everything." },
+  { k: "What you’ve told me", v: "The suggestions you turned down, and how you like your writing, per app. Undo any of it." },
 ] as const;
 
 export default function PrivacyDocsPage() {
@@ -35,7 +38,7 @@ export default function PrivacyDocsPage() {
       <DocHeader eyebrow="Docs" title={p.title} intro={p.intro} />
 
       <DocSection id="switches" title="The switches">
-        <p>All in {brand.name} → Privacy. Each is off until you turn it on.</p>
+        <p>All in {brand.name} → Privacy. Each is off until you turn it on, except Intelligence.</p>
         <DocRows items={switches} />
       </DocSection>
 
@@ -43,7 +46,7 @@ export default function PrivacyDocsPage() {
         <DocRows items={never} />
       </DocSection>
 
-      <DocSection id="what-leaves" title="What leaves your Mac">
+      <DocSection id="what-leaves" title="What leaves your computer">
         <p>Your voice never does. Speech recognition runs on your computer.</p>
         <p>
           When a request needs a model, only the text it needs is sent. Card numbers, API keys, passwords and one-time

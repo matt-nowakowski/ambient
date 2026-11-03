@@ -115,7 +115,8 @@ export default function TroubleshootingPage() {
           <a href={mailto("Troubleshooting")} className="text-foreground underline underline-offset-4">
             {brand.supportEmail}
           </a>{" "}
-          with your OS version, {brand.name} version and what you tried.
+          with your OS version, {brand.name} version and what you tried. Or, from the app, say “Hey {brand.name}, report
+          a bug…” or use <strong>Send feedback</strong> in the menu.
         </p>
       </DocSection>
     </>

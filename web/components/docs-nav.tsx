@@ -14,7 +14,7 @@ const groups = [
   },
   {
     title: `Using ${brand.name}`,
-    links: [link("answers"), link("actions"), link("recall"), link("meetings"), link("suggestions")],
+    links: [link("writing"), link("answers"), link("actions"), link("recall"), link("meetings"), link("suggestions")],
   },
   {
     title: "Privacy & security",
