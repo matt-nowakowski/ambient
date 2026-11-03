@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} is running from its disk image. Move it to your Applications folder so it stays installed and keeps itself up to date.",
     "moveToAppsConfirm": "Move to Applications",
     "moveToAppsLater": "Not now",
-    "moveToAppsFailed": "Couldn't move {{appName}} to Applications. Drag it into the Applications folder instead."
+    "moveToAppsFailed": "Couldn't move {{appName}} to Applications. Drag it into the Applications folder instead.",
+    "sendFeedback": "Send Feedback..."
   },
   "sidebar": {
     "home": "Home",
@@ -885,6 +886,11 @@
         "title": "Welcome intro",
         "description": "The animation {{appName}} plays the first time it opens.",
         "button": "Play intro"
+      },
+      "feedback": {
+        "title": "Send feedback",
+        "description": "Report a bug or share an idea with the team.",
+        "button": "Send feedback"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "Search Google Drive",
       "searchGmail": "Search Gmail"
     },
-    "cloudOffer": "{{appName}} can suggest help on this computer by sending a redacted snippet of the window to its servers. Turn on?"
+    "cloudOffer": "{{appName}} can suggest help on this computer by sending a redacted snippet of the window to its servers. Turn on?",
+    "notes": {
+      "ready": "Your notes are ready",
+      "actionItems": "Action items: {{n}}",
+      "open": "Open",
+      "email": "Email to me",
+      "sending": "Sending…",
+      "sent": "Sent to your email",
+      "failed": "Couldn't send",
+      "emailed": "Meeting notes sent to your email",
+      "emailFailed": "Couldn't email your meeting notes"
+    },
+    "rate": {
+      "up": "Helpful",
+      "down": "Not helpful"
+    }
   },
   "privacy": {
     "title": "Privacy",
@@ -1369,7 +1390,11 @@
         "license": "Account check",
         "trial": "Trial",
         "warmup": "Connection warm-up (nothing sent)",
-        "suggest": "Suggestion check"
+        "suggest": "Suggestion check",
+        "telemetry": "Anonymous usage counts",
+        "config": "Settings check (nothing sent)",
+        "meeting_email": "Meeting notes email",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "Suggestions from the cloud",
         "description": "Sends a redacted snippet of a window you've stayed on to decide whether to offer help. Every request is listed below."
       }
+    },
+    "telemetry": {
+      "title": "Help improve {{appName}}",
+      "label": "Share anonymous usage counts",
+      "description": "Counts and timings only, never what you say, type or see. Off unless you turn it on."
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "Join a call in any app",
       "accept": "Say yes when {{appName}} offers",
       "summary": "Get a summary when it ends"
+    },
+    "email": {
+      "title": "Email notes to me",
+      "description": "Sent to {{email}} after each call. Secrets are removed first, and nothing is kept.",
+      "signedOut": "Sign in to get your notes by email.",
+      "options": {
+        "off": "Off",
+        "ask": "Ask each time",
+        "always": "Always"
+      },
+      "button": "Email to me",
+      "sent": "Notes sent to your email",
+      "errors": {
+        "notSignedIn": "Sign in to email your notes.",
+        "noSummary": "This meeting has no notes to send.",
+        "rateLimited": "That's a lot of emails today. Try again tomorrow.",
+        "offline": "Couldn't reach the server. Check your connection and try again.",
+        "failed": "Couldn't send the email. Try again."
+      }
     }
   },
   "tour": {
@@ -1640,5 +1689,60 @@
     "empty": "Nothing matches “{{query}}”.",
     "jumpTo": "Jump to",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Help improve {{appName}}: share anonymous usage counts, never what you say, type or see.",
+    "whatsShared": "What's shared",
+    "sharedTitle": "Anonymous counts and timings only",
+    "shared": {
+      "suggestions": "How often suggestions are offered, accepted or dismissed",
+      "requests": "Which kind of request it was, and how long it took",
+      "errors": "Which kind of error happened, like “timed out”",
+      "basics": "App version, system, plan and a random ID that changes every 30 days"
+    },
+    "never": "Never what you say, type or see, window titles, links, file names or your email.",
+    "ledger": "Every upload is listed in Privacy, under requests that left this computer."
+  },
+  "feedback": {
+    "title": "Send feedback",
+    "titleThumbs": "What went wrong?",
+    "description": "It goes straight to the team. Nothing else is attached unless you tick it.",
+    "kind": {
+      "label": "Type",
+      "bug": "Bug",
+      "idea": "Idea",
+      "other": "Something else"
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "What happened, or what would help?",
+      "placeholderThumbs": "What went wrong? (optional)"
+    },
+    "email": {
+      "label": "Email for a reply (optional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Include diagnostics",
+      "description": "App version, system, plan, a settings summary and recent log lines, with secrets, window titles and links removed."
+    },
+    "example": {
+      "label": "Include the example",
+      "description": "The question and answer from that card, with secrets removed."
+    },
+    "preview": "Preview what's sent",
+    "hidePreview": "Hide preview",
+    "previewTitle": "Exactly what will be sent",
+    "send": "Send",
+    "sending": "Sending…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "sent": "Thanks! Your feedback was sent.",
+    "errors": {
+      "empty": "Write a few words first.",
+      "offline": "Couldn't reach the server. Check your connection and try again.",
+      "rateLimited": "Too many reports for now. Try again in an hour.",
+      "failed": "Couldn't send your feedback. Try again."
+    }
   }
 }

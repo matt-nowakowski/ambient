@@ -18,10 +18,9 @@ use crate::settings::get_settings;
 /// Follow-ups ("make it shorter") within this window continue the last answer.
 const FOLLOW_UP_WINDOW: Duration = Duration::from_secs(90);
 const CONTEXT_CHARS: usize = 6000;
-/// Waiting for the server to start answering (a web search runs first).
-const FIRST_BYTE_TIMEOUT: Duration = Duration::from_secs(25);
-/// Longest silence mid-answer before it counts as interrupted.
-const STREAM_IDLE_TIMEOUT: Duration = Duration::from_secs(20);
+// Waiting for the server to start answering (a web search runs first) and
+// the longest silence mid-answer: remote_config's `answer.*` tunables
+// (defaults 25 s and 20 s).
 /// A screen capture taken while the router decided is good for this long.
 const PREFETCH_FRESH: Duration = Duration::from_secs(5);
 
@@ -253,6 +252,13 @@ pub async fn run_with(
     opts: Opts,
 ) {
     let id = format!("answer-{}", chrono::Utc::now().timestamp_millis());
+    let started = Instant::now();
+    let first_words: std::sync::OnceLock<Duration> = std::sync::OnceLock::new();
+    crate::telemetry::note_card(
+        &id,
+        "answer",
+        crate::telemetry::answer_kind(needs_web, about_screen, given_context.is_some(), opts.write),
+    );
     let extra: Vec<Source> = opts
         .links
         .iter()
@@ -269,6 +275,9 @@ pub async fn run_with(
                      done: bool,
                      actions: Vec<HudAnswerAction>,
                      note: Option<String>| {
+        if !text.is_empty() {
+            first_words.get_or_init(|| started.elapsed());
+        }
         let all: Vec<Source> = sources.iter().chain(extra.iter()).cloned().collect();
         let mut chips: Vec<HudSource> = window_chip
             .lock()
@@ -370,6 +379,11 @@ pub async fn run_with(
             sources,
             note,
         }) => {
+            crate::telemetry::answer_latency(
+                first_words.get().copied(),
+                started.elapsed(),
+                needs_web,
+            );
             let situation = tauri::async_runtime::spawn_blocking(|| {
                 let place = super::router::place();
                 (
@@ -410,14 +424,17 @@ pub async fn run_with(
                 });
             }
         }
-        Err(message) => hud::show(
-            &app,
-            HudContent::Status {
-                text: message,
-                tone: HudTone::Error,
-                undo: false,
-            },
-        ),
+        Err(message) => {
+            crate::telemetry::error("answer", crate::telemetry::error_kind(&message));
+            hud::show(
+                &app,
+                HudContent::Status {
+                    text: message,
+                    tone: HudTone::Error,
+                    undo: false,
+                },
+            )
+        }
     }
 }
 
@@ -477,7 +494,8 @@ async fn send_once(
         .bearer_auth(llm::server_token(app))
         .json(body)
         .send();
-    let res = match tokio::time::timeout(FIRST_BYTE_TIMEOUT, request).await {
+    let first_byte = crate::remote_config::agent_config().answer_first_byte_timeout;
+    let res = match tokio::time::timeout(first_byte, request).await {
         Err(_) => return Err(SendError::Retry("hud.status.timeout")),
         Ok(Err(e)) if e.is_timeout() => return Err(SendError::Retry("hud.status.timeout")),
         Ok(Err(e)) => {
@@ -594,7 +612,8 @@ async fn server_answer(
         }
     };
     loop {
-        let chunk = match tokio::time::timeout(STREAM_IDLE_TIMEOUT, stream.next()).await {
+        let idle = crate::remote_config::agent_config().answer_idle_timeout;
+        let chunk = match tokio::time::timeout(idle, stream.next()).await {
             Err(_) => return interrupted(text, sources),
             Ok(None) => break,
             Ok(Some(Err(_))) => return interrupted(text, sources),

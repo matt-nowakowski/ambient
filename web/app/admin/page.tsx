@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AdminHeader, BrandMark } from "@/components/admin/chrome";
+import { AgentHealth } from "@/components/admin/agent-health";
+import FeedbackTab from "@/components/admin/feedback-inbox";
+import { openFeedbackCount } from "@/lib/admin/feedback";
 import { CountUp, LineChart, Meter, Sparkline, StackedBars } from "@/components/admin/viz";
 import { format, type Fmt } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/admin/guard";
@@ -30,6 +33,9 @@ const NEEDS: Record<DashboardTab, Need> = {
   costs: { db: true, polar: true, providers: true },
   dependencies: { db: true, polar: true, providers: true },
   orgs: { db: false, polar: true, providers: false },
+  // Read their own data (lib/admin/agent-health.ts, lib/admin/feedback.ts).
+  agent: { db: false, polar: false, providers: false },
+  feedback: { db: false, polar: false, providers: false },
 };
 
 /** Tabs whose numbers change with the period; the others hide the switch. */
@@ -42,6 +48,8 @@ const TITLES: Record<DashboardTab, string> = {
   costs: "Costs and margins",
   dependencies: "Dependencies",
   orgs: "Organizations",
+  agent: "Agent health",
+  feedback: "Feedback",
 };
 
 const PLAN_STYLE: Record<PlanKey, { name: string; color: string }> = {
@@ -69,7 +77,10 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const tab = parseTab(sp.tab);
   const period: Period = sp.period === "30d" || sp.period === "all" ? sp.period : "month";
   const demo = sp.demo === "1";
-  const s = demo ? demoSummary(period) : await buildSummary(period, NEEDS[tab]);
+  const [s, openFeedback] = await Promise.all([
+    demo ? demoSummary(period) : buildSummary(period, NEEDS[tab]),
+    tab === "overview" ? openFeedbackCount(demo) : null,
+  ]);
   const href = (t: DashboardTab, p: Period = period) => adminTabHref(t, { period: p, demo });
   const updated = new Date(s.generatedAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
 
@@ -106,6 +117,16 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         {s.warnings.length ? <Warnings items={s.warnings} /> : null}
 
         {tab === "overview" ? <Overview s={s} href={href} /> : null}
+        {tab === "overview" && openFeedback !== null ? (
+          <p className="mt-3">
+            <Link href={href("feedback")} prefetch={false} className="admin-pill" data-tone={openFeedback > 0 ? "warning" : "moss"}>
+              {openFeedback === 1 ? "1 open feedback item" : `${fmtInt(openFeedback)} open feedback items`} →
+            </Link>
+          </p>
+        ) : null}
+
+        {tab === "agent" ? <AgentHealth demo={demo} /> : null}
+        {tab === "feedback" ? <FeedbackTab demo={demo} searchParams={sp} /> : null}
 
         {tab === "revenue" ? (
           <Section id="revenue" title="Revenue" sub={s.sources.polar.ok ? `Polar ${s.sources.polar.env}, Ambient products only` : undefined}>

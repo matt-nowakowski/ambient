@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} 正在从磁盘映像运行。请将其移到“应用程序”文件夹，以便保持安装并自动更新。",
     "moveToAppsConfirm": "移到“应用程序”",
     "moveToAppsLater": "以后再说",
-    "moveToAppsFailed": "无法将 {{appName}} 移到“应用程序”。请手动将其拖到“应用程序”文件夹。"
+    "moveToAppsFailed": "无法将 {{appName}} 移到“应用程序”。请手动将其拖到“应用程序”文件夹。",
+    "sendFeedback": "发送反馈..."
   },
   "sidebar": {
     "home": "主页",
@@ -885,6 +886,11 @@
         "title": "欢迎动画",
         "description": "{{appName}} 首次打开时播放的动画。",
         "button": "播放动画"
+      },
+      "feedback": {
+        "title": "发送反馈",
+        "description": "报告问题或与团队分享想法。",
+        "button": "发送反馈"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "在 Google 云端硬盘中搜索",
       "searchGmail": "在 Gmail 中搜索"
     },
-    "cloudOffer": "{{appName}} 可以将窗口内容的脱敏片段发送到其服务器，从而在这台电脑上建议提供帮助。要开启吗？"
+    "cloudOffer": "{{appName}} 可以将窗口内容的脱敏片段发送到其服务器，从而在这台电脑上建议提供帮助。要开启吗？",
+    "notes": {
+      "ready": "你的笔记已准备好",
+      "actionItems": "待办事项：{{n}}",
+      "open": "打开",
+      "email": "发到我的邮箱",
+      "sending": "正在发送…",
+      "sent": "已发送到你的邮箱",
+      "failed": "发送失败",
+      "emailed": "会议笔记已发送到你的邮箱",
+      "emailFailed": "无法通过邮件发送会议笔记"
+    },
+    "rate": {
+      "up": "有帮助",
+      "down": "没帮助"
+    }
   },
   "privacy": {
     "title": "隐私",
@@ -1369,7 +1390,11 @@
         "license": "账户验证",
         "trial": "试用",
         "warmup": "预热连接（未发送任何内容）",
-        "suggest": "建议检查"
+        "suggest": "建议检查",
+        "telemetry": "匿名使用计数",
+        "config": "设置检查（不发送任何内容）",
+        "meeting_email": "会议笔记邮件",
+        "feedback": "反馈"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "云端建议",
         "description": "发送你停留过的窗口的脱敏片段，以判断是否提供帮助。每条请求都会列在下方。"
       }
+    },
+    "telemetry": {
+      "title": "帮助改进 {{appName}}",
+      "label": "分享匿名使用计数",
+      "description": "仅计数和耗时，绝不包括你说的、输入的或看到的内容。在你开启前保持关闭。"
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "在任意应用中加入通话",
       "accept": "{{appName}} 提议时说“好”",
       "summary": "结束后获取摘要"
+    },
+    "email": {
+      "title": "将笔记发到我的邮箱",
+      "description": "每次通话后发送到 {{email}}。先移除机密信息，不保存任何内容。",
+      "signedOut": "登录后即可通过邮件接收笔记。",
+      "options": {
+        "off": "关闭",
+        "ask": "每次询问",
+        "always": "始终"
+      },
+      "button": "发到我的邮箱",
+      "sent": "笔记已发送到你的邮箱",
+      "errors": {
+        "notSignedIn": "登录后才能通过邮件发送笔记。",
+        "noSummary": "这场会议没有可发送的笔记。",
+        "rateLimited": "今天发送的邮件太多了，请明天再试。",
+        "offline": "无法连接服务器。请检查网络后重试。",
+        "failed": "无法发送邮件，请重试。"
+      }
     }
   },
   "tour": {
@@ -1594,7 +1643,10 @@
       },
       "recall": {
         "title": "回忆",
-        "examples": ["我昨天关于定价说了什么？", "找到第三季度的演示文稿。"],
+        "examples": [
+          "我昨天关于定价说了什么？",
+          "找到第三季度的演示文稿。"
+        ],
         "hint": "你说过、看过或做过的事。"
       },
       "suggestions": {
@@ -1637,5 +1689,60 @@
     "empty": "没有与“{{query}}”匹配的内容。",
     "jumpTo": "跳转到",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "帮助改进 {{appName}}：分享匿名使用计数，绝不包括你说的、输入的或看到的内容。",
+    "whatsShared": "共享哪些内容",
+    "sharedTitle": "仅匿名计数和耗时",
+    "shared": {
+      "suggestions": "建议被提供、接受或忽略的次数",
+      "requests": "请求的类型及耗时",
+      "errors": "发生的错误类型，例如“超时”",
+      "basics": "应用版本、系统、套餐，以及每 30 天更换一次的随机 ID"
+    },
+    "never": "绝不包括你说的、输入的或看到的内容、窗口标题、链接、文件名或你的邮箱。",
+    "ledger": "每次上传都会列在“隐私”中离开这台电脑的请求里。"
+  },
+  "feedback": {
+    "title": "发送反馈",
+    "titleThumbs": "哪里出了问题？",
+    "description": "直接发给团队。除非你勾选，否则不会附带其他内容。",
+    "kind": {
+      "label": "类型",
+      "bug": "问题",
+      "idea": "建议",
+      "other": "其他"
+    },
+    "message": {
+      "label": "消息",
+      "placeholder": "发生了什么，或者什么会有帮助？",
+      "placeholderThumbs": "哪里出了问题？（可选）"
+    },
+    "email": {
+      "label": "用于回复的邮箱（可选）",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "附带诊断信息",
+      "description": "应用版本、系统、套餐、设置摘要和最近的日志行，已移除机密信息、窗口标题和链接。"
+    },
+    "example": {
+      "label": "附带示例",
+      "description": "该卡片中的问题和回答，已移除机密信息。"
+    },
+    "preview": "预览发送内容",
+    "hidePreview": "隐藏预览",
+    "previewTitle": "将要发送的确切内容",
+    "send": "发送",
+    "sending": "正在发送…",
+    "cancel": "取消",
+    "close": "关闭",
+    "sent": "谢谢！你的反馈已发送。",
+    "errors": {
+      "empty": "请先写几句话。",
+      "offline": "无法连接服务器。请检查网络后重试。",
+      "rateLimited": "目前报告太多，请一小时后再试。",
+      "failed": "无法发送你的反馈，请重试。"
+    }
   }
 }

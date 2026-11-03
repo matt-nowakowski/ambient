@@ -13,6 +13,7 @@ import { ShowWhatsNewOnUpdate } from "../ShowWhatsNewOnUpdate";
 import { ThemeSelector } from "../ThemeSelector";
 import { LogDirectory } from "../debug";
 import { BRAND } from "@/lib/brand";
+import { openFeedback } from "../../feedback/FeedbackGate";
 
 // Shown in-app so the notices ship with the app, as their licenses require.
 import thirdPartyNotices from "../../../../THIRD_PARTY_NOTICES.md?raw";
@@ -63,6 +64,16 @@ export const AboutSettings: React.FC = () => {
             onClick={() => openUrl(BRAND.website)}
           >
             {t("settings.about.sourceCode.button")}
+          </Button>
+        </SettingContainer>
+
+        <SettingContainer
+          title={t("settings.about.feedback.title")}
+          description={t("settings.about.feedback.description")}
+          grouped={true}
+        >
+          <Button variant="secondary" size="md" onClick={() => openFeedback()}>
+            {t("settings.about.feedback.button")}
           </Button>
         </SettingContainer>
 

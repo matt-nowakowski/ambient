@@ -18,6 +18,8 @@ import {
 } from "@/bindings";
 import { Orb } from "@/components/orb/Orb";
 import "./hud.css";
+import { MeetingNotesCard } from "./MeetingNotesCard";
+import { Thumbs } from "./Thumbs";
 
 /** Key glyphs (symbols, not words, so not translated). */
 const KEY_ENTER = "⏎";
@@ -155,6 +157,7 @@ export default function Hud() {
         return;
       case "help":
       case "draft":
+      case "meeting_notes":
         return dismiss();
       case "suggestion":
         // Clicked away from, not refused: no back-off for this kind.
@@ -294,6 +297,7 @@ export default function Hud() {
                       </button>
                     ))}
                     <span className="hud-hint">{t("hud.followUpHint")}</span>
+                    <Thumbs id={content.id} />
                   </footer>
                 )}
               </>
@@ -409,6 +413,7 @@ export default function Hud() {
                   {t("hud.notNow")}
                   <kbd>{KEY_ESC}</kbd>
                 </button>
+                <Thumbs id={content.id} />
                 {showTip && (
                   <span className="hud-tip">{t("hud.suggestionTip")}</span>
                 )}
@@ -440,6 +445,10 @@ export default function Hud() {
                   </button>
                 )}
               </div>
+            )}
+
+            {content.kind === "meeting_notes" && (
+              <MeetingNotesCard card={content} onDismiss={dismiss} />
             )}
 
             {content.kind === "steps" && (

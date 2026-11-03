@@ -5,6 +5,9 @@
 //   cancelScheduled, ended
 // Transactional, sent by the app's sign-in (sendSignInCode in ./sign-in.ts):
 //   signInCode
+// Transactional, sent when the user asks the app to email meeting notes
+// (/api/meetings/email, only ever to the account's own address):
+//   meetingNotes
 // Double opt-in (sent from /api/subscribe):
 //   confirmNewsletter
 // Marketing (customers via soft opt-in, free users via double opt-in; always
@@ -447,6 +450,72 @@ export function highlightMeetings(d: MarketingData): Rendered {
 }
 
 // ---------------------------------------------------------------------------
+// Meeting notes, emailed to the signed-in account when the user asks (or
+// chose "always"). The content is never stored; it's rendered and sent.
+// ---------------------------------------------------------------------------
+export type MeetingNotesData = {
+  title: string;
+  /** Already formatted in the user's locale and time zone by the app. */
+  date: string;
+  durationMin: number;
+  summary: string;
+  decisions: string[];
+  actionItems: string[];
+  questions: string[];
+  followUp?: string;
+  assetBase?: string;
+};
+
+function durationLabel(min: number) {
+  if (!Number.isFinite(min) || min < 1) return "";
+  if (min < 60) return `${min} min`;
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return m ? `${h} h ${m} min` : `${h} h`;
+}
+
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+export function meetingNotes(d: MeetingNotesData): Rendered {
+  const title = d.title.trim() || "Your call";
+  const clean = (xs: string[]) => xs.map((x) => x.trim()).filter(Boolean);
+  const decisions = clean(d.decisions);
+  const actions = clean(d.actionItems);
+  const questions = clean(d.questions);
+  const summary = d.summary.trim();
+  const followUp = d.followUp?.trim() ?? "";
+  const when = [d.date.trim(), durationLabel(d.durationMin)].filter(Boolean).join(" · ");
+
+  const blocks: Block[] = [{ t: "h", text: `Meeting notes: ${title}` }];
+  if (when) blocks.push({ t: "note", text: when });
+  if (summary) blocks.push({ t: "p", size: "lead", text: summary });
+  if (decisions.length) blocks.push({ t: "list", title: "Decisions", items: decisions });
+  if (actions.length) blocks.push({ t: "checklist", title: "Action items", items: actions });
+  if (questions.length) blocks.push({ t: "steps", title: "Questions for you", items: questions });
+  if (followUp) blocks.push({ t: "quote", title: "Follow-up draft", text: followUp });
+  blocks.push({ t: "rule" });
+  blocks.push({
+    t: "note",
+    text: `The call audio was never saved, and we don’t keep a copy of this email. Your notes stay in ${brand.name} on your computer until you delete them.`,
+  });
+
+  const counts = [actions.length ? plural(actions.length, "action item") : "", decisions.length ? plural(decisions.length, "decision") : ""]
+    .filter(Boolean)
+    .join(", ");
+  return renderEmail({
+    subject: `Meeting notes: ${title}`,
+    preheader: (counts ? `${counts}. ${summary}` : summary).slice(0, 110),
+    hero: "meetings",
+    eyebrow: "Meeting notes",
+    kind: "transactional",
+    category: "meeting_notes",
+    reason: `You asked ${brand.name} to email you these notes.`,
+    assetBase: d.assetBase,
+    blocks,
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Personal note: free text from /admin, in the branded layout. One customer →
 // transactional (a reply-style note). A segment → marketing, with unsubscribe.
 // ---------------------------------------------------------------------------
@@ -498,6 +567,20 @@ export const samples = {
   "win-back": (o: { assetBase?: string; unsubscribeUrl?: string }) => winBack({ audience: "customers", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
   "highlight-ask": (o: { assetBase?: string; unsubscribeUrl?: string }) => highlightAsk({ audience: "customers", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
   "highlight-meetings": (o: { assetBase?: string; unsubscribeUrl?: string }) => highlightMeetings({ audience: "customers", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
+  "meeting-notes": (o: { assetBase?: string; unsubscribeUrl?: string }) =>
+    meetingNotes({
+      title: "Q4 launch plan with Priya",
+      date: "Monday, November 2, 2026 at 14:00",
+      durationMin: 42,
+      summary:
+        "You and Priya agreed to move the launch to November 18 so the onboarding fixes ship first. Marketing starts the week before, and support gets a briefing doc.",
+      decisions: ["Launch moves to November 18", "Onboarding fixes ship before any marketing"],
+      actionItems: ["You: send Priya the updated deck (by Friday)", "Priya: book the press briefing for Nov 11", "Sam: draft the support FAQ"],
+      questions: ["Can we offer a launch discount to existing Free users?"],
+      followUp:
+        "Hi Priya,\n\nThanks for the time today. To recap: we’re launching on November 18, after the onboarding fixes ship.\n\n- I’ll send the updated deck by Friday.\n- You’ll book the press briefing for Nov 11.\n- Sam is drafting the support FAQ.\n\nBest,\nAna",
+      assetBase: o.assetBase,
+    }),
   "personal-note": (o: { assetBase?: string; unsubscribeUrl?: string }) =>
     personalNote({
       subject: "Quick question about your meeting notes",

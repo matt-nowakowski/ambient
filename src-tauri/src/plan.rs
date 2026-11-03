@@ -228,6 +228,12 @@ fn stored_session(app: &AppHandle) -> Option<String> {
     stored_str(app, SESSION_FIELD)
 }
 
+/// The signed sign-in session, for endpoints that act on the account (meeting
+/// notes by email). None when signed out.
+pub fn session_token(app: &AppHandle) -> Option<String> {
+    stored_session(app)
+}
+
 fn account_email(app: &AppHandle) -> Option<String> {
     stored_session(app).and(stored_str(app, ACCOUNT_EMAIL_FIELD))
 }

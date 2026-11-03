@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} kører fra diskbilledet. Flyt det til mappen Programmer, så det forbliver installeret og holder sig opdateret.",
     "moveToAppsConfirm": "Flyt til Programmer",
     "moveToAppsLater": "Ikke nu",
-    "moveToAppsFailed": "Kunne ikke flytte {{appName}} til Programmer. Træk det til mappen Programmer i stedet."
+    "moveToAppsFailed": "Kunne ikke flytte {{appName}} til Programmer. Træk det til mappen Programmer i stedet.",
+    "sendFeedback": "Send feedback..."
   },
   "sidebar": {
     "home": "Hjem",
@@ -885,6 +886,11 @@
         "title": "Velkomstintro",
         "description": "Animationen, som {{appName}} viser første gang, den åbnes.",
         "button": "Afspil intro"
+      },
+      "feedback": {
+        "title": "Send feedback",
+        "description": "Rapportér en fejl eller del en idé med holdet.",
+        "button": "Send feedback"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "Søg i Google Drev",
       "searchGmail": "Søg i Gmail"
     },
-    "cloudOffer": "{{appName}} kan foreslå hjælp på denne computer ved at sende et maskeret udsnit af vinduet til sine servere. Slå til?"
+    "cloudOffer": "{{appName}} kan foreslå hjælp på denne computer ved at sende et maskeret udsnit af vinduet til sine servere. Slå til?",
+    "notes": {
+      "ready": "Dine noter er klar",
+      "actionItems": "Opgaver: {{n}}",
+      "open": "Åbn",
+      "email": "Mail til mig",
+      "sending": "Sender…",
+      "sent": "Sendt til din e-mail",
+      "failed": "Kunne ikke sende",
+      "emailed": "Mødenoter sendt til din e-mail",
+      "emailFailed": "Kunne ikke maile dine mødenoter"
+    },
+    "rate": {
+      "up": "Nyttigt",
+      "down": "Ikke nyttigt"
+    }
   },
   "privacy": {
     "title": "Privatliv",
@@ -1369,7 +1390,11 @@
         "license": "Kontotjek",
         "trial": "Prøveperiode",
         "warmup": "Opvarmning af forbindelse (intet sendt)",
-        "suggest": "Forslagstjek"
+        "suggest": "Forslagstjek",
+        "telemetry": "Anonyme brugstal",
+        "config": "Tjek af indstillinger (intet sendt)",
+        "meeting_email": "E-mail med mødenoter",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "Forslag fra skyen",
         "description": "Sender et maskeret udsnit af et vindue, du er blevet på, for at afgøre, om der skal tilbydes hjælp. Hver anmodning er listet nedenfor."
       }
+    },
+    "telemetry": {
+      "title": "Hjælp med at forbedre {{appName}}",
+      "label": "Del anonyme brugstal",
+      "description": "Kun optællinger og tider, aldrig hvad du siger, skriver eller ser. Slået fra, indtil du slår det til."
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "Deltag i et opkald i en hvilken som helst app",
       "accept": "Sig ja, når {{appName}} tilbyder det",
       "summary": "Få et resumé, når det slutter"
+    },
+    "email": {
+      "title": "Mail noter til mig",
+      "description": "Sendes til {{email}} efter hvert opkald. Hemmeligheder fjernes først, og intet gemmes.",
+      "signedOut": "Log ind for at få dine noter på e-mail.",
+      "options": {
+        "off": "Fra",
+        "ask": "Spørg hver gang",
+        "always": "Altid"
+      },
+      "button": "Mail til mig",
+      "sent": "Noter sendt til din e-mail",
+      "errors": {
+        "notSignedIn": "Log ind for at maile dine noter.",
+        "noSummary": "Dette møde har ingen noter at sende.",
+        "rateLimited": "Det er mange e-mails i dag. Prøv igen i morgen.",
+        "offline": "Kunne ikke nå serveren. Tjek din forbindelse, og prøv igen.",
+        "failed": "Kunne ikke sende e-mailen. Prøv igen."
+      }
     }
   },
   "tour": {
@@ -1640,5 +1689,60 @@
     "empty": "Intet matcher “{{query}}”.",
     "jumpTo": "Gå til",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Hjælp med at forbedre {{appName}}: del anonyme brugstal, aldrig hvad du siger, skriver eller ser.",
+    "whatsShared": "Hvad der deles",
+    "sharedTitle": "Kun anonyme optællinger og tider",
+    "shared": {
+      "suggestions": "Hvor ofte forslag vises, accepteres eller afvises",
+      "requests": "Hvilken slags anmodning det var, og hvor lang tid den tog",
+      "errors": "Hvilken slags fejl der opstod, fx “timeout”",
+      "basics": "App-version, system, abonnement og et tilfældigt ID, der skifter hver 30. dag"
+    },
+    "never": "Aldrig hvad du siger, skriver eller ser, vinduestitler, links, filnavne eller din e-mail.",
+    "ledger": "Hver upload står i Privatliv under anmodninger, der har forladt denne computer."
+  },
+  "feedback": {
+    "title": "Send feedback",
+    "titleThumbs": "Hvad gik galt?",
+    "description": "Det går direkte til holdet. Intet andet vedhæftes, medmindre du sætter flueben.",
+    "kind": {
+      "label": "Type",
+      "bug": "Fejl",
+      "idea": "Idé",
+      "other": "Noget andet"
+    },
+    "message": {
+      "label": "Besked",
+      "placeholder": "Hvad skete der, eller hvad ville hjælpe?",
+      "placeholderThumbs": "Hvad gik galt? (valgfrit)"
+    },
+    "email": {
+      "label": "E-mail til svar (valgfrit)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Medtag diagnosticering",
+      "description": "App-version, system, abonnement, et overblik over indstillinger og de seneste loglinjer, uden hemmeligheder, vinduestitler og links."
+    },
+    "example": {
+      "label": "Medtag eksemplet",
+      "description": "Spørgsmålet og svaret fra det kort, uden hemmeligheder."
+    },
+    "preview": "Se hvad der sendes",
+    "hidePreview": "Skjul eksempel",
+    "previewTitle": "Præcis hvad der sendes",
+    "send": "Send",
+    "sending": "Sender…",
+    "cancel": "Annuller",
+    "close": "Luk",
+    "sent": "Tak! Din feedback er sendt.",
+    "errors": {
+      "empty": "Skriv et par ord først.",
+      "offline": "Kunne ikke nå serveren. Tjek din forbindelse, og prøv igen.",
+      "rateLimited": "For mange rapporter lige nu. Prøv igen om en time.",
+      "failed": "Kunne ikke sende din feedback. Prøv igen."
+    }
   }
 }

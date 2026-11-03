@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} draait vanaf de schijfkopie. Verplaats het naar je map Apps zodat het geïnstalleerd blijft en zichzelf bijwerkt.",
     "moveToAppsConfirm": "Naar Apps verplaatsen",
     "moveToAppsLater": "Niet nu",
-    "moveToAppsFailed": "Kan {{appName}} niet naar Apps verplaatsen. Sleep het in plaats daarvan naar de map Apps."
+    "moveToAppsFailed": "Kan {{appName}} niet naar Apps verplaatsen. Sleep het in plaats daarvan naar de map Apps.",
+    "sendFeedback": "Feedback sturen..."
   },
   "sidebar": {
     "home": "Home",
@@ -885,6 +886,11 @@
         "title": "Welkomstintro",
         "description": "De animatie die {{appName}} afspeelt wanneer het voor het eerst opent.",
         "button": "Intro afspelen"
+      },
+      "feedback": {
+        "title": "Feedback sturen",
+        "description": "Meld een fout of deel een idee met het team.",
+        "button": "Feedback sturen"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "Zoeken in Google Drive",
       "searchGmail": "Zoeken in Gmail"
     },
-    "cloudOffer": "{{appName}} kan hulp voorstellen op deze computer door een geschoond fragment van het venster naar zijn servers te sturen. Aanzetten?"
+    "cloudOffer": "{{appName}} kan hulp voorstellen op deze computer door een geschoond fragment van het venster naar zijn servers te sturen. Aanzetten?",
+    "notes": {
+      "ready": "Je notities zijn klaar",
+      "actionItems": "Actiepunten: {{n}}",
+      "open": "Openen",
+      "email": "Naar mij mailen",
+      "sending": "Versturen…",
+      "sent": "Naar je e-mail verstuurd",
+      "failed": "Versturen mislukt",
+      "emailed": "Vergadernotities naar je e-mail verstuurd",
+      "emailFailed": "Kon je vergadernotities niet mailen"
+    },
+    "rate": {
+      "up": "Nuttig",
+      "down": "Niet nuttig"
+    }
   },
   "privacy": {
     "title": "Privacy",
@@ -1369,7 +1390,11 @@
         "license": "Accountcontrole",
         "trial": "Proefperiode",
         "warmup": "Verbinding opwarmen (niets verzonden)",
-        "suggest": "Suggestiecontrole"
+        "suggest": "Suggestiecontrole",
+        "telemetry": "Anonieme gebruikstellingen",
+        "config": "Instellingencheck (niets verstuurd)",
+        "meeting_email": "E-mail met vergadernotities",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "Suggesties uit de cloud",
         "description": "Stuurt een geschoond fragment van een venster waar je een tijdje bent gebleven om te beslissen of er hulp wordt aangeboden. Elk verzoek staat hieronder."
       }
+    },
+    "telemetry": {
+      "title": "Help {{appName}} verbeteren",
+      "label": "Anonieme gebruikstellingen delen",
+      "description": "Alleen tellingen en tijden, nooit wat je zegt, typt of ziet. Uit tot je het aanzet."
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "Neem deel aan een gesprek in elke app",
       "accept": "Zeg ja als {{appName}} het aanbiedt",
       "summary": "Krijg een samenvatting als het afgelopen is"
+    },
+    "email": {
+      "title": "Notities naar mij mailen",
+      "description": "Na elk gesprek naar {{email}}. Geheimen worden eerst verwijderd en er wordt niets bewaard.",
+      "signedOut": "Log in om je notities per e-mail te krijgen.",
+      "options": {
+        "off": "Uit",
+        "ask": "Elke keer vragen",
+        "always": "Altijd"
+      },
+      "button": "Naar mij mailen",
+      "sent": "Notities naar je e-mail verstuurd",
+      "errors": {
+        "notSignedIn": "Log in om je notities te mailen.",
+        "noSummary": "Deze vergadering heeft geen notities om te versturen.",
+        "rateLimited": "Dat zijn veel e-mails vandaag. Probeer het morgen opnieuw.",
+        "offline": "Kan de server niet bereiken. Controleer je verbinding en probeer het opnieuw.",
+        "failed": "Kon de e-mail niet versturen. Probeer het opnieuw."
+      }
     }
   },
   "tour": {
@@ -1640,5 +1689,60 @@
     "empty": "Niets gevonden voor “{{query}}”.",
     "jumpTo": "Ga naar",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Help {{appName}} verbeteren: deel anonieme gebruikstellingen, nooit wat je zegt, typt of ziet.",
+    "whatsShared": "Wat wordt gedeeld",
+    "sharedTitle": "Alleen anonieme tellingen en tijden",
+    "shared": {
+      "suggestions": "Hoe vaak suggesties worden aangeboden, geaccepteerd of weggeklikt",
+      "requests": "Wat voor verzoek het was en hoe lang het duurde",
+      "errors": "Wat voor fout er optrad, zoals “time-out”",
+      "basics": "App-versie, systeem, abonnement en een willekeurige ID die elke 30 dagen verandert"
+    },
+    "never": "Nooit wat je zegt, typt of ziet, venstertitels, links, bestandsnamen of je e-mail.",
+    "ledger": "Elke upload staat in Privacy, bij de verzoeken die deze computer hebben verlaten."
+  },
+  "feedback": {
+    "title": "Feedback sturen",
+    "titleThumbs": "Wat ging er mis?",
+    "description": "Het gaat rechtstreeks naar het team. Er wordt niets anders bijgevoegd, tenzij je het aanvinkt.",
+    "kind": {
+      "label": "Soort",
+      "bug": "Fout",
+      "idea": "Idee",
+      "other": "Iets anders"
+    },
+    "message": {
+      "label": "Bericht",
+      "placeholder": "Wat gebeurde er, of wat zou helpen?",
+      "placeholderThumbs": "Wat ging er mis? (optioneel)"
+    },
+    "email": {
+      "label": "E-mail voor een antwoord (optioneel)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Diagnose meesturen",
+      "description": "App-versie, systeem, abonnement, een overzicht van instellingen en recente logregels, zonder geheimen, venstertitels en links."
+    },
+    "example": {
+      "label": "Het voorbeeld meesturen",
+      "description": "De vraag en het antwoord van die kaart, zonder geheimen."
+    },
+    "preview": "Bekijk wat er wordt verstuurd",
+    "hidePreview": "Voorbeeld verbergen",
+    "previewTitle": "Precies wat er wordt verstuurd",
+    "send": "Versturen",
+    "sending": "Versturen…",
+    "cancel": "Annuleren",
+    "close": "Sluiten",
+    "sent": "Bedankt! Je feedback is verstuurd.",
+    "errors": {
+      "empty": "Schrijf eerst een paar woorden.",
+      "offline": "Kan de server niet bereiken. Controleer je verbinding en probeer het opnieuw.",
+      "rateLimited": "Te veel meldingen op dit moment. Probeer het over een uur opnieuw.",
+      "failed": "Kon je feedback niet versturen. Probeer het opnieuw."
+    }
   }
 }

@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} 正從磁碟映像檔執行。請將它移到「應用程式」檔案夾，以保持安裝並自動更新。",
     "moveToAppsConfirm": "移到「應用程式」",
     "moveToAppsLater": "稍後再說",
-    "moveToAppsFailed": "無法將 {{appName}} 移到「應用程式」。請手動將它拖到「應用程式」檔案夾。"
+    "moveToAppsFailed": "無法將 {{appName}} 移到「應用程式」。請手動將它拖到「應用程式」檔案夾。",
+    "sendFeedback": "傳送意見回饋..."
   },
   "sidebar": {
     "home": "首頁",
@@ -885,6 +886,11 @@
         "title": "歡迎動畫",
         "description": "{{appName}} 首次開啟時播放的動畫。",
         "button": "播放動畫"
+      },
+      "feedback": {
+        "title": "傳送意見回饋",
+        "description": "回報錯誤或與團隊分享想法。",
+        "button": "傳送意見回饋"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "在 Google 雲端硬碟中搜尋",
       "searchGmail": "在 Gmail 中搜尋"
     },
-    "cloudOffer": "{{appName}} 可以將視窗內容的遮蔽片段傳送到其伺服器，藉此在這台電腦上建議提供協助。要開啟嗎？"
+    "cloudOffer": "{{appName}} 可以將視窗內容的遮蔽片段傳送到其伺服器，藉此在這台電腦上建議提供協助。要開啟嗎？",
+    "notes": {
+      "ready": "你的筆記已準備好",
+      "actionItems": "待辦事項：{{n}}",
+      "open": "開啟",
+      "email": "寄給我",
+      "sending": "正在傳送…",
+      "sent": "已寄到你的電子郵件",
+      "failed": "無法傳送",
+      "emailed": "會議筆記已寄到你的電子郵件",
+      "emailFailed": "無法以電子郵件寄出會議筆記"
+    },
+    "rate": {
+      "up": "有幫助",
+      "down": "沒幫助"
+    }
   },
   "privacy": {
     "title": "隱私",
@@ -1369,7 +1390,11 @@
         "license": "帳戶驗證",
         "trial": "試用",
         "warmup": "預熱連線（未傳送任何內容）",
-        "suggest": "建議檢查"
+        "suggest": "建議檢查",
+        "telemetry": "匿名使用次數",
+        "config": "設定檢查（不傳送任何內容）",
+        "meeting_email": "會議筆記電子郵件",
+        "feedback": "意見回饋"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "雲端建議",
         "description": "傳送你停留過的視窗的遮蔽片段，以判斷是否提供協助。每筆請求都會列在下方。"
       }
+    },
+    "telemetry": {
+      "title": "協助改善 {{appName}}",
+      "label": "分享匿名使用次數",
+      "description": "僅次數與耗時，絕不包括你說的、輸入的或看到的內容。在你開啟前保持關閉。"
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "在任何 App 中加入通話",
       "accept": "{{appName}} 提議時說「好」",
       "summary": "結束後取得摘要"
+    },
+    "email": {
+      "title": "將筆記寄給我",
+      "description": "每次通話後寄到 {{email}}。會先移除機密資訊，且不保存任何內容。",
+      "signedOut": "登入後即可透過電子郵件收到筆記。",
+      "options": {
+        "off": "關閉",
+        "ask": "每次詢問",
+        "always": "一律"
+      },
+      "button": "寄給我",
+      "sent": "筆記已寄到你的電子郵件",
+      "errors": {
+        "notSignedIn": "請先登入才能以電子郵件寄出筆記。",
+        "noSummary": "這場會議沒有可寄出的筆記。",
+        "rateLimited": "今天寄出的郵件太多了，請明天再試。",
+        "offline": "無法連線到伺服器。請檢查網路後再試一次。",
+        "failed": "無法寄出電子郵件，請再試一次。"
+      }
     }
   },
   "tour": {
@@ -1594,7 +1643,10 @@
       },
       "recall": {
         "title": "回想",
-        "examples": ["我昨天說了什麼關於定價的事？", "找出第三季的簡報。"],
+        "examples": [
+          "我昨天說了什麼關於定價的事？",
+          "找出第三季的簡報。"
+        ],
         "hint": "你說過、看過或做過的事。"
       },
       "suggestions": {
@@ -1637,5 +1689,60 @@
     "empty": "沒有符合「{{query}}」的內容。",
     "jumpTo": "跳至",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "協助改善 {{appName}}：分享匿名使用次數，絕不包括你說的、輸入的或看到的內容。",
+    "whatsShared": "分享哪些內容",
+    "sharedTitle": "僅匿名次數與耗時",
+    "shared": {
+      "suggestions": "建議被提供、接受或略過的次數",
+      "requests": "請求的類型與耗時",
+      "errors": "發生的錯誤類型，例如「逾時」",
+      "basics": "App 版本、系統、方案，以及每 30 天更換一次的隨機 ID"
+    },
+    "never": "絕不包括你說的、輸入的或看到的內容、視窗標題、連結、檔案名稱或你的電子郵件。",
+    "ledger": "每次上傳都會列在「隱私」中離開這台電腦的請求裡。"
+  },
+  "feedback": {
+    "title": "傳送意見回饋",
+    "titleThumbs": "哪裡出了問題？",
+    "description": "會直接送到團隊。除非你勾選，否則不會附加其他內容。",
+    "kind": {
+      "label": "類型",
+      "bug": "錯誤",
+      "idea": "想法",
+      "other": "其他"
+    },
+    "message": {
+      "label": "訊息",
+      "placeholder": "發生了什麼事，或什麼會有幫助？",
+      "placeholderThumbs": "哪裡出了問題？（選填）"
+    },
+    "email": {
+      "label": "回覆用的電子郵件（選填）",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "附上診斷資訊",
+      "description": "App 版本、系統、方案、設定摘要和最近的記錄行，已移除機密資訊、視窗標題和連結。"
+    },
+    "example": {
+      "label": "附上範例",
+      "description": "該卡片中的問題與回答，已移除機密資訊。"
+    },
+    "preview": "預覽傳送內容",
+    "hidePreview": "隱藏預覽",
+    "previewTitle": "將傳送的確切內容",
+    "send": "傳送",
+    "sending": "正在傳送…",
+    "cancel": "取消",
+    "close": "關閉",
+    "sent": "謝謝！你的意見回饋已送出。",
+    "errors": {
+      "empty": "請先寫幾句話。",
+      "offline": "無法連線到伺服器。請檢查網路後再試一次。",
+      "rateLimited": "目前回報太多，請一小時後再試。",
+      "failed": "無法傳送你的意見回饋，請再試一次。"
+    }
   }
 }

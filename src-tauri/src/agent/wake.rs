@@ -255,6 +255,7 @@ fn handle_request(app: &AppHandle, text: String) {
     super::milestone(app, "wake");
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
+        crate::telemetry::next_route_from_wake();
         let processed = process_transcription_output(&app, &text, true, OutputMode::Ask).await;
         if let Some(route) = processed.agent_route {
             super::handle(&app, route);

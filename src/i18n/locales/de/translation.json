@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} läuft vom Disk-Image. Bewege es in deinen Programme-Ordner, damit es installiert bleibt und sich selbst aktualisiert.",
     "moveToAppsConfirm": "In „Programme“ bewegen",
     "moveToAppsLater": "Nicht jetzt",
-    "moveToAppsFailed": "{{appName}} konnte nicht in „Programme“ bewegt werden. Ziehe es stattdessen in den Programme-Ordner."
+    "moveToAppsFailed": "{{appName}} konnte nicht in „Programme“ bewegt werden. Ziehe es stattdessen in den Programme-Ordner.",
+    "sendFeedback": "Feedback senden..."
   },
   "sidebar": {
     "home": "Home",
@@ -885,6 +886,11 @@
         "title": "Willkommensintro",
         "description": "Die Animation, die {{appName}} beim ersten Öffnen abspielt.",
         "button": "Intro abspielen"
+      },
+      "feedback": {
+        "title": "Feedback senden",
+        "description": "Melde einen Fehler oder teile eine Idee mit dem Team.",
+        "button": "Feedback senden"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "In Google Drive suchen",
       "searchGmail": "In Gmail suchen"
     },
-    "cloudOffer": "{{appName}} kann auf diesem Computer Hilfe vorschlagen, indem es einen geschwärzten Ausschnitt des Fensters an seine Server sendet. Aktivieren?"
+    "cloudOffer": "{{appName}} kann auf diesem Computer Hilfe vorschlagen, indem es einen geschwärzten Ausschnitt des Fensters an seine Server sendet. Aktivieren?",
+    "notes": {
+      "ready": "Deine Notizen sind fertig",
+      "actionItems": "Aufgaben: {{n}}",
+      "open": "Öffnen",
+      "email": "An mich mailen",
+      "sending": "Wird gesendet …",
+      "sent": "An deine E-Mail gesendet",
+      "failed": "Senden fehlgeschlagen",
+      "emailed": "Meeting-Notizen an deine E-Mail gesendet",
+      "emailFailed": "Meeting-Notizen konnten nicht gemailt werden"
+    },
+    "rate": {
+      "up": "Hilfreich",
+      "down": "Nicht hilfreich"
+    }
   },
   "privacy": {
     "title": "Datenschutz",
@@ -1369,7 +1390,11 @@
         "license": "Kontoprüfung",
         "trial": "Testversion",
         "warmup": "Verbindungsaufbau (nichts gesendet)",
-        "suggest": "Vorschlagsprüfung"
+        "suggest": "Vorschlagsprüfung",
+        "telemetry": "Anonyme Nutzungszahlen",
+        "config": "Einstellungsabgleich (nichts gesendet)",
+        "meeting_email": "Meeting-Notizen per E-Mail",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "Vorschläge aus der Cloud",
         "description": "Sendet einen geschwärzten Ausschnitt eines Fensters, auf dem du geblieben bist, um zu entscheiden, ob Hilfe angeboten wird. Jede Anfrage steht unten in der Liste."
       }
+    },
+    "telemetry": {
+      "title": "Hilf mit, {{appName}} zu verbessern",
+      "label": "Anonyme Nutzungszahlen teilen",
+      "description": "Nur Zählungen und Zeiten, nie, was du sagst, tippst oder siehst. Aus, bis du es einschaltest."
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "In einer beliebigen App an einem Anruf teilnehmen",
       "accept": "Ja sagen, wenn {{appName}} es anbietet",
       "summary": "Nach dem Ende eine Zusammenfassung erhalten"
+    },
+    "email": {
+      "title": "Notizen an mich mailen",
+      "description": "Nach jedem Anruf an {{email}}. Geheimnisse werden vorher entfernt, und nichts wird gespeichert.",
+      "signedOut": "Melde dich an, um deine Notizen per E-Mail zu erhalten.",
+      "options": {
+        "off": "Aus",
+        "ask": "Jedes Mal fragen",
+        "always": "Immer"
+      },
+      "button": "An mich mailen",
+      "sent": "Notizen an deine E-Mail gesendet",
+      "errors": {
+        "notSignedIn": "Melde dich an, um deine Notizen zu mailen.",
+        "noSummary": "Dieses Meeting hat keine Notizen zum Senden.",
+        "rateLimited": "Das sind heute viele E-Mails. Versuch es morgen wieder.",
+        "offline": "Server nicht erreichbar. Prüfe deine Verbindung und versuch es erneut.",
+        "failed": "Die E-Mail konnte nicht gesendet werden. Versuch es erneut."
+      }
     }
   },
   "tour": {
@@ -1640,5 +1689,60 @@
     "empty": "Nichts passt zu „{{query}}“.",
     "jumpTo": "Springen zu",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Hilf mit, {{appName}} zu verbessern: Teile anonyme Nutzungszahlen, nie, was du sagst, tippst oder siehst.",
+    "whatsShared": "Was geteilt wird",
+    "sharedTitle": "Nur anonyme Zählungen und Zeiten",
+    "shared": {
+      "suggestions": "Wie oft Vorschläge angeboten, angenommen oder abgelehnt werden",
+      "requests": "Welche Art von Anfrage es war und wie lange sie gedauert hat",
+      "errors": "Welche Art von Fehler aufgetreten ist, z. B. „Zeitüberschreitung“",
+      "basics": "App-Version, System, Tarif und eine zufällige ID, die sich alle 30 Tage ändert"
+    },
+    "never": "Nie, was du sagst, tippst oder siehst, Fenstertitel, Links, Dateinamen oder deine E-Mail.",
+    "ledger": "Jeder Upload steht unter Datenschutz bei den Anfragen, die diesen Computer verlassen haben."
+  },
+  "feedback": {
+    "title": "Feedback senden",
+    "titleThumbs": "Was ist schiefgelaufen?",
+    "description": "Es geht direkt ans Team. Sonst wird nichts angehängt, außer du setzt einen Haken.",
+    "kind": {
+      "label": "Art",
+      "bug": "Fehler",
+      "idea": "Idee",
+      "other": "Etwas anderes"
+    },
+    "message": {
+      "label": "Nachricht",
+      "placeholder": "Was ist passiert, oder was würde helfen?",
+      "placeholderThumbs": "Was ist schiefgelaufen? (optional)"
+    },
+    "email": {
+      "label": "E-Mail für eine Antwort (optional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Diagnosedaten anhängen",
+      "description": "App-Version, System, Tarif, eine Übersicht der Einstellungen und die letzten Protokollzeilen, ohne Geheimnisse, Fenstertitel und Links."
+    },
+    "example": {
+      "label": "Das Beispiel anhängen",
+      "description": "Frage und Antwort dieser Karte, ohne Geheimnisse."
+    },
+    "preview": "Vorschau des Gesendeten",
+    "hidePreview": "Vorschau ausblenden",
+    "previewTitle": "Genau das wird gesendet",
+    "send": "Senden",
+    "sending": "Wird gesendet …",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "sent": "Danke! Dein Feedback wurde gesendet.",
+    "errors": {
+      "empty": "Schreib zuerst ein paar Worte.",
+      "offline": "Server nicht erreichbar. Prüfe deine Verbindung und versuch es erneut.",
+      "rateLimited": "Gerade zu viele Meldungen. Versuch es in einer Stunde wieder.",
+      "failed": "Dein Feedback konnte nicht gesendet werden. Versuch es erneut."
+    }
   }
 }

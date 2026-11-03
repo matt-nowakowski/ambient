@@ -285,8 +285,10 @@ export const FAIR_USE = {
   // Cloud suggestion judgements a day (/api/agent/suggest). The app asks at
   // most once per window the user stays on, a few times an hour.
   suggest: 150,
+  // Meeting notes emailed to the account (/api/meetings/email), per recipient.
+  meeting_email: 20,
 } as const;
-const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40 } as const;
+const FAIR_USE_SOFT = { ai: 200, search: 25, suggest: 40, meeting_email: 5 } as const;
 
 type FairKind = keyof typeof FAIR_USE;
 const local = new Map<string, { day: string; count: number; synced: number }>();

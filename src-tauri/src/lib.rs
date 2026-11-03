@@ -12,6 +12,7 @@ mod clipboard;
 mod commands;
 mod context;
 pub mod engine_supervisor;
+mod feedback;
 mod helpers;
 mod hud;
 #[cfg(target_os = "linux")]
@@ -30,11 +31,13 @@ mod paste_tx;
 mod plan;
 pub mod portable;
 mod recall;
+mod remote_config;
 mod secure_input;
 mod settings;
 mod shortcut;
 mod signal_handle;
 mod system_languages;
+mod telemetry;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
@@ -419,6 +422,10 @@ fn initialize_core_logic(app_handle: &AppHandle) {
             "copy_last_transcript" => {
                 tray::copy_last_transcript(app);
             }
+            "send_feedback" => {
+                show_main_window(app);
+                let _ = app.emit("open-feedback", serde_json::json!({ "source": "dialog" }));
+            }
             "unload_model" => {
                 let transcription_manager = app.state::<Arc<TranscriptionManager>>();
                 if !transcription_manager.is_model_loaded() {
@@ -490,6 +497,8 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     utils::create_recording_overlay(app_handle);
     hud::create(app_handle);
     agent::start(app_handle.clone());
+    telemetry::init(app_handle);
+    remote_config::start(app_handle);
 }
 
 #[tauri::command]
@@ -873,6 +882,12 @@ pub fn run(cli_args: CliArgs) {
             meeting::get_meeting,
             meeting::delete_meeting,
             meeting::meeting_follow_up,
+            meeting::deliver::email_meeting_notes,
+            meeting::deliver::change_meetings_email_setting,
+            telemetry::change_telemetry_setting,
+            feedback::feedback_preview,
+            feedback::send_feedback,
+            feedback::feedback_draft,
             secure_input::get_secure_input_status,
             secure_input::run_keyboard_diagnostic,
             trigger_update_check,
@@ -1334,7 +1349,10 @@ pub fn run(cli_args: CliArgs) {
         }
         // However the app is quitting (tray, Cmd+Q, the menu bar, a
         // signal), make sure the process actually ends.
-        tauri::RunEvent::Exit => arm_exit_watchdog(),
+        tauri::RunEvent::Exit => {
+            arm_exit_watchdog();
+            telemetry::flush_on_quit(app);
+        }
         // No transcription teardown on exit: transcribe.cpp runs only in the
         // worker process, which exits by itself as soon as this process's end
         // of its stdin closes, even if it is hung. Waiting on an unload here

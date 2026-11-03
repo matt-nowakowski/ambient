@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} körs från skivavbilden. Flytta det till mappen Program så att det förblir installerat och uppdaterar sig självt.",
     "moveToAppsConfirm": "Flytta till Program",
     "moveToAppsLater": "Inte nu",
-    "moveToAppsFailed": "Kunde inte flytta {{appName}} till Program. Dra det till mappen Program i stället."
+    "moveToAppsFailed": "Kunde inte flytta {{appName}} till Program. Dra det till mappen Program i stället.",
+    "sendFeedback": "Skicka feedback..."
   },
   "sidebar": {
     "home": "Hem",
@@ -885,6 +886,11 @@
         "title": "Välkomstintro",
         "description": "Animationen som {{appName}} visar första gången den öppnas.",
         "button": "Spela upp intro"
+      },
+      "feedback": {
+        "title": "Skicka feedback",
+        "description": "Rapportera en bugg eller dela en idé med teamet.",
+        "button": "Skicka feedback"
       }
     },
     "agent": {
@@ -1260,7 +1266,22 @@
       "searchDrive": "Sök i Google Drive",
       "searchGmail": "Sök i Gmail"
     },
-    "cloudOffer": "{{appName}} kan föreslå hjälp på den här datorn genom att skicka ett maskerat utdrag av fönstret till sina servrar. Slå på?"
+    "cloudOffer": "{{appName}} kan föreslå hjälp på den här datorn genom att skicka ett maskerat utdrag av fönstret till sina servrar. Slå på?",
+    "notes": {
+      "ready": "Dina anteckningar är klara",
+      "actionItems": "Att göra: {{n}}",
+      "open": "Öppna",
+      "email": "Mejla till mig",
+      "sending": "Skickar…",
+      "sent": "Skickat till din e-post",
+      "failed": "Kunde inte skicka",
+      "emailed": "Mötesanteckningar skickade till din e-post",
+      "emailFailed": "Kunde inte mejla dina mötesanteckningar"
+    },
+    "rate": {
+      "up": "Hjälpsamt",
+      "down": "Inte hjälpsamt"
+    }
   },
   "privacy": {
     "title": "Integritet",
@@ -1369,7 +1390,11 @@
         "license": "Kontokontroll",
         "trial": "Provperiod",
         "warmup": "Förbereder anslutning (inget skickat)",
-        "suggest": "Förslagskontroll"
+        "suggest": "Förslagskontroll",
+        "telemetry": "Anonym användningsstatistik",
+        "config": "Kontroll av inställningar (inget skickas)",
+        "meeting_email": "E-post med mötesanteckningar",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1431,6 +1456,11 @@
         "title": "Förslag från molnet",
         "description": "Skickar ett maskerat utdrag av ett fönster du stannat kvar i för att avgöra om hjälp ska erbjudas. Varje förfrågan listas nedan."
       }
+    },
+    "telemetry": {
+      "title": "Hjälp till att förbättra {{appName}}",
+      "label": "Dela anonym användningsstatistik",
+      "description": "Bara räkningar och tider, aldrig vad du säger, skriver eller ser. Av tills du slår på det."
     }
   },
   "meetings": {
@@ -1500,6 +1530,25 @@
       "join": "Gå med i ett samtal i valfri app",
       "accept": "Säg ja när {{appName}} erbjuder sig",
       "summary": "Få en sammanfattning när det är slut"
+    },
+    "email": {
+      "title": "Mejla anteckningar till mig",
+      "description": "Skickas till {{email}} efter varje samtal. Hemligheter tas bort först och inget sparas.",
+      "signedOut": "Logga in för att få dina anteckningar via e-post.",
+      "options": {
+        "off": "Av",
+        "ask": "Fråga varje gång",
+        "always": "Alltid"
+      },
+      "button": "Mejla till mig",
+      "sent": "Anteckningar skickade till din e-post",
+      "errors": {
+        "notSignedIn": "Logga in för att mejla dina anteckningar.",
+        "noSummary": "Det här mötet har inga anteckningar att skicka.",
+        "rateLimited": "Det är många mejl i dag. Försök igen i morgon.",
+        "offline": "Kunde inte nå servern. Kontrollera anslutningen och försök igen.",
+        "failed": "Kunde inte skicka mejlet. Försök igen."
+      }
     }
   },
   "tour": {
@@ -1640,5 +1689,60 @@
     "empty": "Inget matchar “{{query}}”.",
     "jumpTo": "Hoppa till",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Hjälp till att förbättra {{appName}}: dela anonym användningsstatistik, aldrig vad du säger, skriver eller ser.",
+    "whatsShared": "Vad som delas",
+    "sharedTitle": "Bara anonyma räkningar och tider",
+    "shared": {
+      "suggestions": "Hur ofta förslag visas, accepteras eller avvisas",
+      "requests": "Vilken sorts förfrågan det var och hur lång tid den tog",
+      "errors": "Vilken sorts fel som uppstod, till exempel ”tidsgränsen nåddes”",
+      "basics": "Appversion, system, abonnemang och ett slumpmässigt ID som byts var 30:e dag"
+    },
+    "never": "Aldrig vad du säger, skriver eller ser, fönstertitlar, länkar, filnamn eller din e-post.",
+    "ledger": "Varje uppladdning listas i Integritet, bland förfrågningar som lämnat den här datorn."
+  },
+  "feedback": {
+    "title": "Skicka feedback",
+    "titleThumbs": "Vad gick fel?",
+    "description": "Det går direkt till teamet. Inget annat bifogas om du inte kryssar i det.",
+    "kind": {
+      "label": "Typ",
+      "bug": "Bugg",
+      "idea": "Idé",
+      "other": "Något annat"
+    },
+    "message": {
+      "label": "Meddelande",
+      "placeholder": "Vad hände, eller vad skulle hjälpa?",
+      "placeholderThumbs": "Vad gick fel? (valfritt)"
+    },
+    "email": {
+      "label": "E-post för svar (valfritt)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Bifoga diagnostik",
+      "description": "Appversion, system, abonnemang, en sammanfattning av inställningar och de senaste loggraderna, utan hemligheter, fönstertitlar och länkar."
+    },
+    "example": {
+      "label": "Bifoga exemplet",
+      "description": "Frågan och svaret från det kortet, utan hemligheter."
+    },
+    "preview": "Förhandsgranska det som skickas",
+    "hidePreview": "Dölj förhandsgranskning",
+    "previewTitle": "Exakt det som skickas",
+    "send": "Skicka",
+    "sending": "Skickar…",
+    "cancel": "Avbryt",
+    "close": "Stäng",
+    "sent": "Tack! Din feedback har skickats.",
+    "errors": {
+      "empty": "Skriv några ord först.",
+      "offline": "Kunde inte nå servern. Kontrollera anslutningen och försök igen.",
+      "rateLimited": "För många rapporter just nu. Försök igen om en timme.",
+      "failed": "Kunde inte skicka din feedback. Försök igen."
+    }
   }
 }

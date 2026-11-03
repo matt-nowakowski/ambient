@@ -559,6 +559,25 @@ pub struct AppSettings {
     /// Everything that reads the screen is off until the user opts in.
     #[serde(default)]
     pub agent: AgentSettings,
+    /// Opt-in anonymous usage counts (telemetry.rs). Off until the user
+    /// turns it on.
+    #[serde(default)]
+    pub telemetry: bool,
+    /// Email finished meeting notes to the signed-in account.
+    #[serde(default)]
+    pub meetings_email: MeetingsEmail,
+}
+
+/// When meeting notes are emailed to the account's address.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
+#[serde(rename_all = "lowercase")]
+pub enum MeetingsEmail {
+    Off,
+    /// "Email to me" on the notes card.
+    #[default]
+    Ask,
+    /// Sent as soon as the notes are done.
+    Always,
 }
 
 /// Per-capability opt-ins and privacy controls for the ambient agent.
@@ -1013,6 +1032,8 @@ pub fn get_default_settings() -> AppSettings {
         language_detection_window_secs: default_language_detection_window_secs(),
         overlay_style: default_overlay_style(),
         agent: AgentSettings::default(),
+        telemetry: false,
+        meetings_email: MeetingsEmail::default(),
         intro_seen: false,
     }
 }

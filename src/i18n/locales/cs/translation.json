@@ -16,7 +16,8 @@
     "moveToAppsBody": "{{appName}} běží z obrazu disku. Přesuňte ho do složky Aplikace, aby zůstal nainstalovaný a sám se aktualizoval.",
     "moveToAppsConfirm": "Přesunout do Aplikací",
     "moveToAppsLater": "Teď ne",
-    "moveToAppsFailed": "{{appName}} se nepodařilo přesunout do Aplikací. Přetáhněte ho do složky Aplikace."
+    "moveToAppsFailed": "{{appName}} se nepodařilo přesunout do Aplikací. Přetáhněte ho do složky Aplikace.",
+    "sendFeedback": "Odeslat zpětnou vazbu..."
   },
   "sidebar": {
     "home": "Domů",
@@ -891,6 +892,11 @@
         "title": "Uvítací intro",
         "description": "Animace, kterou {{appName}} přehraje při prvním spuštění.",
         "button": "Přehrát intro"
+      },
+      "feedback": {
+        "title": "Odeslat zpětnou vazbu",
+        "description": "Nahlaste chybu nebo se s týmem podělte o nápad.",
+        "button": "Odeslat zpětnou vazbu"
       }
     },
     "agent": {
@@ -1276,7 +1282,22 @@
       "searchDrive": "Hledat na Disku Google",
       "searchGmail": "Hledat v Gmailu"
     },
-    "cloudOffer": "{{appName}} může navrhovat pomoc na tomto počítači tak, že na své servery odešle začerněný výřez okna. Zapnout?"
+    "cloudOffer": "{{appName}} může navrhovat pomoc na tomto počítači tak, že na své servery odešle začerněný výřez okna. Zapnout?",
+    "notes": {
+      "ready": "Vaše poznámky jsou hotové",
+      "actionItems": "Úkoly: {{n}}",
+      "open": "Otevřít",
+      "email": "Poslat mi e-mailem",
+      "sending": "Odesílání…",
+      "sent": "Odesláno na váš e-mail",
+      "failed": "Nepodařilo se odeslat",
+      "emailed": "Poznámky ze schůzky odeslány na váš e-mail",
+      "emailFailed": "Poznámky ze schůzky se nepodařilo odeslat e-mailem"
+    },
+    "rate": {
+      "up": "Užitečné",
+      "down": "Neužitečné"
+    }
   },
   "privacy": {
     "title": "Soukromí",
@@ -1391,7 +1412,11 @@
         "license": "Kontrola účtu",
         "trial": "Zkušební verze",
         "warmup": "Příprava připojení (nic se neodesílá)",
-        "suggest": "Kontrola návrhů"
+        "suggest": "Kontrola návrhů",
+        "telemetry": "Anonymní statistiky používání",
+        "config": "Kontrola nastavení (nic se neodesílá)",
+        "meeting_email": "E-mail s poznámkami ze schůzky",
+        "feedback": "Zpětná vazba"
       }
     },
     "engine": {
@@ -1455,6 +1480,11 @@
         "title": "Návrhy z cloudu",
         "description": "Odešle začerněný výřez okna, ve kterém jste zůstali, aby se rozhodlo, zda nabídnout pomoc. Každý požadavek je uvedený níže."
       }
+    },
+    "telemetry": {
+      "title": "Pomozte vylepšit {{appName}}",
+      "label": "Sdílet anonymní statistiky používání",
+      "description": "Jen počty a časy, nikdy to, co říkáte, píšete nebo vidíte. Vypnuto, dokud to nezapnete."
     }
   },
   "meetings": {
@@ -1524,6 +1554,25 @@
       "join": "Připojte se k hovoru v libovolné aplikaci",
       "accept": "Řekněte „ano“, když {{appName}} nabídne",
       "summary": "Po skončení získejte shrnutí"
+    },
+    "email": {
+      "title": "Posílat mi poznámky e-mailem",
+      "description": "Posílají se na {{email}} po každém hovoru. Tajné údaje se nejdřív odstraní a nic se neukládá.",
+      "signedOut": "Přihlaste se, abyste dostávali poznámky e-mailem.",
+      "options": {
+        "off": "Vypnuto",
+        "ask": "Pokaždé se zeptat",
+        "always": "Vždy"
+      },
+      "button": "Poslat mi e-mailem",
+      "sent": "Poznámky odeslány na váš e-mail",
+      "errors": {
+        "notSignedIn": "Přihlaste se, abyste mohli poznámky poslat e-mailem.",
+        "noSummary": "Tato schůzka nemá žádné poznámky k odeslání.",
+        "rateLimited": "Dnes je to už hodně e-mailů. Zkuste to zítra.",
+        "offline": "Nelze se spojit se serverem. Zkontrolujte připojení a zkuste to znovu.",
+        "failed": "E-mail se nepodařilo odeslat. Zkuste to znovu."
+      }
     }
   },
   "tour": {
@@ -1664,5 +1713,60 @@
     "empty": "Nic neodpovídá „{{query}}“.",
     "jumpTo": "Přejít na",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Pomozte vylepšit {{appName}}: sdílejte anonymní statistiky používání, nikdy to, co říkáte, píšete nebo vidíte.",
+    "whatsShared": "Co se sdílí",
+    "sharedTitle": "Jen anonymní počty a časy",
+    "shared": {
+      "suggestions": "Jak často se návrhy nabízejí, přijímají nebo odmítají",
+      "requests": "Jaký to byl druh požadavku a jak dlouho trval",
+      "errors": "Jaký druh chyby nastal, třeba „vypršel časový limit“",
+      "basics": "Verze aplikace, systém, tarif a náhodné ID, které se mění každých 30 dní"
+    },
+    "never": "Nikdy to, co říkáte, píšete nebo vidíte, názvy oken, odkazy, názvy souborů ani váš e-mail.",
+    "ledger": "Každé odeslání najdete v Soukromí mezi požadavky, které opustily tento počítač."
+  },
+  "feedback": {
+    "title": "Odeslat zpětnou vazbu",
+    "titleThumbs": "Co se pokazilo?",
+    "description": "Jde přímo týmu. Nic dalšího se nepřikládá, pokud to nezaškrtnete.",
+    "kind": {
+      "label": "Typ",
+      "bug": "Chyba",
+      "idea": "Nápad",
+      "other": "Něco jiného"
+    },
+    "message": {
+      "label": "Zpráva",
+      "placeholder": "Co se stalo, nebo co by pomohlo?",
+      "placeholderThumbs": "Co se pokazilo? (volitelné)"
+    },
+    "email": {
+      "label": "E-mail pro odpověď (volitelný)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Přiložit diagnostiku",
+      "description": "Verze aplikace, systém, tarif, přehled nastavení a poslední řádky logu, bez tajných údajů, názvů oken a odkazů."
+    },
+    "example": {
+      "label": "Přiložit příklad",
+      "description": "Otázka a odpověď z té karty, bez tajných údajů."
+    },
+    "preview": "Náhled toho, co se odešle",
+    "hidePreview": "Skrýt náhled",
+    "previewTitle": "Přesně tohle se odešle",
+    "send": "Odeslat",
+    "sending": "Odesílání…",
+    "cancel": "Zrušit",
+    "close": "Zavřít",
+    "sent": "Díky! Vaše zpětná vazba byla odeslána.",
+    "errors": {
+      "empty": "Nejdřív napište pár slov.",
+      "offline": "Nelze se spojit se serverem. Zkontrolujte připojení a zkuste to znovu.",
+      "rateLimited": "Teď je hlášení příliš mnoho. Zkuste to za hodinu.",
+      "failed": "Zpětnou vazbu se nepodařilo odeslat. Zkuste to znovu."
+    }
   }
 }

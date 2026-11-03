@@ -16,7 +16,8 @@
     "moveToAppsBody": "El {{appName}} s'executa des de la imatge de disc. Moveu-lo a la carpeta Aplicacions perquè continuï instal·lat i s'actualitzi sol.",
     "moveToAppsConfirm": "Mou a Aplicacions",
     "moveToAppsLater": "Ara no",
-    "moveToAppsFailed": "No s'ha pogut moure el {{appName}} a Aplicacions. Arrossegueu-lo a la carpeta Aplicacions."
+    "moveToAppsFailed": "No s'ha pogut moure el {{appName}} a Aplicacions. Arrossegueu-lo a la carpeta Aplicacions.",
+    "sendFeedback": "Envia comentaris..."
   },
   "sidebar": {
     "home": "Inici",
@@ -888,6 +889,11 @@
         "title": "Introducció de benvinguda",
         "description": "L'animació que el {{appName}} reprodueix la primera vegada que s'obre.",
         "button": "Reprodueix la introducció"
+      },
+      "feedback": {
+        "title": "Envia comentaris",
+        "description": "Informa d'un error o comparteix una idea amb l'equip.",
+        "button": "Envia comentaris"
       }
     },
     "agent": {
@@ -1268,7 +1274,22 @@
       "searchDrive": "Cerca a Google Drive",
       "searchGmail": "Cerca a Gmail"
     },
-    "cloudOffer": "El {{appName}} pot suggerir ajuda en aquest ordinador enviant als seus servidors un fragment censurat de la finestra. Voleu activar-ho?"
+    "cloudOffer": "El {{appName}} pot suggerir ajuda en aquest ordinador enviant als seus servidors un fragment censurat de la finestra. Voleu activar-ho?",
+    "notes": {
+      "ready": "Les teves notes estan a punt",
+      "actionItems": "Tasques: {{n}}",
+      "open": "Obre",
+      "email": "Envia-m'ho per correu",
+      "sending": "S'està enviant…",
+      "sent": "Enviat al teu correu",
+      "failed": "No s'ha pogut enviar",
+      "emailed": "Notes de la reunió enviades al teu correu",
+      "emailFailed": "No s'han pogut enviar per correu les notes de la reunió"
+    },
+    "rate": {
+      "up": "Útil",
+      "down": "No és útil"
+    }
   },
   "privacy": {
     "title": "Privadesa",
@@ -1380,7 +1401,11 @@
         "license": "Comprovació del compte",
         "trial": "Prova",
         "warmup": "Preparació de la connexió (no s'envia res)",
-        "suggest": "Comprovació de suggeriment"
+        "suggest": "Comprovació de suggeriment",
+        "telemetry": "Recomptes d'ús anònims",
+        "config": "Comprovació de la configuració (no s'envia res)",
+        "meeting_email": "Correu amb les notes de la reunió",
+        "feedback": "Comentaris"
       }
     },
     "engine": {
@@ -1443,6 +1468,11 @@
         "title": "Suggeriments des del núvol",
         "description": "Envia un fragment censurat d'una finestra on us heu quedat per decidir si ofereix ajuda. Cada petició apareix a sota."
       }
+    },
+    "telemetry": {
+      "title": "Ajuda a millorar {{appName}}",
+      "label": "Comparteix recomptes d'ús anònims",
+      "description": "Només recomptes i temps, mai el que dius, escrius o veus. Desactivat fins que l'activis."
     }
   },
   "meetings": {
@@ -1512,6 +1542,25 @@
       "join": "Uniu-vos a una trucada en qualsevol aplicació",
       "accept": "Digueu que sí quan el {{appName}} ho ofereixi",
       "summary": "Rebeu un resum quan acabi"
+    },
+    "email": {
+      "title": "Envia'm les notes per correu",
+      "description": "S'envien a {{email}} després de cada trucada. Abans es treuen els secrets i no es guarda res.",
+      "signedOut": "Inicia la sessió per rebre les notes per correu.",
+      "options": {
+        "off": "Desactivat",
+        "ask": "Pregunta cada vegada",
+        "always": "Sempre"
+      },
+      "button": "Envia-m'ho per correu",
+      "sent": "Notes enviades al teu correu",
+      "errors": {
+        "notSignedIn": "Inicia la sessió per enviar les notes per correu.",
+        "noSummary": "Aquesta reunió no té notes per enviar.",
+        "rateLimited": "Són molts correus per avui. Torna-ho a provar demà.",
+        "offline": "No s'ha pogut connectar amb el servidor. Comprova la connexió i torna-ho a provar.",
+        "failed": "No s'ha pogut enviar el correu. Torna-ho a provar."
+      }
     }
   },
   "tour": {
@@ -1652,5 +1701,60 @@
     "empty": "Cap resultat per a “{{query}}”.",
     "jumpTo": "Vés a",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Ajuda a millorar {{appName}}: comparteix recomptes d'ús anònims, mai el que dius, escrius o veus.",
+    "whatsShared": "Què es comparteix",
+    "sharedTitle": "Només recomptes i temps anònims",
+    "shared": {
+      "suggestions": "Amb quina freqüència s'ofereixen, s'accepten o es descarten els suggeriments",
+      "requests": "Quin tipus de petició era i quant va trigar",
+      "errors": "Quin tipus d'error va passar, com ara “temps esgotat”",
+      "basics": "Versió de l'app, sistema, pla i un ID aleatori que canvia cada 30 dies"
+    },
+    "never": "Mai el que dius, escrius o veus, títols de finestres, enllaços, noms de fitxers ni el teu correu.",
+    "ledger": "Cada enviament apareix a Privadesa, entre les peticions que han sortit d'aquest ordinador."
+  },
+  "feedback": {
+    "title": "Envia comentaris",
+    "titleThumbs": "Què ha anat malament?",
+    "description": "Arriba directament a l'equip. No s'hi adjunta res més si no ho marques.",
+    "kind": {
+      "label": "Tipus",
+      "bug": "Error",
+      "idea": "Idea",
+      "other": "Una altra cosa"
+    },
+    "message": {
+      "label": "Missatge",
+      "placeholder": "Què ha passat, o què t'ajudaria?",
+      "placeholderThumbs": "Què ha anat malament? (opcional)"
+    },
+    "email": {
+      "label": "Correu per respondre't (opcional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Inclou el diagnòstic",
+      "description": "Versió de l'app, sistema, pla, un resum de la configuració i les últimes línies del registre, sense secrets, títols de finestres ni enllaços."
+    },
+    "example": {
+      "label": "Inclou l'exemple",
+      "description": "La pregunta i la resposta d'aquella targeta, sense secrets."
+    },
+    "preview": "Mostra què s'envia",
+    "hidePreview": "Amaga la previsualització",
+    "previewTitle": "Exactament el que s'enviarà",
+    "send": "Envia",
+    "sending": "S'està enviant…",
+    "cancel": "Cancel·la",
+    "close": "Tanca",
+    "sent": "Gràcies! S'han enviat els teus comentaris.",
+    "errors": {
+      "empty": "Escriu unes quantes paraules primer.",
+      "offline": "No s'ha pogut connectar amb el servidor. Comprova la connexió i torna-ho a provar.",
+      "rateLimited": "Massa informes de moment. Torna-ho a provar d'aquí a una hora.",
+      "failed": "No s'han pogut enviar els teus comentaris. Torna-ho a provar."
+    }
   }
 }

@@ -1,0 +1,56 @@
+/* 👍/👎 on cards, and the meeting notes card. Kept apart from hud.css. */
+
+.hud-thumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-card .hud-thumbs button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--h-faint);
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+
+.hud-card .hud-thumbs button:hover {
+  background: var(--h-raise);
+  color: var(--h-ink);
+}
+
+.hud-card .hud-thumbs button[aria-pressed="true"] {
+  color: var(--h-ink);
+}
+
+.hud-actions .hud-thumbs {
+  margin-left: 4px;
+}
+
+.hud-notes-meta {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--h-muted);
+}
+
+.hud-notes-state {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--h-faint);
+}
+
+.hud-notes-state[data-state="sent"] {
+  color: var(--h-success);
+}
+
+.hud-notes-state[data-state="failed"] {
+  color: var(--h-error);
+}
