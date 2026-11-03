@@ -12,6 +12,7 @@ mod clipboard;
 mod commands;
 mod context;
 pub mod engine_supervisor;
+mod feedback;
 mod helpers;
 mod hud;
 #[cfg(target_os = "linux")]

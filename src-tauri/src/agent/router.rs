@@ -4,7 +4,7 @@
 
 use once_cell::sync::Lazy;
 use regex::Regex;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 
 use super::llm;
@@ -27,11 +27,13 @@ pub enum Route {
     Help,
     /// Already dealt with (e.g. the user answered a suggestion by voice).
     Handled,
+    /// A bug report or feedback for the team: shown in a card to confirm.
+    Report(super::report::ReportIntent),
 }
 
 /// Things the agent can do without touching other apps' UI (P1's ladder rungs
 /// 1–2). Multi-step computer use is P4.
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Action {
     OpenApp {
@@ -87,6 +89,61 @@ pub fn looks_like_request(transcript: &str) -> bool {
     REQUEST_CUES.is_match(transcript) || addresses_ambient(transcript)
 }
 
+/// Requests and questions in any form: imperatives ("reply saying it's
+/// fine", "send it to Sam"), "can we / could you / please …", "remind me",
+/// "what / how / why …", "tell them / let them know". Broader than
+/// `looks_like_request`: used where nothing can be typed (no text field has
+/// focus), so a request always gets an answer instead of "Did you mean to
+/// type this?".
+static SOUNDS_LIKE_REQUEST: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)^\s*(?:(?:please|pls|ok(?:ay)?|so|hey|just|now)[\s,]+)*(?:
+            (?:can|could|would|will|shall)\s+(?:you|u|we|i)\b
+          | (?:let's|lets|let\s+us)\b
+          | (?:i\s+(?:need|want|would\s+like|'d\s+like)\s+(?:you\s+to|to)|i'd\s+like\s+(?:you\s+to|to)|id\s+like\s+to)\b
+          | (?:what|what's|whats|who|who's|whose|when|where|why|how|which|is|are|was|were|do|does|did|should|have|has)\b
+          | (?:reply|respond|answer|tell|let\s+\w+\s+know|send|forward|draft|write|compose|email|e-mail|message|text|dm|ping|call|ring
+             |remind|set|add|create|make|schedule|book|cancel|move|reschedule|invite
+             |open|launch|start|close|quit|go|show|find|search|look|google|check|read|play|pause|stop|turn|switch
+             |summari[sz]e|explain|translate|define|calculate|convert|compare|list|give|get|help|fix|rewrite|shorten|improve|proofread
+             |copy|save|note|jot|take|share|delete|remove|clear|undo)\b
+        )",
+    )
+    .expect("sounds like request")
+});
+
+pub fn sounds_like_request(transcript: &str) -> bool {
+    let t = without_address(transcript);
+    looks_like_request(transcript)
+        || SOUNDS_LIKE_REQUEST.is_match(t)
+        || t.trim_end().ends_with('?')
+        || super::compose::compose_intent(transcript) != super::compose::ComposeIntent::No
+}
+
+/// Commands that are for Ambient even with a text field focused: things only
+/// a computer does ("open Linear", "remind me…", "summarise this thread",
+/// "translate this"). With a field focused outside messaging these go to
+/// the agent; in messaging the router still decides, told it's likely a
+/// command.
+static STRONG_REQUEST: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)^\s*(?:(?:please|ok(?:ay)?|hey|can\s+you|could\s+you|would\s+you)[\s,]+)*(?:
+            (?:open|launch)\s+(?:up\s+)?(?:the\s+)?[\w.\-]+(?:\s+app)?\s*[.!]?\s*$
+          | (?:search\s+(?:the\s+web|google|for)|google|look\s+up)\b
+          | (?:remind\s+me|set\s+(?:a\s+|me\s+a\s+)?(?:reminder|timer|alarm))\b
+          | (?:summari[sz]e|translate|explain|proofread)\s+(?:this|that|the|my|it)\b
+          | (?:what's|what\s+is|whats)\s+(?:on|in)\s+(?:this|my)\s+(?:screen|page|window)\b
+          | (?:add\s+(?:this|that|it|an?\s+event|a\s+meeting)\s+to\s+(?:my\s+)?calendar)\b
+          | (?:run\s+(?:my\s+)?(?:shortcut|automation))\b
+        )",
+    )
+    .expect("strong request")
+});
+
+pub fn strong_request(transcript: &str) -> bool {
+    addresses_ambient(transcript) || STRONG_REQUEST.is_match(without_address(transcript))
+}
+
 /// The cheap request cues are English. Someone who also dictates in other
 /// languages gets the router on every dictation instead (with polish on that
 /// costs nothing extra: the router's "write" result is the polished text).
@@ -124,6 +181,7 @@ pub fn without_address(transcript: &str) -> &str {
 /// An instruction to write something rather than the words to type ("reply
 /// to this email saying we're happy", "draft a quick reply"), decided by the
 /// first pass in `compose`, without a model call.
+#[cfg_attr(not(test), allow(dead_code))]
 pub fn compose_request(transcript: &str) -> Option<String> {
     match super::compose::compose_intent(transcript) {
         super::compose::ComposeIntent::Yes(s) => Some(s),
@@ -165,6 +223,10 @@ pub struct Place {
     pub url: String,
     /// macOS reports a focused text field (a hint only).
     pub editable: bool,
+    /// Certainly no text field has focus, in an app whose accessibility can
+    /// be trusted to say so: nothing said here can be typed, so speech goes
+    /// to the agent unless it's clearly prose.
+    pub no_field: bool,
 }
 
 /// AI assistants: anything said here is a prompt for them, not for Ambient.
@@ -260,12 +322,99 @@ pub fn place() -> Place {
     if crate::context::accessibility_trusted() {
         // Metadata only; the never-watch list still applies.
         if let Ok(s) = crate::context::snapshot(0, &[]) {
+            let url = s.url.clone().unwrap_or_default();
+            p.no_field = front.bundle_id != env!("BRAND_IDENTIFIER")
+                && super::focus_is_reliable(&front.bundle_id)
+                && super::classify_focus(
+                    s.focused_role.as_deref(),
+                    s.editable && !s.secure,
+                    &s.window_title,
+                    &url,
+                ) == Some(false);
             p.title = s.window_title;
-            p.url = s.url.unwrap_or_default();
+            p.url = url;
             p.editable = s.editable;
         }
     }
     p
+}
+
+/// What routing knows before any model call.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct Situation {
+    /// Certainly no text field has focus (see `Place::no_field`).
+    pub no_field: bool,
+    /// A text field has focus (a hint).
+    pub editable: bool,
+    /// Email, chat or docs in front.
+    pub messaging: bool,
+    /// An AI assistant's chat in front.
+    pub ai_chat: bool,
+    /// Said with the Ask key.
+    pub ask: bool,
+    /// An answer card is up.
+    pub follow_up: bool,
+}
+
+/// The first pass's decision.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Decision {
+    /// Decided without a model call.
+    pub route: Option<Route>,
+    /// For the agent: the router may not choose "write".
+    pub to_agent: bool,
+}
+
+/// Route what can be routed from the words and where the user is, with no
+/// model call: "what can I say?", "report a bug: …", "reply saying …",
+/// "remind me tomorrow morning to …". Otherwise say whether it's certainly
+/// for the agent (never typed): the Ask key, a follow-up with no field, any
+/// request or question with nothing to type into, or a command only a
+/// computer does (outside chats). Everything else is the router's call, and
+/// with a field focused, typing stays the default.
+pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> Decision {
+    use super::compose::{compose_intent, ComposeIntent};
+    let decided = |route: Route| Decision {
+        route: Some(route),
+        to_agent: true,
+    };
+    if is_help_request(transcript) {
+        return decided(Route::Help);
+    }
+    if let Some(r) = super::report::report_intent(transcript) {
+        if r.explicit || s.ask || s.no_field || s.follow_up {
+            return decided(Route::Report(r));
+        }
+    }
+    match compose_intent(transcript) {
+        ComposeIntent::Yes(instruction) => return decided(Route::Compose(instruction)),
+        // "Tell them it's fine" with nothing to type into: a reply to draft.
+        ComposeIntent::Maybe if s.no_field || s.ask => {
+            return decided(Route::Compose(
+                without_address(transcript).trim().to_string(),
+            ))
+        }
+        _ => {}
+    }
+    // Typing to people in a chat or email: "remind me…" may be for them.
+    let typing_to_people = s.editable && s.messaging && !s.ask;
+    if let Some(r) = super::when::reminder_request(transcript, now) {
+        if !typing_to_people {
+            return decided(Route::Act(Action::Reminder {
+                due: r.due_string(),
+                title: r.title,
+            }));
+        }
+    }
+    let to_agent = s.ask
+        || (s.follow_up && !s.editable)
+        || (s.no_field && sounds_like_request(transcript))
+        || addresses_ambient(transcript)
+        || (strong_request(transcript) && !s.messaging && !s.ai_chat);
+    Decision {
+        route: None,
+        to_agent,
+    }
 }
 
 /// Plain dictation should skip the router entirely here: the user is typing
@@ -283,7 +432,7 @@ const SYSTEM: &str = r#"You route a voice transcript the user just spoke on thei
 If unsure, choose "write". A message or email being dictated word for word is always "write".
 
 Reply with JSON only, no prose:
-{"intent":"write|answer|act|recall|compose","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
+{"intent":"write|answer|act|recall|compose|report","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
 - write: "text" = the transcript cleaned up following POLISH RULES below.
 - compose: "query" = the instruction, as said.
 - answer: "query" = the question, made self-contained. "needs_web" = true only if it needs current or specific facts you may not know (news, prices, rates, schedules, recent events, specific businesses). "about_screen" = true if it refers to "this"/the current window.
@@ -296,7 +445,9 @@ Reply with JSON only, no prose:
   {"type":"calendar_event","title":"...","start":"YYYY-MM-DDTHH:MM","end":"YYYY-MM-DDTHH:MM or null","location":null}
   {"type":"shortcut","name":"..."}
   {"type":"unsupported","description":"..."}
-Resolve relative dates ("Friday", "at 5") against NOW below, in local time."#;
+Resolve relative dates ("Friday", "at 5") against NOW below, in local time. Parts of the day: morning 09:00, afternoon 14:00, evening 18:00, tonight 20:00; a day with no time is 09:00 that day.
+- "act" with "unsupported" when it's something to do on the computer that the actions above can't do; "description" = what they asked, in a few words starting with a verb ("rename all the files on my desktop").
+- "report": they want to report a bug or send feedback or a wish to the makers of this assistant ("report a bug: …", "that didn't work", "tell the team …", "feature request: …", "I wish you could …"). "query" = what they said, without the opener."#;
 
 /// The route's name, for logs (never its text).
 pub fn route_name(route: Option<&Route>) -> &'static str {
@@ -309,6 +460,7 @@ pub fn route_name(route: Option<&Route>) -> &'static str {
         Some(Route::Compose(_)) => "compose",
         Some(Route::Help) => "help",
         Some(Route::Handled) => "handled",
+        Some(Route::Report(_)) => "report",
     }
 }
 
@@ -341,6 +493,13 @@ fn parse(reply: &str) -> Option<Route> {
         }),
         "act" => raw.action.map(Route::Act),
         "recall" => nonempty(raw.query).map(Route::Recall),
+        "report" => nonempty(raw.query).or(nonempty(raw.text)).map(|message| {
+            Route::Report(super::report::ReportIntent {
+                kind: super::report::classify(&message),
+                message,
+                explicit: true,
+            })
+        }),
         "compose" => nonempty(raw.query)
             .or(nonempty(raw.text))
             .map(Route::Compose),
@@ -439,7 +598,12 @@ pub async fn route(
     if place.editable {
         where_.push_str(", a text field is focused");
     }
-    if place.is_messaging() && !addresses_ambient(transcript) {
+    if place.no_field {
+        where_.push_str(". NO text field is focused, so nothing can be typed here: choose \"write\" only if this is clearly prose meant to be typed (a sentence for a message, note or document); any request, question or instruction is for you (answer/act/compose/recall)");
+    } else if strong_request(transcript) && !place.is_ai_chat() {
+        where_.push_str(". It starts like a command for you, the assistant: don't choose \"write\" unless it's clearly words for the people in the conversation");
+    }
+    if place.is_messaging() && !addresses_ambient(transcript) && !place.no_field {
         where_.push_str(". This is a messaging/email/docs app: requests, questions and commands here are almost always text for the people or the document → \"write\", unless they clearly address you, the assistant, or instruct you to write the message for them (\"compose\")");
     }
     if compose_maybe(transcript) {
@@ -559,6 +723,166 @@ mod tests {
             "I need help with the deck",
         ] {
             assert!(!is_help_request(s), "{s}");
+        }
+    }
+
+    fn now() -> chrono::NaiveDateTime {
+        chrono::NaiveDate::from_ymd_opt(2026, 11, 2)
+            .unwrap()
+            .and_hms_opt(15, 20, 0)
+            .unwrap()
+    }
+
+    fn gmail_no_field() -> Situation {
+        Situation {
+            no_field: true,
+            messaging: true,
+            ..Default::default()
+        }
+    }
+
+    /// The tester's log: with no text field focused, these got "Did you
+    /// mean to type this?" instead of the agent.
+    #[test]
+    fn requests_with_no_field_go_to_the_agent() {
+        let d = decide(
+            "remind me tomorrow morning to fix the vault",
+            &gmail_no_field(),
+            now(),
+        );
+        assert_eq!(
+            d.route,
+            Some(Route::Act(Action::Reminder {
+                title: "fix the vault".into(),
+                due: Some("2026-11-03T09:00".into()),
+            }))
+        );
+        let d = decide(
+            "Can we please reply to this email saying it's all good?",
+            &gmail_no_field(),
+            now(),
+        );
+        assert!(matches!(d.route, Some(Route::Compose(_))), "{d:?}");
+        for s in [
+            "tell them Thursday works",
+            "let them know I'll be late",
+            "what's this thread about",
+            "how do I export this as a PDF",
+            "why is this failing",
+            "could you check the weather in Lisbon tomorrow",
+            "please find the invoice from Bingx",
+            "open Linear",
+            "summarise this",
+            "Translate this page into English",
+            "send this to Sam",
+            "is it going to rain tomorrow?",
+        ] {
+            let d = decide(s, &gmail_no_field(), now());
+            assert!(d.route.is_some() || d.to_agent, "{s}: {d:?}");
+        }
+    }
+
+    #[test]
+    fn prose_with_no_field_is_left_to_the_router() {
+        for s in [
+            "Thanks for the update, I'll send the numbers tomorrow.",
+            "I think we should ship the beta next week",
+            "The quarterly numbers look great",
+        ] {
+            let d = decide(s, &gmail_no_field(), now());
+            assert_eq!(
+                d,
+                Decision {
+                    route: None,
+                    to_agent: false
+                },
+                "{s}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_focused_field_keeps_typing_unless_clearly_a_request() {
+        let notes = Situation {
+            editable: true,
+            ..Default::default()
+        };
+        let slack = Situation {
+            editable: true,
+            messaging: true,
+            ..Default::default()
+        };
+        // Plain sentences and questions to people are typed (router decides).
+        for s in [
+            "Can we move the call to Thursday?",
+            "what do you think about the new logo",
+            "Thanks for the update, I'll send the numbers tomorrow.",
+        ] {
+            assert!(!decide(s, &slack, now()).to_agent, "{s}");
+            assert!(decide(s, &slack, now()).route.is_none(), "{s}");
+        }
+        // Commands only a computer does go to the agent outside chats…
+        for s in [
+            "open Linear",
+            "summarise this page",
+            "remind me at 5 to call Sam",
+        ] {
+            let d = decide(s, &notes, now());
+            assert!(d.to_agent || d.route.is_some(), "{s}");
+        }
+        // …and "remind me" typed to someone in a chat stays the router's call.
+        let d = decide("remind me tomorrow to send the deck", &slack, now());
+        assert!(d.route.is_none() && !d.to_agent, "{d:?}");
+        // "Hey Ambient, …" is always for the agent.
+        assert!(decide("Hey Ambient, what's on my calendar", &slack, now()).to_agent);
+    }
+
+    #[test]
+    fn reports_by_voice() {
+        let d = decide(
+            "report a bug: the summary missed the last email",
+            &Situation::default(),
+            now(),
+        );
+        assert!(matches!(d.route, Some(Route::Report(_))));
+        // "That's wrong" typed to a colleague stays text…
+        let slack = Situation {
+            editable: true,
+            messaging: true,
+            ..Default::default()
+        };
+        assert!(decide("that's wrong", &slack, now()).route.is_none());
+        // …but with the Ask key it's a report.
+        let ask = Situation {
+            ask: true,
+            ..Default::default()
+        };
+        assert!(matches!(
+            decide("that didn't work", &ask, now()).route,
+            Some(Route::Report(_))
+        ));
+    }
+
+    #[test]
+    fn sounds_like_request_is_broad() {
+        for s in [
+            "can we reply saying yes",
+            "please send it to Ana",
+            "reply to Sam",
+            "let them know it's done",
+            "what time is it in Tokyo",
+            "show me my last email",
+            "I need you to draft a note",
+        ] {
+            assert!(sounds_like_request(s), "{s}");
+        }
+        for s in [
+            "Thanks for the update",
+            "The numbers look great",
+            "I'll send it tomorrow",
+            "Great work everyone",
+        ] {
+            assert!(!sounds_like_request(s), "{s}");
         }
     }
 

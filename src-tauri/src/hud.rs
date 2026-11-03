@@ -5,6 +5,7 @@
 //! focus from the app you're in, and it's content-protected: invisible in
 //! screen shares and recordings.
 
+use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -56,11 +57,15 @@ pub enum HudContent {
         /// failed, so this is from what the model knows).
         note: Option<String>,
     },
-    /// A proactive suggestion: one line, accept or dismiss.
+    /// A proactive suggestion: one line, accept or dismiss. `title` is an
+    /// i18n key (or the judge's own words); `vars` fill its placeholders
+    /// (`count`, `name`, `error`; `lang` is a language code the HUD names).
     Suggestion {
         id: String,
         title: String,
         accept_label: String,
+        #[serde(default)]
+        vars: BTreeMap<String, String>,
     },
     /// A short status line ("Searching…", "Added to Calendar"). `text` is an
     /// i18n key. `undo` offers an Undo button that sends the `undo` action.
@@ -90,6 +95,52 @@ pub enum HudContent {
     },
     /// "What can I say?": examples from the help sheet.
     Help,
+    /// What the agent did, or why it couldn't, with what it can do instead:
+    /// "Reminder set for 9:00 tomorrow: fix the vault" (Undo), or "I can't
+    /// set reminders on Linux yet. Add it to your calendar instead?" (Add to
+    /// calendar, Copy). `text` is an i18n key; `vars` fill it (`due` is a
+    /// local "YYYY-MM-DDTHH:MM" the HUD turns into "9:00 tomorrow").
+    Notice {
+        id: String,
+        text: String,
+        #[serde(default)]
+        vars: BTreeMap<String, String>,
+        tone: HudTone,
+        undo: bool,
+        #[serde(default)]
+        offers: Vec<HudOffer>,
+    },
+    /// "Send this to the team?": a bug report or feedback said by voice,
+    /// with the message as heard, an "Include diagnostics" switch (off by
+    /// default) and Send / Edit / Cancel. `report_kind` is `bug`, `idea` or
+    /// `other`; `editing` means the next thing said replaces the message.
+    Report {
+        id: String,
+        report_kind: String,
+        message: String,
+        include_diagnostics: bool,
+        editing: bool,
+    },
+}
+
+/// A button on a notice: an alternative the agent can do instead. `label`
+/// is an i18n key; `copy` is handled by the HUD itself (it copies `value`),
+/// anything else is sent back as a `hud_action` with the notice's id.
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct HudOffer {
+    pub action: String,
+    pub label: String,
+    pub value: Option<String>,
+}
+
+impl HudOffer {
+    pub fn new(action: &str, label: &str, value: Option<String>) -> Self {
+        Self {
+            action: action.into(),
+            label: label.into(),
+            value,
+        }
+    }
 }
 
 impl HudContent {
@@ -103,6 +154,8 @@ impl HudContent {
             HudContent::Listening { .. } => "listening",
             HudContent::Draft { .. } => "draft",
             HudContent::Help => "help",
+            HudContent::Notice { .. } => "notice",
+            HudContent::Report { .. } => "report",
         }
     }
 
@@ -111,7 +164,9 @@ impl HudContent {
             HudContent::Answer { id, .. }
             | HudContent::Suggestion { id, .. }
             | HudContent::Steps { id, .. }
-            | HudContent::Draft { id, .. } => id.clone(),
+            | HudContent::Draft { id, .. }
+            | HudContent::Notice { id, .. }
+            | HudContent::Report { id, .. } => id.clone(),
             _ => String::new(),
         }
     }
@@ -561,13 +616,19 @@ fn on_click_outside(card: &HudContent) -> ClickOutside {
     match card {
         // An answer with nothing in it yet is still "Thinking…".
         HudContent::Answer { text, done, .. } if text.is_empty() && !done => ClickOutside::Ignore,
-        HudContent::Answer { .. } | HudContent::Help | HudContent::Suggestion { .. } => {
+        HudContent::Answer { .. }
+        | HudContent::Help
+        | HudContent::Suggestion { .. }
+        | HudContent::Report { .. } => ClickOutside::Dismiss,
+        HudContent::Draft { .. } => ClickOutside::DismissUnlessFocused,
+        // A notice with choices goes like an answer; a plain one fades.
+        HudContent::Notice { offers, undo, .. } if !offers.is_empty() || *undo => {
             ClickOutside::Dismiss
         }
-        HudContent::Draft { .. } => ClickOutside::DismissUnlessFocused,
-        HudContent::Listening { .. } | HudContent::Steps { .. } | HudContent::Status { .. } => {
-            ClickOutside::Ignore
-        }
+        HudContent::Listening { .. }
+        | HudContent::Steps { .. }
+        | HudContent::Status { .. }
+        | HudContent::Notice { .. } => ClickOutside::Ignore,
     }
 }
 
@@ -707,7 +768,27 @@ fn paste_later(app: &AppHandle, text: String, select_all: bool) {
 #[tauri::command]
 #[specta::specta]
 pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<String>) {
+    // "Send this to the team?" and the "report this?" offer.
+    if id.starts_with(crate::agent::report::CARD_PREFIX) {
+        crate::agent::report::on_action(&app, &id, &action, text);
+        return;
+    }
+    // A notice's alternatives ("add it to your calendar instead") belong to
+    // the agent, which knows what was asked.
+    if id.starts_with(crate::agent::notice::PREFIX)
+        && !matches!(action.as_str(), "copy" | "dismiss" | "open")
+    {
+        crate::agent::notice::on_action(&app, &id, &action, text);
+        return;
+    }
     match action.as_str() {
+        // "Did you mean to type this?" → "Ask Ambient instead".
+        "ask" => {
+            hide(&app);
+            if let Some(text) = text {
+                crate::agent::ask_instead(&app, text);
+            }
+        }
         "insert" => {
             hide(&app);
             if let Some(text) = text {
@@ -820,6 +901,7 @@ mod tests {
             id: "suggest-1".into(),
             title: "t".into(),
             accept_label: "a".into(),
+            vars: Default::default(),
         };
         assert_eq!(on_click_outside(&suggestion), ClickOutside::Dismiss);
         let draft = HudContent::Draft {

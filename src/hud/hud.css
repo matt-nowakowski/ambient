@@ -335,3 +335,54 @@ button.hud-chip:hover {
 .hud-undo:hover {
   background: var(--h-raise-hover);
 }
+
+/* Notices: what was done, or why not and what instead. */
+.hud-notice .hud-status span {
+  line-height: 1.45;
+}
+
+.hud-notice .hud-actions {
+  flex-wrap: wrap;
+}
+
+/* "Send this to the team?" */
+.hud-report-kind {
+  flex-shrink: 0;
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: var(--h-raise);
+  color: var(--h-muted);
+  font-size: 11px;
+}
+
+.hud-report-message {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--h-raise);
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.hud-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.hud-check input {
+  margin: 2px 0 0;
+  accent-color: var(--h-ink);
+}
+
+.hud-actions button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}

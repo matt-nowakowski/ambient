@@ -183,3 +183,84 @@ public func ambientClassifyRoute(_ text: UnsafePointer<CChar>) -> UnsafeMutableP
     _ = semaphore.wait(timeout: .now() + 6)
     return label.flatMap { duplicateCString($0) }
 }
+
+// MARK: - Suggestion judge (guided generation)
+
+/// The judge's verdict, generated straight into typed fields, so there is
+/// never prose or broken JSON to parse. Keep `kind`'s choices in sync with
+/// JUDGE_KINDS in src/agent/judge.rs.
+@available(macOS 26.0, *)
+@Generable
+private struct JudgeVerdict: Sendable {
+    @Guide(description: "true only if one concrete offer would clearly help the user right now")
+    let help: Bool
+    @Guide(
+        description: "What kind of help",
+        .anyOf([
+            "summarise_thread", "draft_reply", "add_to_calendar", "summarise_page",
+            "explain_error", "fix_formula", "review_code", "translate_page", "fill_form", "other",
+        ]))
+    let kind: String
+    @Guide(description: "The offer: one short, concrete question to the user, the way a helpful colleague would ask, naming the specific thing (at most 60 characters)")
+    let title: String
+    @Guide(description: "How likely the user is to say yes, from 0 to 100")
+    let confidence: Int
+}
+
+private func judgeJSON(_ fields: [String: Any]) -> UnsafeMutablePointer<CChar>? {
+    guard let data = try? JSONSerialization.data(withJSONObject: fields),
+          let text = String(data: data, encoding: .utf8)
+    else { return nil }
+    return duplicateCString(text)
+}
+
+/// Judge a window with the on-device model and guided generation. Returns a
+/// strdup'd JSON object: the verdict `{"help","kind","title","confidence"}`
+/// (confidence 0–1), or `{"error": "..."}` ("unavailable", "timeout", or
+/// the model's error). Blocks up to `timeoutMs`; call off the main thread.
+/// Free with `free`.
+@_cdecl("ambient_judge_window")
+public func ambientJudgeWindow(
+    _ instructions: UnsafePointer<CChar>,
+    _ input: UnsafePointer<CChar>,
+    _ timeoutMs: Int32
+) -> UnsafeMutablePointer<CChar>? {
+    guard #available(macOS 26.0, *) else { return judgeJSON(["error": "unavailable"]) }
+    guard case .available = SystemLanguageModel.default.availability else {
+        return judgeJSON(["error": "unavailable"])
+    }
+    let system = String(cString: instructions)
+    let prompt = String(cString: input)
+    let semaphore = DispatchSemaphore(value: 0)
+
+    final class Box: @unchecked Sendable {
+        var fields: [String: Any]?
+    }
+    let box = Box()
+
+    Task.detached(priority: .userInitiated) {
+        defer { semaphore.signal() }
+        do {
+            let session = LanguageModelSession(instructions: system)
+            let r = try await session.respond(
+                to: prompt,
+                generating: JudgeVerdict.self,
+                options: GenerationOptions(temperature: 0)
+            )
+            let v = r.content
+            box.fields = [
+                "help": v.help,
+                "kind": v.kind,
+                "title": v.title,
+                "confidence": Double(max(0, min(100, v.confidence))) / 100.0,
+            ]
+        } catch {
+            box.fields = ["error": String(describing: error).prefix(120).description]
+        }
+    }
+    let waited = semaphore.wait(timeout: .now() + .milliseconds(Int(max(1000, timeoutMs))))
+    if waited == .timedOut {
+        return judgeJSON(["error": "timeout"])
+    }
+    return judgeJSON(box.fields ?? ["error": "no result"])
+}

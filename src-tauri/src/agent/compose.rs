@@ -45,6 +45,19 @@ const POLITE: &[&[&str]] = &[
     &["help", "me"],
 ];
 
+/// "We" forms ("can we reply…", "let's tell them…"): as often said to a
+/// colleague as to Ambient, so at most `Maybe` (and a draft when nothing
+/// can be typed: see `actions`).
+const WE: &[&[&str]] = &[
+    &["can", "we"],
+    &["could", "we"],
+    &["shall", "we"],
+    &["should", "we"],
+    &["let's"],
+    &["lets"],
+    &["let", "us"],
+];
+
 /// Things one replies to or drafts.
 const MESSAGE_NOUNS: &[&str] = &[
     "email",
@@ -309,7 +322,18 @@ pub fn compose_intent(transcript: &str) -> ComposeIntent {
     let instruction = without_address(transcript).trim();
     let all = words_of(instruction);
     let w = strip_polite(&all);
-    let polite = w.len() < all.len();
+    // "Can we please reply to this email saying it's all good?"
+    if let Some(we) = WE.iter().find(|p| starts_with(w, p)) {
+        let rest = strip_polite(&w[we.len()..]);
+        return match first_pass(instruction, rest, true) {
+            ComposeIntent::No => ComposeIntent::No,
+            _ => ComposeIntent::Maybe,
+        };
+    }
+    first_pass(instruction, w, w.len() < all.len())
+}
+
+fn first_pass(instruction: &str, w: &[String], polite: bool) -> ComposeIntent {
     if w.is_empty() {
         return ComposeIntent::No;
     }
@@ -445,6 +469,10 @@ mod tests {
             "Reply to Sam",
             "send a message to the team",
             "ask them if Friday works",
+            // "We" forms: a draft only when nothing can be typed.
+            "Can we please reply to this email saying it's all good?",
+            "could we reply saying Thursday works",
+            "let's tell them we're happy",
         ] {
             assert_eq!(compose_intent(s), ComposeIntent::Maybe, "{s}");
         }
@@ -461,6 +489,7 @@ mod tests {
             "Answer the phone when it rings",
             "respond by Monday please",
             "Let's push the sync to Thursday",
+            "Can we push the sync to Thursday?",
             "I told them we're happy",
             "",
             "   ",
