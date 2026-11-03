@@ -225,6 +225,10 @@
       "hint": "Podeu canviar-ho més tard a la configuració",
       "highFiveLabel": "Xoqueu-la",
       "atLogin": "Inicia el {{appName}} quan entri a la sessió",
+      "polish": {
+        "title": "Deixa que el {{appName}} poleixi i escrigui per tu",
+        "description": "Envia el text que dictes (mai l'àudio) per polir-lo. Desactiva-ho per mantenir el dictat en aquest ordinador."
+      },
       "finish": "Fet",
       "panel": {
         "name": "{{appName}}",

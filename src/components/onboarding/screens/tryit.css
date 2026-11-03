@@ -645,6 +645,22 @@ button.try-panel-row:focus-visible {
   white-space: normal;
   cursor: pointer;
 }
+/* A switch row with a line under its label (AI polish). */
+.try-panel-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  cursor: pointer;
+}
+.try-panel-row.is-switch .try-panel-text .try-panel-label {
+  flex: none;
+}
+.try-panel-sub {
+  color: var(--color-ink-3);
+  text-wrap: pretty;
+}
 
 /* Infinite loops would strobe under the global 1ms rule: stop them. */
 @media (prefers-reduced-motion: reduce) {

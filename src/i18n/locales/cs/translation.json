@@ -226,6 +226,10 @@
       "hint": "Tohle můžete později změnit v Nastavení",
       "highFiveLabel": "Plácnout si",
       "atLogin": "Spustit {{appName}} po přihlášení",
+      "polish": {
+        "title": "Ať {{appName}} vyladí text a píše za vás",
+        "description": "Odesílá nadiktovaný text (nikdy zvuk), aby ho vyladil. Vypněte, pokud má diktování zůstat v tomto počítači."
+      },
       "finish": "Hotovo",
       "panel": {
         "name": "{{appName}}",

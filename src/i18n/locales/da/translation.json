@@ -224,6 +224,10 @@
       "hint": "Du kan ændre disse senere i Indstillinger",
       "highFiveLabel": "Highfive",
       "atLogin": "Start {{appName}}, når jeg logger ind",
+      "polish": {
+        "title": "Lad {{appName}} finpudse og skrive for dig",
+        "description": "Sender den tekst, du dikterer (aldrig lyden), for at finpudse den. Slå fra for at holde diktering på denne computer."
+      },
       "finish": "Færdig",
       "panel": {
         "name": "{{appName}}",

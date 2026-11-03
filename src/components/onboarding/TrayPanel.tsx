@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   keycapLabel,
@@ -6,10 +6,12 @@ import {
   type OSType,
 } from "@/lib/utils/keyboard";
 import { usePressAway } from "@/hooks/usePressAway";
+import { useSettings } from "@/hooks/useSettings";
 import { languageList } from "@/lib/constants/languages";
 import { CapturedKeys, Keycaps } from "../shared/Keycaps";
 import { Switch } from "../ui/Switch";
 import TrayIcon from "../icons/TrayIcon";
+import { useOnboardingStore } from "./onboardingStore";
 
 interface TrayPanelProps {
   os: OSType;
@@ -54,6 +56,50 @@ const Chevron = () => (
     />
   </svg>
 );
+
+// Provider ids from settings.rs (as in AiPolishCard).
+const HOSTED = "ambient";
+const ON_DEVICE = "apple_intelligence";
+
+/** AI polish, on for new installs: saved the moment it's switched (not in a
+ * preview), like Account's AI polish switch. Turning it back on picks our
+ * hosted model if none is chosen; it still runs on device where it can. */
+const PolishRow: React.FC = () => {
+  const { t } = useTranslation();
+  const { getSetting, updateSetting, setPostProcessProvider } = useSettings();
+  const preview = useOnboardingStore((s) => s.preview);
+  const provider = getSetting("post_process_provider_id") ?? "";
+  const chosen = provider === HOSTED || provider === ON_DEVICE;
+  const saved = (getSetting("post_process_enabled") ?? false) && chosen;
+  const [on, setOn] = useState(saved);
+  useEffect(() => setOn(saved), [saved]);
+
+  const toggle = async (next: boolean) => {
+    setOn(next);
+    if (preview) return;
+    if (next && !chosen) await setPostProcessProvider(HOSTED);
+    await updateSetting("post_process_enabled", next);
+  };
+
+  return (
+    <div className="try-panel-row is-switch">
+      {/* Switch draws its own <label>; the words toggle it too. */}
+      <span className="try-panel-text" onClick={() => toggle(!on)}>
+        <span id="try-panel-polish" className="try-panel-label">
+          {t("onboarding.done.polish.title")}
+        </span>
+        <span id="try-panel-polish-sub" className="try-panel-sub">
+          {t("onboarding.done.polish.description")}
+        </span>
+      </span>
+      <Switch
+        checked={on}
+        onChange={toggle}
+        ariaLabelledBy="try-panel-polish"
+      />
+    </div>
+  );
+};
 
 /**
  * All set's summary panel under the drawn tray icon. Clicks here never take
@@ -197,6 +243,7 @@ export const TrayPanel: React.FC<TrayPanelProps> = ({
           ariaLabelledBy="try-panel-login"
         />
       </div>
+      <PolishRow />
     </div>
   );
 };

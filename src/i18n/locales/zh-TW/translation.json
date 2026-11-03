@@ -224,6 +224,10 @@
       "hint": "之後可以隨時在「設定」中變更",
       "highFiveLabel": "擊掌",
       "atLogin": "登入時啟動 {{appName}}",
+      "polish": {
+        "title": "讓 {{appName}} 幫你潤飾和撰寫",
+        "description": "傳送你聽寫的文字（絕不傳送音訊）來潤飾。關閉後，聽寫只留在這台電腦上。"
+      },
       "finish": "完成",
       "panel": {
         "name": "{{appName}}",

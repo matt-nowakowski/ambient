@@ -224,6 +224,10 @@
       "hint": "Bạn có thể thay đổi những mục này sau trong Cài đặt",
       "highFiveLabel": "Đập tay",
       "atLogin": "Khởi động {{appName}} khi tôi đăng nhập",
+      "polish": {
+        "title": "Để {{appName}} trau chuốt và viết giúp bạn",
+        "description": "Gửi văn bản bạn đọc (không bao giờ gửi âm thanh) để trau chuốt. Tắt để giữ việc đọc chính tả trên máy tính này."
+      },
       "finish": "Xong",
       "panel": {
         "name": "{{appName}}",

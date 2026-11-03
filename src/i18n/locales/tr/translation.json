@@ -224,6 +224,10 @@
       "hint": "Bunları daha sonra Ayarlar’dan değiştirebilirsiniz",
       "highFiveLabel": "Çak bir beşlik",
       "atLogin": "Oturum açtığımda {{appName}} uygulamasını başlat",
+      "polish": {
+        "title": "{{appName}} metni cilalasın ve sizin için yazsın",
+        "description": "Dikte ettiğiniz metni (asla sesi değil) cilalamak için gönderir. Dikteyi bu bilgisayarda tutmak için kapatın."
+      },
       "finish": "Bitti",
       "panel": {
         "name": "{{appName}}",

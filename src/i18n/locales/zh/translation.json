@@ -224,6 +224,10 @@
       "hint": "这些内容以后可以在“设置”中更改",
       "highFiveLabel": "击掌",
       "atLogin": "登录时启动 {{appName}}",
+      "polish": {
+        "title": "让 {{appName}} 帮你润色和撰写",
+        "description": "发送你听写的文字（绝不发送音频）来润色。关闭后，听写只留在这台电脑上。"
+      },
       "finish": "完成",
       "panel": {
         "name": "{{appName}}",

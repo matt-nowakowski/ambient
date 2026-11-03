@@ -87,6 +87,12 @@ export default function PrivacyPage() {
                 said, never what is on your screen.
               </p>
               <p>
+                <strong>AI polish.</strong> AI polish tidies the text you dictate and can write a message for you. It is
+                on by default for new installs and can be turned off during setup or at any time in Account; turning it
+                off keeps dictation on your computer. When it is on, the text you dictate (never audio) is processed as
+                described above, and each request sent to our server is listed on the app’s Privacy page.
+              </p>
+              <p>
                 <strong>Web search.</strong> For questions that need the web, our server sends only the search query to
                 our search provider, Tavily, and the model writes an answer from the results. We cache search results on
                 our server for up to 6 hours, stored against the query only and not linked to you or your device.

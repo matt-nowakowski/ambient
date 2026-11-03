@@ -224,6 +224,10 @@
       "hint": "나중에 설정에서 바꿀 수 있습니다",
       "highFiveLabel": "하이파이브",
       "atLogin": "로그인할 때 {{appName}} 시작",
+      "polish": {
+        "title": "{{appName}}이(가) 다듬고 대신 써 주기",
+        "description": "받아쓴 텍스트를 보내 다듬습니다(오디오는 보내지 않음). 받아쓰기를 이 컴퓨터에만 두려면 끄세요."
+      },
       "finish": "완료",
       "panel": {
         "name": "{{appName}}",

@@ -224,6 +224,10 @@
       "hint": "Du kan ändra detta senare i Inställningar",
       "highFiveLabel": "High five",
       "atLogin": "Starta {{appName}} när jag loggar in",
+      "polish": {
+        "title": "Låt {{appName}} finslipa och skriva åt dig",
+        "description": "Skickar texten du dikterar (aldrig ljud) för att finslipa den. Stäng av för att hålla dikteringen på den här datorn."
+      },
       "finish": "Klar",
       "panel": {
         "name": "{{appName}}",

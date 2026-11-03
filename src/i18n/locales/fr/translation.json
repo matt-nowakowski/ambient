@@ -225,6 +225,10 @@
       "hint": "Vous pourrez modifier tout cela plus tard dans les Paramètres",
       "highFiveLabel": "Tope là",
       "atLogin": "Lancer {{appName}} à l’ouverture de ma session",
+      "polish": {
+        "title": "Laisser {{appName}} peaufiner et écrire pour vous",
+        "description": "Envoie le texte que vous dictez (jamais l’audio) pour le peaufiner. Désactivez pour garder la dictée sur cet ordinateur."
+      },
       "finish": "Terminé",
       "panel": {
         "name": "{{appName}}",

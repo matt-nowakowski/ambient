@@ -875,8 +875,11 @@ fn default_theme() -> Theme {
     Theme::System
 }
 
+/// AI polish is on for new installs (it's what lets smart writing polish);
+/// onboarding's All set panel has the switch to turn it off. Stores written
+/// before this default keep their own value (see `apply_settings_migrations`).
 fn default_post_process_enabled() -> bool {
-    false
+    true
 }
 
 fn default_app_language() -> String {
@@ -889,8 +892,11 @@ fn default_show_tray_icon() -> bool {
     true
 }
 
+/// Our hosted model for new installs, so the on-by-default polish works.
+/// It still runs on device where it can, and never leaves this computer with
+/// Intelligence set to "On this computer only" (see actions.rs).
 fn default_post_process_provider_id() -> String {
-    String::new()
+    AMBIENT_AI_PROVIDER_ID.to_string()
 }
 
 /// Id of the built-in polish prompt (`default_post_process_prompts`).
@@ -1319,6 +1325,18 @@ fn apply_settings_migrations(
     if !settings.post_process_provider_id.is_empty()
         && !is_pro_post_process_provider(&settings.post_process_provider_id)
     {
+        settings.post_process_provider_id = String::new();
+        updated = true;
+    }
+
+    // AI polish became on by default (hosted) for new installs only. A store
+    // written before then without these keys had polish off and no provider:
+    // keep exactly that, so no one's text starts being sent without choosing.
+    if settings_value.get("post_process_enabled").is_none() {
+        settings.post_process_enabled = false;
+        updated = true;
+    }
+    if settings_value.get("post_process_provider_id").is_none() {
         settings.post_process_provider_id = String::new();
         updated = true;
     }
@@ -2098,6 +2116,8 @@ mod tests {
             "overlay_style": "live",
             "chinese_script": "as_transcribed",
             "agent": { "intelligence": "auto" },
+            "post_process_enabled": true,
+            "post_process_provider_id": "",
             "transcribe_accelerator": "gpu",
             "transcribe_gpu_device": settings.transcribe_gpu_device
         });
@@ -2144,5 +2164,58 @@ mod tests {
         }
         assert!(ai_provider(AMBIENT_AI_PROVIDER_ID).is_some());
         assert!(ai_provider("openai").is_none());
+    }
+
+    /// New installs get AI polish on with our hosted model; nothing about an
+    /// existing store changes.
+    #[test]
+    fn fresh_store_has_polish_on_with_the_hosted_provider() {
+        let settings = get_default_settings();
+        assert!(settings.post_process_enabled);
+        assert_eq!(settings.post_process_provider_id, AMBIENT_AI_PROVIDER_ID);
+        assert!(settings.active_post_process_provider().is_some());
+        // What a fresh store is written as reads back the same, untouched.
+        let stored = default_settings_json();
+        let mut reread: AppSettings = serde_json::from_value(stored.clone()).unwrap();
+        apply_settings_migrations(&mut reread, &stored);
+        assert!(reread.post_process_enabled);
+        assert_eq!(reread.post_process_provider_id, AMBIENT_AI_PROVIDER_ID);
+    }
+
+    #[test]
+    fn existing_store_with_polish_off_keeps_it_off() {
+        let mut stored = default_settings_json();
+        stored["post_process_enabled"] = serde_json::json!(false);
+        stored["post_process_provider_id"] = serde_json::json!("");
+        let mut settings: AppSettings = serde_json::from_value(stored.clone()).unwrap();
+        apply_settings_migrations(&mut settings, &stored);
+        assert!(!settings.post_process_enabled);
+        assert_eq!(settings.post_process_provider_id, "");
+    }
+
+    #[test]
+    fn existing_store_without_polish_keys_keeps_polish_off() {
+        let mut stored = default_settings_json();
+        let map = stored.as_object_mut().unwrap();
+        map.remove("post_process_enabled");
+        map.remove("post_process_provider_id");
+        let mut settings: AppSettings = serde_json::from_value(stored.clone()).unwrap();
+        assert!(apply_settings_migrations(&mut settings, &stored));
+        assert!(!settings.post_process_enabled);
+        assert_eq!(settings.post_process_provider_id, "");
+    }
+
+    #[test]
+    fn existing_store_with_polish_on_keeps_its_provider() {
+        let mut stored = default_settings_json();
+        stored["post_process_enabled"] = serde_json::json!(true);
+        stored["post_process_provider_id"] = serde_json::json!(APPLE_INTELLIGENCE_PROVIDER_ID);
+        let mut settings: AppSettings = serde_json::from_value(stored.clone()).unwrap();
+        apply_settings_migrations(&mut settings, &stored);
+        assert!(settings.post_process_enabled);
+        assert_eq!(
+            settings.post_process_provider_id,
+            APPLE_INTELLIGENCE_PROVIDER_ID
+        );
     }
 }

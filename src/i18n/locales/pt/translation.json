@@ -225,6 +225,10 @@
       "hint": "Você pode alterar isso depois nas Configurações",
       "highFiveLabel": "Toca aqui",
       "atLogin": "Abrir o {{appName}} ao iniciar a sessão",
+      "polish": {
+        "title": "Deixar o {{appName}} refinar e escrever por você",
+        "description": "Envia o texto que você dita (nunca o áudio) para refiná-lo. Desative para manter o ditado neste computador."
+      },
       "finish": "Concluído",
       "panel": {
         "name": "{{appName}}",
