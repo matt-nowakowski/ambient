@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import {
   ArrowUpRight,
   AudioLines,
+  BellOff,
   ChevronDown,
   Cloud,
   Cpu,
@@ -18,6 +19,7 @@ import {
   ShieldCheck,
   Sparkles,
   Trash2,
+  Undo2,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -54,6 +56,68 @@ const PREVIEW_DELAY_MS = 3000;
 /** "com.tinyspeck.slackmacgap" → "slackmacgap"; good enough without a name lookup. */
 const shortBundle = (id: string) => id.split(".").pop() || id;
 
+/** Display names for well-known apps, keyed by lowercased macOS bundle id or
+ * Windows executable. App names are proper nouns, so they are not translated. */
+const APP_NAMES: Record<string, string> = {
+  "com.tinyspeck.slackmacgap": "Slack",
+  "slack.exe": "Slack",
+  "com.apple.mail": "Mail",
+  "com.google.chrome": "Google Chrome",
+  "chrome.exe": "Google Chrome",
+  "com.apple.safari": "Safari",
+  "company.thebrowser.browser": "Arc",
+  "arc.exe": "Arc",
+  "com.microsoft.edgemac": "Microsoft Edge",
+  "msedge.exe": "Microsoft Edge",
+  "org.mozilla.firefox": "Firefox",
+  "firefox.exe": "Firefox",
+  "com.brave.browser": "Brave",
+  "brave.exe": "Brave",
+  "com.microsoft.teams": "Microsoft Teams",
+  "com.microsoft.teams2": "Microsoft Teams",
+  "ms-teams.exe": "Microsoft Teams",
+  "teams.exe": "Microsoft Teams",
+  "com.microsoft.outlook": "Outlook",
+  "outlook.exe": "Outlook",
+  "olk.exe": "Outlook",
+  "notion.id": "Notion",
+  "notion.exe": "Notion",
+  "com.apple.terminal": "Terminal",
+  "windowsterminal.exe": "Windows Terminal",
+  "com.googlecode.iterm2": "iTerm",
+  "dev.warp.warp-stable": "Warp",
+  "warp.exe": "Warp",
+  "com.microsoft.vscode": "VS Code",
+  "code.exe": "VS Code",
+  "com.todesktop.230313mzl4w4u92": "Cursor",
+  "cursor.exe": "Cursor",
+  "dev.zed.zed": "Zed",
+  "zed.exe": "Zed",
+  "com.microsoft.excel": "Excel",
+  "excel.exe": "Excel",
+  "com.microsoft.word": "Word",
+  "winword.exe": "Word",
+  "com.apple.iwork.numbers": "Numbers",
+  "com.apple.iwork.pages": "Pages",
+  "com.apple.notes": "Notes",
+  "com.hnc.discord": "Discord",
+  "discord.exe": "Discord",
+  "net.whatsapp.whatsapp": "WhatsApp",
+  "desktop.whatsapp": "WhatsApp",
+  "whatsapp.exe": "WhatsApp",
+  "ru.keepcoder.telegram": "Telegram",
+  "org.telegram.desktop": "Telegram",
+  "telegram.exe": "Telegram",
+  "com.apple.mobilesms": "Messages",
+  "com.linear": "Linear",
+  "linear.exe": "Linear",
+  "com.readdle.smartemail-mac": "Spark",
+  "spark.exe": "Spark",
+  "com.superhuman.electron": "Superhuman",
+  "superhuman.exe": "Superhuman",
+};
+const appName = (id: string) => APP_NAMES[id.toLowerCase()] ?? shortBundle(id);
+
 type Capability =
   | "screen_context"
   | "screen_memory"
@@ -76,7 +140,8 @@ const INTELLIGENCE: { key: Intelligence; icon: LucideIcon }[] = [
   { key: "device", icon: Laptop },
   { key: "cloud", icon: Cloud },
 ];
-/** Capabilities grouped by what they touch, each with its icon. */
+/** Capabilities grouped by what they touch, each with its icon. Suggestions
+ * ("proactive") has its own section further down. */
 const CAPABILITY_GROUPS: {
   key: "screen" | "listening";
   caps: { cap: Capability; icon: LucideIcon }[];
@@ -86,7 +151,6 @@ const CAPABILITY_GROUPS: {
     caps: [
       { cap: "screen_context", icon: ScanText },
       { cap: "screen_memory", icon: History },
-      { cap: "proactive", icon: Sparkles },
     ],
   },
   {
@@ -172,6 +236,112 @@ export const PrivacyCenter: React.FC = () => {
     : s.screen_context || s.screen_memory || s.proactive || s.meetings
       ? "on"
       : "off";
+
+  /** One capability: what it reads, what leaves the computer, and its switch. */
+  const capabilityRow = (cap: Capability, Icon: LucideIcon) => {
+    const unsupported = UNSUPPORTED.includes(cap);
+    const locked = !paid || unsupported;
+    return (
+      <div
+        key={cap}
+        data-search-row
+        className="flex items-start gap-3 px-row-x py-row-y"
+      >
+        <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+          <Icon width={14} height={14} strokeWidth={1.75} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
+            {t(`privacy.capabilities.${cap}.title`)}
+            {unsupported ? (
+              <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                {t("privacy.macOnly")}
+              </span>
+            ) : (
+              locked && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                  <Lock width={10} height={10} />
+                  {t("account.plans.pro")}
+                </span>
+              )
+            )}
+          </p>
+          <p className="mt-0.5 text-small text-ink-2">
+            {t(`privacy.capabilities.${cap}.reads`)}
+          </p>
+          <p className="mt-1 flex items-center gap-1 text-meta text-ink-3">
+            <ArrowUpRight
+              width={11}
+              height={11}
+              strokeWidth={1.75}
+              className="shrink-0"
+              aria-hidden="true"
+            />
+            {t(`privacy.capabilities.${cap}.leaves`)}
+          </p>
+          {cap === "screen_memory" && s.screen_memory && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              <span className="text-small text-ink-2">
+                {t("privacy.retention")}
+              </span>
+              {RETENTION_CHOICES.map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => save({ ...s, retention_days: d })}
+                  className={`rounded-full px-2.5 py-0.5 text-meta transition-colors ${
+                    s.retention_days === d
+                      ? "bg-text text-background"
+                      : "bg-glass-press text-ink-2 hover:text-text"
+                  }`}
+                >
+                  {t("privacy.days", { count: d })}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <Switch
+          checked={s[cap]}
+          disabled={locked}
+          ariaLabel={t(`privacy.capabilities.${cap}.title`)}
+          onChange={(on) => save({ ...s, [cap]: on })}
+        />
+      </div>
+    );
+  };
+
+  /** Everything the user has turned down by voice, one row per preference. */
+  const learned = Object.entries(s.suggestion_prefs).flatMap(([kind, pref]) =>
+    pref
+      ? [
+          ...(pref.off ? [{ kind, app: null as string | null }] : []),
+          ...pref.muted_apps.map((app) => ({ kind, app })),
+        ]
+      : [],
+  );
+
+  const kindLabel = (kind: string) => {
+    const key = `privacy.suggestions.kinds.${kind}`;
+    return i18n.exists(key) ? t(key) : t("privacy.suggestions.unknownKind");
+  };
+
+  /** Forget one preference: "never" back to allowed, or one app un-muted. */
+  const undoPref = (kind: string, app: string | null) => {
+    const pref = s.suggestion_prefs[kind];
+    if (!pref) return;
+    const next = {
+      off: app === null ? false : pref.off,
+      muted_apps:
+        app === null
+          ? pref.muted_apps
+          : pref.muted_apps.filter((b) => b !== app),
+    };
+    const prefs = { ...s.suggestion_prefs };
+    if (!next.off && next.muted_apps.length === 0) delete prefs[kind];
+    else prefs[kind] = next;
+    save({ ...s, suggestion_prefs: prefs });
+  };
 
   const pauseItems: MoreMenuItem[] = [
     {
@@ -324,84 +494,70 @@ export const PrivacyCenter: React.FC = () => {
                 {t(`privacy.capabilities.groups.${group.key}`)}
               </p>
               <div className="divide-y divide-glass-edge">
-                {group.caps.map(({ cap, icon: Icon }) => {
-                  const unsupported = UNSUPPORTED.includes(cap);
-                  const locked = !paid || unsupported;
-                  return (
-                    <div
-                      key={cap}
-                      data-search-row
-                      className="flex items-start gap-3 px-row-x py-row-y"
-                    >
-                      <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
-                        <Icon width={14} height={14} strokeWidth={1.75} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
-                          {t(`privacy.capabilities.${cap}.title`)}
-                          {unsupported ? (
-                            <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
-                              {t("privacy.macOnly")}
-                            </span>
-                          ) : (
-                            locked && (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
-                                <Lock width={10} height={10} />
-                                {t("account.plans.pro")}
-                              </span>
-                            )
-                          )}
-                        </p>
-                        <p className="mt-0.5 text-small text-ink-2">
-                          {t(`privacy.capabilities.${cap}.reads`)}
-                        </p>
-                        <p className="mt-1 flex items-center gap-1 text-meta text-ink-3">
-                          <ArrowUpRight
-                            width={11}
-                            height={11}
-                            strokeWidth={1.75}
-                            className="shrink-0"
-                            aria-hidden="true"
-                          />
-                          {t(`privacy.capabilities.${cap}.leaves`)}
-                        </p>
-                        {cap === "screen_memory" && s.screen_memory && (
-                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                            <span className="text-small text-ink-2">
-                              {t("privacy.retention")}
-                            </span>
-                            {RETENTION_CHOICES.map((d) => (
-                              <button
-                                key={d}
-                                type="button"
-                                onClick={() =>
-                                  save({ ...s, retention_days: d })
-                                }
-                                className={`rounded-full px-2.5 py-0.5 text-meta transition-colors ${
-                                  s.retention_days === d
-                                    ? "bg-text text-background"
-                                    : "bg-glass-press text-ink-2 hover:text-text"
-                                }`}
-                              >
-                                {t("privacy.days", { count: d })}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <Switch
-                        checked={s[cap]}
-                        disabled={locked}
-                        ariaLabel={t(`privacy.capabilities.${cap}.title`)}
-                        onChange={(on) => save({ ...s, [cap]: on })}
-                      />
-                    </div>
-                  );
-                })}
+                {group.caps.map(({ cap, icon }) => capabilityRow(cap, icon))}
               </div>
             </div>
           ))}
         </div>
+
+        {/* Suggestions: one switch, then what it has learned by voice. */}
+        <SettingsGroup title={t("privacy.suggestions.title")}>
+          {capabilityRow("proactive", Sparkles)}
+          {s.proactive && (
+            <div className="px-row-x py-row-y">
+              <p className="text-meta font-medium text-ink-3">
+                {t("privacy.suggestions.learned.title")}
+              </p>
+              {learned.length === 0 ? (
+                <p className="mt-1 text-small text-ink-2">
+                  {t("privacy.suggestions.learned.empty")}
+                </p>
+              ) : (
+                <ul className="mt-1 divide-y divide-glass-edge">
+                  {learned.map(({ kind, app }) => (
+                    <li
+                      key={`${kind}:${app ?? ""}`}
+                      className="flex items-center gap-3 py-2"
+                    >
+                      <BellOff
+                        width={13}
+                        height={13}
+                        strokeWidth={1.75}
+                        className="shrink-0 text-ink-3"
+                        aria-hidden="true"
+                      />
+                      <span
+                        className="min-w-0 flex-1 text-small"
+                        title={app ?? undefined}
+                      >
+                        {app === null
+                          ? t("privacy.suggestions.learned.never", {
+                              kind: kindLabel(kind),
+                            })
+                          : t("privacy.suggestions.learned.notIn", {
+                              kind: kindLabel(kind),
+                              app: appName(app),
+                            })}
+                      </span>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="shrink-0 whitespace-nowrap"
+                        onClick={() => undoPref(kind, app)}
+                      >
+                        <Undo2 width={12} height={12} aria-hidden="true" />
+                        {t("privacy.suggestions.learned.undo")}
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p className="mt-3 text-meta text-ink-3">
+                {t("privacy.suggestions.teach")}
+              </p>
+            </div>
+          )}
+        </SettingsGroup>
 
         {/* Where the intelligence runs: every platform, three choices. */}
         <SettingsGroup
@@ -494,67 +650,6 @@ export const PrivacyCenter: React.FC = () => {
             </div>
           )}
         </SettingsGroup>
-
-        {/* Suggestions: what it has learned */}
-        {s.proactive && (
-          <SettingsGroup
-            title={t("privacy.suggestions.title")}
-            description={t("privacy.suggestions.description")}
-          >
-            {status.suggestion_kinds.map((kind) => {
-              const pref = s.suggestion_prefs[kind];
-              const muted = pref?.muted_apps ?? [];
-              return (
-                <div
-                  key={kind}
-                  className="flex items-center justify-between gap-6 px-row-x py-2.5"
-                >
-                  <div className="min-w-0">
-                    <p className="text-ui">
-                      {t(`privacy.suggestions.kinds.${kind}`)}
-                    </p>
-                    {muted.length > 0 && (
-                      <button
-                        type="button"
-                        className="mt-0.5 text-meta text-ink-3 hover:text-text"
-                        onClick={() =>
-                          save({
-                            ...s,
-                            suggestion_prefs: {
-                              ...s.suggestion_prefs,
-                              [kind]: {
-                                off: pref?.off ?? false,
-                                muted_apps: [],
-                              },
-                            },
-                          })
-                        }
-                      >
-                        {t("privacy.suggestions.mutedIn", {
-                          apps: muted.map(shortBundle).join(", "),
-                        })}{" "}
-                        ×
-                      </button>
-                    )}
-                  </div>
-                  <Switch
-                    checked={!pref?.off}
-                    ariaLabel={t(`privacy.suggestions.kinds.${kind}`)}
-                    onChange={(on) =>
-                      save({
-                        ...s,
-                        suggestion_prefs: {
-                          ...s.suggestion_prefs,
-                          [kind]: { off: !on, muted_apps: muted },
-                        },
-                      })
-                    }
-                  />
-                </div>
-              );
-            })}
-          </SettingsGroup>
-        )}
 
         {/* What Ambient sees */}
         {SCREEN_AGENT && (
