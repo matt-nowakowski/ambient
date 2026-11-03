@@ -56,29 +56,32 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
   const currentModel = useModelStore((s) => s.currentModel);
   const selectModel = useModelStore((s) => s.selectModel);
 
-  // Once models load: start from an on-disk model if there is one, or flag a
-  // download interrupted by a quit. Reads the store since reset() runs first.
+  // Once models load, flag a download interrupted by a quit. Reads the store
+  // since reset() runs first.
   useEffect(() => {
     if (preview || !models.offered.length) return;
     const { downloadId } = useOnboardingStore.getState();
-    if (downloadId) {
-      const model = models.offered.find((m) => m.id === downloadId);
-      if (model && models.downloadState(model).state === "none")
-        store.set({ downloadFailed: true });
-      return;
-    }
-    const onDisk = models.offered.filter(
-      (m) => models.infoFor(m)?.is_downloaded,
-    );
-    if (!onDisk.length) return;
-    const selected = models.catalogFor(settings?.selected_model ?? "");
-    const chosen =
-      onDisk.find((m) => m.id === selected?.id) ??
-      onDisk.find((m) => models.picks.some((p) => p.model.id === m.id)) ??
-      onDisk[0];
-    store.set({ downloadId: chosen.id });
+    if (!downloadId) return;
+    const model = models.offered.find((m) => m.id === downloadId);
+    if (model && models.downloadState(model).state === "none")
+      store.set({ downloadFailed: true });
     // Decided once the model list is in.
   }, [models.offered.length]);
+
+  // A model already on this computer (e.g. in the shared Hugging Face cache)
+  // that speaks every chosen language: the Model step puts it first and
+  // preselects it, so nothing new is downloaded. The one in use wins, then
+  // the picks, then the best value. Worked out live: the languages are only
+  // final after Welcome, and the model list can fill in after the first load.
+  const readyId = (() => {
+    if (preview) return null;
+    const fits = [...models.groups.picks, ...models.groups.others].map(
+      (r) => r.model,
+    );
+    const onDisk = fits.filter((m) => models.infoFor(m)?.is_downloaded);
+    const inUse = models.catalogFor(settings?.selected_model ?? "");
+    return (onDisk.find((m) => m.id === inUse?.id) ?? onDisk[0])?.id ?? null;
+  })();
 
   // Select the picked model as soon as it's on disk, so Try it can use it.
   const downloaded = models.offered.find((m) => m.id === store.downloadId);
@@ -211,6 +214,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
         <Model
           progress={progress}
           models={models}
+          readyId={readyId}
           onBack={store.returnTo ? () => go(store.returnTo!) : back}
           onChoose={chooseModel}
         />

@@ -20,11 +20,17 @@ export const useModelCatalog = (languages: string[]) => {
   const tier = useMachineTier();
   const infos = useModelStore((s) => s.models);
 
+  // One entry per repo. A repo can also have an alternate-quant entry for a
+  // file found on disk (e.g. in the shared Hugging Face cache): prefer the
+  // downloaded one, so a model already on this computer counts as such.
   const infoByRepo = useMemo(() => {
     const map = new Map<string, ModelInfo>();
     for (const info of infos) {
       const repo = repoIdOf(info);
-      if (repo && !info.is_custom && !map.has(repo)) map.set(repo, info);
+      if (!repo || info.is_custom) continue;
+      const seen = map.get(repo);
+      if (!seen || (info.is_downloaded && !seen.is_downloaded))
+        map.set(repo, info);
     }
     return map;
   }, [infos]);
