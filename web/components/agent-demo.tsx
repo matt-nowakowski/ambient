@@ -47,15 +47,26 @@ function Backdrop() {
 }
 
 /** The glass answer card, top right, as the app shows it. */
-export function Card({ children, orb }: { children: ReactNode; orb: "B2" | "S3" | "G3" | "C4" }) {
+export function Card({
+  children,
+  orb,
+  place = "absolute left-4 right-4 top-4 sm:left-auto sm:w-[300px]",
+  origin = "100% 0%",
+}: {
+  children: ReactNode;
+  orb: "B2" | "S3" | "G3" | "C4";
+  /** Where it sits in the window; the top right by default. */
+  place?: string;
+  origin?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -8, scale: 0.96, filter: "blur(6px)" }}
       animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
       exit={{ opacity: 0, y: -6, scale: 0.98, filter: "blur(4px)" }}
       transition={spring}
-      style={{ transformOrigin: "100% 0%" }}
-      className="glass-strong absolute left-4 right-4 top-4 rounded-[18px] p-4 sm:left-auto sm:w-[300px]"
+      style={{ transformOrigin: origin }}
+      className={`glass-strong rounded-[18px] p-4 ${place}`}
     >
       <div className="flex items-start gap-3">
         <OrbIcon variant={orb} footprint={15} className="mt-0.5" />

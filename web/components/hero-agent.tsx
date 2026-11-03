@@ -41,6 +41,9 @@ const firstStep = (b: Beat) => STEPS.findIndex((s) => s.beat === b);
 /** With reduced motion, each beat holds one still: the answer, the action, and the offer itself. */
 const stillStep = (b: Beat) => (b === "nudge" ? STEPS.findIndex((s) => s.kind === "offer") : lastStep(b));
 
+/** Ambient's cards sit at the bottom right, clear of the email and above the pill. */
+const CARD = "absolute bottom-[72px] left-4 right-4 sm:left-auto sm:right-5 sm:w-[300px]";
+
 const THREAD: MailMessage[] = [
   {
     from: "Ana Ruiz",
@@ -92,7 +95,7 @@ export function HeroAgent() {
         waiting on a reply and offers to help; you say “yes, tell her Thursday works” and the reply is written for you.
       </p>
       <div aria-hidden="true">
-        <MailWindow subject="Re: Launch review" messages={THREAD} heightClass="h-[400px] sm:h-[370px]" narrow>
+        <MailWindow subject="Re: Launch review" messages={THREAD} heightClass="h-[440px] sm:h-[390px]">
           {/* The reply it writes for you */}
           <AnimatePresence>
             {step.kind === "reply" ? (
@@ -102,7 +105,7 @@ export function HeroAgent() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={spring}
-                className="mt-4 overflow-hidden rounded-[14px] ring-[0.5px] ring-border-strong sm:max-w-[62%]"
+                className="mt-4 overflow-hidden rounded-[14px] ring-[0.5px] ring-border-strong sm:max-w-[58%]"
               >
                 <p className="flex items-center gap-1.5 border-b border-border px-4 py-2 text-[11.5px] text-subtle">
                   <span className="text-muted">To:</span> Ana
@@ -116,16 +119,16 @@ export function HeroAgent() {
             ) : null}
           </AnimatePresence>
 
-          {/* Its answer and its action: the glass card, top right */}
+          {/* Its answer and its action: the glass card, bottom right, above what you said */}
           <AnimatePresence mode="wait">
             {step.kind === "answer" ? (
-              <Card key="answer" orb="B2">
+              <Card key="answer" orb="B2" place={CARD} origin="100% 100%">
                 <p className="text-foreground">Thursday at 3pm.</p>
                 <p className="mt-1 text-muted">In Ana’s last email, to walk through the deck.</p>
                 <p className="mt-2.5 text-[11.5px] text-subtle">From this window</p>
               </Card>
             ) : step.kind === "act" ? (
-              <Card key="act" orb="S3">
+              <Card key="act" orb="S3" place={CARD} origin="100% 100%">
                 <p className="text-foreground">Added to Calendar</p>
                 <p className="mt-1 text-muted">Launch review · Thursday, 3:00 pm</p>
                 <p className="mt-2.5 text-[11.5px] text-subtle">Undo</p>
@@ -133,7 +136,7 @@ export function HeroAgent() {
             ) : null}
           </AnimatePresence>
 
-          {/* It notices, and offers: the HUD bubble */}
+          {/* It notices, and offers: the HUD bubble, where the cards sit */}
           <AnimatePresence>
             {showOffer ? (
               <motion.div
@@ -142,8 +145,8 @@ export function HeroAgent() {
                 animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: 6, scale: 0.97, filter: "blur(4px)" }}
                 transition={spring}
-                style={{ transformOrigin: "100% 0%" }}
-                className="glass-strong absolute left-4 right-4 top-4 rounded-[18px] p-4 sm:left-auto sm:w-[300px]"
+                style={{ transformOrigin: "100% 100%" }}
+                className={`glass-strong rounded-[18px] p-4 ${CARD}`}
               >
                 <div className="flex items-start gap-3">
                   <OrbIcon variant="S1" footprint={15} className="mt-0.5" />
