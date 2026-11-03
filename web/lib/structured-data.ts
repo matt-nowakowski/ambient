@@ -1,4 +1,4 @@
-import { brand, siteUrl } from "./brand";
+import { brand, freeMeetingsPerMonth, siteUrl } from "./brand";
 import { description, platforms, tiers } from "./content";
 import type { FaqItem } from "./faqs";
 import { RELEASE_VERSION } from "./releases";
@@ -11,11 +11,32 @@ const organization = {
   logo: `${siteUrl}/icon-512.png`,
 };
 
+/** Shipped capabilities, for SoftwareApplication.featureList. */
+const featureList = [
+  "Live desktop agent you talk to",
+  "Answers with sources",
+  "Actions: reminders, calendar events, apps, links and shortcuts",
+  "Recall of what you said, saw or saved",
+  "Suggestions when it can help",
+  "Meeting notes with no bot",
+  "Smart writing: as said, polished, or written for you",
+  "Unlimited on-device dictation in 99 languages",
+  `Hands-free “Hey ${brand.name}”`,
+];
+
 const offers = [
-  { "@type": "Offer", name: tiers.free.name, price: "0", priceCurrency: "USD", url: `${siteUrl}/download` },
+  {
+    "@type": "Offer",
+    name: tiers.free.name,
+    description: `${tiers.free.tagline} Unlimited dictation, ${brand.freePolishPerWeek} AI uses a week, up to ${brand.freeSuggestionsPerWeek} suggestions a week, ${freeMeetingsPerMonth} meetings a month.`,
+    price: "0",
+    priceCurrency: "USD",
+    url: `${siteUrl}/download`,
+  },
   {
     "@type": "Offer",
     name: `${tiers.pro.name} (monthly)`,
+    description: `${tiers.pro.features[0]}, within fair use.`,
     price: String(tiers.pro.monthly),
     priceCurrency: "USD",
     url: `${siteUrl}/pricing`,
@@ -24,6 +45,7 @@ const offers = [
   {
     "@type": "Offer",
     name: `${tiers.pro.name} (annual)`,
+    description: `${tiers.pro.features[0]}, within fair use.`,
     price: String(tiers.pro.yearlyTotal),
     priceCurrency: "USD",
     url: `${siteUrl}/pricing`,
@@ -44,6 +66,8 @@ export function softwareApplicationLd() {
     applicationSubCategory: "ProductivityApplication",
     softwareVersion: RELEASE_VERSION,
     downloadUrl: `${siteUrl}/download`,
+    slogan: `${brand.tagline}.`,
+    featureList: featureList.join(", "),
     offers,
     publisher: organization,
   };
