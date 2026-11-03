@@ -1,6 +1,6 @@
 # Website + licensing API
 
-Marketing site, pricing, downloads and the stateless licensing API for the desktop app.
+Marketing site, docs, pricing, downloads and the licensing API for Ambient, your desktop colleague.
 Next.js (App Router) + TypeScript + Tailwind v4, deployable to Vercel.
 
 The product name, domain, support email, prices, GitHub repo and license key prefix all come from
@@ -21,12 +21,13 @@ bun run verify-license   # mint + verify a test license key (needs LICENSE_PRIVA
 
 | Route               | What                                                                 |
 | ------------------- | -------------------------------------------------------------------- |
-| `/`                 | Landing: hero demo, features, comparison, pricing, FAQ               |
+| `/`                 | Landing: the agent, suggestions, meetings, writing, privacy, pricing, FAQ |
+| `/features`         | Everything it does, by area                                          |
 | `/pricing`          | Free / Pro (monthly–annual toggle → Polar checkout) / Team (mailto) |
 | `/download`         | OS-detected primary download + every installer                       |
 | `/checkout/success` | Verifies the paid Checkout Session and shows a freshly minted key    |
 | `/checkout/cancel`  | —                                                                    |
-| `/docs/troubleshooting`, `/docs/linux` | Help pages the desktop app links to                    |
+| `/docs/*`           | Guide (getting started, writing, answers, actions, recall, meetings, suggestions, privacy) and help (troubleshooting, Linux); nav in `components/docs-nav.tsx`, copy in `lib/guide.ts` |
 | `/privacy`, `/terms`| **Templates — need legal review before launch**                      |
 
 ### SEO / metadata (all generated from `brand.config.json`)
