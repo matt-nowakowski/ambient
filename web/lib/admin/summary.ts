@@ -483,6 +483,11 @@ export function countDeps() {
 }
 
 export function money(v: number, digits = 2) {
+  // Sub-cent costs (a few thousand tokens) would round to $0.00 and read as
+  // "free": show two significant digits instead, e.g. $0.0034.
+  if (digits > 0 && v !== 0 && Math.abs(v) < 10 ** -digits) {
+    return `$${v.toLocaleString("en-US", { maximumSignificantDigits: 2 })}`;
+  }
   return `$${v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits })}`;
 }
 export function fmtInt(v: number) {
