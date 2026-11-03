@@ -7,7 +7,17 @@
     "model": "模型",
     "quit": "退出",
     "cancel": "取消",
-    "secureInputWarning": "⚠ 快捷键被 Secure Input 阻止"
+    "secureInputWarning": "⚠ 快捷键被 Secure Input 阻止",
+    "installerTrashTitle": "将 {{appName}} 安装器移到废纸篓？",
+    "installerTrashBody": "{{appName}} 已安装，你不再需要 {{file}}。",
+    "installerTrashConfirm": "移到废纸篓",
+    "installerKeep": "保留",
+    "moveToAppsTitle": "将 {{appName}} 移到“应用程序”？",
+    "moveToAppsBody": "{{appName}} 正在从磁盘映像运行。请将其移到“应用程序”文件夹，以便保持安装并自动更新。",
+    "moveToAppsConfirm": "移到“应用程序”",
+    "moveToAppsLater": "以后再说",
+    "moveToAppsFailed": "无法将 {{appName}} 移到“应用程序”。请手动将其拖到“应用程序”文件夹。",
+    "sendFeedback": "发送反馈..."
   },
   "sidebar": {
     "home": "主页",
@@ -128,7 +138,8 @@
       "downloadInstead": "改为下载（{{size}}）",
       "pauses": "{{name}}将在 {{percent}}% 时暂停",
       "resumeLater": "再次选择它，即可从中断处继续",
-      "hint": "在您完成设置的同时下载"
+      "hint": "在您完成设置的同时下载",
+      "onDisk": "已在这台电脑上"
     },
     "demo": {
       "title": "一个快捷键，在任何应用中开口就写",
@@ -875,6 +886,11 @@
         "title": "欢迎动画",
         "description": "{{appName}} 首次打开时播放的动画。",
         "button": "播放动画"
+      },
+      "feedback": {
+        "title": "发送反馈",
+        "description": "报告问题或与团队分享想法。",
+        "button": "发送反馈"
       }
     },
     "agent": {
@@ -933,7 +949,36 @@
     "modelLoadFailedUnknown": "未知模型",
     "pasteFailedTitle": "粘贴文本失败",
     "pasteFailed": "无法将文本粘贴到当前活动的应用程序中。",
-    "transcriptionFailedTitle": "转录失败"
+    "transcriptionFailedTitle": "转录失败",
+    "actions": {
+      "retry": "重试",
+      "openSettings": "打开设置"
+    },
+    "titles": {
+      "download": "下载失败",
+      "signIn": "无法登录",
+      "billing": "无法打开账单",
+      "update": "无法更新 {{appName}}",
+      "transcription": "转写失败",
+      "recording": "无法开始录音",
+      "model": "无法加载模型",
+      "meeting": "会议笔记已停止",
+      "file": "无法转写该文件",
+      "settings": "无法保存该设置",
+      "shortcut": "无法设置快捷键",
+      "generic": "出了点问题"
+    },
+    "friendly": {
+      "offline": "无法连接到 {{appName}} 的服务器。请检查网络连接后重试。",
+      "offlineDownload": "无法连接到下载服务器。请检查网络连接后重试。",
+      "timeout": "服务器响应时间过长。请稍后重试。",
+      "notFound": "该文件目前不可用。请稍后重试。",
+      "diskFull": "这台电脑的可用空间不足。请释放一些空间后重试。",
+      "checksum": "下载的文件已损坏。请重试。",
+      "permission": "{{appName}} 没有执行此操作的权限。请在系统设置中检查其权限。",
+      "server": "服务器出现问题。请稍后重试。",
+      "unknown": "出了点问题。请重试。"
+    }
   },
   "appLanguage": {
     "title": "应用语言",
@@ -992,7 +1037,7 @@
       "remove": "移除",
       "activating": "正在激活…",
       "paste": "粘贴",
-      "pasteFailed": "无法读取剪贴板。请改用 ⌘V 粘贴。",
+      "pasteFailed": "无法读取剪贴板。请改用 {{keys}} 粘贴。",
       "holder": "登录账户",
       "renewsLabel": "续订日期",
       "copied": "已复制",
@@ -1285,6 +1330,21 @@
       "failed": "暂时无法发送。复制下来稍后再试？",
       "offer": "要我把这个报告给团队吗？",
       "offerAccept": "报告"
+    },
+    "notes": {
+      "ready": "你的笔记已准备好",
+      "actionItems": "待办事项：{{n}}",
+      "open": "打开",
+      "email": "发到我的邮箱",
+      "sending": "正在发送…",
+      "sent": "已发送到你的邮箱",
+      "failed": "发送失败",
+      "emailed": "会议笔记已发送到你的邮箱",
+      "emailFailed": "无法通过邮件发送会议笔记"
+    },
+    "rate": {
+      "up": "有帮助",
+      "down": "没帮助"
     }
   },
   "privacy": {
@@ -1394,7 +1454,11 @@
         "license": "账户验证",
         "trial": "试用",
         "warmup": "预热连接（未发送任何内容）",
-        "suggest": "建议检查"
+        "suggest": "建议检查",
+        "telemetry": "匿名使用计数",
+        "config": "设置检查（不发送任何内容）",
+        "meeting_email": "会议笔记邮件",
+        "feedback": "反馈"
       }
     },
     "engine": {
@@ -1463,6 +1527,11 @@
         "title": "云端建议",
         "description": "发送你停留过的窗口的脱敏片段，以判断是否提供帮助。每条请求都会列在下方。"
       }
+    },
+    "telemetry": {
+      "title": "帮助改进 {{appName}}",
+      "label": "分享匿名使用计数",
+      "description": "仅计数和耗时，绝不包括你说的、输入的或看到的内容。在你开启前保持关闭。"
     }
   },
   "meetings": {
@@ -1532,13 +1601,32 @@
       "join": "在任意应用中加入通话",
       "accept": "{{appName}} 提议时说“好”",
       "summary": "结束后获取摘要"
+    },
+    "email": {
+      "title": "将笔记发到我的邮箱",
+      "description": "每次通话后发送到 {{email}}。先移除机密信息，不保存任何内容。",
+      "signedOut": "登录后即可通过邮件接收笔记。",
+      "options": {
+        "off": "关闭",
+        "ask": "每次询问",
+        "always": "始终"
+      },
+      "button": "发到我的邮箱",
+      "sent": "笔记已发送到你的邮箱",
+      "errors": {
+        "notSignedIn": "登录后才能通过邮件发送笔记。",
+        "noSummary": "这场会议没有可发送的笔记。",
+        "rateLimited": "今天发送的邮件太多了，请明天再试。",
+        "offline": "无法连接服务器。请检查网络后重试。",
+        "failed": "无法发送邮件，请重试。"
+      }
     }
   },
   "tour": {
     "skip": "跳过",
     "next": "下一步",
     "done": "完成",
-    "start": "开始使用 {{appName}}",
+    "start": "开始使用",
     "meet": {
       "title": "认识智能体",
       "description": "按住快捷键说话。剩下的交给 {{appName}}。"
@@ -1672,5 +1760,60 @@
     "empty": "没有与“{{query}}”匹配的内容。",
     "jumpTo": "跳转到",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "帮助改进 {{appName}}：分享匿名使用计数，绝不包括你说的、输入的或看到的内容。",
+    "whatsShared": "共享哪些内容",
+    "sharedTitle": "仅匿名计数和耗时",
+    "shared": {
+      "suggestions": "建议被提供、接受或忽略的次数",
+      "requests": "请求的类型及耗时",
+      "errors": "发生的错误类型，例如“超时”",
+      "basics": "应用版本、系统、套餐，以及每 30 天更换一次的随机 ID"
+    },
+    "never": "绝不包括你说的、输入的或看到的内容、窗口标题、链接、文件名或你的邮箱。",
+    "ledger": "每次上传都会列在“隐私”中离开这台电脑的请求里。"
+  },
+  "feedback": {
+    "title": "发送反馈",
+    "titleThumbs": "哪里出了问题？",
+    "description": "直接发给团队。除非你勾选，否则不会附带其他内容。",
+    "kind": {
+      "label": "类型",
+      "bug": "问题",
+      "idea": "建议",
+      "other": "其他"
+    },
+    "message": {
+      "label": "消息",
+      "placeholder": "发生了什么，或者什么会有帮助？",
+      "placeholderThumbs": "哪里出了问题？（可选）"
+    },
+    "email": {
+      "label": "用于回复的邮箱（可选）",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "附带诊断信息",
+      "description": "应用版本、系统、套餐、设置摘要和最近的日志行，已移除机密信息、窗口标题和链接。"
+    },
+    "example": {
+      "label": "附带示例",
+      "description": "该卡片中的问题和回答，已移除机密信息。"
+    },
+    "preview": "预览发送内容",
+    "hidePreview": "隐藏预览",
+    "previewTitle": "将要发送的确切内容",
+    "send": "发送",
+    "sending": "正在发送…",
+    "cancel": "取消",
+    "close": "关闭",
+    "sent": "谢谢！你的反馈已发送。",
+    "errors": {
+      "empty": "请先写几句话。",
+      "offline": "无法连接服务器。请检查网络后重试。",
+      "rateLimited": "目前报告太多，请一小时后再试。",
+      "failed": "无法发送你的反馈，请重试。"
+    }
   }
 }

@@ -3,6 +3,7 @@ import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 import { commands } from "@/bindings";
 import { SECURE_INPUT_HELP_URL } from "@/components/SecureInputWarning";
 import { useSettings } from "@/hooks/useSettings";
@@ -79,10 +80,7 @@ export const useShortcutCapture = (
       try {
         if (!inert) await updateBinding(bindingId, binding);
       } catch (error) {
-        console.error("Failed to change binding:", error);
-        toast.error(
-          t("settings.general.shortcut.errors.set", { error: String(error) }),
-        );
+        showError("settings", error, { title: t("errors.titles.shortcut") });
       }
       await finish();
       return true;
@@ -108,9 +106,9 @@ export const useShortcutCapture = (
             },
           });
         } else {
-          toast.error(
-            t("settings.general.shortcut.errors.set", { error: result.error }),
-          );
+          showError("settings", result.error, {
+            title: t("errors.titles.shortcut"),
+          });
         }
         return false;
       }

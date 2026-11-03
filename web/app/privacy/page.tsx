@@ -221,6 +221,88 @@ export default function PrivacyPage() {
           ),
         },
         {
+          id: "usage-statistics",
+          title: "Anonymous usage statistics (optional, off by default)",
+          body: (
+            <>
+              <p>
+                We can only make the assistant better from real use, so the app can share anonymous usage counts with us.
+                This is <strong>off until you turn it on</strong>: on the “You’re all set” screen at the end of setup, or
+                with <strong>Share anonymous usage counts</strong> in the app’s Privacy Center. While it is off, nothing is
+                collected or sent.
+              </p>
+              <p>
+                <strong>What is collected:</strong> counts and timings of what the assistant does, such as how often a
+                kind of suggestion is offered, accepted, dismissed or ignored; whether the suggestion check worked and
+                roughly how long it took; which kind of request a voice command became (typing, an answer, an action);
+                how long answers took, in broad ranges; whether actions such as reminders worked; which category of error
+                happened (for example “timed out”); how a meeting’s notes turned out and its length, in broad ranges; how
+                long dictation took (only 1 in 10, sampled); and 👍 or 👎 on answer and suggestion cards. Each count comes
+                with the app version, your operating system family (macOS, Windows or Linux), your plan (Free, Pro or
+                trial), and a random install ID created on your computer that changes every 30 days. The kind of app
+                you were in is recorded only as a broad category: browser, mail, chat, editor, terminal or other.
+              </p>
+              <p>
+                <strong>What is never collected:</strong> what you say, type or see; any text, transcripts, answers or
+                screen content; window titles, web addresses, app names, file names or email addresses; your account,
+                license or the device hash described below. Every value the app may send comes from a fixed list, and
+                our server rejects anything else.
+              </p>
+              <p>
+                The app sends these counts in batches, at most every 10 minutes and when you quit. Our server does not
+                keep the individual events: it adds them to daily totals, and uses a one-way hash of the random install ID,
+                changed every day, only to count how many installs shared data that day. Daily totals are kept for 180
+                days and then deleted. Every upload appears in the Privacy Center’s list of requests that left your
+                computer, with exactly what was sent. Turn it off at any time in the Privacy Center; from then on nothing
+                more is collected or sent.
+              </p>
+            </>
+          ),
+        },
+        {
+          id: "meeting-email",
+          title: "Meeting notes by email (optional)",
+          body: (
+            <p>
+              If you are signed in, you can have the notes from a meeting emailed to you: with the “Email to me” button
+              when the notes are ready, or automatically after every meeting if you choose “Always” in Meetings. The notes
+              (title, date and length, summary, decisions, action items, questions for you and the follow-up draft) are
+              sent to our server, with secrets redacted on your computer first, and emailed only to the email address of
+              your {brand.name} account, never to any other address. We send them through our email provider, Resend,
+              only to deliver that email. We do not store the notes or log their content. Each email you send this way
+              appears in the Privacy Center’s list of requests.
+            </p>
+          ),
+        },
+        {
+          id: "feedback",
+          title: "Feedback and bug reports",
+          body: (
+            <>
+              <p>
+                You can send us feedback from the app (Send feedback in the menu or in Settings, 👎 on a card, or by
+                asking {brand.name} out loud). Nothing is sent unless you choose to send it, and the app first shows you
+                exactly what will be sent. A report contains your message, the email address you give for a reply (if
+                any), the app version, your operating system and your plan, and the random install ID described above
+                (used only to stop floods of reports).
+              </p>
+              <p>
+                Two extras are sent only if you tick them: <strong>diagnostics</strong> (a summary of your settings,
+                without your custom words or never-watch list, and the app’s last few hundred log lines, with secrets,
+                window titles and web addresses removed) and, for a 👎 on a card, <strong>the example</strong> (that card’s
+                question and answer, with secrets redacted). When you report something by voice and ask to include
+                diagnostics, the last answer card from the past 2 minutes is attached as the example.
+              </p>
+              <p>
+                Reports are stored in our database so we can read and fix them, and kept for up to 180 days, or 30 days
+                after we mark them resolved, whichever comes first. If you gave an email address, we may use it to reply.
+                To have a report deleted sooner, email {email}. Every report you send appears in the Privacy Center’s list
+                of requests.
+              </p>
+            </>
+          ),
+        },
+        {
           id: "trial",
           title: "Trial and free allowance",
           body: (
@@ -291,6 +373,12 @@ export default function PrivacyPage() {
                 <strong>Sign-in and plan checks:</strong> described above.
               </li>
               <li>
+                <strong>Assistant settings check:</strong> on launch and at most once a day, the app downloads the
+                assistant’s tuning settings (for example how often it may offer suggestions) from our website. The request
+                carries only your IP address and the app version; nothing about you or your use is sent. If it fails, the
+                app keeps its built-in settings.
+              </li>
+              <li>
                 <strong>Network ledger:</strong> the app keeps a local, encrypted log of every request it sends and the
                 text that was sent, for 30 days, which you can view in the Privacy Center. It stays on your device.
               </li>
@@ -330,6 +418,9 @@ export default function PrivacyPage() {
                 To run the free trial and free weekly AI allowance, and to stop the same computer from starting repeat
                 trials — our legitimate interests.
               </li>
+              <li>To collect anonymous usage statistics — your consent, which you can withdraw at any time in the app.</li>
+              <li>To email you your meeting notes when you ask — performance of a contract.</li>
+              <li>To read, answer and act on feedback you send us — our legitimate interests, and your consent for diagnostics and examples.</li>
               <li>To keep records required for tax and accounting — legal obligation.</li>
               <li>To answer your messages and keep our services secure — our legitimate interests.</li>
             </ul>
@@ -348,9 +439,12 @@ export default function PrivacyPage() {
                 </li>
                 <li>Tavily (web search; receives only the search query, through our server),</li>
                 <li>Vercel (hosts the website and our server),</li>
-                <li>Neon (database holding the hashed trial, weekly allowance and sign-in attempt records),</li>
+                <li>
+                  Neon (database holding the hashed trial, weekly allowance and sign-in attempt records, the daily usage
+                  totals if you share them, and feedback you send),
+                </li>
                 <li>Cloudflare (stores and delivers installers, updates and backup model files),</li>
-                <li>Resend (sends sign-in codes and account emails),</li>
+                <li>Resend (sends sign-in codes, account emails and the meeting notes you ask us to email you),</li>
                 <li>our email provider, for messages you send us.</li>
               </ul>
               <p>
@@ -380,6 +474,9 @@ export default function PrivacyPage() {
                 Text sent for hosted AI processing: not stored by us after the response is returned.
               </li>
               <li>Web search results: cached on our server for up to 6 hours, against the query only.</li>
+              <li>Anonymous usage statistics (only if you turned them on): daily totals, 180 days.</li>
+              <li>Meeting notes you email to yourself: not stored by us; they are sent and forgotten.</li>
+              <li>Feedback and bug reports: up to 180 days, or 30 days after they are resolved, whichever is sooner.</li>
               <li>Support emails: up to 24 months after the conversation ends, unless you ask us to delete them sooner.</li>
               <li>Server logs: kept by our hosting provider for a short period, typically no more than 30 days.</li>
               <li>

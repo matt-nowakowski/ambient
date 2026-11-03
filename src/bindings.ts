@@ -786,6 +786,70 @@ async meetingFollowUp(id: number) : Promise<Result<string, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * "Email to me" from the Meetings page.
+ */
+async emailMeetingNotes(id: number) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("email_meeting_notes", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Off, ask (the card's button) or always.
+ */
+async changeMeetingsEmailSetting(mode: MeetingsEmail) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_meetings_email_setting", { mode }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Turn anonymous usage counts on or off. Off clears anything queued.
+ */
+async changeTelemetrySetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_telemetry_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * A failure toast the UI showed (`src/lib/errors.ts` `showError`): its
+ * context and friendly kind, mapped onto the schema's `error` event. Only
+ * these fixed names are counted; anything else is ignored.
+ */
+async recordUiError(context: string, kind: string) : Promise<void> {
+    await TAURI_INVOKE("record_ui_error", { context, kind });
+},
+/**
+ * Exactly what Send would send, pretty-printed.
+ */
+async feedbackPreview(input: FeedbackInput) : Promise<string> {
+    return await TAURI_INVOKE("feedback_preview", { input });
+},
+/**
+ * Send the dialog's report. Err is an i18n key.
+ */
+async sendFeedback(input: FeedbackInput) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("send_feedback", { input }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Prefill for the dialog: the signed-in email, and the 👎'd card.
+ */
+async feedbackDraft(cardId: string | null) : Promise<FeedbackDraft> {
+    return await TAURI_INVOKE("feedback_draft", { cardId });
+},
 async getSecureInputStatus() : Promise<SecureInputStatus> {
     return await TAURI_INVOKE("get_secure_input_status");
 },
@@ -1514,7 +1578,16 @@ intro_seen?: boolean;
  * The ambient agent (Pro): routing, screen context, memory, privacy.
  * Everything that reads the screen is off until the user opts in.
  */
-agent?: AgentSettings }
+agent?: AgentSettings; 
+/**
+ * Opt-in anonymous usage counts (telemetry.rs). Off until the user
+ * turns it on.
+ */
+telemetry?: boolean; 
+/**
+ * Email finished meeting notes to the signed-in account.
+ */
+meetings_email?: MeetingsEmail }
 export type AppUsage = { bundle_id: string; entries: number }
 export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
@@ -1659,13 +1732,73 @@ export type HudContent =
  * default) and Send / Edit / Cancel. `report_kind` is `bug`, `idea` or
  * `other`; `editing` means the next thing said replaces the message.
  */
-{ kind: "report"; id: string; report_kind: string; message: string; include_diagnostics: boolean; editing: boolean }
+{ kind: "report"; id: string; report_kind: string; message: string; include_diagnostics: boolean; editing: boolean } | 
+/**
+ * Meeting notes are ready (meeting/deliver.rs): Open, Copy, Email to me.
+ */
+({ kind: "meeting_notes" } & NotesCard)
 /**
  * A button on a notice: an alternative the agent can do instead. `label`
  * is an i18n key; `copy` is handled by the HUD itself (it copies `value`),
  * anything else is sent back as a `hud_action` with the notice's id.
  */
 export type HudOffer = { action: string; label: string; value: string | null }
+/**
+ * The "Your notes are ready" card.
+ */
+export type NotesCard = { id: string; meeting_id: number; 
+/**
+ * The summary's title; empty when there's none (the card shows the time).
+ */
+title: string; 
+/**
+ * Unix seconds the meeting started.
+ */
+started: number; action_items: number; 
+/**
+ * The notes as plain text, for Copy.
+ */
+text: string; 
+/**
+ * Offer "Email to me": signed in, and email isn't turned off.
+ */
+can_email: boolean; 
+/**
+ * `sending`, `sent` or `failed` once an email is under way.
+ */
+email: string | null }
+/**
+ * What kind of report.
+ */
+export type FeedbackKind = "bug" | "idea" | "other"
+/**
+ * Where the report came from (shown and filterable in the admin inbox).
+ */
+export type FeedbackSource = "voice" | "dialog" | "thumbs"
+/**
+ * A card the report is about: its question and answer, redacted.
+ */
+export type FeedbackExample = { card: string; kind: string; question: string; answer: string }
+/**
+ * What the dialog sends (and previews).
+ */
+export type FeedbackInput = { kind: FeedbackKind; source: FeedbackSource; message: string; email: string | null; include_diagnostics: boolean; 
+/**
+ * Only when the user ticked "Include the example".
+ */
+example: FeedbackExample | null }
+/**
+ * What the dialog starts with.
+ */
+export type FeedbackDraft = { 
+/**
+ * The signed-in email, to prefill the reply address.
+ */
+email: string | null; 
+/**
+ * The card a 👎 was for, redacted (sent only if ticked).
+ */
+example: FeedbackExample | null }
 export type HudSource = { title: string; url: string }
 export type HudTone = "neutral" | "success" | "error"
 /**
@@ -1799,6 +1932,18 @@ export type MeetingState = { active: boolean; id: number | null; started: number
  * i18n key, set when the call audio couldn't be captured.
  */
 warning: string | null }
+/**
+ * When meeting notes are emailed to the account's address.
+ */
+export type MeetingsEmail = "off" | 
+/**
+ * "Email to me" on the notes card.
+ */
+"ask" | 
+/**
+ * Sent as soon as the notes are done.
+ */
+"always"
 export type MeetingSummary = { title: string; summary: string; decisions: string[]; action_items: string[]; questions_for_you: string[] }
 export type ModelInfo = { id: string; name: string; description: string; filename: string; source: ModelSource; size_mb: number; is_downloaded: boolean; is_downloading: boolean; partial_size: number; accuracy_score: number; speed_score: number; supports_translation: boolean; is_recommended: boolean; supported_languages: string[]; supports_language_selection: boolean; is_custom: boolean; supports_streaming: boolean; supports_language_detection: boolean }
 export type ModelLoadStatus = { is_loaded: boolean; current_model: string | null }

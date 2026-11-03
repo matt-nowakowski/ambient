@@ -15,6 +15,7 @@ import { DesktopBar } from "../DesktopBar";
 import { WindowBar } from "../WindowBar";
 import { OnboardingShell, ScreenSub, ScreenTitle } from "../OnboardingShell";
 import { LinuxGuide } from "../LinuxGuide";
+import { TelemetryOptIn } from "../TelemetryOptIn";
 import { TrayPanel } from "../TrayPanel";
 import { useOnboardingStore } from "../onboardingStore";
 import { useTryEngine } from "../useTryEngine";
@@ -792,6 +793,7 @@ export const TryIt: React.FC<TryItProps> = ({
         </div>
         {/* Always reserves its height so the screen doesn't jump. */}
         <div className="try-after">
+          {stage === "set" && e.slowWait == null && <TelemetryOptIn />}
           {e.slowWait != null && (
             <span>
               <Trans

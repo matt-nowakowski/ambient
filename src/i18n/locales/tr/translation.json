@@ -7,7 +7,17 @@
     "model": "Model",
     "quit": "Çıkış",
     "cancel": "İptal",
-    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor"
+    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor",
+    "installerTrashTitle": "{{appName}} yükleyicisi Çöp Sepeti'ne taşınsın mı?",
+    "installerTrashBody": "{{appName}} yüklendi, artık {{file}} dosyasına ihtiyacınız yok.",
+    "installerTrashConfirm": "Çöp Sepeti'ne taşı",
+    "installerKeep": "Sakla",
+    "moveToAppsTitle": "{{appName}} Uygulamalar'a taşınsın mı?",
+    "moveToAppsBody": "{{appName}} disk görüntüsünden çalışıyor. Yüklü kalması ve kendini güncellemesi için Uygulamalar klasörüne taşıyın.",
+    "moveToAppsConfirm": "Uygulamalar'a taşı",
+    "moveToAppsLater": "Şimdi değil",
+    "moveToAppsFailed": "{{appName}} Uygulamalar'a taşınamadı. Bunun yerine Uygulamalar klasörüne sürükleyin.",
+    "sendFeedback": "Geri bildirim gönder..."
   },
   "sidebar": {
     "home": "Ana Sayfa",
@@ -128,7 +138,8 @@
       "downloadInstead": "Bunun yerine {{size}} indir",
       "pauses": "{{name}} %{{percent}} noktasında duraklıyor",
       "resumeLater": "Tekrar seçtiğinizde kaldığı yerden devam eder",
-      "hint": "Kurulumu bitirirken iner"
+      "hint": "Kurulumu bitirirken iner",
+      "onDisk": "Bu bilgisayarda zaten var"
     },
     "demo": {
       "title": "Tek kısayolla her uygulamada konuşun",
@@ -875,6 +886,11 @@
         "title": "Karşılama tanıtımı",
         "description": "{{appName}} ilk açıldığında oynatılan animasyon.",
         "button": "Tanıtımı oynat"
+      },
+      "feedback": {
+        "title": "Geri bildirim gönder",
+        "description": "Bir hata bildir ya da ekiple bir fikir paylaş.",
+        "button": "Geri bildirim gönder"
       }
     },
     "agent": {
@@ -933,7 +949,36 @@
     "modelLoadFailedUnknown": "bilinmeyen model",
     "pasteFailedTitle": "Metin yapıştırılamadı",
     "pasteFailed": "Metin etkin uygulamaya yapıştırılamadı.",
-    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu"
+    "transcriptionFailedTitle": "Transkripsiyon başarısız oldu",
+    "actions": {
+      "retry": "Tekrar dene",
+      "openSettings": "Ayarları aç"
+    },
+    "titles": {
+      "download": "İndirme başarısız oldu",
+      "signIn": "Giriş yapılamadı",
+      "billing": "Faturalandırma açılamadı",
+      "update": "{{appName}} güncellenemedi",
+      "transcription": "Yazıya dökme başarısız oldu",
+      "recording": "Kayıt başlatılamadı",
+      "model": "Model yüklenemedi",
+      "meeting": "Toplantı notları durdu",
+      "file": "Dosya yazıya dökülemedi",
+      "settings": "Ayar kaydedilemedi",
+      "shortcut": "Kısayol ayarlanamadı",
+      "generic": "Bir şeyler ters gitti"
+    },
+    "friendly": {
+      "offline": "{{appName}} sunucularına ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.",
+      "offlineDownload": "İndirme sunucusuna ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.",
+      "timeout": "Sunucu çok geç yanıt verdi. Birazdan tekrar deneyin.",
+      "notFound": "Bu dosya şu anda kullanılamıyor. Daha sonra tekrar deneyin.",
+      "diskFull": "Bu bilgisayarda yeterli boş alan yok. Biraz yer açıp tekrar deneyin.",
+      "checksum": "İndirilen dosya bozuk geldi. Tekrar deneyin.",
+      "permission": "{{appName}} bunu yapma iznine sahip değil. Sistem ayarlarından izinlerini kontrol edin.",
+      "server": "Sunucuda bir sorun oluştu. Birazdan tekrar deneyin.",
+      "unknown": "Bir şeyler ters gitti. Tekrar deneyin."
+    }
   },
   "appLanguage": {
     "title": "Uygulama Dili",
@@ -992,7 +1037,7 @@
       "remove": "Kaldır",
       "activating": "Etkinleştiriliyor…",
       "paste": "Yapıştır",
-      "pasteFailed": "Pano okunamadı. Bunun yerine ⌘V ile yapıştırın.",
+      "pasteFailed": "Pano okunamadı. Bunun yerine {{keys}} ile yapıştırın.",
       "holder": "Giriş yapılan hesap",
       "renewsLabel": "Yenilenme",
       "copied": "Kopyalandı",
@@ -1285,6 +1330,21 @@
       "failed": "Şu anda gönderilemedi. Kopyalayıp daha sonra tekrar denensin mi?",
       "offer": "Bunu ekibe bildireyim mi?",
       "offerAccept": "Bildir"
+    },
+    "notes": {
+      "ready": "Notların hazır",
+      "actionItems": "Yapılacaklar: {{n}}",
+      "open": "Aç",
+      "email": "Bana e-postayla gönder",
+      "sending": "Gönderiliyor…",
+      "sent": "E-postana gönderildi",
+      "failed": "Gönderilemedi",
+      "emailed": "Toplantı notları e-postana gönderildi",
+      "emailFailed": "Toplantı notların e-postayla gönderilemedi"
+    },
+    "rate": {
+      "up": "Faydalı",
+      "down": "Faydalı değil"
     }
   },
   "privacy": {
@@ -1394,7 +1454,11 @@
         "license": "Hesap kontrolü",
         "trial": "Deneme",
         "warmup": "Bağlantı hazırlığı (hiçbir şey gönderilmedi)",
-        "suggest": "Öneri kontrolü"
+        "suggest": "Öneri kontrolü",
+        "telemetry": "Anonim kullanım sayıları",
+        "config": "Ayar kontrolü (hiçbir şey gönderilmez)",
+        "meeting_email": "Toplantı notları e-postası",
+        "feedback": "Geri bildirim"
       }
     },
     "engine": {
@@ -1463,6 +1527,11 @@
         "title": "Buluttan öneriler",
         "description": "Yardım önerip önermeyeceğine karar vermek için üzerinde durduğunuz bir pencerenin kişisel verilerden arındırılmış bir parçasını gönderir. Her istek aşağıda listelenir."
       }
+    },
+    "telemetry": {
+      "title": "{{appName}} uygulamasını geliştirmeye yardım et",
+      "label": "Anonim kullanım sayılarını paylaş",
+      "description": "Yalnızca sayılar ve süreler; söylediklerin, yazdıkların veya gördüklerin asla. Sen açana kadar kapalı."
     }
   },
   "meetings": {
@@ -1532,13 +1601,32 @@
       "join": "Herhangi bir uygulamada görüşmeye katılın",
       "accept": "{{appName}} önerince evet deyin",
       "summary": "Bittiğinde özet alın"
+    },
+    "email": {
+      "title": "Notları bana e-postayla gönder",
+      "description": "Her görüşmeden sonra {{email}} adresine gönderilir. Gizli bilgiler önce çıkarılır ve hiçbir şey saklanmaz.",
+      "signedOut": "Notlarını e-postayla almak için oturum aç.",
+      "options": {
+        "off": "Kapalı",
+        "ask": "Her seferinde sor",
+        "always": "Her zaman"
+      },
+      "button": "Bana e-postayla gönder",
+      "sent": "Notlar e-postana gönderildi",
+      "errors": {
+        "notSignedIn": "Notlarını e-postayla göndermek için oturum aç.",
+        "noSummary": "Bu toplantının gönderilecek notu yok.",
+        "rateLimited": "Bugün için çok fazla e-posta oldu. Yarın tekrar dene.",
+        "offline": "Sunucuya ulaşılamadı. Bağlantını kontrol edip tekrar dene.",
+        "failed": "E-posta gönderilemedi. Tekrar dene."
+      }
     }
   },
   "tour": {
     "skip": "Atla",
     "next": "İleri",
     "done": "Bitti",
-    "start": "{{appName}} kullanmaya başla",
+    "start": "Başlayın",
     "meet": {
       "title": "Aracıyla tanışın",
       "description": "Kısayolunuzu basılı tutun ve konuşun. Gerisini {{appName}} halleder."
@@ -1672,5 +1760,60 @@
     "empty": "“{{query}}” ile eşleşen bir şey yok.",
     "jumpTo": "Git",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "{{appName}} uygulamasını geliştirmeye yardım et: anonim kullanım sayılarını paylaş, söylediklerini, yazdıklarını veya gördüklerini asla.",
+    "whatsShared": "Neler paylaşılır",
+    "sharedTitle": "Yalnızca anonim sayılar ve süreler",
+    "shared": {
+      "suggestions": "Önerilerin ne sıklıkla sunulduğu, kabul edildiği veya kapatıldığı",
+      "requests": "İsteğin türü ve ne kadar sürdüğü",
+      "errors": "Hangi tür hata oluştuğu, örneğin “zaman aşımı”",
+      "basics": "Uygulama sürümü, sistem, plan ve her 30 günde değişen rastgele bir kimlik"
+    },
+    "never": "Söylediklerin, yazdıkların veya gördüklerin, pencere başlıkları, bağlantılar, dosya adları ya da e-postan asla.",
+    "ledger": "Her gönderim Gizlilik'te, bu bilgisayardan çıkan istekler arasında listelenir."
+  },
+  "feedback": {
+    "title": "Geri bildirim gönder",
+    "titleThumbs": "Ne ters gitti?",
+    "description": "Doğrudan ekibe gider. Sen işaretlemedikçe başka hiçbir şey eklenmez.",
+    "kind": {
+      "label": "Tür",
+      "bug": "Hata",
+      "idea": "Fikir",
+      "other": "Başka bir şey"
+    },
+    "message": {
+      "label": "Mesaj",
+      "placeholder": "Ne oldu ya da ne işine yarardı?",
+      "placeholderThumbs": "Ne ters gitti? (isteğe bağlı)"
+    },
+    "email": {
+      "label": "Yanıt için e-posta (isteğe bağlı)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Tanılama bilgilerini ekle",
+      "description": "Uygulama sürümü, sistem, plan, ayarların özeti ve son günlük satırları; gizli bilgiler, pencere başlıkları ve bağlantılar çıkarılmış olarak."
+    },
+    "example": {
+      "label": "Örneği ekle",
+      "description": "O karttaki soru ve yanıt, gizli bilgiler çıkarılmış olarak."
+    },
+    "preview": "Gönderilecekleri önizle",
+    "hidePreview": "Önizlemeyi gizle",
+    "previewTitle": "Tam olarak gönderilecek olan",
+    "send": "Gönder",
+    "sending": "Gönderiliyor…",
+    "cancel": "İptal",
+    "close": "Kapat",
+    "sent": "Teşekkürler! Geri bildirimin gönderildi.",
+    "errors": {
+      "empty": "Önce birkaç kelime yaz.",
+      "offline": "Sunucuya ulaşılamadı. Bağlantını kontrol edip tekrar dene.",
+      "rateLimited": "Şu an çok fazla bildirim var. Bir saat sonra tekrar dene.",
+      "failed": "Geri bildirimin gönderilemedi. Tekrar dene."
+    }
   }
 }

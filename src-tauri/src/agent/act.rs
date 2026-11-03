@@ -43,12 +43,21 @@ pub fn os_name() -> &'static str {
 }
 
 pub async fn run(app: AppHandle, action: Action) {
+    let kind = match &action {
+        Action::Reminder { .. } => Some("reminder"),
+        Action::CalendarEvent { .. } => Some("calendar"),
+        Action::OpenApp { .. } => Some("open_app"),
+        Action::Shortcut { .. } => Some("shortcut"),
+        Action::Unsupported { .. } => Some("unsupported"),
+        _ => None,
+    };
     let notice = tauri::async_runtime::spawn_blocking({
         let app = app.clone();
         move || perform(&app, action)
     })
     .await
     .unwrap_or_else(|_| Notice::cant("hud.notice.failed"));
+    crate::telemetry::act(kind, notice.outcome());
     notice.show(&app);
 }
 

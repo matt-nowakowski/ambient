@@ -388,3 +388,7 @@ export class ChordRecorder {
     return { partial: "", done: partial || null };
   }
 }
+
+/** An app shortcut on the platform's primary modifier: "⌘ V" on macOS, "Ctrl + V" elsewhere. */
+export const primaryShortcut = (key: string, osType: OSType): string =>
+  keycapLabel(`${osType === "macos" ? "command" : "ctrl"}+${key}`, osType);

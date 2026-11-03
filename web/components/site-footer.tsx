@@ -66,12 +66,12 @@ export function SiteFooter() {
             <p>
               © {new Date().getFullYear()} {company.legalName}
             </p>
-            <p className="flex flex-wrap gap-x-4 gap-y-1">
-              {Object.values(emails).map((e) => (
-                <a key={e} href={mailto(undefined, e)} className="transition-colors hover:text-foreground">
-                  {e}
-                </a>
-              ))}
+            {/* Only the general inbox here; sales@ and legal@ sit where they apply
+                (Team plan, pricing and sales; privacy and terms; Contact). */}
+            <p>
+              <a href={mailto(undefined, emails.hello)} className="transition-colors hover:text-foreground">
+                {emails.hello}
+              </a>
             </p>
           </div>
         </div>

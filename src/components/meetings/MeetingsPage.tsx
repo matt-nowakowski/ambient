@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 import {
   ArrowLeft,
   Copy,
@@ -30,6 +31,8 @@ import { Button } from "../ui/Button";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { useSettings } from "../../hooks/useSettings";
 import { isPaid, usePlan } from "../account/usePlan";
+import { EmailNotesButton, MeetingsEmailSetting } from "./MeetingsEmail";
+import { usePendingMeeting } from "./pendingMeeting";
 
 /** Call detection and call audio: macOS, Windows and Linux. */
 const AUTO_DETECTS = hasScreenAgent(osType());
@@ -157,8 +160,7 @@ export const MeetingsPage: React.FC = () => {
     setBusy(true);
     const r = await commands.startMeeting();
     setBusy(false);
-    if (r.status === "error")
-      toast.error(t(r.error, { defaultValue: r.error }));
+    if (r.status === "error") showError("meeting", r.error, { retry: start });
     await refresh();
   };
 
@@ -166,8 +168,7 @@ export const MeetingsPage: React.FC = () => {
     setBusy(true);
     const r = await commands.stopMeeting();
     setBusy(false);
-    if (r.status === "error")
-      toast.error(t(r.error, { defaultValue: r.error }));
+    if (r.status === "error") showError("meeting", r.error, { retry: stop });
   };
 
   // Call detection is the meetings capability (Privacy): with it on,
@@ -178,7 +179,7 @@ export const MeetingsPage: React.FC = () => {
     setBusy(true);
     const r = await commands.setAgentSettings({ ...agent, meetings: true });
     setBusy(false);
-    if (r.status === "error") toast.error(r.error);
+    if (r.status === "error") showError("settings", r.error);
     await refreshSettings();
   };
 
@@ -189,6 +190,8 @@ export const MeetingsPage: React.FC = () => {
       setOpen(m.data);
     }
   };
+
+  usePendingMeeting(openMeeting);
 
   const remove = async (id: number) => {
     await commands.deleteMeeting(id);
@@ -201,7 +204,7 @@ export const MeetingsPage: React.FC = () => {
     const r = await commands.meetingFollowUp(id);
     setBusy(false);
     if (r.status === "ok") setFollowUp(r.data);
-    else toast.error(t(r.error, { defaultValue: r.error }));
+    else showError("meeting", r.error, { retry: () => draftFollowUp(id) });
   };
 
   const copy = async (text: string) => {
@@ -265,6 +268,7 @@ export const MeetingsPage: React.FC = () => {
               <Mail width={13} height={13} />
               {t("meetings.followUp")}
             </Button>
+            <EmailNotesButton id={open.id} disabled={!s} />
           </div>
         </header>
         <div className="space-y-section">
@@ -451,6 +455,8 @@ export const MeetingsPage: React.FC = () => {
             </SettingsGroup>
           </>
         )}
+
+        <MeetingsEmailSetting />
 
         <SettingsGroup title={t("meetings.past")}>
           {list.filter((m) => m.id !== state.id).length === 0 ? (

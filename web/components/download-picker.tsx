@@ -51,7 +51,16 @@ const getSnapshot = () => {
  * download page); otherwise links go to /download?get=<id>, which starts the
  * download and shows the setup steps.
  */
-export function DownloadButton({ direct = false, className = "" }: { direct?: boolean; className?: string }) {
+export function DownloadButton({
+  direct = false,
+  menu = true,
+  className = "",
+}: {
+  direct?: boolean;
+  /** The arrow with every build; the homepage hero shows just the main button. */
+  menu?: boolean;
+  className?: string;
+}) {
   const platform = usePlatform();
   const href = (r: Release) => (direct ? r.url : `/download?get=${r.id}`);
 
@@ -66,6 +75,16 @@ export function DownloadButton({ direct = false, className = "" }: { direct?: bo
   }
 
   const current = releases[platform.release];
+  if (!menu) {
+    return (
+      <a href={href(current)} className={buttonClass("primary", "lg", className)}>
+        <DownloadIcon />
+        <span className="truncate">
+          Download<span className="hidden min-[400px]:inline"> for {osLabel[platform.os]}</span>
+        </span>
+      </a>
+    );
+  }
   return (
     <SplitButton
       className={className}

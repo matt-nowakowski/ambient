@@ -90,6 +90,83 @@ export async function usageDb() {
   return sql;
 }
 
+let productSchemaReady: Promise<unknown> | null = null;
+
+/**
+ * Anonymous product analytics (lib/agent/telemetry-store.ts) and the remote
+ * agent config (lib/agent/config-store.ts). Created lazily by those paths and
+ * the admin page only; additive, `create table if not exists`.
+ *
+ * - product_events_daily: counts per (UTC day, event, canonical props, app
+ *   version). No install ids, no text: props are allowlisted enums only.
+ * - product_installs_daily: opted-in installs per day, as a hash of the
+ *   rotating install id and the day, so a row can't be linked to another day.
+ * - agent_config / agent_config_state / agent_config_history: tunables the
+ *   app fetches from /api/agent/config, the auto-tuning pause flag, and every
+ *   change with its reason and the numbers behind it.
+ *
+ * Event rows and install rows are pruned after PRODUCT_RETENTION_DAYS.
+ */
+export async function productDb() {
+  const sql = await db();
+  productSchemaReady ??= sql`
+    create table if not exists product_events_daily (
+      day date not null,
+      name text not null,
+      props_key text not null,
+      version text not null,
+      count integer not null default 0,
+      primary key (day, name, props_key, version)
+    )`
+    .then(
+      () => sql`
+    create table if not exists product_installs_daily (
+      day date not null,
+      install_hash text not null,
+      primary key (day, install_hash)
+    )`,
+    )
+    .then(
+      () => sql`
+    create table if not exists agent_config (
+      key text primary key,
+      value jsonb not null,
+      source text not null,
+      pinned boolean not null default false,
+      updated_at timestamptz not null default now()
+    )`,
+    )
+    .then(
+      () => sql`
+    create table if not exists agent_config_state (
+      key text primary key,
+      value jsonb not null
+    )`,
+    )
+    .then(
+      () => sql`
+    create table if not exists agent_config_history (
+      id bigserial primary key,
+      at timestamptz not null default now(),
+      key text not null,
+      old_value jsonb,
+      new_value jsonb,
+      source text not null,
+      reason text not null,
+      stats jsonb
+    )`,
+    );
+  try {
+    await productSchemaReady;
+  } catch (err) {
+    productSchemaReady = null; // retry on the next call
+    throw err;
+  }
+  return sql;
+}
+
+export const PRODUCT_RETENTION_DAYS = 180;
+
 /** Monday (UTC) of the current week, and when the next week starts. */
 export function currentWeek(now = new Date()) {
   const day = (now.getUTCDay() + 6) % 7; // Monday = 0

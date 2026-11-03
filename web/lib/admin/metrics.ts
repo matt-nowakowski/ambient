@@ -140,6 +140,8 @@ export type PolarStats = {
   activeSubscriptions: number;
   trialingSubscriptions: number;
   payingCustomers: number;
+  /** Active $0 subscriptions (100% discount codes, e.g. friends and family). */
+  complimentary: number;
   mrrCents: number;
   cancellingAtPeriodEnd: number;
   churned: number;
@@ -238,14 +240,18 @@ const loadPolar = unstable_cache(
       return amount / c;
     };
 
-    const active = subs.filter((s) => s.status === "active");
+    // A $0 subscription (a 100% discount such as the friends-and-family code)
+    // is complimentary: counted on its own, never as a paying customer or MRR.
+    const isComp = (s: Subscription) => s.amount === 0;
+    const active = subs.filter((s) => s.status === "active" && !isComp(s));
+    const complimentary = subs.filter((s) => s.status === "active" && isComp(s));
     const trialing = subs.filter((s) => s.status === "trialing");
     const payingCustomers = new Set(active.map((s) => s.customerId));
     const mrrCents = active.reduce((sum, s) => sum + monthly(s.amount, s.recurringInterval, s.recurringIntervalCount), 0);
     const ended = subs.filter((s) => s.status === "canceled" || s.endedAt);
     const firstPaid = new Map<string, number>();
     for (const o of orders) {
-      if (!o.paid) continue;
+      if (!o.paid || o.totalAmount === 0) continue; // $0 (complimentary) orders aren't paying
       const t = o.createdAt.getTime();
       if (!firstPaid.has(o.customerId) || t < firstPaid.get(o.customerId)!) firstPaid.set(o.customerId, t);
     }
@@ -337,7 +343,7 @@ const loadPolar = unstable_cache(
           plan: s.metadata?.plan === "team" || teamProducts.has(s.productId) ? ("team" as const) : ("pro" as const),
           product: s.product?.name ?? s.productId,
           interval: s.recurringInterval,
-          status: cancelling ? "cancelling" : s.status,
+          status: s.status === "active" && isComp(s) ? "complimentary" : cancelling ? "cancelling" : s.status,
           since: (s.startedAt ?? s.createdAt).toISOString(),
           mrrCents: live ? monthly(s.amount, s.recurringInterval, s.recurringIntervalCount) : 0,
           renewsAt: live && !cancelling ? s.currentPeriodEnd.toISOString() : null,
@@ -357,6 +363,7 @@ const loadPolar = unstable_cache(
       activeSubscriptions: active.length,
       trialingSubscriptions: trialing.length,
       payingCustomers: payingCustomers.size,
+      complimentary: new Set(complimentary.map((s) => s.customerId)).size,
       mrrCents,
       cancellingAtPeriodEnd: active.filter((s) => s.cancelAtPeriodEnd).length,
       churned: ended.length,

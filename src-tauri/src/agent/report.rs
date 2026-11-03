@@ -9,7 +9,9 @@
 //! leaves until Send.
 //!
 //! Right after an answer, "that's wrong" or "no, that's not it" offers to
-//! report it (rate-limited), with that question and answer as the example.
+//! report it (rate-limited). With diagnostics on, `feedback::submit` attaches
+//! the last answer card (shown in the last 2 minutes), redacted, so this
+//! module never attaches one itself.
 
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -20,7 +22,7 @@ use tauri::AppHandle;
 
 use super::notice::{offer, Notice};
 use super::router::without_address;
-use crate::feedback::{Feedback, FeedbackExample, FeedbackKind, FeedbackSource};
+use crate::feedback::{Feedback, FeedbackKind, FeedbackSource};
 use crate::hud::{self, HudContent};
 
 /// HUD ids of report cards and of the "report this?" offer.
@@ -172,7 +174,6 @@ struct Pending {
     kind: FeedbackKind,
     message: String,
     diagnostics: bool,
-    example: Option<FeedbackExample>,
     /// Edit was pressed: the next thing said replaces the message.
     editing: bool,
 }
@@ -190,20 +191,18 @@ fn card(p: &Pending) -> HudContent {
 }
 
 /// Show "Send this to the team?" with the message as heard.
-pub fn show(app: &AppHandle, intent: ReportIntent, example: Option<(String, String)>) {
+pub fn show(app: &AppHandle, intent: ReportIntent) {
     let p = Pending {
         id: format!("{CARD_PREFIX}{}", chrono::Utc::now().timestamp_millis()),
         kind: intent.kind,
         message: intent.message,
         diagnostics: false,
-        example: example.map(|(question, answer)| FeedbackExample { question, answer }),
         editing: false,
     };
     log::debug!(
-        "report: showing a {} report card ({} chars, example={})",
+        "report: showing a {} report card ({} chars)",
         kind_name(p.kind),
         p.message.chars().count(),
-        p.example.is_some()
     );
     hud::show(app, card(&p));
     if let Ok(mut g) = PENDING.lock() {
@@ -284,23 +283,26 @@ fn send(app: &AppHandle, p: Pending) {
             kind: p.kind,
             message: p.message,
             include_diagnostics: p.diagnostics,
-            example: p.example,
+            // `submit` attaches the last answer itself when diagnostics are on.
+            example: None,
             source: FeedbackSource::Voice,
         };
-        let result =
-            tauri::async_runtime::spawn_blocking(move || crate::feedback::submit(feedback))
-                .await
-                .unwrap_or_else(|_| Err("submit panicked".into()));
+        let result = crate::feedback::submit(&app, feedback).await;
         match result {
             Ok(()) => {
                 log::debug!("report: sent");
                 Notice::done("hud.report.sent").show(&app);
             }
+            // `e` is an i18n key (`feedback.errors.*`): say why, then offer Copy.
             Err(e) => {
                 log::warn!("report: sending failed: {e}");
-                Notice::cant("hud.report.failed")
-                    .offer(offer::COPY, "hud.copy", message)
-                    .show(&app);
+                Notice::cant(if e.starts_with("feedback.errors.") {
+                    &e
+                } else {
+                    "hud.report.failed"
+                })
+                .offer(offer::COPY, "hud.copy", message)
+                .show(&app);
             }
         }
     });
@@ -377,7 +379,6 @@ struct Offer {
     id: String,
     at: Instant,
     said: String,
-    example: Option<(String, String)>,
 }
 
 static OFFER: Mutex<Option<Offer>> = Mutex::new(None);
@@ -399,9 +400,9 @@ pub fn offer_after_answer(app: &AppHandle, transcript: &str) -> bool {
     if !is_negative(transcript) {
         return false;
     }
-    let Some(example) = super::answer::last_turn() else {
+    if super::answer::last_turn().is_none() {
         return false;
-    };
+    }
     {
         let mut times = OFFERED
             .lock()
@@ -418,7 +419,6 @@ pub fn offer_after_answer(app: &AppHandle, transcript: &str) -> bool {
             id: id.clone(),
             at: Instant::now(),
             said: transcript.trim().to_string(),
-            example: Some(example),
         });
     }
     log::debug!("report: offering to report the last answer");
@@ -454,7 +454,6 @@ fn on_offer(app: &AppHandle, id: &str, action: &str) {
             message: o.said,
             explicit: true,
         },
-        o.example,
     );
 }
 

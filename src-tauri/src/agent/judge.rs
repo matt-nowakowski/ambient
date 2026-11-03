@@ -29,14 +29,15 @@ pub struct Verdict {
     pub confidence: f32,
 }
 
-/// Offers below this confidence are dropped.
-pub const MIN_CONFIDENCE: f32 = 0.6;
 /// The most window text handed to the judge (Apple's model has a ~4k-token
 /// window, shared with the prompt and reply).
 pub const MAX_TEXT: usize = 3500;
-/// Apple's model takes 3–6 s on a few thousand characters; the log showed
-/// every judgement cut off at 4 s. It runs on the proactive worker, never
-/// the agent loop, so waiting longer costs nothing but the offer's delay.
+/// The default on-device deadline; the live value is
+/// `remote_config::agent_config().judge_timeout` (same default). Apple's
+/// model takes 1–6 s on a few thousand characters; the log showed every
+/// judgement cut off at 4 s. It runs on the proactive worker, never the
+/// agent loop, so waiting longer costs nothing but the offer's delay.
+#[allow(dead_code)]
 pub const TIMEOUT: Duration = Duration::from_secs(8);
 const MAX_TITLE: usize = 60;
 
@@ -132,7 +133,9 @@ pub fn parse_verdict(reply: &str) -> Option<Verdict> {
 
 /// Whether a verdict earns an offer.
 pub fn worth_offering(v: &Verdict) -> bool {
-    v.help && v.confidence >= MIN_CONFIDENCE && (v.kind != "other" || !v.title.is_empty())
+    v.help
+        && v.confidence >= crate::remote_config::agent_config().min_confidence_for(&v.kind)
+        && (v.kind != "other" || !v.title.is_empty())
 }
 
 /// Why the judge gave no verdict.
@@ -196,7 +199,9 @@ pub fn route(
 
 // ── Cloud judge ─────────────────────────────────────────────────────────────
 
-/// The whole cloud round trip, server model call included.
+/// The whole cloud round trip, server model call included. The default:
+/// the remote agent config may tune it (`judge.cloud_timeout_ms`).
+#[allow(dead_code)]
 pub const CLOUD_TIMEOUT: Duration = Duration::from_secs(7);
 /// After the server says no (cap reached, not Pro), don't ask again for this long.
 const CLOUD_COOLDOWN: Duration = Duration::from_secs(3600);
@@ -205,7 +210,8 @@ static CLOUD_PAUSED: Mutex<Option<Instant>> = Mutex::new(None);
 static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
     reqwest::Client::builder()
         .connect_timeout(Duration::from_secs(4))
-        .timeout(CLOUD_TIMEOUT)
+        // The upper bound of the tunable round trip (remote_config).
+        .timeout(Duration::from_secs(12))
         .build()
         .unwrap_or_default()
 });
@@ -299,7 +305,8 @@ pub fn judge_cloud(
             .header("Content-Type", "application/json")
             .body(body)
             .send();
-        let res = match tokio::time::timeout(CLOUD_TIMEOUT, send).await {
+        let limit = crate::remote_config::agent_config().judge_cloud_timeout;
+        let res = match tokio::time::timeout(limit, send).await {
             Err(_) => return Err(JudgeError::TimedOut),
             Ok(Err(e)) if e.is_timeout() => return Err(JudgeError::TimedOut),
             Ok(Err(_)) => return Err(JudgeError::Offline),
@@ -348,17 +355,18 @@ pub fn judge(
     let text: String = text.chars().take(MAX_TEXT).collect();
     let user = format!("App: {app_name}\nWindow: {title}\n---\n{text}");
     let system = instructions(language);
+    let timeout = crate::remote_config::agent_config().judge_timeout;
     let (tx, rx) = mpsc::sync_channel(1);
     let started = Instant::now();
     std::thread::Builder::new()
         .name("ambient-judge".into())
         .spawn(move || {
-            let _ = tx.send(on_device(&system, &user));
+            let _ = tx.send(on_device_with(&system, &user, timeout));
         })
         .map_err(|_| JudgeError::Failed)?;
     // A little longer than the Swift side's own deadline, so its "timeout"
     // is what's reported.
-    let mut result = match rx.recv_timeout(TIMEOUT + Duration::from_millis(500)) {
+    let mut result = match rx.recv_timeout(timeout + Duration::from_millis(500)) {
         Ok(Some(reply)) => read_guided(&reply),
         Ok(None) => Err(JudgeError::Failed),
         Err(mpsc::RecvTimeoutError::Timeout) => Err(JudgeError::TimedOut),
@@ -369,14 +377,14 @@ pub fn judge(
     // with just the latest part, if there's time left.
     if result == Err(JudgeError::Failed)
         && text.chars().count() > RETRY_TEXT
-        && started.elapsed() < TIMEOUT / 2
+        && started.elapsed() < timeout / 2
     {
         let tail: String = {
             let n = text.chars().count();
             text.chars().skip(n - RETRY_TEXT).collect()
         };
         let user = format!("App: {app_name}\nWindow: {title}\n---\n{tail}");
-        let left = TIMEOUT.saturating_sub(started.elapsed());
+        let left = timeout.saturating_sub(started.elapsed());
         log::debug!("judge: retrying on device with the last {RETRY_TEXT} characters");
         result = on_device_with(&instructions(language), &user, left)
             .map_or(Err(JudgeError::Failed), |r| read_guided(&r));
@@ -410,12 +418,7 @@ pub fn read_guided(reply: &str) -> Result<Verdict, JudgeError> {
 /// The latest part of the window, for the one retry.
 const RETRY_TEXT: usize = 1500;
 
-#[cfg(all(target_os = "macos", target_arch = "aarch64"))]
-fn on_device(system: &str, user: &str) -> Option<String> {
-    on_device_with(system, user, TIMEOUT)
-}
-
-#[cfg(not(all(target_os = "macos", target_arch = "aarch64")))]
+#[cfg(test)]
 fn on_device(system: &str, user: &str) -> Option<String> {
     on_device_with(system, user, TIMEOUT)
 }

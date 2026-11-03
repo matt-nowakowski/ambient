@@ -7,9 +7,12 @@
 //!
 //! - the same kind is never offered twice for the same window or thread
 //!   (and repeats are dropped before they count against anything);
-//! - each app has a short cooldown, longer after a dismissal there;
-//! - the hourly cap is higher (10), and each dismissal in the last hour
-//!   lowers it, so a user who keeps saying "not now" hears less;
+//! - each app has a short cooldown after an offer (the offered kind's
+//!   `cooldown_min` in the agent config, 3 minutes by default), longer after
+//!   a dismissal there;
+//! - the hourly cap is higher (the agent config's `hourly_budget`, 10 by
+//!   default), and each dismissal in the last hour lowers it, so a user who
+//!   keeps saying "not now" hears less;
 //! - two dismissals of a kind back that kind off for a day.
 //!
 //! Pure: callers pass `Instant`s, so the rules are unit-tested.
@@ -19,13 +22,13 @@ use std::time::{Duration, Instant};
 
 use super::proactive::Kind;
 
-/// The hourly cap before back-off.
+/// The hourly cap before back-off (the agent config's default).
 pub const HOURLY_CAP: u32 = 10;
 /// The cap never falls below this, however many dismissals.
 const MIN_CAP: u32 = 3;
 /// Each dismissal in the last hour lowers the cap by this much.
 const CAP_PER_DISMISSAL: u32 = 2;
-/// Between two offers in the same app.
+/// Between two offers in the same app (the default `cooldown_min`).
 pub const APP_COOLDOWN: Duration = Duration::from_secs(3 * 60);
 /// Added to an app's cooldown after a dismissal there.
 const APP_COOLDOWN_AFTER_DISMISS: Duration = Duration::from_secs(15 * 60);
@@ -73,8 +76,9 @@ pub struct Budget {
     shown: VecDeque<Instant>,
     /// (kind, window key) → when offered.
     offered: HashMap<(Kind, String), Instant>,
-    /// Bundle → when something was last offered there.
-    app_last: HashMap<String, Instant>,
+    /// Bundle → when something was last offered there, and how long that
+    /// kind keeps the app quiet.
+    app_last: HashMap<String, (Instant, Duration)>,
     /// Bundle → when something was last dismissed there.
     app_dismissed: HashMap<String, Instant>,
     /// Recent dismissals (any kind).
@@ -89,16 +93,17 @@ impl Budget {
         self.shown.retain(|t| fresh(t, HOUR));
         self.dismissals.retain(|t| fresh(t, HOUR));
         self.offered.retain(|_, t| fresh(t, SAME_WINDOW));
-        self.app_last.retain(|_, t| fresh(t, HOUR));
+        self.app_last
+            .retain(|_, (t, _)| fresh(t, HOUR.max(SAME_WINDOW)));
         self.app_dismissed.retain(|_, t| fresh(t, HOUR));
     }
 
-    /// The cap after back-off: `per_hour` (at least `HOURLY_CAP`), less two
-    /// for each dismissal in the last hour.
+    /// The cap after back-off: `per_hour`, less two for each dismissal in
+    /// the last hour (never below 3, or `per_hour` if that's lower).
     pub fn cap(&self, per_hour: u32) -> u32 {
-        let base = per_hour.max(HOURLY_CAP);
-        base.saturating_sub(CAP_PER_DISMISSAL * self.dismissals.len() as u32)
-            .max(MIN_CAP)
+        per_hour
+            .saturating_sub(CAP_PER_DISMISSAL * self.dismissals.len() as u32)
+            .max(MIN_CAP.min(per_hour))
     }
 
     pub fn shown_this_hour(&self) -> u32 {
@@ -131,20 +136,22 @@ impl Budget {
     pub fn check_app(&mut self, bundle: &str, per_hour: u32, now: Instant) -> Result<(), Block> {
         self.prune(now);
         if !bundle.is_empty() {
-            let mut cooldown = APP_COOLDOWN;
-            if self.app_dismissed.contains_key(bundle) {
-                cooldown += APP_COOLDOWN_AFTER_DISMISS;
-            }
-            let since = self
-                .app_dismissed
+            let since = |t: &Instant| now.saturating_duration_since(*t);
+            // After an offer: that kind's cooldown. After a dismissal: the
+            // default plus the extra rest.
+            let waits = self
+                .app_last
                 .get(bundle)
+                .map(|(t, cooldown)| (since(t), *cooldown))
                 .into_iter()
-                .chain(self.app_last.get(bundle))
-                .map(|t| now.saturating_duration_since(*t))
-                .min();
-            if let Some(since) = since.filter(|s| *s < cooldown) {
+                .chain(
+                    self.app_dismissed
+                        .get(bundle)
+                        .map(|t| (since(t), APP_COOLDOWN + APP_COOLDOWN_AFTER_DISMISS)),
+                );
+            if let Some(left) = waits.filter(|(s, c)| s < c).map(|(s, c)| c - s).max() {
                 return Err(Block::AppCooldown {
-                    secs_left: (cooldown - since).as_secs(),
+                    secs_left: left.as_secs(),
                 });
             }
         }
@@ -158,12 +165,19 @@ impl Budget {
         Ok(())
     }
 
-    /// An offer was shown.
-    pub fn record_shown(&mut self, kind: Kind, bundle: &str, key: &str, now: Instant) {
+    /// An offer was shown; its app stays quiet for `cooldown`.
+    pub fn record_shown(
+        &mut self,
+        kind: Kind,
+        bundle: &str,
+        key: &str,
+        cooldown: Duration,
+        now: Instant,
+    ) {
         self.shown.push_back(now);
         self.offered.insert((kind, key.to_string()), now);
         if !bundle.is_empty() {
-            self.app_last.insert(bundle.to_string(), now);
+            self.app_last.insert(bundle.to_string(), (now, cooldown));
         }
     }
 
@@ -209,31 +223,37 @@ mod tests {
         let safari = "com.apple.Safari|Build log";
         // 03:48 explain_error in Safari: shown.
         assert!(b
-            .check(Kind::ExplainError, SAFARI, safari, 3, at(0))
+            .check(Kind::ExplainError, SAFARI, safari, HOURLY_CAP, at(0))
             .is_ok());
-        b.record_shown(Kind::ExplainError, SAFARI, safari, at(0));
+        b.record_shown(Kind::ExplainError, SAFARI, safari, APP_COOLDOWN, at(0));
         // 03:50 add_to_calendar in Arc: shown.
         assert!(b
-            .check(Kind::AddToCalendar, ARC, "arc|Lunch", 3, at(2))
+            .check(Kind::AddToCalendar, ARC, "arc|Lunch", HOURLY_CAP, at(2))
             .is_ok());
-        b.record_shown(Kind::AddToCalendar, ARC, "arc|Lunch", at(2));
+        b.record_shown(Kind::AddToCalendar, ARC, "arc|Lunch", APP_COOLDOWN, at(2));
         // The same error, the same window, again and again: dropped, never counted.
         for m in [3, 5, 7, 8, 9, 13] {
             assert_eq!(
-                b.check(Kind::ExplainError, SAFARI, safari, 3, at(m)),
+                b.check(Kind::ExplainError, SAFARI, safari, HOURLY_CAP, at(m)),
                 Err(Block::Repeat)
             );
         }
         // 03:52 draft_reply in Arc, after the app cooldown: shown.
         assert!(b
-            .check(Kind::DraftReply, ARC, "arc|Re: Q4", 3, at(5))
+            .check(Kind::DraftReply, ARC, "arc|Re: Q4", HOURLY_CAP, at(5))
             .is_ok());
-        b.record_shown(Kind::DraftReply, ARC, "arc|Re: Q4", at(5));
+        b.record_shown(Kind::DraftReply, ARC, "arc|Re: Q4", APP_COOLDOWN, at(5));
         // 03:56 summarise_thread on the 61-message thread: still offered
         // (three shown is well under the new cap).
         assert_eq!(b.shown_this_hour(), 3);
         assert!(b
-            .check(Kind::SummariseThread, ARC, "arc|Re: Launch", 3, at(9))
+            .check(
+                Kind::SummariseThread,
+                ARC,
+                "arc|Re: Launch",
+                HOURLY_CAP,
+                at(9)
+            )
             .is_ok());
     }
 
@@ -241,7 +261,7 @@ mod tests {
     fn one_app_cant_fire_back_to_back() {
         let mut b = Budget::default();
         let t0 = Instant::now();
-        b.record_shown(Kind::DraftReply, ARC, "a", t0);
+        b.record_shown(Kind::DraftReply, ARC, "a", APP_COOLDOWN, t0);
         assert!(matches!(
             b.check(
                 Kind::SummariseThread,
@@ -272,26 +292,32 @@ mod tests {
     fn dismissals_lower_the_cap_and_back_off_the_kind() {
         let mut b = Budget::default();
         let t0 = Instant::now();
-        assert_eq!(b.cap(3), HOURLY_CAP);
+        assert_eq!(b.cap(HOURLY_CAP), HOURLY_CAP);
         b.record_dismissed(Kind::DraftReply, ARC, t0);
-        assert_eq!(b.cap(3), HOURLY_CAP - 2);
+        assert_eq!(b.cap(HOURLY_CAP), HOURLY_CAP - 2);
         // The dismissed app rests longer.
         assert!(matches!(
-            b.check(Kind::SummariseThread, ARC, "x", 3, t0 + APP_COOLDOWN),
+            b.check(
+                Kind::SummariseThread,
+                ARC,
+                "x",
+                HOURLY_CAP,
+                t0 + APP_COOLDOWN
+            ),
             Err(Block::AppCooldown { .. })
         ));
         b.record_dismissed(Kind::DraftReply, SAFARI, t0);
         assert_eq!(
-            b.check(Kind::DraftReply, "com.apple.mail", "y", 3, t0),
+            b.check(Kind::DraftReply, "com.apple.mail", "y", HOURLY_CAP, t0),
             Err(Block::KindBackedOff)
         );
         for _ in 0..10 {
             b.record_dismissed(Kind::ExplainError, "", t0);
         }
-        assert_eq!(b.cap(3), 3, "never below the floor");
+        assert_eq!(b.cap(HOURLY_CAP), 3, "never below the floor");
         b.record_accepted(Kind::DraftReply);
         assert!(b
-            .check(Kind::DraftReply, "com.apple.mail", "y", 3, t0)
+            .check(Kind::DraftReply, "com.apple.mail", "y", HOURLY_CAP, t0)
             .is_ok());
     }
 
@@ -302,17 +328,17 @@ mod tests {
         for i in 0..HOURLY_CAP {
             let bundle = format!("app{i}");
             assert!(b
-                .check(Kind::SummarisePage, &bundle, &bundle, 3, t0)
+                .check(Kind::SummarisePage, &bundle, &bundle, HOURLY_CAP, t0)
                 .is_ok());
-            b.record_shown(Kind::SummarisePage, &bundle, &bundle, t0);
+            b.record_shown(Kind::SummarisePage, &bundle, &bundle, APP_COOLDOWN, t0);
         }
         assert!(matches!(
-            b.check(Kind::SummarisePage, "other", "other", 3, t0),
+            b.check(Kind::SummarisePage, "other", "other", HOURLY_CAP, t0),
             Err(Block::Cap { .. })
         ));
         // An hour later the budget is back.
         assert!(b
-            .check(Kind::SummarisePage, "other", "other", 3, t0 + HOUR)
+            .check(Kind::SummarisePage, "other", "other", HOURLY_CAP, t0 + HOUR)
             .is_ok());
     }
 }

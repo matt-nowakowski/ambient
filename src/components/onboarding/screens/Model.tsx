@@ -32,6 +32,7 @@ import {
   ModelTableRow,
   ROLE_KEYS as PICK_ROLE_KEYS,
 } from "../../shared/modelTable/ModelTableRow";
+import { Check } from "lucide-react";
 import { formatModelSize } from "@/lib/utils/format";
 import { OnboardingShell, ScreenHeader, ScreenMain } from "../OnboardingShell";
 import { useOnboardingStore } from "../onboardingStore";
@@ -70,6 +71,8 @@ const vt = (id: string, part = "") => ({
 interface ModelProps {
   progress?: { index: number; count: number };
   models: Models;
+  /** A model already on this computer that fits the languages: first, and preselected. */
+  readyId?: string | null;
   onBack?: () => void;
   /** The picked model (catalog id), once Download or Continue is pressed. */
   onChoose: (modelId: string) => void;
@@ -79,6 +82,7 @@ interface ModelProps {
 export const Model: React.FC<ModelProps> = ({
   progress,
   models,
+  readyId = null,
   onBack,
   onChoose,
 }) => {
@@ -104,7 +108,7 @@ export const Model: React.FC<ModelProps> = ({
     m.capabilities[CAPABILITIES[c].flag];
   const previews = (m: CatalogModel) => has(m, "preview");
   const pick = picks.find((p) => p.role === "pick") ?? picks[0];
-  const selectedId = modelId ?? downloadId ?? pick?.model.id ?? null;
+  const selectedId = modelId ?? downloadId ?? readyId ?? pick?.model.id ?? null;
   const isPick = (id: string | null) =>
     !!id && picks.some((p) => p.model.id === id);
   // A model picked from the full list stays as a fourth card unless a pick.
@@ -157,11 +161,23 @@ export const Model: React.FC<ModelProps> = ({
     );
   };
 
-  /** What a model can do besides transcribe, beside its role. */
-  const capabilityTags = (m: CatalogModel) =>
-    CAPABILITY_KEYS.map((c) => (
-      <Fragment key={c}>{capabilityTag(m, c)}</Fragment>
-    ));
+  /** A model already on disk (downloaded, or in the shared Hugging Face cache). */
+  const onDisk = (m: CatalogModel) => !!models.infoFor(m)?.is_downloaded;
+
+  /** What a model can do besides transcribe, beside its role; and whether it's here. */
+  const capabilityTags = (m: CatalogModel) => (
+    <>
+      {onDisk(m) && (
+        <Tag className="inline-flex items-center gap-[4px]">
+          <Check aria-hidden="true" className="size-[11px]" strokeWidth={2.5} />
+          {t("onboarding.model.onDisk")}
+        </Tag>
+      )}
+      {CAPABILITY_KEYS.map((c) => (
+        <Fragment key={c}>{capabilityTag(m, c)}</Fragment>
+      ))}
+    </>
+  );
 
   const move = (update: () => void) => moveModels(rootRef.current, update);
 
@@ -541,6 +557,11 @@ export const Model: React.FC<ModelProps> = ({
           ? fullCard(extra, "extra")
           : oneLine(extra, "extra"),
       );
+    // The model already on this computer leads.
+    const readyAt = readyId
+      ? items.findIndex((item) => item?.key === readyId)
+      : -1;
+    if (readyAt > 0) items.unshift(...items.splice(readyAt, 1));
     return (
       <OnboardingShell
         progress={progress}

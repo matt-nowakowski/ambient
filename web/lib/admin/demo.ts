@@ -230,6 +230,7 @@ export function demoSummary(period: Period): Summary {
       weeklyActiveFree: 1_964,
       freeUsesThisWeek: 21_380,
       paying,
+      complimentary: 6,
       trialing: 0,
       newPaying30: 31,
       mrr,

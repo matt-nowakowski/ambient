@@ -7,7 +7,17 @@
     "model": "Modelo",
     "quit": "Sair",
     "cancel": "Cancelar",
-    "secureInputWarning": "⚠ Atalhos bloqueados pelo Secure Input"
+    "secureInputWarning": "⚠ Atalhos bloqueados pelo Secure Input",
+    "installerTrashTitle": "Mover o instalador do {{appName}} para a Lixeira?",
+    "installerTrashBody": "O {{appName}} já está instalado, então você não vai precisar mais de {{file}}.",
+    "installerTrashConfirm": "Mover para a Lixeira",
+    "installerKeep": "Manter",
+    "moveToAppsTitle": "Mover o {{appName}} para Aplicativos?",
+    "moveToAppsBody": "O {{appName}} está rodando da imagem de disco. Mova-o para a pasta Aplicativos para que continue instalado e se atualize sozinho.",
+    "moveToAppsConfirm": "Mover para Aplicativos",
+    "moveToAppsLater": "Agora não",
+    "moveToAppsFailed": "Não foi possível mover o {{appName}} para Aplicativos. Arraste-o para a pasta Aplicativos.",
+    "sendFeedback": "Enviar feedback..."
   },
   "sidebar": {
     "home": "Início",
@@ -129,7 +139,8 @@
       "downloadInstead": "Baixar {{size}} em vez disso",
       "pauses": "{{name}} pausa em {{percent}}%",
       "resumeLater": "Escolha-o de novo para continuar de onde parou",
-      "hint": "Baixa enquanto você termina a configuração"
+      "hint": "Baixa enquanto você termina a configuração",
+      "onDisk": "Já está neste computador"
     },
     "demo": {
       "title": "Fale em qualquer app, com um único atalho",
@@ -878,6 +889,11 @@
         "title": "Introdução de boas-vindas",
         "description": "A animação que o {{appName}} exibe na primeira vez que é aberto.",
         "button": "Reproduzir introdução"
+      },
+      "feedback": {
+        "title": "Enviar feedback",
+        "description": "Relate um bug ou compartilhe uma ideia com a equipe.",
+        "button": "Enviar feedback"
       }
     },
     "agent": {
@@ -936,7 +952,36 @@
     "modelLoadFailedUnknown": "modelo desconhecido",
     "pasteFailedTitle": "Falha ao colar o texto",
     "pasteFailed": "Não foi possível colar o texto no aplicativo ativo.",
-    "transcriptionFailedTitle": "Falha na transcrição"
+    "transcriptionFailedTitle": "Falha na transcrição",
+    "actions": {
+      "retry": "Tentar novamente",
+      "openSettings": "Abrir ajustes"
+    },
+    "titles": {
+      "download": "Falha no download",
+      "signIn": "Não foi possível entrar",
+      "billing": "Não foi possível abrir o faturamento",
+      "update": "Não foi possível atualizar o {{appName}}",
+      "transcription": "Falha na transcrição",
+      "recording": "Não foi possível começar a gravar",
+      "model": "Não foi possível carregar o modelo",
+      "meeting": "As notas da reunião pararam",
+      "file": "Não foi possível transcrever o arquivo",
+      "settings": "Não foi possível salvar o ajuste",
+      "shortcut": "Não foi possível definir o atalho",
+      "generic": "Algo deu errado"
+    },
+    "friendly": {
+      "offline": "Não foi possível acessar os servidores do {{appName}}. Verifique sua conexão e tente novamente.",
+      "offlineDownload": "Não foi possível acessar o servidor de download. Verifique sua conexão e tente novamente.",
+      "timeout": "O servidor demorou demais para responder. Tente novamente em instantes.",
+      "notFound": "Esse arquivo não está disponível agora. Tente mais tarde.",
+      "diskFull": "Não há espaço livre suficiente neste computador. Libere espaço e tente novamente.",
+      "checksum": "O download chegou corrompido. Tente novamente.",
+      "permission": "O {{appName}} não tem permissão para fazer isso. Verifique as permissões nos ajustes do sistema.",
+      "server": "O servidor teve um problema. Tente novamente em instantes.",
+      "unknown": "Algo deu errado. Tente novamente."
+    }
   },
   "appLanguage": {
     "title": "Idioma da Aplicação",
@@ -997,7 +1042,7 @@
       "remove": "Remover",
       "activating": "Ativando…",
       "paste": "Colar",
-      "pasteFailed": "Não foi possível ler a área de transferência. Cole com ⌘V.",
+      "pasteFailed": "Não foi possível ler a área de transferência. Cole com {{keys}}.",
       "holder": "Conectado como",
       "renewsLabel": "Renova em",
       "copied": "Copiada",
@@ -1293,6 +1338,21 @@
       "failed": "Não foi possível enviar agora. Copiar e tentar mais tarde?",
       "offer": "Quer que eu relate isso à equipe?",
       "offerAccept": "Relatar"
+    },
+    "notes": {
+      "ready": "Suas notas estão prontas",
+      "actionItems": "Tarefas: {{n}}",
+      "open": "Abrir",
+      "email": "Enviar para meu e-mail",
+      "sending": "Enviando…",
+      "sent": "Enviado para seu e-mail",
+      "failed": "Não foi possível enviar",
+      "emailed": "Notas da reunião enviadas para seu e-mail",
+      "emailFailed": "Não foi possível enviar as notas da reunião por e-mail"
+    },
+    "rate": {
+      "up": "Útil",
+      "down": "Não foi útil"
     }
   },
   "privacy": {
@@ -1405,7 +1465,11 @@
         "license": "Verificação da conta",
         "trial": "Avaliação",
         "warmup": "Preparação da conexão (nada enviado)",
-        "suggest": "Verificação de sugestão"
+        "suggest": "Verificação de sugestão",
+        "telemetry": "Contagens de uso anônimas",
+        "config": "Verificação de configurações (nada enviado)",
+        "meeting_email": "E-mail com notas da reunião",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1475,6 +1539,11 @@
         "title": "Sugestões da nuvem",
         "description": "Envia um trecho editado de uma janela em que você ficou para decidir se oferece ajuda. Cada solicitação aparece na lista abaixo."
       }
+    },
+    "telemetry": {
+      "title": "Ajude a melhorar o {{appName}}",
+      "label": "Compartilhar contagens de uso anônimas",
+      "description": "Apenas contagens e tempos, nunca o que você diz, digita ou vê. Desativado até você ativar."
     }
   },
   "meetings": {
@@ -1544,13 +1613,32 @@
       "join": "Entre em uma chamada em qualquer app",
       "accept": "Diga sim quando o {{appName}} se oferecer",
       "summary": "Receba um resumo quando terminar"
+    },
+    "email": {
+      "title": "Enviar notas para meu e-mail",
+      "description": "Enviadas para {{email}} após cada chamada. Segredos são removidos antes e nada é guardado.",
+      "signedOut": "Entre na sua conta para receber as notas por e-mail.",
+      "options": {
+        "off": "Desativado",
+        "ask": "Perguntar sempre",
+        "always": "Sempre"
+      },
+      "button": "Enviar para meu e-mail",
+      "sent": "Notas enviadas para seu e-mail",
+      "errors": {
+        "notSignedIn": "Entre na sua conta para enviar as notas por e-mail.",
+        "noSummary": "Esta reunião não tem notas para enviar.",
+        "rateLimited": "São muitos e-mails hoje. Tente de novo amanhã.",
+        "offline": "Não foi possível acessar o servidor. Verifique sua conexão e tente de novo.",
+        "failed": "Não foi possível enviar o e-mail. Tente de novo."
+      }
     }
   },
   "tour": {
     "skip": "Pular",
     "next": "Avançar",
     "done": "Concluir",
-    "start": "Começar a usar o {{appName}}",
+    "start": "Começar",
     "meet": {
       "title": "Conheça o agente",
       "description": "Mantenha seu atalho pressionado e fale. O {{appName}} cuida do resto."
@@ -1684,5 +1772,60 @@
     "empty": "Nada corresponde a “{{query}}”.",
     "jumpTo": "Ir para",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Ajude a melhorar o {{appName}}: compartilhe contagens de uso anônimas, nunca o que você diz, digita ou vê.",
+    "whatsShared": "O que é compartilhado",
+    "sharedTitle": "Apenas contagens e tempos anônimos",
+    "shared": {
+      "suggestions": "Com que frequência sugestões são oferecidas, aceitas ou dispensadas",
+      "requests": "Que tipo de solicitação foi e quanto tempo levou",
+      "errors": "Que tipo de erro aconteceu, como “tempo esgotado”",
+      "basics": "Versão do app, sistema, plano e um ID aleatório que muda a cada 30 dias"
+    },
+    "never": "Nunca o que você diz, digita ou vê, títulos de janelas, links, nomes de arquivos ou seu e-mail.",
+    "ledger": "Cada envio aparece em Privacidade, nas solicitações que saíram deste computador."
+  },
+  "feedback": {
+    "title": "Enviar feedback",
+    "titleThumbs": "O que deu errado?",
+    "description": "Vai direto para a equipe. Nada mais é anexado, a menos que você marque.",
+    "kind": {
+      "label": "Tipo",
+      "bug": "Bug",
+      "idea": "Ideia",
+      "other": "Outra coisa"
+    },
+    "message": {
+      "label": "Mensagem",
+      "placeholder": "O que aconteceu, ou o que ajudaria?",
+      "placeholderThumbs": "O que deu errado? (opcional)"
+    },
+    "email": {
+      "label": "E-mail para resposta (opcional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Incluir diagnóstico",
+      "description": "Versão do app, sistema, plano, um resumo das configurações e as últimas linhas do log, sem segredos, títulos de janelas e links."
+    },
+    "example": {
+      "label": "Incluir o exemplo",
+      "description": "A pergunta e a resposta daquele cartão, sem segredos."
+    },
+    "preview": "Ver o que será enviado",
+    "hidePreview": "Ocultar prévia",
+    "previewTitle": "Exatamente o que será enviado",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "sent": "Obrigado! Seu feedback foi enviado.",
+    "errors": {
+      "empty": "Escreva algumas palavras primeiro.",
+      "offline": "Não foi possível acessar o servidor. Verifique sua conexão e tente de novo.",
+      "rateLimited": "Muitos relatos por enquanto. Tente de novo em uma hora.",
+      "failed": "Não foi possível enviar seu feedback. Tente de novo."
+    }
   }
 }

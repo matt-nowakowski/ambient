@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 import { commands } from "@/bindings";
 import { ToggleSwitch } from "../ui/ToggleSwitch";
 import { useSettings } from "../../hooks/useSettings";
@@ -18,7 +18,7 @@ export const WakeWord: React.FC<{ grouped?: boolean }> = ({
       checked={agent.wake_word}
       onChange={async (wake_word) => {
         const r = await commands.setAgentSettings({ ...agent, wake_word });
-        if (r.status === "error") toast.error(r.error);
+        if (r.status === "error") showError("settings", r.error);
         await refreshSettings();
       }}
       label={t("settings.agent.wake.label")}
@@ -43,7 +43,7 @@ export const AgentRouting: React.FC<{ grouped?: boolean }> = ({
       checked={agent.routing}
       onChange={async (routing) => {
         const r = await commands.setAgentSettings({ ...agent, routing });
-        if (r.status === "error") toast.error(r.error);
+        if (r.status === "error") showError("settings", r.error);
         await refreshSettings();
       }}
       label={t("settings.agent.routing.label")}

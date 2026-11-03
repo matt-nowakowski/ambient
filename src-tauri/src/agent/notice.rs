@@ -89,6 +89,26 @@ impl Notice {
         &self.offers
     }
 
+    /// For telemetry: `ok` when done; `fallback` when it was done another
+    /// way (an .ics file) or an alternative was offered; `failed` otherwise.
+    pub fn outcome(&self) -> &'static str {
+        let other_way = [
+            "Ics",
+            "noCalendarApp",
+            "reminderLinux",
+            "reminderWindows",
+            "NotificationsOff",
+        ]
+        .iter()
+        .any(|k| self.key.contains(k));
+        match self.tone {
+            _ if other_way => "fallback",
+            HudTone::Success => "ok",
+            _ if !self.offers.is_empty() => "fallback",
+            _ => "failed",
+        }
+    }
+
     pub fn content(self) -> HudContent {
         HudContent::Notice {
             id: format!("{PREFIX}{}", chrono::Utc::now().timestamp_millis()),

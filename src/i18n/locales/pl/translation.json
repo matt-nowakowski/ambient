@@ -7,7 +7,17 @@
     "model": "Model",
     "quit": "Zamknij",
     "cancel": "Anuluj",
-    "secureInputWarning": "⚠ Skróty zablokowane przez Secure Input"
+    "secureInputWarning": "⚠ Skróty zablokowane przez Secure Input",
+    "installerTrashTitle": "Przenieść instalator {{appName}} do Kosza?",
+    "installerTrashBody": "{{appName}} jest zainstalowany, więc {{file}} nie będzie już potrzebny.",
+    "installerTrashConfirm": "Przenieś do Kosza",
+    "installerKeep": "Zachowaj",
+    "moveToAppsTitle": "Przenieść {{appName}} do Aplikacji?",
+    "moveToAppsBody": "{{appName}} działa z obrazu dysku. Przenieś go do folderu Aplikacje, aby pozostał zainstalowany i sam się aktualizował.",
+    "moveToAppsConfirm": "Przenieś do Aplikacji",
+    "moveToAppsLater": "Nie teraz",
+    "moveToAppsFailed": "Nie udało się przenieść {{appName}} do Aplikacji. Przeciągnij go do folderu Aplikacje.",
+    "sendFeedback": "Wyślij opinię..."
   },
   "sidebar": {
     "home": "Start",
@@ -130,7 +140,8 @@
       "downloadInstead": "Pobierz zamiast tego ({{size}})",
       "pauses": "{{name}} zatrzymuje się na {{percent}}%",
       "resumeLater": "Wybierz go ponownie, aby wznowić od miejsca zatrzymania",
-      "hint": "Pobiera się, gdy kończysz konfigurację"
+      "hint": "Pobiera się, gdy kończysz konfigurację",
+      "onDisk": "Już na tym komputerze"
     },
     "demo": {
       "title": "Mów w dowolnej aplikacji, jednym skrótem",
@@ -881,6 +892,11 @@
         "title": "Intro powitalne",
         "description": "Animacja, którą {{appName}} odtwarza przy pierwszym uruchomieniu.",
         "button": "Odtwórz intro"
+      },
+      "feedback": {
+        "title": "Wyślij opinię",
+        "description": "Zgłoś błąd lub podziel się pomysłem z zespołem.",
+        "button": "Wyślij opinię"
       }
     },
     "agent": {
@@ -939,7 +955,36 @@
     "modelLoadFailedUnknown": "nieznany model",
     "pasteFailedTitle": "Nie udało się wkleić tekstu",
     "pasteFailed": "Nie można było wkleić tekstu do aktywnej aplikacji.",
-    "transcriptionFailedTitle": "Transkrypcja nie powiodła się"
+    "transcriptionFailedTitle": "Transkrypcja nie powiodła się",
+    "actions": {
+      "retry": "Spróbuj ponownie",
+      "openSettings": "Otwórz ustawienia"
+    },
+    "titles": {
+      "download": "Pobieranie nie powiodło się",
+      "signIn": "Nie udało się zalogować",
+      "billing": "Nie udało się otworzyć płatności",
+      "update": "Nie udało się zaktualizować {{appName}}",
+      "transcription": "Transkrypcja nie powiodła się",
+      "recording": "Nie udało się rozpocząć nagrywania",
+      "model": "Nie udało się wczytać modelu",
+      "meeting": "Notatki ze spotkania zatrzymane",
+      "file": "Nie udało się przetranskrybować pliku",
+      "settings": "Nie udało się zapisać ustawienia",
+      "shortcut": "Nie udało się ustawić skrótu",
+      "generic": "Coś poszło nie tak"
+    },
+    "friendly": {
+      "offline": "Nie można połączyć się z serwerami {{appName}}. Sprawdź połączenie i spróbuj ponownie.",
+      "offlineDownload": "Nie można połączyć się z serwerem pobierania. Sprawdź połączenie i spróbuj ponownie.",
+      "timeout": "Serwer odpowiadał zbyt długo. Spróbuj ponownie za chwilę.",
+      "notFound": "Ten plik jest teraz niedostępny. Spróbuj później.",
+      "diskFull": "Na tym komputerze brakuje wolnego miejsca. Zwolnij trochę i spróbuj ponownie.",
+      "checksum": "Pobrany plik jest uszkodzony. Spróbuj ponownie.",
+      "permission": "{{appName}} nie ma na to pozwolenia. Sprawdź uprawnienia w ustawieniach systemu.",
+      "server": "Serwer napotkał problem. Spróbuj ponownie za chwilę.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   },
   "appLanguage": {
     "title": "Język aplikacji",
@@ -1002,7 +1047,7 @@
       "remove": "Usuń",
       "activating": "Aktywowanie…",
       "paste": "Wklej",
-      "pasteFailed": "Nie udało się odczytać schowka. Wklej za pomocą ⌘V.",
+      "pasteFailed": "Nie udało się odczytać schowka. Wklej za pomocą {{keys}}.",
       "holder": "Zalogowano jako",
       "renewsLabel": "Odnawia się",
       "copied": "Skopiowano",
@@ -1301,6 +1346,21 @@
       "failed": "Nie udało się teraz wysłać. Skopiować i spróbować później?",
       "offer": "Zgłosić to zespołowi?",
       "offerAccept": "Zgłoś"
+    },
+    "notes": {
+      "ready": "Twoje notatki są gotowe",
+      "actionItems": "Zadania: {{n}}",
+      "open": "Otwórz",
+      "email": "Wyślij mi e-mailem",
+      "sending": "Wysyłanie…",
+      "sent": "Wysłano na twój e-mail",
+      "failed": "Nie udało się wysłać",
+      "emailed": "Notatki ze spotkania wysłano na twój e-mail",
+      "emailFailed": "Nie udało się wysłać notatek ze spotkania e-mailem"
+    },
+    "rate": {
+      "up": "Pomocne",
+      "down": "Niepomocne"
     }
   },
   "privacy": {
@@ -1416,7 +1476,11 @@
         "license": "Sprawdzenie konta",
         "trial": "Wersja próbna",
         "warmup": "Przygotowanie połączenia (nic nie wysłano)",
-        "suggest": "Sprawdzenie sugestii"
+        "suggest": "Sprawdzenie sugestii",
+        "telemetry": "Anonimowe statystyki użycia",
+        "config": "Sprawdzenie ustawień (nic nie wysłano)",
+        "meeting_email": "E-mail z notatkami ze spotkania",
+        "feedback": "Opinia"
       }
     },
     "engine": {
@@ -1487,6 +1551,11 @@
         "title": "Sugestie z chmury",
         "description": "Wysyła fragment okna, na którym zostajesz dłużej, z ukrytymi poufnymi danymi, by zdecydować, czy zaproponować pomoc. Każde żądanie jest wymienione poniżej."
       }
+    },
+    "telemetry": {
+      "title": "Pomóż ulepszyć {{appName}}",
+      "label": "Udostępniaj anonimowe statystyki użycia",
+      "description": "Tylko liczniki i czasy, nigdy to, co mówisz, piszesz lub widzisz. Wyłączone, dopóki tego nie włączysz."
     }
   },
   "meetings": {
@@ -1556,13 +1625,32 @@
       "join": "Dołącz do rozmowy w dowolnej aplikacji",
       "accept": "Powiedz „tak”, gdy {{appName}} zaproponuje",
       "summary": "Otrzymaj podsumowanie po zakończeniu"
+    },
+    "email": {
+      "title": "Wysyłaj mi notatki e-mailem",
+      "description": "Wysyłane na {{email}} po każdej rozmowie. Sekrety są najpierw usuwane i nic nie jest przechowywane.",
+      "signedOut": "Zaloguj się, aby dostawać notatki e-mailem.",
+      "options": {
+        "off": "Wyłączone",
+        "ask": "Pytaj za każdym razem",
+        "always": "Zawsze"
+      },
+      "button": "Wyślij mi e-mailem",
+      "sent": "Notatki wysłano na twój e-mail",
+      "errors": {
+        "notSignedIn": "Zaloguj się, aby wysłać notatki e-mailem.",
+        "noSummary": "To spotkanie nie ma notatek do wysłania.",
+        "rateLimited": "To dużo e-maili jak na dziś. Spróbuj jutro.",
+        "offline": "Nie można połączyć się z serwerem. Sprawdź połączenie i spróbuj ponownie.",
+        "failed": "Nie udało się wysłać e-maila. Spróbuj ponownie."
+      }
     }
   },
   "tour": {
     "skip": "Pomiń",
     "next": "Dalej",
     "done": "Gotowe",
-    "start": "Zacznij korzystać z {{appName}}",
+    "start": "Zaczynamy",
     "meet": {
       "title": "Poznaj agenta",
       "description": "Przytrzymaj skrót i mów. {{appName}} zajmie się resztą."
@@ -1696,5 +1784,60 @@
     "empty": "Brak wyników dla „{{query}}”.",
     "jumpTo": "Przejdź do",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Pomóż ulepszyć {{appName}}: udostępniaj anonimowe statystyki użycia, nigdy tego, co mówisz, piszesz lub widzisz.",
+    "whatsShared": "Co jest udostępniane",
+    "sharedTitle": "Tylko anonimowe liczniki i czasy",
+    "shared": {
+      "suggestions": "Jak często sugestie są pokazywane, przyjmowane lub odrzucane",
+      "requests": "Jaki to był rodzaj prośby i ile trwała",
+      "errors": "Jaki rodzaj błędu wystąpił, np. „przekroczono czas”",
+      "basics": "Wersja aplikacji, system, plan i losowy identyfikator zmieniany co 30 dni"
+    },
+    "never": "Nigdy tego, co mówisz, piszesz lub widzisz, tytułów okien, linków, nazw plików ani twojego e-maila.",
+    "ledger": "Każde wysłanie jest widoczne w Prywatności, wśród żądań, które opuściły ten komputer."
+  },
+  "feedback": {
+    "title": "Wyślij opinię",
+    "titleThumbs": "Co poszło nie tak?",
+    "description": "Trafia prosto do zespołu. Nic więcej nie jest dołączane, chyba że to zaznaczysz.",
+    "kind": {
+      "label": "Rodzaj",
+      "bug": "Błąd",
+      "idea": "Pomysł",
+      "other": "Coś innego"
+    },
+    "message": {
+      "label": "Wiadomość",
+      "placeholder": "Co się stało albo co by pomogło?",
+      "placeholderThumbs": "Co poszło nie tak? (opcjonalnie)"
+    },
+    "email": {
+      "label": "E-mail do odpowiedzi (opcjonalnie)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Dołącz diagnostykę",
+      "description": "Wersja aplikacji, system, plan, podsumowanie ustawień i ostatnie wiersze logu, bez sekretów, tytułów okien i linków."
+    },
+    "example": {
+      "label": "Dołącz przykład",
+      "description": "Pytanie i odpowiedź z tej karty, bez sekretów."
+    },
+    "preview": "Podgląd tego, co zostanie wysłane",
+    "hidePreview": "Ukryj podgląd",
+    "previewTitle": "Dokładnie to zostanie wysłane",
+    "send": "Wyślij",
+    "sending": "Wysyłanie…",
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "sent": "Dziękujemy! Twoja opinia została wysłana.",
+    "errors": {
+      "empty": "Najpierw napisz kilka słów.",
+      "offline": "Nie można połączyć się z serwerem. Sprawdź połączenie i spróbuj ponownie.",
+      "rateLimited": "Na razie za dużo zgłoszeń. Spróbuj za godzinę.",
+      "failed": "Nie udało się wysłać opinii. Spróbuj ponownie."
+    }
   }
 }

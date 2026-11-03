@@ -121,6 +121,8 @@ pub enum HudContent {
         include_diagnostics: bool,
         editing: bool,
     },
+    /// Meeting notes are ready (meeting/deliver.rs): Open, Copy, Email to me.
+    MeetingNotes(crate::meeting::deliver::NotesCard),
 }
 
 /// A button on a notice: an alternative the agent can do instead. `label`
@@ -156,6 +158,7 @@ impl HudContent {
             HudContent::Help => "help",
             HudContent::Notice { .. } => "notice",
             HudContent::Report { .. } => "report",
+            HudContent::MeetingNotes(_) => "meeting_notes",
         }
     }
 
@@ -167,6 +170,7 @@ impl HudContent {
             | HudContent::Draft { id, .. }
             | HudContent::Notice { id, .. }
             | HudContent::Report { id, .. } => id.clone(),
+            HudContent::MeetingNotes(n) => n.id.clone(),
             _ => String::new(),
         }
     }
@@ -414,6 +418,7 @@ pub fn show(app: &AppHandle, content: HudContent) {
             return;
         }
     }
+    crate::feedback::note_card(&content);
     GENERATION.fetch_add(1, Ordering::SeqCst);
     if let Ok(mut g) = CURRENT.lock() {
         *g = Some(content.clone());
@@ -619,7 +624,8 @@ fn on_click_outside(card: &HudContent) -> ClickOutside {
         HudContent::Answer { .. }
         | HudContent::Help
         | HudContent::Suggestion { .. }
-        | HudContent::Report { .. } => ClickOutside::Dismiss,
+        | HudContent::Report { .. }
+        | HudContent::MeetingNotes(_) => ClickOutside::Dismiss,
         HudContent::Draft { .. } => ClickOutside::DismissUnlessFocused,
         // A notice with choices goes like an answer; a plain one fades.
         HudContent::Notice { offers, undo, .. } if !offers.is_empty() || *undo => {
@@ -844,6 +850,12 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
         "dismiss" => {
             remember_dismissed(&id);
             hide(&app);
+        }
+        // 👍/👎 on an answer or suggestion: counted (and 👎 opens feedback),
+        // without touching the card's own flow.
+        "rate_up" | "rate_down" => {
+            crate::feedback::on_rate(&app, &id, action == "rate_up");
+            return;
         }
         "undo" => {
             let ok = crate::agent::act::undo_last();

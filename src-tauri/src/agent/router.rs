@@ -340,7 +340,7 @@ pub fn place() -> Place {
 }
 
 /// What routing knows before any model call.
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Copy)]
 pub struct Situation {
     /// Certainly no text field has focus (see `Place::no_field`).
     pub no_field: bool,
@@ -354,6 +354,36 @@ pub struct Situation {
     pub ask: bool,
     /// An answer card is up.
     pub follow_up: bool,
+    /// The agent config's `router.did_you_mean_bias`: with no text field,
+    /// how eagerly speech is doubted as dictation and sent to the agent
+    /// (≤ 0.25 only clear commands, 0.5 any request or question, ≥ 0.75
+    /// everything).
+    pub did_you_mean_bias: f32,
+}
+
+impl Default for Situation {
+    fn default() -> Self {
+        Self {
+            no_field: false,
+            editable: false,
+            messaging: false,
+            ai_chat: false,
+            ask: false,
+            follow_up: false,
+            did_you_mean_bias: 0.5,
+        }
+    }
+}
+
+/// With nothing to type into, is this for the agent? Depends on the bias.
+fn no_field_agent(transcript: &str, bias: f32) -> bool {
+    if bias >= 0.75 {
+        true
+    } else if bias <= 0.25 {
+        looks_like_request(transcript) || strong_request(transcript)
+    } else {
+        sounds_like_request(transcript)
+    }
 }
 
 /// The first pass's decision.
@@ -408,7 +438,7 @@ pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> De
     }
     let to_agent = s.ask
         || (s.follow_up && !s.editable)
-        || (s.no_field && sounds_like_request(transcript))
+        || (s.no_field && no_field_agent(transcript, s.did_you_mean_bias))
         || addresses_ambient(transcript)
         || (strong_request(transcript) && !s.messaging && !s.ai_chat);
     Decision {
@@ -861,6 +891,23 @@ mod tests {
             decide("that didn't work", &ask, now()).route,
             Some(Route::Report(_))
         ));
+    }
+
+    #[test]
+    fn the_did_you_mean_bias_moves_the_line() {
+        let at = |bias: f32| Situation {
+            did_you_mean_bias: bias,
+            ..gmail_no_field()
+        };
+        let prose = "The quarterly numbers look great";
+        let soft = "send this to Sam";
+        assert!(!decide(prose, &at(0.5), now()).to_agent);
+        assert!(decide(soft, &at(0.5), now()).to_agent);
+        // Eager: everything with no field goes to the agent.
+        assert!(decide(prose, &at(0.9), now()).to_agent);
+        // Cautious: only clear commands and questions do.
+        assert!(!decide(soft, &at(0.1), now()).to_agent);
+        assert!(decide("what's the weather in Lisbon", &at(0.1), now()).to_agent);
     }
 
     #[test]

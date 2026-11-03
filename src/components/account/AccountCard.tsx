@@ -30,6 +30,9 @@ import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SuccessCheck, TextSwap } from "../ui/Transitions";
 import { spring } from "../ui/Motion";
 import { openUpgrade } from "./usePlan";
+import { friendlyMessage, logError } from "@/lib/errors";
+import { useOsType } from "@/hooks/useOsType";
+import { primaryShortcut } from "@/lib/utils/keyboard";
 
 const BURST = 18;
 const CODE_LENGTH = 6;
@@ -91,6 +94,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   billingBusy,
 }) => {
   const { t, i18n } = useTranslation();
+  const osType = useOsType();
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [digits, setDigits] = useState("");
@@ -166,7 +170,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           : t(`account.card.errors.${kind}`),
       );
     } else {
-      setError(raw);
+      logError("signIn", raw);
+      setError(friendlyMessage(raw, "signIn"));
     }
   };
 
@@ -231,7 +236,11 @@ export const AccountCard: React.FC<AccountCardProps> = ({
       setRedeem(((await readText()) ?? "").trim());
       setError(null);
     } catch {
-      setError(t("account.card.pasteFailed"));
+      setError(
+        t("account.card.pasteFailed", {
+          keys: primaryShortcut("v", osType),
+        }),
+      );
     }
   };
 

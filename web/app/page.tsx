@@ -73,7 +73,7 @@ export default function Home() {
                 {heroSub}
               </p>
               <div className="mx-auto mt-9 flex max-w-[400px] items-center justify-center gap-2.5 sm:max-w-none">
-                <DownloadButton className="min-w-0 flex-1 sm:flex-none" />
+                <DownloadButton menu={false} className="min-w-0 flex-1 sm:flex-none" />
                 <ButtonLink href={video ? "#video" : "/pricing"} variant="glass" size="lg" className="shrink-0 px-5 sm:px-6">
                   {video ? "Learn more" : "See pricing"}
                 </ButtonLink>

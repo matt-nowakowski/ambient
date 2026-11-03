@@ -7,7 +7,17 @@
     "model": "Model",
     "quit": "Quit",
     "cancel": "Cancel",
-    "secureInputWarning": "⚠ Shortcuts blocked by Secure Input"
+    "secureInputWarning": "⚠ Shortcuts blocked by Secure Input",
+    "installerTrashTitle": "Move the {{appName}} installer to the Bin?",
+    "installerTrashBody": "{{appName}} is installed, so you won't need {{file}} again.",
+    "installerTrashConfirm": "Move to Bin",
+    "installerKeep": "Keep",
+    "moveToAppsTitle": "Move {{appName}} to Applications?",
+    "moveToAppsBody": "{{appName}} is running from its disk image. Move it to your Applications folder so it stays installed and keeps itself up to date.",
+    "moveToAppsConfirm": "Move to Applications",
+    "moveToAppsLater": "Not now",
+    "moveToAppsFailed": "Couldn't move {{appName}} to Applications. Drag it into the Applications folder instead.",
+    "sendFeedback": "Send Feedback..."
   },
   "sidebar": {
     "home": "Home",
@@ -128,7 +138,8 @@
       "downloadInstead": "Download {{size}} instead",
       "pauses": "{{name}} pauses at {{percent}}%",
       "resumeLater": "Pick it again to pick up where it left off",
-      "hint": "Downloads while you finish setup"
+      "hint": "Downloads while you finish setup",
+      "onDisk": "Already on this computer"
     },
     "demo": {
       "title": "Talk in any app, with one shortcut",
@@ -875,6 +886,11 @@
         "title": "Welcome intro",
         "description": "The animation {{appName}} plays the first time it opens.",
         "button": "Play intro"
+      },
+      "feedback": {
+        "title": "Send feedback",
+        "description": "Report a bug or share an idea with the team.",
+        "button": "Send feedback"
       }
     },
     "agent": {
@@ -933,7 +949,36 @@
     "modelLoadFailedUnknown": "unknown model",
     "pasteFailedTitle": "Failed to Paste Text",
     "pasteFailed": "Text could not be pasted into the active application.",
-    "transcriptionFailedTitle": "Transcription Failed"
+    "transcriptionFailedTitle": "Transcription Failed",
+    "actions": {
+      "retry": "Try again",
+      "openSettings": "Open settings"
+    },
+    "titles": {
+      "download": "Download failed",
+      "signIn": "Couldn't sign in",
+      "billing": "Couldn't open billing",
+      "update": "Couldn't update {{appName}}",
+      "transcription": "Transcription failed",
+      "recording": "Couldn't start recording",
+      "model": "Couldn't load the model",
+      "meeting": "Meeting notes stopped",
+      "file": "Couldn't transcribe the file",
+      "settings": "Couldn't save that setting",
+      "shortcut": "Couldn't set the shortcut",
+      "generic": "Something went wrong"
+    },
+    "friendly": {
+      "offline": "Couldn't reach {{appName}}'s servers. Check your connection and try again.",
+      "offlineDownload": "Couldn't reach the download server. Check your connection and try again.",
+      "timeout": "The server took too long to answer. Try again in a moment.",
+      "notFound": "That file isn't available right now. Try again later.",
+      "diskFull": "There isn't enough free space on this computer. Free some up and try again.",
+      "checksum": "The download arrived damaged. Try again.",
+      "permission": "{{appName}} isn't allowed to do that. Check its permissions in your system settings.",
+      "server": "The server ran into a problem. Try again in a moment.",
+      "unknown": "Something went wrong. Try again."
+    }
   },
   "appLanguage": {
     "title": "Application Language",
@@ -992,7 +1037,7 @@
       "remove": "Remove",
       "activating": "Activating…",
       "paste": "Paste",
-      "pasteFailed": "Couldn't read the clipboard. Paste with ⌘V instead.",
+      "pasteFailed": "Couldn't read the clipboard. Paste with {{keys}} instead.",
       "holder": "Signed in as",
       "renewsLabel": "Renews",
       "copied": "Copied",
@@ -1285,6 +1330,21 @@
       "failed": "Couldn't send it right now. Copy it and try again later?",
       "offer": "Want me to report this to the team?",
       "offerAccept": "Report"
+    },
+    "notes": {
+      "ready": "Your notes are ready",
+      "actionItems": "Action items: {{n}}",
+      "open": "Open",
+      "email": "Email to me",
+      "sending": "Sending…",
+      "sent": "Sent to your email",
+      "failed": "Couldn't send",
+      "emailed": "Meeting notes sent to your email",
+      "emailFailed": "Couldn't email your meeting notes"
+    },
+    "rate": {
+      "up": "Helpful",
+      "down": "Not helpful"
     }
   },
   "privacy": {
@@ -1394,7 +1454,11 @@
         "license": "Account check",
         "trial": "Trial",
         "warmup": "Connection warm-up (nothing sent)",
-        "suggest": "Suggestion check"
+        "suggest": "Suggestion check",
+        "telemetry": "Anonymous usage counts",
+        "config": "Settings check (nothing sent)",
+        "meeting_email": "Meeting notes email",
+        "feedback": "Feedback"
       }
     },
     "engine": {
@@ -1463,6 +1527,11 @@
         "title": "Suggestions from the cloud",
         "description": "Sends a redacted snippet of a window you've stayed on to decide whether to offer help. Every request is listed below."
       }
+    },
+    "telemetry": {
+      "title": "Help improve {{appName}}",
+      "label": "Share anonymous usage counts",
+      "description": "Counts and timings only, never what you say, type or see. Off unless you turn it on."
     }
   },
   "meetings": {
@@ -1532,13 +1601,32 @@
       "join": "Join a call in any app",
       "accept": "Say yes when {{appName}} offers",
       "summary": "Get a summary when it ends"
+    },
+    "email": {
+      "title": "Email notes to me",
+      "description": "Sent to {{email}} after each call. Secrets are removed first, and nothing is kept.",
+      "signedOut": "Sign in to get your notes by email.",
+      "options": {
+        "off": "Off",
+        "ask": "Ask each time",
+        "always": "Always"
+      },
+      "button": "Email to me",
+      "sent": "Notes sent to your email",
+      "errors": {
+        "notSignedIn": "Sign in to email your notes.",
+        "noSummary": "This meeting has no notes to send.",
+        "rateLimited": "That's a lot of emails today. Try again tomorrow.",
+        "offline": "Couldn't reach the server. Check your connection and try again.",
+        "failed": "Couldn't send the email. Try again."
+      }
     }
   },
   "tour": {
     "skip": "Skip",
     "next": "Next",
     "done": "Done",
-    "start": "Start using {{appName}}",
+    "start": "Get started",
     "meet": {
       "title": "Meet the agent",
       "description": "Hold your shortcut and talk. {{appName}} figures out the rest."
@@ -1672,5 +1760,60 @@
     "empty": "Nothing matches “{{query}}”.",
     "jumpTo": "Jump to",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Help improve {{appName}}: share anonymous usage counts, never what you say, type or see.",
+    "whatsShared": "What's shared",
+    "sharedTitle": "Anonymous counts and timings only",
+    "shared": {
+      "suggestions": "How often suggestions are offered, accepted or dismissed",
+      "requests": "Which kind of request it was, and how long it took",
+      "errors": "Which kind of error happened, like “timed out”",
+      "basics": "App version, system, plan and a random ID that changes every 30 days"
+    },
+    "never": "Never what you say, type or see, window titles, links, file names or your email.",
+    "ledger": "Every upload is listed in Privacy, under requests that left this computer."
+  },
+  "feedback": {
+    "title": "Send feedback",
+    "titleThumbs": "What went wrong?",
+    "description": "It goes straight to the team. Nothing else is attached unless you tick it.",
+    "kind": {
+      "label": "Type",
+      "bug": "Bug",
+      "idea": "Idea",
+      "other": "Something else"
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "What happened, or what would help?",
+      "placeholderThumbs": "What went wrong? (optional)"
+    },
+    "email": {
+      "label": "Email for a reply (optional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Include diagnostics",
+      "description": "App version, system, plan, a settings summary and recent log lines, with secrets, window titles and links removed."
+    },
+    "example": {
+      "label": "Include the example",
+      "description": "The question and answer from that card, with secrets removed."
+    },
+    "preview": "Preview what's sent",
+    "hidePreview": "Hide preview",
+    "previewTitle": "Exactly what will be sent",
+    "send": "Send",
+    "sending": "Sending…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "sent": "Thanks! Your feedback was sent.",
+    "errors": {
+      "empty": "Write a few words first.",
+      "offline": "Couldn't reach the server. Check your connection and try again.",
+      "rateLimited": "Too many reports for now. Try again in an hour.",
+      "failed": "Couldn't send your feedback. Try again."
+    }
   }
 }

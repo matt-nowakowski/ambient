@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "buckets": {
+    "ms": ["lt250", "lt500", "lt1s", "lt2s", "lt5s", "lt10s", "lt30s", "ge30s"],
+    "duration": ["lt5m", "lt15m", "lt30m", "lt60m", "ge60m"]
+  },
+  "enums": {
+    "suggestion_kind": [
+      "summarise_thread", "draft_reply", "add_to_calendar", "summarise_page", "explain_error",
+      "tighten_draft", "price_check", "answer_search", "fix_formula", "meeting_prep",
+      "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge"
+    ],
+    "rating_kind": [
+      "summarise_thread", "draft_reply", "add_to_calendar", "summarise_page", "explain_error",
+      "tighten_draft", "price_check", "answer_search", "fix_formula", "meeting_prep",
+      "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge",
+      "answer", "web", "recall", "write", "about_screen"
+    ],
+    "app_category": ["browser", "mail", "chat", "editor", "terminal", "other"],
+    "platform": ["macos", "windows", "linux"],
+    "plan": ["free", "pro", "trial"]
+  },
+  "common": { "os": "@platform", "plan": "@plan" },
+  "events": {
+    "suggestion_offered": { "kind": "@suggestion_kind", "judge": ["device", "cloud", "rules"], "app_category": "@app_category" },
+    "suggestion_result": { "kind": "@suggestion_kind", "outcome": ["accepted", "dismissed", "ignored", "muted"], "by": ["voice", "click", "timeout"] },
+    "judge_run": { "engine": ["device", "cloud"], "outcome": ["ok", "unparsable", "timeout", "error"], "ms_bucket": "#ms" },
+    "route": { "route": ["write", "answer", "act", "recall", "compose", "help", "report", "handled", "none"], "source": ["ask_key", "dictation_key", "wake"], "had_focus_field": "bool" },
+    "did_you_mean_shown": {},
+    "did_you_mean_result": { "result": ["typed", "asked", "dismissed"] },
+    "answer_latency": { "first_card_ms_bucket": "#ms", "total_ms_bucket": "#ms", "web": "bool" },
+    "act": { "kind": ["reminder", "calendar", "open_app", "shortcut", "unsupported"], "outcome": ["ok", "fallback", "failed"], "platform": "@platform" },
+    "error": {
+      "area": ["download", "model", "transcription", "polish", "answer", "judge", "act", "meeting", "account", "audio", "update", "other"],
+      "kind": ["offline", "timeout", "not_found", "disk_full", "checksum", "server", "limited", "permission", "unparsable", "failed"]
+    },
+    "meeting": { "outcome": ["notes", "empty", "failed"], "duration_bucket": "#duration" },
+    "dictation": { "polish": "bool", "ms_bucket": "#ms" },
+    "card_rating": { "card": ["answer", "suggestion"], "kind": "@rating_kind", "rating": ["up", "down"] },
+    "meeting_email": { "mode": ["ask", "always"], "outcome": ["sent", "failed"] }
+  }
+}

@@ -7,7 +7,17 @@
     "model": "Model",
     "quit": "Keluar",
     "cancel": "Batal",
-    "secureInputWarning": "⚠ Pintasan diblokir oleh Secure Input"
+    "secureInputWarning": "⚠ Pintasan diblokir oleh Secure Input",
+    "installerTrashTitle": "Pindahkan penginstal {{appName}} ke Tong Sampah?",
+    "installerTrashBody": "{{appName}} sudah terinstal, jadi Anda tidak memerlukan {{file}} lagi.",
+    "installerTrashConfirm": "Pindahkan ke Tong Sampah",
+    "installerKeep": "Simpan",
+    "moveToAppsTitle": "Pindahkan {{appName}} ke Aplikasi?",
+    "moveToAppsBody": "{{appName}} berjalan dari image disk-nya. Pindahkan ke folder Aplikasi agar tetap terinstal dan memperbarui dirinya sendiri.",
+    "moveToAppsConfirm": "Pindahkan ke Aplikasi",
+    "moveToAppsLater": "Nanti saja",
+    "moveToAppsFailed": "Tidak dapat memindahkan {{appName}} ke Aplikasi. Seret ke folder Aplikasi sebagai gantinya.",
+    "sendFeedback": "Kirim masukan..."
   },
   "sidebar": {
     "home": "Beranda",
@@ -128,7 +138,8 @@
       "downloadInstead": "Unduh {{size}} saja",
       "pauses": "{{name}} berhenti sejenak di {{percent}}%",
       "resumeLater": "Pilih lagi untuk melanjutkan dari titik terhenti",
-      "hint": "Diunduh selagi Anda menyelesaikan penyiapan"
+      "hint": "Diunduh selagi Anda menyelesaikan penyiapan",
+      "onDisk": "Sudah ada di komputer ini"
     },
     "demo": {
       "title": "Bicara di aplikasi apa pun, dengan satu pintasan",
@@ -875,6 +886,11 @@
         "title": "Intro sambutan",
         "description": "Animasi yang diputar {{appName}} saat pertama kali dibuka.",
         "button": "Putar intro"
+      },
+      "feedback": {
+        "title": "Kirim masukan",
+        "description": "Laporkan bug atau bagikan ide dengan tim.",
+        "button": "Kirim masukan"
       }
     },
     "agent": {
@@ -933,7 +949,36 @@
     "modelLoadFailedUnknown": "model tidak dikenal",
     "pasteFailedTitle": "Gagal Menempelkan Teks",
     "pasteFailed": "Teks tidak dapat ditempelkan ke aplikasi aktif.",
-    "transcriptionFailedTitle": "Transkripsi Gagal"
+    "transcriptionFailedTitle": "Transkripsi Gagal",
+    "actions": {
+      "retry": "Coba lagi",
+      "openSettings": "Buka pengaturan"
+    },
+    "titles": {
+      "download": "Unduhan gagal",
+      "signIn": "Tidak dapat masuk",
+      "billing": "Tidak dapat membuka penagihan",
+      "update": "Tidak dapat memperbarui {{appName}}",
+      "transcription": "Transkripsi gagal",
+      "recording": "Tidak dapat mulai merekam",
+      "model": "Tidak dapat memuat model",
+      "meeting": "Catatan rapat berhenti",
+      "file": "Tidak dapat mentranskripsi file",
+      "settings": "Tidak dapat menyimpan pengaturan",
+      "shortcut": "Tidak dapat mengatur pintasan",
+      "generic": "Terjadi kesalahan"
+    },
+    "friendly": {
+      "offline": "Tidak dapat menjangkau server {{appName}}. Periksa koneksi Anda dan coba lagi.",
+      "offlineDownload": "Tidak dapat menjangkau server unduhan. Periksa koneksi Anda dan coba lagi.",
+      "timeout": "Server terlalu lama merespons. Coba lagi sebentar lagi.",
+      "notFound": "File itu sedang tidak tersedia. Coba lagi nanti.",
+      "diskFull": "Ruang kosong di komputer ini tidak cukup. Kosongkan sedikit lalu coba lagi.",
+      "checksum": "Unduhan tiba dalam keadaan rusak. Coba lagi.",
+      "permission": "{{appName}} tidak diizinkan melakukan itu. Periksa izinnya di pengaturan sistem.",
+      "server": "Server mengalami masalah. Coba lagi sebentar lagi.",
+      "unknown": "Terjadi kesalahan. Coba lagi."
+    }
   },
   "appLanguage": {
     "title": "Bahasa Aplikasi",
@@ -992,7 +1037,7 @@
       "remove": "Hapus",
       "activating": "Mengaktifkan…",
       "paste": "Tempel",
-      "pasteFailed": "Tidak dapat membaca papan klip. Tempel dengan ⌘V.",
+      "pasteFailed": "Tidak dapat membaca papan klip. Tempel dengan {{keys}}.",
       "holder": "Masuk sebagai",
       "renewsLabel": "Diperpanjang",
       "copied": "Disalin",
@@ -1285,6 +1330,21 @@
       "failed": "Tidak bisa mengirim sekarang. Salin dan coba lagi nanti?",
       "offer": "Mau saya laporkan ini ke tim?",
       "offerAccept": "Laporkan"
+    },
+    "notes": {
+      "ready": "Catatan Anda sudah siap",
+      "actionItems": "Tindak lanjut: {{n}}",
+      "open": "Buka",
+      "email": "Kirim ke email saya",
+      "sending": "Mengirim…",
+      "sent": "Terkirim ke email Anda",
+      "failed": "Gagal mengirim",
+      "emailed": "Catatan rapat terkirim ke email Anda",
+      "emailFailed": "Tidak dapat mengirim catatan rapat lewat email"
+    },
+    "rate": {
+      "up": "Membantu",
+      "down": "Tidak membantu"
     }
   },
   "privacy": {
@@ -1394,7 +1454,11 @@
         "license": "Pemeriksaan akun",
         "trial": "Uji coba",
         "warmup": "Pemanasan koneksi (tidak ada yang dikirim)",
-        "suggest": "Pemeriksaan saran"
+        "suggest": "Pemeriksaan saran",
+        "telemetry": "Hitungan penggunaan anonim",
+        "config": "Pemeriksaan pengaturan (tidak ada yang dikirim)",
+        "meeting_email": "Email catatan rapat",
+        "feedback": "Masukan"
       }
     },
     "engine": {
@@ -1463,6 +1527,11 @@
         "title": "Saran dari cloud",
         "description": "Mengirim cuplikan jendela yang telah disamarkan, yang Anda buka cukup lama, untuk memutuskan apakah akan menawarkan bantuan. Setiap permintaan tercantum di bawah."
       }
+    },
+    "telemetry": {
+      "title": "Bantu tingkatkan {{appName}}",
+      "label": "Bagikan hitungan penggunaan anonim",
+      "description": "Hanya hitungan dan waktu, tidak pernah apa yang Anda ucapkan, ketik, atau lihat. Mati sampai Anda menyalakannya."
     }
   },
   "meetings": {
@@ -1532,13 +1601,32 @@
       "join": "Gabung panggilan di aplikasi apa pun",
       "accept": "Katakan ya saat {{appName}} menawarkan",
       "summary": "Dapatkan ringkasan saat selesai"
+    },
+    "email": {
+      "title": "Kirim catatan ke email saya",
+      "description": "Dikirim ke {{email}} setelah setiap panggilan. Rahasia dihapus terlebih dahulu, dan tidak ada yang disimpan.",
+      "signedOut": "Masuk untuk mendapatkan catatan lewat email.",
+      "options": {
+        "off": "Mati",
+        "ask": "Tanya setiap kali",
+        "always": "Selalu"
+      },
+      "button": "Kirim ke email saya",
+      "sent": "Catatan terkirim ke email Anda",
+      "errors": {
+        "notSignedIn": "Masuk untuk mengirim catatan lewat email.",
+        "noSummary": "Rapat ini tidak punya catatan untuk dikirim.",
+        "rateLimited": "Sudah banyak email hari ini. Coba lagi besok.",
+        "offline": "Tidak dapat menghubungi server. Periksa koneksi Anda lalu coba lagi.",
+        "failed": "Tidak dapat mengirim email. Coba lagi."
+      }
     }
   },
   "tour": {
     "skip": "Lewati",
     "next": "Berikutnya",
     "done": "Selesai",
-    "start": "Mulai gunakan {{appName}}",
+    "start": "Mulai",
     "meet": {
       "title": "Kenali agennya",
       "description": "Tahan pintasan Anda dan bicaralah. {{appName}} mengurus sisanya."
@@ -1672,5 +1760,60 @@
     "empty": "Tidak ada yang cocok dengan “{{query}}”.",
     "jumpTo": "Buka",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Bantu tingkatkan {{appName}}: bagikan hitungan penggunaan anonim, tidak pernah apa yang Anda ucapkan, ketik, atau lihat.",
+    "whatsShared": "Yang dibagikan",
+    "sharedTitle": "Hanya hitungan dan waktu anonim",
+    "shared": {
+      "suggestions": "Seberapa sering saran ditawarkan, diterima, atau ditutup",
+      "requests": "Jenis permintaannya dan berapa lama prosesnya",
+      "errors": "Jenis kesalahan yang terjadi, seperti “waktu habis”",
+      "basics": "Versi aplikasi, sistem, paket, dan ID acak yang berganti setiap 30 hari"
+    },
+    "never": "Tidak pernah apa yang Anda ucapkan, ketik, atau lihat, judul jendela, tautan, nama file, atau email Anda.",
+    "ledger": "Setiap unggahan tercantum di Privasi, dalam daftar permintaan yang keluar dari komputer ini."
+  },
+  "feedback": {
+    "title": "Kirim masukan",
+    "titleThumbs": "Apa yang salah?",
+    "description": "Langsung sampai ke tim. Tidak ada yang dilampirkan kecuali Anda mencentangnya.",
+    "kind": {
+      "label": "Jenis",
+      "bug": "Bug",
+      "idea": "Ide",
+      "other": "Lainnya"
+    },
+    "message": {
+      "label": "Pesan",
+      "placeholder": "Apa yang terjadi, atau apa yang akan membantu?",
+      "placeholderThumbs": "Apa yang salah? (opsional)"
+    },
+    "email": {
+      "label": "Email untuk balasan (opsional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Sertakan diagnostik",
+      "description": "Versi aplikasi, sistem, paket, ringkasan pengaturan, dan baris log terbaru, tanpa rahasia, judul jendela, dan tautan."
+    },
+    "example": {
+      "label": "Sertakan contohnya",
+      "description": "Pertanyaan dan jawaban dari kartu itu, tanpa rahasia."
+    },
+    "preview": "Pratinjau yang dikirim",
+    "hidePreview": "Sembunyikan pratinjau",
+    "previewTitle": "Persis yang akan dikirim",
+    "send": "Kirim",
+    "sending": "Mengirim…",
+    "cancel": "Batal",
+    "close": "Tutup",
+    "sent": "Terima kasih! Masukan Anda sudah terkirim.",
+    "errors": {
+      "empty": "Tulis beberapa kata dulu.",
+      "offline": "Tidak dapat menghubungi server. Periksa koneksi Anda lalu coba lagi.",
+      "rateLimited": "Terlalu banyak laporan untuk saat ini. Coba lagi dalam satu jam.",
+      "failed": "Tidak dapat mengirim masukan Anda. Coba lagi."
+    }
   }
 }

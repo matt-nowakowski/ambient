@@ -488,8 +488,8 @@ pub fn handle(app: &AppHandle, route: Route) {
             Route::Write(_) | Route::Handled => {}
             Route::Help => crate::hud::show(&app, crate::hud::HudContent::Help),
             // "Send this to the team?": nothing leaves until Send. A report
-            // right after an answer carries that answer as the example.
-            Route::Report(intent) => report::show(&app, intent, answer::last_turn()),
+            // with diagnostics on carries the last answer (feedback::submit).
+            Route::Report(intent) => report::show(&app, intent),
             // Draft from the instruction and what's on screen (the thread
             // being replied to), then insert it or offer it.
             Route::Compose(instruction) => {
@@ -796,20 +796,23 @@ pub fn draft_instead_of_paste(app: &AppHandle, text: &str) -> bool {
     if state != Some(false) || !focus_is_reliable(&bundle) || bundle == env!("BRAND_IDENTIFIER") {
         return false;
     }
-    show_draft(app, "hud.draft.title", text.to_string(), false);
+    let id = show_draft(app, "hud.draft.title", text.to_string(), false);
+    crate::telemetry::did_you_mean_shown(&id);
     true
 }
 
-fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) {
+fn show_draft(app: &AppHandle, title: &str, text: String, editable: bool) -> String {
+    let id = format!("draft-{}", chrono::Utc::now().timestamp_millis());
     crate::hud::show(
         app,
         crate::hud::HudContent::Draft {
-            id: format!("draft-{}", chrono::Utc::now().timestamp_millis()),
+            id: id.clone(),
             title: title.into(),
             text,
             editable,
         },
     );
+    id
 }
 
 /// A finished draft the user asked for by voice: typed where the cursor is;
@@ -988,6 +991,7 @@ pub fn ask_instead(app: &AppHandle, text: String) {
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
         let route = route_for_agent(&app, &text).await;
+        crate::telemetry::route(router::route_name(Some(&route)), true, false);
         handle(&app, route);
     });
 }

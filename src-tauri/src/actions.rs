@@ -548,6 +548,7 @@ pub(crate) async fn process_transcription_output(
     post_process: bool,
     mode: OutputMode,
 ) -> ProcessedTranscription {
+    let started = Instant::now();
     let settings = get_settings(app);
     let mut final_text = transcription.to_string();
     let mut post_processed_text: Option<String> = None;
@@ -631,12 +632,15 @@ pub(crate) async fn process_transcription_output(
             report.as_ref().map_or("none", |r| if r.explicit { "explicit" } else { "vague" }),
         );
     }
-    let agent_route = |route: Route| ProcessedTranscription {
-        final_text: String::new(),
-        post_processed_text: None,
-        post_process_prompt: None,
-        agent_route: Some(route),
-        offer_search: None,
+    let agent_route = |route: Route| {
+        crate::telemetry::route(router::route_name(Some(&route)), ask, place.editable);
+        ProcessedTranscription {
+            final_text: String::new(),
+            post_processed_text: None,
+            post_process_prompt: None,
+            agent_route: Some(route),
+            offer_search: None,
+        }
     };
     let decision = router::decide(
         transcription,
@@ -647,6 +651,7 @@ pub(crate) async fn process_transcription_output(
             ai_chat: place.is_ai_chat(),
             ask,
             follow_up,
+            did_you_mean_bias: crate::remote_config::agent_config().did_you_mean_bias,
         },
         chrono::Local::now().naive_local(),
     );
@@ -733,6 +738,8 @@ pub(crate) async fn process_transcription_output(
                     && !place.is_messaging()
                     && !place.is_ai_chat())
                 .then(|| transcription.trim().to_string());
+                crate::telemetry::route("write", ask, place.editable);
+                crate::telemetry::dictation(post_processed_text.is_some(), started.elapsed());
                 return ProcessedTranscription {
                     final_text,
                     post_processed_text,
@@ -743,7 +750,7 @@ pub(crate) async fn process_transcription_output(
             }
             Some(route) => return agent_route(route),
             // Router unavailable or unsure: fall through to plain dictation.
-            None => {}
+            None => crate::telemetry::route("none", ask, place.editable),
         }
     }
 
@@ -755,7 +762,12 @@ pub(crate) async fn process_transcription_output(
             final_text = processed_text;
 
             post_process_prompt = selected_polish_prompt(&settings);
+        } else {
+            crate::telemetry::error("polish", "failed");
         }
+    }
+    if mode == OutputMode::Dictation {
+        crate::telemetry::dictation(post_processed_text.is_some(), started.elapsed());
     }
 
     ProcessedTranscription {

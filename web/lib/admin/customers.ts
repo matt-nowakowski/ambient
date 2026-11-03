@@ -17,6 +17,7 @@ export const STATUS_FILTERS = [
   { id: "cancelling", label: "Cancelling" },
   { id: "trialing", label: "Trialing" },
   { id: "past_due", label: "Past due" },
+  { id: "complimentary", label: "Friends & family" },
   { id: "canceled", label: "Canceled" },
 ] as const;
 export type StatusFilter = (typeof STATUS_FILTERS)[number]["id"];
@@ -24,6 +25,7 @@ export type StatusFilter = (typeof STATUS_FILTERS)[number]["id"];
 export const STATUS_LABEL: Record<string, string> = {
   active: "Active",
   cancelling: "Cancelling",
+  complimentary: "Friends & family",
   trialing: "Trialing",
   past_due: "Past due",
   canceled: "Canceled",
@@ -41,12 +43,12 @@ export const STATUS_TONE: Record<string, "moss" | "warning" | "error" | undefine
 
 export function matchesStatus(c: CustomerRow, f: StatusFilter) {
   if (f === "all") return true;
-  if (f === "canceled") return !["active", "cancelling", "trialing", "past_due"].includes(c.status);
+  if (f === "canceled") return !["active", "cancelling", "complimentary", "trialing", "past_due"].includes(c.status);
   return c.status === f;
 }
 
 export const SEGMENTS = [
-  { id: "active", label: "All active", test: (c: CustomerRow) => c.status === "active" || c.status === "cancelling" },
+  { id: "active", label: "All active", test: (c: CustomerRow) => c.status === "active" || c.status === "cancelling" || c.status === "complimentary" },
   { id: "cancelling", label: "Cancelling", test: (c: CustomerRow) => c.status === "cancelling" },
   { id: "trialing", label: "Trialing", test: (c: CustomerRow) => c.status === "trialing" },
   { id: "past_due", label: "Past due", test: (c: CustomerRow) => c.status === "past_due" },

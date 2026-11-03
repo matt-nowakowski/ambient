@@ -130,6 +130,50 @@ orgs, top consumers, the full dependency inventory and risks. `?period=month|30d
   `usage_subject_daily`, see `lib/usage.ts`) are kept in memory and flushed in one batched upsert
   per instance at most every 10 minutes, only during real traffic, so Neon still sleeps.
 
+## Agent analytics, remote config and feedback
+
+Everything runs on this Vercel project and Neon; the app works without any of it (no analytics
+sent, built-in config, feedback shows an error and keeps the draft).
+
+| Endpoint | What |
+| --- | --- |
+| `POST /api/telemetry` | Opt-in anonymous counts from the app: `{v, install, version, os, plan, events: [{name, props, n}]}`. Checked strictly against `lib/agent/telemetry-schema.json` (unknown event, prop or value → 400, whole batch). Rate limited per rotating install id (6 / 15 min) and per IP (120 / 15 min). Bodies are never logged; events only add to daily counters. |
+| `GET /api/agent/config?v=` | The agent's tunables: defaults ← auto-tuned ← manual (from `/admin?tab=agent`). `s-maxage=3600`; built-in defaults when Neon is missing. The app fetches it on launch and at most daily, sends only its version, and clamps every value to its own copy of the bounds. |
+| `GET /api/cron/tune` | Daily auto-tuning (Vercel Cron, `vercel.json`, 04:17 UTC). Requires `Authorization: Bearer $CRON_SECRET`; 503 without `CRON_SECRET`. Reads 14 days of aggregates; never touches manual or pinned values; skipped while paused in `/admin`. |
+| `POST /api/meetings/email` | Meeting notes to the signed-in account's own email (Resend). Content is never logged or stored. |
+| `POST /api/feedback` | Bug reports and ideas from the app, shown in `/admin?tab=feedback`. |
+
+**Tables** (created idempotently by `lib/db.ts` `productDb()`): `product_events_daily` (day, event,
+canonical props, app version → count), `product_installs_daily` (day, sha256 of the rotating id
+and the day: unlinkable across days), `agent_config` (non-default values, source `auto`/`manual`,
+`pinned`), `agent_config_state` (the pause flag), `agent_config_history` (every change with its
+reason and the numbers behind it). Event and install rows are pruned after **180 days**.
+
+**Tuning rules** (`lib/agent/config.ts`, over 14 days): a suggestion kind accepted < 15% over ≥ 50
+offers gets +0.05 minimum confidence (×1.5 cooldown once confidence is at its ceiling); < 5% over
+≥ 100 offers turns it off; ≥ 50% over ≥ 50 offers relaxes −0.02 (÷1.25 cooldown at the floor). A
+judge timing out on > 20% of ≥ 50 runs gets +1000 ms (device and cloud separately). Over 25% of ≥ 50
+requests ending on "did you mean to type this?" moves the router bias +0.05. Each step stays in the
+bounds:
+
+| Key | Min | Max | Default |
+| --- | --- | --- | --- |
+| `kind.<kind>.enabled` | — | — | on |
+| `kind.<kind>.min_confidence` | 0.5 | 0.95 | 0.6 |
+| `kind.<kind>.cooldown_min` | 1 | 1440 | 3 |
+| `hourly_budget` | 1 | 20 | 10 |
+| `judge.timeout_ms` | 3000 | 15000 | 8000 |
+| `judge.cloud_timeout_ms` | 3000 | 12000 | 7000 |
+| `judge.min_confidence` | 0.5 | 0.95 | 0.6 |
+| `router.did_you_mean_bias` | 0 | 1 | 0.5 |
+| `answer.first_byte_timeout_ms` | 8000 | 40000 | 25000 |
+| `answer.idle_timeout_ms` | 5000 | 30000 | 20000 |
+| `search.timeout_ms` | 2000 | 15000 | 6000 |
+
+The bounds live in `lib/agent/config-schema.json`; the app keeps its own copy (`src-tauri`), and a
+unit test there checks the two match. Tests: `bun scripts/telemetry-test.ts`,
+`bun scripts/agent-config-test.ts`.
+
 ## Email
 
 Branded customer emails over [Resend](https://resend.com) (plain `fetch`, no SDK), rendered from
@@ -234,6 +278,8 @@ See `.env.example`. For local dev, copy it to `.env.local` (gitignored).
 | `AUTH_SECRET`               | app sign-in challenges and sessions (≥ 32 chars; changing it signs everyone out) |
 | `RESEND_AUDIENCE_CUSTOMERS` | segment id (optional: found or created by name) |
 | `RESEND_AUDIENCE_NEWSLETTER`| segment id (optional: found or created by name) |
+| `CRON_SECRET`               | **required** for `/api/cron/tune` (daily agent auto-tuning; unset → the cron refuses with 503 and the config stays as is) |
+| `FEEDBACK_NOTIFY_EMAIL`     | optional: email each new feedback item to this address (unset → none) |
 
 ## Deploy to Vercel
 

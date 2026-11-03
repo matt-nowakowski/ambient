@@ -9,9 +9,10 @@ import type {
   ShortcutActivation,
   VadBackend,
   LanguageDetectionMode,
+  MeetingsEmail,
 } from "@/bindings";
 import { commands } from "@/bindings";
-import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 
 interface SettingsStore {
   settings: Settings | null;
@@ -80,6 +81,9 @@ const settingUpdaters: {
     commands.changeSpokenLanguagesSetting(value as string[]),
   update_checks_enabled: (value) =>
     commands.changeUpdateChecksSetting(value as boolean),
+  telemetry: (value) => commands.changeTelemetrySetting(value as boolean),
+  meetings_email: (value) =>
+    commands.changeMeetingsEmailSetting(value as MeetingsEmail),
   show_whats_new_on_update: (value) =>
     commands.changeShowWhatsNewOnUpdateSetting(value as boolean),
   whats_new_last_seen_version: (value) =>
@@ -168,7 +172,7 @@ const settingUpdaters: {
     if (result.status === "error") {
       // Rejected switches (e.g. mid-recording) roll the dropdown back via the
       // throw below; the toast tells the user why.
-      toast.error(result.error);
+      showError("settings", result.error);
       throw new Error(result.error);
     }
   },

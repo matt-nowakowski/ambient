@@ -6,6 +6,8 @@ export const ADMIN_TABS = [
   { id: "costs", label: "Costs" },
   { id: "dependencies", label: "Dependencies" },
   { id: "orgs", label: "Orgs" },
+  { id: "agent", label: "Agent health" },
+  { id: "feedback", label: "Feedback" },
   { id: "customers", label: "Customers" },
 ] as const;
 
