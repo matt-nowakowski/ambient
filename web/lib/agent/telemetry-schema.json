@@ -37,6 +37,7 @@
     "meeting": { "outcome": ["notes", "empty", "failed"], "duration_bucket": "#duration" },
     "dictation": { "polish": "bool", "ms_bucket": "#ms" },
     "card_rating": { "card": ["answer", "suggestion"], "kind": "@rating_kind", "rating": ["up", "down"] },
-    "meeting_email": { "mode": ["ask", "always"], "outcome": ["sent", "failed"] }
+    "meeting_email": { "mode": ["ask", "always"], "outcome": ["sent", "failed"] },
+    "limit_hit": { "kind": ["ai", "suggestions", "meetings"] }
   }
 }

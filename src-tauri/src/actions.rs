@@ -9,8 +9,8 @@ use crate::managers::transcription::policy::{live_decode, LiveDecode, ModelTrait
 use crate::managers::transcription::StreamWorkKind;
 use crate::managers::transcription::{Transcription, TranscriptionManager};
 use crate::settings::{
-    get_settings, is_pro_post_process_provider, AppSettings, OverlayStyle,
-    AMBIENT_AI_DEFAULT_MODEL_ID, AMBIENT_AI_PROVIDER_ID, APPLE_INTELLIGENCE_PROVIDER_ID,
+    get_settings, AppSettings, OverlayStyle, AMBIENT_AI_DEFAULT_MODEL_ID, AMBIENT_AI_PROVIDER_ID,
+    APPLE_INTELLIGENCE_PROVIDER_ID,
 };
 use crate::shortcut;
 use crate::tray::{set_tray_state, TrayIconState};
@@ -263,12 +263,21 @@ async fn post_process_transcription(
             return None;
         }
     };
+    // Free: each polish is an AI use from the weekly pool. Once it's spent the
+    // plain transcript is typed, and the HUD says so once that week.
+    if !crate::limits::ai_available(app) {
+        debug!("Post-processing skipped: Free's AI uses this week are spent");
+        crate::limits::ai_spent(app, crate::limits::Show::Once);
+        return None;
+    }
     // Hosted Ambient AI polish runs on this Mac instead whenever Apple
     // Intelligence can do it: no cost, and the text never leaves.
+    let mut took_local = false;
     if provider.id == AMBIENT_AI_PROVIDER_ID
         && crate::agent::llm::use_on_device(app, transcription.len() + 2_000)
         && crate::plan::consume_local_ai(app)
     {
+        took_local = true;
         if let Some(local) = crate::settings::ai_provider(APPLE_INTELLIGENCE_PROVIDER_ID) {
             debug!("Polishing on device (Apple Intelligence) instead of hosted");
             provider = local;
@@ -282,18 +291,15 @@ async fn post_process_transcription(
         return None;
     }
 
-    // Apple Intelligence is Pro-only. Hosted polish works on Free too, within
-    // a weekly allowance the server enforces.
-    let swapped_from_hosted = settings.post_process_provider_id == AMBIENT_AI_PROVIDER_ID;
-    if is_pro_post_process_provider(&provider.id)
-        && provider.id != AMBIENT_AI_PROVIDER_ID
-        && !swapped_from_hosted
-        && !crate::plan::is_paid(app)
+    // Apple Intelligence chosen directly works on every plan; on Free it takes
+    // an AI use from the same weekly pool as hosted polish (which the server
+    // counts).
+    if provider.id == APPLE_INTELLIGENCE_PROVIDER_ID
+        && !took_local
+        && !crate::plan::consume_local_ai(app)
     {
-        debug!(
-            "Post-processing skipped: provider '{}' needs a paid plan",
-            provider.id
-        );
+        debug!("Post-processing skipped: Free's AI uses this week are spent");
+        crate::limits::ai_spent(app, crate::limits::Show::Once);
         return None;
     }
 
@@ -451,6 +457,10 @@ async fn post_process_transcription(
                 return None;
             }
             Err(e) => {
+                // Free's week is used: the legacy retry would be refused too.
+                if crate::limits::check_model_error(app, &e, crate::limits::Show::Once) {
+                    return None;
+                }
                 warn!(
                     "Structured output failed for provider '{}': {}. Falling back to legacy mode.",
                     provider.id, e
@@ -488,6 +498,7 @@ async fn post_process_transcription(
             None
         }
         Err(e) => {
+            crate::limits::check_model_error(app, &e, crate::limits::Show::Once);
             error!(
                 "LLM post-processing failed for provider '{}': {}. Falling back to original transcription.",
                 provider.id,

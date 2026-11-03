@@ -1036,10 +1036,10 @@
     "limitReached": "Wykorzystano darmowe słowa z tego tygodnia. Ulepsz plan, aby dyktować bez limitu, albo kontynuuj po resecie tygodnia.",
     "limitToast": "Wykorzystano tygodniowy limit darmowych słów",
     "proFeatures": {
-      "polish": "Szlifowanie AI przy każdym dyktowaniu",
-      "onDevice": "Szlifowanie na urządzeniu z Apple Intelligence",
-      "agent": "Agent działający w tle, z każdą nową funkcją",
-      "priority": "Priorytetowa pomoc techniczna"
+      "priority": "Priorytetowa pomoc techniczna",
+      "noLimits": "Bez tygodniowych limitów użyć AI i sugestii",
+      "meetings": "Nielimitowane notatki ze spotkań",
+      "memory": "Pamięć ekranu do 90 dni"
     },
     "card": {
       "activate": "Aktywuj",
@@ -1110,7 +1110,7 @@
       "unlock": "Odblokuj bez limitu",
       "onDevice": "Zostaw to na tym Macu",
       "onDeviceDescription": "Użyj zamiast tego Apple Intelligence. Nic nie opuszcza Twojego Maca.",
-      "freeLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu"
+      "freeUsesLeft": "Pozostało {{left}} z {{limit}} darmowych użyć AI w tym tygodniu"
     },
     "trial": {
       "daysLeft_one": "Pozostał {{count}} dzień",
@@ -1164,12 +1164,13 @@
     "plan": {
       "title": "Twój plan",
       "polishUnlimited": "Szlifowanie AI: bez limitu.",
-      "polishLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu · reset: {{day}}",
       "polishFree": "Plan darmowy obejmuje tygodniowy limit szlifowania AI.",
       "meetingsLeft": "W tym miesiącu zostało {{left}} z {{limit}} notatek ze spotkań",
       "aiLeft": "Dziś zostało {{left}} z {{limit}} zapytań AI",
       "searchLeft": "Pozostałe wyszukiwania: {{count}}",
-      "meterLabel": "Pozostały limit"
+      "meterLabel": "Pozostały limit",
+      "aiUsesLeft": "Pozostało {{left}} z {{limit}} użyć AI w tym tygodniu · reset {{day}}",
+      "suggestionsLeft": "Pozostało {{left}} z {{limit}} sugestii w tym tygodniu"
     },
     "privacy": {
       "title": "Prywatność",
@@ -1316,7 +1317,10 @@
       "cantDoYet": "Tego jeszcze nie potrafię: {{what}}. Pokazać ci, jak zrobić to samodzielnie?",
       "cantDoYetPlain": "Nie mogę jeszcze tego zrobić na tym komputerze. Pokazać ci, jak zrobić to samodzielnie?",
       "failed": "Tym razem się nie udało. Spróbuj ponownie za chwilę.",
-      "undoFailed": "Nie udało się tego cofnąć. Możesz to usunąć bezpośrednio w aplikacji."
+      "undoFailed": "Nie udało się tego cofnąć. Możesz to usunąć bezpośrednio w aplikacji.",
+      "limitAi": "To już {{limit}} użyć AI w tym tygodniu. Limit odnowi się w poniedziałek. Ulepsz plan, aby nie mieć limitów.",
+      "limitSuggestions": "Wykorzystano {{limit}} sugestii w tym tygodniu w planie Darmowym.",
+      "limitMeetings": "To już {{limit}} spotkań w tym miesiącu w planie Darmowym. Ulepsz plan, aby nie mieć limitów."
     },
     "offer": {
       "searchWeb": "Szukaj w internecie",
@@ -1326,7 +1330,8 @@
       "openSettings": "Otwórz Ustawienia",
       "showFile": "Pokaż plik",
       "howTo": "Pokaż jak",
-      "showMeHow": "Pokaż jak"
+      "showMeHow": "Pokaż jak",
+      "upgrade": "Ulepsz"
     },
     "report": {
       "title": "Wysłać to zespołowi {{appName}}?",
@@ -1556,6 +1561,12 @@
       "title": "Pomóż ulepszyć {{appName}}",
       "label": "Udostępniaj anonimowe statystyki użycia",
       "description": "Tylko liczniki i czasy, nigdy to, co mówisz, piszesz lub widzisz. Wyłączone, dopóki tego nie włączysz."
+    },
+    "free": {
+      "perWeek": "Darmowy: {{limit}} na tydzień",
+      "perMonth": "Darmowy: {{limit}} na miesiąc",
+      "hours": "Darmowy: {{limit}} godz.",
+      "retention": "Plan Darmowy przechowuje ostatnie {{limit}} godz. Pro przechowuje do 90 dni."
     }
   },
   "meetings": {
@@ -1599,7 +1610,7 @@
     },
     "error": {
       "storage": "Nie udało się otworzyć magazynu spotkań.",
-      "freeLimit": "Plan darmowy obejmuje 2 spotkania miesięcznie. Pro nie ma limitu.",
+      "freeLimit": "To już {{limit}} spotkań w tym miesiącu w planie Darmowym. Ulepsz plan, aby nie mieć limitów.",
       "mic": "Nie udało się otworzyć mikrofonu.",
       "notActive": "Żadne spotkanie nie trwa.",
       "notFound": "To spotkanie już nie istnieje.",
@@ -1615,8 +1626,6 @@
       "offDetail": "Włącz, a {{appName}} zaproponuje notatki, gdy zacznie się rozmowa.",
       "paused": "Wstrzymano",
       "pausedDetail": "{{appName}} nie zaproponuje notatek, dopóki nie wznowisz tego w sekcji Prywatność.",
-      "pro": "Notatki wyłączone",
-      "proDetail": "W Pro {{appName}} wykrywa Twoje rozmowy i proponuje notatki.",
       "unsupported": "Notatki wyłączone",
       "unsupportedDetail": "Zacznij notatki, gdy rozpocznie się rozmowa.",
       "turnOn": "Włącz"
@@ -1686,14 +1695,14 @@
       "title": "Wybierz, co może robić {{appName}}",
       "description": "Wszystko opcjonalne. Zmienisz to w każdej chwili w sekcji Prywatność.",
       "footnote": "Hasła, portfele i okna prywatne nigdy nie są odczytywane.",
-      "proOnly": "Część Pro. Przejdź na Pro w sekcji Konto.",
       "caps": {
         "screen_context": "Tylko okno, o które pytasz",
         "proactive": "Decyzja zapada na tym komputerze",
         "meetings": "Dźwięk zostaje na tym komputerze",
         "wake_word": "Słucha tylko na tym komputerze",
         "screen_memory": "Zostaje na tym komputerze, szyfrowane"
-      }
+      },
+      "freeNote": "W planie Darmowym użycia AI i sugestie mają tygodniowe limity."
     }
   },
   "getStarted": {

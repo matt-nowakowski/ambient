@@ -90,7 +90,7 @@ export const AgentTour: React.FC = () => {
   const tried = done.includes("answer") || done.includes("reminder");
 
   const finish = async () => {
-    if (agent && screenAgent && paid) {
+    if (agent && screenAgent) {
       const next: AgentSettings = { ...agent, ...picked };
       const r = await commands.setAgentSettings(next);
       if (r.status === "error") showError("settings", r.error);
@@ -218,14 +218,14 @@ export const AgentTour: React.FC = () => {
               </div>
               <Switch
                 checked={picked[cap]}
-                disabled={!paid}
                 ariaLabel={t(`privacy.capabilities.${cap}.title`)}
                 onChange={(on) => setPicked({ ...picked, [cap]: on })}
               />
             </div>
           ))}
           <p className="mt-auto pt-2 text-small text-ink-3">
-            {paid ? t("tour.choose.footnote") : t("tour.choose.proOnly")}
+            {t("tour.choose.footnote")}
+            {!paid && ` ${t("tour.choose.freeNote")}`}
           </p>
         </motion.div>
       </div>

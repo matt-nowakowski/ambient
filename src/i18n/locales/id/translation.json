@@ -1026,10 +1026,10 @@
     "limitReached": "Kata gratis minggu ini sudah habis. Tingkatkan untuk dikte tanpa batas, atau lanjutkan saat minggu direset.",
     "limitToast": "Kata gratis mingguan habis",
     "proFeatures": {
-      "polish": "Poles AI di setiap dikte",
-      "onDevice": "Poles di perangkat dengan Apple Intelligence",
-      "agent": "Agen ambient, dengan setiap fitur baru begitu dirilis",
-      "priority": "Dukungan prioritas"
+      "priority": "Dukungan prioritas",
+      "noLimits": "Tanpa batas mingguan untuk penggunaan AI dan saran",
+      "meetings": "Catatan rapat tanpa batas",
+      "memory": "Memori layar hingga 90 hari"
     },
     "card": {
       "activate": "Aktifkan",
@@ -1100,7 +1100,7 @@
       "unlock": "Dapatkan tanpa batas",
       "onDevice": "Simpan di Mac ini",
       "onDeviceDescription": "Gunakan Apple Intelligence sebagai gantinya. Tidak ada yang keluar dari Mac Anda.",
-      "freeLeft": "Sisa {{left}} dari {{limit}} poles AI gratis minggu ini"
+      "freeUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI gratis minggu ini"
     },
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",
@@ -1148,12 +1148,13 @@
     "plan": {
       "title": "Paket Anda",
       "polishUnlimited": "Poles AI tanpa batas.",
-      "polishLeft": "Sisa {{left}} dari {{limit}} poles AI gratis minggu ini · direset {{day}}",
       "polishFree": "Paket Gratis mencakup jatah poles AI mingguan.",
       "meetingsLeft": "Sisa {{left}} dari {{limit}} catatan rapat bulan ini",
       "aiLeft": "Sisa {{left}} dari {{limit}} permintaan AI hari ini",
       "searchLeft": "Sisa pencarian: {{count}}",
-      "meterLabel": "Sisa jatah"
+      "meterLabel": "Sisa jatah",
+      "aiUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI minggu ini · direset {{day}}",
+      "suggestionsLeft": "Sisa {{left}} dari {{limit}} saran minggu ini"
     },
     "privacy": {
       "title": "Privasi",
@@ -1300,7 +1301,10 @@
       "cantDoYet": "Saya belum bisa melakukan ini: {{what}}. Mau saya tunjukkan cara melakukannya sendiri?",
       "cantDoYetPlain": "Saya belum bisa melakukan itu di komputer ini. Mau saya tunjukkan cara melakukannya sendiri?",
       "failed": "Kali ini tidak berhasil. Coba lagi sebentar lagi.",
-      "undoFailed": "Saya tidak dapat membatalkannya. Anda bisa menghapusnya langsung di aplikasinya."
+      "undoFailed": "Saya tidak dapat membatalkannya. Anda bisa menghapusnya langsung di aplikasinya.",
+      "limitAi": "Itu {{limit}} penggunaan AI minggu ini. Direset hari Senin. Tingkatkan agar tanpa batas.",
+      "limitSuggestions": "Anda sudah mendapat {{limit}} saran minggu ini di paket Gratis.",
+      "limitMeetings": "Itu {{limit}} rapat bulan ini di paket Gratis. Tingkatkan agar tanpa batas."
     },
     "offer": {
       "searchWeb": "Cari di web",
@@ -1310,7 +1314,8 @@
       "openSettings": "Buka Pengaturan",
       "showFile": "Tampilkan file",
       "howTo": "Tunjukkan caranya",
-      "showMeHow": "Tunjukkan caranya"
+      "showMeHow": "Tunjukkan caranya",
+      "upgrade": "Tingkatkan"
     },
     "report": {
       "title": "Kirim ini ke tim {{appName}}?",
@@ -1532,6 +1537,12 @@
       "title": "Bantu tingkatkan {{appName}}",
       "label": "Bagikan hitungan penggunaan anonim",
       "description": "Hanya hitungan dan waktu, tidak pernah apa yang Anda ucapkan, ketik, atau lihat. Mati sampai Anda menyalakannya."
+    },
+    "free": {
+      "perWeek": "Gratis: {{limit}} per minggu",
+      "perMonth": "Gratis: {{limit}} per bulan",
+      "hours": "Gratis: {{limit}} jam",
+      "retention": "Paket Gratis menyimpan {{limit}} jam terakhir. Pro menyimpan hingga 90 hari."
     }
   },
   "meetings": {
@@ -1575,7 +1586,7 @@
     },
     "error": {
       "storage": "Tidak dapat membuka penyimpanan rapat.",
-      "freeLimit": "Paket Gratis mencakup 2 rapat per bulan. Pro tanpa batas.",
+      "freeLimit": "Itu {{limit}} rapat bulan ini di paket Gratis. Tingkatkan agar tanpa batas.",
       "mic": "Tidak dapat membuka mikrofon.",
       "notActive": "Tidak ada rapat yang sedang berlangsung.",
       "notFound": "Rapat itu sudah tidak ada.",
@@ -1591,8 +1602,6 @@
       "offDetail": "Aktifkan, dan {{appName}} menawarkan pencatatan saat panggilan dimulai.",
       "paused": "Dijeda",
       "pausedDetail": "{{appName}} tidak akan menawarkan pencatatan sampai Anda melanjutkannya di Privasi.",
-      "pro": "Tidak mencatat",
-      "proDetail": "Dengan Pro, {{appName}} mengenali panggilan Anda dan menawarkan pencatatan.",
       "unsupported": "Tidak mencatat",
       "unsupportedDetail": "Mulai mencatat saat panggilan Anda dimulai.",
       "turnOn": "Aktifkan"
@@ -1662,14 +1671,14 @@
       "title": "Pilih yang boleh dilakukan {{appName}}",
       "description": "Semuanya opsional. Ubah kapan saja di Privasi.",
       "footnote": "Kata sandi, dompet, dan jendela pribadi tidak pernah dibaca.",
-      "proOnly": "Bagian dari Pro. Tingkatkan di Akun.",
       "caps": {
         "screen_context": "Hanya jendela yang Anda tanyakan",
         "proactive": "Diputuskan di komputer ini",
         "meetings": "Audio tetap di komputer ini",
         "wake_word": "Hanya mendengarkan di komputer ini",
         "screen_memory": "Tetap di komputer ini, terenkripsi"
-      }
+      },
+      "freeNote": "Di paket Gratis, penggunaan AI dan saran punya batas mingguan."
     }
   },
   "getStarted": {

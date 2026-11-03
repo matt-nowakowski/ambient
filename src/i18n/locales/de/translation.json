@@ -1026,10 +1026,10 @@
     "limitReached": "Du hast die kostenlosen Wörter dieser Woche aufgebraucht. Upgrade für unbegrenztes Diktieren oder mach weiter, sobald die Woche zurückgesetzt wird.",
     "limitToast": "Kostenlose Wörter dieser Woche aufgebraucht",
     "proFeatures": {
-      "polish": "KI-Feinschliff für jedes Diktat",
-      "onDevice": "Feinschliff auf dem Gerät mit Apple Intelligence",
-      "agent": "Der Ambient-Agent mit allen neuen Funktionen",
-      "priority": "Prioritärer Support"
+      "priority": "Prioritärer Support",
+      "noLimits": "Keine Wochenlimits für KI-Nutzungen und Vorschläge",
+      "meetings": "Unbegrenzte Meeting-Notizen",
+      "memory": "Bildschirmgedächtnis bis zu 90 Tage"
     },
     "card": {
       "activate": "Aktivieren",
@@ -1100,7 +1100,7 @@
       "unlock": "Unbegrenzt freischalten",
       "onDevice": "Auf diesem Mac behalten",
       "onDeviceDescription": "Nutze stattdessen Apple Intelligence. Nichts verlässt deinen Mac.",
-      "freeLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche"
+      "freeUsesLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Nutzungen diese Woche"
     },
     "trial": {
       "daysLeft_one": "Noch {{count}} Tag",
@@ -1148,12 +1148,13 @@
     "plan": {
       "title": "Dein Tarif",
       "polishUnlimited": "KI-Feinschliff ist unbegrenzt.",
-      "polishLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche · wird {{day}} zurückgesetzt",
       "polishFree": "Im kostenlosen Tarif ist ein wöchentliches Kontingent an KI-Feinschliff enthalten.",
       "meetingsLeft": "Noch {{left}} von {{limit}} Meeting-Notizen in diesem Monat",
       "aiLeft": "Heute noch {{left}} von {{limit}} KI-Anfragen",
       "searchLeft": "Verbleibende Suchen: {{count}}",
-      "meterLabel": "Verbleibendes Kontingent"
+      "meterLabel": "Verbleibendes Kontingent",
+      "aiUsesLeft": "Noch {{left}} von {{limit}} KI-Nutzungen diese Woche · wird {{day}} zurückgesetzt",
+      "suggestionsLeft": "Noch {{left}} von {{limit}} Vorschlägen diese Woche"
     },
     "privacy": {
       "title": "Datenschutz",
@@ -1300,7 +1301,10 @@
       "cantDoYet": "Das kann ich noch nicht: {{what}}. Soll ich dir zeigen, wie du es selbst machst?",
       "cantDoYetPlain": "Das kann ich auf diesem Computer noch nicht. Soll ich dir zeigen, wie du es selbst machst?",
       "failed": "Das hat diesmal nicht geklappt. Versuch es gleich noch einmal.",
-      "undoFailed": "Das konnte ich nicht rückgängig machen. Du kannst es direkt in der App entfernen."
+      "undoFailed": "Das konnte ich nicht rückgängig machen. Du kannst es direkt in der App entfernen.",
+      "limitAi": "Das waren die {{limit}} KI-Nutzungen dieser Woche. Sie werden am Montag zurückgesetzt. Mit einem Upgrade gibt es keine Limits.",
+      "limitSuggestions": "Du hattest die {{limit}} Vorschläge dieser Woche im kostenlosen Tarif.",
+      "limitMeetings": "Das waren die {{limit}} Meetings dieses Monats im kostenlosen Tarif. Mit einem Upgrade gibt es keine Limits."
     },
     "offer": {
       "searchWeb": "Im Web suchen",
@@ -1310,7 +1314,8 @@
       "openSettings": "Einstellungen öffnen",
       "showFile": "Datei zeigen",
       "howTo": "Zeig mir, wie",
-      "showMeHow": "Zeig mir, wie"
+      "showMeHow": "Zeig mir, wie",
+      "upgrade": "Upgrade"
     },
     "report": {
       "title": "An das {{appName}}-Team senden?",
@@ -1532,6 +1537,12 @@
       "title": "Hilf mit, {{appName}} zu verbessern",
       "label": "Anonyme Nutzungszahlen teilen",
       "description": "Nur Zählungen und Zeiten, nie, was du sagst, tippst oder siehst. Aus, bis du es einschaltest."
+    },
+    "free": {
+      "perWeek": "Kostenlos: {{limit}} pro Woche",
+      "perMonth": "Kostenlos: {{limit}} pro Monat",
+      "hours": "Kostenlos: {{limit}} Stunden",
+      "retention": "Kostenlos bleiben die letzten {{limit}} Stunden gespeichert. Pro behält bis zu 90 Tage."
     }
   },
   "meetings": {
@@ -1575,7 +1586,7 @@
     },
     "error": {
       "storage": "Der Meeting-Speicher konnte nicht geöffnet werden.",
-      "freeLimit": "Im kostenlosen Tarif sind 2 Meetings pro Monat enthalten. Pro ist unbegrenzt.",
+      "freeLimit": "Das waren die {{limit}} Meetings dieses Monats im kostenlosen Tarif. Mit einem Upgrade gibt es keine Limits.",
       "mic": "Das Mikrofon konnte nicht geöffnet werden.",
       "notActive": "Kein Meeting aktiv.",
       "notFound": "Dieses Meeting existiert nicht mehr.",
@@ -1591,8 +1602,6 @@
       "offDetail": "Aktiviere sie, und {{appName}} bietet beim Start eines Anrufs an, Notizen zu machen.",
       "paused": "Pausiert",
       "pausedDetail": "{{appName}} bietet keine Notizen an, bis du es unter Datenschutz wieder fortsetzt.",
-      "pro": "Keine Notizen",
-      "proDetail": "Mit Pro erkennt {{appName}} deine Anrufe und bietet an, Notizen zu machen.",
       "unsupported": "Keine Notizen",
       "unsupportedDetail": "Starte Notizen, wenn dein Anruf beginnt.",
       "turnOn": "Aktivieren"
@@ -1662,14 +1671,14 @@
       "title": "Wähle, was {{appName}} darf",
       "description": "Alles optional. Jederzeit unter Datenschutz änderbar.",
       "footnote": "Passwörter, Wallets und private Fenster werden nie gelesen.",
-      "proOnly": "Teil von Pro. Upgrade unter Konto.",
       "caps": {
         "screen_context": "Nur das Fenster, das du meinst",
         "proactive": "Wird auf diesem Computer entschieden",
         "meetings": "Audio bleibt auf diesem Computer",
         "wake_word": "Hört nur auf diesem Computer zu",
         "screen_memory": "Verschlüsselt auf diesem Computer"
-      }
+      },
+      "freeNote": "Im kostenlosen Tarif haben KI-Nutzungen und Vorschläge Wochenlimits."
     }
   },
   "getStarted": {

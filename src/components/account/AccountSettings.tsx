@@ -9,7 +9,7 @@ import { AccountCard } from "./AccountCard";
 import { AiPolishCard } from "./AiPolishCard";
 import { isPaid, openUpgrade, usePlan } from "./usePlan";
 
-const PRO_FEATURES = ["polish", "onDevice", "agent", "priority"] as const;
+const PRO_FEATURES = ["noLimits", "meetings", "memory", "priority"] as const;
 
 export const AccountSettings: React.FC = () => {
   const { t, i18n } = useTranslation();

@@ -1026,10 +1026,10 @@
     "limitReached": "你已用完本週的免費字數。升級即可無限聽寫，或等本週重設後繼續使用。",
     "limitToast": "本週免費字數已用完",
     "proFeatures": {
-      "polish": "對每次聽寫進行 AI 潤飾",
-      "onDevice": "使用 Apple Intelligence 在裝置上潤飾",
-      "agent": "Ambient 智慧代理，新功能陸續推出",
-      "priority": "優先支援"
+      "priority": "優先支援",
+      "noLimits": "AI 使用和建議沒有每週上限",
+      "meetings": "會議筆記不限次數",
+      "memory": "螢幕記憶最長保留 90 天"
     },
     "card": {
       "activate": "啟用",
@@ -1100,7 +1100,7 @@
       "unlock": "取得無限次",
       "onDevice": "僅在這台 Mac 上處理",
       "onDeviceDescription": "改用 Apple Intelligence。任何內容都不會離開你的 Mac。",
-      "freeLeft": "本週還剩 {{left}} 次免費 AI 潤飾（共 {{limit}} 次）"
+      "freeUsesLeft": "本週還剩 {{left}} / {{limit}} 次免費 AI 使用"
     },
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",
@@ -1148,12 +1148,13 @@
     "plan": {
       "title": "你的方案",
       "polishUnlimited": "AI 潤飾不限次數。",
-      "polishLeft": "本週還剩 {{left}} 次免費 AI 潤飾（共 {{limit}} 次）· {{day}} 重設",
       "polishFree": "免費方案包含每週的 AI 潤飾額度。",
       "meetingsLeft": "本月還剩 {{left}}/{{limit}} 份會議記錄",
       "aiLeft": "今天還剩 {{left}}/{{limit}} 次 AI 請求",
       "searchLeft": "剩餘搜尋次數：{{count}}",
-      "meterLabel": "剩餘額度"
+      "meterLabel": "剩餘額度",
+      "aiUsesLeft": "本週還剩 {{left}} / {{limit}} 次 AI 使用 · {{day}}重設",
+      "suggestionsLeft": "本週還剩 {{left}} / {{limit}} 則建議"
     },
     "privacy": {
       "title": "隱私",
@@ -1300,7 +1301,10 @@
       "cantDoYet": "我還做不到：{{what}}。要我教你自己操作嗎？",
       "cantDoYetPlain": "我還無法在這台電腦上做到。要我教你自己操作嗎？",
       "failed": "這次沒有成功。請稍後再試。",
-      "undoFailed": "無法復原這一項。你可以直接在該應用程式中移除。"
+      "undoFailed": "無法復原這一項。你可以直接在該應用程式中移除。",
+      "limitAi": "本週的 {{limit}} 次 AI 使用已用完，將於週一重設。升級即可不受限制。",
+      "limitSuggestions": "免費版本週的 {{limit}} 則建議已全部提供。",
+      "limitMeetings": "免費版本月的 {{limit}} 場會議已用完。升級即可不受限制。"
     },
     "offer": {
       "searchWeb": "在網路上搜尋",
@@ -1310,7 +1314,8 @@
       "openSettings": "開啟設定",
       "showFile": "顯示檔案",
       "howTo": "教我怎麼做",
-      "showMeHow": "教我怎麼做"
+      "showMeHow": "教我怎麼做",
+      "upgrade": "升級"
     },
     "report": {
       "title": "要傳送給 {{appName}} 團隊嗎？",
@@ -1532,6 +1537,12 @@
       "title": "協助改善 {{appName}}",
       "label": "分享匿名使用次數",
       "description": "僅次數與耗時，絕不包括你說的、輸入的或看到的內容。在你開啟前保持關閉。"
+    },
+    "free": {
+      "perWeek": "免費版：每週 {{limit}} 則",
+      "perMonth": "免費版：每月 {{limit}} 場",
+      "hours": "免費版：{{limit}} 小時",
+      "retention": "免費版保留最近 {{limit}} 小時。Pro 最長保留 90 天。"
     }
   },
   "meetings": {
@@ -1575,7 +1586,7 @@
     },
     "error": {
       "storage": "無法開啟會議儲存空間。",
-      "freeLimit": "免費方案每月包含 2 場會議。Pro 不限次數。",
+      "freeLimit": "免費版本月的 {{limit}} 場會議已用完。升級即可不受限制。",
       "mic": "無法開啟麥克風。",
       "notActive": "目前沒有進行中的會議。",
       "notFound": "該會議已不存在。",
@@ -1591,8 +1602,6 @@
       "offDetail": "開啟後，通話開始時 {{appName}} 會提議做記錄。",
       "paused": "已暫停",
       "pausedDetail": "在「隱私」中恢復之前，{{appName}} 不會提議做記錄。",
-      "pro": "未做記錄",
-      "proDetail": "使用 Pro，{{appName}} 會偵測你的通話並提議做記錄。",
       "unsupported": "未做記錄",
       "unsupportedDetail": "通話開始時開始記錄。",
       "turnOn": "開啟"
@@ -1662,14 +1671,14 @@
       "title": "選擇 {{appName}} 可以做什麼",
       "description": "全部可選。可隨時在「隱私」中更改。",
       "footnote": "絕不讀取密碼、錢包和私密視窗。",
-      "proOnly": "Pro 功能。在「帳戶」中升級。",
       "caps": {
         "screen_context": "只看你問到的視窗",
         "proactive": "在這台電腦上決定",
         "meetings": "音訊留在這台電腦上",
         "wake_word": "只在這台電腦上聆聽",
         "screen_memory": "加密儲存在這台電腦上"
-      }
+      },
+      "freeNote": "免費版的 AI 使用和建議有每週上限。"
     }
   },
   "getStarted": {

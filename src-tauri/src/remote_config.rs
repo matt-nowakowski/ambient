@@ -35,6 +35,36 @@ pub mod bounds {
     pub const ANSWER_FIRST_BYTE_TIMEOUT_MS: (f64, f64, f64) = (8000.0, 40000.0, 25000.0);
     pub const ANSWER_IDLE_TIMEOUT_MS: (f64, f64, f64) = (5000.0, 30000.0, 20000.0);
     pub const SEARCH_TIMEOUT_MS: (f64, f64, f64) = (2000.0, 15000.0, 6000.0);
+    /// Free's weekly pool of AI uses (hosted and on-device together). The
+    /// server enforces the hosted side with the same tunable.
+    pub const FREE_AI_PER_WEEK: (f64, f64, f64) = (5.0, 500.0, 25.0);
+    /// Suggestions Free is offered a week (judged on device or by rules).
+    pub const FREE_SUGGESTIONS_PER_WEEK: (f64, f64, f64) = (1.0, 200.0, 10.0);
+    /// How long Free's screen memory keeps what it saw, in hours.
+    pub const FREE_MEMORY_HOURS: (f64, f64, f64) = (1.0, 168.0, 24.0);
+    /// Meetings Free can take notes in each calendar month.
+    pub const FREE_MEETINGS_PER_MONTH: (f64, f64, f64) = (1.0, 30.0, 2.0);
+}
+
+/// Free's limits (`crate::limits`). Pro, Team and the trial have none
+/// beyond fair use.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct FreeLimits {
+    pub ai_per_week: u32,
+    pub suggestions_per_week: u32,
+    pub memory_hours: u32,
+    pub meetings_per_month: u32,
+}
+
+impl Default for FreeLimits {
+    fn default() -> Self {
+        Self {
+            ai_per_week: bounds::FREE_AI_PER_WEEK.2 as u32,
+            suggestions_per_week: bounds::FREE_SUGGESTIONS_PER_WEEK.2 as u32,
+            memory_hours: bounds::FREE_MEMORY_HOURS.2 as u32,
+            meetings_per_month: bounds::FREE_MEETINGS_PER_MONTH.2 as u32,
+        }
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -73,6 +103,7 @@ pub struct AgentConfig {
     pub answer_idle_timeout: Duration,
     /// Used by the server's search; served for completeness.
     pub search_timeout: Duration,
+    pub free: FreeLimits,
     kinds: BTreeMap<String, KindConfig>,
 }
 
@@ -88,6 +119,7 @@ impl Default for AgentConfig {
             answer_first_byte_timeout: ms(bounds::ANSWER_FIRST_BYTE_TIMEOUT_MS),
             answer_idle_timeout: ms(bounds::ANSWER_IDLE_TIMEOUT_MS),
             search_timeout: ms(bounds::SEARCH_TIMEOUT_MS),
+            free: FreeLimits::default(),
             kinds: BTreeMap::new(),
         }
     }
@@ -130,6 +162,10 @@ fn clamp(v: Option<&Value>, b: (f64, f64, f64)) -> f64 {
         .map_or(b.2, |x| x.clamp(b.0, b.1))
 }
 
+fn whole(v: Option<&Value>, b: (f64, f64, f64)) -> u32 {
+    clamp(v, b).round() as u32
+}
+
 /// The server's JSON, applied within bounds. None for another schema version
 /// or something that isn't an object (the defaults then stay).
 pub fn parse(text: &str) -> Option<AgentConfig> {
@@ -168,6 +204,18 @@ pub fn parse(text: &str) -> Option<AgentConfig> {
             v.pointer("/search/timeout_ms"),
             bounds::SEARCH_TIMEOUT_MS,
         )),
+        free: FreeLimits {
+            ai_per_week: whole(v.pointer("/free/ai_per_week"), bounds::FREE_AI_PER_WEEK),
+            suggestions_per_week: whole(
+                v.pointer("/free/suggestions_per_week"),
+                bounds::FREE_SUGGESTIONS_PER_WEEK,
+            ),
+            memory_hours: whole(v.pointer("/free/memory_hours"), bounds::FREE_MEMORY_HOURS),
+            meetings_per_month: whole(
+                v.pointer("/free/meetings_per_month"),
+                bounds::FREE_MEETINGS_PER_MONTH,
+            ),
+        },
         kinds: BTreeMap::new(),
     };
     if let Some(kinds) = v.get("kinds").and_then(Value::as_object) {
@@ -285,6 +333,27 @@ mod tests {
         assert!((c.min_confidence_for("draft_reply") - 0.6).abs() < 1e-6);
         assert!(c.kind("summarise_thread").enabled);
         assert_eq!(c.kind("draft_reply").cooldown, Duration::from_secs(180));
+        assert_eq!(
+            c.free,
+            FreeLimits {
+                ai_per_week: 25,
+                suggestions_per_week: 10,
+                memory_hours: 24,
+                meetings_per_month: 2,
+            }
+        );
+    }
+
+    #[test]
+    fn free_limits_are_clamped() {
+        let c = parse(
+            r#"{"schema":1,"free":{"ai_per_week":100000,"suggestions_per_week":0,"memory_hours":"x","meetings_per_month":3.6}}"#,
+        )
+        .unwrap();
+        assert_eq!(c.free.ai_per_week, 500);
+        assert_eq!(c.free.suggestions_per_week, 1);
+        assert_eq!(c.free.memory_hours, 24); // not a number → default
+        assert_eq!(c.free.meetings_per_month, 4);
     }
 
     #[test]
@@ -346,6 +415,13 @@ mod tests {
         );
         check("answer.idle_timeout_ms", bounds::ANSWER_IDLE_TIMEOUT_MS);
         check("search.timeout_ms", bounds::SEARCH_TIMEOUT_MS);
+        check("free.ai_per_week", bounds::FREE_AI_PER_WEEK);
+        check(
+            "free.suggestions_per_week",
+            bounds::FREE_SUGGESTIONS_PER_WEEK,
+        );
+        check("free.memory_hours", bounds::FREE_MEMORY_HOURS);
+        check("free.meetings_per_month", bounds::FREE_MEETINGS_PER_MONTH);
         for k in v["kinds"].as_array().unwrap() {
             assert!(known_kind(k.as_str().unwrap()), "{k}");
         }

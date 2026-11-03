@@ -1026,10 +1026,10 @@
     "limitReached": "Bu haftaki ücretsiz kelimelerinizi kullandınız. Sınırsız dikte için yükseltin veya hafta sıfırlandığında devam edin.",
     "limitToast": "Haftalık ücretsiz kelimeler bitti",
     "proFeatures": {
-      "polish": "Her dikteye yapay zekâ cilası",
-      "onDevice": "Apple Intelligence ile cihazda cila",
-      "agent": "Ambient aracısı, çıktığı anda",
-      "priority": "Öncelikli destek"
+      "priority": "Öncelikli destek",
+      "noLimits": "Yapay zekâ kullanımı ve önerilerde haftalık sınır yok",
+      "meetings": "Sınırsız toplantı notları",
+      "memory": "90 güne kadar ekran belleği"
     },
     "card": {
       "activate": "Etkinleştir",
@@ -1100,7 +1100,7 @@
       "unlock": "Sınırsıza geç",
       "onDevice": "Bu Mac’te tutun",
       "onDeviceDescription": "Bunun yerine Apple Intelligence kullanın. Hiçbir şey Mac’inizden çıkmaz.",
-      "freeLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı"
+      "freeUsesLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ kullanımından {{left}} tanesi kaldı"
     },
     "trial": {
       "daysLeft_one": "{{count}} gün kaldı",
@@ -1148,12 +1148,13 @@
     "plan": {
       "title": "Planınız",
       "polishUnlimited": "Yapay zekâ cilası sınırsızdır.",
-      "polishLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ cilası hakkından {{left}} tanesi kaldı · {{day}} sıfırlanır",
       "polishFree": "Ücretsiz plan haftalık yapay zekâ cilası hakkı içerir.",
       "meetingsLeft": "Bu ay {{limit}} toplantı notundan {{left}} tanesi kaldı",
       "aiLeft": "Bugün {{limit}} yapay zekâ isteğinden {{left}} tanesi kaldı",
       "searchLeft": "Kalan aramalar: {{count}}",
-      "meterLabel": "Kalan hak"
+      "meterLabel": "Kalan hak",
+      "aiUsesLeft": "Bu hafta {{limit}} yapay zekâ kullanımından {{left}} tanesi kaldı · {{day}} sıfırlanır",
+      "suggestionsLeft": "Bu hafta {{limit}} öneriden {{left}} tanesi kaldı"
     },
     "privacy": {
       "title": "Gizlilik",
@@ -1300,7 +1301,10 @@
       "cantDoYet": "Bunu henüz yapamıyorum: {{what}}. Kendiniz nasıl yapacağınızı göstereyim mi?",
       "cantDoYetPlain": "Bunu bu bilgisayarda henüz yapamıyorum. Kendiniz nasıl yapacağınızı göstereyim mi?",
       "failed": "Bu sefer olmadı. Birazdan tekrar deneyin.",
-      "undoFailed": "Bunu geri alamadım. Uygulamanın kendisinden kaldırabilirsiniz."
+      "undoFailed": "Bunu geri alamadım. Uygulamanın kendisinden kaldırabilirsiniz.",
+      "limitAi": "Bu haftanın {{limit}} yapay zekâ kullanımı bitti. Pazartesi sıfırlanır. Sınırsız kullanım için yükseltin.",
+      "limitSuggestions": "Ücretsiz planda bu haftanın {{limit}} önerisini aldınız.",
+      "limitMeetings": "Ücretsiz planda bu ayın {{limit}} toplantısı bitti. Sınırsız kullanım için yükseltin."
     },
     "offer": {
       "searchWeb": "Web'de ara",
@@ -1310,7 +1314,8 @@
       "openSettings": "Ayarları aç",
       "showFile": "Dosyayı göster",
       "howTo": "Nasıl yapılır",
-      "showMeHow": "Nasıl yapılır"
+      "showMeHow": "Nasıl yapılır",
+      "upgrade": "Yükselt"
     },
     "report": {
       "title": "Bu, {{appName}} ekibine gönderilsin mi?",
@@ -1532,6 +1537,12 @@
       "title": "{{appName}} uygulamasını geliştirmeye yardım et",
       "label": "Anonim kullanım sayılarını paylaş",
       "description": "Yalnızca sayılar ve süreler; söylediklerin, yazdıkların veya gördüklerin asla. Sen açana kadar kapalı."
+    },
+    "free": {
+      "perWeek": "Ücretsiz: haftada {{limit}}",
+      "perMonth": "Ücretsiz: ayda {{limit}}",
+      "hours": "Ücretsiz: {{limit}} saat",
+      "retention": "Ücretsiz plan son {{limit}} saati saklar. Pro 90 güne kadar saklar."
     }
   },
   "meetings": {
@@ -1575,7 +1586,7 @@
     },
     "error": {
       "storage": "Toplantı depolaması açılamadı.",
-      "freeLimit": "Ücretsiz plan ayda 2 toplantı içerir. Pro sınırsızdır.",
+      "freeLimit": "Ücretsiz planda bu ayın {{limit}} toplantısı bitti. Sınırsız kullanım için yükseltin.",
       "mic": "Mikrofon açılamadı.",
       "notActive": "Devam eden toplantı yok.",
       "notFound": "Bu toplantı artık mevcut değil.",
@@ -1591,8 +1602,6 @@
       "offDetail": "Açın, görüşme başlayınca {{appName}} not almayı önersin.",
       "paused": "Duraklatıldı",
       "pausedDetail": "Gizlilik bölümünden devam ettirene kadar {{appName}} not önermeyecek.",
-      "pro": "Not alınmıyor",
-      "proDetail": "Pro ile {{appName}} görüşmelerinizi fark eder ve not almayı önerir.",
       "unsupported": "Not alınmıyor",
       "unsupportedDetail": "Görüşmeniz başlayınca not almaya başlayın.",
       "turnOn": "Aç"
@@ -1662,14 +1671,14 @@
       "title": "{{appName}} neler yapabilir, seçin",
       "description": "Hepsi isteğe bağlı. Gizlilik bölümünden istediğiniz zaman değiştirin.",
       "footnote": "Parolalar, cüzdanlar ve gizli pencereler asla okunmaz.",
-      "proOnly": "Pro’ya dahildir. Hesap bölümünden yükseltin.",
       "caps": {
         "screen_context": "Yalnızca sorduğunuz pencere",
         "proactive": "Bu bilgisayarda karar verilir",
         "meetings": "Ses bu bilgisayarda kalır",
         "wake_word": "Yalnızca bu bilgisayarda dinler",
         "screen_memory": "Bu bilgisayarda şifreli kalır"
-      }
+      },
+      "freeNote": "Ücretsiz planda yapay zekâ kullanımı ve önerilerin haftalık sınırları vardır."
     }
   },
   "getStarted": {

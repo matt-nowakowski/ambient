@@ -1026,10 +1026,10 @@
     "limitReached": "Bạn đã dùng hết số từ miễn phí của tuần này. Hãy nâng cấp để đọc chính tả không giới hạn, hoặc tiếp tục khi tuần được đặt lại.",
     "limitToast": "Đã dùng hết từ miễn phí trong tuần",
     "proFeatures": {
-      "polish": "Trau chuốt bằng AI cho mọi lần đọc chính tả",
-      "onDevice": "Trau chuốt ngay trên thiết bị với Apple Intelligence",
-      "agent": "Tác nhân ambient, với mọi tính năng mới ngay khi ra mắt",
-      "priority": "Hỗ trợ ưu tiên"
+      "priority": "Hỗ trợ ưu tiên",
+      "noLimits": "Không giới hạn hằng tuần cho lượt dùng AI và gợi ý",
+      "meetings": "Ghi chú cuộc họp không giới hạn",
+      "memory": "Bộ nhớ màn hình tối đa 90 ngày"
     },
     "card": {
       "activate": "Kích hoạt",
@@ -1100,7 +1100,7 @@
       "unlock": "Nhận không giới hạn",
       "onDevice": "Giữ trên Mac này",
       "onDeviceDescription": "Hãy dùng Apple Intelligence thay thế. Không có gì rời khỏi Mac của bạn.",
-      "freeLeft": "Còn {{left}} trên {{limit}} lượt trau chuốt bằng AI miễn phí tuần này"
+      "freeUsesLeft": "Còn {{left}}/{{limit}} lượt dùng AI miễn phí tuần này"
     },
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",
@@ -1148,12 +1148,13 @@
     "plan": {
       "title": "Gói của bạn",
       "polishUnlimited": "Trau chuốt bằng AI không giới hạn.",
-      "polishLeft": "Còn {{left}} trên {{limit}} lượt trau chuốt bằng AI miễn phí tuần này · đặt lại vào {{day}}",
       "polishFree": "Gói miễn phí gồm hạn mức trau chuốt bằng AI hằng tuần.",
       "meetingsLeft": "Tháng này còn {{left}}/{{limit}} ghi chú cuộc họp",
       "aiLeft": "Hôm nay còn {{left}}/{{limit}} yêu cầu AI",
       "searchLeft": "Số lần tìm kiếm còn lại: {{count}}",
-      "meterLabel": "Hạn mức còn lại"
+      "meterLabel": "Hạn mức còn lại",
+      "aiUsesLeft": "Còn {{left}}/{{limit}} lượt dùng AI tuần này · đặt lại {{day}}",
+      "suggestionsLeft": "Còn {{left}}/{{limit}} gợi ý tuần này"
     },
     "privacy": {
       "title": "Quyền riêng tư",
@@ -1300,7 +1301,10 @@
       "cantDoYet": "Tôi chưa làm được việc này: {{what}}. Bạn có muốn tôi chỉ cách tự làm không?",
       "cantDoYetPlain": "Tôi chưa làm được việc đó trên máy tính này. Bạn có muốn tôi chỉ cách tự làm không?",
       "failed": "Lần này không thành công. Hãy thử lại sau giây lát.",
-      "undoFailed": "Tôi không hoàn tác được. Bạn có thể xóa trực tiếp trong ứng dụng."
+      "undoFailed": "Tôi không hoàn tác được. Bạn có thể xóa trực tiếp trong ứng dụng.",
+      "limitAi": "Bạn đã dùng hết {{limit}} lượt AI của tuần này. Sẽ đặt lại vào thứ Hai. Nâng cấp để không giới hạn.",
+      "limitSuggestions": "Bạn đã nhận đủ {{limit}} gợi ý của tuần này trên gói Miễn phí.",
+      "limitMeetings": "Bạn đã dùng hết {{limit}} cuộc họp của tháng này trên gói Miễn phí. Nâng cấp để không giới hạn."
     },
     "offer": {
       "searchWeb": "Tìm trên web",
@@ -1310,7 +1314,8 @@
       "openSettings": "Mở Cài đặt",
       "showFile": "Hiện tệp",
       "howTo": "Chỉ tôi cách làm",
-      "showMeHow": "Chỉ tôi cách làm"
+      "showMeHow": "Chỉ tôi cách làm",
+      "upgrade": "Nâng cấp"
     },
     "report": {
       "title": "Gửi cho nhóm {{appName}}?",
@@ -1532,6 +1537,12 @@
       "title": "Giúp cải thiện {{appName}}",
       "label": "Chia sẻ số liệu sử dụng ẩn danh",
       "description": "Chỉ số đếm và thời gian, không bao giờ là những gì bạn nói, gõ hay thấy. Tắt cho đến khi bạn bật."
+    },
+    "free": {
+      "perWeek": "Miễn phí: {{limit}} mỗi tuần",
+      "perMonth": "Miễn phí: {{limit}} mỗi tháng",
+      "hours": "Miễn phí: {{limit}} giờ",
+      "retention": "Gói Miễn phí giữ {{limit}} giờ gần nhất. Pro giữ tối đa 90 ngày."
     }
   },
   "meetings": {
@@ -1575,7 +1586,7 @@
     },
     "error": {
       "storage": "Không thể mở bộ nhớ cuộc họp.",
-      "freeLimit": "Gói miễn phí gồm 2 cuộc họp mỗi tháng. Pro không giới hạn.",
+      "freeLimit": "Bạn đã dùng hết {{limit}} cuộc họp của tháng này trên gói Miễn phí. Nâng cấp để không giới hạn.",
       "mic": "Không thể mở micrô.",
       "notActive": "Không có cuộc họp nào đang diễn ra.",
       "notFound": "Cuộc họp đó không còn tồn tại.",
@@ -1591,8 +1602,6 @@
       "offDetail": "Bật lên và {{appName}} sẽ đề nghị ghi chú khi cuộc gọi bắt đầu.",
       "paused": "Đã tạm dừng",
       "pausedDetail": "{{appName}} sẽ không đề nghị ghi chú cho đến khi bạn tiếp tục trong Quyền riêng tư.",
-      "pro": "Không ghi chú",
-      "proDetail": "Với Pro, {{appName}} nhận ra cuộc gọi của bạn và đề nghị ghi chú.",
       "unsupported": "Không ghi chú",
       "unsupportedDetail": "Bắt đầu ghi chú khi cuộc gọi của bạn bắt đầu.",
       "turnOn": "Bật"
@@ -1662,14 +1671,14 @@
       "title": "Chọn những gì {{appName}} được làm",
       "description": "Tất cả đều tùy chọn. Thay đổi bất cứ lúc nào trong Quyền riêng tư.",
       "footnote": "Mật khẩu, ví và cửa sổ riêng tư không bao giờ được đọc.",
-      "proOnly": "Thuộc gói Pro. Nâng cấp trong Tài khoản.",
       "caps": {
         "screen_context": "Chỉ cửa sổ bạn hỏi đến",
         "proactive": "Quyết định trên máy tính này",
         "meetings": "Âm thanh ở lại trên máy tính này",
         "wake_word": "Chỉ nghe trên máy tính này",
         "screen_memory": "Mã hóa, chỉ trên máy tính này"
-      }
+      },
+      "freeNote": "Trên gói Miễn phí, lượt dùng AI và gợi ý có giới hạn hằng tuần."
     }
   },
   "getStarted": {

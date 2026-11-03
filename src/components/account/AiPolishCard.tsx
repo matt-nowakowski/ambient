@@ -13,8 +13,9 @@ const ON_DEVICE = "apple_intelligence";
 // settings.rs offers Apple Intelligence only on Apple silicon Macs.
 const onDeviceAvailable = platform() === "macos" && arch() === "aarch64";
 
-/** AI polish: one switch, plus "keep it on this Mac" (Pro) where Apple
- * Intelligence is available. Free gets a weekly allowance of hosted polish. */
+/** AI polish: one switch, plus "keep it on this Mac" where Apple
+ * Intelligence is available. On Free each polish, hosted or on this Mac, is
+ * one of the week's AI uses. */
 export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
   const { t } = useTranslation();
   const { getSetting, updateSetting, setPostProcessProvider } = useSettings();
@@ -25,9 +26,7 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
   const provider = getSetting("post_process_provider_id") ?? "";
   const prompts = getSetting("post_process_prompts") ?? [];
   const selectedPrompt = getSetting("post_process_selected_prompt_id");
-  const on = paid
-    ? enabled && (provider === HOSTED || provider === ON_DEVICE)
-    : enabled && provider === HOSTED;
+  const on = enabled && (provider === HOSTED || provider === ON_DEVICE);
   const local = provider === ON_DEVICE;
 
   const turnOn = async (useDevice: boolean) => {
@@ -52,7 +51,7 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
             </p>
             {!paid && usage && (
               <p className="mt-2 text-small font-medium tabular-nums">
-                {t("account.polish.freeLeft", {
+                {t("account.polish.freeUsesLeft", {
                   left: Math.max(0, usage.limit - usage.used),
                   limit: usage.limit,
                 })}
@@ -71,14 +70,14 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
             ariaLabel={t("account.polish.title")}
             onChange={(next) =>
               next
-                ? turnOn(paid && local)
+                ? turnOn(local)
                 : updateSetting("post_process_enabled", false)
             }
           />
         </div>
       </div>
 
-      {paid && onDeviceAvailable && (
+      {onDeviceAvailable && (
         <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
           <div>
             <p className="text-ui">{t("account.polish.onDevice")}</p>

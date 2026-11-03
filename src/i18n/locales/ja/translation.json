@@ -1026,10 +1026,10 @@
     "limitReached": "今週の無料の語数を使い切りました。アップグレードすると無制限で音声入力できます。週のリセット後に続けることもできます。",
     "limitToast": "今週の無料の語数を使い切りました",
     "proFeatures": {
-      "polish": "すべての音声入力をAIで整形",
-      "onDevice": "Apple Intelligenceによるデバイス上での整形",
-      "agent": "ambient エージェントの新機能をリリースと同時に利用",
-      "priority": "優先サポート"
+      "priority": "優先サポート",
+      "noLimits": "AI利用と提案に週ごとの上限なし",
+      "meetings": "会議メモが無制限",
+      "memory": "画面の記憶を最大90日間"
     },
     "card": {
       "activate": "有効化",
@@ -1100,7 +1100,7 @@
       "unlock": "無制限にする",
       "onDevice": "このMacで処理する",
       "onDeviceDescription": "代わりにApple Intelligenceを使用します。データがMacの外に出ることはありません。",
-      "freeLeft": "今週は無料のAIによる整形があと {{left}} 回（全 {{limit}} 回）"
+      "freeUsesLeft": "今週の無料AI利用はあと {{left}} 回（全 {{limit}} 回）"
     },
     "trial": {
       "daysLeft_one": "残り {{count}} 日",
@@ -1148,12 +1148,13 @@
     "plan": {
       "title": "ご利用中のプラン",
       "polishUnlimited": "AIによる整形は無制限です。",
-      "polishLeft": "今週は無料のAIによる整形があと {{left}} 回（全 {{limit}} 回）・{{day}}にリセット",
       "polishFree": "無料プランには週ごとのAIによる整形の利用枠が含まれます。",
       "meetingsLeft": "今月の会議メモ残り {{left}}/{{limit}}",
       "aiLeft": "今日のAIリクエスト残り {{left}}/{{limit}}",
       "searchLeft": "残りの検索：{{count}}",
-      "meterLabel": "残り枠"
+      "meterLabel": "残り枠",
+      "aiUsesLeft": "今週のAI利用はあと {{left}} 回（全 {{limit}} 回）・{{day}}にリセット",
+      "suggestionsLeft": "今週の提案はあと {{left}} 件（全 {{limit}} 件）"
     },
     "privacy": {
       "title": "プライバシー",
@@ -1300,7 +1301,10 @@
       "cantDoYet": "まだこれはできません：{{what}}。自分でやる方法をお見せしましょうか？",
       "cantDoYetPlain": "このコンピュータではまだそれができません。自分でやる方法をお見せしましょうか？",
       "failed": "今回はうまくいきませんでした。少ししてからもう一度お試しください。",
-      "undoFailed": "元に戻せませんでした。アプリ内で直接削除できます。"
+      "undoFailed": "元に戻せませんでした。アプリ内で直接削除できます。",
+      "limitAi": "今週のAI利用 {{limit}} 回を使い切りました。月曜日にリセットされます。アップグレードすると上限がなくなります。",
+      "limitSuggestions": "無料プランの今週の提案 {{limit}} 件をすべて表示しました。",
+      "limitMeetings": "無料プランの今月の会議 {{limit}} 回を使い切りました。アップグレードすると上限がなくなります。"
     },
     "offer": {
       "searchWeb": "Webで検索",
@@ -1310,7 +1314,8 @@
       "openSettings": "設定を開く",
       "showFile": "ファイルを表示",
       "howTo": "やり方を見る",
-      "showMeHow": "やり方を見る"
+      "showMeHow": "やり方を見る",
+      "upgrade": "アップグレード"
     },
     "report": {
       "title": "{{appName}}チームに送信しますか？",
@@ -1532,6 +1537,12 @@
       "title": "{{appName}}の改善に協力する",
       "label": "匿名の利用回数を共有",
       "description": "回数と所要時間のみ。話した内容、入力した内容、画面の内容は共有しません。オンにするまでオフです。"
+    },
+    "free": {
+      "perWeek": "無料：週 {{limit}} 件",
+      "perMonth": "無料：月 {{limit}} 回",
+      "hours": "無料：{{limit}} 時間",
+      "retention": "無料プランでは直近 {{limit}} 時間分を保持します。Proなら最大90日間です。"
     }
   },
   "meetings": {
@@ -1575,7 +1586,7 @@
     },
     "error": {
       "storage": "会議の保存先を開けませんでした。",
-      "freeLimit": "無料プランでは月2回まで会議を利用できます。Proなら無制限です。",
+      "freeLimit": "無料プランの今月の会議 {{limit}} 回を使い切りました。アップグレードすると上限がなくなります。",
       "mic": "マイクを開けませんでした。",
       "notActive": "進行中の会議はありません。",
       "notFound": "その会議はもう存在しません。",
@@ -1591,8 +1602,6 @@
       "offDetail": "オンにすると、通話の開始時に{{appName}}がメモの作成を提案します。",
       "paused": "一時停止中",
       "pausedDetail": "プライバシーで再開するまで、{{appName}}はメモを提案しません。",
-      "pro": "メモを取っていません",
-      "proDetail": "Proなら、{{appName}}が通話を検出してメモの作成を提案します。",
       "unsupported": "メモを取っていません",
       "unsupportedDetail": "通話が始まったらメモを開始します。",
       "turnOn": "オンにする"
@@ -1662,14 +1671,14 @@
       "title": "{{appName}}に許可することを選ぶ",
       "description": "すべて任意です。プライバシーでいつでも変更できます。",
       "footnote": "パスワード、ウォレット、プライベートウィンドウは読み取りません。",
-      "proOnly": "Proの機能です。アカウントでアップグレードしてください。",
       "caps": {
         "screen_context": "尋ねたウィンドウのみ",
         "proactive": "このコンピュータ上で判断",
         "meetings": "音声はこのコンピュータの外に出ません",
         "wake_word": "このコンピュータ上でのみ聞き取り",
         "screen_memory": "このコンピュータに暗号化して保存"
-      }
+      },
+      "freeNote": "無料プランでは、AI利用と提案に週ごとの上限があります。"
     }
   },
   "getStarted": {

@@ -128,14 +128,13 @@ pub fn start(app: AppHandle) {
 }
 
 /// Opens the mic while the setting is on (and no meeting is running), closes it otherwise.
+/// On every plan: the phrase is heard on this computer and costs nothing;
+/// what's asked after it counts like any other request.
 fn supervise(app: AppHandle) {
     loop {
         std::thread::sleep(Duration::from_secs(1));
         let agent = get_settings(&app).agent;
-        let want = agent.wake_word
-            && !agent.is_paused()
-            && crate::plan::is_paid(&app)
-            && !crate::meeting::is_active();
+        let want = agent.wake_word && !agent.is_paused() && !crate::meeting::is_active();
         if want && !RUNNING.load(Ordering::SeqCst) {
             listen(&app);
         }
@@ -168,11 +167,7 @@ fn listen(app: &AppHandle) {
         if last_check.elapsed() > Duration::from_secs(1) {
             last_check = Instant::now();
             let agent = get_settings(app).agent;
-            if !agent.wake_word
-                || agent.is_paused()
-                || crate::meeting::is_active()
-                || !crate::plan::is_paid(app)
-            {
+            if !agent.wake_word || agent.is_paused() || crate::meeting::is_active() {
                 break;
             }
             if awaiting_request.is_some_and(|t| t.elapsed() > FOLLOW_UP) {
