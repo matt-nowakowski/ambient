@@ -31,6 +31,10 @@ export const GLOBAL_KEYS = [
   "answer.first_byte_timeout_ms",
   "answer.idle_timeout_ms",
   "search.timeout_ms",
+  "free.ai_per_week",
+  "free.suggestions_per_week",
+  "free.memory_hours",
+  "free.meetings_per_month",
 ] as const;
 
 const KIND_FIELDS = ["enabled", "min_confidence", "cooldown_min"] as const;
@@ -111,6 +115,8 @@ export type PublicConfig = {
   router: { did_you_mean_bias: number };
   answer: { first_byte_timeout_ms: number; idle_timeout_ms: number };
   search: { timeout_ms: number };
+  /** Free's limits. The server enforces ai_per_week on hosted AI; the app the rest. */
+  free: { ai_per_week: number; suggestions_per_week: number; memory_hours: number; meetings_per_month: number };
   kinds: Record<string, { enabled: boolean; min_confidence: number; cooldown_min: number }>;
 };
 
@@ -125,6 +131,12 @@ export function toPublic(values: Flat, now = new Date()): PublicConfig {
     router: { did_you_mean_bias: n("router.did_you_mean_bias") },
     answer: { first_byte_timeout_ms: n("answer.first_byte_timeout_ms"), idle_timeout_ms: n("answer.idle_timeout_ms") },
     search: { timeout_ms: n("search.timeout_ms") },
+    free: {
+      ai_per_week: n("free.ai_per_week"),
+      suggestions_per_week: n("free.suggestions_per_week"),
+      memory_hours: n("free.memory_hours"),
+      meetings_per_month: n("free.meetings_per_month"),
+    },
     kinds: Object.fromEntries(
       KINDS.map((k) => [
         k,

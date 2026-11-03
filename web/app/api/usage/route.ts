@@ -1,13 +1,13 @@
-import { brand } from "@/lib/brand";
+import { freeAiPerWeek } from "@/lib/agent/config-store";
 import { currentWeek, db, isDatabaseConfigured } from "@/lib/db";
 import { machineKey, parseMachine } from "@/lib/machine";
 
-/** Free's AI polish usage this week, for the app's Home and Account screens. */
+/** Free's AI uses this week (hosted), for the app's Home and Account screens. */
 export async function GET(req: Request) {
   const machine = parseMachine(new URL(req.url).searchParams.get("machine"));
   if (!machine) return Response.json({ error: "invalid_machine" }, { status: 400 });
   const { week, resetsAt } = currentWeek();
-  const limit = brand.freePolishPerWeek;
+  const limit = await freeAiPerWeek();
   if (!isDatabaseConfigured()) return Response.json({ used: 0, limit, resetsAt });
 
   const sql = await db();

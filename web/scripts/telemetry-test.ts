@@ -43,6 +43,11 @@ check("every schema event has a valid sample", EVENT_NAMES.every((n) => validEve
 check("a batch of every event parses", parseBatch(batch(EVENT_NAMES.map(sample))) !== null);
 check("valid batch parses", parseBatch(batch([offered]))?.events.length === 1);
 check("event with no props (did_you_mean_shown)", validEvent({ name: "did_you_mean_shown", props: {}, n: 3 }));
+check(
+  "limit_hit takes ai, suggestions or meetings only",
+  ["ai", "suggestions", "meetings"].every((kind) => validEvent({ name: "limit_hit", props: { kind }, n: 1 })) &&
+    !validEvent({ name: "limit_hit", props: { kind: "words" }, n: 1 }),
+);
 
 check("unknown event rejected", parseBatch(batch([{ name: "keystroke", props: {}, n: 1 }])) === null);
 check("unknown prop rejected", !validEvent({ ...offered, props: { ...offered.props, title: "Re: invoice" } }));

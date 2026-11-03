@@ -23,8 +23,14 @@ export const brand = {
   enforceFreeWordLimit: config.enforceFreeWordLimit,
   /** Days of Pro on first launch, no card. */
   trialDays: config.trialDays,
-  /** Hosted AI polishes per week on Free, after the trial. */
+  /**
+   * AI uses per week on Free, after the trial: one pool for polish, answers,
+   * actions, meeting summaries and on-device Apple Intelligence. The live
+   * value is the remote config's `free.ai_per_week` (default equal to this).
+   */
   freePolishPerWeek: config.freePolishPerWeek,
+  /** Proactive suggestions per week on Free (`free.suggestions_per_week`). */
+  freeSuggestionsPerWeek: config.freeSuggestionsPerWeek,
   company: config.company,
   pricing: {
     proMonthly: config.pricing.proMonthly,
@@ -34,8 +40,8 @@ export const brand = {
   },
 } as const;
 
-/** Meetings with notes per month on Free, after the trial. Mirrors FREE_MEETINGS_PER_MONTH in src-tauri/src/meeting/mod.rs. */
-export const freeMeetingsPerMonth = 2;
+/** Meetings with notes per month on Free, after the trial (the remote config's `free.meetings_per_month` defaults to this). */
+export const freeMeetingsPerMonth: number = config.freeMeetingsPerMonth;
 
 /** Fair-use limits on paid plans (Pro and Team), per account per day, reset at midnight UTC. */
 export const fairUse = { aiRequestsPerDay: 1500, webSearchesPerDay: 100 } as const;
