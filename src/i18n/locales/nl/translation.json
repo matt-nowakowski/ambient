@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "Instellingen...",
-    "checkUpdates": "Controleren op updates...",
+    "settings": "Instellingen…",
+    "checkUpdates": "Controleren op updates…",
     "copyLastTranscript": "Laatste transcriptie kopiëren",
     "unloadModel": "Model ontladen",
     "model": "Model",
@@ -17,8 +17,8 @@
     "advanced": "Geavanceerd",
     "postProcessing": "Naverwerking",
     "history": "Geschiedenis",
-    "debug": "Probleemoplossing",
-    "about": "Over {{appName}}",
+    "debug": "Debug",
+    "about": "Over",
     "settings": "Instellingen",
     "privacy": "Privacy",
     "meetings": "Vergaderingen"
@@ -73,8 +73,8 @@
       "progress": "Stap {{step}} van {{count}}"
     },
     "welcome": {
-      "title": "Praat in plaats van typen, in elke app",
-      "subtitle": "Kies de talen waarin je gaat dicteren",
+      "title": "Welke talen spreek je?",
+      "subtitle": "Kies alle talen die je met {{appName}} gebruikt. Je kunt dit later wijzigen.",
       "languagesLabel": "Talen",
       "noMatch": "Geen resultaat voor ‘{{query}}’. Meer talen vind je in de instellingen.",
       "appLanguage": "App-taal",
@@ -147,9 +147,9 @@
       "addKey": "Voeg nu een toets toe",
       "cancel": "Annuleren",
       "tryIt": "Probeer het zelf",
-      "addModifier": "Losse toets typt. Voeg een speciale toets toe.",
+      "addModifier": "Een losse toets zou gewoon typen. Voeg een modificatietoets toe.",
       "lines": {
-        "hold": "Ja! Ik ben tien minuten later, hou een plekje vrij.",
+        "hold": "Ja! Ik ben tien minuten te laat, hou een plekje voor me vrij.",
         "tap": "Zaterdag picknicken in het park, daarna eten bij Rosa's. Neem de blauwe deken en de goede speaker mee."
       },
       "agent": {
@@ -172,7 +172,7 @@
     },
     "try": {
       "title": "Probeer het maar!",
-      "subtitle": "{{appName}} staat in de hoek om je er doorheen te helpen",
+      "subtitle": "{{appName}} staat in de hoek en helpt je op weg",
       "noteLabel": "Notitie",
       "placeholder": "Nieuwe notitie",
       "hold": "Houd <keys/> ingedrukt en praat.",
@@ -181,14 +181,14 @@
       "tapAgain": "Tik nogmaals op <keys/> als je klaar bent.",
       "watch": "Kijk naar de notitie.",
       "changeKeys": "Wijzig je sneltoets, {{keys}}",
-      "doneHold": "High five! Dat was ingedrukt houden.",
+      "doneHold": "Yes! Dat was ingedrukt houden.",
       "doneHoldNext": "Nu de handsfree manier.",
       "doneTap": "Top! Dat was tikken.",
       "doneTapNext": "Probeer ze nu ingedrukt te houden terwijl je praat.",
       "giveFive": "Gelukt! Geef me een high five",
       "highFive": "High five",
       "slowLine": "{{name}} deed er {{wait}} over op deze computer. <faster>Probeer een sneller model</faster>",
-      "nothingTyped": "Hm, er is niets aangekomen.",
+      "nothingTyped": "Hm, er verscheen niets.",
       "nothingTypedSub": "Klik eerst in de notitie en probeer het dan opnieuw.",
       "silent": "Ik hoorde niets.",
       "silentSub": "Deze microfoon gaf geen geluid. Probeer een andere:",
@@ -196,15 +196,15 @@
       "noWordsSub": "Probeer het opnieuw en zeg een hele zin.",
       "finish": "Afronden",
       "skip": "Overslaan",
-      "seconds": "{{value}} s",
+      "seconds": "{{value}} s",
       "heardHold": "Dat was ingedrukt houden. Nu de handsfree manier.",
       "heardTap": "Dat was tikken. Probeer ze nu ingedrukt te houden terwijl je praat.",
       "gotIt": "Elk woord opgevangen: ‘{{quote}}’"
     },
     "done": {
-      "title": "Alles is klaar",
-      "subMac": "{{appName}} woont in je menubalk. Houd <keys/> ingedrukt of tik erop in elke app om te praten.",
-      "subTray": "{{appName}} woont in je systeemvak. Houd <keys/> ingedrukt of tik erop in elke app om te praten.",
+      "title": "Alles staat klaar",
+      "subMac": "{{appName}} staat in je menubalk. Houd <keys/> ingedrukt of tik erop in elke app om te praten.",
+      "subTray": "{{appName}} staat in je systeemvak. Houd <keys/> ingedrukt of tik erop in elke app om te praten.",
       "hint": "Je kunt dit later wijzigen in de instellingen",
       "highFiveLabel": "High five",
       "atLogin": "{{appName}} starten als ik inlog",
@@ -245,7 +245,7 @@
       },
       "unsupported": "Dit model verstaat geen {{language}} en kan het dus niet typen",
       "unrated": "Dit model verstaat {{language}}, maar we hebben nog niet gemeten hoe goed",
-      "under": "onder {{max}}%",
+      "under": "minder dan {{max}}%",
       "between": "{{min}} tot {{max}}%",
       "over": "{{min}}% of meer",
       "speedTitle": "Snelheid: {{speed}}",
@@ -265,9 +265,9 @@
       },
       "speedPreview": "{{meaning}}, met een live voorvertoning terwijl je praat",
       "untimed": "We hebben nog niet gemeten hoe snel het is",
-      "underSeconds": "onder {{max}} s",
-      "betweenSeconds": "{{min}} tot {{max}} s",
-      "overSeconds": "{{min}} s of meer"
+      "underSeconds": "minder dan {{max}} s",
+      "betweenSeconds": "{{min}} tot {{max}} s",
+      "overSeconds": "{{min}} s of meer"
     },
     "roles": {
       "recommended": "Aanbevolen",
@@ -280,7 +280,7 @@
     "accuracy": "Nauwkeurigheid",
     "search": "Modellen zoeken",
     "allLabel": "Spraakmodellen",
-    "noMatch": "Niets gevonden voor „{{query}}”. Probeer een taal of een familie zoals Whisper of Parakeet",
+    "noMatch": "Niets gevonden voor ‘{{query}}’. Probeer een taal of een familie zoals Whisper of Parakeet",
     "noFilterMatch": "Geen modellen die bij deze filters passen",
     "speedUntested": "Snelheid nog niet gemeten",
     "speedWords": {
@@ -314,17 +314,17 @@
     "streaming": "Streaming",
     "active": "Actief",
     "noModelsAvailable": "Geen modellen beschikbaar",
-    "verifying": "Verifiëren van {{modelName}}...",
-    "verifyingGeneric": "Verifiëren...",
-    "downloading": "Downloaden {{percentage}}%",
-    "downloadingMultiple": "Downloaden van {{count}} modellen...",
+    "verifying": "{{modelName}} verifiëren…",
+    "verifyingGeneric": "Verifiëren…",
+    "downloading": "Downloaden: {{percentage}}%",
+    "downloadingMultiple": "{{count}} modellen downloaden…",
     "modelReady": "Model gereed",
-    "loading": "Laden van {{modelName}}...",
-    "loadingGeneric": "Laden...",
+    "loading": "{{modelName}} laden…",
+    "loadingGeneric": "Laden…",
     "modelError": "Modelfout",
     "modelUnloaded": "Model ontladen",
-    "noModelDownloadRequired": "Geen model - Download vereist",
-    "downloadSpeed": "{{speed}} MB/s",
+    "noModelDownloadRequired": "Geen model – download vereist",
+    "downloadSpeed": "{{speed}} MB/s",
     "lockedWhileTranscribing": "Je kunt van model wisselen zodra het transcriberen in Geschiedenis klaar is."
   },
   "settings": {
@@ -334,12 +334,12 @@
     "general": {
       "title": "Algemeen",
       "shortcut": {
-        "title": "Sneltoetsen",
+        "title": "Sneltoetsen voor {{appName}}",
         "description": "Configureer sneltoetsen om spraak-naar-tekst-opnames te starten",
-        "loading": "Sneltoetsen laden...",
+        "loading": "Sneltoetsen laden…",
         "none": "Geen sneltoetsen geconfigureerd",
         "notFound": "Sneltoets niet gevonden",
-        "pressKeys": "Druk op toetsen...",
+        "pressKeys": "Druk op toetsen…",
         "bindings": {
           "transcribe": {
             "name": "Sneltoets voor dicteren",
@@ -351,7 +351,7 @@
           },
           "transcribe_with_post_process": {
             "name": "Sneltoets voor naverwerking",
-            "description": "Optioneel: Een specifieke sneltoets die altijd AI-naverwerking toepast op je transcriptie."
+            "description": "Optioneel: een aparte sneltoets die altijd AI-naverwerking toepast op je transcriptie."
           },
           "ask_agent": {
             "name": "Sneltoets voor vragen",
@@ -364,13 +364,13 @@
       },
       "language": {
         "title": "Taal",
-        "description": "Selecteer de taal voor spraakherkenning. 'Automatisch' detecteert de taal vanzelf, terwijl het kiezen van een specifieke taal de nauwkeurigheid voor die taal kan verbeteren.",
-        "searchPlaceholder": "Talen zoeken...",
+        "description": "Selecteer de taal voor spraakherkenning. ‘Automatisch’ detecteert de taal vanzelf, terwijl het kiezen van een specifieke taal de nauwkeurigheid voor die taal kan verbeteren.",
+        "searchPlaceholder": "Talen zoeken…",
         "noResults": "Geen talen gevonden",
         "auto": "Automatisch",
         "autoUnavailable": {
           "title": "Automatisch is uitgeschakeld",
-          "oneLanguage": "Maar één van je talen werkt met dit model",
+          "oneLanguage": "Slechts één van je talen werkt met dit model",
           "undetectable": "Niet beschikbaar met {{languages}}",
           "noMatch": "Geen van je talen werkt met dit model"
         },
@@ -381,7 +381,7 @@
       "preferredLanguages": {
         "title": "Voorkeurstalen",
         "description": "De talen die je spreekt. {{appName}} gebruikt ze om modellen aan te bevelen.",
-        "noMatch": "Geen taal gevonden voor „{{query}}”",
+        "noMatch": "Geen taal gevonden voor ‘{{query}}’",
         "weak": "Geen enkel model herkent {{languages}} al goed."
       },
       "shortcutActivation": {
@@ -404,7 +404,7 @@
         "delay": {
           "label": "Pauze voor het stoppen",
           "description": "Hoe lang je na het praten stil moet zijn voordat dicteren stopt.",
-          "seconds": "{{seconds}} s"
+          "seconds": "{{seconds}} s"
         }
       }
     },
@@ -459,8 +459,8 @@
       "microphone": {
         "title": "Microfoon",
         "description": "Selecteer de gewenste microfoon",
-        "placeholder": "Microfoon selecteren...",
-        "loading": "Laden..."
+        "placeholder": "Microfoon selecteren…",
+        "loading": "Laden…"
       },
       "channel": {
         "title": "Ingangskanaal",
@@ -475,8 +475,8 @@
       "outputDevice": {
         "title": "Afspeelapparaat",
         "description": "Selecteer het gewenste audioapparaat voor feedbackgeluiden",
-        "placeholder": "Afspeelapparaat selecteren...",
-        "loading": "Laden..."
+        "placeholder": "Afspeelapparaat selecteren…",
+        "loading": "Laden…"
       },
       "volume": {
         "title": "Volume",
@@ -502,18 +502,18 @@
       "acceleration": {
         "transcribe": {
           "title": "Hardwareversnelling",
-          "description": "Kies de hardware die voor transcriptie wordt gebruikt. 'Automatisch' gebruikt de GPU indien beschikbaar en valt anders terug op de CPU."
+          "description": "Kies de hardware die voor transcriptie wordt gebruikt. ‘Automatisch’ gebruikt de GPU indien beschikbaar en valt anders terug op de CPU."
         },
         "gpuDevice": {
           "auto": "Automatisch"
         }
       },
       "startHidden": {
-        "label": "Geminimaliseerd opstarten",
-        "description": "Start op de achtergrond in het systeemvak zonder het hoofdvenster te openen."
+        "label": "Verborgen starten",
+        "description": "Start in het systeemvak zonder het venster te openen."
       },
       "autostart": {
-        "label": "Starten bij opstarten",
+        "label": "Starten bij inloggen",
         "description": "{{appName}} automatisch starten zodra je inlogt op je computer."
       },
       "showTrayIcon": {
@@ -523,7 +523,7 @@
       "overlay": {
         "style": {
           "title": "Overlay",
-          "description": "Kies de opname-overlay: 'Geen' verbergt deze, 'Minimaal' toont een compacte balk, 'Live' toont de tekst in realtime tijdens het spreken (alleen voor streaming-modellen). Op Linux wordt 'Geen' aanbevolen.",
+          "description": "Kies de opname-overlay: ‘Geen’ verbergt deze, ‘Minimaal’ toont een compacte balk, ‘Live’ toont de tekst in realtime terwijl je praat (alleen streamingmodellen; let op het label ‘Streaming’ in de modelkiezer). Op Linux wordt ‘Geen’ aanbevolen.",
           "options": {
             "none": "Geen",
             "minimal": "Minimaal",
@@ -541,7 +541,7 @@
       },
       "pasteMethod": {
         "title": "Plakmethode",
-        "description": "Kies hoe tekst wordt ingevoegd. 'Direct' simuleert typen via het systeem. 'Geen' slaat het plakken over en werkt alleen de geschiedenis en het klembord bij.",
+        "description": "Kies hoe tekst wordt ingevoegd. ‘Direct’ simuleert typen via het systeem. ‘Geen’ slaat het plakken over en werkt alleen de geschiedenis en het klembord bij.",
         "options": {
           "clipboard": "Klembord ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Klembord (Ctrl+Shift+V)",
@@ -553,15 +553,15 @@
         "externalScriptPlaceholder": "/pad/naar/je/script.sh"
       },
       "typingTool": {
-        "title": "Typgereedschap",
-        "description": "Kies welke Linux-typtool gebruikt moet worden voor de 'Directe' plakmethode. 'Automatisch' detecteert zelf de beste optie voor jouw systeem.",
+        "title": "Typtool",
+        "description": "Kies welke Linux-typtool de plakmethode ‘Direct’ gebruikt. ‘Automatisch’ detecteert zelf de beste tool voor je systeem.",
         "options": {
-          "auto": "Automatisch (Aanbevolen)"
+          "auto": "Automatisch (aanbevolen)"
         }
       },
       "clipboardHandling": {
         "title": "Klembordbeheer",
-        "description": "'Klembord niet aanpassen' behoudt je huidige klembordinhoud na een transcriptie. 'Kopiëren naar klembord' laat de getranscribeerde tekst achter op je klembord.",
+        "description": "‘Klembord niet aanpassen’ behoudt je huidige klembordinhoud na een transcriptie. ‘Kopiëren naar klembord’ laat de getranscribeerde tekst achter op je klembord.",
         "options": {
           "dontModify": "Klembord niet aanpassen",
           "copyToClipboard": "Kopiëren naar klembord"
@@ -587,7 +587,7 @@
         "description": "Geheugen (GPU/CPU) automatisch vrijmaken wanneer het model voor de opgegeven tijd niet is gebruikt",
         "options": {
           "never": "Nooit",
-          "immediately": "Direct",
+          "immediately": "Meteen",
           "min2": "Na 2 minuten",
           "min5": "Na 5 minuten",
           "min10": "Na 10 minuten",
@@ -602,7 +602,7 @@
         "placeholder": "Woord toevoegen",
         "add": "Toevoegen",
         "remove": "{{word}} verwijderen",
-        "duplicate": "\"{{word}}\" bestaat al"
+        "duplicate": "‘{{word}}’ bestaat al"
       },
       "voiceActivityDetection": {
         "title": "Spraakactiviteitsdetectie (VAD)",
@@ -649,7 +649,7 @@
     "history": {
       "title": "Geschiedenis",
       "openFolder": "Opnamemap openen",
-      "loading": "Geschiedenis laden...",
+      "loading": "Geschiedenis laden…",
       "empty": "Nog geen transcripties. Start met opnemen om je geschiedenis op te bouwen!",
       "copyToClipboard": "Transcriptie naar klembord kopiëren",
       "copyError": "Transcriptie naar het klembord kopiëren mislukt.",
@@ -659,19 +659,19 @@
       "deleteError": "Item verwijderen mislukt. Probeer het opnieuw.",
       "retranscribe": "Opnieuw transcriberen",
       "cancelTranscription": "Transcriptie annuleren",
-      "transcribing": "Transcriberen...",
-      "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaad-pictogram.",
-      "notTranscribed": "Niet getranscribeerd. Je kunt het transcriberen via het herlaad-pictogram.",
+      "transcribing": "Transcriberen…",
+      "transcriptionFailed": "Transcriptie mislukt. Je kunt het opnieuw proberen via het herlaadpictogram.",
+      "notTranscribed": "Niet getranscribeerd. Je kunt het transcriberen via het herlaadpictogram.",
       "transcribeFile": "Bestand transcriberen",
       "mediaFiles": "Audio en video",
       "fileUnsupported": "Kon geen audio lezen uit {{name}}.",
-      "readingFile": "{{name}} wordt gelezen...",
+      "readingFile": "{{name}} wordt gelezen…",
       "transcribeFailed": "Transcriptie mislukt. Probeer het opnieuw.",
       "waiting": "Wacht op transcriptie",
       "transcribingPercent": "Transcriberen, {{percent}}%",
       "showMore": "Meer tonen",
       "showLess": "Minder tonen",
-      "dropTitle": "Loslaten om te transcriberen",
+      "dropTitle": "Neerzetten om te transcriberen",
       "dropDescription": "Het verschijnt in de geschiedenis.",
       "searchPlaceholder": "Geschiedenis doorzoeken",
       "clearSearch": "Zoekopdracht wissen",
@@ -680,15 +680,15 @@
       "saved": "Opgeslagen",
       "playRecording": "Opname afspelen",
       "hidePlayer": "Speler verbergen",
-      "emptyTitle": "Nog geen dictaten",
+      "emptyTitle": "Nog niets gedicteerd",
       "emptyDescription": "Alles wat {{appName}} transcribeert verschijnt hier, nieuwste eerst. Houd je sneltoets ingedrukt in een willekeurige app en begin te praten.",
       "noResultsTitle": "Geen resultaten",
-      "noResultsDescription": "Niets in je geschiedenis komt overeen met “{{query}}”.",
+      "noResultsDescription": "Niets in je geschiedenis komt overeen met ‘{{query}}’.",
       "loadingMore": "Meer laden…",
       "searchingOlder": "Oudere items doorzoeken…"
     },
     "debug": {
-      "title": "Probleemoplossing",
+      "title": "Debug",
       "logDirectory": {
         "title": "Logboekmap",
         "description": "Locatie waar logbestanden worden opgeslagen"
@@ -698,7 +698,7 @@
         "description": "Stel de gedetailleerdheid van de logboeken in"
       },
       "liveLogs": {
-        "title": "Live logboeken",
+        "title": "Live-logboeken",
         "description": "Streamt applicatielogs in realtime om problemen te diagnosticeren zonder het logbestand te openen. Alleen logs die worden gegenereerd terwijl dit paneel open is worden getoond; dit respecteert het bovenstaande logboekniveau.",
         "live": "Live",
         "paused": "Gepauzeerd",
@@ -706,7 +706,7 @@
         "resume": "Hervatten",
         "copied": "Gekopieerd",
         "lineCount": "{{count}} regels",
-        "empty": "Wachten op logboeken... Meldingen verschijnen hier zodra de app ze genereert."
+        "empty": "Wachten op logboeken… Meldingen verschijnen hier zodra de app ze genereert."
       },
       "updateChecks": {
         "label": "Controleren op updates",
@@ -766,7 +766,7 @@
         "days3": "Na 3 dagen",
         "weeks2": "Na 2 weken",
         "months3": "Na 3 maanden",
-        "placeholder": "Selecteer bewaarperiode..."
+        "placeholder": "Selecteer bewaarperiode…"
       },
       "alwaysOnMicrophone": {
         "label": "Microfoon altijd aan",
@@ -806,7 +806,7 @@
         "description": "Alleen in de modus Automatisch: hoe lang (in milliseconden) de sneltoets ingedrukt moet blijven om als vasthouden te tellen in plaats van als tik. Verlaag dit als de opname na kort vasthouden blijft doorlopen; verhoog het als bewuste tikken als vasthouden worden gezien."
       },
       "reliablePaste": {
-        "title": "Betrouwbaar plakken (Beta)",
+        "title": "Betrouwbaar plakken (bèta)",
         "description": "Herstel het klembord pas nadat de doelapp de transcriptie daadwerkelijk heeft gelezen, in plaats van na een vaste vertraging. Bedoeld om te verhelpen dat bij systeembelasting de oude klembordinhoud wordt geplakt. Vereist een plakmethode via het klembord; alleen macOS en Windows."
       },
       "recordingBuffer": {
@@ -820,7 +820,7 @@
       "keyboardDiagnostic": {
         "title": "Toetsenborddiagnose",
         "description": "Controleert of toetsenbordgebeurtenissen {{appName}} bereiken. Alleen het aantal gebeurtenissen wordt vastgelegd — nooit welke toetsen je indrukt.",
-        "run": "Diagnose van 10 s uitvoeren",
+        "run": "Diagnose van 10 s starten",
         "running": "Luisteren… druk je sneltoets een paar keer in (bijv. Option+Space)",
         "secureInputLabel": "Secure Input",
         "enabled": "ingeschakeld",
@@ -839,13 +839,13 @@
       }
     },
     "about": {
-      "title": "Over {{appName}}",
+      "title": "Over",
       "version": {
         "title": "Versie",
         "description": "Huidige versie van {{appName}}"
       },
       "whatsNewUpdates": {
-        "label": "Toon 'Wat is er nieuw'",
+        "label": "‘Wat is er nieuw’ tonen",
         "description": "Release-notes tonen nadat {{appName}} is bijgewerkt"
       },
       "appDataDirectory": {
@@ -865,10 +865,10 @@
           "details": "{{appName}}'s lokale spraak-naar-tekst is gebouwd op transcribe.cpp en ggml. Met dank aan het geweldige werk van Georgi Gerganov en alle bijdragers."
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "Opensourcelicenties",
+          "description": "Vermeldingen voor de opensourcesoftware in {{appName}}",
+          "show": "Licenties tonen",
+          "hide": "Licenties verbergen"
         }
       },
       "intro": {
@@ -886,18 +886,18 @@
       },
       "wake": {
         "label": "Handsfree: zeg ‘Hallo Ambient’",
-        "description": "Praat met {{appName}} zonder toets: ‘Hallo Ambient, wat staat er in mijn agenda?’ Het luistert op deze computer en negeert alles wat niet met zijn naam begint. Je computer toont de microfoonindicator zolang het aanstaat."
+        "description": "Praat met {{appName}} zonder toets: ‘Hallo Ambient, wat staat er in mijn agenda?’ Het luistert op deze computer en negeert alles wat niet met zijn naam begint. Je computer laat zien dat de microfoon in gebruik is zolang dit aanstaat."
       }
     }
   },
   "footer": {
-    "checkingUpdates": "Controleren op updates...",
+    "checkingUpdates": "Controleren op updates…",
     "updateAvailableShort": "Update beschikbaar",
     "upToDate": "Up-to-date",
     "updateCheckingDisabled": "Updatecontrole uitgeschakeld",
-    "downloading": "Downloaden... {{progress}}%",
-    "installing": "Installeren...",
-    "preparing": "Voorbereiden...",
+    "downloading": "Downloaden… {{progress}}%",
+    "installing": "Installeren…",
+    "preparing": "Voorbereiden…",
     "checkForUpdates": "Controleren op updates",
     "portableUpdateTitle": "Handmatige update vereist",
     "portableUpdateMessage": "Draagbare (portable) installaties kunnen niet automatisch worden bijgewerkt. Download hieronder het installatiebestand voor je systeem, voer het uit en installeer in dezelfde map — je Data/-map (instellingen, modellen, opnames) blijft behouden.",
@@ -909,7 +909,7 @@
     "title": "Nieuw in {{appName}} v{{version}}"
   },
   "common": {
-    "loading": "Laden...",
+    "loading": "Laden…",
     "delete": "Verwijderen",
     "close": "Sluiten",
     "open": "Openen",
@@ -949,9 +949,9 @@
     }
   },
   "overlay": {
-    "transcribing": "Transcriberen...",
-    "processing": "Verwerken...",
-    "loadingModel": "Model laden..."
+    "transcribing": "Transcriberen…",
+    "processing": "Verwerken…",
+    "loadingModel": "Model laden…"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} blokkeert mogelijk 1 sneltoets",
@@ -981,9 +981,9 @@
     "limitReached": "Je hebt de gratis woorden van deze week gebruikt. Upgrade voor onbeperkt dicteren, of ga verder wanneer de week wordt gereset.",
     "limitToast": "Wekelijkse gratis woorden op",
     "proFeatures": {
-      "polish": "AI-afwerking bij elk dictaat",
-      "onDevice": "Afwerking op het apparaat met Apple Intelligence",
-      "agent": "De ambient-agent zoals hij wordt geleverd",
+      "polish": "AI-afwerking voor alles wat je dicteert",
+      "onDevice": "AI-afwerking op het apparaat met Apple Intelligence",
+      "agent": "De Ambient-agent, met elke nieuwe versie",
       "priority": "Prioriteitsondersteuning"
     },
     "card": {
@@ -1014,7 +1014,7 @@
       "continue": "Doorgaan",
       "sending": "Versturen…",
       "codeTitle": "Check je e-mail",
-      "codeDescription": "Voer de code van 6 cijfers in die we naar {{email}} stuurden.",
+      "codeDescription": "Voer de code van 6 cijfers in die we naar {{email}} hebben gestuurd.",
       "codeLabel": "Inlogcode",
       "digitLabel": "Cijfer {{n}}",
       "signedInShort": "Ingelogd",
@@ -1045,17 +1045,17 @@
         "invalid_code": "Die code klopt niet. Controleer de e-mail en probeer het opnieuw.",
         "expired": "Die code is verlopen. Vraag een nieuwe aan.",
         "too_many_attempts": "Te veel pogingen. Vraag een nieuwe code aan.",
-        "server": "Inloggen mislukte aan onze kant. Probeer het zo opnieuw.",
+        "server": "Inloggen is bij ons mislukt. Probeer het zo opnieuw.",
         "redeem_invalid": "Die code is niet herkend. Controleer hem en probeer het opnieuw."
       }
     },
     "polish": {
       "title": "AI-afwerking",
-      "description": "Maakt elk dictaat netjes: interpunctie, stopwoorden, lijsten en correcties zoals “wis dat”. Alleen de tekst wordt verzonden, nooit audio.",
-      "unlock": "Ga onbeperkt",
+      "description": "Maakt alles wat je dicteert netjes: interpunctie, opvulwoorden, lijsten en correcties als ‘laat maar’. Alleen de tekst wordt verstuurd, nooit audio.",
+      "unlock": "Ga voor onbeperkt",
       "onDevice": "Houd het op deze Mac",
       "onDeviceDescription": "Gebruik in plaats daarvan Apple Intelligence. Er verlaat niets je Mac.",
-      "freeLeft": "Nog {{left}} van {{limit}} gratis keer AI-afwerking deze week"
+      "freeLeft": "Nog {{left}} van {{limit}} gratis AI-afwerkingen deze week"
     },
     "trial": {
       "daysLeft_one": "Nog {{count}} dag",
@@ -1067,7 +1067,7 @@
       "morning": "Goedemorgen",
       "afternoon": "Goedemiddag",
       "evening": "Goedenavond",
-      "night": "Laat aan het werk"
+      "night": "Nog laat aan het werk"
     },
     "hold": "Houd",
     "anywhere": "ingedrukt in elke app en begin te praten.",
@@ -1077,17 +1077,17 @@
       "wordsHint": "Gedicteerd met {{appName}}",
       "saved": "Bespaarde tijd",
       "savedHint": "Praten met {{speaking}} wpm vs. typen met {{typing}}",
-      "lessThanMinute": "< 1 min",
-      "minutes_one": "{{count}} min",
-      "minutes_other": "{{count}} min",
-      "hours_one": "{{count}} uur",
-      "hours_other": "{{count}} uur"
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} uur",
+      "hours_other": "{{count}} uur"
     },
-    "recent": "Recente dictaten",
+    "recent": "Recent gedicteerd",
     "viewAll": "Alles bekijken",
     "empty": {
       "title": "Nog niets hier",
-      "description": "Druk op je sneltoets in een willekeurige app en praat. Je dictaten verschijnen hier."
+      "description": "Druk in een willekeurige app op je sneltoets en praat. Wat je dicteert, verschijnt hier."
     },
     "tips": {
       "holdOrTap": "Houd de sneltoets ingedrukt om te praten, of tik er één keer op om te starten en nog een keer om te stoppen.",
@@ -1103,7 +1103,7 @@
     "plan": {
       "title": "Jouw abonnement",
       "polishUnlimited": "AI-afwerking is onbeperkt.",
-      "polishLeft": "Nog {{left}} van {{limit}} gratis keer AI-afwerking deze week · reset op {{day}}",
+      "polishLeft": "Nog {{left}} van {{limit}} gratis AI-afwerkingen deze week · reset op {{day}}",
       "polishFree": "Gratis bevat een wekelijks tegoed aan AI-afwerking.",
       "meetingsLeft": "Nog {{left}} van {{limit}} vergadernotities over deze maand",
       "aiLeft": "Nog {{left}} van {{limit}} AI-verzoeken over vandaag",
@@ -1157,7 +1157,7 @@
       "heardNothing": "Gehoord, maar geen verzoek opgevangen.",
       "noWebResults": "Zoeken op het web lukte nu niet, dus dit is wat ik weet.",
       "timeout": "Dat duurde te lang. Probeer het opnieuw.",
-      "needsCloud": "Dit heeft de cloud nodig, en Intelligence staat op ‘Alleen op deze computer’. Wijzig dit in Privacy.",
+      "needsCloud": "Hiervoor is de cloud nodig, maar de intelligentie staat op ‘Alleen op deze computer’. Wijzig dit in Privacy.",
       "cloudOfferOn": "Suggesties uit de cloud staan aan. Wijzig dit in Privacy."
     },
     "undo": "Ongedaan maken",
@@ -1189,11 +1189,11 @@
       "review": "Beoordelen",
       "write": "Schrijven",
       "fillForm": "Vul je een formulier in? Ik kan helpen.",
-      "fill": "Help",
+      "fill": "Helpen",
       "translatePage": "Deze pagina vertalen?",
       "translate": "Vertalen",
       "helpHere": "Kan ik hier ergens mee helpen?",
-      "help": "Help"
+      "help": "Helpen"
     },
     "nudge": {
       "findIt": "Zoeken",
@@ -1221,13 +1221,13 @@
       "searchDrive": "Zoeken in Google Drive",
       "searchGmail": "Zoeken in Gmail"
     },
-    "cloudOffer": "{{appName}} kan hulp voorstellen op deze computer door een geschoond fragment van het venster naar zijn servers te sturen. Aanzetten?"
+    "cloudOffer": "{{appName}} kan op deze computer hulp voorstellen door een geschoond fragment van het venster naar zijn servers te sturen. Aanzetten?"
   },
   "privacy": {
     "title": "Privacy",
     "promise": "Wat {{appName}} kan lezen, wat deze computer verlaat en wat het bewaart.",
     "state": {
-      "on": "Kijkt mee, zoals je toestond",
+      "on": "Kijkt mee, zoals je hebt toegestaan",
       "onDetail": "Alleen de functies die je hieronder hebt aangezet.",
       "off": "Kijkt niet mee",
       "offDetail": "Dicteren werkt zoals altijd. Er wordt niets op je scherm gelezen.",
@@ -1262,7 +1262,7 @@
       "proactive": {
         "title": "Suggesties doen",
         "reads": "Stelt op het juiste moment een volgende stap voor: threads, concepten, datums, fouten, vergaderingen.",
-        "leaves": "Besloten op deze computer, of in de cloud als je dat hieronder kiest. Er wordt verder niets verstuurd tenzij je accepteert, behalve tips tijdens vergaderingen."
+        "leaves": "Wordt op deze computer bepaald, of in de cloud als je dat hieronder kiest. Verder wordt er niets verstuurd tenzij je accepteert, behalve tips tijdens vergaderingen."
       },
       "meetings": {
         "title": "Vergadernotities",
@@ -1271,7 +1271,7 @@
       },
       "wake_word": {
         "title": "Handsfree: zeg ‘Hallo Ambient’",
-        "reads": "Luistert op deze computer naar ‘Hallo Ambient’. Al het andere wordt weggegooid terwijl je praat.",
+        "reads": "Luistert op deze computer naar ‘Hallo Ambient’. Al het andere wordt meteen weggegooid terwijl je praat.",
         "leaves": "Er wordt niets opgenomen of verstuurd tot je het zegt."
       },
       "groups": {
@@ -1284,7 +1284,7 @@
     "days_other": "{{count}} dagen",
     "preview": {
       "title": "Wat {{appName}} ziet",
-      "description": "Precies wat het uit een venster zou lezen, na het onleesbaar maken van gevoelige gegevens.",
+      "description": "Precies wat het uit een venster zou lezen, nadat gevoelige gegevens zijn weggelaten.",
       "hint": "Klik op Voorvertoning en schakel binnen 3 seconden naar een willekeurig venster.",
       "switchNow": "Schakel nu naar een ander venster…",
       "button": "Voorvertoning",
@@ -1316,7 +1316,7 @@
     },
     "ledger": {
       "title": "Verzoeken die deze computer hebben verlaten",
-      "description": "Elk verzoek en precies wat het verstuurde. 30 dagen bewaard.",
+      "description": "Elk verzoek en wat er precies is verstuurd. 30 dagen bewaard.",
       "empty": "Nog geen verzoeken.",
       "bytes_one": "{{count}} byte",
       "bytes_other": "{{count}} bytes",
@@ -1335,7 +1335,7 @@
     },
     "engine": {
       "title": "Apple Intelligence ook voor antwoorden gebruiken",
-      "description": "Antwoorden en AI-afwerking draaien op deze computer als ze passen. De resultaten zijn minder verfijnd, dus dit staat standaard uit."
+      "description": "Antwoorden en AI-afwerking draaien op deze Mac als dat kan. De resultaten zijn minder verfijnd, dus dit staat standaard uit."
     },
     "suggestions": {
       "title": "Suggesties die je krijgt",
@@ -1365,14 +1365,14 @@
       "voice": "Je stem blijft op deze computer",
       "text": "Leest tekst, nooit schermafbeeldingen",
       "sensitive": "Slaat wachtwoorden, wallets en privévensters over",
-      "ledger": "Elk verzoek dat de Mac verlaat staat hieronder"
+      "ledger": "Elk verzoek dat deze computer verlaat, staat hieronder"
     },
     "intelligence": {
       "title": "Waar de intelligentie draait",
-      "description": "Wat beslist over suggesties en antwoorden schrijft. Elke functie werkt met elke keuze.",
+      "description": "Wat over suggesties beslist en antwoorden schrijft. Elke functie werkt met elke keuze.",
       "capability": {
         "apple": "Apple Intelligence beschikbaar op deze computer",
-        "none": "Geen model op het apparaat op deze computer"
+        "none": "Geen lokaal model op deze computer"
       },
       "options": {
         "auto": {
@@ -1407,7 +1407,7 @@
     "consentMessage": "Even ter info: ik gebruik {{appName}} om notities te maken van dit gesprek.",
     "openSettings": "Instellingen openen",
     "notes": "Notities",
-    "transcript": "Transcript",
+    "transcript": "Transcriptie",
     "past": "Eerdere vergaderingen",
     "empty": "Nog geen vergaderingen.",
     "untitled": "Naamloze vergadering",
@@ -1441,7 +1441,7 @@
       "notFound": "Die vergadering bestaat niet meer.",
       "followUp": "Kon de follow-up nu niet opstellen."
     },
-    "freeLeft": "Gratis vergaderingen over deze maand: {{left}} van {{limit}}. Pro is onbeperkt.",
+    "freeLeft": "Nog {{left}} van {{limit}} gratis vergaderingen deze maand. Pro is onbeperkt.",
     "startNow": "Nu starten",
     "startNowHint": "Maak nu notities, zonder op een gesprek te wachten",
     "auto": {
@@ -1451,9 +1451,9 @@
       "offDetail": "Zet het aan en {{appName}} biedt aan notities te maken als een gesprek begint.",
       "paused": "Gepauzeerd",
       "pausedDetail": "{{appName}} biedt geen notities aan tot je het hervat bij Privacy.",
-      "pro": "Geen notities",
+      "pro": "Maakt geen notities",
       "proDetail": "Met Pro merkt {{appName}} je gesprekken op en biedt aan notities te maken.",
-      "unsupported": "Geen notities",
+      "unsupported": "Maakt geen notities",
       "unsupportedDetail": "Start notities wanneer je gesprek begint.",
       "turnOn": "Aanzetten"
     },
@@ -1505,8 +1505,8 @@
       "footnote": "Wachtwoorden, wallets en privévensters worden nooit gelezen.",
       "proOnly": "Onderdeel van Pro. Upgrade in Account.",
       "caps": {
-        "screen_context": "Alleen het venster in kwestie",
-        "proactive": "Bepaald op deze computer",
+        "screen_context": "Alleen het venster waar je naar vraagt",
+        "proactive": "Wordt op deze computer bepaald",
         "meetings": "Audio blijft op deze computer",
         "wake_word": "Luistert alleen op deze computer",
         "screen_memory": "Blijft versleuteld op deze computer"
@@ -1551,7 +1551,7 @@
           "Open Linear.",
           "Voer mijn standup-opdracht uit."
         ],
-        "hint": "Herinneringen, afspraken, apps en snelkoppelingen."
+        "hint": "Herinneringen, afspraken, apps en opdrachten."
       },
       "recall": {
         "title": "Terugvinden",
@@ -1587,8 +1587,8 @@
     "subtitle": "Praat zoals je het aan een collega zou vragen. Een paar manieren om te beginnen.",
     "ways": {
       "0": "Houd ingedrukt om met de agent te praten.",
-      "1": "Houd ingedrukt om te dicteren. Begin met “Hey {{appName}}” om in plaats daarvan te vragen.",
-      "2": "Handsfree: zeg “Hey {{appName}}, …”. Zet het aan bij Privacy."
+      "1": "Houd ingedrukt om te dicteren. Begin met ‘Hallo {{appName}}’ om in plaats daarvan te vragen.",
+      "2": "Handsfree: zeg ‘Hallo {{appName}}, …’. Zet het aan bij Privacy."
     }
   },
   "app": {
@@ -1598,7 +1598,7 @@
     "label": "Zoeken",
     "button": "Zoeken",
     "placeholder": "Zoek in instellingen en pagina's",
-    "empty": "Niets gevonden voor “{{query}}”.",
+    "empty": "Niets gevonden voor ‘{{query}}’.",
     "jumpTo": "Ga naar",
     "escape": "esc"
   }

@@ -1,9 +1,9 @@
 {
   "tray": {
-    "settings": "Configuración...",
-    "checkUpdates": "Buscar actualizaciones...",
+    "settings": "Configuración…",
+    "checkUpdates": "Buscar actualizaciones…",
     "copyLastTranscript": "Copiar la última transcripción",
-    "unloadModel": "Descargar modelo",
+    "unloadModel": "Liberar modelo",
     "model": "Modelo",
     "quit": "Salir",
     "cancel": "Cancelar",
@@ -15,7 +15,7 @@
     "account": "Cuenta",
     "models": "Modelos",
     "advanced": "Avanzado",
-    "postProcessing": "Post proceso",
+    "postProcessing": "Posprocesado",
     "history": "Historial",
     "debug": "Depuración",
     "about": "Acerca de",
@@ -49,8 +49,8 @@
         "why": "Para que tu atajo funcione en todas partes y el texto aparezca donde escribes."
       },
       "errors": {
-        "checkFailed": "Error al verificar permisos. Por favor, inténtalo de nuevo.",
-        "requestFailed": "Error al solicitar permiso. Por favor, inténtalo de nuevo."
+        "checkFailed": "No se pudieron comprobar los permisos. Inténtalo de nuevo.",
+        "requestFailed": "No se pudo solicitar el permiso. Inténtalo de nuevo."
       },
       "titleMac": "Dos permisos y listo",
       "titleWindows": "Un permiso y listo",
@@ -76,7 +76,7 @@
       "title": "¿Qué idiomas hablas?",
       "subtitle": "Elige todos los que usarás con {{appName}}. Puedes cambiarlo después.",
       "languagesLabel": "Idiomas",
-      "noMatch": "No hay resultados para «{{query}}». Hay más idiomas en los ajustes.",
+      "noMatch": "No hay resultados para «{{query}}». Hay más idiomas en la configuración.",
       "appLanguage": "Idioma de la app",
       "menusIn": "Interfaz en <b>{{language}}</b>",
       "chinese": {
@@ -141,7 +141,7 @@
       },
       "chat": "¿Todavía vienes esta noche?",
       "noteTitle": "Planes del fin de semana",
-      "screenLabel": "Una laptop: alguien hace clic en una app, pulsa el atajo y habla, y las palabras aparecen donde hizo clic.",
+      "screenLabel": "Un portátil: alguien hace clic en una app, pulsa el atajo y habla, y las palabras aparecen donde hizo clic.",
       "change": "Cambiar",
       "yourShortcut": "Tu atajo es",
       "pressKeys": "Pulsa las teclas nuevas",
@@ -245,7 +245,7 @@
         "F": "A menudo poco claro: gran parte de lo que dices puede salir mal"
       },
       "unsupported": "Este modelo no entiende {{language}}, así que no puede escribirlo",
-      "unrated": "Este modelo entiende {{language}}, pero aún no hemos medido qué tan bien",
+      "unrated": "Este modelo entiende {{language}}, pero aún no hemos medido cómo de bien",
       "under": "menos de {{max}} %",
       "between": "{{min}} a {{max}} %",
       "over": "{{min}} % o más",
@@ -316,17 +316,17 @@
     "streaming": "Streaming",
     "active": "Activo",
     "noModelsAvailable": "No hay modelos disponibles",
-    "verifying": "Verificando {{modelName}}...",
-    "verifyingGeneric": "Verificando...",
-    "downloading": "Descargando {{percentage}}%",
-    "downloadingMultiple": "Descargando {{count}} modelos...",
+    "verifying": "Verificando {{modelName}}…",
+    "verifyingGeneric": "Verificando…",
+    "downloading": "Descargando {{percentage}} %",
+    "downloadingMultiple": "Descargando {{count}} modelos…",
     "modelReady": "Modelo listo",
-    "loading": "Cargando {{modelName}}...",
-    "loadingGeneric": "Cargando...",
+    "loading": "Cargando {{modelName}}…",
+    "loadingGeneric": "Cargando…",
     "modelError": "Error del modelo",
-    "modelUnloaded": "Modelo descargado",
-    "noModelDownloadRequired": "Sin modelo - descarga requerida",
-    "downloadSpeed": "{{speed}} MB/s",
+    "modelUnloaded": "Modelo liberado",
+    "noModelDownloadRequired": "Sin modelo: descarga uno",
+    "downloadSpeed": "{{speed}} MB/s",
     "lockedWhileTranscribing": "Podrás cambiar de modelo cuando termine la transcripción en el Historial."
   },
   "settings": {
@@ -338,10 +338,10 @@
       "shortcut": {
         "title": "Atajos de {{appName}}",
         "description": "Configura atajos de teclado para activar la grabación de voz a texto",
-        "loading": "Cargando atajos...",
+        "loading": "Cargando atajos…",
         "none": "No hay atajos configurados",
         "notFound": "Atajo no encontrado",
-        "pressKeys": "Presiona teclas...",
+        "pressKeys": "Pulsa las teclas…",
         "bindings": {
           "transcribe": {
             "name": "Atajo de transcripción",
@@ -352,8 +352,8 @@
             "description": "El atajo de teclado para cancelar la grabación actual."
           },
           "transcribe_with_post_process": {
-            "name": "Tecla de post procesamiento",
-            "description": "Opcional: Una tecla de acceso rápido dedicada que siempre aplica post procesamiento con IA a tu transcripción."
+            "name": "Atajo de posprocesado",
+            "description": "Opcional: un atajo dedicado que siempre aplica posprocesado con IA a tu transcripción."
           },
           "ask_agent": {
             "name": "Atajo para preguntar",
@@ -366,8 +366,8 @@
       },
       "language": {
         "title": "Idioma",
-        "description": "Selecciona el idioma para el reconocimiento de voz. Auto detectará automáticamente el idioma, mientras que seleccionar un idioma específico puede mejorar la precisión para ese idioma.",
-        "searchPlaceholder": "Buscar idiomas...",
+        "description": "Selecciona el idioma para el reconocimiento de voz. Automático detecta el idioma por sí solo; elegir un idioma concreto puede mejorar la precisión en ese idioma.",
+        "searchPlaceholder": "Buscar idiomas…",
         "noResults": "No se encontraron idiomas",
         "auto": "Automático",
         "autoUnavailable": {
@@ -406,7 +406,7 @@
         "delay": {
           "label": "Pausa antes de detener",
           "description": "Cuánto tiempo debes quedarte en silencio después de hablar para que el dictado se detenga.",
-          "seconds": "{{seconds}} s"
+          "seconds": "{{seconds}} s"
         }
       }
     },
@@ -419,9 +419,9 @@
         "untested": "Sin probar"
       },
       "untestedNote": "No probados con {{appName}}. Pueden ser más lentos o cometer más errores.",
-      "untestedHidden_one": "{{count}} modelo más no está optimizado para dictado. Búscalo para encontrarlo.",
-      "untestedHidden_many": "{{count}} modelos más no están optimizados para dictado. Busca para encontrar uno.",
-      "untestedHidden_other": "{{count}} modelos más no están optimizados para dictado. Busca para encontrar uno.",
+      "untestedHidden_one": "{{count}} modelo más no está optimizado para dictado. Usa la búsqueda para encontrarlo.",
+      "untestedHidden_many": "{{count}} modelos más no están optimizados para dictado. Usa la búsqueda para encontrar uno.",
+      "untestedHidden_other": "{{count}} modelos más no están optimizados para dictado. Usa la búsqueda para encontrar uno.",
       "emptyYours": "Aún no hay modelos. Elige uno abajo: se descarga y {{appName}} lo usa.",
       "showMore": "Mostrar {{count}} más",
       "showFewer": "Mostrar menos",
@@ -435,10 +435,10 @@
       "cancelDownload": "Detener la descarga de {{name}}",
       "legend": {
         "open": "Cómo se califican los modelos",
-        "accuracyNote": "Para cada uno de tus idiomas: cuántas palabras erró un modelo en nuestras grabaciones de prueba.",
+        "accuracyNote": "Para cada uno de tus idiomas: cuántas palabras falló un modelo en nuestras grabaciones de prueba.",
         "speedNote": {
-          "accelerated": "Cuánto tarda en transcribirse 30 segundos de voz con el chip gráfico de nuestra laptop de pruebas. Este equipo puede variar.",
-          "cpu": "Cuánto tarda en transcribirse 30 segundos de voz con el procesador de nuestra laptop de pruebas. Este equipo puede variar."
+          "accelerated": "Cuánto se tarda en transcribir 30 segundos de voz con el chip gráfico de nuestro portátil de pruebas. Este equipo puede variar.",
+          "cpu": "Cuánto se tarda en transcribir 30 segundos de voz con el procesador de nuestro portátil de pruebas. Este equipo puede variar."
         },
         "marks": "? aún no se ha medido. — no entiende ese idioma."
       },
@@ -462,8 +462,8 @@
       "microphone": {
         "title": "Micrófono",
         "description": "Selecciona tu dispositivo de micrófono preferido",
-        "placeholder": "Seleccionar micrófono...",
-        "loading": "Cargando..."
+        "placeholder": "Seleccionar micrófono…",
+        "loading": "Cargando…"
       },
       "channel": {
         "title": "Canal de entrada",
@@ -472,18 +472,18 @@
         "channel": "Canal {{n}}"
       },
       "audioFeedback": {
-        "label": "Retroalimentación de audio",
-        "description": "Reproducir sonido cuando la grabación inicia y se detiene"
+        "label": "Sonidos de aviso",
+        "description": "Reproducir un sonido al iniciar y al detener la grabación"
       },
       "outputDevice": {
         "title": "Dispositivo de salida",
-        "description": "Selecciona tu dispositivo de salida de audio preferido para los sonidos de retroalimentación",
-        "placeholder": "Seleccionar dispositivo de salida...",
-        "loading": "Cargando..."
+        "description": "Selecciona el dispositivo de salida de audio para los sonidos de aviso",
+        "placeholder": "Seleccionar dispositivo de salida…",
+        "loading": "Cargando…"
       },
       "volume": {
         "title": "Volumen",
-        "description": "Ajusta el volumen de los sonidos de retroalimentación de audio"
+        "description": "Ajusta el volumen de los sonidos de aviso"
       }
     },
     "advanced": {
@@ -513,11 +513,11 @@
       },
       "startHidden": {
         "label": "Iniciar oculto",
-        "description": "Lanzar en la bandeja del sistema sin abrir la ventana."
+        "description": "Abrir en la bandeja del sistema sin mostrar la ventana."
       },
       "autostart": {
-        "label": "Iniciar al arranque",
-        "description": "Iniciar {{appName}} automáticamente cuando inicies sesión en tu computadora."
+        "label": "Abrir al iniciar sesión",
+        "description": "Iniciar {{appName}} automáticamente al iniciar sesión en el equipo."
       },
       "showTrayIcon": {
         "label": "Mostrar icono de bandeja",
@@ -526,7 +526,7 @@
       "overlay": {
         "style": {
           "title": "Superposición",
-          "description": "Elige la superposición de grabación: Ninguna la oculta, Minimalista muestra una píldora compacta, En vivo muestra la transcripción en tiempo real mientras hablas (solo modelos compatibles con streaming — busca la insignia Streaming en el selector de modelos). En Linux se recomienda 'Ninguna'.",
+          "description": "Elige la superposición de grabación: Ninguna la oculta, Minimalista muestra una píldora compacta y En vivo muestra la transcripción en tiempo real mientras hablas (solo modelos compatibles con streaming; busca la insignia Streaming en el selector de modelos). En Linux se recomienda «Ninguna».",
           "options": {
             "none": "Ninguna",
             "minimal": "Minimalista",
@@ -553,13 +553,13 @@
           "none": "Ninguno",
           "externalScript": "Script externo"
         },
-        "externalScriptPlaceholder": "/ruta/a/su/script.sh"
+        "externalScriptPlaceholder": "/ruta/a/tu/script.sh"
       },
       "typingTool": {
         "title": "Herramienta de escritura",
-        "description": "Elige qué herramienta de escritura de Linux usar para el método de pegado directo. Auto detectará y usará automáticamente la mejor herramienta disponible para tu sistema.",
+        "description": "Elige qué herramienta de escritura de Linux usar con el método de pegado directo. Automático detecta y usa la mejor herramienta disponible en tu sistema.",
         "options": {
-          "auto": "Auto (recomendado)"
+          "auto": "Automático (recomendado)"
         }
       },
       "clipboardHandling": {
@@ -586,7 +586,7 @@
         "description": "Traducir automáticamente el habla de otros idiomas al inglés durante la transcripción."
       },
       "modelUnload": {
-        "title": "Descargar modelo",
+        "title": "Liberar modelo",
         "description": "Liberar automáticamente la memoria GPU/CPU cuando el modelo no se ha usado durante el tiempo especificado",
         "options": {
           "never": "Nunca",
@@ -602,10 +602,10 @@
       "customWords": {
         "title": "Palabras personalizadas",
         "description": "Ayuda a los modelos compatibles a reconocer nombres y términos especializados. Actualmente, la corrección aproximada se limita a palabras que usan letras de la A a la Z y números.",
-        "placeholder": "Agregar una palabra",
-        "add": "Agregar",
-        "remove": "Eliminar {{word}}",
-        "duplicate": "\"{{word}}\" ya existe"
+        "placeholder": "Añadir una palabra",
+        "add": "Añadir",
+        "remove": "Quitar {{word}}",
+        "duplicate": "«{{word}}» ya existe"
       },
       "voiceActivityDetection": {
         "title": "Detección de actividad de voz",
@@ -613,7 +613,7 @@
       },
       "longFormChunking": {
         "title": "División de audio largo",
-        "description": "Divide las grabaciones largas en las pausas antes de transcribirlas, lo que normalmente mejora el rendimiento de la transcripción. Los archivos transcritos y las re-transcripciones largas siempre se dividen."
+        "description": "Divide las grabaciones largas en las pausas antes de transcribirlas, lo que suele mejorar la transcripción. Los archivos transcritos y las retranscripciones largas siempre se dividen."
       },
       "languageDetection": {
         "title": "Limitar Automático a mis idiomas",
@@ -646,32 +646,32 @@
     },
     "postProcessing": {
       "hotkey": {
-        "title": "Tecla de acceso rápido"
+        "title": "Atajo"
       }
     },
     "history": {
       "title": "Historial",
       "openFolder": "Abrir carpeta de grabaciones",
-      "loading": "Cargando historial...",
+      "loading": "Cargando historial…",
       "empty": "Aún no hay transcripciones. ¡Comienza a grabar para crear tu historial!",
       "copyToClipboard": "Copiar transcripción al portapapeles",
       "copyError": "No se pudo copiar la transcripción al portapapeles.",
       "save": "Guardar transcripción",
       "unsave": "Eliminar de guardados",
       "delete": "Eliminar entrada",
-      "deleteError": "Error al eliminar la entrada. Por favor, intenta de nuevo.",
-      "retranscribe": "Re-transcribir",
+      "deleteError": "No se pudo eliminar la entrada. Inténtalo de nuevo.",
+      "retranscribe": "Volver a transcribir",
       "cancelTranscription": "Cancelar transcripción",
-      "transcribing": "Transcribiendo...",
-      "transcriptionFailed": "La transcripción falló. Puedes re-transcribir usando el icono de reintentar.",
-      "notTranscribed": "Sin transcribir. Puedes transcribirlo usando el icono de reintentar.",
+      "transcribing": "Transcribiendo…",
+      "transcriptionFailed": "La transcripción falló. Puedes volver a transcribir con el icono de reintentar.",
+      "notTranscribed": "Sin transcribir. Puedes transcribirlo con el icono de reintentar.",
       "transcribeFile": "Transcribir archivo",
       "mediaFiles": "Audio y vídeo",
       "fileUnsupported": "No se pudo leer el audio de {{name}}.",
-      "readingFile": "Leyendo {{name}}...",
+      "readingFile": "Leyendo {{name}}…",
       "transcribeFailed": "La transcripción falló. Inténtalo de nuevo.",
       "waiting": "Esperando para transcribir",
-      "transcribingPercent": "Transcribiendo, {{percent}} %",
+      "transcribingPercent": "Transcribiendo, {{percent}} %",
       "showMore": "Mostrar más",
       "showLess": "Mostrar menos",
       "dropTitle": "Suelta para transcribir",
@@ -686,7 +686,7 @@
       "emptyTitle": "Aún no hay dictados",
       "emptyDescription": "Todo lo que {{appName}} transcribe aparece aquí, lo más reciente primero. Mantén pulsado tu atajo en cualquier app y empieza a hablar.",
       "noResultsTitle": "Sin resultados",
-      "noResultsDescription": "Nada en tu historial coincide con “{{query}}”.",
+      "noResultsDescription": "Nada en tu historial coincide con «{{query}}».",
       "loadingMore": "Cargando más…",
       "searchingOlder": "Buscando entradas anteriores…"
     },
@@ -738,8 +738,8 @@
         }
       },
       "onboardingRun": {
-        "title": "Ejecutar introducción",
-        "description": "Recorre la introducción de verdad desde el principio: pide permisos, descarga modelos y guarda tus elecciones",
+        "title": "Ejecutar configuración inicial",
+        "description": "Recorre la configuración inicial de verdad desde el principio: pide permisos, descarga modelos y guarda tus elecciones",
         "button": "Iniciar"
       },
       "modelMigration": {
@@ -750,7 +750,7 @@
       },
       "soundTheme": {
         "label": "Tema de sonido",
-        "description": "Elige un tema de sonido para la retroalimentación de inicio y parada de grabación"
+        "description": "Elige un tema para los sonidos de inicio y fin de grabación"
       },
       "wordCorrectionThreshold": {
         "title": "Umbral de corrección de palabras",
@@ -769,7 +769,7 @@
         "days3": "Después de 3 días",
         "weeks2": "Después de 2 semanas",
         "months3": "Después de 3 meses",
-        "placeholder": "Seleccionar período de retención..."
+        "placeholder": "Seleccionar período de retención…"
       },
       "alwaysOnMicrophone": {
         "label": "Micrófono siempre activo",
@@ -780,7 +780,7 @@
         "description": "Micrófono a usar cuando la tapa del portátil está cerrada"
       },
       "postProcessingToggle": {
-        "label": "Post procesamiento",
+        "label": "Posprocesado",
         "description": "Habilitar refinamiento de texto impulsado por IA después de la transcripción"
       },
       "muteWhileRecording": {
@@ -788,8 +788,8 @@
         "description": "Silenciar el audio del sistema durante la grabación"
       },
       "appendTrailingSpace": {
-        "label": "Agregar espacio final",
-        "description": "Agregar un espacio después de la transcripción pegada"
+        "label": "Añadir espacio final",
+        "description": "Añadir un espacio después de la transcripción pegada"
       },
       "keyboardImplementation": {
         "title": "Implementación del teclado",
@@ -798,18 +798,18 @@
       },
       "pasteDelay": {
         "title": "Retraso de pegado (antes)",
-        "description": "Retraso (en milisegundos) después de copiar el texto, antes de enviar la pulsación de tecla de pegar. Auméntelo si no se pega nada."
+        "description": "Retraso (en milisegundos) después de copiar el texto, antes de enviar la pulsación de pegar. Auméntalo si no se pega nada."
       },
       "pasteDelayAfter": {
         "title": "Retraso de pegado (después)",
-        "description": "Retraso (en milisegundos) después de la pulsación de tecla de pegar, antes de restaurar el portapapeles anterior. Auméntelo si se pega el contenido antiguo del portapapeles en lugar de la transcripción."
+        "description": "Retraso (en milisegundos) después de la pulsación de pegar, antes de restaurar el portapapeles anterior. Auméntalo si se pega el contenido antiguo del portapapeles en lugar de la transcripción."
       },
       "holdThreshold": {
         "title": "Umbral de pulsación",
         "description": "Solo en el modo Automático: cuánto tiempo (en milisegundos) debe mantenerse pulsado el atajo para contar como mantener en lugar de un toque. Redúcelo si la grabación sigue activa tras pulsaciones cortas; auméntalo si los toques deliberados se interpretan como mantener."
       },
       "reliablePaste": {
-        "title": "Pegado fiable (Beta)",
+        "title": "Pegado fiable (beta)",
         "description": "Restaura el portapapeles solo después de que la aplicación de destino lea realmente la transcripción, en lugar de tras un retraso fijo. Pensado para corregir que se pegue el contenido antiguo del portapapeles cuando el sistema está cargado. Requiere un método de pegado por portapapeles; solo macOS y Windows."
       },
       "recordingBuffer": {
@@ -823,8 +823,8 @@
       "keyboardDiagnostic": {
         "title": "Diagnóstico del teclado",
         "description": "Comprueba si los eventos de teclado llegan a {{appName}}. Solo se registra el número de eventos, nunca qué teclas pulsas.",
-        "run": "Ejecutar diagnóstico de 10 s",
-        "running": "Escuchando… pulsa tu atajo varias veces (p. ej. Option+Space)",
+        "run": "Ejecutar diagnóstico de 10 s",
+        "running": "Escuchando… pulsa tu atajo varias veces (p. ej., Option+Espacio)",
         "secureInputLabel": "Secure Input",
         "enabled": "activado",
         "disabled": "desactivado",
@@ -835,7 +835,7 @@
         "flagsChanged": "Modificadores",
         "mouse": "Ratón",
         "verdictBlocked": "Secure Input está bloqueando los eventos de teclado: los atajos que incluyen una tecla normal no pueden funcionar hasta que se resuelva.",
-        "verdictSuspicious": "Llegaron eventos de modificadores, pero ningún evento de tecla: algo está suprimiendo las teclas aunque Secure Input aparezca como desactivado. Por favor, repórtalo en GitHub.",
+        "verdictSuspicious": "Llegaron eventos de modificadores, pero ningún evento de tecla: algo está suprimiendo las teclas aunque Secure Input aparezca como desactivado. Avísanos en GitHub.",
         "verdictOk": "Los eventos de teclado llegan a {{appName}} con normalidad.",
         "verdictNoEvents": "No se capturó ningún evento: ¿pulsaste alguna tecla durante la prueba?",
         "failed": "El diagnóstico falló: {{error}}"
@@ -865,13 +865,13 @@
         "ggml": {
           "title": "ggml",
           "description": "Biblioteca de tensores de alto rendimiento para inferencia de aprendizaje automático en el dispositivo",
-          "details": "El habla a texto local de {{appName}} está construido sobre transcribe.cpp y ggml. Gracias al increíble trabajo de Georgi Gerganov y colaboradores."
+          "details": "La transcripción local de {{appName}} se basa en transcribe.cpp y ggml. Gracias al increíble trabajo de Georgi Gerganov y los colaboradores."
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "Licencias de código abierto",
+          "description": "Avisos del software de código abierto que incluye {{appName}}",
+          "show": "Mostrar licencias",
+          "hide": "Ocultar licencias"
         }
       },
       "intro": {
@@ -882,7 +882,7 @@
     },
     "agent": {
       "title": "Agente de voz",
-      "description": "Haz una pregunta o pide que haga algo, en lugar de escribir.",
+      "description": "Haz una pregunta o pídele que haga algo, en lugar de escribir.",
       "routing": {
         "label": "Entender peticiones al dictar",
         "description": "Las peticiones se atienden; todo lo demás se escribe como siempre. Desactívalo para escribir siempre."
@@ -894,40 +894,40 @@
     }
   },
   "footer": {
-    "checkingUpdates": "Buscando actualizaciones...",
+    "checkingUpdates": "Buscando actualizaciones…",
     "updateAvailableShort": "Actualización disponible",
     "upToDate": "Actualizado",
     "updateCheckingDisabled": "Búsqueda de actualizaciones deshabilitada",
-    "downloading": "Descargando... {{progress}}%",
-    "installing": "Instalando...",
-    "preparing": "Preparando...",
+    "downloading": "Descargando… {{progress}} %",
+    "installing": "Instalando…",
+    "preparing": "Preparando…",
     "checkForUpdates": "Buscar actualizaciones",
     "portableUpdateTitle": "Actualización manual necesaria",
-    "portableUpdateMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga abajo el instalador para tu sistema, ejecútalo e instálalo en la misma carpeta: tu carpeta Data/ (ajustes, modelos, grabaciones) se conserva.",
+    "portableUpdateMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga abajo el instalador para tu sistema, ejecútalo e instálalo en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
     "portableUpdateButton": "Descargar instalador",
-    "portableUpdateBrowseMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga la versión más reciente para tu sistema desde GitHub Releases e instálala en la misma carpeta: tu carpeta Data/ (ajustes, modelos, grabaciones) se conserva.",
+    "portableUpdateBrowseMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga la versión más reciente para tu sistema desde GitHub Releases e instálala en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
     "portableUpdateBrowseButton": "Abrir GitHub Releases"
   },
   "whatsNew": {
     "title": "Nuevo en {{appName}} v{{version}}"
   },
   "common": {
-    "loading": "Cargando...",
+    "loading": "Cargando…",
     "delete": "Eliminar",
     "close": "Cerrar",
     "open": "Abrir",
     "copy": "Copiar",
-    "clear": "Limpiar",
+    "clear": "Borrar",
     "noOptionsFound": "No se encontraron opciones"
   },
   "errors": {
     "loadDirectory": "Error al cargar el directorio: {{error}}",
     "micPermissionDeniedTitle": "Acceso al micrófono denegado",
     "micPermissionDenied": {
-      "generic": "El sistema operativo denegó el acceso al micrófono. Por favor, conceda el permiso del micrófono en la configuración del sistema.",
-      "windows": "Active el acceso al micrófono en Configuración → Privacidad y seguridad → Micrófono (incluido el acceso de aplicaciones de escritorio).",
-      "macos": "Conceda el acceso al micrófono en Ajustes del Sistema → Privacidad y seguridad → Micrófono.",
-      "linux": "Conceda el acceso al micrófono en la configuración de sonido o privacidad de su sistema."
+      "generic": "El sistema operativo denegó el acceso al micrófono. Concede el permiso del micrófono en la configuración del sistema.",
+      "windows": "Activa el acceso al micrófono en Configuración → Privacidad y seguridad → Micrófono (incluido el acceso de las aplicaciones de escritorio).",
+      "macos": "Concede el acceso al micrófono en Ajustes del Sistema → Privacidad y seguridad → Micrófono.",
+      "linux": "Concede el acceso al micrófono en la configuración de sonido o privacidad de tu sistema."
     },
     "noInputDeviceTitle": "No se encontró micrófono",
     "noInputDevice": "No se detectó ningún dispositivo de entrada de audio. Conecta un micrófono o auriculares e inténtalo de nuevo.",
@@ -952,9 +952,9 @@
     }
   },
   "overlay": {
-    "transcribing": "Transcribiendo...",
-    "processing": "Procesando...",
-    "loadingModel": "Cargando modelo..."
+    "transcribing": "Transcribiendo…",
+    "processing": "Procesando…",
+    "loadingModel": "Cargando modelo…"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} puede estar bloqueando 1 atajo",
@@ -988,7 +988,7 @@
     "proFeatures": {
       "polish": "Pulido con IA en cada dictado",
       "onDevice": "Pulido en el dispositivo con Apple Intelligence",
-      "agent": "El agente ambient tal como se entrega",
+      "agent": "El agente Ambient y todas sus novedades",
       "priority": "Soporte prioritario"
     },
     "card": {
@@ -1000,7 +1000,7 @@
       "pasteFailed": "No se pudo leer el portapapeles. Pega con ⌘V.",
       "holder": "Sesión iniciada como",
       "renewsLabel": "Se renueva",
-      "copied": "Copiada",
+      "copied": "Copiado",
       "errors": {
         "network": "No se pudo conectar con {{appName}} para activar. Revisa tu conexión e inténtalo de nuevo.",
         "inactive": "La suscripción de este código no está activa. Renuévala para desbloquear tu plan.",
@@ -1056,8 +1056,8 @@
     },
     "polish": {
       "title": "Pulido con IA",
-      "description": "Limpia cada dictado: puntuación, muletillas, listas y correcciones como “borra eso”. Solo se envía el texto, nunca el audio.",
-      "unlock": "Obtén ilimitado",
+      "description": "Limpia cada dictado: puntuación, muletillas, listas y correcciones como «borra eso». Solo se envía el texto, nunca el audio.",
+      "unlock": "Sin límites",
       "onDevice": "Mantenlo en este Mac",
       "onDeviceDescription": "Usa Apple Intelligence en su lugar. Nada sale de tu Mac.",
       "freeLeft": "Te quedan {{left}} de {{limit}} usos gratuitos de pulido con IA esta semana"
@@ -1083,13 +1083,13 @@
       "wordsHint": "Dictadas con {{appName}}",
       "saved": "Tiempo ahorrado",
       "savedHint": "Hablando a {{speaking}} ppm frente a escribir a {{typing}}",
-      "lessThanMinute": "< 1 min",
-      "minutes_one": "{{count}} min",
-      "minutes_many": "{{count}} min",
-      "minutes_other": "{{count}} min",
-      "hours_one": "{{count}} h",
-      "hours_many": "{{count}} h",
-      "hours_other": "{{count}} h"
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_many": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} h",
+      "hours_many": "{{count}} h",
+      "hours_other": "{{count}} h"
     },
     "recent": "Dictados recientes",
     "viewAll": "Ver todo",
@@ -1110,11 +1110,11 @@
     },
     "plan": {
       "title": "Tu plan",
-      "polishUnlimited": "Pulido con IA es ilimitado.",
+      "polishUnlimited": "El pulido con IA es ilimitado.",
       "polishLeft": "Te quedan {{left}} de {{limit}} usos gratuitos de pulido con IA esta semana · se restablece el {{day}}",
       "polishFree": "El plan gratuito incluye una cuota semanal de pulido con IA.",
       "meetingsLeft": "Te quedan {{left}} de {{limit}} notas de reuniones este mes",
-      "aiLeft": "Te quedan {{left}} de {{limit}} solicitudes de IA hoy",
+      "aiLeft": "Te quedan {{left}} de {{limit}} peticiones de IA hoy",
       "searchLeft": "Búsquedas restantes: {{count}}",
       "meterLabel": "Cupo restante"
     },
@@ -1163,9 +1163,9 @@
       "slowDown": "Son muchas peticiones a la vez. Vuelve a intentarlo en un minuto.",
       "listening": "Escuchando…",
       "heardNothing": "Te he oído, pero no he entendido la petición.",
-      "noWebResults": "Ahora no pude buscar en la web, así que esto es lo que sé.",
+      "noWebResults": "Ahora no pude buscar en la web, así que respondo con lo que sé.",
       "timeout": "Ha tardado demasiado. Inténtalo de nuevo.",
-      "needsCloud": "Esto necesita la nube, y la inteligencia está en «Solo en este equipo». Cámbialo en Privacidad.",
+      "needsCloud": "Esto necesita la nube, y la inteligencia está configurada en «Solo en este equipo». Cámbialo en Privacidad.",
       "cloudOfferOn": "Las sugerencias desde la nube están activadas. Cámbialo en Privacidad."
     },
     "undo": "Deshacer",
@@ -1198,7 +1198,7 @@
       "write": "Escribir",
       "fillForm": "¿Rellenando un formulario? Puedo ayudarte.",
       "fill": "Ayúdame",
-      "translatePage": "¿Traduzco esta página?",
+      "translatePage": "¿Traducir esta página?",
       "translate": "Traducir",
       "helpHere": "¿Te ayudo con algo aquí?",
       "help": "Ayúdame"
@@ -1209,7 +1209,7 @@
       "copy": "Copiar"
     },
     "chip": {
-      "searchInstead": "Escrito. ¿Buscarlo en su lugar?",
+      "searchInstead": "Ya está escrito. ¿Prefieres buscarlo?",
       "search": "Buscar"
     },
     "suggestionTip": "Di «sí», «ahora no» o «no me muestres esto».",
@@ -1229,7 +1229,7 @@
       "searchDrive": "Buscar en Google Drive",
       "searchGmail": "Buscar en Gmail"
     },
-    "cloudOffer": "{{appName}} puede sugerir ayuda en este equipo enviando a sus servidores un fragmento redactado de la ventana. ¿Activarlo?"
+    "cloudOffer": "{{appName}} puede sugerirte ayuda en este equipo enviando a sus servidores un fragmento de la ventana sin datos sensibles. ¿Lo activo?"
   },
   "privacy": {
     "title": "Privacidad",
@@ -1260,7 +1260,7 @@
       "screen_context": {
         "title": "Leer lo que preguntas",
         "reads": "Lee la ventana sobre la que preguntas, y tus ventanas abiertas cuando le pides que busque algo.",
-        "leaves": "Solo lo necesario para responder, sin datos secretos."
+        "leaves": "Solo lo necesario para responder, sin datos sensibles."
       },
       "screen_memory": {
         "title": "Recordar lo que has visto",
@@ -1376,12 +1376,12 @@
     "promises": {
       "voice": "Tu voz se queda en este equipo",
       "text": "Lee texto, nunca capturas de pantalla",
-      "sensitive": "Omite contraseñas, carteras y ventanas privadas",
-      "ledger": "Cada solicitud que sale aparece en la lista de abajo"
+      "sensitive": "Omite contraseñas, monederos y ventanas privadas",
+      "ledger": "Cada petición que sale aparece en la lista de abajo"
     },
     "intelligence": {
       "title": "Dónde se ejecuta la inteligencia",
-      "description": "Lo que decide las sugerencias y escribe las respuestas. Todas las funciones van con cualquier opción.",
+      "description": "Lo que decide las sugerencias y escribe las respuestas. Todas las funciones van bien con cualquier opción.",
       "capability": {
         "apple": "Apple Intelligence disponible en este equipo",
         "none": "Sin modelo local en este equipo"
@@ -1397,12 +1397,12 @@
         },
         "cloud": {
           "title": "Nube",
-          "description": "Los mejores resultados. El texto redactado se envía a los servidores de {{appName}}."
+          "description": "Los mejores resultados. El texto se envía a los servidores de {{appName}} sin datos sensibles."
         }
       },
       "cloudSuggestions": {
         "title": "Sugerencias desde la nube",
-        "description": "Envía un fragmento redactado de una ventana en la que te has quedado para decidir si ofrecer ayuda. Cada petición aparece en la lista de abajo."
+        "description": "Envía un fragmento, sin datos sensibles, de una ventana en la que te detienes para decidir si ofrecer ayuda. Cada petición aparece en la lista de abajo."
       }
     }
   },
@@ -1417,7 +1417,7 @@
     "consent": "Avisa a todos de que estás tomando notas.",
     "copyConsent": "Copiar un mensaje",
     "consentMessage": "Aviso: estoy usando {{appName}} para tomar notas de esta llamada.",
-    "openSettings": "Abrir ajustes",
+    "openSettings": "Abrir configuración",
     "notes": "Notas",
     "transcript": "Transcripción",
     "past": "Reuniones anteriores",
@@ -1437,7 +1437,7 @@
     "copied": "Copiado",
     "delete": "Eliminar reunión",
     "you": "Tú",
-    "them": "Ellos",
+    "them": "Los demás",
     "systemAudio": {
       "noPermission": "Permite la grabación de pantalla para que {{appName}} pueda oír la llamada. Solo se usa el audio y no se guarda nada.",
       "oldMacOS": "Para oír la llamada se necesita macOS 13 o posterior. Tu micrófono se sigue transcribiendo.",
@@ -1491,7 +1491,7 @@
       },
       "answer": {
         "title": "Responder",
-        "example": "¿Cuánto es el 15 % de 240?"
+        "example": "¿Cuánto es el 15 % de 240?"
       },
       "act": {
         "title": "Actuar",
@@ -1517,7 +1517,7 @@
       "footnote": "Las contraseñas, los monederos y las ventanas privadas nunca se leen.",
       "proOnly": "Parte de Pro. Mejora tu plan en Cuenta.",
       "caps": {
-        "screen_context": "Solo la ventana que preguntes",
+        "screen_context": "Solo la ventana sobre la que preguntes",
         "proactive": "Se decide en este equipo",
         "meetings": "El audio no sale de este equipo",
         "wake_word": "Solo escucha en este equipo",
@@ -1527,7 +1527,7 @@
   },
   "getStarted": {
     "title": "Primeros pasos",
-    "progress": "{{done}} de {{total}} hechos",
+    "progress": "{{done}} de {{total}} completados",
     "hide": "Ocultar",
     "whatToSay": "¿Qué puedo decir?",
     "replayTour": "Volver a ver el recorrido",
@@ -1599,8 +1599,8 @@
     "subtitle": "Habla como le preguntarías a un colega. Algunas formas de empezar.",
     "ways": {
       "0": "Mantén pulsado para hablar con el agente.",
-      "1": "Mantén pulsado para dictar. Empieza con “Hey {{appName}}” para preguntar en su lugar.",
-      "2": "Manos libres: di “Hey {{appName}}, …”. Actívalo en Privacidad."
+      "1": "Mantén pulsado para dictar. Empieza con «Hola {{appName}}» para preguntar en su lugar.",
+      "2": "Manos libres: di «Hola {{appName}}, …». Actívalo en Privacidad."
     }
   },
   "app": {
@@ -1610,7 +1610,7 @@
     "label": "Buscar",
     "button": "Buscar",
     "placeholder": "Busca en ajustes y páginas",
-    "empty": "Nada coincide con “{{query}}”.",
+    "empty": "Nada coincide con «{{query}}».",
     "jumpTo": "Ir a",
     "escape": "esc"
   }

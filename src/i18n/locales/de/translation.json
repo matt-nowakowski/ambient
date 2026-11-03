@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "Einstellungen...",
-    "checkUpdates": "Nach Updates suchen...",
+    "settings": "Einstellungen…",
+    "checkUpdates": "Nach Updates suchen…",
     "copyLastTranscript": "Letzte Transkription kopieren",
     "unloadModel": "Modell entladen",
     "model": "Modell",
@@ -10,7 +10,7 @@
     "secureInputWarning": "⚠ Tastenkürzel durch Secure Input blockiert"
   },
   "sidebar": {
-    "home": "Home",
+    "home": "Start",
     "general": "Allgemein",
     "account": "Konto",
     "models": "Modelle",
@@ -73,8 +73,8 @@
       "progress": "Schritt {{step}} von {{count}}"
     },
     "welcome": {
-      "title": "Sprechen statt tippen, in jeder App",
-      "subtitle": "Wähle die Sprachen, in denen du diktierst",
+      "title": "Welche Sprachen sprichst du?",
+      "subtitle": "Wähle alle, die du mit {{appName}} nutzen wirst. Du kannst das später ändern.",
       "languagesLabel": "Sprachen",
       "noMatch": "Kein Treffer für „{{query}}“. Weitere Sprachen findest du in den Einstellungen.",
       "appLanguage": "App-Sprache",
@@ -88,7 +88,7 @@
       },
       "hint": {
         "pickOne": "Wähle mindestens eine Sprache",
-        "weak_one": "{{languages}}: Noch kein Modell versteht sie gut",
+        "weak_one": "{{languages}}: Noch kein Modell versteht diese Sprache gut",
         "weak_other": "{{languages}}: Noch kein Modell versteht sie gut"
       }
     },
@@ -104,7 +104,7 @@
       "stopped": "Download von {{name}} angehalten",
       "retryDetail": "Beim erneuten Versuch geht es dort weiter, wo es aufgehört hat",
       "retryDownload": "Download wiederholen",
-      "cardProgress": "Lädt herunter: {{percent}} %, {{done}} von {{total}}",
+      "cardProgress": "Lädt herunter: {{percent}} %, {{done}} von {{total}}",
       "timeLeft": "noch {{time}}",
       "speedLeft": "{{speed}}, noch {{time}}"
     },
@@ -120,13 +120,13 @@
       "shorts": {
         "recommended": "Beste Balance für dich",
         "faster": "Schneller, etwas mehr Fehler",
-        "accurate": "Wenigste Fehler, aber langsamer"
+        "accurate": "Kaum Fehler, aber langsamer"
       },
       "model": "Modell",
       "showAll": "Alle {{count}} Modelle anzeigen",
       "download": "{{size}} herunterladen",
       "downloadInstead": "Stattdessen {{size}} herunterladen",
-      "pauses": "{{name}} pausiert bei {{percent}} %",
+      "pauses": "{{name}} pausiert bei {{percent}} %",
       "resumeLater": "Wähle es erneut, um dort weiterzumachen, wo es aufgehört hat",
       "hint": "Wird heruntergeladen, während du die Einrichtung abschließt"
     },
@@ -147,9 +147,9 @@
       "addKey": "Füge jetzt eine Taste hinzu",
       "cancel": "Abbrechen",
       "tryIt": "Probier es selbst aus",
-      "addModifier": "Eine Taste allein tippt. Nimm eine Sondertaste.",
+      "addModifier": "Eine einzelne Taste würde tippen. Füge eine Sondertaste hinzu.",
       "lines": {
-        "hold": "Ja! Bin zehn Minuten später, halt mir einen Platz frei.",
+        "hold": "Ja! Ich bin zehn Minuten zu spät, halt mir einen Platz frei.",
         "tap": "Samstag Picknick im Park, danach Abendessen bei Rosa's. Die blaue Decke und den guten Lautsprecher mitbringen."
       },
       "agent": {
@@ -160,8 +160,8 @@
         },
         "act": {
           "sentence": "<0>Soll etwas erledigt werden?</0> <1>Halte dein Tastenkürzel gedrückt und sag es.</1> <2>Erledigt.</2>",
-          "said": "Erinnere mich um 5, Sam anzurufen",
-          "reply": "Erinnerung für 17:00: Sam anrufen."
+          "said": "Erinnere mich um 5 daran, Sam anzurufen",
+          "reply": "Erinnerung für 17 Uhr: Sam anrufen."
         },
         "recall": {
           "sentence": "<0>Etwas vergessen?</0> <1>Halte dein Tastenkürzel gedrückt und frag.</1> <2>Es erinnert sich.</2>",
@@ -172,7 +172,7 @@
     },
     "try": {
       "title": "Probier es aus!",
-      "subtitle": "{{appName}} ist in der Ecke und führt dich durch",
+      "subtitle": "{{appName}} wartet unten in der Ecke und zeigt dir, wie es geht",
       "noteLabel": "Notiz",
       "placeholder": "Neue Notiz",
       "hold": "Halte <keys/> gedrückt und sprich.",
@@ -196,15 +196,15 @@
       "noWordsSub": "Versuche es noch einmal und sag einen ganzen Satz.",
       "finish": "Fertig",
       "skip": "Überspringen",
-      "seconds": "{{value}} s",
+      "seconds": "{{value}} s",
       "heardHold": "Das war Halten. Als Nächstes: freihändig.",
       "heardTap": "Das war Tippen. Probier jetzt, sie beim Sprechen gedrückt zu halten.",
       "gotIt": "Jedes Wort erkannt: „{{quote}}“"
     },
     "done": {
       "title": "Alles bereit",
-      "subMac": "{{appName}} wohnt in deiner Menüleiste. Halte oder tippe <keys/> in jeder App, um zu sprechen.",
-      "subTray": "{{appName}} wohnt in deiner Taskleiste. Halte oder tippe <keys/> in jeder App, um zu sprechen.",
+      "subMac": "{{appName}} wohnt in deiner Menüleiste. Halte <keys/> gedrückt oder tippe kurz darauf, um in jeder App zu sprechen.",
+      "subTray": "{{appName}} wohnt in deiner Taskleiste. Halte <keys/> gedrückt oder tippe kurz darauf, um in jeder App zu sprechen.",
       "hint": "Du kannst das später in den Einstellungen ändern",
       "highFiveLabel": "High Five",
       "atLogin": "{{appName}} beim Anmelden starten",
@@ -245,9 +245,9 @@
       },
       "unsupported": "Dieses Modell versteht {{language}} nicht und kann es daher nicht tippen",
       "unrated": "Dieses Modell versteht {{language}}, aber wir haben noch nicht gemessen, wie gut",
-      "under": "unter {{max}} %",
-      "between": "{{min}} bis {{max}} %",
-      "over": "{{min}} % oder mehr",
+      "under": "unter {{max}} %",
+      "between": "{{min}} bis {{max}} %",
+      "over": "{{min}} % oder mehr",
       "speedTitle": "Geschwindigkeit: {{speed}}",
       "speedName": {
         "0": "Sehr langsam",
@@ -265,9 +265,9 @@
       },
       "speedPreview": "{{meaning}}, mit Live-Vorschau während du sprichst",
       "untimed": "Wir haben noch nicht gemessen, wie schnell es ist",
-      "underSeconds": "unter {{max}} s",
-      "betweenSeconds": "{{min}} bis {{max}} s",
-      "overSeconds": "{{min}} s oder mehr"
+      "underSeconds": "unter {{max}} s",
+      "betweenSeconds": "{{min}} bis {{max}} s",
+      "overSeconds": "{{min}} s oder mehr"
     },
     "roles": {
       "recommended": "Empfohlen",
@@ -299,7 +299,7 @@
     },
     "missingLanguage": "Eine Sprache fehlt",
     "allLanguages": "Alle",
-    "downloadingLine": "Lädt herunter: {{percent}} % von {{total}}",
+    "downloadingLine": "Lädt herunter: {{percent}} % von {{total}}",
     "customLine": "Aus deinem Modellordner hinzugefügt. Nicht bewertet."
   },
   "languagePicker": {
@@ -314,17 +314,17 @@
     "streaming": "Streaming",
     "active": "Aktiv",
     "noModelsAvailable": "Keine Modelle verfügbar",
-    "verifying": "Überprüfung von {{modelName}}...",
-    "verifyingGeneric": "Überprüfung...",
-    "downloading": "Herunterladen {{percentage}}%",
-    "downloadingMultiple": "Lade {{count}} Modelle herunter...",
+    "verifying": "{{modelName}} wird überprüft…",
+    "verifyingGeneric": "Wird überprüft…",
+    "downloading": "Wird heruntergeladen: {{percentage}} %",
+    "downloadingMultiple": "{{count}} Modelle werden heruntergeladen…",
     "modelReady": "Modell bereit",
-    "loading": "Lade {{modelName}}...",
-    "loadingGeneric": "Wird geladen...",
+    "loading": "{{modelName}} wird geladen…",
+    "loadingGeneric": "Wird geladen…",
     "modelError": "Modellfehler",
     "modelUnloaded": "Modell entladen",
-    "noModelDownloadRequired": "Kein Modell - Download erforderlich",
-    "downloadSpeed": "{{speed}} MB/s",
+    "noModelDownloadRequired": "Kein Modell – Download erforderlich",
+    "downloadSpeed": "{{speed}} MB/s",
     "lockedWhileTranscribing": "Du kannst das Modell wechseln, sobald die Transkription im Verlauf fertig ist."
   },
   "settings": {
@@ -336,10 +336,10 @@
       "shortcut": {
         "title": "{{appName}}-Tastenkürzel",
         "description": "Tastenkürzel für die Sprachaufnahme konfigurieren",
-        "loading": "Tastenkürzel werden geladen...",
+        "loading": "Tastenkürzel werden geladen…",
         "none": "Keine Tastenkürzel konfiguriert",
         "notFound": "Tastenkürzel nicht gefunden",
-        "pressKeys": "Tasten drücken...",
+        "pressKeys": "Tasten drücken…",
         "bindings": {
           "transcribe": {
             "name": "Transkriptions-Tastenkürzel",
@@ -364,18 +364,18 @@
       },
       "language": {
         "title": "Sprache",
-        "description": "Wähle die Sprache für die Spracherkennung. Auto erkennt die Sprache automatisch, die Auswahl einer bestimmten Sprache kann die Genauigkeit verbessern.",
-        "searchPlaceholder": "Sprachen suchen...",
+        "description": "Wähle die Sprache für die Spracherkennung. „Automatisch“ erkennt die Sprache selbst; eine bestimmte Sprache auszuwählen kann die Genauigkeit für diese Sprache verbessern.",
+        "searchPlaceholder": "Sprachen suchen…",
         "noResults": "Keine Sprachen gefunden",
         "auto": "Automatisch",
         "autoUnavailable": {
-          "title": "Automatisch ist deaktiviert",
+          "title": "„Automatisch“ ist deaktiviert",
           "oneLanguage": "Nur eine deiner Sprachen funktioniert mit diesem Modell",
           "undetectable": "Nicht verfügbar mit {{languages}}",
           "noMatch": "Keine deiner Sprachen funktioniert mit diesem Modell"
         },
-        "detectorMissingTitle": "Automatisch braucht einen separaten Download",
-        "detectorMissing": "Dieses Modell erkennt nicht, welche Sprache du sprichst. Automatisch braucht eine kleine Spracherkennung, die das herausfindet",
+        "detectorMissingTitle": "„Automatisch“ braucht einen separaten Download",
+        "detectorMissing": "Dieses Modell erkennt nicht, welche Sprache du sprichst. „Automatisch“ braucht eine kleine Spracherkennung, um das herauszufinden",
         "stopDetectorDownload": "Download der Spracherkennung stoppen"
       },
       "preferredLanguages": {
@@ -385,7 +385,7 @@
         "weak": "Noch kein Modell erkennt {{languages}} gut."
       },
       "shortcutActivation": {
-        "title": "Verhalten der Tastenkombination",
+        "title": "Verhalten des Tastenkürzels",
         "description": "Wähle aus, wie das Transkriptions-Tastenkürzel die Aufnahme startet und beendet.",
         "options": {
           "holdOrToggle": "Automatisch",
@@ -394,8 +394,8 @@
         },
         "descriptions": {
           "hold_or_toggle": "Gedrückt halten zum Aufnehmen oder antippen zum Umschalten",
-          "push_to_talk": "Nimmt auf, solange die Tastenkombination gedrückt bleibt",
-          "toggle": "Tastenkombination antippen, um die Aufnahme zu starten, erneut antippen zum Stoppen"
+          "push_to_talk": "Nimmt auf, solange du das Tastenkürzel gedrückt hältst",
+          "toggle": "Tippe auf das Tastenkürzel, um die Aufnahme zu starten, und erneut, um sie zu stoppen"
         }
       },
       "autoStop": {
@@ -404,7 +404,7 @@
         "delay": {
           "label": "Pause bis zum Stopp",
           "description": "Wie lange du nach dem Sprechen still sein musst, bis das Diktat stoppt.",
-          "seconds": "{{seconds}} s"
+          "seconds": "{{seconds}} s"
         }
       }
     },
@@ -423,7 +423,7 @@
       "showMore": "{{count}} weitere anzeigen",
       "showFewer": "Weniger anzeigen",
       "download": "Herunterladen und verwenden",
-      "downloadingThenUse": "{{percent}} % von {{total}}, dann wird gewechselt",
+      "downloadingThenUse": "{{percent}} % von {{total}}, dann wird gewechselt",
       "loading": "Wird geladen…",
       "deleteAsk": "{{name}} löschen? Das gibt {{size}} frei.",
       "deleteAskActive": "{{name}} löschen? {{appName}} kann erst wieder transkribieren, wenn du ein anderes wählst.",
@@ -434,10 +434,10 @@
         "open": "So werden Modelle bewertet",
         "accuracyNote": "Für jede deiner Sprachen: wie viele Wörter ein Modell in unseren Testaufnahmen falsch hatte.",
         "speedNote": {
-          "accelerated": "Wie lange es dauert, 30 Sekunden Sprache auf dem Grafikchip unseres Test-Laptops zu tippen. Dieser Computer kann abweichen.",
-          "cpu": "Wie lange es dauert, 30 Sekunden Sprache auf dem Prozessor unseres Test-Laptops zu tippen. Dieser Computer kann abweichen."
+          "accelerated": "Wie lange der Grafikchip unseres Test-Laptops braucht, um 30 Sekunden Sprache abzutippen. Auf diesem Computer kann es anders sein.",
+          "cpu": "Wie lange der Prozessor unseres Test-Laptops braucht, um 30 Sekunden Sprache abzutippen. Auf diesem Computer kann es anders sein."
         },
-        "marks": "? wurde noch nicht gemessen. — versteht diese Sprache nicht."
+        "marks": "? wurde noch nicht gemessen. – versteht diese Sprache nicht."
       },
       "retiredNotice": {
         "title": "Alte Modelle funktionieren nicht mehr mit {{appName}}",
@@ -459,8 +459,8 @@
       "microphone": {
         "title": "Mikrofon",
         "description": "Bevorzugtes Mikrofon auswählen",
-        "placeholder": "Mikrofon auswählen...",
-        "loading": "Wird geladen..."
+        "placeholder": "Mikrofon auswählen…",
+        "loading": "Wird geladen…"
       },
       "channel": {
         "title": "Eingangskanal",
@@ -475,8 +475,8 @@
       "outputDevice": {
         "title": "Ausgabegerät",
         "description": "Bevorzugtes Audioausgabegerät für Feedback-Töne auswählen",
-        "placeholder": "Ausgabegerät auswählen...",
-        "loading": "Wird geladen..."
+        "placeholder": "Ausgabegerät auswählen…",
+        "loading": "Wird geladen…"
       },
       "volume": {
         "title": "Lautstärke",
@@ -510,10 +510,10 @@
       },
       "startHidden": {
         "label": "Versteckt starten",
-        "description": "In den Systembereich starten, ohne das Fenster zu öffnen."
+        "description": "In der Taskleiste starten, ohne das Fenster zu öffnen."
       },
       "autostart": {
-        "label": "Beim Start ausführen",
+        "label": "Beim Anmelden starten",
         "description": "{{appName}} automatisch beim Anmelden starten."
       },
       "showTrayIcon": {
@@ -532,7 +532,7 @@
         },
         "position": {
           "title": "Overlay-Position",
-          "description": "Visuelles Feedback-Overlay während Aufnahme und Transkription anzeigen. Unter Linux wird 'Keine' empfohlen.",
+          "description": "Wo das Overlay während Aufnahme und Transkription auf dem Bildschirm erscheint.",
           "options": {
             "bottom": "Unten",
             "top": "Oben"
@@ -550,18 +550,18 @@
           "none": "Keine",
           "externalScript": "Externes Skript"
         },
-        "externalScriptPlaceholder": "/pfad/zu/ihrem/skript.sh"
+        "externalScriptPlaceholder": "/pfad/zu/deinem/skript.sh"
       },
       "typingTool": {
         "title": "Eingabetool",
-        "description": "Wähle, welches Linux-Eingabetool für die Direkt-Einfügen-Methode verwendet werden soll. Auto erkennt und verwendet automatisch das beste verfügbare Tool für dein System.",
+        "description": "Wähle, welches Linux-Eingabetool die Einfügemethode „Direkt“ verwendet. „Automatisch“ erkennt das beste verfügbare Tool für dein System und verwendet es.",
         "options": {
-          "auto": "Auto (Empfohlen)"
+          "auto": "Automatisch (empfohlen)"
         }
       },
       "clipboardHandling": {
         "title": "Zwischenablage-Verhalten",
-        "description": "Zwischenablage nicht ändern bewahrt den aktuellen Inhalt nach der Transkription. In Zwischenablage kopieren hinterlässt das Transkriptionsergebnis in der Zwischenablage.",
+        "description": "„Zwischenablage nicht ändern“ behält den aktuellen Inhalt der Zwischenablage nach der Transkription bei. „In Zwischenablage kopieren“ lässt die Transkription nach dem Einfügen in der Zwischenablage.",
         "options": {
           "dontModify": "Zwischenablage nicht ändern",
           "copyToClipboard": "In Zwischenablage kopieren"
@@ -602,7 +602,7 @@
         "placeholder": "Wort hinzufügen",
         "add": "Hinzufügen",
         "remove": "{{word}} entfernen",
-        "duplicate": "\"{{word}}\" existiert bereits"
+        "duplicate": "„{{word}}“ existiert bereits"
       },
       "voiceActivityDetection": {
         "title": "Sprachaktivitätserkennung (VAD)",
@@ -614,13 +614,13 @@
       },
       "languageDetection": {
         "title": "Automatisch auf meine Sprachen beschränken",
-        "description": "Automatisch wählt nur aus deinen bevorzugten Sprachen, mithilfe einer kleinen Spracherkennung. Schalte das ein, wenn Automatisch immer wieder eine Sprache wählt, die du nicht sprichst",
+        "description": "„Automatisch“ wählt mithilfe einer kleinen Spracherkennung nur aus deinen bevorzugten Sprachen. Schalte das ein, wenn „Automatisch“ immer wieder eine Sprache wählt, die du nicht sprichst",
         "downloadHint": "Beim Einschalten wird eine kleine Spracherkennung heruntergeladen",
         "downloadingHint": "Die Spracherkennung wird heruntergeladen. Zum Abbrechen ausschalten"
       },
       "vadBackend": {
         "title": "VAD-Backend",
-        "description": "Wählt den Detektor zum Herausfiltern von Stille. Earshot ist experimentell; wechseln Sie zurück zu Silero, wenn Sprache abgeschnitten oder Rauschen beibehalten wird.",
+        "description": "Wähle den Detektor, der Stille herausfiltert. Earshot ist experimentell; wechsle zurück zu Silero, wenn Sprache abgeschnitten wird oder Rauschen bleibt.",
         "options": {
           "silero": "Silero",
           "earshot": "Earshot"
@@ -628,7 +628,7 @@
       },
       "fillerWordRemoval": {
         "title": "Füllwörter entfernen",
-        "description": "Entfernt häufige Verzögerungslaute aus Transkriptionen. Deaktivieren Sie diese Option, um sie beizubehalten."
+        "description": "Entfernt häufige Füllwörter aus Transkriptionen. Ausschalten, um sie zu behalten."
       },
       "chineseScript": {
         "title": "Chinesische Schrift",
@@ -649,7 +649,7 @@
     "history": {
       "title": "Verlauf",
       "openFolder": "Aufnahmeordner öffnen",
-      "loading": "Verlauf wird geladen...",
+      "loading": "Verlauf wird geladen…",
       "empty": "Noch keine Transkriptionen. Starte eine Aufnahme, um deinen Verlauf aufzubauen!",
       "copyToClipboard": "Transkription in Zwischenablage kopieren",
       "copyError": "Transkription konnte nicht in die Zwischenablage kopiert werden.",
@@ -659,16 +659,16 @@
       "deleteError": "Eintrag konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "retranscribe": "Erneut transkribieren",
       "cancelTranscription": "Transkription abbrechen",
-      "transcribing": "Transkribiere...",
+      "transcribing": "Wird transkribiert…",
       "transcriptionFailed": "Transkription fehlgeschlagen. Du kannst über das Wiederholen-Symbol erneut transkribieren.",
       "notTranscribed": "Nicht transkribiert. Du kannst es über das Wiederholen-Symbol transkribieren.",
       "transcribeFile": "Datei transkribieren",
       "mediaFiles": "Audio und Video",
       "fileUnsupported": "Audio aus {{name}} konnte nicht gelesen werden.",
-      "readingFile": "{{name}} wird gelesen...",
+      "readingFile": "{{name}} wird gelesen…",
       "transcribeFailed": "Transkription fehlgeschlagen. Bitte versuche es erneut.",
       "waiting": "Wartet auf Transkription",
-      "transcribingPercent": "Transkribiere, {{percent}} %",
+      "transcribingPercent": "Wird transkribiert, {{percent}} %",
       "showMore": "Mehr anzeigen",
       "showLess": "Weniger anzeigen",
       "dropTitle": "Zum Transkribieren ablegen",
@@ -706,7 +706,7 @@
         "resume": "Fortsetzen",
         "copied": "Kopiert",
         "lineCount": "{{count}} Zeilen",
-        "empty": "Warte auf Logs … Einträge erscheinen hier, sobald die App sie ausgibt."
+        "empty": "Warte auf Logs… Einträge erscheinen hier, sobald die App sie ausgibt."
       },
       "updateChecks": {
         "label": "Nach Updates suchen",
@@ -721,8 +721,8 @@
         "error": "Versionshinweise konnten nicht angezeigt werden"
       },
       "onboardingPreview": {
-        "title": "Ersteinrichtung ansehen",
-        "description": "Vorschau der Einrichtungsbildschirme, ohne Berechtigungen, Modelle oder den Abschlussstatus zu ändern",
+        "title": "Onboarding-Vorschau",
+        "description": "Onboarding-Bildschirme ansehen, ohne Berechtigungen, Modelle oder den Abschlussstatus zu ändern",
         "exitButton": "Vorschau beenden",
         "choose": "Bildschirm auswählen",
         "screens": {
@@ -747,7 +747,7 @@
       },
       "soundTheme": {
         "label": "Sound-Thema",
-        "description": "Sound-Thema für Aufnahme-Start und -Stop-Feedback auswählen"
+        "description": "Sound-Thema für Start und Ende der Aufnahme auswählen"
       },
       "wordCorrectionThreshold": {
         "title": "Wortkorrektur-Schwelle",
@@ -766,7 +766,7 @@
         "days3": "Nach 3 Tagen",
         "weeks2": "Nach 2 Wochen",
         "months3": "Nach 3 Monaten",
-        "placeholder": "Aufbewahrungszeitraum auswählen..."
+        "placeholder": "Aufbewahrungszeitraum auswählen…"
       },
       "alwaysOnMicrophone": {
         "label": "Mikrofon immer aktiv",
@@ -803,7 +803,7 @@
       },
       "holdThreshold": {
         "title": "Halte-Schwellenwert",
-        "description": "Nur im Modus „Automatisch“: wie lange (in Millisekunden) die Tastenkombination gedrückt bleiben muss, damit sie als Halten statt als Tippen zählt. Verringern, wenn die Aufnahme nach kurzem Halten weiterläuft; erhöhen, wenn bewusstes Tippen als Halten gewertet wird."
+        "description": "Nur im Modus „Automatisch“: wie lange (in Millisekunden) das Tastenkürzel gedrückt bleiben muss, damit es als Halten statt als Tippen zählt. Verringern, wenn die Aufnahme nach kurzem Halten weiterläuft; erhöhen, wenn bewusstes Tippen als Halten gewertet wird."
       },
       "reliablePaste": {
         "title": "Zuverlässiges Einfügen (Beta)",
@@ -819,8 +819,8 @@
       },
       "keyboardDiagnostic": {
         "title": "Tastatur-Diagnose",
-        "description": "Prüft, ob Tastaturereignisse {{appName}} erreichen. Es wird nur die Anzahl der Ereignisse erfasst — niemals, welche Tasten du drückst.",
-        "run": "10-Sekunden-Diagnose starten",
+        "description": "Prüft, ob Tastaturereignisse {{appName}} erreichen. Es wird nur die Anzahl der Ereignisse erfasst – niemals, welche Tasten du drückst.",
+        "run": "Diagnose starten (10 s)",
         "running": "Lauscht… drücke dein Tastenkürzel ein paar Mal (z. B. Option+Space)",
         "secureInputLabel": "Secure Input",
         "enabled": "aktiviert",
@@ -831,10 +831,10 @@
         "keyUp": "Taste losgelassen",
         "flagsChanged": "Modifikatoren",
         "mouse": "Maus",
-        "verdictBlocked": "Secure Input blockiert Tastenereignisse — Tastenkürzel mit einer normalen Taste können erst wieder funktionieren, wenn das behoben ist.",
-        "verdictSuspicious": "Es kamen Modifikator-Ereignisse an, aber keine Tastenereignisse — irgendetwas unterdrückt Tasten, obwohl Secure Input als deaktiviert gemeldet wird. Bitte melde das auf GitHub.",
+        "verdictBlocked": "Secure Input blockiert Tastenereignisse – Tastenkürzel mit einer normalen Taste können erst wieder funktionieren, wenn das behoben ist.",
+        "verdictSuspicious": "Es kamen Modifikator-Ereignisse an, aber keine Tastenereignisse – irgendetwas unterdrückt Tasten, obwohl Secure Input als deaktiviert gemeldet wird. Bitte melde das auf GitHub.",
         "verdictOk": "Tastenereignisse erreichen {{appName}} normal.",
-        "verdictNoEvents": "Keine Ereignisse erfasst — hast du während des Tests Tasten gedrückt?",
+        "verdictNoEvents": "Keine Ereignisse erfasst – hast du während des Tests Tasten gedrückt?",
         "failed": "Diagnose fehlgeschlagen: {{error}}"
       }
     },
@@ -861,14 +861,14 @@
         "title": "Danksagungen",
         "ggml": {
           "title": "ggml",
-          "description": "Hochleistungs-Inferenz des Whisper-Spracherkennungsmodells von OpenAI",
-          "details": "{{appName}} verwendet ggml für schnelle, lokale Sprach-zu-Text-Verarbeitung. Dank an Georgi Gerganov und die Mitwirkenden für ihre großartige Arbeit."
+          "description": "Hochleistungs-Tensorbibliothek für maschinelles Lernen direkt auf dem Gerät",
+          "details": "Die lokale Spracherkennung von {{appName}} basiert auf transcribe.cpp und ggml. Danke an Georgi Gerganov und alle Mitwirkenden für ihre großartige Arbeit."
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "Open-Source-Lizenzen",
+          "description": "Hinweise zur Open-Source-Software in {{appName}}",
+          "show": "Lizenzen anzeigen",
+          "hide": "Lizenzen ausblenden"
         }
       },
       "intro": {
@@ -886,30 +886,30 @@
       },
       "wake": {
         "label": "Freihändig: Sag „Hallo Ambient“",
-        "description": "Sprich mit {{appName}} ohne Taste: „Hallo Ambient, was steht heute in meinem Kalender?“ Es hört auf diesem Computer zu und ignoriert alles, was nicht mit seinem Namen beginnt. Solange es aktiv ist, zeigt dein Computer die Mikrofonanzeige."
+        "description": "Sprich mit {{appName}} ohne Taste: „Hallo Ambient, was steht heute in meinem Kalender?“ Es hört auf diesem Computer zu und ignoriert alles, was nicht mit seinem Namen beginnt. Solange es aktiv ist, zeigt dein Computer an, dass das Mikrofon verwendet wird."
       }
     }
   },
   "footer": {
-    "checkingUpdates": "Suche nach Updates...",
+    "checkingUpdates": "Suche nach Updates…",
     "updateAvailableShort": "Update verfügbar",
     "upToDate": "Aktuell",
     "updateCheckingDisabled": "Update-Prüfung deaktiviert",
-    "downloading": "Wird heruntergeladen... {{progress}}%",
-    "installing": "Wird installiert...",
-    "preparing": "Wird vorbereitet...",
+    "downloading": "Wird heruntergeladen… {{progress}} %",
+    "installing": "Wird installiert…",
+    "preparing": "Wird vorbereitet…",
     "checkForUpdates": "Nach Updates suchen",
     "portableUpdateTitle": "Manuelles Update erforderlich",
-    "portableUpdateMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Lade unten den Installer für dein System herunter, führe ihn aus und installiere in denselben Ordner — dein Data/-Ordner (Einstellungen, Modelle, Aufnahmen) bleibt erhalten.",
+    "portableUpdateMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Lade unten den Installer für dein System herunter, führe ihn aus und installiere in denselben Ordner – dein Data/-Ordner (Einstellungen, Modelle, Aufnahmen) bleibt erhalten.",
     "portableUpdateButton": "Installer herunterladen",
-    "portableUpdateBrowseMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Lade die neueste Version für dein System von GitHub Releases herunter und installiere sie in denselben Ordner — dein Data/-Ordner (Einstellungen, Modelle, Aufnahmen) bleibt erhalten.",
+    "portableUpdateBrowseMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Lade die neueste Version für dein System von GitHub Releases herunter und installiere sie in denselben Ordner – dein Data/-Ordner (Einstellungen, Modelle, Aufnahmen) bleibt erhalten.",
     "portableUpdateBrowseButton": "GitHub Releases öffnen"
   },
   "whatsNew": {
     "title": "Neu in {{appName}} v{{version}}"
   },
   "common": {
-    "loading": "Wird geladen...",
+    "loading": "Wird geladen…",
     "delete": "Löschen",
     "close": "Schließen",
     "open": "Öffnen",
@@ -941,7 +941,7 @@
   },
   "theme": {
     "title": "Anwendungsdesign",
-    "description": "Wählen Sie, ob {{appName}} dem Systemthema folgt oder hell bzw. dunkel bleibt",
+    "description": "Wähle, ob {{appName}} dem Systemdesign folgt oder immer hell oder dunkel bleibt",
     "options": {
       "system": "System",
       "light": "Hell",
@@ -949,9 +949,9 @@
     }
   },
   "overlay": {
-    "transcribing": "Transkribiere...",
-    "processing": "Verarbeite...",
-    "loadingModel": "Modell wird geladen..."
+    "transcribing": "Wird transkribiert…",
+    "processing": "Wird verarbeitet…",
+    "loadingModel": "Modell wird geladen…"
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} blockiert möglicherweise 1 Tastenkürzel",
@@ -961,7 +961,7 @@
     "recorderBlockedWithCulprit": "{{name}} blockiert möglicherweise Änderungen an Tastenkürzeln",
     "recorderBlockedNoCulprit": "macOS blockiert vorübergehend Änderungen an Tastenkürzeln",
     "learnMore": "So behebst du das",
-    "recorderBlocked": "Tastenkürzel können gerade nicht aufgezeichnet werden — macOS Secure Input blockiert Tastenereignisse. Behebe zuerst die Secure-Input-Warnung.",
+    "recorderBlocked": "Tastenkürzel können gerade nicht aufgezeichnet werden – macOS Secure Input blockiert Tastenereignisse. Behebe zuerst die Secure-Input-Warnung.",
     "dismiss": "Ausblenden"
   },
   "account": {
@@ -983,7 +983,7 @@
     "proFeatures": {
       "polish": "KI-Feinschliff für jedes Diktat",
       "onDevice": "Feinschliff auf dem Gerät mit Apple Intelligence",
-      "agent": "Der ambient-Agent, so wie er ausgeliefert wird",
+      "agent": "Der Ambient-Agent mit allen neuen Funktionen",
       "priority": "Prioritärer Support"
     },
     "card": {
@@ -998,7 +998,7 @@
       "copied": "Kopiert",
       "errors": {
         "network": "{{appName}} ist zum Aktivieren nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
-        "inactive": "Das Abo zu diesem Code ist nicht aktiv. Verlängere es, um deinen Plan freizuschalten.",
+        "inactive": "Das Abo zu diesem Code ist nicht aktiv. Verlängere es, um deinen Tarif freizuschalten.",
         "rate_limited": "Zu viele Versuche. Versuche es in 15 Minuten erneut.",
         "server": "Die Aktivierung ist bei uns fehlgeschlagen. Versuche es gleich noch einmal."
       },
@@ -1022,7 +1022,7 @@
       "resent": "Neuer Code gesendet.",
       "changeEmail": "Andere E-Mail verwenden",
       "signedInTitle": "Angemeldet",
-      "noPurchase": "{{email}} hat noch kein Pro-Abo. Kauf Pro, und es wird hier aktiviert.",
+      "noPurchase": "{{email}} hat noch kein Pro-Abo. Sobald du Pro kaufst, wird es hier aktiviert.",
       "checkAgain": "Erneut prüfen",
       "signOut": "Abmelden",
       "redeemLink": "Code einlösen",
@@ -1055,7 +1055,7 @@
       "unlock": "Unbegrenzt freischalten",
       "onDevice": "Auf diesem Mac behalten",
       "onDeviceDescription": "Nutze stattdessen Apple Intelligence. Nichts verlässt deinen Mac.",
-      "freeLeft": "Noch {{left}} von {{limit}} kostenlosen Anwendungen von KI-Feinschliff diese Woche"
+      "freeLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche"
     },
     "trial": {
       "daysLeft_one": "Noch {{count}} Tag",
@@ -1067,7 +1067,7 @@
       "morning": "Guten Morgen",
       "afternoon": "Guten Tag",
       "evening": "Guten Abend",
-      "night": "Spät dran"
+      "night": "Noch spät am Werk"
     },
     "hold": "Halte",
     "anywhere": "in jeder App gedrückt und sprich einfach los.",
@@ -1090,7 +1090,7 @@
       "description": "Drücke dein Tastenkürzel in einer beliebigen App und sprich. Deine Diktate erscheinen dann hier."
     },
     "tips": {
-      "holdOrTap": "Halte das Tastenkürzel zum Sprechen gedrückt oder tippe es einmal zum Starten und noch einmal zum Beenden.",
+      "holdOrTap": "Halte das Tastenkürzel zum Sprechen gedrückt oder tippe einmal darauf, um zu starten, und noch einmal, um zu beenden.",
       "customWords": "Füge unter Einstellungen → Erweitert → Benutzerdefinierte Wörter Namen und Fachbegriffe hinzu, um die Genauigkeit zu verbessern.",
       "dropFile": "Ziehe eine Audiodatei auf dieses Fenster, um sie zu transkribieren.",
       "languages": "Wähle unter Einstellungen → Allgemein die Sprachen aus, die du sprichst, um bessere Modellvorschläge zu erhalten."
@@ -1103,7 +1103,7 @@
     "plan": {
       "title": "Dein Tarif",
       "polishUnlimited": "KI-Feinschliff ist unbegrenzt.",
-      "polishLeft": "Noch {{left}} von {{limit}} kostenlosen Anwendungen von KI-Feinschliff diese Woche · wird {{day}} zurückgesetzt",
+      "polishLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Feinschliffen diese Woche · wird {{day}} zurückgesetzt",
       "polishFree": "Im kostenlosen Tarif ist ein wöchentliches Kontingent an KI-Feinschliff enthalten.",
       "meetingsLeft": "Noch {{left}} von {{limit}} Meeting-Notizen in diesem Monat",
       "aiLeft": "Heute noch {{left}} von {{limit}} KI-Anfragen",
@@ -1129,10 +1129,10 @@
     "stop": "Stopp",
     "status": {
       "needScreenContext": "Schalte „Lesen, wonach du fragst“ unter Datenschutz ein, um das zu nutzen.",
-      "onDeviceFailed": "Konnte gerade nicht auf diesem Computer antworten.",
+      "onDeviceFailed": "Auf diesem Computer ist gerade keine Antwort möglich.",
       "offline": "{{appName}} ist nicht erreichbar. Prüfe deine Verbindung.",
       "weeklyLimit": "Die kostenlosen KI-Nutzungen dieser Woche sind aufgebraucht. Mit Pro unbegrenzt.",
-      "account": "Dein Pro-Zugang erfordert Aufmerksamkeit unter Konto.",
+      "account": "Bitte prüfe deinen Pro-Zugang unter Konto.",
       "failed": "Das hat gerade nicht geklappt.",
       "interrupted": "Die Antwort wurde unterbrochen.",
       "opened": "Geöffnet",
@@ -1154,10 +1154,10 @@
       "fairUse": "Du hast das heutige Fair-Use-Limit erreicht. Es wird um Mitternacht UTC zurückgesetzt.",
       "slowDown": "Das sind sehr viele Anfragen auf einmal. Versuch es in einer Minute noch einmal.",
       "listening": "Hört zu…",
-      "heardNothing": "Gehört, aber keine Anfrage verstanden.",
-      "noWebResults": "Die Websuche hat gerade nicht geklappt, daher ist das aus meinem Wissen.",
+      "heardNothing": "Ich habe dich gehört, aber keine Anfrage erkannt.",
+      "noWebResults": "Die Websuche hat gerade nicht geklappt, daher antworte ich aus meinem eigenen Wissen.",
       "timeout": "Das hat zu lange gedauert. Versuch es noch einmal.",
-      "needsCloud": "Dafür braucht es die Cloud, aber die KI ist auf „Nur auf diesem Computer“ gestellt. Ändere das unter Datenschutz.",
+      "needsCloud": "Dafür braucht es die Cloud, aber die KI ist auf „Nur auf diesem Computer“ eingestellt. Ändere das unter Datenschutz.",
       "cloudOfferOn": "Vorschläge aus der Cloud sind aktiv. Ändere das unter Datenschutz."
     },
     "undo": "Rückgängig",
@@ -1221,7 +1221,7 @@
       "searchDrive": "In Google Drive suchen",
       "searchGmail": "In Gmail suchen"
     },
-    "cloudOffer": "{{appName}} kann auf diesem Computer Hilfe vorschlagen, indem es einen geschwärzten Ausschnitt des Fensters an seine Server sendet. Aktivieren?"
+    "cloudOffer": "{{appName}} kann auf diesem Computer Hilfe vorschlagen, indem es einen bereinigten Ausschnitt des Fensters (ohne vertrauliche Daten) an seine Server sendet. Aktivieren?"
   },
   "privacy": {
     "title": "Datenschutz",
@@ -1252,7 +1252,7 @@
       "screen_context": {
         "title": "Lesen, wonach du fragst",
         "reads": "Liest das Fenster, nach dem du fragst, und deine offenen Fenster, wenn du etwas suchen lässt.",
-        "leaves": "Nur das, was zum Antworten nötig ist, ohne Geheimnisse."
+        "leaves": "Nur das, was für die Antwort nötig ist, ohne vertrauliche Daten."
       },
       "screen_memory": {
         "title": "Merken, was du gesehen hast",
@@ -1262,7 +1262,7 @@
       "proactive": {
         "title": "Vorschläge machen",
         "reads": "Schlägt im richtigen Moment einen nächsten Schritt vor: Threads, Entwürfe, Termine, Fehler, Meetings.",
-        "leaves": "Wird auf diesem Computer entschieden, oder in der Cloud, wenn du sie unten wählst. Sonst wird nichts gesendet, außer du nimmst an, ausgenommen Hinweise in Meetings."
+        "leaves": "Wird auf diesem Computer entschieden oder in der Cloud, wenn du das unten auswählst. Sonst wird nur gesendet, was du annimmst – mit Ausnahme von Hinweisen in Meetings."
       },
       "meetings": {
         "title": "Meeting-Notizen",
@@ -1284,8 +1284,8 @@
     "days_other": "{{count}} Tage",
     "preview": {
       "title": "Was {{appName}} sieht",
-      "description": "Genau das, was es nach dem Schwärzen aus einem Fenster lesen würde.",
-      "hint": "Klicke auf Vorschau und wechsle dann innerhalb von 3 Sekunden zu einem beliebigen Fenster.",
+      "description": "Genau das, was es aus einem Fenster lesen würde, nachdem vertrauliche Daten entfernt wurden.",
+      "hint": "Klicke auf „Vorschau“ und wechsle dann innerhalb von 3 Sekunden zu einem beliebigen Fenster.",
       "switchNow": "Wechsle jetzt zu einem anderen Fenster…",
       "button": "Vorschau",
       "noText": "Kein lesbarer Text in diesem Fenster.",
@@ -1304,7 +1304,7 @@
     },
     "stored": {
       "title": "Was gespeichert ist",
-      "description": "Bildschirmgedächtnis auf diesem Computer. Der Diktatverlauf ist unter Verlauf.",
+      "description": "Bildschirmgedächtnis auf diesem Computer. Dein Diktatverlauf befindet sich unter „Verlauf“.",
       "summary_one": "{{count}} Schnappschuss seit {{since}}.",
       "summary_other": "{{count}} Schnappschüsse seit {{since}}.",
       "entries_one": "{{count}} Schnappschuss",
@@ -1365,11 +1365,11 @@
       "voice": "Deine Stimme bleibt auf diesem Computer",
       "text": "Liest Text, nie Screenshots",
       "sensitive": "Überspringt Passwörter, Wallets und private Fenster",
-      "ledger": "Jede Anfrage, die den Mac verlässt, steht unten in der Liste"
+      "ledger": "Jede Anfrage, die diesen Computer verlässt, steht unten in der Liste"
     },
     "intelligence": {
       "title": "Wo die KI läuft",
-      "description": "Was über Vorschläge entscheidet und Antworten schreibt. Jede Funktion klappt mit jeder Auswahl.",
+      "description": "Was über Vorschläge entscheidet und Antworten schreibt. Jede Funktion arbeitet mit jeder Auswahl.",
       "capability": {
         "apple": "Apple Intelligence auf diesem Computer verfügbar",
         "none": "Kein lokales Modell auf diesem Computer"
@@ -1381,23 +1381,23 @@
         },
         "device": {
           "title": "Nur auf diesem Computer",
-          "description": "Zum Entscheiden oder Antworten wird nichts gesendet. Funktionen, die ein Modell brauchen, nutzen einfache Regeln oder sagen, dass sie nicht gehen."
+          "description": "Zum Entscheiden oder Antworten wird nichts gesendet. Funktionen, die ein Modell brauchen, nutzen einfache Regeln oder melden, dass sie das nicht können."
         },
         "cloud": {
           "title": "Cloud",
-          "description": "Die besten Ergebnisse. Geschwärzter Text wird an die Server von {{appName}} gesendet."
+          "description": "Die besten Ergebnisse. Bereinigter Text ohne vertrauliche Daten wird an die Server von {{appName}} gesendet."
         }
       },
       "cloudSuggestions": {
         "title": "Vorschläge aus der Cloud",
-        "description": "Sendet einen geschwärzten Ausschnitt eines Fensters, auf dem du geblieben bist, um zu entscheiden, ob Hilfe angeboten wird. Jede Anfrage steht unten in der Liste."
+        "description": "Sendet einen bereinigten Ausschnitt eines Fensters, in dem du länger bleibst, um zu entscheiden, ob Hilfe angeboten wird. Jede Anfrage steht unten in der Liste."
       }
     }
   },
   "meetings": {
     "title": "Meetings",
     "intro": "Notizen für jeden Anruf: du und die anderen, transkribiert auf diesem Computer. Audio wird nie gespeichert.",
-    "live": "Notizen laufen · {{time}}",
+    "live": "Notizen werden erstellt · {{time}}",
     "capturingBoth": "Hört dich und den Anruf.",
     "capturingMic": "Hört nur dein Mikrofon.",
     "stop": "Beenden und zusammenfassen",
@@ -1435,13 +1435,13 @@
     },
     "error": {
       "storage": "Der Meeting-Speicher konnte nicht geöffnet werden.",
-      "freeLimit": "Kostenlos sind 2 Meetings pro Monat enthalten. Pro ist unbegrenzt.",
+      "freeLimit": "Im kostenlosen Tarif sind 2 Meetings pro Monat enthalten. Pro ist unbegrenzt.",
       "mic": "Das Mikrofon konnte nicht geöffnet werden.",
       "notActive": "Kein Meeting aktiv.",
       "notFound": "Dieses Meeting existiert nicht mehr.",
       "followUp": "Das Follow-up konnte gerade nicht entworfen werden."
     },
-    "freeLeft": "Kostenlose Meetings diesen Monat übrig: {{left}} von {{limit}}. Pro ist unbegrenzt.",
+    "freeLeft": "Noch {{left}} von {{limit}} kostenlosen Meetings diesen Monat. Pro ist unbegrenzt.",
     "startNow": "Jetzt starten",
     "startNowHint": "Jetzt Notizen machen, ohne auf einen Anruf zu warten",
     "auto": {
@@ -1479,15 +1479,15 @@
       },
       "answer": {
         "title": "Antworten",
-        "example": "Wie viel sind 15 % von 240?"
+        "example": "Wie viel sind 15 % von 240?"
       },
       "act": {
         "title": "Erledigen",
-        "example": "Erinnere mich um 5, Sam anzurufen"
+        "example": "Erinnere mich um 5 daran, Sam anzurufen"
       },
       "recall": {
         "title": "Erinnern",
-        "example": "Was sagte ich zu den Preisen?"
+        "example": "Was habe ich zu den Preisen gesagt?"
       }
     },
     "nothingToConnect": {
@@ -1506,7 +1506,7 @@
       "proOnly": "Teil von Pro. Upgrade unter Konto.",
       "caps": {
         "screen_context": "Nur das Fenster, das du meinst",
-        "proactive": "Entschieden auf diesem Computer",
+        "proactive": "Wird auf diesem Computer entschieden",
         "meetings": "Audio bleibt auf diesem Computer",
         "wake_word": "Hört nur auf diesem Computer zu",
         "screen_memory": "Verschlüsselt auf diesem Computer"
@@ -1546,7 +1546,7 @@
       "act": {
         "title": "Erledigen",
         "examples": [
-          "Erinnere mich um 5, Sam anzurufen.",
+          "Erinnere mich um 5 daran, Sam anzurufen.",
           "Trag Mittagessen mit Ana am Freitag um 13 Uhr ein.",
           "Öffne Linear.",
           "Führ meinen Standup-Kurzbefehl aus."
@@ -1584,11 +1584,11 @@
         "title": "So sprichst du"
       }
     },
-    "subtitle": "Sprich so, wie du einen Kollegen fragen würdest. Ein paar Wege zum Einstieg.",
+    "subtitle": "Sprich so, wie du einen Kollegen fragen würdest. Ein paar Möglichkeiten für den Anfang.",
     "ways": {
       "0": "Halten, um mit dem Agenten zu sprechen.",
-      "1": "Halten zum Diktieren. Beginne mit „Hey {{appName}}“, um stattdessen zu fragen.",
-      "2": "Freihändig: Sag „Hey {{appName}}, …“. Aktiviere das unter Datenschutz."
+      "1": "Halten zum Diktieren. Beginne mit „Hallo {{appName}}“, um stattdessen zu fragen.",
+      "2": "Freihändig: Sag „Hallo {{appName}}, …“. Aktiviere das unter Datenschutz."
     }
   },
   "app": {
@@ -1599,7 +1599,7 @@
     "button": "Suchen",
     "placeholder": "Einstellungen und Seiten durchsuchen",
     "empty": "Nichts passt zu „{{query}}“.",
-    "jumpTo": "Springen zu",
+    "jumpTo": "Gehe zu",
     "escape": "esc"
   }
 }

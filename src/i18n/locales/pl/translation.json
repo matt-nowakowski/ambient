@@ -1,7 +1,7 @@
 {
   "tray": {
-    "settings": "Ustawienia...",
-    "checkUpdates": "Sprawdź aktualizacje...",
+    "settings": "Ustawienia…",
+    "checkUpdates": "Sprawdź aktualizacje…",
     "copyLastTranscript": "Kopiuj ostatnią transkrypcję",
     "unloadModel": "Zwolnij model",
     "model": "Model",
@@ -15,7 +15,7 @@
     "account": "Konto",
     "models": "Modele",
     "advanced": "Zaawansowane",
-    "postProcessing": "Postproces",
+    "postProcessing": "Przetwarzanie końcowe",
     "history": "Historia",
     "debug": "Debugowanie",
     "about": "O programie",
@@ -42,7 +42,7 @@
     "permissions": {
       "microphone": {
         "name": "Mikrofon",
-        "why": "Aby {{appName}} mógł cię słyszeć. Twój głos nigdy nie opuszcza tego komputera."
+        "why": "Aby {{appName}} mógł Cię słyszeć. Twój głos nigdy nie opuszcza tego komputera."
       },
       "accessibility": {
         "name": "Dostępność",
@@ -115,7 +115,7 @@
       "subtitle": "Zamienia głos w tekst, na tym komputerze",
       "label": "Model mowy",
       "lines": {
-        "recommended": "Najlepsza szybkość i dokładność dla twoich języków",
+        "recommended": "Najlepsza szybkość i dokładność dla Twoich języków",
         "faster": "Szybszy, ale z kilkoma błędami więcej",
         "accurate": "Najmniej błędów, ale wolniejszy"
       },
@@ -126,8 +126,8 @@
       },
       "model": "Model",
       "showAll": "Pokaż wszystkie modele ({{count}})",
-      "download": "Pobierz ({{size}})",
-      "downloadInstead": "Pobierz zamiast tego ({{size}})",
+      "download": "Pobierz {{size}}",
+      "downloadInstead": "Pobierz zamiast tego {{size}}",
       "pauses": "{{name}} zatrzymuje się na {{percent}}%",
       "resumeLater": "Wybierz go ponownie, aby wznowić od miejsca zatrzymania",
       "hint": "Pobiera się, gdy kończysz konfigurację"
@@ -148,8 +148,8 @@
       "pressKeys": "Naciśnij nowe klawisze",
       "addKey": "Teraz dodaj klawisz",
       "cancel": "Anuluj",
-      "tryIt": "Wypróbuj sam",
-      "addModifier": "Sam klawisz by pisał. Dodaj modyfikator.",
+      "tryIt": "Wypróbuj",
+      "addModifier": "Sam klawisz wpisałby znak. Dodaj modyfikator.",
       "lines": {
         "hold": "Tak! Spóźnię się dziesięć minut, zajmij mi miejsce.",
         "tap": "Piknik w parku w sobotę, potem kolacja w Rosa's. Zabrać niebieski koc i dobry głośnik."
@@ -185,7 +185,7 @@
       "changeKeys": "Zmień skrót, {{keys}}",
       "doneHold": "Piątka! Tak działa przytrzymanie.",
       "doneHoldNext": "Teraz sposób bez rąk.",
-      "doneTap": "Piątka! Tak działa naciśnięcie.",
+      "doneTap": "Brawo! Tak działa naciśnięcie.",
       "doneTapNext": "Teraz spróbuj przytrzymać je podczas mówienia.",
       "giveFive": "Udało się! Przybij piątkę",
       "highFive": "Piątka",
@@ -198,15 +198,15 @@
       "noWordsSub": "Spróbuj jeszcze raz i powiedz całe zdanie.",
       "finish": "Zakończ",
       "skip": "Pomiń",
-      "seconds": "{{value}} s",
+      "seconds": "{{value}} s",
       "heardHold": "Tak działa przytrzymanie. Teraz sposób bez rąk.",
       "heardTap": "Tak działa naciśnięcie. Teraz spróbuj przytrzymać je podczas mówienia.",
       "gotIt": "Mam każde słowo: „{{quote}}”"
     },
     "done": {
       "title": "Wszystko gotowe",
-      "subMac": "{{appName}} mieszka na pasku menu. Przytrzymaj lub dotknij <keys/> w dowolnej aplikacji, aby mówić.",
-      "subTray": "{{appName}} mieszka w zasobniku systemowym. Przytrzymaj lub dotknij <keys/> w dowolnej aplikacji, aby mówić.",
+      "subMac": "{{appName}} czeka na pasku menu. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby mówić.",
+      "subTray": "{{appName}} czeka w zasobniku systemowym. Przytrzymaj lub naciśnij <keys/> w dowolnej aplikacji, aby mówić.",
       "hint": "Możesz to później zmienić w Ustawieniach",
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
@@ -267,9 +267,9 @@
       },
       "speedPreview": "{{meaning}}, z podglądem na żywo podczas mówienia",
       "untimed": "Nie zmierzyliśmy jeszcze, jak jest szybki",
-      "underSeconds": "poniżej {{max}} s",
-      "betweenSeconds": "od {{min}} do {{max}} s",
-      "overSeconds": "{{min}} s lub więcej"
+      "underSeconds": "poniżej {{max}} s",
+      "betweenSeconds": "od {{min}} do {{max}} s",
+      "overSeconds": "{{min}} s lub więcej"
     },
     "roles": {
       "recommended": "Polecany",
@@ -309,26 +309,26 @@
     "addAnother": "Dodaj kolejny",
     "remove": "Usuń: {{language}}",
     "alreadyAdded_one": "{{languages}} jest już dodany.",
-    "alreadyAdded_few": "{{languages}}: już dodano.",
-    "alreadyAdded_many": "{{languages}}: już dodano.",
-    "alreadyAdded_other": "{{languages}}: już dodano."
+    "alreadyAdded_few": "{{languages}} są już dodane.",
+    "alreadyAdded_many": "{{languages}} są już dodane.",
+    "alreadyAdded_other": "{{languages}} są już dodane."
   },
   "modelSelector": {
     "custom": "Własny",
     "streaming": "Streaming",
     "active": "Aktywny",
     "noModelsAvailable": "Brak dostępnych modeli",
-    "verifying": "Weryfikacja {{modelName}}...",
-    "verifyingGeneric": "Weryfikacja...",
+    "verifying": "Weryfikowanie: {{modelName}}…",
+    "verifyingGeneric": "Weryfikacja…",
     "downloading": "Pobieranie {{percentage}}%",
-    "downloadingMultiple": "Pobieranie {{count}} modeli...",
+    "downloadingMultiple": "Pobieranie modeli ({{count}})…",
     "modelReady": "Model gotowy",
-    "loading": "Wczytywanie {{modelName}}...",
-    "loadingGeneric": "Wczytywanie...",
+    "loading": "Wczytywanie: {{modelName}}…",
+    "loadingGeneric": "Wczytywanie…",
     "modelError": "Błąd modelu",
-    "modelUnloaded": "Model wyładowany",
+    "modelUnloaded": "Model zwolniony",
     "noModelDownloadRequired": "Brak modelu – wymagane pobranie",
-    "downloadSpeed": "{{speed}} MB/s",
+    "downloadSpeed": "{{speed}} MB/s",
     "lockedWhileTranscribing": "Model będzie można zmienić po zakończeniu transkrypcji w Historii."
   },
   "settings": {
@@ -340,10 +340,10 @@
       "shortcut": {
         "title": "Skróty {{appName}}",
         "description": "Skonfiguruj skróty klawiaturowe do uruchamiania nagrywania mowy",
-        "loading": "Wczytywanie skrótów...",
+        "loading": "Wczytywanie skrótów…",
         "none": "Brak skonfigurowanych skrótów",
         "notFound": "Nie znaleziono skrótu",
-        "pressKeys": "Naciśnij klawisze...",
+        "pressKeys": "Naciśnij klawisze…",
         "bindings": {
           "transcribe": {
             "name": "Skrót transkrypcji",
@@ -354,8 +354,8 @@
             "description": "Skrót klawiaturowy do anulowania bieżącego nagrywania."
           },
           "transcribe_with_post_process": {
-            "name": "Skrót postprocessingu",
-            "description": "Opcjonalnie: Dedykowany skrót klawiszowy, który zawsze stosuje postprocessing AI do transkrypcji."
+            "name": "Skrót przetwarzania końcowego",
+            "description": "Opcjonalnie: osobny skrót, który zawsze stosuje do transkrypcji przetwarzanie końcowe przez AI."
           },
           "ask_agent": {
             "name": "Skrót pytania",
@@ -369,14 +369,14 @@
       "language": {
         "title": "Język",
         "description": "Wybierz język rozpoznawania mowy. Opcja Auto automatycznie określi język, a wybór konkretnego języka może poprawić dokładność.",
-        "searchPlaceholder": "Szukaj języka...",
+        "searchPlaceholder": "Szukaj języka…",
         "noResults": "Nie znaleziono języków",
         "auto": "Automatycznie",
         "autoUnavailable": {
-          "title": "Automatycznie jest wyłączone",
-          "oneLanguage": "Z tym modelem działa tylko jeden z twoich języków",
+          "title": "Tryb automatyczny jest wyłączony",
+          "oneLanguage": "Z tym modelem działa tylko jeden z Twoich języków",
           "undetectable": "Niedostępne dla {{languages}}",
-          "noMatch": "Żaden z twoich języków nie działa z tym modelem"
+          "noMatch": "Żaden z Twoich języków nie działa z tym modelem"
         },
         "detectorMissingTitle": "Tryb automatyczny wymaga osobnego pobrania",
         "detectorMissing": "Ten model nie rozpozna, w jakim języku mówisz. Tryb automatyczny potrzebuje małego detektora języka, żeby to ustalić",
@@ -397,18 +397,18 @@
           "toggle": "Przełączaj"
         },
         "descriptions": {
-          "hold_or_toggle": "Przytrzymaj, aby nagrywać, lub dotknij, aby przełączyć",
+          "hold_or_toggle": "Przytrzymaj, aby nagrywać, lub naciśnij, aby włączyć i wyłączyć",
           "push_to_talk": "Nagrywa, dopóki trzymasz skrót",
-          "toggle": "Dotknij skrótu, aby rozpocząć nagrywanie, dotknij ponownie, aby zatrzymać"
+          "toggle": "Naciśnij skrót, aby zacząć nagrywanie, i naciśnij ponownie, aby zakończyć"
         }
       },
       "autoStop": {
         "label": "Zatrzymaj po pauzie",
-        "description": "Gdy zaczynasz stuknięciem, dyktowanie zatrzymuje się też samo, gdy po mówieniu zrobisz pauzę. Krótkie pauzy w środku zdania się nie liczą i nigdy nie zatrzyma się, zanim coś powiesz.",
+        "description": "Gdy zaczynasz naciśnięciem, dyktowanie kończy się też samo, gdy po mówieniu zrobisz pauzę. Krótkie pauzy w środku zdania się nie liczą, a dyktowanie nigdy nie kończy się, zanim cokolwiek powiesz.",
         "delay": {
           "label": "Pauza przed zatrzymaniem",
           "description": "Jak długo milczeć po mówieniu, zanim dyktowanie się zatrzyma.",
-          "seconds": "{{seconds}} s"
+          "seconds": "{{seconds}} s"
         }
       }
     },
@@ -421,10 +421,10 @@
         "untested": "Nieprzetestowane"
       },
       "untestedNote": "Nie testowano z {{appName}}. Mogą działać wolniej lub popełniać więcej błędów.",
-      "untestedHidden_one": "{{count}} kolejny model nie jest dostosowany do dyktowania. Użyj wyszukiwania, aby go znaleźć.",
-      "untestedHidden_few": "{{count}} kolejne modele nie są dostosowane do dyktowania. Użyj wyszukiwania, aby je znaleźć.",
-      "untestedHidden_many": "{{count}} kolejnych modeli nie jest dostosowanych do dyktowania. Użyj wyszukiwania, aby je znaleźć.",
-      "untestedHidden_other": "Kolejne modele nie są dostosowane do dyktowania (liczba: {{count}}). Użyj wyszukiwania, aby je znaleźć.",
+      "untestedHidden_one": "Jeszcze {{count}} model nie jest dostosowany do dyktowania. Znajdziesz go przez wyszukiwanie.",
+      "untestedHidden_few": "Jeszcze {{count}} modele nie są dostosowane do dyktowania. Znajdziesz je przez wyszukiwanie.",
+      "untestedHidden_many": "Jeszcze {{count}} modeli nie jest dostosowanych do dyktowania. Znajdziesz je przez wyszukiwanie.",
+      "untestedHidden_other": "Jeszcze {{count}} modelu nie dostosowano do dyktowania. Znajdziesz je przez wyszukiwanie.",
       "emptyYours": "Brak modeli. Wybierz jeden poniżej: zostanie pobrany, a potem {{appName}} go użyje.",
       "showMore": "Pokaż jeszcze {{count}}",
       "showFewer": "Pokaż mniej",
@@ -432,7 +432,7 @@
       "downloadingThenUse": "{{percent}}% z {{total}}, potem przełączy",
       "loading": "Ładowanie…",
       "deleteAsk": "Usunąć {{name}}? Zwolni to {{size}}.",
-      "deleteAskActive": "Usunąć {{name}}? {{appName}} nie będzie mogło transkrybować, dopóki nie wybierzesz innego modelu.",
+      "deleteAskActive": "Usunąć {{name}}? {{appName}} nie będzie mógł transkrybować, dopóki nie wybierzesz innego modelu.",
       "cancel": "Anuluj",
       "deleteModel": "Usuń {{name}}",
       "cancelDownload": "Zatrzymaj pobieranie {{name}}",
@@ -465,8 +465,8 @@
       "microphone": {
         "title": "Mikrofon",
         "description": "Wybierz preferowane urządzenie mikrofonowe",
-        "placeholder": "Wybierz mikrofon...",
-        "loading": "Wczytywanie..."
+        "placeholder": "Wybierz mikrofon…",
+        "loading": "Wczytywanie…"
       },
       "channel": {
         "title": "Kanał wejściowy",
@@ -481,8 +481,8 @@
       "outputDevice": {
         "title": "Urządzenie wyjściowe",
         "description": "Wybierz preferowane urządzenie audio do odtwarzania dźwięków",
-        "placeholder": "Wybierz urządzenie wyjściowe...",
-        "loading": "Wczytywanie..."
+        "placeholder": "Wybierz urządzenie wyjściowe…",
+        "loading": "Wczytywanie…"
       },
       "volume": {
         "title": "Głośność",
@@ -498,7 +498,7 @@
         "experimental": "Eksperymentalne"
       },
       "experimentalToggle": {
-        "label": "Funkcje Eksperymentalne",
+        "label": "Funkcje eksperymentalne",
         "description": "Włącz funkcje eksperymentalne, które są jeszcze w fazie rozwoju."
       },
       "lazyStreamClose": {
@@ -515,8 +515,8 @@
         }
       },
       "startHidden": {
-        "label": "Uruchom ukryty",
-        "description": "Uruchom w zasobniku systemowym bez otwierania okna."
+        "label": "Uruchamiaj w tle",
+        "description": "Uruchamiaj w zasobniku systemowym bez otwierania okna."
       },
       "autostart": {
         "label": "Uruchamiaj przy starcie",
@@ -529,7 +529,7 @@
       "overlay": {
         "style": {
           "title": "Nakładka",
-          "description": "Wybierz nakładkę nagrywania: „Brak“ ją ukrywa, „Minimalna“ pokazuje kompaktowy wskaźnik, „Na żywo“ wyświetla transkrypcję w czasie rzeczywistym podczas mówienia (tylko modele obsługujące streaming — poszukaj etykiety „Streaming“ w selektorze modeli). W systemie Linux zalecana jest opcja „Brak“.",
+          "description": "Wybierz nakładkę nagrywania: „Brak” ją ukrywa, „Minimalna” pokazuje kompaktowy wskaźnik, „Na żywo” wyświetla transkrypcję w czasie rzeczywistym podczas mówienia (tylko modele obsługujące streaming — szukaj etykiety „Streaming” przy wyborze modelu). W Linuksie zalecana jest opcja „Brak”.",
           "options": {
             "none": "Brak",
             "minimal": "Minimalna",
@@ -538,7 +538,7 @@
         },
         "position": {
           "title": "Pozycja nakładki",
-          "description": "Wyświetlaj wizualną nakładkę podczas nagrywania i transkrypcji. Na Linuxie zalecane 'Brak'.",
+          "description": "Gdzie na ekranie pojawia się nakładka podczas nagrywania i transkrypcji.",
           "options": {
             "bottom": "Dół",
             "top": "Góra"
@@ -547,7 +547,7 @@
       },
       "pasteMethod": {
         "title": "Metoda wklejania",
-        "description": "Wybierz sposób wstawiania tekstu. Direct: symuluje wpisywanie. None: pomija wklejanie, tylko aktualizuje historię/clipboard.",
+        "description": "Wybierz sposób wstawiania tekstu. „Bezpośrednio”: symuluje pisanie na klawiaturze. „Brak”: pomija wklejanie, aktualizuje tylko historię i schowek.",
         "options": {
           "clipboard": "Schowek ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Schowek (Ctrl+Shift+V)",
@@ -560,14 +560,14 @@
       },
       "typingTool": {
         "title": "Narzędzie do wpisywania",
-        "description": "Wybierz, którego narzędzia do wpisywania w Linuxie użyć dla metody bezpośredniego wklejania. Auto automatycznie wykryje i użyje najlepszego dostępnego narzędzia dla Twojego systemu.",
+        "description": "Wybierz narzędzie do wpisywania w Linuksie dla metody „Bezpośrednio”. Opcja „Automatycznie (zalecane)” sama wykryje i wybierze najlepsze dostępne narzędzie.",
         "options": {
-          "auto": "Auto (Zalecane)"
+          "auto": "Automatycznie (zalecane)"
         }
       },
       "clipboardHandling": {
         "title": "Obsługa schowka",
-        "description": "Nie modyfikuj schowka zachowuje jego zawartość. Kopiuj do schowka pozostawia wynik transkrypcji w schowku.",
+        "description": "„Nie modyfikuj schowka” zachowuje jego dotychczasową zawartość po transkrypcji. „Kopiuj do schowka” zostawia w schowku wynik transkrypcji po wklejeniu.",
         "options": {
           "dontModify": "Nie modyfikuj schowka",
           "copyToClipboard": "Kopiuj do schowka"
@@ -589,7 +589,7 @@
         "description": "Automatycznie tłumacz mowę z innych języków na angielski podczas transkrypcji."
       },
       "modelUnload": {
-        "title": "Wyładowanie modelu",
+        "title": "Zwalnianie modelu",
         "description": "Automatycznie zwalnia pamięć GPU/CPU po określonym czasie nieużywania",
         "options": {
           "never": "Nigdy",
@@ -608,7 +608,7 @@
         "placeholder": "Dodaj słowo",
         "add": "Dodaj",
         "remove": "Usuń {{word}}",
-        "duplicate": "\"{{word}}\" już istnieje"
+        "duplicate": "„{{word}}” już istnieje"
       },
       "voiceActivityDetection": {
         "title": "Wykrywanie aktywności głosowej",
@@ -655,7 +655,7 @@
     "history": {
       "title": "Historia",
       "openFolder": "Otwórz folder nagrań",
-      "loading": "Wczytywanie historii...",
+      "loading": "Wczytywanie historii…",
       "empty": "Brak transkrypcji. Rozpocznij nagrywanie, aby zbudować historię!",
       "copyToClipboard": "Kopiuj transkrypcję do schowka",
       "copyError": "Nie udało się skopiować transkrypcji do schowka.",
@@ -665,13 +665,13 @@
       "deleteError": "Nie udało się usunąć wpisu. Spróbuj ponownie.",
       "retranscribe": "Transkrybuj ponownie",
       "cancelTranscription": "Anuluj transkrypcję",
-      "transcribing": "Transkrybuję...",
+      "transcribing": "Transkrypcja…",
       "transcriptionFailed": "Transkrypcja nie powiodła się. Możesz transkrybować ponownie za pomocą ikony ponowienia.",
       "notTranscribed": "Nie przetranskrybowano. Możesz to przetranskrybować za pomocą ikony ponowienia.",
       "transcribeFile": "Transkrybuj plik",
       "mediaFiles": "Audio i wideo",
       "fileUnsupported": "Nie udało się odczytać dźwięku z {{name}}.",
-      "readingFile": "Wczytywanie {{name}}...",
+      "readingFile": "Wczytywanie: {{name}}…",
       "transcribeFailed": "Transkrypcja nie powiodła się. Spróbuj ponownie.",
       "waiting": "Oczekuje na transkrypcję",
       "transcribingPercent": "Transkrypcja, {{percent}}%",
@@ -727,8 +727,8 @@
         "error": "Nie udało się wyświetlić podglądu informacji o wydaniu"
       },
       "onboardingPreview": {
-        "title": "Podgląd konfiguracji początkowej",
-        "description": "Wyświetl ekrany konfiguracji początkowej bez zmiany uprawnień, modeli ani stanu ukończenia",
+        "title": "Podgląd wprowadzenia",
+        "description": "Wyświetl ekrany wprowadzenia bez zmiany uprawnień, modeli ani stanu ukończenia",
         "exitButton": "Zakończ podgląd",
         "choose": "Wybierz ekran",
         "screens": {
@@ -743,7 +743,7 @@
       "onboardingRun": {
         "title": "Uruchom wprowadzenie",
         "description": "Przejdź wprowadzenie naprawdę od początku: poprosi o uprawnienia, pobierze modele i zapisze Twoje wybory",
-        "button": "Start"
+        "button": "Uruchom"
       },
       "modelMigration": {
         "title": "Migracja modeli",
@@ -762,7 +762,7 @@
       "historyLimit": {
         "title": "Limit historii",
         "description": "Maksymalna liczba wpisów w historii",
-        "entries": "wpisy"
+        "entries": "wpisów"
       },
       "recordingRetention": {
         "title": "Automatyczne usuwanie nagrań",
@@ -772,7 +772,7 @@
         "days3": "Po 3 dniach",
         "weeks2": "Po 2 tygodniach",
         "months3": "Po 3 miesiącach",
-        "placeholder": "Wybierz okres retencji..."
+        "placeholder": "Wybierz, jak długo przechowywać…"
       },
       "alwaysOnMicrophone": {
         "label": "Mikrofon zawsze aktywny",
@@ -783,8 +783,8 @@
         "description": "Mikrofon używany, gdy pokrywa laptopa jest zamknięta"
       },
       "postProcessingToggle": {
-        "label": "Postprocess",
-        "description": "Włącz AI do ulepszania tekstu po transkrypcji"
+        "label": "Przetwarzanie końcowe",
+        "description": "Włącz dopracowywanie tekstu przez AI po transkrypcji"
       },
       "muteWhileRecording": {
         "label": "Wycisz podczas nagrywania",
@@ -809,7 +809,7 @@
       },
       "holdThreshold": {
         "title": "Próg przytrzymania",
-        "description": "Tylko w trybie automatycznym: jak długo (w milisekundach) skrót musi być przytrzymany, aby liczył się jako przytrzymanie, a nie dotknięcie. Zmniejsz, jeśli po krótkim przytrzymaniu nagrywanie pozostaje włączone; zwiększ, jeśli celowe dotknięcia są traktowane jako przytrzymanie."
+        "description": "Tylko w trybie automatycznym: jak długo (w milisekundach) trzeba trzymać skrót, aby liczyło się to jako przytrzymanie, a nie krótkie naciśnięcie. Zmniejsz, jeśli po krótkim przytrzymaniu nagrywanie zostaje włączone; zwiększ, jeśli celowe naciśnięcia są traktowane jak przytrzymanie."
       },
       "reliablePaste": {
         "title": "Niezawodne wklejanie (Beta)",
@@ -826,7 +826,7 @@
       "keyboardDiagnostic": {
         "title": "Diagnostyka klawiatury",
         "description": "Sprawdza, czy zdarzenia klawiatury docierają do {{appName}}. Zapisywana jest tylko liczba zdarzeń — nigdy to, które klawisze naciskasz.",
-        "run": "Uruchom 10-sekundową diagnostykę",
+        "run": "Uruchom diagnostykę (10 s)",
         "running": "Nasłuchiwanie… naciśnij swój skrót kilka razy (np. Option+Space)",
         "secureInputLabel": "Secure Input",
         "enabled": "włączony",
@@ -867,20 +867,20 @@
         "title": "Podziękowania",
         "ggml": {
           "title": "ggml",
-          "description": "Wydajne wykonywanie modelu rozpoznawania mowy Whisper od OpenAI",
-          "details": "{{appName}} używa ggml do szybkiego, lokalnego przetwarzania mowy na tekst. Dzięki niesamowitej pracy Georgi Gerganova i współtwórców."
+          "description": "Wydajna biblioteka tensorowa do lokalnego uruchamiania modeli uczenia maszynowego",
+          "details": "Lokalne rozpoznawanie mowy w {{appName}} działa dzięki transcribe.cpp i ggml. Dziękujemy Georgiemu Gerganovowi i współtwórcom za ich świetną pracę."
         },
         "licenses": {
-          "title": "Open-source licenses",
-          "description": "Notices for the open-source software {{appName}} includes",
-          "show": "Show licenses",
-          "hide": "Hide licenses"
+          "title": "Licencje open source",
+          "description": "Informacje o oprogramowaniu open source używanym w {{appName}}",
+          "show": "Pokaż licencje",
+          "hide": "Ukryj licencje"
         }
       },
       "intro": {
-        "title": "Intro powitalne",
+        "title": "Animacja powitalna",
         "description": "Animacja, którą {{appName}} odtwarza przy pierwszym uruchomieniu.",
-        "button": "Odtwórz intro"
+        "button": "Odtwórz animację"
       }
     },
     "agent": {
@@ -892,18 +892,18 @@
       },
       "wake": {
         "label": "Bez użycia rąk: powiedz „Cześć Ambient”",
-        "description": "Rozmawiaj z {{appName}} bez klawisza: „Cześć Ambient, co mam w kalendarzu?”. Słucha na tym komputerze i ignoruje wszystko, co nie zaczyna się od jego nazwy. Gdy funkcja jest włączona, komputer pokazuje wskaźnik mikrofonu."
+        "description": "Rozmawiaj z {{appName}} bez klawisza: „Cześć Ambient, co mam w kalendarzu?”. Słucha na tym komputerze i ignoruje wszystko, co nie zaczyna się od jego nazwy. Gdy funkcja jest włączona, komputer pokazuje, że mikrofon jest w użyciu."
       }
     }
   },
   "footer": {
-    "checkingUpdates": "Sprawdzanie aktualizacji...",
+    "checkingUpdates": "Sprawdzanie aktualizacji…",
     "updateAvailableShort": "Dostępna aktualizacja",
     "upToDate": "Aktualne",
     "updateCheckingDisabled": "Sprawdzanie aktualizacji wyłączone",
-    "downloading": "Pobieranie... {{progress}}%",
-    "installing": "Instalowanie...",
-    "preparing": "Przygotowywanie...",
+    "downloading": "Pobieranie… {{progress}}%",
+    "installing": "Instalowanie…",
+    "preparing": "Przygotowywanie…",
     "checkForUpdates": "Sprawdź aktualizacje",
     "portableUpdateTitle": "Wymagana ręczna aktualizacja",
     "portableUpdateMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Pobierz poniżej instalator dla swojego systemu, uruchom go i zainstaluj w tym samym folderze — Twój folder Data/ (ustawienia, modele, nagrania) pozostaje na miejscu.",
@@ -915,7 +915,7 @@
     "title": "Nowości w {{appName}} v{{version}}"
   },
   "common": {
-    "loading": "Wczytywanie...",
+    "loading": "Wczytywanie…",
     "delete": "Usuń",
     "close": "Zamknij",
     "open": "Otwórz",
@@ -955,16 +955,16 @@
     }
   },
   "overlay": {
-    "transcribing": "Transkrypcja...",
-    "processing": "Przetwarzanie...",
-    "loadingModel": "Wczytywanie modelu..."
+    "transcribing": "Transkrypcja…",
+    "processing": "Przetwarzanie…",
+    "loadingModel": "Wczytywanie modelu…"
   },
   "secureInput": {
-    "blockedWithCulprit_one": "{{name}} może blokować {{count}} skrót",
+    "blockedWithCulprit_one": "{{name}} może blokować 1 skrót",
     "blockedWithCulprit_few": "{{name}} może blokować {{count}} skróty",
     "blockedWithCulprit_many": "{{name}} może blokować {{count}} skrótów",
     "blockedWithCulprit_other": "{{name}} może blokować {{count}} skrótu",
-    "blockedNoCulprit_one": "macOS tymczasowo blokuje {{count}} skrót",
+    "blockedNoCulprit_one": "macOS tymczasowo blokuje 1 skrót",
     "blockedNoCulprit_few": "macOS tymczasowo blokuje {{count}} skróty",
     "blockedNoCulprit_many": "macOS tymczasowo blokuje {{count}} skrótów",
     "blockedNoCulprit_other": "macOS tymczasowo blokuje {{count}} skrótu",
@@ -979,11 +979,11 @@
     "plans": {
       "free": "Darmowy",
       "pro": "Pro",
-      "team": "Team",
+      "team": "Zespołowy",
       "trial": "Okres próbny Pro"
     },
     "upgrade": "Ulepsz",
-    "upgradeTo": "Ulepsz do {{plan}}",
+    "upgradeTo": "Przejdź na {{plan}}",
     "manageBilling": "Zarządzaj płatnościami",
     "usage": "{{used}} z {{limit}} słów w tym tygodniu",
     "usageShort": "{{used}} / {{limit}} słów",
@@ -993,7 +993,7 @@
     "proFeatures": {
       "polish": "Szlifowanie AI przy każdym dyktowaniu",
       "onDevice": "Szlifowanie na urządzeniu z Apple Intelligence",
-      "agent": "Agent ambient w wersji fabrycznej",
+      "agent": "Agent działający w tle, z każdą nową funkcją",
       "priority": "Priorytetowa pomoc techniczna"
     },
     "card": {
@@ -1018,7 +1018,7 @@
       "sectionTitle": "Twoje konto",
       "cardLabel": "Konto",
       "title": "Zaloguj się do Pro",
-      "description": "Użyj adresu e-mail, którym kupiłeś Pro. Wyślemy Ci 6-cyfrowy kod.",
+      "description": "Użyj adresu e-mail podanego przy zakupie Pro. Wyślemy Ci 6-cyfrowy kod.",
       "emailLabel": "E-mail",
       "emailPlaceholder": "ty@przyklad.pl",
       "continue": "Dalej",
@@ -1037,7 +1037,7 @@
       "signOut": "Wyloguj się",
       "redeemLink": "Zrealizuj kod",
       "redeemTitle": "Zrealizuj kod",
-      "redeemDescription": "Dla kodów podarunkowych i od wsparcia.",
+      "redeemDescription": "Dla kodów podarunkowych i kodów od zespołu wsparcia.",
       "redeemPlaceholder": "red-grizzly-4320",
       "redeemDetected": "To wygląda na kod {{appName}}.",
       "backToSignIn": "Wróć do logowania",
@@ -1065,7 +1065,7 @@
       "unlock": "Odblokuj bez limitu",
       "onDevice": "Zostaw to na tym Macu",
       "onDeviceDescription": "Użyj zamiast tego Apple Intelligence. Nic nie opuszcza Twojego Maca.",
-      "freeLeft": "Pozostało {{left}} z {{limit}} darmowych użyć: Szlifowanie AI w tym tygodniu"
+      "freeLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu"
     },
     "trial": {
       "daysLeft_one": "Pozostał {{count}} dzień",
@@ -1089,15 +1089,15 @@
       "wordsHint": "Podyktowane w {{appName}}",
       "saved": "Zaoszczędzony czas",
       "savedHint": "Mówienie: {{speaking}} słów/min, pisanie: {{typing}}",
-      "lessThanMinute": "< 1 min",
-      "minutes_one": "{{count}} min",
-      "minutes_few": "{{count}} min",
-      "minutes_many": "{{count}} min",
-      "minutes_other": "{{count}} min",
-      "hours_one": "{{count}} godz.",
-      "hours_few": "{{count}} godz.",
-      "hours_many": "{{count}} godz.",
-      "hours_other": "{{count}} godz."
+      "lessThanMinute": "< 1 min",
+      "minutes_one": "{{count}} min",
+      "minutes_few": "{{count}} min",
+      "minutes_many": "{{count}} min",
+      "minutes_other": "{{count}} min",
+      "hours_one": "{{count}} godz.",
+      "hours_few": "{{count}} godz.",
+      "hours_many": "{{count}} godz.",
+      "hours_other": "{{count}} godz."
     },
     "recent": "Ostatnie dyktowania",
     "viewAll": "Zobacz wszystko",
@@ -1119,8 +1119,8 @@
     "plan": {
       "title": "Twój plan",
       "polishUnlimited": "Szlifowanie AI: bez limitu.",
-      "polishLeft": "Pozostało {{left}} z {{limit}} darmowych użyć (szlifowanie AI) w tym tygodniu · reset: {{day}}",
-      "polishFree": "Plan darmowy obejmuje tygodniowy limit: Szlifowanie AI.",
+      "polishLeft": "Pozostało {{left}} z {{limit}} darmowych szlifowań AI w tym tygodniu · reset: {{day}}",
+      "polishFree": "Plan darmowy obejmuje tygodniowy limit szlifowania AI.",
       "meetingsLeft": "W tym miesiącu zostało {{left}} z {{limit}} notatek ze spotkań",
       "aiLeft": "Dziś zostało {{left}} z {{limit}} zapytań AI",
       "searchLeft": "Pozostałe wyszukiwania: {{count}}",
@@ -1170,10 +1170,10 @@
       "fairUse": "Osiągnięto dzisiejszy limit uczciwego użytkowania. Zostanie zresetowany o północy UTC.",
       "slowDown": "To dużo żądań naraz. Spróbuj ponownie za minutę.",
       "listening": "Słucham…",
-      "heardNothing": "Słyszę cię, ale nie wychwyciłem prośby.",
+      "heardNothing": "Słyszałem, ale nie wychwyciłem żadnej prośby.",
       "noWebResults": "Nie udało się teraz przeszukać sieci, więc to odpowiedź z mojej wiedzy.",
       "timeout": "Trwało to zbyt długo. Spróbuj ponownie.",
-      "needsCloud": "To wymaga chmury, a Inteligencja jest ustawiona na „Tylko na tym komputerze”. Zmień to w sekcji Prywatność.",
+      "needsCloud": "To wymaga chmury, a w ustawieniu „Gdzie działa inteligencja” wybrano „Tylko na tym komputerze”. Zmień to w sekcji Prywatność.",
       "cloudOfferOn": "Sugestie z chmury są włączone. Zmień to w sekcji Prywatność."
     },
     "undo": "Cofnij",
@@ -1194,12 +1194,12 @@
       "priceCheck": "Sprawdzić, czy gdzie indziej jest taniej?",
       "answerSearch": "Mam po prostu odpowiedzieć?",
       "fixFormula": "Naprawić te błędy w formułach?",
-      "meetingPrep": "Zaraz spotkanie. Przygotować podsumowanie?",
+      "meetingPrep": "Zaraz spotkanie. Przypomnieć, co ważne?",
       "tighten": "Skróć",
       "check": "Sprawdź",
       "answer": "Odpowiedz",
       "fix": "Napraw",
-      "brief": "Przygotuj mnie",
+      "brief": "Przypomnij",
       "reviewCode": "Przejrzeć ten pull request?",
       "commitMessage": "Napisać do tego opis commita?",
       "review": "Przejrzyj",
@@ -1217,7 +1217,7 @@
       "copy": "Kopiuj"
     },
     "chip": {
-      "searchInstead": "Wpisano. Wyszukać to zamiast tego?",
+      "searchInstead": "Wpisano. Może zamiast tego wyszukać?",
       "search": "Szukaj"
     },
     "suggestionTip": "Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”.",
@@ -1229,8 +1229,8 @@
       "addToCalendar": "Dodaj do kalendarza"
     },
     "draft": {
-      "title": "Czy chodziło ci o wpisanie tego?",
-      "composed": "Oto twój szkic.",
+      "title": "Czy to miało zostać wpisane?",
+      "composed": "Oto Twój szkic.",
       "focusHint": "Kliknij pole tekstowe, aby go wstawić."
     },
     "source": {
@@ -1268,17 +1268,17 @@
       "screen_context": {
         "title": "Czytaj to, o co pytasz",
         "reads": "Odczytuje okno, o które pytasz, oraz otwarte okna, gdy prosisz o znalezienie czegoś.",
-        "leaves": "Tylko to, co potrzebne do odpowiedzi, bez sekretów."
+        "leaves": "Tylko to, co potrzebne do odpowiedzi, bez poufnych danych."
       },
       "screen_memory": {
         "title": "Zapamiętuj to, co widzisz",
-        "reads": "Pamięta okna, których używałeś, aby można było później o nie zapytać.",
+        "reads": "Pamięta używane okna, aby można było później o nie zapytać.",
         "leaves": "Zostaje na tym komputerze, zaszyfrowane."
       },
       "proactive": {
-        "title": "Proponuj sugestie",
+        "title": "Podsuwaj sugestie",
         "reads": "Proponuje kolejny krok we właściwym momencie: wątki, szkice, daty, błędy, spotkania.",
-        "leaves": "Decyzja zapada na tym komputerze albo w chmurze, jeśli wybierzesz to poniżej. Nic więcej nie jest wysyłane bez twojej zgody, poza podpowiedziami na spotkaniach."
+        "leaves": "Decyzja zapada na tym komputerze albo w chmurze, jeśli wybierzesz to poniżej. Bez Twojej zgody nic więcej nie jest wysyłane, poza podpowiedziami podczas spotkań."
       },
       "meetings": {
         "title": "Notatki ze spotkań",
@@ -1287,7 +1287,7 @@
       },
       "wake_word": {
         "title": "Bez użycia rąk: powiedz „Cześć Ambient”",
-        "reads": "Nasłuchuje na tym komputerze „Cześć Ambient”. Wszystko inne jest odrzucane na bieżąco.",
+        "reads": "Nasłuchuje na tym komputerze frazy „Cześć Ambient”. Wszystko inne jest odrzucane na bieżąco.",
         "leaves": "Nic nie jest nagrywane ani wysyłane, dopóki tego nie powiesz."
       },
       "groups": {
@@ -1306,7 +1306,7 @@
       "button": "Podgląd",
       "noText": "Brak czytelnego tekstu w tym oknie.",
       "skipped": {
-        "never_watch": "Ta aplikacja jest na liście nigdy nieobserwowanych, więc nic nie odczytano.",
+        "never_watch": "Ta aplikacja jest na liście „Nigdy nie obserwuj”, więc nic nie odczytano.",
         "no_permission": "Najpierw zezwól na dostęp do funkcji Dostępność.",
         "unavailable": "Nie udało się odczytać tego okna.",
         "sensitive": "To okno pokazuje frazę odzyskiwania lub klucz prywatny, więc nic nie odczytano."
@@ -1357,7 +1357,7 @@
     },
     "engine": {
       "title": "Używaj Apple Intelligence także do odpowiedzi",
-      "description": "Odpowiedzi i szlifowanie działają na tym komputerze, gdy się mieszczą. Wyniki są mniej dopracowane, więc domyślnie jest wyłączone."
+      "description": "Odpowiedzi i szlifowanie działają na tym Macu, gdy się zmieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone."
     },
     "suggestions": {
       "title": "Otrzymywane sugestie",
@@ -1373,12 +1373,12 @@
         "price_check": "Porównywanie cen gdzie indziej",
         "answer_search": "Odpowiedzi na wyszukiwania, które ciągle przeformułowujesz",
         "fix_formula": "Naprawianie formuł w arkuszach",
-        "meeting_prep": "Przygotowanie przed spotkaniami",
+        "meeting_prep": "Krótkie przypomnienie przed spotkaniami",
         "review_code": "Przeglądanie pull requestów",
         "commit_message": "Pisanie opisów commitów",
         "fill_form": "Pomoc w wypełnianiu formularzy",
         "translate_page": "Tłumaczenie stron w innych językach",
-        "help_here": "Inna pomoc, jakiej według niej potrzebujesz",
+        "help_here": "Inna pomoc, która może Ci się przydać",
         "meeting_nudge": "Podpowiedzi podczas spotkań"
       }
     },
@@ -1420,10 +1420,10 @@
   },
   "meetings": {
     "title": "Spotkania",
-    "intro": "Notatki z każdej rozmowy: ty i rozmówcy, transkrybowani na tym komputerze. Dźwięk nigdy nie jest zapisywany.",
+    "intro": "Notatki z każdej rozmowy: Ty i rozmówcy, transkrypcja na tym komputerze. Dźwięk nigdy nie jest zapisywany.",
     "live": "Notowanie · {{time}}",
-    "capturingBoth": "Słyszy ciebie i rozmowę.",
-    "capturingMic": "Słyszy tylko twój mikrofon.",
+    "capturingBoth": "Słyszy Cię i rozmowę.",
+    "capturingMic": "Słyszy tylko Twój mikrofon.",
     "stop": "Zatrzymaj i podsumuj",
     "listening": "Słucham…",
     "consent": "Daj wszystkim znać, że robisz notatki.",
@@ -1440,11 +1440,11 @@
     "summary": "Podsumowanie",
     "decisions": "Decyzje",
     "actionItems": "Zadania",
-    "questions": "Pytania do ciebie",
+    "questions": "Pytania do Ciebie",
     "noSummary": "Brak podsumowania tego spotkania.",
     "copyMarkdown": "Kopiuj jako Markdown",
-    "followUp": "Przygotuj wiadomość uzupełniającą",
-    "followUpTitle": "E-mail uzupełniający",
+    "followUp": "Napisz e-mail",
+    "followUpTitle": "E-mail po spotkaniu",
     "copy": "Kopiuj",
     "copied": "Skopiowano",
     "delete": "Usuń spotkanie",
@@ -1463,7 +1463,7 @@
       "mic": "Nie udało się otworzyć mikrofonu.",
       "notActive": "Żadne spotkanie nie trwa.",
       "notFound": "To spotkanie już nie istnieje.",
-      "followUp": "Nie udało się teraz przygotować wiadomości uzupełniającej."
+      "followUp": "Nie udało się teraz przygotować e-maila po spotkaniu."
     },
     "freeLeft": "Pozostałe darmowe spotkania w tym miesiącu: {{left}} z {{limit}}. Pro nie ma limitu.",
     "startNow": "Zacznij teraz",
@@ -1521,7 +1521,7 @@
     "try": {
       "title": "Wypróbuj teraz",
       "body": "Przytrzymaj {{keys}} i zapytaj: „Jaka będzie jutro pogoda w Lizbonie?”",
-      "done": "To wszystko. Udało ci się użyć agenta."
+      "done": "To wszystko. Udało Ci się użyć agenta."
     },
     "choose": {
       "title": "Wybierz, co może robić {{appName}}",
@@ -1542,7 +1542,7 @@
     "progress": "Ukończono: {{done}} z {{total}}",
     "hide": "Ukryj",
     "whatToSay": "Co mogę powiedzieć?",
-    "replayTour": "Obejrzyj przewodnik ponownie",
+    "replayTour": "Powtórz przewodnik",
     "steps": {
       "answer": "Zadaj agentowi pytanie",
       "reminder": "Ustaw przypomnienie głosem",
@@ -1555,7 +1555,7 @@
   "trySaying": {
     "title": "Co mogę powiedzieć?",
     "close": "Zamknij",
-    "footnote": "W ChatGPT lub Claude zacznij od „Cześć Ambient”, aby rozmawiać z agentem.",
+    "footnote": "W ChatGPT lub Claude zacznij od „Cześć Ambient”, aby zamiast tego rozmawiać z agentem.",
     "groups": {
       "answer": {
         "title": "Pytaj",
@@ -1583,7 +1583,7 @@
           "Co mówiłem wczoraj o cenach?",
           "Znajdź prezentację za Q3."
         ],
-        "hint": "To, co powiedziano, zobaczono lub zrobiono."
+        "hint": "To, co padło, pojawiło się na ekranie albo nad czym pracowano."
       },
       "suggestions": {
         "title": "Sugestie",
@@ -1599,7 +1599,7 @@
         "title": "Spotkania",
         "examples": [
           "Zacznij notatki w sekcji Spotkania albo powiedz „tak”, gdy Ambient to zaproponuje.",
-          "„Znajdź”, gdy ktoś cię o coś poprosi.",
+          "„Znajdź”, gdy ktoś Cię o coś poprosi.",
           "„Przypomnij mi”, gdy obiecasz coś zrobić."
         ],
         "hint": "Gdy {{appName}} robi notatki podczas rozmowy."
@@ -1608,11 +1608,11 @@
         "title": "Jak mówić"
       }
     },
-    "subtitle": "Mów tak, jakbyś prosił o pomoc kolegę. Kilka sposobów na start.",
+    "subtitle": "Mów tak, jak zwracasz się do kogoś z pracy. Kilka sposobów na początek.",
     "ways": {
       "0": "Przytrzymaj, aby rozmawiać z agentem.",
-      "1": "Przytrzymaj, aby dyktować. Zacznij od „Hey {{appName}}”, aby zadać pytanie.",
-      "2": "Bez rąk: powiedz „Hey {{appName}}, …”. Włącz to w sekcji Prywatność."
+      "1": "Przytrzymaj, aby dyktować. Zacznij od „Cześć {{appName}}”, aby zadać pytanie.",
+      "2": "Bez rąk: powiedz „Cześć {{appName}}, …”. Włącz to w sekcji Prywatność."
     }
   },
   "app": {
