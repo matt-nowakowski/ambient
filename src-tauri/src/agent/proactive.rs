@@ -939,6 +939,11 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
             super::judge::Route::Rules
         };
     }
+    log::debug!(
+        "proactive: {bundle} title[{tag}] no rule fired; judge route {route:?} (Intelligence {:?}, on-device model: {on_device}, cloud offer {:?})",
+        settings.agent.intelligence,
+        settings.agent.cloud_suggestions
+    );
     if route == super::judge::Route::Rules {
         log::debug!(
             "proactive: judge unavailable here ({:?}, on-device model: {on_device}); using broader rules",
