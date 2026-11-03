@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { commands } from "@/bindings";
+import { friendlyMessage, logError } from "@/lib/errors";
 import { SettingContainer } from "../ui/SettingContainer";
 import { PathDisplay } from "../ui/PathDisplay";
 
@@ -25,12 +26,12 @@ export const AppDataDirectory: React.FC<AppDataDirectoryProps> = ({
         if (result.status === "ok") {
           setAppDirPath(result.data);
         } else {
-          setError(result.error);
+          logError("settings", result.error);
+          setError(friendlyMessage(result.error));
         }
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load app directory",
-        );
+        logError("settings", err);
+        setError(friendlyMessage(err));
       } finally {
         setLoading(false);
       }

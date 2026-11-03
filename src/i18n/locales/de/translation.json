@@ -7,7 +7,16 @@
     "model": "Modell",
     "quit": "Beenden",
     "cancel": "Abbrechen",
-    "secureInputWarning": "⚠ Tastenkürzel durch Secure Input blockiert"
+    "secureInputWarning": "⚠ Tastenkürzel durch Secure Input blockiert",
+    "installerTrashTitle": "{{appName}}-Installer in den Papierkorb legen?",
+    "installerTrashBody": "{{appName}} ist installiert, {{file}} brauchst du nicht mehr.",
+    "installerTrashConfirm": "In den Papierkorb",
+    "installerKeep": "Behalten",
+    "moveToAppsTitle": "{{appName}} in „Programme“ bewegen?",
+    "moveToAppsBody": "{{appName}} läuft vom Disk-Image. Bewege es in deinen Programme-Ordner, damit es installiert bleibt und sich selbst aktualisiert.",
+    "moveToAppsConfirm": "In „Programme“ bewegen",
+    "moveToAppsLater": "Nicht jetzt",
+    "moveToAppsFailed": "{{appName}} konnte nicht in „Programme“ bewegt werden. Ziehe es stattdessen in den Programme-Ordner."
   },
   "sidebar": {
     "home": "Home",
@@ -128,7 +137,8 @@
       "downloadInstead": "Stattdessen {{size}} herunterladen",
       "pauses": "{{name}} pausiert bei {{percent}} %",
       "resumeLater": "Wähle es erneut, um dort weiterzumachen, wo es aufgehört hat",
-      "hint": "Wird heruntergeladen, während du die Einrichtung abschließt"
+      "hint": "Wird heruntergeladen, während du die Einrichtung abschließt",
+      "onDisk": "Schon auf diesem Computer"
     },
     "demo": {
       "title": "Sprich in jeder App, mit einem Tastenkürzel",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "unbekanntes Modell",
     "pasteFailedTitle": "Text konnte nicht eingefügt werden",
     "pasteFailed": "Der Text konnte nicht in die aktive Anwendung eingefügt werden.",
-    "transcriptionFailedTitle": "Transkription fehlgeschlagen"
+    "transcriptionFailedTitle": "Transkription fehlgeschlagen",
+    "actions": {
+      "retry": "Erneut versuchen",
+      "openSettings": "Einstellungen öffnen"
+    },
+    "titles": {
+      "download": "Download fehlgeschlagen",
+      "signIn": "Anmeldung fehlgeschlagen",
+      "billing": "Abrechnung konnte nicht geöffnet werden",
+      "update": "{{appName}} konnte nicht aktualisiert werden",
+      "transcription": "Transkription fehlgeschlagen",
+      "recording": "Aufnahme konnte nicht starten",
+      "model": "Modell konnte nicht geladen werden",
+      "meeting": "Meeting-Notizen gestoppt",
+      "file": "Datei konnte nicht transkribiert werden",
+      "settings": "Einstellung konnte nicht gespeichert werden",
+      "shortcut": "Kurzbefehl konnte nicht festgelegt werden",
+      "generic": "Etwas ist schiefgelaufen"
+    },
+    "friendly": {
+      "offline": "Die Server von {{appName}} sind nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
+      "offlineDownload": "Der Download-Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
+      "timeout": "Der Server hat zu lange gebraucht. Versuche es gleich noch einmal.",
+      "notFound": "Diese Datei ist gerade nicht verfügbar. Versuche es später erneut.",
+      "diskFull": "Auf diesem Computer ist nicht genug Speicherplatz frei. Gib etwas frei und versuche es erneut.",
+      "checksum": "Der Download ist beschädigt angekommen. Versuche es erneut.",
+      "permission": "{{appName}} darf das nicht. Prüfe die Berechtigungen in den Systemeinstellungen.",
+      "server": "Auf dem Server ist ein Problem aufgetreten. Versuche es gleich noch einmal.",
+      "unknown": "Etwas ist schiefgelaufen. Versuche es erneut."
+    }
   },
   "appLanguage": {
     "title": "Anwendungssprache",
@@ -992,7 +1031,7 @@
       "remove": "Entfernen",
       "activating": "Wird aktiviert…",
       "paste": "Einfügen",
-      "pasteFailed": "Die Zwischenablage konnte nicht gelesen werden. Füge stattdessen mit ⌘V ein.",
+      "pasteFailed": "Die Zwischenablage konnte nicht gelesen werden. Füge stattdessen mit {{keys}} ein.",
       "holder": "Angemeldet als",
       "renewsLabel": "Verlängert am",
       "copied": "Kopiert",
@@ -1467,7 +1506,7 @@
     "skip": "Überspringen",
     "next": "Weiter",
     "done": "Fertig",
-    "start": "{{appName}} verwenden",
+    "start": "Los geht's",
     "meet": {
       "title": "Lerne den Agenten kennen",
       "description": "Halte dein Tastenkürzel gedrückt und sprich. {{appName}} erledigt den Rest."

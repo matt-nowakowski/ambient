@@ -7,7 +7,16 @@
     "model": "Model",
     "quit": "Keluar",
     "cancel": "Batal",
-    "secureInputWarning": "⚠ Pintasan diblokir oleh Secure Input"
+    "secureInputWarning": "⚠ Pintasan diblokir oleh Secure Input",
+    "installerTrashTitle": "Pindahkan penginstal {{appName}} ke Tong Sampah?",
+    "installerTrashBody": "{{appName}} sudah terinstal, jadi Anda tidak memerlukan {{file}} lagi.",
+    "installerTrashConfirm": "Pindahkan ke Tong Sampah",
+    "installerKeep": "Simpan",
+    "moveToAppsTitle": "Pindahkan {{appName}} ke Aplikasi?",
+    "moveToAppsBody": "{{appName}} berjalan dari image disk-nya. Pindahkan ke folder Aplikasi agar tetap terinstal dan memperbarui dirinya sendiri.",
+    "moveToAppsConfirm": "Pindahkan ke Aplikasi",
+    "moveToAppsLater": "Nanti saja",
+    "moveToAppsFailed": "Tidak dapat memindahkan {{appName}} ke Aplikasi. Seret ke folder Aplikasi sebagai gantinya."
   },
   "sidebar": {
     "home": "Beranda",
@@ -128,7 +137,8 @@
       "downloadInstead": "Unduh {{size}} saja",
       "pauses": "{{name}} berhenti sejenak di {{percent}}%",
       "resumeLater": "Pilih lagi untuk melanjutkan dari titik terhenti",
-      "hint": "Diunduh selagi Anda menyelesaikan penyiapan"
+      "hint": "Diunduh selagi Anda menyelesaikan penyiapan",
+      "onDisk": "Sudah ada di komputer ini"
     },
     "demo": {
       "title": "Bicara di aplikasi apa pun, dengan satu pintasan",
@@ -933,7 +943,36 @@
     "modelLoadFailedUnknown": "model tidak dikenal",
     "pasteFailedTitle": "Gagal Menempelkan Teks",
     "pasteFailed": "Teks tidak dapat ditempelkan ke aplikasi aktif.",
-    "transcriptionFailedTitle": "Transkripsi Gagal"
+    "transcriptionFailedTitle": "Transkripsi Gagal",
+    "actions": {
+      "retry": "Coba lagi",
+      "openSettings": "Buka pengaturan"
+    },
+    "titles": {
+      "download": "Unduhan gagal",
+      "signIn": "Tidak dapat masuk",
+      "billing": "Tidak dapat membuka penagihan",
+      "update": "Tidak dapat memperbarui {{appName}}",
+      "transcription": "Transkripsi gagal",
+      "recording": "Tidak dapat mulai merekam",
+      "model": "Tidak dapat memuat model",
+      "meeting": "Catatan rapat berhenti",
+      "file": "Tidak dapat mentranskripsi file",
+      "settings": "Tidak dapat menyimpan pengaturan",
+      "shortcut": "Tidak dapat mengatur pintasan",
+      "generic": "Terjadi kesalahan"
+    },
+    "friendly": {
+      "offline": "Tidak dapat menjangkau server {{appName}}. Periksa koneksi Anda dan coba lagi.",
+      "offlineDownload": "Tidak dapat menjangkau server unduhan. Periksa koneksi Anda dan coba lagi.",
+      "timeout": "Server terlalu lama merespons. Coba lagi sebentar lagi.",
+      "notFound": "File itu sedang tidak tersedia. Coba lagi nanti.",
+      "diskFull": "Ruang kosong di komputer ini tidak cukup. Kosongkan sedikit lalu coba lagi.",
+      "checksum": "Unduhan tiba dalam keadaan rusak. Coba lagi.",
+      "permission": "{{appName}} tidak diizinkan melakukan itu. Periksa izinnya di pengaturan sistem.",
+      "server": "Server mengalami masalah. Coba lagi sebentar lagi.",
+      "unknown": "Terjadi kesalahan. Coba lagi."
+    }
   },
   "appLanguage": {
     "title": "Bahasa Aplikasi",
@@ -992,7 +1031,7 @@
       "remove": "Hapus",
       "activating": "Mengaktifkan…",
       "paste": "Tempel",
-      "pasteFailed": "Tidak dapat membaca papan klip. Tempel dengan ⌘V.",
+      "pasteFailed": "Tidak dapat membaca papan klip. Tempel dengan {{keys}}.",
       "holder": "Masuk sebagai",
       "renewsLabel": "Diperpanjang",
       "copied": "Disalin",
@@ -1467,7 +1506,7 @@
     "skip": "Lewati",
     "next": "Berikutnya",
     "done": "Selesai",
-    "start": "Mulai gunakan {{appName}}",
+    "start": "Mulai",
     "meet": {
       "title": "Kenali agennya",
       "description": "Tahan pintasan Anda dan bicaralah. {{appName}} mengurus sisanya."

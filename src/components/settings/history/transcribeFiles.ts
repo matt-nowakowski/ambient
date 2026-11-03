@@ -1,5 +1,6 @@
 import { open } from "@tauri-apps/plugin-dialog";
 import { toast } from "sonner";
+import { errorKind, logError, showError } from "@/lib/errors";
 import i18n from "@/i18n";
 import { commands } from "@/bindings";
 
@@ -39,10 +40,14 @@ export const transcribeFiles = async (paths: string[]): Promise<number> => {
     if (result.status === "ok") {
       added += 1;
     } else {
-      console.error(`Failed to transcribe ${path}:`, result.error);
-      toast.error(
-        i18n.t("settings.history.fileUnsupported", { name: fileName(path) }),
-      );
+      // Most failures are a format we can't read; anything else (disk,
+      // permissions) gets its own plain words.
+      if (errorKind(result.error) === "unknown") {
+        logError("file", `${path}: ${result.error}`);
+        toast.error(
+          i18n.t("settings.history.fileUnsupported", { name: fileName(path) }),
+        );
+      } else showError("file", result.error);
     }
   }
   return added;

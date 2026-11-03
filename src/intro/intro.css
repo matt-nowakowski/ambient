@@ -122,3 +122,25 @@
 .intro-word > span {
   display: inline-block;
 }
+
+/* Linux (WebKitGTK): no backdrop blur and no 120px light blurs, which it
+   draws on the CPU; a deeper veil keeps the same look over the desktop. */
+:root[data-platform="linux"] .intro-veil {
+  background: rgba(10, 10, 14, 0.92);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:root[data-platform="linux"] .intro-aurora {
+  filter: none;
+  opacity: 0.3;
+}
+
+/* The window isn't transparent (no compositor): paint the backdrop the veil
+   would have shown, so the edges are dark glass, never a black box. */
+:root[data-solid] body,
+:root[data-solid] .intro-stage {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgb(40 48 72) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 85%, rgb(56 40 38) 0%, transparent 60%),
+    rgb(12 12 16);
+}

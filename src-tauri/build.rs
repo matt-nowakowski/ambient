@@ -326,7 +326,8 @@ fn generate_tray_translations(brand_name: &str) {
     );
 
     // Struct
-    out.push_str("#[derive(Debug, Clone)]\npub struct TrayStrings {\n");
+    // Some fields are used on one platform only (the macOS installer alerts).
+    out.push_str("#[derive(Debug, Clone)]\n#[allow(dead_code)]\npub struct TrayStrings {\n");
     for (rust_field, _) in &fields {
         out.push_str(&format!("    pub {rust_field}: String,\n"));
     }

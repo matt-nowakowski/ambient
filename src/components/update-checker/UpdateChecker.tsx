@@ -8,6 +8,7 @@ import { arch, platform } from "@tauri-apps/plugin-os";
 import { ProgressBar } from "../shared";
 import { useSettings } from "../../hooks/useSettings";
 import { commands } from "../../bindings";
+import { logError, showError } from "../../lib/errors";
 import {
   resolvePortableInstallerUrl,
   PORTABLE_RELEASES_URL,
@@ -106,7 +107,11 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
         }
       }
     } catch (error) {
-      console.error("Failed to check for updates:", error);
+      // Background checks fail quietly (just the log); a check the user asked
+      // for says why.
+      if (isManualCheckRef.current)
+        showError("update", error, { retry: handleManualUpdateCheck });
+      else logError("update", error);
     } finally {
       setIsChecking(false);
       isManualCheckRef.current = false;
@@ -161,7 +166,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       });
       await relaunch();
     } catch (error) {
-      console.error("Failed to install update:", error);
+      showError("update", error, { retry: () => void installUpdate() });
     } finally {
       setIsInstalling(false);
       setDownloadProgress(0);

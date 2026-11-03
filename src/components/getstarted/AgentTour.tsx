@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Plug } from "lucide-react";
-import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 import { commands, type AgentSettings } from "@/bindings";
 import { useOsType } from "@/hooks/useOsType";
 import { hasScreenAgent } from "@/lib/agentPlatform";
@@ -93,7 +93,7 @@ export const AgentTour: React.FC = () => {
     if (agent && screenAgent && paid) {
       const next: AgentSettings = { ...agent, ...picked };
       const r = await commands.setAgentSettings(next);
-      if (r.status === "error") toast.error(r.error);
+      if (r.status === "error") showError("settings", r.error);
       await refreshSettings();
     }
     closeTour();

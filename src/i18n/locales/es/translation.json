@@ -7,7 +7,16 @@
     "model": "Modelo",
     "quit": "Salir",
     "cancel": "Cancelar",
-    "secureInputWarning": "⚠ Atajos bloqueados por Secure Input"
+    "secureInputWarning": "⚠ Atajos bloqueados por Secure Input",
+    "installerTrashTitle": "¿Mover el instalador de {{appName}} a la Papelera?",
+    "installerTrashBody": "{{appName}} ya está instalado, así que no volverás a necesitar {{file}}.",
+    "installerTrashConfirm": "Mover a la Papelera",
+    "installerKeep": "Conservar",
+    "moveToAppsTitle": "¿Mover {{appName}} a Aplicaciones?",
+    "moveToAppsBody": "{{appName}} se está ejecutando desde su imagen de disco. Muévelo a tu carpeta Aplicaciones para que siga instalado y se actualice solo.",
+    "moveToAppsConfirm": "Mover a Aplicaciones",
+    "moveToAppsLater": "Ahora no",
+    "moveToAppsFailed": "No se pudo mover {{appName}} a Aplicaciones. Arrástralo a la carpeta Aplicaciones."
   },
   "sidebar": {
     "home": "Inicio",
@@ -129,7 +138,8 @@
       "downloadInstead": "Descargar {{size}} en su lugar",
       "pauses": "{{name}} se pausa en {{percent}} %",
       "resumeLater": "Elígelo de nuevo para continuar donde se quedó",
-      "hint": "Se descarga mientras terminas la configuración"
+      "hint": "Se descarga mientras terminas la configuración",
+      "onDisk": "Ya en este ordenador"
     },
     "demo": {
       "title": "Habla en cualquier app, con un solo atajo",
@@ -936,7 +946,36 @@
     "modelLoadFailedUnknown": "modelo desconocido",
     "pasteFailedTitle": "Error al pegar el texto",
     "pasteFailed": "No se pudo pegar el texto en la aplicación activa.",
-    "transcriptionFailedTitle": "Error de transcripción"
+    "transcriptionFailedTitle": "Error de transcripción",
+    "actions": {
+      "retry": "Intentar de nuevo",
+      "openSettings": "Abrir configuración"
+    },
+    "titles": {
+      "download": "Error en la descarga",
+      "signIn": "No se pudo iniciar sesión",
+      "billing": "No se pudo abrir la facturación",
+      "update": "No se pudo actualizar {{appName}}",
+      "transcription": "Error en la transcripción",
+      "recording": "No se pudo empezar a grabar",
+      "model": "No se pudo cargar el modelo",
+      "meeting": "Las notas de la reunión se detuvieron",
+      "file": "No se pudo transcribir el archivo",
+      "settings": "No se pudo guardar el ajuste",
+      "shortcut": "No se pudo configurar el atajo",
+      "generic": "Algo salió mal"
+    },
+    "friendly": {
+      "offline": "No se pudo conectar con los servidores de {{appName}}. Revisa tu conexión e inténtalo de nuevo.",
+      "offlineDownload": "No se pudo conectar con el servidor de descargas. Revisa tu conexión e inténtalo de nuevo.",
+      "timeout": "El servidor tardó demasiado en responder. Inténtalo de nuevo en un momento.",
+      "notFound": "Ese archivo no está disponible ahora. Inténtalo más tarde.",
+      "diskFull": "No hay suficiente espacio libre en este ordenador. Libera espacio e inténtalo de nuevo.",
+      "checksum": "La descarga llegó dañada. Inténtalo de nuevo.",
+      "permission": "{{appName}} no tiene permiso para hacer eso. Revisa sus permisos en los ajustes del sistema.",
+      "server": "El servidor tuvo un problema. Inténtalo de nuevo en un momento.",
+      "unknown": "Algo salió mal. Inténtalo de nuevo."
+    }
   },
   "appLanguage": {
     "title": "Idioma de la aplicación",
@@ -997,7 +1036,7 @@
       "remove": "Quitar",
       "activating": "Activando…",
       "paste": "Pegar",
-      "pasteFailed": "No se pudo leer el portapapeles. Pega con ⌘V.",
+      "pasteFailed": "No se pudo leer el portapapeles. Pega con {{keys}}.",
       "holder": "Sesión iniciada como",
       "renewsLabel": "Se renueva",
       "copied": "Copiada",
@@ -1479,7 +1518,7 @@
     "skip": "Omitir",
     "next": "Siguiente",
     "done": "Listo",
-    "start": "Empezar a usar {{appName}}",
+    "start": "Empezar",
     "meet": {
       "title": "Conoce al agente",
       "description": "Mantén pulsado tu atajo y habla. {{appName}} se encarga del resto."

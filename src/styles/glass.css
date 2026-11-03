@@ -296,3 +296,38 @@
     animation: none;
   }
 }
+
+/* WebKitGTK (Linux) composites backdrop-filter and large blur filters on the
+ * CPU on many setups: scrolling stutters and the drifting light costs a core.
+ * There the glass becomes a solid, slightly translucent surface (same colours,
+ * rim and shadow, no blur) and the ambient light keeps its gradients but stops
+ * blurring and drifting. Also used wherever backdrop-filter is missing.
+ * macOS and Windows keep the real glass. */
+:root[data-platform="linux"] {
+  --glass-blur: none;
+  --light-glass: rgba(255, 255, 255, 0.9);
+  --light-glass-sidebar: rgba(246, 246, 248, 0.94);
+  --dark-glass: rgba(30, 30, 34, 0.92);
+  --dark-glass-sidebar: rgba(22, 22, 26, 0.94);
+}
+:root[data-platform="linux"] .app-backdrop::before,
+:root[data-platform="linux"] .app-backdrop::after {
+  filter: none;
+  animation: none;
+}
+:root[data-platform="linux"] *,
+:root[data-platform="linux"] *::before,
+:root[data-platform="linux"] *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  :root {
+    --light-glass: rgba(255, 255, 255, 0.9);
+    --light-glass-sidebar: rgba(246, 246, 248, 0.94);
+    --dark-glass: rgba(30, 30, 34, 0.92);
+    --dark-glass-sidebar: rgba(22, 22, 26, 0.94);
+  }
+}

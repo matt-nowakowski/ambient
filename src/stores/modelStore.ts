@@ -3,7 +3,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { produce } from "immer";
 import { listen } from "@tauri-apps/api/event";
 import { commands, type ModelInfo } from "@/bindings";
-import { toast } from "sonner";
+import { showError } from "@/lib/errors";
 
 export interface DownloadProgress {
   model_id: string;
@@ -290,7 +290,12 @@ export const useModelStore = create<ModelsStore>()(
               state.error = error;
             }),
           );
-          toast.error(error);
+          // The language detector downloads through its own command.
+          const retry =
+            modelId === "language-detector"
+              ? () => void commands.downloadLanguageDetector()
+              : () => void get().downloadModel(modelId);
+          showError("download", error, { id: `download-${modelId}`, retry });
         },
       );
 
