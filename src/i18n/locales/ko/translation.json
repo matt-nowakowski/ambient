@@ -1376,7 +1376,11 @@
       "copiedWords": "말한 그대로의 문장을 복사했습니다. 붙여넣어 바꾸세요.",
       "copiedEdit": "새 버전을 복사했습니다. 붙여넣어 바꾸세요.",
       "noAllowance": "이번 주 AI 쓰기 한도를 다 써서 말한 그대로 입력했습니다.",
-      "couldntWrite": "지금은 쓸 수 없어서 말한 그대로 입력했습니다."
+      "couldntWrite": "지금은 쓸 수 없어서 말한 그대로 입력했습니다.",
+      "rewritten": "다시 씀",
+      "undoRewrite": "다시 쓰기 취소",
+      "copiedOriginal": "원래 텍스트를 복사했습니다. 붙여넣어 바꾸세요.",
+      "couldntRewrite": "지금은 다시 쓸 수 없어서 텍스트를 그대로 두었습니다."
     }
   },
   "privacy": {

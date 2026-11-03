@@ -1376,7 +1376,11 @@
       "copiedWords": "Copied your exact words. Paste to replace.",
       "copiedEdit": "Copied the new version. Paste to replace.",
       "noAllowance": "Out of AI writing for this week, so it's typed as you said it.",
-      "couldntWrite": "Couldn't write that just now, so it's typed as you said it."
+      "couldntWrite": "Couldn't write that just now, so it's typed as you said it.",
+      "rewritten": "Rewritten",
+      "undoRewrite": "Undo rewrite",
+      "copiedOriginal": "Copied your original text. Paste to replace.",
+      "couldntRewrite": "Couldn't rewrite that just now, so your text is unchanged."
     }
   },
   "privacy": {

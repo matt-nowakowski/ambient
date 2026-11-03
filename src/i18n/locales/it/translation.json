@@ -1384,7 +1384,11 @@
       "copiedWords": "Ho copiato le tue parole esatte. Incolla per sostituire.",
       "copiedEdit": "Ho copiato la nuova versione. Incolla per sostituire.",
       "noAllowance": "La scrittura IA di questa settimana è finita, quindi è scritto come l'hai detto.",
-      "couldntWrite": "Non è stato possibile scriverlo ora, quindi è scritto come l'hai detto."
+      "couldntWrite": "Non è stato possibile scriverlo ora, quindi è scritto come l'hai detto.",
+      "rewritten": "Riscritto",
+      "undoRewrite": "Annulla riscrittura",
+      "copiedOriginal": "Ho copiato il testo originale. Incolla per sostituire.",
+      "couldntRewrite": "Non è stato possibile riscriverlo ora, quindi il testo è invariato."
     }
   },
   "privacy": {

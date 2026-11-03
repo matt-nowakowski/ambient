@@ -634,6 +634,7 @@ async fn smart_write(
             decision: Decision::AsSaid,
             raw: transcription.to_string(),
             note: Some(n),
+            rewrite: false,
         }),
         written: None,
     };
@@ -672,6 +673,7 @@ async fn smart_write(
                             decision: Decision::Polished,
                             raw: transcription.to_string(),
                             note: None,
+                            rewrite: false,
                         }),
                         written: None,
                     }

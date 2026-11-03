@@ -1384,7 +1384,11 @@
       "copiedWords": "Suas palavras exatas foram copiadas. Cole para substituir.",
       "copiedEdit": "A nova versão foi copiada. Cole para substituir.",
       "noAllowance": "A escrita com IA desta semana acabou, então foi digitado como você disse.",
-      "couldntWrite": "Não deu para escrever agora, então foi digitado como você disse."
+      "couldntWrite": "Não deu para escrever agora, então foi digitado como você disse.",
+      "rewritten": "Reescrito",
+      "undoRewrite": "Desfazer reescrita",
+      "copiedOriginal": "Seu texto original foi copiado. Cole para substituir.",
+      "couldntRewrite": "Não deu para reescrever agora, então seu texto não mudou."
     }
   },
   "privacy": {

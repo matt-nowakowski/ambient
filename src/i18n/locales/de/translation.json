@@ -1376,7 +1376,11 @@
       "copiedWords": "Deine genauen Worte sind kopiert. Zum Ersetzen einfügen.",
       "copiedEdit": "Die neue Fassung ist kopiert. Zum Ersetzen einfügen.",
       "noAllowance": "Das KI-Schreiben für diese Woche ist aufgebraucht, daher steht es so da, wie du es gesagt hast.",
-      "couldntWrite": "Das ging gerade nicht, daher steht es so da, wie du es gesagt hast."
+      "couldntWrite": "Das ging gerade nicht, daher steht es so da, wie du es gesagt hast.",
+      "rewritten": "Umgeschrieben",
+      "undoRewrite": "Umschreiben rückgängig",
+      "copiedOriginal": "Dein ursprünglicher Text ist kopiert. Zum Ersetzen einfügen.",
+      "couldntRewrite": "Das ließ sich gerade nicht umschreiben, dein Text bleibt unverändert."
     }
   },
   "privacy": {

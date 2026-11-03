@@ -1384,7 +1384,11 @@
       "copiedWords": "Vos mots exacts sont copiés. Collez pour remplacer.",
       "copiedEdit": "La nouvelle version est copiée. Collez pour remplacer.",
       "noAllowance": "Plus d'écriture IA cette semaine, c'est donc tapé tel que vous l'avez dit.",
-      "couldntWrite": "Impossible de rédiger pour l'instant, c'est donc tapé tel que vous l'avez dit."
+      "couldntWrite": "Impossible de rédiger pour l'instant, c'est donc tapé tel que vous l'avez dit.",
+      "rewritten": "Réécrit",
+      "undoRewrite": "Annuler la réécriture",
+      "copiedOriginal": "Votre texte d'origine est copié. Collez pour remplacer.",
+      "couldntRewrite": "Impossible de réécrire pour l'instant, votre texte n'a pas changé."
     }
   },
   "privacy": {

@@ -1384,7 +1384,11 @@
       "copiedWords": "Copiamos tus palabras exactas. Pega para reemplazar.",
       "copiedEdit": "Copiamos la nueva versión. Pega para reemplazar.",
       "noAllowance": "Se acabó la escritura con IA de esta semana, así que va tal como lo dijiste.",
-      "couldntWrite": "No se pudo redactar ahora, así que va tal como lo dijiste."
+      "couldntWrite": "No se pudo redactar ahora, así que va tal como lo dijiste.",
+      "rewritten": "Reescrito",
+      "undoRewrite": "Deshacer reescritura",
+      "copiedOriginal": "Copiamos tu texto original. Pega para reemplazar.",
+      "couldntRewrite": "No se pudo reescribir ahora, así que tu texto no cambió."
     }
   },
   "privacy": {

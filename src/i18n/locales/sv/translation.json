@@ -1376,7 +1376,11 @@
       "copiedWords": "Dina exakta ord är kopierade. Klistra in för att ersätta.",
       "copiedEdit": "Den nya versionen är kopierad. Klistra in för att ersätta.",
       "noAllowance": "AI-skrivandet för den här veckan är slut, så det står som du sa det.",
-      "couldntWrite": "Det gick inte att skriva just nu, så det står som du sa det."
+      "couldntWrite": "Det gick inte att skriva just nu, så det står som du sa det.",
+      "rewritten": "Omskrivet",
+      "undoRewrite": "Ångra omskrivning",
+      "copiedOriginal": "Din ursprungliga text är kopierad. Klistra in för att ersätta.",
+      "couldntRewrite": "Det gick inte att skriva om just nu, så din text är oförändrad."
     }
   },
   "privacy": {

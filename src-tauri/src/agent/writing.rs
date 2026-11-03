@@ -561,6 +561,9 @@ pub struct Typed {
     /// An i18n key for a gentle note instead of the usual chip text (e.g.
     /// out of allowance, so it's as said).
     pub note: Option<&'static str>,
+    /// A rewrite of the user's selection: `raw` is that original text,
+    /// restored exactly by "Undo rewrite".
+    pub rewrite: bool,
 }
 
 /// A request to write for the user (`Decision::Written`).
@@ -581,8 +584,31 @@ pub struct WriteRequest {
 /// What the answer flow needs to finish a smart write.
 #[derive(Debug, Clone)]
 pub struct SmartWrite {
+    /// What "Use my words" puts back: the transcript, or for a rewrite the
+    /// original selected text.
     pub raw: String,
     pub replaces: Option<Inserted>,
+    /// A rewrite of the selection (`raw` is the original selection).
+    pub rewrite: bool,
+}
+
+impl SmartWrite {
+    /// For a new write: a rewrite of the selection when it could be read
+    /// (its original text is what a revert restores), else the transcript.
+    pub fn new(transcript: String, selection: Option<String>) -> Self {
+        match selection.filter(|s| !s.is_empty()) {
+            Some(original) => Self {
+                raw: original,
+                replaces: None,
+                rewrite: true,
+            },
+            None => Self {
+                raw: transcript,
+                replaces: None,
+                rewrite: false,
+            },
+        }
+    }
 }
 
 /// Text typed into a field, kept briefly so it can be replaced.
@@ -591,7 +617,12 @@ pub struct Inserted {
     /// Exactly what was pasted (a trailing space included when that
     /// setting is on).
     pub text: String,
+    /// What a revert puts back: the transcript, or the original selection
+    /// for a rewrite.
     pub raw: String,
+    /// A rewrite of a selection: the revert restores `raw` exactly (no
+    /// trailing space) and the chip says "Undo rewrite".
+    pub rewrite: bool,
     pub decision: Decision,
     pub bundle: String,
     pub app_name: String,
@@ -637,6 +668,7 @@ pub fn after_insert(app: &AppHandle, typed: Typed, final_text: &str) {
     let inserted = Inserted {
         text: pasted_form(&s, final_text),
         raw: typed.raw,
+        rewrite: typed.rewrite,
         decision: typed.decision,
         bundle: front.bundle_id,
         app_name: front.name,
@@ -644,12 +676,14 @@ pub fn after_insert(app: &AppHandle, typed: Typed, final_text: &str) {
         at: Instant::now(),
     };
     log::debug!(
-        "writing: typed {} ({} chars, raw {} chars)",
+        "writing: typed {} ({} chars, raw {} chars, rewrite {})",
         inserted.decision.name(),
         inserted.text.chars().count(),
-        inserted.raw.chars().count()
+        inserted.raw.chars().count(),
+        inserted.rewrite
     );
     let decision = inserted.decision;
+    let label = chip_decision(&inserted);
     if let Ok(mut g) = LAST.lock() {
         *g = Some(inserted);
     }
@@ -657,12 +691,28 @@ pub fn after_insert(app: &AppHandle, typed: Typed, final_text: &str) {
         app,
         HudContent::Writing {
             id: chip_id(),
-            decision: decision.name().into(),
+            decision: label.into(),
             note: None,
             revert: true,
             edit: decision == Decision::Written,
         },
     );
+}
+
+/// The chip's `decision`: `rewritten` for a rewrite of a selection (it
+/// offers "Undo rewrite"), else the decision's name.
+pub fn chip_decision(ins: &Inserted) -> &'static str {
+    if ins.rewrite {
+        "rewritten"
+    } else {
+        ins.decision.name()
+    }
+}
+
+/// What a revert puts back and whether to paste it exactly (no trailing
+/// space): the original selection for a rewrite, else the transcript.
+pub fn revert_text(ins: &Inserted) -> (&str, bool) {
+    (ins.raw.as_str(), ins.rewrite)
 }
 
 /// A chip with only a note ("Copied your exact words…").
@@ -802,17 +852,26 @@ fn revert(app: &AppHandle, by: &'static str) {
     let Some(last) = LAST.lock().ok().and_then(|mut g| g.take()) else {
         return;
     };
-    let how = replace_inserted(app, &last, &last.raw);
+    let (text, exact) = revert_text(&last);
+    let how = replace_inserted(app, &last, text, exact);
     log::debug!(
-        "writing: reverted {} by {by} ({})",
+        "writing: reverted {}{} by {by} ({})",
         last.decision.name(),
+        if last.rewrite { " (rewrite)" } else { "" },
         how.name()
     );
     match how {
         Replaced::Selected | Replaced::Undone => {}
         Replaced::Clipboard => {
-            copy_text(app, &last.raw);
-            show_note(app, "hud.writing.copiedWords");
+            copy_text(app, text);
+            show_note(
+                app,
+                if last.rewrite {
+                    "hud.writing.copiedOriginal"
+                } else {
+                    "hud.writing.copiedWords"
+                },
+            );
         }
     }
     crate::telemetry::write_revert(last.decision.name(), by);
@@ -924,7 +983,19 @@ fn send_keys(app: &AppHandle, f: fn(&mut enigo::Enigo) -> Result<(), String>) ->
 ///    paste, but only if re-reading proves Undo removed exactly the
 ///    insertion (if it changed something else, Redo puts it back).
 /// 3. Otherwise: nothing (the caller copies the text and says so).
-pub fn replace_inserted(app: &AppHandle, ins: &Inserted, replacement: &str) -> Replaced {
+pub fn replace_inserted(
+    app: &AppHandle,
+    ins: &Inserted,
+    replacement: &str,
+    exact: bool,
+) -> Replaced {
+    let paste = |text: &str| {
+        if exact {
+            crate::clipboard::paste_exact(text.to_string(), app.clone())
+        } else {
+            crate::clipboard::paste(text.to_string(), app.clone())
+        }
+    };
     if ins.submitted {
         return Replaced::Clipboard;
     }
@@ -939,7 +1010,7 @@ pub fn replace_inserted(app: &AppHandle, ins: &Inserted, replacement: &str) -> R
         return Replaced::Clipboard;
     };
     if let Some(r) = select_inserted(&f, &ins.text, &nw) {
-        if crate::clipboard::paste(replacement.to_string(), app.clone()).is_ok() {
+        if paste(replacement).is_ok() {
             return r;
         }
         return Replaced::Clipboard;
@@ -958,7 +1029,7 @@ pub fn replace_inserted(app: &AppHandle, ins: &Inserted, replacement: &str) -> R
     let now = field::focused_field(true, &nw).and_then(|f| f.value);
     match now {
         Some(now) if undo_removed(&after, &now, &ins.text) => {
-            if crate::clipboard::paste(replacement.to_string(), app.clone()).is_ok() {
+            if paste(replacement).is_ok() {
                 Replaced::Undone
             } else {
                 Replaced::Clipboard
@@ -1009,6 +1080,14 @@ pub fn write_for_you(app: &AppHandle, req: WriteRequest) {
     super::milestone(app, "answer");
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
+        // A rewrite keeps the original selection, which "Undo rewrite"
+        // restores; an Edit keeps what the first write would restore.
+        let mut smart = SmartWrite::new(req.raw.clone(), None);
+        if let Some(prev) = &req.replaces {
+            smart.raw = prev.raw.clone();
+            smart.rewrite = prev.rewrite;
+        }
+        smart.replaces = req.replaces.clone();
         let context = match (&req.context, req.has_selection) {
             (Some(text), _) => Some(format!(
                 "Text to rewrite (reply with the rewritten text only):\n\"\"\"\n{text}\n\"\"\""
@@ -1022,7 +1101,14 @@ pub fn write_for_you(app: &AppHandle, req: WriteRequest) {
                 .await
                 .ok()
                 .flatten();
-                selection.map(|s| {
+                // Without the selection's text there's nothing to rewrite:
+                // leave it as it is rather than type over it.
+                let Some(original) = selection.filter(|s| !s.trim().is_empty()) else {
+                    show_note(&app, "hud.writing.couldntRewrite");
+                    return;
+                };
+                smart = SmartWrite::new(req.raw.clone(), Some(original.clone()));
+                Some(original).map(|s| {
                     format!(
                         "Selected text to rewrite (reply with the rewritten text only; it replaces the selection):\n\"\"\"\n{s}\n\"\"\""
                     )
@@ -1040,10 +1126,7 @@ pub fn write_for_you(app: &AppHandle, req: WriteRequest) {
             super::answer::Opts {
                 write: true,
                 compose: true,
-                smart: Some(SmartWrite {
-                    raw: req.raw,
-                    replaces: req.replaces,
-                }),
+                smart: Some(smart),
                 ..Default::default()
             },
         )
@@ -1056,7 +1139,7 @@ pub fn write_for_you(app: &AppHandle, req: WriteRequest) {
 /// the caller offers it as a draft. Call off the main thread.
 pub fn deliver_written(app: &AppHandle, text: &str, smart: &SmartWrite) -> bool {
     if let Some(prev) = &smart.replaces {
-        let how = replace_inserted(app, prev, text);
+        let how = replace_inserted(app, prev, text, false);
         log::debug!("writing: replaced the edited text ({})", how.name());
         if how == Replaced::Clipboard {
             copy_text(app, text);
@@ -1073,6 +1156,7 @@ pub fn deliver_written(app: &AppHandle, text: &str, smart: &SmartWrite) -> bool 
             decision: Decision::Written,
             raw: smart.raw.clone(),
             note: None,
+            rewrite: smart.rewrite,
         },
         text,
     );
@@ -1090,7 +1174,11 @@ pub fn written_failed(app: &AppHandle, smart: SmartWrite, error_key: &str) {
         // This note says it; don't repeat it on the next dictation.
         LIMIT_NOTED.store(true, std::sync::atomic::Ordering::SeqCst);
     }
-    let note = if limit {
+    // A failed rewrite leaves the selection alone (typing the command over
+    // it would lose their text).
+    let note = if smart.rewrite {
+        "hud.writing.couldntRewrite"
+    } else if limit {
         "hud.writing.noAllowance"
     } else {
         "hud.writing.couldntWrite"
@@ -1100,6 +1188,7 @@ pub fn written_failed(app: &AppHandle, smart: SmartWrite, error_key: &str) {
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_millis(150));
         if smart.replaces.is_none()
+            && !smart.rewrite
             && crate::clipboard::paste(smart.raw.clone(), app.clone()).is_err()
         {
             return;
@@ -1428,6 +1517,58 @@ mod tests {
         assert!(undo_removed("Thursday works for me.", "", ins));
         // Repeated text: any one occurrence exactly removed counts.
         assert!(undo_removed("ok ok ", "ok ", "ok "));
+    }
+
+    fn inserted(text: &str, raw: &str, rewrite: bool) -> Inserted {
+        Inserted {
+            text: text.into(),
+            raw: raw.into(),
+            rewrite,
+            decision: Decision::Written,
+            bundle: "com.apple.mail".into(),
+            app_name: "Mail".into(),
+            submitted: false,
+            at: Instant::now(),
+        }
+    }
+
+    #[test]
+    fn undoing_a_rewrite_restores_the_original_selection_not_the_command() {
+        let original = "hey can u send the deck by fri";
+        // "make this more formal" with that text selected.
+        let smart = SmartWrite::new("make this more formal".into(), Some(original.into()));
+        assert!(smart.rewrite);
+        assert_eq!(smart.raw, original);
+        // No selection read: a plain write, reverted to the transcript.
+        let plain = SmartWrite::new("write a thank-you to the team".into(), None);
+        assert!(!plain.rewrite);
+        assert_eq!(plain.raw, "write a thank-you to the team");
+        assert!(!SmartWrite::new("x".into(), Some(String::new())).rewrite);
+
+        // The rewrite went in where the selection was (trailing space on).
+        let rewritten = "Could you please send the deck by Friday? ";
+        let ins = inserted(rewritten, &smart.raw, smart.rewrite);
+        assert_eq!(chip_decision(&ins), "rewritten");
+        // The revert restores the original exactly, without a trailing space.
+        assert_eq!(revert_text(&ins), (original, true));
+        // ...over exactly the rewritten range before the caret.
+        let field = format!("Hi Sam,\n{rewritten}Thanks");
+        let caret = format!("Hi Sam,\n{rewritten}").chars().count();
+        assert_eq!(
+            inserted_before_caret(&field, caret, &ins.text),
+            Some((8, rewritten.chars().count()))
+        );
+        // The Undo fallback counts only if it removed exactly the rewrite.
+        assert!(undo_removed(&field, "Hi Sam,\nThanks", &ins.text));
+
+        // A plain write still offers the user's words.
+        let w = inserted(
+            "I can't make it, sorry! ",
+            "tell him I can't make it",
+            false,
+        );
+        assert_eq!(chip_decision(&w), "written");
+        assert_eq!(revert_text(&w), ("tell him I can't make it", false));
     }
 
     #[test]

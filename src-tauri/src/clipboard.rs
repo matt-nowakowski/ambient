@@ -890,6 +890,16 @@ fn should_send_auto_submit(auto_submit: bool, paste_method: PasteMethod) -> bool
 /// Pastes `text` into the focused app. Call from a worker thread, never the main
 /// thread: it sleeps between steps (input injection hops via `with_enigo`).
 pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
+    paste_with(text, app_handle, true)
+}
+
+/// `paste`, but exactly `text`: no trailing space even when that setting is
+/// on (restoring text the user had, e.g. undoing a rewrite of a selection).
+pub fn paste_exact(text: String, app_handle: AppHandle) -> Result<(), String> {
+    paste_with(text, app_handle, false)
+}
+
+fn paste_with(text: String, app_handle: AppHandle, trailing_space: bool) -> Result<(), String> {
     // Nothing said (a silent auto-stop, VAD trimming everything): paste
     // nothing, rather than ⌘V over whatever the clipboard already holds.
     if !is_pasteable(&text) {
@@ -903,7 +913,7 @@ pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
     let paste_delay_after_ms = settings.paste_delay_after_ms;
 
     // Append trailing space if setting is enabled
-    let text = if settings.append_trailing_space {
+    let text = if trailing_space && settings.append_trailing_space {
         format!("{} ", text)
     } else {
         text

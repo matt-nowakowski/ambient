@@ -16,8 +16,9 @@ const AFTER_HOVER = 2.5;
 /**
  * Keyed by the card's id, so each chip starts its own countdown.
  *
- * Smart writing, after typing: "Polished · Use my words" or "Written for
- * you · Use my words · Edit". Fades on its own after about five seconds;
+ * Smart writing, after typing: "Polished · Use my words", "Written for
+ * you · Use my words · Edit", or after rewriting a selection "Rewritten ·
+ * Undo rewrite · Edit" (which restores the original selection). Fades on its own after about five seconds;
  * hovering keeps it (Rust also reports hover, since the panel never takes
  * focus). Reduced motion: no countdown bar, the card only fades.
  */
@@ -62,7 +63,9 @@ export function WritingChip({ card }: { card: WritingCard }) {
       ? t(card.note)
       : card.decision === "written"
         ? t("hud.writing.written")
-        : t("hud.writing.polished");
+        : card.decision === "rewritten"
+          ? t("hud.writing.rewritten")
+          : t("hud.writing.polished");
 
   return (
     <div
@@ -85,7 +88,9 @@ export function WritingChip({ card }: { card: WritingCard }) {
           title={t("hud.writing.voiceHint")}
           onClick={() => commands.hudAction(card.id, "revert", null)}
         >
-          {t("hud.writing.useMyWords")}
+          {card.decision === "rewritten"
+            ? t("hud.writing.undoRewrite")
+            : t("hud.writing.useMyWords")}
         </button>
       )}
       {card.edit && (

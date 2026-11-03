@@ -1820,7 +1820,8 @@ export type HudContent =
  * Smart writing, after typing (agent/writing.rs): a small chip saying
  * what was done, "Polished" or "Written for you", with "Use my
  * words" (`revert`) and, for written text, "Edit". `decision` is
- * `polished`, `written`, `editing` (Edit: say what to change) or
+ * `polished`, `written`, `rewritten` (a selection rewritten: "Undo rewrite"
+ * restores it), `editing` (Edit: say what to change) or
  * `note`; `note` is an i18n key for a line instead ("Copied your exact
  * words…"). Fades after a few seconds unless hovered.
  */

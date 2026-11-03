@@ -1376,7 +1376,11 @@
       "copiedWords": "已複製你的原話。貼上即可取代。",
       "copiedEdit": "已複製新版本。貼上即可取代。",
       "noAllowance": "本週的 AI 寫作額度已用完，所以照你說的原話輸入。",
-      "couldntWrite": "暫時無法撰寫，所以照你說的原話輸入。"
+      "couldntWrite": "暫時無法撰寫，所以照你說的原話輸入。",
+      "rewritten": "已改寫",
+      "undoRewrite": "復原改寫",
+      "copiedOriginal": "已複製你的原文。貼上即可取代。",
+      "couldntRewrite": "暫時無法改寫，你的文字保持不變。"
     }
   },
   "privacy": {

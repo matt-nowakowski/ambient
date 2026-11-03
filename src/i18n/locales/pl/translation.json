@@ -1392,7 +1392,11 @@
       "copiedWords": "Skopiowano twoje dokładne słowa. Wklej, aby zastąpić.",
       "copiedEdit": "Skopiowano nową wersję. Wklej, aby zastąpić.",
       "noAllowance": "Limit pisania z AI na ten tydzień się wyczerpał, więc wpisano tak, jak powiedziałeś.",
-      "couldntWrite": "Nie udało się teraz tego napisać, więc wpisano tak, jak powiedziałeś."
+      "couldntWrite": "Nie udało się teraz tego napisać, więc wpisano tak, jak powiedziałeś.",
+      "rewritten": "Przepisane",
+      "undoRewrite": "Cofnij przepisanie",
+      "copiedOriginal": "Skopiowano twój oryginalny tekst. Wklej, aby zastąpić.",
+      "couldntRewrite": "Nie udało się teraz tego przepisać, więc twój tekst się nie zmienił."
     }
   },
   "privacy": {

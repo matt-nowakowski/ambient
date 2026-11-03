@@ -1384,7 +1384,11 @@
       "copiedWords": "S'han copiat les teves paraules exactes. Enganxa per substituir.",
       "copiedEdit": "S'ha copiat la versió nova. Enganxa per substituir.",
       "noAllowance": "S'ha acabat l'escriptura amb IA d'aquesta setmana, així que va tal com ho has dit.",
-      "couldntWrite": "Ara no s'ha pogut redactar, així que va tal com ho has dit."
+      "couldntWrite": "Ara no s'ha pogut redactar, així que va tal com ho has dit.",
+      "rewritten": "Reescrit",
+      "undoRewrite": "Desfés la reescriptura",
+      "copiedOriginal": "S'ha copiat el text original. Enganxa per substituir.",
+      "couldntRewrite": "Ara no s'ha pogut reescriure, així que el teu text no ha canviat."
     }
   },
   "privacy": {
