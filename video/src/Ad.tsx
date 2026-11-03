@@ -3,6 +3,8 @@
 // app's backdrop, the launch-screen lockup, light Geist weights, sound effects,
 // and layouts where nothing collides or clips. One component renders both the
 // 16:9 master and the 9:16 cut (useTall); see src/beats.ts and script.md.
+// v5: Ambient as a desktop colleague. A new opening, a smart-writing beat, the
+// suggestions moved up and held on one long example, the brand line as tagline.
 import React, { type CSSProperties, type ReactNode } from "react";
 import { AbsoluteFill, Audio, Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import {
@@ -14,6 +16,7 @@ import {
   FONT,
   FONT_DISPLAY,
   HudButton,
+  LensOrb,
   Lockup,
   MacWindow,
   Orb,
@@ -24,11 +27,12 @@ import {
   camera,
   ease,
   hudCard,
+  press,
   settle,
   springAt,
   useTall,
 } from "./kit";
-import { FB, FPS, FIRST_BEAT, MUSIC_SPLICE, SHOTS, TOTAL, VO, beat } from "./beats";
+import { FB, FPS, FIRST_BEAT, MUSIC_SPLICES, SHOTS, TOTAL, VO, beat } from "./beats";
 import vo from "./vo";
 
 // ---------------------------------------------------------------- motion helpers
@@ -249,37 +253,82 @@ const Dark: React.FC = () => <Backdrop dark />;
 // ---------------------------------------------------------------- shots
 type ShotProps = { start: number; len: number };
 
-const Open: React.FC<ShotProps> = ({ start }) => {
+/** The pointer, drawn at `k`× (a plain arrow: no OS in particular). */
+const Cursor: React.FC<{ x: number; y: number; k?: number }> = ({ x, y, k = 2.2 }) => (
+  <svg width={22 * k} height={32 * k} viewBox="0 0 22 32" style={{ position: "absolute", left: x, top: y, overflow: "visible", filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.25))" }}>
+    <path d="M2 2 L2 25 L7.6 19.8 L11.6 29.2 L15.4 27.6 L11.5 18.6 L19 18.6 Z" fill={C.fg} stroke="#fff" strokeWidth={1.6} strokeLinejoin="round" />
+  </svg>
+);
+
+/** The brand line, "Your desktop colleague.": one line in 16:9, two in 9:16 (the opening and the tagline). */
+const TAG_LINES = (tall: boolean) => (tall ? [[0, 1], [2]] : [[0, 1, 2]]);
+const TAG_SIZE = (tall: boolean) => (tall ? 140 : 150);
+
+/** v5's opening: the orb's slide, and the slam line word by word on the voice (public/vo/colleague.json). */
+export const OPEN = () => {
+  const vAt = beat(VO.find((v) => v[0] === "colleague")![1]);
+  return { slide: lb(0, 2.5), land: lb(0, 2.5) + 22, line: vo.colleague.words.map((x) => vAt + Math.round(x.start * 30)) };
+};
+
+/**
+ * 0:00 an empty desktop, a quiet beat. ~0:02 the orb slides in and settles
+ * beside the pointer, like someone pulling up a chair. Then the line.
+ */
+const Open: React.FC<ShotProps> = ({ len }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const hits = [0, 1, 2, 3].map((b) => lb(start, b));
-  const s = springAt(f, fps, hits[0], { damping: 12, stiffness: 160 });
-  const p = pulse(f, hits, 5);
+  const tall = useTall();
+  const { slide, land, line } = OPEN();
+  // the pointer drifts in and comes to rest
+  const cur = ease(f, [4, 40], [0, 1], ARRIVE);
+  const px = Math.round((tall ? 470 : 905) + (1 - cur) * (tall ? 120 : 180));
+  const py = Math.round((tall ? 1230 : 700) + (1 - cur) * 70);
+  // the orb: slides in from the right on a low arc and settles beside the pointer
+  const s = settle(spring({ frame: f - slide, fps, config: { damping: 15, stiffness: 70, mass: 1 } }));
+  const ox = px + 66 + (1 - s) * (tall ? 700 : 1100);
+  const oy = py + 50 - Math.sin(Math.min(1, s) * Math.PI) * 26;
+  const bump = pulse(f, [land], 6);
+  const lines = TAG_LINES(tall);
+  const words = vo.colleague.text.split(" ");
   return (
     <AbsoluteFill>
       <Light />
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
-        {hits.map((h) => (
-          <React.Fragment key={h}>{ring(f, h, 1200, "rgba(0,0,0,0.4)")}</React.Fragment>
-        ))}
-        <div style={{ transform: `scale(${s * (1 + 0.12 * p) * (1 + ease(f, [0, 72], [0, 0.2]))})` }}>
-          <Orb size={200} floor={0.16} speed={1.5} />
+      <AbsoluteFill style={{ transform: `scale(${1 + ease(f, [line[0], len], [0, 0.035], Easing.linear)})`, transformOrigin: tall ? "50% 60%" : "50% 55%" }}>
+        <div style={{ position: "absolute", left: 0, right: 0, top: tall ? 500 : 250, display: "grid", justifyItems: "center", rowGap: 4 }}>
+          {lines.map((ix, k) => (
+            <Slam key={k} words={ix.map((i) => ({ t: words[i], at: line[i] - 2 }))} size={TAG_SIZE(tall)} style={{ justifyContent: "center" }} />
+          ))}
         </div>
+        <Cursor x={px} y={py} />
+        {f >= slide - 1 && (
+          <div style={{ position: "absolute", left: ox, top: oy, transform: `scale(${1 + 0.1 * bump})`, filter: s < 0.9 ? `blur(${(1 - s) * 5}px)` : undefined }}>
+            <LensOrb k={1.05} color={C.fg} glow={0} spin={0.35} />
+          </div>
+        )}
       </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 
-const Speak: React.FC<ShotProps> = ({ len }) => {
+/** "You talk." and the recording pill (v4's "Speak." shot). */
+export const TALK = { you: 2, talk: 19, pill: 27 };
+const Talk: React.FC<ShotProps> = ({ len }) => {
   const f = useCurrentFrame();
   const tall = useTall();
   return (
     <AbsoluteFill>
       <Light />
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", transform: `scale(${1 + ease(f, [0, len], [0, 0.06], Easing.linear)})` }}>
-        <Slam words={[{ t: "Speak.", at: 0 }]} size={tall ? 240 : 280} />
+        <Slam
+          words={[
+            { t: "You", at: TALK.you },
+            { t: "talk.", at: TALK.talk },
+          ]}
+          size={tall ? 200 : 260}
+          style={{ justifyContent: "center", whiteSpace: "nowrap" }}
+        />
       </AbsoluteFill>
-      <LivePill at={18} y={tall ? 1160 : 780} />
+      <LivePill at={TALK.pill} y={tall ? 1160 : 780} />
     </AbsoluteFill>
   );
 };
@@ -505,17 +554,127 @@ const Writes: React.FC<ShotProps> = ({ len }) => {
  * so it starts at x ≥ 900 in 16:9 (the caption ends by 820), and sits under the
  * caption in 9:16.
  */
-const ProductShot: React.FC<{ word: string; wordAt: number; len: number; uiW: number; children: ReactNode }> = ({ word, wordAt, len, uiW, children }) => {
+const ProductShot: React.FC<{ word: string; wordAt: number; len: number; uiW: number; tallCy?: number; children: ReactNode }> = ({ word, wordAt, len, uiW, tallCy = 228, children }) => {
   const f = useCurrentFrame();
   const tall = useTall();
   const t = interpolate(f, [0, len], [0, 1], { easing: Easing.out(Easing.quad) });
-  const cam = tall ? { zoom: 1.25 + 0.04 * t, cx: 600 + uiW / 2, cy: 228 } : { zoom: 1.2 + 0.08 * t, cx: 620, cy: 262 };
+  const cam = tall ? { zoom: 1.25 + 0.04 * t, cx: 600 + uiW / 2, cy: tallCy } : { zoom: 1.2 + 0.08 * t, cx: 620, cy: 262 };
   return (
     <AbsoluteFill>
       <Light />
       <Stage {...cam}>{children}</Stage>
       <SideWord text={word} at={wordAt} />
     </AbsoluteFill>
+  );
+};
+
+/**
+ * v5, smart writing: an instruction, not words to type. "tell Ana Thursday
+ * works, after three" becomes the message itself, with the HUD's chip
+ * (hud-chip / hud-undo look): "Written for you · Use my words".
+ */
+export const SMART = { pill: 2, streamTo: 18, writing: 22, msg: 28, msgTo: 42, chip: 42 };
+const INSTRUCTION = "tell Ana Thursday works, after three";
+const MESSAGE = "Thursday works for me — any time after 3pm.";
+
+const Smart: React.FC<ShotProps> = ({ len }) => {
+  const f = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const { pill, streamTo, writing, msg, msgTo, chip } = SMART;
+  const win = springAt(f, fps, 0, { damping: 20, stiffness: 240 });
+  const p = springAt(f, fps, pill, { damping: 18, stiffness: 300 });
+  const pillOut = ease(f, [msg - 2, msg + 6], [1, 0]);
+  const c = springAt(f, fps, chip, { damping: 16, stiffness: 320 });
+  return (
+    <ProductShot word="It writes." wordAt={-120} len={len} uiW={380}>
+      <MacWindow w={380} h={236} title="Ana Lopez" style={{ left: 600, top: 118 + Math.round((1 - win) * 24), opacity: Math.min(1, win * 1.6) }}>
+        <div style={{ padding: "14px 16px 0", display: "flex", gap: 10, color: C.fg }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: "#8fa9b8", flex: "none", display: "grid", placeItems: "center", color: "#fff", fontSize: 13, fontWeight: 500 }}>A</div>
+          <div style={{ display: "grid", gap: 3 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 500 }}>
+              Ana <span style={{ color: C.subtle, fontWeight: 400, fontSize: 11 }}>10:42</span>
+            </div>
+            <div style={{ fontSize: 13, whiteSpace: "nowrap" }}>Does Thursday work for the dry run?</div>
+          </div>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 14,
+            right: 14,
+            bottom: 16,
+            height: 64,
+            boxSizing: "border-box",
+            borderRadius: 9,
+            boxShadow: `inset 0 0 0 ${f >= msg ? 1 : 0.5}px rgba(0,0,0,${f >= msg ? 0.16 : 0.12})`,
+            padding: "10px 12px",
+            fontSize: 13,
+            lineHeight: 1.5,
+            color: C.fg,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {f < msg ? <span style={{ color: C.subtle }}>Message Ana</span> : <Stream text={MESSAGE} from={msg} to={msgTo} />}
+        </div>
+      </MacWindow>
+      {/* the Live pill: the instruction, then "Writing" */}
+      <div
+        style={{
+          position: "absolute",
+          left: 600,
+          top: 368,
+          width: 380,
+          boxSizing: "border-box",
+          borderRadius: 22,
+          background: "rgba(18,18,22,0.86)",
+          boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.14), 0 12px 32px -8px rgba(0,0,0,0.35)",
+          color: C.hInk,
+          fontFamily: FONT,
+          opacity: Math.min(1, p * 1.5) * pillOut,
+          transform: `translateY(${(1 - p) * 10 - (1 - pillOut) * 12}px)`,
+        }}
+      >
+        <div style={{ padding: "12px 16px 2px", fontSize: 14, lineHeight: 1.5, minHeight: 21, whiteSpace: "nowrap", opacity: f >= writing ? 0.62 : 1 }}>
+          <Stream text={INSTRUCTION} from={pill + 1} to={streamTo} />
+        </div>
+        <div style={{ height: 40, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", padding: "0 14px" }}>
+          <span style={{ width: 7, height: 7, borderRadius: 4, background: f >= writing ? "rgba(255,255,255,0.4)" : C.rec }} />
+          {f >= writing ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>
+              <Orb size={14} color="#fff" speed={3} />
+              Writing
+            </div>
+          ) : (
+            <Levels />
+          )}
+          <span />
+        </div>
+      </div>
+      {/* the chip, under the message it wrote */}
+      <div
+        style={{
+          ...hudCard,
+          left: 614,
+          top: 344,
+          padding: "0 5px 0 9px",
+          height: 32,
+          borderRadius: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          fontSize: 12,
+          whiteSpace: "nowrap",
+          opacity: Math.min(1, c * 1.5),
+          transform: `translateY(${(1 - c) * -8}px) scale(${0.92 + 0.08 * c})`,
+          transformOrigin: "0 0",
+        }}
+      >
+        <Orb size={14} color="#fff" floor={0.4} speed={1.2} />
+        <span>Written for you</span>
+        <span style={{ color: C.hFaint }}>·</span>
+        <div style={{ height: 22, padding: "0 8px", borderRadius: 7, background: C.hRaise, color: C.hInk, display: "grid", placeItems: "center" }}>Use my words</div>
+      </div>
+    </ProductShot>
   );
 };
 
@@ -597,34 +756,91 @@ const Remembers: React.FC<ShotProps> = ({ len }) => (
   </ProductShot>
 );
 
-/** Four words, four beats, light and dark grounds. */
-const Modes: React.FC<ShotProps> = ({ start }) => {
+/**
+ * v5, "It nudges you.": one suggestion held long enough to play out. A
+ * 40-message thread, the offer to summarise it, a spoken "yes", the summary.
+ */
+export const NUDGE = { card: 30, yes: 64, press: 80, out: 84, sum: 92 };
+const SUMMARY = ["Launch moves to the 14th", "Priya sends the press kit Friday", "Tom signs off the pricing page"];
+const THREAD = ["Priya", "Tom", "Ana", "Sam", "Priya", "Tom", "Ana", "Priya", "Sam", "Tom"];
+
+const Nudge: React.FC<ShotProps> = ({ len }) => {
   const f = useCurrentFrame();
-  const tall = useTall();
-  const words: [string, boolean][] = [
-    ["Write.", true],
-    ["Answer.", false],
-    ["Act.", true],
-    ["Recall.", false],
-  ];
-  const i = Math.min(3, Math.max(0, Math.floor(f / FB)));
-  const at = lb(start, 24 + i);
-  const [w, dark] = words[i];
-  const fg = dark ? "#fafafa" : C.fg;
+  const { fps } = useVideoConfig();
+  const { card, yes, press: pressAt, out, sum: sumAt } = NUDGE;
+  const win = springAt(f, fps, 0, { damping: 20, stiffness: 240 });
+  const k = springAt(f, fps, card, { damping: 20, stiffness: 300 });
+  const gone = ease(f, [out, out + 10], [0, 1]);
+  const sum = springAt(f, fps, sumAt, { damping: 18, stiffness: 260 });
+  const scroll = ease(f, [0, sumAt], [0, 150], Easing.linear);
+  const drain = ease(f, [card, card + 8 * 30], [1, 0], Easing.linear);
+  const g = ["#7d93c9", "#c99a8a", "#8fa9b8", "#9aa3b5"];
   return (
-    <AbsoluteFill>
-      {dark ? <Dark /> : <Light />}
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
-        <div style={{ transform: `scale(${1 + 0.06 * pulse(f, [at], 7)})` }}>
-          <Slam key={i} words={[{ t: w, at }]} size={tall ? 210 : 260} color={fg} />
+    <ProductShot word="It nudges you." wordAt={0} len={len} uiW={380} tallCy={160}>
+      <MacWindow w={380} h={244} title="Inbox" style={{ left: 600, top: 84 + Math.round((1 - win) * 24), opacity: Math.min(1, win * 1.6) }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, height: 36, padding: "0 14px", borderBottom: "0.5px solid rgba(0,0,0,0.07)", whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 13, fontWeight: 500, color: C.fg }}>Re: Launch plan</span>
+          <span style={{ height: 20, padding: "0 8px", borderRadius: 10, background: "rgba(0,0,0,0.06)", color: C.muted, fontSize: 11, display: "grid", placeItems: "center" }}>40 messages</span>
         </div>
-        <div style={{ position: "absolute", bottom: tall ? 300 : 110, display: "flex", gap: 14 }}>
-          {words.map((_, k) => (
-            <div key={k} style={{ width: k === i ? 34 : 10, height: 10, borderRadius: 5, background: fg, opacity: k === i ? 0.9 : 0.25 }} />
-          ))}
+        <div style={{ position: "absolute", top: 36, left: 0, right: 0, bottom: 0, overflow: "hidden", opacity: 1 - 0.35 * sum }}>
+          <div style={{ transform: `translateY(${-Math.round(scroll)}px)`, padding: "6px 14px", display: "grid", gap: 6 }}>
+            {THREAD.map((n, i) => (
+              <div key={i} style={{ display: "flex", gap: 9, alignItems: "flex-start", padding: "6px 0", borderBottom: "0.5px solid rgba(0,0,0,0.05)" }}>
+                <div style={{ width: 20, height: 20, borderRadius: 10, background: g[i % 4], flex: "none" }} />
+                <div style={{ display: "grid", gap: 6, paddingTop: 2 }}>
+                  <div style={{ fontSize: 11.5, fontWeight: 500, color: C.fg, lineHeight: 1 }}>{n}</div>
+                  <Bar w={[250, 210, 280, 190, 240][i % 5]} o={0.8} />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
+      </MacWindow>
+      {/* the suggestion: the HUD card, its buttons wrapping under the title as in the app */}
+      <div
+        style={{
+          ...hudCard,
+          left: 600,
+          top: 300,
+          width: 380,
+          overflow: "hidden",
+          opacity: Math.min(1, k * 1.4) * (1 - gone),
+          transform: `translateY(${(1 - k) * -8 - gone * 6}px) scale(${0.98 + 0.02 * k})`,
+          filter: k < 0.98 ? `blur(${(1 - k) * 4}px)` : undefined,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10, whiteSpace: "nowrap" }}>
+          <RingOrb size={18} color={C.hInk} />
+          <span style={{ fontSize: 13 }}>Want me to summarise this 40-message thread?</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 6, marginTop: 10 }}>
+          <HudButton label="Summarise" kbd="⏎" primary press={press(f, pressAt)} />
+          <HudButton label="Not now" kbd="esc" />
+        </div>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 1.5, background: "rgba(255,255,255,0.35)", transformOrigin: "left", transform: `scaleX(${drain})` }} />
+      </div>
+      {/* the answer, spoken */}
+      <div style={{ opacity: 1 - gone }}>
+        <Request text="“yes”" at={yes} style={{ left: 600, top: 400 }} />
+      </div>
+      {/* the summary */}
+      <div style={{ ...hudCard, left: 600, top: 300, width: 380, opacity: Math.min(1, sum * 1.5), transform: `translateY(${(1 - sum) * 14}px)` }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
+          <Orb size={18} color="#fff" speed={1.5} />
+          <span style={{ fontSize: 13, fontWeight: 500 }}>Summary</span>
+          <span style={{ fontSize: 12, color: C.hMuted }}>· 40 messages</span>
+        </div>
+        {SUMMARY.map((it, i) => {
+          const t = springAt(f, fps, sumAt + 8 + i * 6, { damping: 18, stiffness: 320 });
+          return (
+            <div key={it} style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 13, marginTop: 9, whiteSpace: "nowrap", opacity: Math.min(1, t * 1.5), transform: `translateX(${(1 - t) * -10}px)` }}>
+              <span style={{ width: 4, height: 4, borderRadius: 2, background: C.hMuted, flex: "none" }} />
+              {it}
+            </div>
+          );
+        })}
+      </div>
+    </ProductShot>
   );
 };
 
@@ -843,19 +1059,18 @@ const NoBot: React.FC<ShotProps> = ({ start }) => {
   );
 };
 
-/** Suggestion pills over four contexts, three beats each. */
+/** v5: after the long one, two quick suggestions, three beats each (v4 had four). */
 export const SUGGEST_EACH = 3;
+export const SUGGEST_N = 2;
 const Suggest: React.FC<ShotProps> = () => {
   const f = useCurrentFrame();
   const tall = useTall();
   const shots: { title: string; short: string; accept: string; ctx: ReactNode }[] = [
-    { title: "Long thread. Summarise it?", short: "Long thread. Summarise it?", accept: "Summarise", ctx: <ThreadCtx /> },
     { title: "There's a date in this. Add it to your calendar?", short: "Add Thursday 3pm to your calendar?", accept: "Add", ctx: <ChatCtx /> },
     { title: "Explain this error?", short: "Explain this error?", accept: "Explain", ctx: <TermCtx /> },
-    { title: "Tighten this draft?", short: "Tighten this draft?", accept: "Tighten", ctx: <DraftCtx /> },
   ];
   const each = Math.round(SUGGEST_EACH * FB);
-  const i = Math.min(3, Math.max(0, Math.floor(f / each)));
+  const i = Math.min(SUGGEST_N - 1, Math.max(0, Math.floor(f / each)));
   const at = i * each;
   const s = shots[i];
   const z = (tall ? 1.0 : 1.45) + ease(f, [at, at + each], [0, tall ? 0.08 : 0.15], Easing.out(Easing.quad));
@@ -873,22 +1088,6 @@ const Suggest: React.FC<ShotProps> = () => {
     </AbsoluteFill>
   );
 };
-
-const ThreadCtx: React.FC = () => (
-  <MacWindow w={620} h={420} title="Re: Launch plan (14)" style={{ left: 170, top: 90 }}>
-    <div style={{ padding: 16, display: "grid", gap: 10 }}>
-      {[0, 1, 2, 3, 4].map((i) => (
-        <div key={i} style={{ padding: 10, borderRadius: 8, boxShadow: "0 0 0 0.5px rgba(0,0,0,0.08)", display: "grid", gap: 7 }}>
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <div style={{ width: 18, height: 18, borderRadius: 9, background: ["#7d93c9", "#c99a8a", "#8fa9b8", "#9aa3b5", "#e8d2c8"][i] }} />
-            <Bar w={[80, 60, 90, 70, 84][i]} />
-          </div>
-          <Bar w={[460, 400, 520, 380, 440][i]} o={0.7} />
-        </div>
-      ))}
-    </div>
-  </MacWindow>
-);
 
 const ChatCtx: React.FC = () => (
   <MacWindow w={620} h={420} title="#launch" style={{ left: 170, top: 90 }}>
@@ -921,17 +1120,6 @@ const TermCtx: React.FC = () => (
       </div>
       <div style={{ color: "#fca5a5" }}>TypeError: Cannot read properties of undefined (reading 'plan')</div>
       <div style={{ color: "rgba(255,255,255,0.45)" }}> at renew (src/billing.ts:42:18)</div>
-    </div>
-  </MacWindow>
-);
-
-const DraftCtx: React.FC = () => (
-  <MacWindow w={620} h={420} title="Launch post" style={{ left: 170, top: 90 }}>
-    <div style={{ padding: "90px 70px 0", display: "grid", gap: 11 }}>
-      <div style={{ fontSize: 22, fontWeight: 400, letterSpacing: "-0.02em", color: C.fg }}>Meet Ambient</div>
-      {[460, 420, 480, 260, 440, 400].map((w, i) => (
-        <Bar key={i} w={w} h={7} />
-      ))}
     </div>
   </MacWindow>
 );
@@ -1163,23 +1351,28 @@ const Reveal: React.FC<ShotProps> = ({ start, len }) => {
 const Tagline: React.FC<ShotProps> = ({ start }) => {
   const f = useCurrentFrame();
   const tall = useTall();
+  // v5: the opening line again, in two steps on the beats, then all of it at once
+  const g = [0, lb(start, 74)];
   const ws = [
-    { t: "Speak.", at: 0 },
-    { t: "It's", at: lb(start, 74) },
-    { t: "written.", at: lb(start, 74) + 4 },
-    { t: "Answered.", at: lb(start, 76) },
-    { t: "Done.", at: lb(start, 78) },
+    { t: "Your", at: g[0], k: 0 },
+    { t: "desktop", at: g[0] + 4, k: 0 },
+    { t: "colleague.", at: g[1], k: 1 },
   ];
-  const latest = ws.filter((w) => f >= w.at).length - 1;
+  const all = lb(start, 76);
+  const latest = g.filter((x) => f >= x).length - 1;
   return (
     <AbsoluteFill>
       <Light />
-      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", transform: `scale(${1 + 0.03 * pulse(f, ws.map((w) => w.at), 6)})` }}>
-        <Slam
-          words={ws.map((w, i) => ({ ...w, color: i === latest || (latest === 2 && i === 1) ? C.fg : "#b5b5bb" }))}
-          size={tall ? 104 : 112}
-          style={{ justifyContent: "center", width: tall ? 940 : 1500 }}
-        />
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", rowGap: 4, transform: `scale(${1 + 0.03 * pulse(f, [...g, all], 6)})` }}>
+        {/* broken where the opening broke it */}
+        {TAG_LINES(tall).map((ix, k) => (
+          <Slam
+            key={k}
+            words={ix.map((i) => ws[i]).map((w) => ({ t: w.t, at: w.at, color: w.k === latest || f >= all ? C.fg : "#b5b5bb" }))}
+            size={TAG_SIZE(tall)}
+            style={{ justifyContent: "center" }}
+          />
+        ))}
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -1214,16 +1407,17 @@ const EndCard: React.FC<ShotProps> = ({ start, len }) => {
 
 const VIEWS: Record<string, React.FC<ShotProps>> = {
   open: Open,
-  speak: Speak,
+  talk: Talk,
   writes: Writes,
+  smart: Smart,
   answers: Answers,
   acts: Acts,
   remembers: Remembers,
-  modes: Modes,
+  nudge: Nudge,
+  suggest: Suggest,
   hey: Hey,
   meeting: Meeting,
   nobot: NoBot,
-  suggest: Suggest,
   apps: Apps,
   connect: Connect,
   private: Private,
@@ -1234,7 +1428,7 @@ const VIEWS: Record<string, React.FC<ShotProps>> = {
 };
 
 // The shots that arrive with a whip (the rest are hard cuts on the beat).
-const WHIPS = new Set(["answers", "acts", "remembers", "meeting", "connect"]);
+const WHIPS = new Set(["answers", "acts", "remembers", "nudge", "meeting", "connect"]);
 
 // ---------------------------------------------------------------- sound
 const shot = (id: string) => SHOTS.find((s) => s[0] === id)!;
@@ -1248,12 +1442,19 @@ function sfxList(): [string, number, number, number?][] {
   const TAP = 3.2;
   const WHOOSH = 0.75;
   const L: [string, number, number, number?][] = [];
-  [0, 1, 2, 3].forEach((b) => L.push(["tap", at("open", lb(0, b)), (b === 0 ? 0.5 : 0.3) * TAP]));
-  L.push(["chime", at("open", 2), 0.22]);
-  L.push(["tap", at("speak", 16), 0.45 * TAP]);
+  // v5 opening: quiet; a swish as the orb slides in, a soft tap as it settles,
+  // the chime under the line's first word, a tap as the pill appears
+  const o = OPEN();
+  L.push(["swish", at("open", o.slide - 2), 0.3]);
+  L.push(["tap", at("open", o.land), 0.35 * TAP]);
+  L.push(["chime", at("open", o.line[0] - 2), 0.2]);
+  L.push(["tap", at("talk", TALK.pill - 2), 0.45 * TAP]);
   L.push(["typing", at("writes", WRITES.streamFrom), 0.32, WRITES.streamTo - WRITES.streamFrom + 6]);
   L.push(["click", at("writes", WRITES.polish), 0.35 * TAP]);
   L.push(["swish", at("writes", WRITES.land - 4), 0.22]);
+  L.push(["tap", at("smart", SMART.pill), 0.4 * TAP]);
+  L.push(["swish", at("smart", SMART.msg - 2), 0.2]);
+  L.push(["pop", at("smart", SMART.chip), 0.22]);
   L.push(["tap", at("answers", 3), 0.4 * TAP]);
   L.push(["pop", at("answers", 12), 0.22]);
   L.push(["tap", at("acts", 3), 0.4 * TAP]);
@@ -1261,7 +1462,17 @@ function sfxList(): [string, number, number, number?][] {
   L.push(["swish", at("acts", lb(v1("acts"), 17.5)), 0.18]);
   L.push(["tap", at("remembers", 3), 0.4 * TAP]);
   L.push(["pop", at("remembers", 14), 0.22]);
-  [0, 1, 2, 3].forEach((k) => L.push(["tap", at("modes", lb(0, k)), 0.22 * TAP]));
+  L.push(["pop", at("nudge", NUDGE.card), 0.22]);
+  L.push(["tap", at("nudge", NUDGE.yes), 0.4 * TAP]);
+  L.push(["click", at("nudge", NUDGE.press), 0.55 * TAP]);
+  L.push(["swish", at("nudge", NUDGE.sum), 0.2]);
+  const each = Math.round(SUGGEST_EACH * FB);
+  for (let k = 0; k < SUGGEST_N; k++) {
+    // every quick suggestion arrives with a whip
+    L.push(["whoosh", at("suggest", k * each - 4), WHOOSH]);
+    L.push(["pop", at("suggest", k * each + 4), 0.2]);
+    L.push(["click", at("suggest", k * each + 30), 0.55 * TAP]);
+  }
   L.push(["chime", at("hey", heyAt()), 0.38]);
   const m = MEETING(v1("meeting"));
   L.push(["pop", at("meeting", m.suggest), 0.22]);
@@ -1271,13 +1482,6 @@ function sfxList(): [string, number, number, number?][] {
   L.push(["pop", at("nobot", 0), 0.22]);
   L.push(["click", at("nobot", n.press), 0.55 * TAP]);
   L.push(["swish", at("nobot", n.sum), 0.18]);
-  const each = Math.round(SUGGEST_EACH * FB);
-  [0, 1, 2, 3].forEach((k) => {
-    // every suggestion arrives with a whip, the first one included
-    L.push(["whoosh", at("suggest", k * each - 4), WHOOSH]);
-    L.push(["pop", at("suggest", k * each + 4), 0.2]);
-    L.push(["click", at("suggest", k * each + 30), 0.55 * TAP]);
-  });
   APPS.forEach((_, k) => L.push(["tap", at("apps", appAt(k)), 0.18 * TAP]));
   privateCards(v1("private")).forEach((c) => L.push(["swish", at("private", c), 0.16]));
   L.push(["pop", at("private", privateCards(v1("private"))[2] + 8), 0.2]);
@@ -1301,13 +1505,21 @@ function musicVolume(f: number) {
   for (const [a, b2] of voWindows) dist = Math.min(dist, f < a ? a - f : f > b2 ? f - b2 : 0);
   const duck = interpolate(dist, [0, 8], [1, 0], { extrapolateRight: "clamp" });
   // the bed builds about 7 dB through the cut; ease it back so the late lines stay clear
-  const build = interpolate(f, [beat(30), beat(98)], [1, 0.75], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  return (0.72 - 0.42 * duck) * build;
+  // (v5: the same bed beats as v4's 30 and 90, now at video beats 38 and 106)
+  const build = interpolate(f, [beat(38), beat(106)], [1, 0.75], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  // v5: the first pass of the intro bar, under the empty desktop, sits back
+  const quiet = interpolate(f, [0, beat(MUSIC_SPLICES[1][0])], [0.45, 0.8], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  return (0.72 - 0.42 * duck) * build * (f < beat(MUSIC_SPLICES[1][0]) ? quiet : 1);
 }
 /** Frame in the bed file of its beat b. */
 const musicFrame = (b: number) => Math.round((FIRST_BEAT + (b * 60) / 100) * FPS);
-const SPLICE = beat(MUSIC_SPLICE.at);
-const XF = 3; // a 3-frame crossfade at the splice
+const XF = 3; // a 3-frame crossfade at each splice
+/** The bed's segments in frames: [video from, video to, bed frame at `from`]. */
+const MUSIC = MUSIC_SPLICES.map(([vb, mb], i) => {
+  const from = vb === 0 ? 0 : beat(vb);
+  const to = i < MUSIC_SPLICES.length - 1 ? beat(MUSIC_SPLICES[i + 1][0]) : TOTAL;
+  return { from, to, src: mb === 0 && vb === 0 ? 0 : musicFrame(mb) - (from - beat(vb)) };
+});
 
 export const Ad: React.FC = () => (
   <AbsoluteFill style={{ background: C.bg }}>
@@ -1338,17 +1550,28 @@ export const Ad: React.FC = () => (
         <Audio src={staticFile(`sfx/${id}.mp3`)} volume={dur ? (x) => v * interpolate(x, [dur - 8, dur], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : v} />
       </Sequence>
     ))}
-    {/* the bed, with two bars repeated at the splice (see beats.ts) */}
-    <Sequence from={0} durationInFrames={SPLICE + XF} name="music a">
-      <Audio src={staticFile("music/bed.mp3")} volume={(x) => musicVolume(x) * interpolate(x, [SPLICE - XF, SPLICE + XF], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
-    </Sequence>
-    <Sequence from={SPLICE - XF} name="music b">
-      <Audio
-        src={staticFile("music/bed.mp3")}
-        trimBefore={musicFrame(MUSIC_SPLICE.to) - XF}
-        volume={(x) => musicVolume(x + SPLICE - XF) * interpolate(x, [0, 2 * XF], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })}
-      />
-    </Sequence>
+    {/* the bed, re-cut on beats (MUSIC_SPLICES in beats.ts), a short crossfade at each joint */}
+    {MUSIC.map(({ from, to, src }, i) => {
+      const first = i === 0;
+      const last = i === MUSIC.length - 1;
+      const lead = first ? 0 : Math.min(XF, src); // a segment from the bed's very start can't lead in
+      const start = from - lead;
+      const end = last ? TOTAL : to + XF;
+      return (
+        <Sequence key={`music-${i}`} from={start} durationInFrames={end - start} name={`music ${i}`}>
+          <Audio
+            src={staticFile("music/bed.mp3")}
+            trimBefore={src - lead}
+            volume={(x) => {
+              const g = x + start;
+              const fadeIn = first ? 1 : interpolate(g, [start, from + XF], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+              const fadeOut = last ? 1 : interpolate(g, [to - XF, to + XF], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+              return musicVolume(g) * fadeIn * fadeOut;
+            }}
+          />
+        </Sequence>
+      );
+    })}
   </AbsoluteFill>
 );
 

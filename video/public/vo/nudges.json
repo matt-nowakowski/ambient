@@ -1,0 +1,22 @@
+{
+ "id": "nudges",
+ "text": "It nudges you.",
+ "duration": 1.52,
+ "words": [
+  {
+   "w": "It",
+   "start": 0,
+   "end": 0.24
+  },
+  {
+   "w": "nudges",
+   "start": 0.4,
+   "end": 0.8
+  },
+  {
+   "w": "you.",
+   "start": 0.88,
+   "end": 1.52
+  }
+ ]
+}
