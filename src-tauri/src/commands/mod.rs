@@ -204,6 +204,16 @@ pub fn complete_onboarding(app: AppHandle) -> Result<(), String> {
     let mut settings = crate::settings::get_settings(&app);
     settings.onboarding_completed = true;
     crate::settings::write_settings(&app, settings);
+    // Setup is done: offer once to put the downloaded installer in the Bin,
+    // after the main window has settled.
+    #[cfg(target_os = "macos")]
+    {
+        let handle = app.clone();
+        std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_millis(1500));
+            crate::installer::offer_trash_installer(&handle);
+        });
+    }
     Ok(())
 }
 

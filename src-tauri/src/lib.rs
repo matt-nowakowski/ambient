@@ -17,6 +17,8 @@ mod hud;
 #[cfg(target_os = "linux")]
 mod hud_linux;
 mod input;
+#[cfg(target_os = "macos")]
+mod installer;
 mod intro;
 mod language_detection;
 mod llm_client;
@@ -187,6 +189,14 @@ fn set_dock_icon_from_bundle(app: &AppHandle) {
         unsafe { ns_app.setApplicationIconImage(Some(&image)) };
         ns_app.dockTile().display();
     });
+}
+
+/// The first window of a launch: on a first launch the full-screen intro
+/// plays and shows the main window when it finishes; otherwise the main window.
+pub(crate) fn show_first_window(app: &AppHandle) {
+    if !(intro::should_play(app) && intro::play(app)) {
+        show_main_window(app);
+    }
 }
 
 pub(crate) fn show_main_window(app: &AppHandle) {
@@ -1246,12 +1256,15 @@ pub fn run(cli_args: CliArgs) {
             // anyway. Without a tray icon, the dock is the only way back in.
             // Keep in sync with `apply_startup_activation_policy` (macOS).
             let tray_available = settings.show_tray_icon && !cli_args.no_tray;
-            if should_force_show || !should_hide || !tray_available {
-                // First launch: the full-screen intro plays first and shows
-                // the main window when it finishes.
-                if !(intro::should_play(&app_handle) && intro::play(&app_handle)) {
-                    show_main_window(&app_handle);
-                }
+            // macOS: running off the disk image asks to move to Applications
+            // first (and shows the window itself if the answer is no); a first
+            // launch from Applications ejects the image.
+            #[cfg(target_os = "macos")]
+            let installer_has_window = installer::on_launch(&app_handle);
+            #[cfg(not(target_os = "macos"))]
+            let installer_has_window = false;
+            if !installer_has_window && (should_force_show || !should_hide || !tray_available) {
+                show_first_window(&app_handle);
             }
 
             Ok(())
