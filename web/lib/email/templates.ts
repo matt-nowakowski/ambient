@@ -105,7 +105,7 @@ export function welcome(d: WelcomeData): Rendered {
       {
         t: "p",
         size: "lead",
-        text: "Thank you for backing a small team building a private voice agent. There’s no key to keep: your plan is tied to this email.",
+        text: "Thank you for backing a small team building your desktop colleague. There’s no key to keep: your plan is tied to this email.",
       },
       { t: "signin", email: d.email, plan: planLine(d.plan, d.interval), renews: d.interval ? formatDate(d.renewsAt) : undefined },
       signInSteps,
@@ -235,7 +235,7 @@ export function cancelScheduled(d: CancelScheduledData): Rendered {
   const date = formatDate(d.endsAt);
   return renderEmail({
     subject: `${name} stays on until ${date}`,
-    preheader: "No more charges. Everything keeps working until then, and dictation stays free after.",
+    preheader: "No more charges. Everything keeps working until then, and Free keeps going after.",
     hero: "cancel",
     eyebrow: "Subscription canceled",
     kind: "transactional",
@@ -248,8 +248,8 @@ export function cancelScheduled(d: CancelScheduledData): Rendered {
       {
         t: "features",
         items: [
-          { icon: "mic", k: "Dictation stays free, forever", v: "Unlimited, on your computer, in any app. Nothing to reinstall." },
-          { icon: "shield", k: "Your things stay on your Mac", v: "History and meeting notes stay where they are, until you delete them." },
+          { icon: "mic", k: "Then Free, with weekly limits", v: `Unlimited dictation, ${brand.freePolishPerWeek} AI uses a week and ${freeMeetingsPerMonth} meetings a month. Nothing to reinstall.` },
+          { icon: "shield", k: "Your things stay on your computer", v: "History and meeting notes stay where they are, until you delete them." },
         ],
       },
       {
@@ -272,8 +272,8 @@ export type EndedData = { plan: Plan; assetBase?: string };
 export function ended(d: EndedData): Rendered {
   const name = planName(d.plan);
   return renderEmail({
-    subject: `Your ${name} has ended. Dictation is still yours.`,
-    preheader: "Free dictation keeps working, forever. Here’s what stays and what changes.",
+    subject: `Your ${name} has ended. ${brand.name} is still yours.`,
+    preheader: "Free keeps the whole colleague, with weekly limits. Here’s what stays and what changes.",
     hero: "ended",
     eyebrow: "Back on Free",
     kind: "transactional",
@@ -289,10 +289,10 @@ export function ended(d: EndedData): Rendered {
           {
             icon: "mic",
             k: "Still yours, free",
-            v: `Unlimited dictation in any app, on your computer, offline. ${brand.freePolishPerWeek} AI polishes a week and notes for ${freeMeetingsPerMonth} meetings a month.`,
+            v: `The whole colleague, with weekly limits: unlimited dictation, ${brand.freePolishPerWeek} AI uses and up to ${brand.freeSuggestionsPerWeek} suggestions a week, and ${freeMeetingsPerMonth} meetings a month.`,
           },
-          { icon: "shield", k: "Still on your Mac", v: "Your dictation history and meeting notes stay where they always were, until you delete them." },
-          { icon: "sparkle", k: "Paused for now", v: "Unlimited AI polish, the agent’s answers and actions, hands-free and unlimited meeting notes." },
+          { icon: "shield", k: "Still on your computer", v: "Your dictation history and meeting notes stay where they always were, until you delete them." },
+          { icon: "sparkle", k: "What changes", v: "The limits are back, cloud suggestions stop, and screen memory keeps the last 24 hours." },
         ],
       },
       { t: "button", href: url("/pricing"), label: "Pick up where you left off" },
@@ -341,7 +341,7 @@ const marketingReason = (a: MarketingData["audience"]) =>
 export function winBack(d: MarketingData): Rendered {
   return renderEmail({
     subject: `A month on: how’s ${brand.name} treating you?`,
-    preheader: "Dictation is still free. Here’s what Pro does now, if you want it back.",
+    preheader: "Free still has the whole colleague. Here’s what Pro adds, if you want it back.",
     hero: "winback",
     eyebrow: "A month on",
     kind: "marketing",
@@ -351,14 +351,14 @@ export function winBack(d: MarketingData): Rendered {
     assetBase: d.assetBase,
     blocks: [
       { t: "h", text: "A month on." },
-      { t: "p", size: "lead", text: "It’s been about a month since your Pro plan ended. I hope dictation is still earning its place: it stays free and on your computer, for good." },
+      { t: "p", size: "lead", text: `It’s been about a month since your Pro plan ended. I hope ${brand.name} is still earning its place on Free.` },
       {
         t: "features",
         title: "What Pro adds back",
         items: [
-          { icon: "ask", k: "Answers from any app", v: "Ask about what’s on your screen and get a short answer with sources." },
+          { icon: "ask", k: "No weekly limits", v: "Answers, actions, suggestions and smart writing, as often as you like (fair use)." },
           { icon: "wave", k: "Unlimited meeting notes", v: "Any call, no bot. Summary, decisions, action items and a follow-up email." },
-          { icon: "sparkle", k: "Unlimited AI polish", v: "Punctuation, no filler words, “scratch that” applied. No API key." },
+          { icon: "sparkle", k: "Longer recall", v: "Screen memory for 7 days by default, up to 90, and cloud suggestions if you choose." },
         ],
       },
       { t: "button", href: url("/pricing"), label: "See Pro" },
@@ -402,7 +402,7 @@ export function highlightAsk(d: MarketingData): Rendered {
         t: "callout",
         icon: "shield",
         k: "Private by default",
-        v: "Answers come with their sources, and it searches the web only when it has to. Card numbers, API keys, passwords and one-time codes are removed on your Mac before any text is sent.",
+        v: "Answers come with their sources, and it searches the web only when it has to. Card numbers, API keys, passwords and one-time codes are removed on your computer before any text is sent.",
       },
       { t: "button", href: url("/docs/answers"), label: "More things to ask" },
       macNote,
@@ -415,7 +415,7 @@ export function highlightAsk(d: MarketingData): Rendered {
 export function highlightMeetings(d: MarketingData): Rendered {
   return renderEmail({
     subject: "One thing worth trying: meeting notes, no bot",
-    preheader: "Notes for any call, taken on your Mac. Nobody new joins the meeting.",
+    preheader: "Notes for any call, taken on your computer. Nobody new joins the meeting.",
     hero: "meetings",
     eyebrow: "One thing worth trying",
     kind: "marketing",
@@ -425,7 +425,7 @@ export function highlightMeetings(d: MarketingData): Rendered {
     assetBase: d.assetBase,
     blocks: [
       { t: "h", text: "Meeting notes, without a bot." },
-      { t: "p", size: "lead", text: "Notes for any call: Zoom, Meet, Teams, FaceTime or Slack huddles. You and them, transcribed on your Mac, and no bot joins the call." },
+      { t: "p", size: "lead", text: "Notes for any call: Zoom, Meet, Teams, FaceTime or Slack huddles. You and them, transcribed on your computer, and no bot joins the call." },
       {
         t: "steps",
         title: "How it goes",
@@ -439,7 +439,7 @@ export function highlightMeetings(d: MarketingData): Rendered {
       {
         t: "features",
         items: [
-          { icon: "shield", k: "The audio is never saved", v: "Notes stay on your Mac until you delete them." },
+          { icon: "shield", k: "The audio is never saved", v: "Notes stay on your computer until you delete them." },
           { icon: "calendar", k: `${freeMeetingsPerMonth} a month on Free, unlimited on Pro`, v: "The Ask shortcut works during a call too: “Remind me Friday at 10 to send Priya the deck.”" },
         ],
       },
