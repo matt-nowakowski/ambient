@@ -8,10 +8,10 @@
     "voice:samples": "node scripts/voice.mjs samples",
     "chapters": "node scripts/chapters.mjs",
     "sheet": "sh scripts/sheet.sh",
-    "render": "node scripts/chapters.mjs && remotion render Launch out/ambient-launch-v5.mp4 --codec h264 --crf 18 --audio-bitrate 192k",
-    "poster": "remotion still Poster out/ambient-launch-v5.jpg --props='{\"theme\":\"light\"}' --image-format jpeg --jpeg-quality 90 && remotion still Poster out/ambient-launch-v5-dark.jpg --props='{\"theme\":\"dark\"}' --image-format jpeg --jpeg-quality 90 && remotion still PosterVertical out/ambient-launch-v5-vertical.jpg --props='{\"theme\":\"light\"}' --image-format jpeg --jpeg-quality 90 && remotion still PosterVertical out/ambient-launch-v5-vertical-dark.jpg --props='{\"theme\":\"dark\"}' --image-format jpeg --jpeg-quality 90",
+    "render": "node scripts/chapters.mjs && remotion render Launch out/ambient-launch-v6.mp4 --codec h264 --crf 18 --audio-bitrate 192k",
+    "poster": "remotion still Poster out/ambient-launch-v6.jpg --props='{\"theme\":\"light\"}' --image-format jpeg --jpeg-quality 90 && remotion still Poster out/ambient-launch-v6-dark.jpg --props='{\"theme\":\"dark\"}' --image-format jpeg --jpeg-quality 90 && remotion still PosterVertical out/ambient-launch-v6-vertical.jpg --props='{\"theme\":\"light\"}' --image-format jpeg --jpeg-quality 90 && remotion still PosterVertical out/ambient-launch-v6-vertical-dark.jpg --props='{\"theme\":\"dark\"}' --image-format jpeg --jpeg-quality 90",
     "music": "node scripts/music.mjs",
-    "render:vertical": "remotion render LaunchVertical out/ambient-launch-v5-vertical.mp4 --codec h264 --crf 18 --audio-bitrate 192k",
+    "render:vertical": "remotion render LaunchVertical out/ambient-launch-v6-vertical.mp4 --codec h264 --crf 18 --audio-bitrate 192k",
     "sheet:vertical": "COMP=LaunchVertical sh scripts/sheet.sh",
     "sfx": "node scripts/sfx.mjs"
   },

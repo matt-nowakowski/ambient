@@ -20,6 +20,12 @@
 // still sits on the same beat of the bed (writes on its groove, Hey Ambient on
 // its breakdown, the logo on its lift, the end card on its final hit); the bed is
 // re-cut to fit (MUSIC_SPLICES, see script.md).
+//
+// v6: the opening line is "Say hi to your new desktop colleague." (the tagline
+// stays "Your desktop colleague."); "Hey Ambient" is an also ("Hands-free, too"),
+// and moves after the meetings, so the story runs: the four verbs → it nudges
+// you → it takes notes for every call, no bot → hands-free, too → in any app →
+// nothing to connect → private by design → Meet Ambient.
 export const FPS = 30;
 export const W = 1920;
 export const H = 1080;
@@ -28,24 +34,30 @@ export const BPM = 100;
 export const FIRST_BEAT = 0.032;
 export const MUSIC_TRIM = 0;
 /**
- * v5: the bed as segments [video beat, bed beat]: from each video beat on, the
- * bed plays from that beat of its own (until the next segment). Each joint is a
- * 3-frame crossfade on a beat.
+ * The bed as segments [video beat, bed beat] (v5, re-planned in v6): from each
+ * video beat on, the bed plays from that beat of its own (until the next
+ * segment). Each joint is a 3-frame crossfade on a beat, and every jump keeps
+ * the bar phase (video − bed is always a multiple of 4).
  *  - 0 → 0, then 4 → 0: the intro bar plays twice (quietly the first time, under
- *    the empty desktop), so the slam line lands on the bed's first beat;
+ *    the empty desktop), so the opening line lands on the bed's first beat;
  *  - 16 → 8: a bar of the groove repeats under the mail, so "It answers" still
  *    lands on the bed's dip (its beat 15);
- *  - 40 → 20: three bars of the groove repeat under the suggestions, so Hey
- *    Ambient still lands on the breakdown (its beat 36);
- *  - 68 → 52: from "No bot." on, the bed is v4's (v4's 48 → 40 splice, minus the
- *    12 beats the suggestions took there).
+ *  - 40 → 20: three bars of the groove repeat under the suggestions;
+ *  - 56 → 64 (v6): the meeting and "No bot." ride the fuller second groove
+ *    (its beats 64–80, just before the riser);
+ *  - 72 → 36 (v6): hands-free "Hey Ambient" lands on the breakdown (its beat 36),
+ *    and "In any app." on the groove's return after it (its beat 42);
+ *  - 94 → 78 (v6): from privacy on, the bed is v4's: the riser under privacy,
+ *    the logo on the lift (88), the end card's hit on 110.
  */
 export const MUSIC_SPLICES: [number, number][] = [
   [0, 0],
   [4, 0],
   [16, 8],
   [40, 20],
-  [68, 52],
+  [56, 64],
+  [72, 36],
+  [94, 78],
 ];
 /** Frames per beat. */
 export const FB = (60 / BPM) * FPS;
@@ -63,12 +75,12 @@ export const SHOTS: [string, number, number][] = [
   ["remembers", 34, 20],
   ["nudge", 40, 0],
   ["suggest", 50, 40],
-  ["hey", 56, 28],
-  ["meeting", 62, 32],
-  ["nobot", 68, 36],
-  ["apps", 77, 48],
-  ["connect", 89, 54],
-  ["private", 93, 57],
+  ["meeting", 56, 32],
+  ["nobot", 63, 36],
+  ["hey", 72, 28],
+  ["apps", 78, 48],
+  ["connect", 90, 54],
+  ["private", 94, 57],
   ["gather", 100, 62],
   ["reveal", 104, 64],
   ["tagline", 112, 72],
@@ -86,12 +98,12 @@ export const VO: [string, number][] = [
   ["acts", 29],
   ["remembers", 34],
   ["nudges", 40],
-  ["hey", 56],
-  ["notes", 62],
-  ["nobot", 72],
-  ["anyapp", 77],
-  ["nothing", 89],
-  ["private", 93.5],
+  ["notes", 56],
+  ["nobot", 67],
+  ["hey", 72],
+  ["anyapp", 78],
+  ["nothing", 90],
+  ["private", 94.5],
   ["meet", 104],
   ["free", 121],
 ];
@@ -102,9 +114,9 @@ export const CHAPTERS: [string, number][] = [
   ["Writing", 8],
   ["The agent", 23],
   ["Suggestions", 40],
-  ["Hey Ambient", 56],
-  ["Meetings", 62],
-  ["Nothing to connect", 77],
-  ["Privacy", 93],
+  ["Meetings", 56],
+  ["Hey Ambient", 72],
+  ["Nothing to connect", 78],
+  ["Privacy", 94],
   ["Meet Ambient", 104],
 ];

@@ -260,7 +260,7 @@ const Cursor: React.FC<{ x: number; y: number; k?: number }> = ({ x, y, k = 2.2 
   </svg>
 );
 
-/** The brand line, "Your desktop colleague.": one line in 16:9, two in 9:16 (the opening and the tagline). */
+/** The brand line, "Your desktop colleague.": one line in 16:9, two in 9:16 (the tagline). */
 const TAG_LINES = (tall: boolean) => (tall ? [[0, 1], [2]] : [[0, 1, 2]]);
 const TAG_SIZE = (tall: boolean) => (tall ? 140 : 150);
 
@@ -288,15 +288,16 @@ const Open: React.FC<ShotProps> = ({ len }) => {
   const ox = px + 66 + (1 - s) * (tall ? 700 : 1100);
   const oy = py + 50 - Math.sin(Math.min(1, s) * Math.PI) * 26;
   const bump = pulse(f, [land], 6);
-  const lines = TAG_LINES(tall);
+  // v6: "Say hi to your new desktop colleague." (two lines; three in 9:16)
+  const lines = tall ? [[0, 1, 2], [3, 4, 5], [6]] : [[0, 1, 2, 3, 4], [5, 6]];
   const words = vo.colleague.text.split(" ");
   return (
     <AbsoluteFill>
       <Light />
       <AbsoluteFill style={{ transform: `scale(${1 + ease(f, [line[0], len], [0, 0.035], Easing.linear)})`, transformOrigin: tall ? "50% 60%" : "50% 55%" }}>
-        <div style={{ position: "absolute", left: 0, right: 0, top: tall ? 500 : 250, display: "grid", justifyItems: "center", rowGap: 4 }}>
+        <div style={{ position: "absolute", left: 0, right: 0, top: tall ? 470 : 170, display: "grid", justifyItems: "center", rowGap: 4 }}>
           {lines.map((ix, k) => (
-            <Slam key={k} words={ix.map((i) => ({ t: words[i], at: line[i] - 2 }))} size={TAG_SIZE(tall)} style={{ justifyContent: "center" }} />
+            <Slam key={k} words={ix.map((i) => ({ t: words[i], at: line[i] - 2 }))} size={tall ? 124 : 132} style={{ justifyContent: "center" }} />
           ))}
         </div>
         <Cursor x={px} y={py} />
@@ -844,7 +845,8 @@ const Nudge: React.FC<ShotProps> = ({ len }) => {
   );
 };
 
-export const heyAt = () => Math.round(vo.hey.words[3].start * 30) - 2;
+/** The frame "Hey" is said (v6: "Hands-free, too: Hey Ambient."). */
+export const heyAt = () => Math.round(vo.hey.words.find((w) => w.w === "Hey")!.start * 30) - 2;
 
 const Hey: React.FC<ShotProps> = () => {
   const f = useCurrentFrame();
@@ -852,9 +854,9 @@ const Hey: React.FC<ShotProps> = () => {
   const tall = useTall();
   const at = heyAt();
   const wake = springAt(f, fps, at, { damping: 12, stiffness: 140 });
-  const cy = tall ? height * 0.42 : 470;
+  const cy = tall ? height * 0.36 : 380; // v6: raised, so the dots clear the three lines under it
   const rx = tall ? 400 : 495;
-  const ry = tall ? 400 : 280;
+  const ry = tall ? 360 : 210;
   return (
     <AbsoluteFill style={{ fontFamily: FONT }}>
       <Dark />
@@ -884,8 +886,15 @@ const Hey: React.FC<ShotProps> = () => {
         </div>
       </div>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: tall ? 560 : 200 }}>
+        {/* v6: an also, not an either/or: "Hands-free, too:" on the voice, then the phrase */}
+        <Slam
+          words={vo.hey.words.slice(0, 2).map((w) => ({ t: w.w, at: Math.round(w.start * 30) + 2 }))}
+          size={tall ? 46 : 44}
+          color="rgba(255,255,255,0.78)"
+          style={{ marginBottom: 22 }}
+        />
         <Slam words={[{ t: "“Hey", at }, { t: "Ambient”", at: at + 5 }]} size={tall ? 100 : 108} color="#fff" />
-        <div style={{ marginTop: 28, fontSize: tall ? 34 : 32, fontWeight: 300, letterSpacing: "-0.01em", lineHeight: 1.35, color: C.mutedDark, opacity: ease(f, [at + 10, at + 18], [0, 1]) }}>Optional. No key at all.</div>
+        <div style={{ marginTop: 28, fontSize: tall ? 34 : 32, fontWeight: 300, letterSpacing: "-0.01em", lineHeight: 1.35, color: C.mutedDark, opacity: ease(f, [at + 10, at + 18], [0, 1]) }}>Optional, and off until you turn it on.</div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
