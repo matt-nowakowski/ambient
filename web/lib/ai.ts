@@ -272,7 +272,12 @@ export function usagePlan(auth: Extract<Authorized, { ok: true }>): UsagePlan {
  */
 export function completionKind(messages: Message[]): UsageKind {
   const system = messages.find((m) => m.role === "system")?.content ?? "";
-  return system.startsWith("You route a voice transcript") ? "ai_route" : "ai_polish";
+  // Background decisions: the agent router, and smart writing's "type as said,
+  // polish or write?" check (src-tauri/src/agent/writing.rs MODEL_SYSTEM).
+  const background =
+    system.startsWith("You route a voice transcript") ||
+    system.startsWith("You decide how to type what the user just dictated");
+  return background ? "ai_route" : "ai_polish";
 }
 
 /**

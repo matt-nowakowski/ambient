@@ -432,8 +432,10 @@ pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Optio
     let local_ok = super::llm::on_device_ready()
         && s.agent.intelligence != Intelligence::Cloud
         && (crate::plan::is_paid(app) || s.agent.device_only() || s.agent.on_device_when_possible);
+    // A background decision like the router's: it never spends a Free AI use,
+    // on device or hosted (the server treats this prompt as routing).
     let ask = async {
-        if local_ok && crate::plan::consume_local_ai(app) {
+        if local_ok {
             let reply = super::llm::complete_on_device(MODEL_SYSTEM, &user).await;
             if reply.is_some() || s.agent.device_only() {
                 return reply;
