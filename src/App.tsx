@@ -36,6 +36,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { FileDropOverlay } from "./components/FileDropOverlay";
 import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { GlobalSearch, useSearchJump } from "./components/search/GlobalSearch";
+import { FeedbackGate } from "./components/feedback/FeedbackGate";
 import { WhatsNewGate } from "./components/whats-new";
 import { useSettings } from "./hooks/useSettings";
 import { useSettingsStore } from "./stores/settingsStore";
@@ -507,6 +508,9 @@ function App() {
         </ErrorBoundary>
         <ErrorBoundary context="Search">
           <GlobalSearch onNavigate={setCurrentSection} />
+        </ErrorBoundary>
+        <ErrorBoundary context="Feedback">
+          <FeedbackGate onNavigate={setCurrentSection} />
         </ErrorBoundary>
         {/* Inset layout (shadcn "inset" sidebar): the sidebar sits on the
             window backdrop; the page floats in a rounded panel beside it. */}

@@ -264,6 +264,18 @@ const PLACES: Place[] = [
             label: "settings.about.sourceCode.title",
             description: "settings.about.sourceCode.description",
           },
+          {
+            label: "settings.about.feedback.title",
+            description: "settings.about.feedback.description",
+            keywords: [
+              "bug",
+              "report",
+              "problem",
+              "idea",
+              "support",
+              "contact",
+            ],
+          },
         ],
       },
       {
@@ -342,6 +354,16 @@ const PLACES: Place[] = [
         rows: [],
       },
       {
+        label: "privacy.telemetry.title",
+        keywords: ["analytics", "telemetry", "usage", "statistics", "improve"],
+        rows: [
+          {
+            label: "privacy.telemetry.label",
+            description: "privacy.telemetry.description",
+          },
+        ],
+      },
+      {
         label: "privacy.ledger.title",
         description: "privacy.ledger.description",
         keywords: ["network", "sent", "requests", "log"],
@@ -375,7 +397,17 @@ const PLACES: Place[] = [
   },
   {
     section: "meetings",
-    groups: [{ rows: [{ label: "meetings.past" }] }],
+    groups: [
+      {
+        rows: [
+          {
+            label: "meetings.email.title",
+            keywords: ["email", "send", "notes", "inbox"],
+          },
+          { label: "meetings.past" },
+        ],
+      },
+    ],
   },
 ];
 

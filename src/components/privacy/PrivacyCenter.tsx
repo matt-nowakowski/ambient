@@ -40,6 +40,7 @@ import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
+import { UsageStats } from "./UsageStats";
 
 const RETENTION_CHOICES = [1, 3, 7, 14, 30];
 /** The guarantees, always shown at the top: four short lines. */
@@ -726,6 +727,8 @@ export const PrivacyCenter: React.FC = () => {
             </div>
           </div>
         </SettingsGroup>
+
+        <UsageStats />
 
         {/* Network ledger */}
         <SettingsGroup

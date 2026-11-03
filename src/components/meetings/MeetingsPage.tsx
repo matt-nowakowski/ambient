@@ -30,6 +30,8 @@ import { Button } from "../ui/Button";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { useSettings } from "../../hooks/useSettings";
 import { isPaid, usePlan } from "../account/usePlan";
+import { EmailNotesButton, MeetingsEmailSetting } from "./MeetingsEmail";
+import { usePendingMeeting } from "./pendingMeeting";
 
 /** Call detection and call audio: macOS, Windows and Linux. */
 const AUTO_DETECTS = hasScreenAgent(osType());
@@ -190,6 +192,8 @@ export const MeetingsPage: React.FC = () => {
     }
   };
 
+  usePendingMeeting(openMeeting);
+
   const remove = async (id: number) => {
     await commands.deleteMeeting(id);
     setOpen(null);
@@ -265,6 +269,7 @@ export const MeetingsPage: React.FC = () => {
               <Mail width={13} height={13} />
               {t("meetings.followUp")}
             </Button>
+            <EmailNotesButton id={open.id} disabled={!s} />
           </div>
         </header>
         <div className="space-y-section">
@@ -451,6 +456,8 @@ export const MeetingsPage: React.FC = () => {
             </SettingsGroup>
           </>
         )}
+
+        <MeetingsEmailSetting />
 
         <SettingsGroup title={t("meetings.past")}>
           {list.filter((m) => m.id !== state.id).length === 0 ? (

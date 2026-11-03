@@ -7,7 +7,8 @@
     "model": "Modèle",
     "quit": "Quitter",
     "cancel": "Annuler",
-    "secureInputWarning": "⚠ Raccourcis bloqués par Secure Input"
+    "secureInputWarning": "⚠ Raccourcis bloqués par Secure Input",
+    "sendFeedback": "Envoyer un avis..."
   },
   "sidebar": {
     "home": "Accueil",
@@ -878,6 +879,11 @@
         "title": "Introduction de bienvenue",
         "description": "L'animation que {{appName}} affiche à sa première ouverture.",
         "button": "Lire l'intro"
+      },
+      "feedback": {
+        "title": "Envoyer un avis",
+        "description": "Signalez un bug ou partagez une idée avec l'équipe.",
+        "button": "Envoyer un avis"
       }
     },
     "agent": {
@@ -1229,7 +1235,22 @@
       "searchDrive": "Rechercher dans Google Drive",
       "searchGmail": "Rechercher dans Gmail"
     },
-    "cloudOffer": "{{appName}} peut suggérer de l'aide sur cet ordinateur en envoyant à ses serveurs un extrait expurgé de la fenêtre. Activer ?"
+    "cloudOffer": "{{appName}} peut suggérer de l'aide sur cet ordinateur en envoyant à ses serveurs un extrait expurgé de la fenêtre. Activer ?",
+    "notes": {
+      "ready": "Vos notes sont prêtes",
+      "actionItems": "Actions : {{n}}",
+      "open": "Ouvrir",
+      "email": "M'envoyer par e-mail",
+      "sending": "Envoi…",
+      "sent": "Envoyé à votre e-mail",
+      "failed": "Échec de l'envoi",
+      "emailed": "Notes de réunion envoyées à votre e-mail",
+      "emailFailed": "Impossible d'envoyer vos notes de réunion par e-mail"
+    },
+    "rate": {
+      "up": "Utile",
+      "down": "Pas utile"
+    }
   },
   "privacy": {
     "title": "Confidentialité",
@@ -1341,7 +1362,11 @@
         "license": "Vérification du compte",
         "trial": "Essai",
         "warmup": "Préparation de la connexion (rien n'est envoyé)",
-        "suggest": "Vérification de suggestion"
+        "suggest": "Vérification de suggestion",
+        "telemetry": "Statistiques d'usage anonymes",
+        "config": "Vérification des réglages (rien n'est envoyé)",
+        "meeting_email": "E-mail des notes de réunion",
+        "feedback": "Avis"
       }
     },
     "engine": {
@@ -1404,6 +1429,11 @@
         "title": "Suggestions depuis le cloud",
         "description": "Envoie un extrait expurgé d'une fenêtre sur laquelle vous êtes resté pour décider s'il faut proposer de l'aide. Chaque requête est listée ci-dessous."
       }
+    },
+    "telemetry": {
+      "title": "Aidez à améliorer {{appName}}",
+      "label": "Partager des statistiques d'usage anonymes",
+      "description": "Uniquement des comptages et des durées, jamais ce que vous dites, tapez ou voyez. Désactivé tant que vous ne l'activez pas."
     }
   },
   "meetings": {
@@ -1473,6 +1503,25 @@
       "join": "Rejoignez un appel dans n'importe quelle app",
       "accept": "Acceptez quand {{appName}} le propose",
       "summary": "Recevez un résumé à la fin"
+    },
+    "email": {
+      "title": "M'envoyer les notes par e-mail",
+      "description": "Envoyées à {{email}} après chaque appel. Les secrets sont retirés avant, et rien n'est conservé.",
+      "signedOut": "Connectez-vous pour recevoir vos notes par e-mail.",
+      "options": {
+        "off": "Désactivé",
+        "ask": "Demander à chaque fois",
+        "always": "Toujours"
+      },
+      "button": "M'envoyer par e-mail",
+      "sent": "Notes envoyées à votre e-mail",
+      "errors": {
+        "notSignedIn": "Connectez-vous pour envoyer vos notes par e-mail.",
+        "noSummary": "Cette réunion n'a pas de notes à envoyer.",
+        "rateLimited": "Cela fait beaucoup d'e-mails aujourd'hui. Réessayez demain.",
+        "offline": "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.",
+        "failed": "Impossible d'envoyer l'e-mail. Réessayez."
+      }
     }
   },
   "tour": {
@@ -1613,5 +1662,60 @@
     "empty": "Aucun résultat pour « {{query}} ».",
     "jumpTo": "Aller à",
     "escape": "échap"
+  },
+  "telemetry": {
+    "optIn": "Aidez à améliorer {{appName}} : partagez des statistiques d'usage anonymes, jamais ce que vous dites, tapez ou voyez.",
+    "whatsShared": "Ce qui est partagé",
+    "sharedTitle": "Uniquement des comptages et des durées anonymes",
+    "shared": {
+      "suggestions": "La fréquence à laquelle les suggestions sont proposées, acceptées ou ignorées",
+      "requests": "Le type de requête et le temps qu'elle a pris",
+      "errors": "Le type d'erreur survenue, comme « délai dépassé »",
+      "basics": "Version de l'app, système, offre et un identifiant aléatoire qui change tous les 30 jours"
+    },
+    "never": "Jamais ce que vous dites, tapez ou voyez, ni les titres de fenêtres, liens, noms de fichiers ou votre e-mail.",
+    "ledger": "Chaque envoi figure dans Confidentialité, parmi les requêtes sorties de cet ordinateur."
+  },
+  "feedback": {
+    "title": "Envoyer un avis",
+    "titleThumbs": "Qu'est-ce qui n'a pas marché ?",
+    "description": "Il arrive directement à l'équipe. Rien d'autre n'est joint sauf si vous le cochez.",
+    "kind": {
+      "label": "Type",
+      "bug": "Bug",
+      "idea": "Idée",
+      "other": "Autre chose"
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "Que s'est-il passé, ou qu'est-ce qui vous aiderait ?",
+      "placeholderThumbs": "Qu'est-ce qui n'a pas marché ? (facultatif)"
+    },
+    "email": {
+      "label": "E-mail pour une réponse (facultatif)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Joindre les diagnostics",
+      "description": "Version de l'app, système, offre, un résumé des réglages et les dernières lignes du journal, sans secrets, titres de fenêtres ni liens."
+    },
+    "example": {
+      "label": "Joindre l'exemple",
+      "description": "La question et la réponse de cette carte, sans secrets."
+    },
+    "preview": "Aperçu de l'envoi",
+    "hidePreview": "Masquer l'aperçu",
+    "previewTitle": "Exactement ce qui sera envoyé",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "sent": "Merci ! Votre avis a été envoyé.",
+    "errors": {
+      "empty": "Écrivez d'abord quelques mots.",
+      "offline": "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.",
+      "rateLimited": "Trop de signalements pour l'instant. Réessayez dans une heure.",
+      "failed": "Impossible d'envoyer votre avis. Réessayez."
+    }
   }
 }

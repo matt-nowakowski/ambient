@@ -7,7 +7,8 @@
     "model": "Modelo",
     "quit": "Salir",
     "cancel": "Cancelar",
-    "secureInputWarning": "⚠ Atajos bloqueados por Secure Input"
+    "secureInputWarning": "⚠ Atajos bloqueados por Secure Input",
+    "sendFeedback": "Enviar comentarios..."
   },
   "sidebar": {
     "home": "Inicio",
@@ -878,6 +879,11 @@
         "title": "Introducción de bienvenida",
         "description": "La animación que {{appName}} muestra la primera vez que se abre.",
         "button": "Ver la introducción"
+      },
+      "feedback": {
+        "title": "Enviar comentarios",
+        "description": "Informa de un error o comparte una idea con el equipo.",
+        "button": "Enviar comentarios"
       }
     },
     "agent": {
@@ -1229,7 +1235,22 @@
       "searchDrive": "Buscar en Google Drive",
       "searchGmail": "Buscar en Gmail"
     },
-    "cloudOffer": "{{appName}} puede sugerir ayuda en este equipo enviando a sus servidores un fragmento redactado de la ventana. ¿Activarlo?"
+    "cloudOffer": "{{appName}} puede sugerir ayuda en este equipo enviando a sus servidores un fragmento redactado de la ventana. ¿Activarlo?",
+    "notes": {
+      "ready": "Tus notas están listas",
+      "actionItems": "Tareas: {{n}}",
+      "open": "Abrir",
+      "email": "Enviármelo por correo",
+      "sending": "Enviando…",
+      "sent": "Enviado a tu correo",
+      "failed": "No se pudo enviar",
+      "emailed": "Notas de la reunión enviadas a tu correo",
+      "emailFailed": "No se pudieron enviar por correo las notas de la reunión"
+    },
+    "rate": {
+      "up": "Útil",
+      "down": "No útil"
+    }
   },
   "privacy": {
     "title": "Privacidad",
@@ -1341,7 +1362,11 @@
         "license": "Comprobación de cuenta",
         "trial": "Prueba",
         "warmup": "Preparación de la conexión (no se envía nada)",
-        "suggest": "Comprobación de sugerencia"
+        "suggest": "Comprobación de sugerencia",
+        "telemetry": "Recuentos de uso anónimos",
+        "config": "Comprobación de ajustes (no se envía nada)",
+        "meeting_email": "Correo con notas de reunión",
+        "feedback": "Comentarios"
       }
     },
     "engine": {
@@ -1404,6 +1429,11 @@
         "title": "Sugerencias desde la nube",
         "description": "Envía un fragmento redactado de una ventana en la que te has quedado para decidir si ofrecer ayuda. Cada petición aparece en la lista de abajo."
       }
+    },
+    "telemetry": {
+      "title": "Ayuda a mejorar {{appName}}",
+      "label": "Compartir recuentos de uso anónimos",
+      "description": "Solo recuentos y tiempos, nunca lo que dices, escribes o ves. Desactivado hasta que lo actives."
     }
   },
   "meetings": {
@@ -1473,6 +1503,25 @@
       "join": "Únete a una llamada en cualquier app",
       "accept": "Di que sí cuando {{appName}} te lo ofrezca",
       "summary": "Recibe un resumen cuando termine"
+    },
+    "email": {
+      "title": "Enviarme las notas por correo",
+      "description": "Se envían a {{email}} tras cada llamada. Antes se quitan los secretos y no se guarda nada.",
+      "signedOut": "Inicia sesión para recibir tus notas por correo.",
+      "options": {
+        "off": "Desactivado",
+        "ask": "Preguntar cada vez",
+        "always": "Siempre"
+      },
+      "button": "Enviármelo por correo",
+      "sent": "Notas enviadas a tu correo",
+      "errors": {
+        "notSignedIn": "Inicia sesión para enviar tus notas por correo.",
+        "noSummary": "Esta reunión no tiene notas que enviar.",
+        "rateLimited": "Son muchos correos por hoy. Vuelve a intentarlo mañana.",
+        "offline": "No se pudo conectar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
+        "failed": "No se pudo enviar el correo. Inténtalo de nuevo."
+      }
     }
   },
   "tour": {
@@ -1613,5 +1662,60 @@
     "empty": "Nada coincide con “{{query}}”.",
     "jumpTo": "Ir a",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Ayuda a mejorar {{appName}}: comparte recuentos de uso anónimos, nunca lo que dices, escribes o ves.",
+    "whatsShared": "Qué se comparte",
+    "sharedTitle": "Solo recuentos y tiempos anónimos",
+    "shared": {
+      "suggestions": "Con qué frecuencia se ofrecen, aceptan o descartan las sugerencias",
+      "requests": "Qué tipo de petición fue y cuánto tardó",
+      "errors": "Qué tipo de error ocurrió, como “tiempo agotado”",
+      "basics": "Versión de la app, sistema, plan y un ID aleatorio que cambia cada 30 días"
+    },
+    "never": "Nunca lo que dices, escribes o ves, títulos de ventanas, enlaces, nombres de archivo ni tu correo.",
+    "ledger": "Cada envío aparece en Privacidad, entre las peticiones que salieron de este equipo."
+  },
+  "feedback": {
+    "title": "Enviar comentarios",
+    "titleThumbs": "¿Qué salió mal?",
+    "description": "Llega directamente al equipo. No se adjunta nada más salvo que lo marques.",
+    "kind": {
+      "label": "Tipo",
+      "bug": "Error",
+      "idea": "Idea",
+      "other": "Otra cosa"
+    },
+    "message": {
+      "label": "Mensaje",
+      "placeholder": "¿Qué pasó o qué te ayudaría?",
+      "placeholderThumbs": "¿Qué salió mal? (opcional)"
+    },
+    "email": {
+      "label": "Correo para responderte (opcional)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Incluir diagnóstico",
+      "description": "Versión de la app, sistema, plan, un resumen de ajustes y las últimas líneas del registro, sin secretos, títulos de ventanas ni enlaces."
+    },
+    "example": {
+      "label": "Incluir el ejemplo",
+      "description": "La pregunta y la respuesta de esa tarjeta, sin secretos."
+    },
+    "preview": "Ver lo que se envía",
+    "hidePreview": "Ocultar vista previa",
+    "previewTitle": "Exactamente lo que se enviará",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "sent": "¡Gracias! Se enviaron tus comentarios.",
+    "errors": {
+      "empty": "Escribe unas palabras primero.",
+      "offline": "No se pudo conectar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
+      "rateLimited": "Demasiados informes por ahora. Inténtalo dentro de una hora.",
+      "failed": "No se pudieron enviar tus comentarios. Inténtalo de nuevo."
+    }
   }
 }

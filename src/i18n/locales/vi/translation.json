@@ -7,7 +7,8 @@
     "model": "Mô hình",
     "quit": "Thoát",
     "cancel": "Hủy",
-    "secureInputWarning": "⚠ Phím tắt bị Secure Input chặn"
+    "secureInputWarning": "⚠ Phím tắt bị Secure Input chặn",
+    "sendFeedback": "Gửi phản hồi..."
   },
   "sidebar": {
     "home": "Trang chủ",
@@ -875,6 +876,11 @@
         "title": "Phần giới thiệu chào mừng",
         "description": "Hoạt ảnh {{appName}} phát khi mở lần đầu tiên.",
         "button": "Phát phần giới thiệu"
+      },
+      "feedback": {
+        "title": "Gửi phản hồi",
+        "description": "Báo lỗi hoặc chia sẻ ý tưởng với đội ngũ.",
+        "button": "Gửi phản hồi"
       }
     },
     "agent": {
@@ -1221,7 +1227,22 @@
       "searchDrive": "Tìm trong Google Drive",
       "searchGmail": "Tìm trong Gmail"
     },
-    "cloudOffer": "{{appName}} có thể gợi ý trợ giúp trên máy tính này bằng cách gửi một đoạn đã ẩn thông tin của cửa sổ đến máy chủ của mình. Bật chứ?"
+    "cloudOffer": "{{appName}} có thể gợi ý trợ giúp trên máy tính này bằng cách gửi một đoạn đã ẩn thông tin của cửa sổ đến máy chủ của mình. Bật chứ?",
+    "notes": {
+      "ready": "Ghi chú của bạn đã sẵn sàng",
+      "actionItems": "Việc cần làm: {{n}}",
+      "open": "Mở",
+      "email": "Gửi email cho tôi",
+      "sending": "Đang gửi…",
+      "sent": "Đã gửi đến email của bạn",
+      "failed": "Không gửi được",
+      "emailed": "Đã gửi ghi chú cuộc họp đến email của bạn",
+      "emailFailed": "Không gửi được ghi chú cuộc họp qua email"
+    },
+    "rate": {
+      "up": "Hữu ích",
+      "down": "Không hữu ích"
+    }
   },
   "privacy": {
     "title": "Quyền riêng tư",
@@ -1330,7 +1351,11 @@
         "license": "Kiểm tra tài khoản",
         "trial": "Dùng thử",
         "warmup": "Chuẩn bị kết nối (không gửi gì)",
-        "suggest": "Kiểm tra gợi ý"
+        "suggest": "Kiểm tra gợi ý",
+        "telemetry": "Số liệu sử dụng ẩn danh",
+        "config": "Kiểm tra cài đặt (không gửi gì)",
+        "meeting_email": "Email ghi chú cuộc họp",
+        "feedback": "Phản hồi"
       }
     },
     "engine": {
@@ -1392,6 +1417,11 @@
         "title": "Gợi ý từ đám mây",
         "description": "Gửi một đoạn đã ẩn thông tin của cửa sổ bạn dừng lại để quyết định có nên đề nghị trợ giúp. Mọi yêu cầu đều được liệt kê bên dưới."
       }
+    },
+    "telemetry": {
+      "title": "Giúp cải thiện {{appName}}",
+      "label": "Chia sẻ số liệu sử dụng ẩn danh",
+      "description": "Chỉ số đếm và thời gian, không bao giờ là những gì bạn nói, gõ hay thấy. Tắt cho đến khi bạn bật."
     }
   },
   "meetings": {
@@ -1461,6 +1491,25 @@
       "join": "Tham gia cuộc gọi trong bất kỳ ứng dụng nào",
       "accept": "Nói đồng ý khi {{appName}} đề nghị",
       "summary": "Nhận bản tóm tắt khi kết thúc"
+    },
+    "email": {
+      "title": "Gửi ghi chú qua email cho tôi",
+      "description": "Gửi đến {{email}} sau mỗi cuộc gọi. Thông tin bí mật được xóa trước và không lưu lại gì.",
+      "signedOut": "Đăng nhập để nhận ghi chú qua email.",
+      "options": {
+        "off": "Tắt",
+        "ask": "Hỏi mỗi lần",
+        "always": "Luôn luôn"
+      },
+      "button": "Gửi email cho tôi",
+      "sent": "Đã gửi ghi chú đến email của bạn",
+      "errors": {
+        "notSignedIn": "Đăng nhập để gửi ghi chú qua email.",
+        "noSummary": "Cuộc họp này không có ghi chú để gửi.",
+        "rateLimited": "Hôm nay đã gửi nhiều email. Hãy thử lại vào ngày mai.",
+        "offline": "Không kết nối được máy chủ. Hãy kiểm tra kết nối rồi thử lại.",
+        "failed": "Không gửi được email. Hãy thử lại."
+      }
     }
   },
   "tour": {
@@ -1601,5 +1650,60 @@
     "empty": "Không có kết quả nào khớp với “{{query}}”.",
     "jumpTo": "Chuyển đến",
     "escape": "esc"
+  },
+  "telemetry": {
+    "optIn": "Giúp cải thiện {{appName}}: chia sẻ số liệu sử dụng ẩn danh, không bao giờ là những gì bạn nói, gõ hay thấy.",
+    "whatsShared": "Những gì được chia sẻ",
+    "sharedTitle": "Chỉ số đếm và thời gian ẩn danh",
+    "shared": {
+      "suggestions": "Tần suất gợi ý được đưa ra, chấp nhận hoặc bỏ qua",
+      "requests": "Loại yêu cầu và thời gian xử lý",
+      "errors": "Loại lỗi đã xảy ra, ví dụ “hết thời gian chờ”",
+      "basics": "Phiên bản ứng dụng, hệ thống, gói và một ID ngẫu nhiên thay đổi mỗi 30 ngày"
+    },
+    "never": "Không bao giờ là những gì bạn nói, gõ hay thấy, tiêu đề cửa sổ, liên kết, tên tệp hay email của bạn.",
+    "ledger": "Mỗi lần tải lên đều có trong Quyền riêng tư, ở mục các yêu cầu đã rời khỏi máy tính này."
+  },
+  "feedback": {
+    "title": "Gửi phản hồi",
+    "titleThumbs": "Có gì không ổn?",
+    "description": "Phản hồi đến thẳng đội ngũ. Không đính kèm gì khác trừ khi bạn đánh dấu.",
+    "kind": {
+      "label": "Loại",
+      "bug": "Lỗi",
+      "idea": "Ý tưởng",
+      "other": "Khác"
+    },
+    "message": {
+      "label": "Tin nhắn",
+      "placeholder": "Đã xảy ra chuyện gì, hoặc điều gì sẽ giúp ích?",
+      "placeholderThumbs": "Có gì không ổn? (không bắt buộc)"
+    },
+    "email": {
+      "label": "Email để phản hồi (không bắt buộc)",
+      "placeholder": "you@example.com"
+    },
+    "diagnostics": {
+      "label": "Kèm thông tin chẩn đoán",
+      "description": "Phiên bản ứng dụng, hệ thống, gói, tóm tắt cài đặt và các dòng nhật ký gần đây, đã bỏ thông tin bí mật, tiêu đề cửa sổ và liên kết."
+    },
+    "example": {
+      "label": "Kèm ví dụ",
+      "description": "Câu hỏi và câu trả lời từ thẻ đó, đã bỏ thông tin bí mật."
+    },
+    "preview": "Xem trước nội dung gửi",
+    "hidePreview": "Ẩn bản xem trước",
+    "previewTitle": "Chính xác những gì sẽ được gửi",
+    "send": "Gửi",
+    "sending": "Đang gửi…",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "sent": "Cảm ơn bạn! Phản hồi đã được gửi.",
+    "errors": {
+      "empty": "Hãy viết vài chữ trước.",
+      "offline": "Không kết nối được máy chủ. Hãy kiểm tra kết nối rồi thử lại.",
+      "rateLimited": "Hiện có quá nhiều báo cáo. Hãy thử lại sau một giờ.",
+      "failed": "Không gửi được phản hồi của bạn. Hãy thử lại."
+    }
   }
 }
