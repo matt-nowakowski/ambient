@@ -715,6 +715,13 @@ async hudAction(id: string, action: string, text: string | null) : Promise<void>
  * The intro reports it has finished (or was skipped): bring in the main
  * window in front of everything, then close the intro over it, and remember
  * it was seen.
+ * 
+ * The main window stays above other apps' windows until the user leaves it
+ * (see [`on_main_focus_lost`]). Dropping that level after a fixed 120 ms, as
+ * before, let it fall behind whatever app was active whenever Ambient itself
+ * hadn't become the active app yet (a first launch from the disk image or
+ * past the Gatekeeper prompt): macOS 14+ may decline a background app's
+ * activation request, so the window ended up at normal level, behind.
  */
 async introFinished() : Promise<void> {
     await TAURI_INVOKE("intro_finished");
@@ -1414,17 +1421,17 @@ never_watch: string[];
  * chosen automatically. Absorbs `on_device_only` (see
  * `apply_settings_migrations`).
  */
-intelligence: Intelligence;
+intelligence: Intelligence; 
 /**
  * The one-time offer (Automatic, no on-device model) to judge
  * suggestions in the cloud, and the answer.
  */
-cloud_suggestions: CloudSuggestions;
+cloud_suggestions: CloudSuggestions; 
 /**
  * Legacy mirror of `intelligence == Device`, kept in sync so older
  * builds reading this store still behave. Read `device_only()` instead.
  */
-on_device_only: boolean;
+on_device_only: boolean; 
 /**
  * In Automatic: use Apple Intelligence on this Mac whenever a task fits
  * it, and our hosted model only when it doesn't. Off by default:
@@ -1433,7 +1440,7 @@ on_device_only: boolean;
  * and routed 29/33 vs 33/33. Quality first; users can still choose
  * privacy over quality. Ignored in the other two modes.
  */
-on_device_when_possible: boolean;
+on_device_when_possible: boolean; 
 /**
  * Unix seconds until which all watching is paused.
  */
@@ -1656,6 +1663,59 @@ frame_urls?: string[];
  */
 frame_titles?: string[] }
 export type CustomSounds = { start: boolean; stop: boolean }
+/**
+ * What the dialog starts with.
+ */
+export type FeedbackDraft = { 
+/**
+ * The signed-in email, to prefill the reply address.
+ */
+email: string | null; 
+/**
+ * The card a 👎 was for, redacted (sent only if ticked).
+ */
+example: FeedbackExample | null }
+/**
+ * A card the report is about: its question and answer, redacted.
+ */
+export type FeedbackExample = { 
+/**
+ * `answer` or `suggestion`.
+ */
+card: string; 
+/**
+ * The answer type (`answer`, `web`, `recall`, `write`, `about_screen`)
+ * or the suggestion kind.
+ */
+kind: string; question: string; answer: string }
+/**
+ * What the dialog sends (and previews).
+ */
+export type FeedbackInput = { kind: FeedbackKind; source: FeedbackSource; message: string; email: string | null; include_diagnostics: boolean; 
+/**
+ * Only when the user ticked "Include the example".
+ */
+example: FeedbackExample | null }
+/**
+ * What kind of report.
+ */
+export type FeedbackKind = "bug" | "idea" | "other"
+/**
+ * Where the report came from (shown and filterable in the admin inbox).
+ */
+export type FeedbackSource = 
+/**
+ * Said to the agent ("tell the team the reminder didn't work").
+ */
+"voice" | 
+/**
+ * The Send feedback dialog.
+ */
+"dialog" | 
+/**
+ * A 👎 on an answer or suggestion card.
+ */
+"thumbs"
 export type FrontmostApp = { pid: number; bundle_id: string; name: string }
 export type GpuDeviceOption = { id: string; name: string; total_vram_mb: number }
 export type HistoryEntry = { id: number; file_name: string; timestamp: number; saved: boolean; title: string; transcription_text: string; post_processed_text: string | null; post_process_prompt: string | null; post_process_requested: boolean; 
@@ -1717,7 +1777,7 @@ export type HudContent =
 /**
  * "What can I say?": examples from the help sheet.
  */
-{ kind: "help" } |
+{ kind: "help" } | 
 /**
  * What the agent did, or why it couldn't, with what it can do instead:
  * "Reminder set for 9:00 tomorrow: fix the vault" (Undo), or "I can't
@@ -1725,7 +1785,7 @@ export type HudContent =
  * calendar, Copy). `text` is an i18n key; `vars` fill it (`due` is a
  * local "YYYY-MM-DDTHH:MM" the HUD turns into "9:00 tomorrow").
  */
-{ kind: "notice"; id: string; text: string; vars?: Partial<{ [key in string]: string }>; tone: HudTone; undo: boolean; offers?: HudOffer[] } |
+{ kind: "notice"; id: string; text: string; vars?: Partial<{ [key in string]: string }>; tone: HudTone; undo: boolean; offers?: HudOffer[] } | 
 /**
  * "Send this to the team?": a bug report or feedback said by voice,
  * with the message as heard, an "Include diagnostics" switch (off by
@@ -1743,62 +1803,6 @@ export type HudContent =
  * anything else is sent back as a `hud_action` with the notice's id.
  */
 export type HudOffer = { action: string; label: string; value: string | null }
-/**
- * The "Your notes are ready" card.
- */
-export type NotesCard = { id: string; meeting_id: number; 
-/**
- * The summary's title; empty when there's none (the card shows the time).
- */
-title: string; 
-/**
- * Unix seconds the meeting started.
- */
-started: number; action_items: number; 
-/**
- * The notes as plain text, for Copy.
- */
-text: string; 
-/**
- * Offer "Email to me": signed in, and email isn't turned off.
- */
-can_email: boolean; 
-/**
- * `sending`, `sent` or `failed` once an email is under way.
- */
-email: string | null }
-/**
- * What kind of report.
- */
-export type FeedbackKind = "bug" | "idea" | "other"
-/**
- * Where the report came from (shown and filterable in the admin inbox).
- */
-export type FeedbackSource = "voice" | "dialog" | "thumbs"
-/**
- * A card the report is about: its question and answer, redacted.
- */
-export type FeedbackExample = { card: string; kind: string; question: string; answer: string }
-/**
- * What the dialog sends (and previews).
- */
-export type FeedbackInput = { kind: FeedbackKind; source: FeedbackSource; message: string; email: string | null; include_diagnostics: boolean; 
-/**
- * Only when the user ticked "Include the example".
- */
-example: FeedbackExample | null }
-/**
- * What the dialog starts with.
- */
-export type FeedbackDraft = { 
-/**
- * The signed-in email, to prefill the reply address.
- */
-email: string | null; 
-/**
- * The card a 👎 was for, redacted (sent only if ticked).
- */
-example: FeedbackExample | null }
 export type HudSource = { title: string; url: string }
 export type HudTone = "neutral" | "success" | "error"
 /**
@@ -1810,27 +1814,27 @@ export type ImplementationChangeResult = { success: boolean;
  */
 reset_bindings: string[] }
 /**
- * Where the main window will open, in the intro window's own coordinates
- * (logical px), so the intro can shrink into exactly that spot.
- */
-/**
  * Where the agent's intelligence runs.
  */
-export type Intelligence =
+export type Intelligence = 
 /**
  * On this computer when it can (Apple Intelligence); otherwise rules,
  * plus a one-time offer to judge suggestions in the cloud.
  */
-"auto" |
+"auto" | 
 /**
  * Never send anything to decide or answer: on-device model or rules.
  */
-"device" |
+"device" | 
 /**
  * Our hosted model: the best results; redacted text is sent.
  */
 "cloud"
-export type IntroTarget ={ x: number; y: number; width: number; height: number }
+/**
+ * Where the main window will open, in the intro window's own coordinates
+ * (logical px), so the intro can shrink into exactly that spot.
+ */
+export type IntroTarget = { x: number; y: number; width: number; height: number }
 export type KeyboardDiagnosticReport = { secure_input_enabled: boolean; culprit_pid: number | null; culprit_name: string | null; 
 /**
  * Counts only — key identity is deliberately never captured.
@@ -1932,6 +1936,7 @@ export type MeetingState = { active: boolean; id: number | null; started: number
  * i18n key, set when the call audio couldn't be captured.
  */
 warning: string | null }
+export type MeetingSummary = { title: string; summary: string; decisions: string[]; action_items: string[]; questions_for_you: string[] }
 /**
  * When meeting notes are emailed to the account's address.
  */
@@ -1944,7 +1949,6 @@ export type MeetingsEmail = "off" |
  * Sent as soon as the notes are done.
  */
 "always"
-export type MeetingSummary = { title: string; summary: string; decisions: string[]; action_items: string[]; questions_for_you: string[] }
 export type ModelInfo = { id: string; name: string; description: string; filename: string; source: ModelSource; size_mb: number; is_downloaded: boolean; is_downloading: boolean; partial_size: number; accuracy_score: number; speed_score: number; supports_translation: boolean; is_recommended: boolean; supported_languages: string[]; supports_language_selection: boolean; is_custom: boolean; supports_streaming: boolean; supports_language_detection: boolean }
 export type ModelLoadStatus = { is_loaded: boolean; current_model: string | null }
 /**
@@ -1964,6 +1968,30 @@ export type ModelSource =
  */
 "Local"
 export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "min_10" | "min_15" | "hour_1" | "sec_15"
+/**
+ * The "Your notes are ready" card.
+ */
+export type NotesCard = { id: string; meeting_id: number; 
+/**
+ * The summary's title; empty when there's none (the card shows the time).
+ */
+title: string; 
+/**
+ * Unix seconds the meeting started.
+ */
+started: number; action_items: number; 
+/**
+ * The notes as plain text, for Copy.
+ */
+text: string; 
+/**
+ * Offer "Email to me": signed in, and email isn't turned off.
+ */
+can_email: boolean; 
+/**
+ * `sending`, `sent` or `failed` once an email is under way.
+ */
+email: string | null }
 export type OverlayPosition = "top" | "bottom"
 /**
  * Which recording overlay to display. `Minimal` and `Live` share one base

@@ -11,6 +11,49 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.6",
+    date: "2026-11-03",
+    title: "A colleague, not a command line",
+    summary:
+      "Ask anything and Ambient answers, does it, or tells you why not and what it can do instead. It also speaks up more, in better moments, and learns what you want.",
+    sections: [
+      {
+        heading: "The agent",
+        items: [
+          "Requests always get a response: “remind me tomorrow morning…”, “can we reply saying…”, questions with nothing selected. If it can't do something, it says why and offers an alternative.",
+          "Suggestions like a colleague: summarise a long thread, “Reply to Ana?” (say “yes, tell them Thursday works”), translate a page, explain an error. Never the same offer twice on one window, and quieter when you dismiss.",
+          "A reliable on-device judge on Macs with Apple Intelligence, and visible cloud suggestions when you choose Cloud.",
+          "Reminders on every system: Reminders on Mac, notifications on Windows and Linux, with a clear fallback and Undo.",
+          "Report a bug by voice: “Hey Ambient, report a bug…”, or 👍/👎 on any answer, or Send feedback in the menu.",
+        ],
+      },
+      {
+        heading: "Meetings",
+        items: [
+          "When a call ends, a card says your notes are ready: open, copy, or email them to yourself (signed in).",
+        ],
+      },
+      {
+        heading: "Privacy",
+        items: [
+          "“What you've told me”: the suggestions you've turned off, with Undo, instead of a long list of switches.",
+          "Optional anonymous usage counts (never what you say, type or see), off unless you turn them on.",
+        ],
+      },
+      {
+        heading: "App",
+        items: [
+          "A full-size Dock icon on macOS, and setup stays in front after the intro.",
+          "Setup picks a speech model that's already on your computer.",
+          "Clear, translated error messages with Try again, instead of technical ones.",
+          "First launch tidies up: ejects the installer and offers to move it to the Bin.",
+          "Windows and Linux: the intro, glass and animations, with Ctrl key hints; screen memory key protected by Windows.",
+          "Translations reviewed in every language.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.5",
     date: "2026-11-03",
     title: "The agent on Windows and Linux",
