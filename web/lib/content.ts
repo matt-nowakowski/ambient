@@ -449,11 +449,11 @@ export type LaunchVideo = {
 export const launchVideo: LaunchVideo | null = {
   title: `${brand.name} launch video`,
   horizontal: {
-    url: "/media/ambient-launch-v4.mp4",
-    poster: { light: "/media/ambient-launch-v4.jpg", dark: "/media/ambient-launch-v4-dark.jpg" },
+    url: "/media/ambient-launch-v6.mp4",
+    poster: { light: "/media/ambient-launch-v6.jpg", dark: "/media/ambient-launch-v6-dark.jpg" },
   },
   vertical: {
-    url: "/media/ambient-launch-v4-vertical.mp4",
-    poster: { light: "/media/ambient-launch-v4-vertical.jpg", dark: "/media/ambient-launch-v4-vertical-dark.jpg" },
+    url: "/media/ambient-launch-v6-vertical.mp4",
+    poster: { light: "/media/ambient-launch-v6-vertical.jpg", dark: "/media/ambient-launch-v6-vertical-dark.jpg" },
   },
 };
