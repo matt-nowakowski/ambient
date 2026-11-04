@@ -418,6 +418,10 @@
           "toggle": "Kaydı başlatmak için kısayola dokunun, durdurmak için tekrar dokunun"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Kısayollarına yalnızca {{appName}} yanıt verir",
+        "description": "Diğer dikte uygulamaları dahil diğer uygulamalar {{appName}} kısayollarınızın tuşlarını görmez. Başka bir uygulamanın aynı tuşlara ihtiyacı varsa kapatın."
+      },
       "autoStop": {
         "label": "Duraksamadan sonra durdur",
         "description": "Dokunarak başlattığınızda, konuştuktan sonra duraksadığınızda dikte kendiliğinden de durur. Cümle ortasındaki kısa duraksamalar sayılmaz ve bir şey söylemeden asla durmaz.",
@@ -1017,6 +1021,15 @@
     "recorderBlockedNoCulprit": "macOS geçici olarak kısayol değişikliklerini engelliyor",
     "learnMore": "Nasıl düzeltilir",
     "recorderBlocked": "Şu anda kısayol kaydedilemiyor — macOS Secure Input tuş olaylarını engelliyor. Önce Secure Input uyarısını giderin.",
+    "dismiss": "Kapat"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} da burada dikte alabilir. Bir kısayol {{appName}} ile aynıysa ikisi de yanıt verebilir.",
+    "macosFn": "macOS da Fn (🌐) tuşunu kullanır. Dikte veya emoji de açılıyorsa Klavye ayarlarında “🌐 tuşuna basınca” seçeneğini Hiçbir Şey Yapma yapın.",
+    "windowsVoiceTyping": "Win + H, Windows sesle yazmayı da başlatır. Yalnızca {{appName}} yanıt versin diye başka bir kısayol seçin.",
+    "makeExclusive": "Yalnızca {{appName}} yanıt versin",
+    "changeShortcut": "Kısayolu değiştir",
+    "openKeyboardSettings": "Klavye ayarlarını aç",
     "dismiss": "Kapat"
   },
   "account": {

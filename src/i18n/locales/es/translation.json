@@ -420,6 +420,10 @@
           "toggle": "Toca el atajo para empezar a grabar, tócalo de nuevo para detener"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Solo {{appName}} responde a sus atajos",
+        "description": "Otras apps, incluidas otras apps de dictado, no verán las teclas de tus atajos de {{appName}}. Desactívalo si otra app necesita las mismas teclas."
+      },
       "autoStop": {
         "label": "Detener tras una pausa",
         "description": "Si empiezas con un toque, el dictado también se detiene solo cuando haces una pausa después de hablar. Las pausas cortas a mitad de frase no cuentan y nunca se detiene antes de que digas algo.",
@@ -1023,6 +1027,15 @@
     "learnMore": "Cómo solucionarlo",
     "recorderBlocked": "Ahora mismo no se pueden grabar atajos: Secure Input de macOS está bloqueando los eventos de teclado. Resuelve primero el aviso de Secure Input.",
     "dismiss": "Descartar"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} también puede dictar aquí. Si un atajo coincide con el de {{appName}}, es posible que respondan ambos.",
+    "macosFn": "macOS también usa la tecla Fn (🌐). Si también se abre el Dictado o los emojis, en Ajustes de Teclado pon “Pulsar la tecla 🌐 para” en No hacer nada.",
+    "windowsVoiceTyping": "Win + H también inicia la escritura por voz de Windows. Elige otro atajo para que solo responda {{appName}}.",
+    "makeExclusive": "Que solo responda {{appName}}",
+    "changeShortcut": "Cambiar atajo",
+    "openKeyboardSettings": "Abrir ajustes de Teclado",
+    "dismiss": "Cerrar"
   },
   "account": {
     "currentPlan": "Plan actual",

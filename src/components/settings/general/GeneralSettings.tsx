@@ -13,6 +13,7 @@ import { AudioFeedback } from "../AudioFeedback";
 import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
+import { ExclusiveShortcuts } from "../ExclusiveShortcuts";
 import { ModelSettingsCard } from "./ModelSettingsCard";
 import { PreferredLanguages } from "../PreferredLanguages";
 import { ChineseScriptSetting } from "../ChineseScript";
@@ -32,10 +33,14 @@ export const GeneralSettings: React.FC = () => {
         <ShortcutInput shortcutId="transcribe" grouped={true} />
         <ShortcutActivationSetting descriptionMode="tooltip" grouped={true} />
         <AutoStopOnPause descriptionMode="tooltip" grouped={true} />
+        <ExclusiveShortcuts descriptionMode="tooltip" grouped={true} />
         {/* Cancel shortcut remains hidden on Linux because of dynamic shortcut instability. */}
         {!isLinux && <ShortcutInput shortcutId="cancel" grouped={true} />}
       </SettingsGroup>
-      <SettingsGroup title={t("settings.agent.title")} description={t("settings.agent.description")}>
+      <SettingsGroup
+        title={t("settings.agent.title")}
+        description={t("settings.agent.description")}
+      >
         <AgentRouting grouped={true} />
         <WakeWord grouped={true} />
         <ShortcutInput shortcutId="ask_agent" grouped={true} />

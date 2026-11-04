@@ -422,6 +422,10 @@
           "toggle": "Naciśnij skrót, aby zacząć nagrywanie, i naciśnij ponownie, aby zakończyć"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Tylko {{appName}} reaguje na swoje skróty",
+        "description": "Inne aplikacje, w tym inne aplikacje do dyktowania, nie zobaczą klawiszy Twoich skrótów {{appName}}. Wyłącz, jeśli inna aplikacja potrzebuje tych samych klawiszy."
+      },
       "autoStop": {
         "label": "Zatrzymaj po pauzie",
         "description": "Gdy zaczynasz naciśnięciem, dyktowanie kończy się też samo, gdy po mówieniu zrobisz pauzę. Krótkie pauzy w środku zdania się nie liczą, a dyktowanie nigdy nie kończy się, zanim cokolwiek powiesz.",
@@ -1028,6 +1032,15 @@
     "learnMore": "Jak to naprawić",
     "recorderBlocked": "Nie można teraz nagrać skrótu — Secure Input w macOS blokuje zdarzenia klawiszy. Najpierw rozwiąż ostrzeżenie o Secure Input.",
     "dismiss": "Odrzuć"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} też może tu dyktować. Jeśli skrót jest taki sam jak w {{appName}}, mogą zareagować obie.",
+    "macosFn": "macOS też używa klawisza Fn (🌐). Jeśli otwiera się też Dyktowanie lub emoji, w ustawieniach Klawiatury ustaw „Naciśnij klawisz 🌐, aby” na Nic nie rób.",
+    "windowsVoiceTyping": "Win + H uruchamia też pisanie głosowe Windows. Wybierz inny skrót, by reagował tylko {{appName}}.",
+    "makeExclusive": "Niech reaguje tylko {{appName}}",
+    "changeShortcut": "Zmień skrót",
+    "openKeyboardSettings": "Otwórz ustawienia Klawiatury",
+    "dismiss": "Zamknij"
   },
   "account": {
     "currentPlan": "Aktualny plan",

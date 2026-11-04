@@ -418,6 +418,10 @@
           "toggle": "Tryck på kortkommandot för att starta inspelningen och tryck igen för att stoppa"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Bara {{appName}} svarar på sina kortkommandon",
+        "description": "Andra appar, även andra dikteringsappar, ser inte tangenterna i dina {{appName}}-kortkommandon. Stäng av om en annan app behöver samma tangenter."
+      },
       "autoStop": {
         "label": "Stoppa efter en paus",
         "description": "När du startar med ett tryck slutar dikteringen också av sig själv när du pausar efter att ha pratat. Korta pauser mitt i en mening räknas inte, och den slutar aldrig innan du har sagt något.",
@@ -1018,6 +1022,15 @@
     "learnMore": "Så här löser du det",
     "recorderBlocked": "Det går inte att spela in kortkommandon just nu — macOS Secure Input blockerar tangenthändelser. Lös varningen om Secure Input först.",
     "dismiss": "Avfärda"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} kan också diktera här. Om ett kortkommando är samma som {{appName}}s kan båda svara.",
+    "macosFn": "macOS använder också Fn-tangenten (🌐). Om Diktering eller emoji också öppnas, ställ in ”Tryck på 🌐 för att” på Gör ingenting i Tangentbordsinställningar.",
+    "windowsVoiceTyping": "Win + H startar också Windows röstinmatning. Välj ett annat kortkommando så att bara {{appName}} svarar.",
+    "makeExclusive": "Låt bara {{appName}} svara",
+    "changeShortcut": "Byt kortkommando",
+    "openKeyboardSettings": "Öppna Tangentbordsinställningar",
+    "dismiss": "Stäng"
   },
   "account": {
     "currentPlan": "Nuvarande plan",

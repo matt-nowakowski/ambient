@@ -418,6 +418,10 @@
           "toggle": "ショートカットをタップすると録音を開始し、もう一度タップすると停止します"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "ショートカットには {{appName}} だけが反応",
+        "description": "他のアプリ（他の音声入力アプリを含む）は {{appName}} のショートカットのキーを受け取りません。同じキーを使うアプリがあればオフにしてください。"
+      },
       "autoStop": {
         "label": "話し終えたら自動で停止",
         "description": "タップで開始したときは、話したあとに間が空くと音声入力が自動でも止まります。文の途中の短い間は数えず、何か話す前に止まることはありません。",
@@ -1017,6 +1021,15 @@
     "recorderBlockedNoCulprit": "macOS が一時的にショートカットの変更をブロックしています",
     "learnMore": "解決方法",
     "recorderBlocked": "現在ショートカットを記録できません。macOS の Secure Input がキーイベントをブロックしています。先に Secure Input の警告を解消してください。",
+    "dismiss": "閉じる"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} もここで音声入力できます。ショートカットが {{appName}} と同じだと、両方が反応することがあります。",
+    "macosFn": "macOS も Fn（🌐）キーを使います。音声入力や絵文字も開く場合は、キーボード設定で「🌐キーを押して」を「何もしない」にしてください。",
+    "windowsVoiceTyping": "Win + H は Windows の音声入力も起動します。{{appName}} だけが反応するよう、別のショートカットを選んでください。",
+    "makeExclusive": "{{appName}} だけ反応させる",
+    "changeShortcut": "ショートカットを変更",
+    "openKeyboardSettings": "キーボード設定を開く",
     "dismiss": "閉じる"
   },
   "account": {

@@ -420,6 +420,10 @@
           "toggle": "Premi la scorciatoia per avviare la registrazione, premila di nuovo per fermarla"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Solo {{appName}} risponde alle sue scorciatoie",
+        "description": "Le altre app, comprese altre app di dettatura, non vedranno i tasti delle tue scorciatoie di {{appName}}. Disattiva se un'altra app ha bisogno degli stessi tasti."
+      },
       "autoStop": {
         "label": "Interrompi dopo una pausa",
         "description": "Quando avvii con una pressione breve, la dettatura si ferma anche da sola appena fai una pausa dopo aver parlato. Le brevi pause a metà frase non contano e non si ferma mai prima che tu abbia detto qualcosa.",
@@ -1023,6 +1027,15 @@
     "dismiss": "Ignora",
     "blockedWithCulprit_many": "{{name}} potrebbe bloccare {{count}} scorciatoie",
     "blockedNoCulprit_many": "macOS sta bloccando temporaneamente {{count}} scorciatoie"
+  },
+  "dictationConflict": {
+    "apps": "Anche {{apps}} può dettare qui. Se una scorciatoia coincide con quella di {{appName}}, potrebbero rispondere entrambe.",
+    "macosFn": "Anche macOS usa il tasto Fn (🌐). Se si apre anche Dettatura o le emoji, in Impostazioni Tastiera imposta “Premi il tasto 🌐 per” su Non fare nulla.",
+    "windowsVoiceTyping": "Win + H avvia anche la digitazione vocale di Windows. Scegli un'altra scorciatoia perché risponda solo {{appName}}.",
+    "makeExclusive": "Fai rispondere solo {{appName}}",
+    "changeShortcut": "Cambia scorciatoia",
+    "openKeyboardSettings": "Apri impostazioni Tastiera",
+    "dismiss": "Chiudi"
   },
   "account": {
     "currentPlan": "Piano attuale",

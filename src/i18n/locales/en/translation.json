@@ -418,6 +418,10 @@
           "toggle": "Tap the shortcut to start recording, tap again to stop"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Only {{appName}} responds to its shortcuts",
+        "description": "Other apps, other dictation apps included, won't see the keys of your {{appName}} shortcuts. Turn off if another app needs the same keys."
+      },
       "autoStop": {
         "label": "Stop after a pause",
         "description": "When you tap to start, dictation also stops on its own once you pause after speaking. Short pauses mid-sentence don't count, and it never stops before you've said anything.",
@@ -1017,6 +1021,15 @@
     "recorderBlockedNoCulprit": "macOS is temporarily blocking shortcut changes",
     "learnMore": "How to fix",
     "recorderBlocked": "Can't record shortcuts right now — macOS Secure Input is blocking key events. Resolve the Secure Input warning first.",
+    "dismiss": "Dismiss"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} can also take dictation here. If a shortcut matches {{appName}}'s, both may respond.",
+    "macosFn": "macOS also uses the Fn (🌐) key. If Dictation or emoji opens too, set “Press 🌐 key to” to Do Nothing in Keyboard settings.",
+    "windowsVoiceTyping": "Win + H also starts Windows voice typing. Pick another shortcut so only {{appName}} responds.",
+    "makeExclusive": "Let only {{appName}} respond",
+    "changeShortcut": "Change shortcut",
+    "openKeyboardSettings": "Open Keyboard settings",
     "dismiss": "Dismiss"
   },
   "account": {

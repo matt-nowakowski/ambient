@@ -420,6 +420,10 @@
           "toggle": "Premeu la drecera per iniciar l'enregistrament i torneu-la a prémer per aturar-lo"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Només {{appName}} respon a les seves dreceres",
+        "description": "Les altres apps, incloses altres apps de dictat, no veuran les tecles de les teves dreceres de {{appName}}. Desactiva-ho si una altra app necessita les mateixes tecles."
+      },
       "autoStop": {
         "label": "Atura després d'una pausa",
         "description": "Quan comenceu amb un toc, el dictat també s'atura sol quan feu una pausa després de parlar. Les pauses curtes a mitja frase no compten, i mai no s'atura abans que hàgiu dit res.",
@@ -1023,6 +1027,15 @@
     "dismiss": "Descarta",
     "blockedWithCulprit_many": "{{name}} pot estar blocant {{count}} dreceres",
     "blockedNoCulprit_many": "El macOS està blocant temporalment {{count}} dreceres"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} també pot dictar aquí. Si una drecera coincideix amb la de {{appName}}, és possible que responguin totes dues.",
+    "macosFn": "El macOS també fa servir la tecla Fn (🌐). Si també s'obre el Dictat o els emojis, a la configuració del Teclat posa “Prem la tecla 🌐 per” a No fer res.",
+    "windowsVoiceTyping": "Win + H també inicia l'escriptura per veu del Windows. Tria una altra drecera perquè només respongui {{appName}}.",
+    "makeExclusive": "Que només respongui {{appName}}",
+    "changeShortcut": "Canvia la drecera",
+    "openKeyboardSettings": "Obre la configuració del Teclat",
+    "dismiss": "Tanca"
   },
   "account": {
     "currentPlan": "Pla actual",

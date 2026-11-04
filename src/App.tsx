@@ -18,6 +18,7 @@ import { ModelStateEvent, RecordingErrorEvent } from "./lib/types/events";
 import { showError } from "./lib/errors";
 import "./App.css";
 import SecureInputWarning from "./components/SecureInputWarning";
+import DictationConflictNotice from "./components/DictationConflictNotice";
 import Footer from "./components/footer";
 import { OnboardingFlow } from "./components/onboarding/OnboardingFlow";
 import ModelMigration from "./components/onboarding/ModelMigration";
@@ -529,6 +530,9 @@ function App() {
               className={`flex flex-col items-center px-8 pt-8 pb-10 gap-4 ${currentSection === "models" ? "h-full" : ""}`}
             >
               <SecureInputWarning />
+              <DictationConflictNotice
+                onChangeShortcut={() => setCurrentSection("settings")}
+              />
               <PageTransition
                 id={currentSection}
                 className={`w-full ${currentSection === "models" ? "h-full" : ""}`}

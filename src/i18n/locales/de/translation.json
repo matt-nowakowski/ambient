@@ -418,6 +418,10 @@
           "toggle": "Tippe auf das Tastenkürzel, um die Aufnahme zu starten, und erneut, um sie zu stoppen"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Nur {{appName}} reagiert auf seine Kurzbefehle",
+        "description": "Andere Apps, auch andere Diktier-Apps, sehen die Tasten deiner {{appName}}-Kurzbefehle nicht. Schalte das aus, wenn eine andere App dieselben Tasten braucht."
+      },
       "autoStop": {
         "label": "Nach einer Pause stoppen",
         "description": "Wenn du per Tippen startest, stoppt das Diktat auch von selbst, sobald du nach dem Sprechen eine Pause machst. Kurze Pausen mitten im Satz zählen nicht, und es stoppt nie, bevor du etwas gesagt hast.",
@@ -1018,6 +1022,15 @@
     "learnMore": "So behebst du das",
     "recorderBlocked": "Tastenkürzel können gerade nicht aufgezeichnet werden – macOS Secure Input blockiert Tastenereignisse. Behebe zuerst die Secure-Input-Warnung.",
     "dismiss": "Ausblenden"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} kann hier ebenfalls diktieren. Wenn ein Kurzbefehl mit dem von {{appName}} übereinstimmt, reagieren eventuell beide.",
+    "macosFn": "macOS nutzt die Fn-Taste (🌐) ebenfalls. Wenn auch Diktat oder Emoji aufgeht, stelle in den Tastatur-Einstellungen „Drücken der 🌐-Taste“ auf „Keine Aktion“.",
+    "windowsVoiceTyping": "Win + H startet auch die Windows-Spracheingabe. Wähle einen anderen Kurzbefehl, damit nur {{appName}} reagiert.",
+    "makeExclusive": "Nur {{appName}} reagieren lassen",
+    "changeShortcut": "Kurzbefehl ändern",
+    "openKeyboardSettings": "Tastatur-Einstellungen öffnen",
+    "dismiss": "Schließen"
   },
   "account": {
     "currentPlan": "Aktueller Tarif",

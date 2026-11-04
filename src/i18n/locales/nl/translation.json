@@ -418,6 +418,10 @@
           "toggle": "Tik op de sneltoets om de opname te starten, tik opnieuw om te stoppen"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Alleen {{appName}} reageert op zijn sneltoetsen",
+        "description": "Andere apps, ook andere dicteerapps, zien de toetsen van je {{appName}}-sneltoetsen niet. Zet uit als een andere app dezelfde toetsen nodig heeft."
+      },
       "autoStop": {
         "label": "Stoppen na een pauze",
         "description": "Als je met een tik start, stopt dicteren ook vanzelf zodra je na het praten even stil bent. Korte pauzes midden in een zin tellen niet mee, en het stopt nooit voordat je iets hebt gezegd.",
@@ -1017,6 +1021,15 @@
     "recorderBlockedNoCulprit": "macOS blokkeert tijdelijk wijzigingen aan sneltoetsen",
     "learnMore": "Hoe je dit oplost",
     "recorderBlocked": "Sneltoetsen kunnen nu niet worden opgenomen — Secure Input van macOS blokkeert toetsgebeurtenissen. Los eerst de Secure Input-waarschuwing op.",
+    "dismiss": "Sluiten"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} kan hier ook dicteren. Als een sneltoets gelijk is aan die van {{appName}}, reageren ze misschien allebei.",
+    "macosFn": "macOS gebruikt de Fn-toets (🌐) ook. Gaat Dicteren of emoji ook open, zet dan bij Toetsenbord-instellingen ‘Druk op 🌐-toets om’ op Doe niets.",
+    "windowsVoiceTyping": "Win + H start ook Windows-spraakinvoer. Kies een andere sneltoets zodat alleen {{appName}} reageert.",
+    "makeExclusive": "Laat alleen {{appName}} reageren",
+    "changeShortcut": "Sneltoets wijzigen",
+    "openKeyboardSettings": "Toetsenbord-instellingen openen",
     "dismiss": "Sluiten"
   },
   "account": {

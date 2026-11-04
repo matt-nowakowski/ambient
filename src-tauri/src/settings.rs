@@ -496,6 +496,11 @@ pub struct AppSettings {
     pub lazy_stream_close: bool,
     #[serde(default)]
     pub keyboard_implementation: KeyboardImplementation,
+    /// Swallow Ambient's shortcut presses so another dictation app bound to
+    /// the same keys doesn't also start. ambient-keys only; Tauri's backend
+    /// can't block.
+    #[serde(default = "default_exclusive_shortcuts")]
+    pub exclusive_shortcuts: bool,
     #[serde(default = "default_show_tray_icon")]
     pub show_tray_icon: bool,
     #[serde(default = "default_paste_delay_ms")]
@@ -891,6 +896,10 @@ fn default_app_language() -> String {
         .unwrap_or_else(|| "en".to_string())
 }
 
+fn default_exclusive_shortcuts() -> bool {
+    true
+}
+
 fn default_show_tray_icon() -> bool {
     true
 }
@@ -1057,6 +1066,7 @@ pub fn get_default_settings() -> AppSettings {
         experimental_enabled: false,
         lazy_stream_close: false,
         keyboard_implementation: KeyboardImplementation::default(),
+        exclusive_shortcuts: default_exclusive_shortcuts(),
         show_tray_icon: default_show_tray_icon(),
         paste_delay_ms: default_paste_delay_ms(),
         paste_delay_after_ms: default_paste_delay_after_ms(),

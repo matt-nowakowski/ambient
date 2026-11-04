@@ -28,10 +28,10 @@
 //! via Tauri's event system.
 
 use ambient_keys::{Hotkey, HotkeyId, HotkeyManager, HotkeyState, KeyboardListener};
-use log::{debug, error, info};
+use log::{debug, error, info, warn};
 use serde::Serialize;
 use specta::Type;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::sync::{Arc, Mutex};
@@ -53,7 +53,48 @@ enum ManagerCommand {
         binding_id: String,
         response: Sender<Result<(), String>>,
     },
+    /// Recreate the listener (blocking or not). Deferred until no hotkey
+    /// is held.
+    Rebuild {
+        exclusive: bool,
+    },
     Shutdown,
+}
+
+/// Whether the live listener swallows shortcut presses. False while
+/// exclusive shortcuts are off, or when blocking couldn't start (Linux
+/// without `/dev/uinput` access) and the listener fell back to listening.
+static BLOCKING_ACTIVE: AtomicBool = AtomicBool::new(false);
+
+/// Whether Ambient's shortcut presses are currently kept from other apps.
+pub fn blocking_active() -> bool {
+    BLOCKING_ACTIVE.load(Ordering::SeqCst)
+}
+
+/// Create the hotkey manager. Exclusive mode swallows registered shortcuts
+/// so other apps never see them; if blocking can't start, fall back to
+/// listening so shortcuts keep working.
+fn create_manager(exclusive: bool) -> Option<HotkeyManager> {
+    if exclusive {
+        match HotkeyManager::new_with_blocking() {
+            Ok(m) => {
+                BLOCKING_ACTIVE.store(true, Ordering::SeqCst);
+                return Some(m);
+            }
+            Err(e) => warn!(
+                "Couldn't keep shortcuts exclusive ({}); listening without blocking",
+                e
+            ),
+        }
+    }
+    BLOCKING_ACTIVE.store(false, Ordering::SeqCst);
+    match HotkeyManager::new() {
+        Ok(m) => Some(m),
+        Err(e) => {
+            error!("Failed to create HotkeyManager: {}", e);
+            None
+        }
+    }
 }
 
 /// State for the ambient-keys shortcut manager
@@ -110,30 +151,61 @@ impl AmbientKeysState {
     fn manager_thread(cmd_rx: Receiver<ManagerCommand>, app: AppHandle) {
         info!("ambient-keys manager thread started");
 
-        // Create the HotkeyManager in this thread
-        let manager = match HotkeyManager::new_with_blocking() {
-            Ok(m) => m,
-            Err(e) => {
-                error!("Failed to create HotkeyManager: {}", e);
-                return;
-            }
+        let mut exclusive = get_settings(&app).exclusive_shortcuts;
+        let Some(mut manager) = create_manager(exclusive) else {
+            return;
         };
 
         // Maps binding IDs to HotkeyIds and hotkey strings
         let mut binding_to_hotkey: HashMap<String, HotkeyId> = HashMap::new();
         let mut hotkey_to_binding: HashMap<HotkeyId, (String, String)> = HashMap::new(); // (binding_id, hotkey_string)
+                                                                                         // Hotkeys currently held. A rebuild waits until none are, so a held
+                                                                                         // push-to-talk key never loses its release.
+        let mut pressed: HashSet<HotkeyId> = HashSet::new();
+        let mut rebuild_pending = false;
 
         loop {
             // Check for hotkey events (non-blocking)
             while let Some(event) = manager.try_recv() {
+                let is_pressed = event.state == HotkeyState::Pressed;
+                if is_pressed {
+                    pressed.insert(event.id);
+                } else {
+                    pressed.remove(&event.id);
+                }
                 if let Some((binding_id, hotkey_string)) = hotkey_to_binding.get(&event.id) {
                     debug!(
                         "ambient-keys event: binding={}, hotkey={}, state={:?}",
                         binding_id, hotkey_string, event.state
                     );
-                    let is_pressed = event.state == HotkeyState::Pressed;
                     handle_shortcut_event(&app, binding_id, hotkey_string, is_pressed);
                 }
+            }
+
+            if rebuild_pending && pressed.is_empty() {
+                rebuild_pending = false;
+                // Drop the old listener first: on Linux a blocking listener
+                // grabs the keyboards exclusively, so two can't coexist.
+                drop(manager);
+                manager = match create_manager(exclusive) {
+                    Some(m) => m,
+                    None => return,
+                };
+                let bindings: Vec<(String, String)> =
+                    hotkey_to_binding.drain().map(|(_, b)| b).collect();
+                binding_to_hotkey.clear();
+                for (binding_id, hotkey_string) in bindings {
+                    if let Err(e) = Self::do_register(
+                        &manager,
+                        &mut binding_to_hotkey,
+                        &mut hotkey_to_binding,
+                        &binding_id,
+                        &hotkey_string,
+                    ) {
+                        error!("Failed to re-register {} after rebuild: {}", binding_id, e);
+                    }
+                }
+                info!("ambient-keys listener rebuilt (exclusive: {})", exclusive);
             }
 
             // Check for commands (non-blocking with timeout)
@@ -165,6 +237,10 @@ impl AmbientKeysState {
                         );
                         let _ = response.send(result);
                     }
+                    ManagerCommand::Rebuild { exclusive: next } => {
+                        exclusive = next;
+                        rebuild_pending = true;
+                    }
                     ManagerCommand::Shutdown => {
                         info!("ambient-keys manager thread shutting down");
                         break;
@@ -180,7 +256,19 @@ impl AmbientKeysState {
             }
         }
 
+        BLOCKING_ACTIVE.store(false, Ordering::SeqCst);
         info!("ambient-keys manager thread stopped");
+    }
+
+    /// Recreate the listener, with or without swallowing shortcut presses.
+    /// A new hook also goes in front of any other app's hook installed since,
+    /// and the hook in front decides whether the rest see the key at all.
+    pub fn rebuild(&self, exclusive: bool) -> Result<(), String> {
+        self.command_sender
+            .lock()
+            .map_err(|_| "Failed to lock command_sender")?
+            .send(ManagerCommand::Rebuild { exclusive })
+            .map_err(|_| "Failed to send rebuild command".to_string())
     }
 
     /// Register a hotkey
@@ -455,6 +543,16 @@ pub fn init_shortcuts(app: &AppHandle) -> Result<(), String> {
     app.manage(state);
     info!("ambient-keys shortcuts initialized");
     Ok(())
+}
+
+/// Apply the exclusive-shortcuts setting, or re-assert Ambient's place in
+/// front of other apps' keyboard hooks. No-op when ambient-keys isn't the
+/// active implementation.
+pub fn rebuild_listener(app: &AppHandle, exclusive: bool) -> Result<(), String> {
+    match app.try_state::<AmbientKeysState>() {
+        Some(state) => state.rebuild(exclusive),
+        None => Ok(()),
+    }
 }
 
 /// Register a shortcut

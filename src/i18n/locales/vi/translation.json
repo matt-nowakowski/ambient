@@ -418,6 +418,10 @@
           "toggle": "Nhấn phím tắt để bắt đầu ghi âm, nhấn lại để dừng"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Chỉ {{appName}} phản hồi phím tắt của mình",
+        "description": "Các ứng dụng khác, kể cả ứng dụng đọc chính tả khác, sẽ không thấy phím của phím tắt {{appName}}. Tắt nếu ứng dụng khác cần cùng phím."
+      },
       "autoStop": {
         "label": "Dừng sau khi ngừng nói",
         "description": "Khi bạn nhấn để bắt đầu, chế độ đọc chính tả cũng tự dừng khi bạn ngừng nói một lúc. Những quãng nghỉ ngắn giữa câu không được tính, và nó không bao giờ dừng trước khi bạn nói gì.",
@@ -1018,6 +1022,15 @@
     "learnMore": "Cách khắc phục",
     "recorderBlocked": "Hiện không thể ghi phím tắt — Secure Input của macOS đang chặn các sự kiện phím. Hãy xử lý cảnh báo Secure Input trước.",
     "dismiss": "Bỏ qua"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} cũng có thể đọc chính tả ở đây. Nếu phím tắt trùng với {{appName}}, cả hai có thể cùng phản hồi.",
+    "macosFn": "macOS cũng dùng phím Fn (🌐). Nếu Đọc chính tả hoặc biểu tượng cảm xúc cũng mở, hãy đặt “Nhấn phím 🌐 để” thành Không làm gì trong cài đặt Bàn phím.",
+    "windowsVoiceTyping": "Win + H cũng bật nhập bằng giọng nói của Windows. Hãy chọn phím tắt khác để chỉ {{appName}} phản hồi.",
+    "makeExclusive": "Chỉ để {{appName}} phản hồi",
+    "changeShortcut": "Đổi phím tắt",
+    "openKeyboardSettings": "Mở cài đặt Bàn phím",
+    "dismiss": "Đóng"
   },
   "account": {
     "currentPlan": "Gói hiện tại",
