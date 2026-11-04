@@ -226,8 +226,8 @@
       "highFiveLabel": "Tope là",
       "atLogin": "Lancer {{appName}} à l’ouverture de ma session",
       "polish": {
-        "title": "Laisser {{appName}} peaufiner et écrire pour vous",
-        "description": "Envoie le texte que vous dictez (jamais l’audio) pour le peaufiner. Désactivez pour garder la dictée sur cet ordinateur."
+        "title": "Peaufiner ma dictée avec l'IA",
+        "description": "Désactivé, la dictée est tapée instantanément. Activé, la parole hésitante est d'abord nettoyée (le texte est envoyé, jamais l'audio). Dans les deux cas, {{appName}} écrit pour vous quand vous le demandez."
       },
       "finish": "Terminé",
       "panel": {
@@ -1133,7 +1133,7 @@
           "description": "Finition IA sur chaque dictée."
         }
       },
-      "needsPolish": "Peaufiner nécessite la finition IA. Rédiger pour vous compte comme une requête IA."
+      "needsPolish": "Le polissage IA est désactivé : la dictée est tapée instantanément et la parole hésitante reste telle quelle. {{appName}} écrit toujours pour vous quand vous le demandez (cela compte comme une requête IA)."
     },
     "trial": {
       "daysLeft_one": "{{count}} jour restant",

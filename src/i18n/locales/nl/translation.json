@@ -225,8 +225,8 @@
       "highFiveLabel": "High five",
       "atLogin": "{{appName}} starten als ik inlog",
       "polish": {
-        "title": "Laat {{appName}} afwerken en voor je schrijven",
-        "description": "Verstuurt de tekst die je dicteert (nooit audio) om die af te werken. Zet uit om dicteren op deze computer te houden."
+        "title": "Mijn dictaat opschonen met AI",
+        "description": "Uit: dictaat wordt meteen getypt. Aan: rommelige spraak wordt eerst opgeschoond (de tekst wordt verstuurd, nooit audio). Hoe dan ook schrijft {{appName}} voor je als je erom vraagt."
       },
       "finish": "Klaar",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "AI-polish bij elk dictaat."
         }
       },
-      "needsPolish": "Oppoetsen werkt alleen met AI-polish aan. Voor je schrijven telt als AI-verzoek."
+      "needsPolish": "AI-polijsten staat uit, dus dictaat wordt meteen getypt en rommelige spraak blijft zoals gezegd. {{appName}} schrijft nog steeds voor je als je erom vraagt (dat telt als een AI-verzoek)."
     },
     "trial": {
       "daysLeft_one": "Nog {{count}} dag",

@@ -458,7 +458,7 @@ const SYSTEM: &str = r#"You route a voice transcript the user just spoke on thei
 - "answer": they ask YOU, the assistant, for facts, an explanation, a calculation, a translation, or about what's on their screen ("summarise this", "translate this into Spanish", "what does this error mean"). Translating or rewriting text is always "answer", never "act".
 - "act": they want something done on the computer: open an app or website, search the web in the browser, create a reminder or calendar event, run one of their Shortcuts.
 - "recall": they ask about something they said, dictated, read or saw earlier ("what did I say about pricing", "what was that number on the page").
-- "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply to Sam" (with an email or chat open). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). If the transcript reads as the message itself, it's "write".
+- "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply that everything's ok", "reply to Sam" (with an email or chat open), in any language ("odpisz że wszystko ok", "napisz mu że będę o 5", "dile que llego tarde", "réponds-lui que c'est bon", "antworte, dass alles passt"). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). Decide from the words, not from which app is open. If the transcript reads as the message itself, spoken to its reader, it's "write".
 If unsure, choose "write". A message or email being dictated word for word is always "write".
 
 Reply with JSON only, no prose:
@@ -633,8 +633,15 @@ pub async fn route(
     } else if strong_request(transcript) && !place.is_ai_chat() {
         where_.push_str(". It starts like a command for you, the assistant: don't choose \"write\" unless it's clearly words for the people in the conversation");
     }
-    if place.is_messaging() && !addresses_ambient(transcript) && !place.no_field {
-        where_.push_str(". This is a messaging/email/docs app: requests, questions and commands here are almost always text for the people or the document → \"write\", unless they clearly address you, the assistant, or instruct you to write the message for them (\"compose\")");
+    // Write or compose is decided from the words and the field, the same in
+    // every app (it used to lean on a list of messaging apps, which drafted
+    // in Mail but typed "tell him…" verbatim in Messages and Slack).
+    if place.editable
+        && !addresses_ambient(transcript)
+        && !place.no_field
+        && !strong_request(transcript)
+    {
+        where_.push_str(". With a text field focused, questions and requests are usually text for the people being written to → \"write\", unless they clearly address you, the assistant, or instruct you to write the message for them (\"compose\")");
     }
     if compose_maybe(transcript) {
         where_.push_str(". The wording may be an instruction to write a message for them: choose \"compose\" if so");
@@ -650,7 +657,15 @@ pub async fn route(
     } else {
         format!("{follow_up}{where_}\nTranscript: {transcript}")
     };
-    let reply = llm::complete_hosted(app, "route", &system, &user).await?;
+    // The reply is a short JSON object, its "text" about the transcript's
+    // length: capping it bounds a runaway reply and, for short dictations,
+    // gets the server's short time budget.
+    let chars = u32::try_from(transcript.chars().count()).unwrap_or(u32::MAX);
+    let limits = crate::llm_client::RequestLimits {
+        max_tokens: Some(chars.saturating_mul(2).saturating_add(320).min(2_048)),
+        timeout: None,
+    };
+    let reply = llm::complete_hosted_limited(app, "route", &system, &user, limits).await?;
     let route = parse(&reply);
     log::debug!(
         "router decided {} ({} words, messaging={}, editable={})",

@@ -46,6 +46,10 @@ pub mod bounds {
     pub const WRITING_POLISH_DISFLUENCY: (f64, f64, f64) = (0.02, 0.3, 0.06);
     /// Words without a sentence break that make a run-on (polished).
     pub const WRITING_RUN_ON_WORDS: (f64, f64, f64) = (15.0, 80.0, 35.0);
+    /// Dictations of this many words or fewer are typed without AI polish
+    /// (no model round trip for "sounds good"); 0 polishes everything. The
+    /// polish shortcut always polishes.
+    pub const WRITING_SKIP_POLISH_WORDS: (f64, f64, f64) = (0.0, 10.0, 3.0);
     /// Free's weekly pool of AI uses (hosted and on-device together). The
     /// server enforces the hosted side with the same tunable.
     pub const FREE_AI_PER_WEEK: (f64, f64, f64) = (5.0, 500.0, 25.0);
@@ -129,6 +133,7 @@ pub struct WritingConfig {
     pub ambiguous_floor: f32,
     pub polish_disfluency: f32,
     pub run_on_words: u32,
+    pub skip_polish_words: u32,
 }
 
 impl Default for WritingConfig {
@@ -138,6 +143,7 @@ impl Default for WritingConfig {
             ambiguous_floor: bounds::WRITING_AMBIGUOUS_FLOOR.2 as f32,
             polish_disfluency: bounds::WRITING_POLISH_DISFLUENCY.2 as f32,
             run_on_words: bounds::WRITING_RUN_ON_WORDS.2 as u32,
+            skip_polish_words: bounds::WRITING_SKIP_POLISH_WORDS.2 as u32,
         }
     }
 }
@@ -260,6 +266,11 @@ pub fn parse(text: &str) -> Option<AgentConfig> {
                 run_on_words: clamp(
                     v.pointer("/writing/run_on_words"),
                     bounds::WRITING_RUN_ON_WORDS,
+                )
+                .round() as u32,
+                skip_polish_words: clamp(
+                    v.pointer("/writing/skip_polish_words"),
+                    bounds::WRITING_SKIP_POLISH_WORDS,
                 )
                 .round() as u32,
             }
@@ -445,13 +456,14 @@ mod tests {
     #[test]
     fn writing_tunables_are_clamped_and_the_band_stays_below_the_threshold() {
         let c = parse(
-            r#"{"schema":1,"writing":{"written_threshold":0.55,"ambiguous_floor":0.69,"polish_disfluency":9,"run_on_words":2}}"#,
+            r#"{"schema":1,"writing":{"written_threshold":0.55,"ambiguous_floor":0.69,"polish_disfluency":9,"run_on_words":2,"skip_polish_words":99}}"#,
         )
         .unwrap();
         assert!((c.writing.written_threshold - 0.55).abs() < 1e-6);
         assert!((c.writing.ambiguous_floor - 0.5).abs() < 1e-6);
         assert!((c.writing.polish_disfluency - 0.3).abs() < 1e-6);
         assert_eq!(c.writing.run_on_words, 15);
+        assert_eq!(c.writing.skip_polish_words, 10);
         assert_eq!(AgentConfig::default().writing, WritingConfig::default());
     }
 
@@ -498,6 +510,10 @@ mod tests {
             bounds::WRITING_POLISH_DISFLUENCY,
         );
         check("writing.run_on_words", bounds::WRITING_RUN_ON_WORDS);
+        check(
+            "writing.skip_polish_words",
+            bounds::WRITING_SKIP_POLISH_WORDS,
+        );
         check("free.ai_per_week", bounds::FREE_AI_PER_WEEK);
         check(
             "free.suggestions_per_week",

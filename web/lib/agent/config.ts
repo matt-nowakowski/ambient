@@ -35,6 +35,7 @@ export const GLOBAL_KEYS = [
   "writing.ambiguous_floor",
   "writing.polish_disfluency",
   "writing.run_on_words",
+  "writing.skip_polish_words",
   "free.ai_per_week",
   "free.suggestions_per_week",
   "free.memory_hours",
@@ -119,7 +120,7 @@ export type PublicConfig = {
   router: { did_you_mean_bias: number };
   answer: { first_byte_timeout_ms: number; idle_timeout_ms: number };
   search: { timeout_ms: number };
-  writing: { written_threshold: number; ambiguous_floor: number; polish_disfluency: number; run_on_words: number };
+  writing: { written_threshold: number; ambiguous_floor: number; polish_disfluency: number; run_on_words: number; skip_polish_words: number };
   /** Free's limits. The server enforces ai_per_week on hosted AI; the app the rest. */
   free: { ai_per_week: number; suggestions_per_week: number; memory_hours: number; meetings_per_month: number };
   kinds: Record<string, { enabled: boolean; min_confidence: number; cooldown_min: number }>;
@@ -141,6 +142,7 @@ export function toPublic(values: Flat, now = new Date()): PublicConfig {
       ambiguous_floor: n("writing.ambiguous_floor"),
       polish_disfluency: n("writing.polish_disfluency"),
       run_on_words: n("writing.run_on_words"),
+      skip_polish_words: n("writing.skip_polish_words"),
     },
     free: {
       ai_per_week: n("free.ai_per_week"),

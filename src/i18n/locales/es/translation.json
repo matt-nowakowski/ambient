@@ -226,8 +226,8 @@
       "highFiveLabel": "Choca esos cinco",
       "atLogin": "Iniciar {{appName}} al iniciar sesión",
       "polish": {
-        "title": "Deja que {{appName}} pula y escriba por ti",
-        "description": "Envía el texto que dictas (nunca el audio) para pulirlo. Desactívalo para que el dictado se quede en este ordenador."
+        "title": "Pulir mi dictado con IA",
+        "description": "Desactivado, el dictado se escribe al instante. Activado, primero se limpia el habla desordenada (se envía el texto, nunca el audio). En ambos casos, {{appName}} escribe por ti cuando se lo pides."
       },
       "finish": "Listo",
       "panel": {
@@ -1133,7 +1133,7 @@
           "description": "Pulido con IA en cada dictado."
         }
       },
-      "needsPolish": "Para pulir hay que activar el pulido con IA. Redactar por ti cuenta como una solicitud de IA."
+      "needsPolish": "El pulido con IA está desactivado, así que el dictado se escribe al instante y el habla desordenada queda tal como la dijiste. {{appName}} sigue escribiendo por ti cuando se lo pides (cuenta como una solicitud de IA)."
     },
     "trial": {
       "daysLeft_one": "Queda {{count}} día",

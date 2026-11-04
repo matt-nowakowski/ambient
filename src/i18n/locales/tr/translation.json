@@ -225,8 +225,8 @@
       "highFiveLabel": "Çak bir beşlik",
       "atLogin": "Oturum açtığımda {{appName}} uygulamasını başlat",
       "polish": {
-        "title": "{{appName}} metni cilalasın ve sizin için yazsın",
-        "description": "Dikte ettiğiniz metni (asla sesi değil) cilalamak için gönderir. Dikteyi bu bilgisayarda tutmak için kapatın."
+        "title": "Dikteimi yapay zekâyla toparla",
+        "description": "Kapalıyken dikte anında yazılır. Açıkken dağınık konuşma önce toparlanır (metin gönderilir, ses asla). Her iki durumda da istediğinde {{appName}} senin için yazar."
       },
       "finish": "Bitti",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "Her diktede yapay zekâ düzeltmesi."
         }
       },
-      "needsPolish": "Düzeltme için yapay zekâ düzeltmesinin açık olması gerekir. Sizin için yazmak bir yapay zekâ isteği sayılır."
+      "needsPolish": "Yapay zekâ cilası kapalı; bu yüzden dikte anında yazılır ve dağınık konuşma söylendiği gibi kalır. İstediğinde {{appName}} yine senin için yazar (bu bir yapay zekâ isteği sayılır)."
     },
     "trial": {
       "daysLeft_one": "{{count}} gün kaldı",

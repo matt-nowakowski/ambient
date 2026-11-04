@@ -61,7 +61,8 @@ const Chevron = () => (
 const HOSTED = "ambient";
 const ON_DEVICE = "apple_intelligence";
 
-/** AI polish, on for new installs: saved the moment it's switched (not in a
+/** AI polish, off for new installs (dictation types instantly; smart
+ * writing still drafts when asked): saved the moment it's switched (not in a
  * preview), like Account's AI polish switch. Turning it back on picks our
  * hosted model if none is chosen; it still runs on device where it can. */
 const PolishRow: React.FC = () => {

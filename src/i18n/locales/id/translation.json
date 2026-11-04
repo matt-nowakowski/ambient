@@ -225,8 +225,8 @@
       "highFiveLabel": "Tos",
       "atLogin": "Jalankan {{appName}} saat saya masuk",
       "polish": {
-        "title": "Biarkan {{appName}} memoles dan menulis untuk Anda",
-        "description": "Mengirim teks yang Anda dikte (tidak pernah audio) untuk dipoles. Matikan agar dikte tetap di komputer ini."
+        "title": "Rapikan dikte saya dengan AI",
+        "description": "Mati: dikte langsung diketik. Nyala: ucapan yang berantakan dirapikan dulu (teks yang dikirim, tidak pernah audio). Bagaimanapun, {{appName}} menuliskan untukmu saat kamu minta."
       },
       "finish": "Selesai",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "Perapian AI di setiap dikte."
         }
       },
-      "needsPolish": "Merapikan memerlukan perapian AI aktif. Menuliskan untuk Anda dihitung sebagai permintaan AI."
+      "needsPolish": "Poles AI mati, jadi dikte langsung diketik dan ucapan yang berantakan tetap seperti diucapkan. {{appName}} tetap menuliskan untukmu saat kamu minta (dihitung sebagai permintaan AI)."
     },
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",

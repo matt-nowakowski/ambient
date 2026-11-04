@@ -37,7 +37,7 @@ check(
 );
 check("every global key has a bound", GLOBAL_KEYS.every((k) => boundFor(k) !== null && boundFor(k) !== "bool"));
 check("config kinds match telemetry suggestion kinds", JSON.stringify(KINDS) === JSON.stringify(telemetry.enums.suggestion_kind));
-check("16 kinds × 3 + 16 globals", configKeys().length === KINDS.length * 3 + GLOBAL_KEYS.length && GLOBAL_KEYS.length === 16);
+check("16 kinds × 3 + 17 globals", configKeys().length === KINDS.length * 3 + GLOBAL_KEYS.length && GLOBAL_KEYS.length === 17);
 check(
   "Free limits default to the brand values",
   schema.bounds["free.ai_per_week"].default === brand.freePolishPerWeek &&

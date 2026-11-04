@@ -225,8 +225,8 @@
       "highFiveLabel": "High five",
       "atLogin": "Start {{appName}} when I log in",
       "polish": {
-        "title": "Let {{appName}} tidy up and write for you",
-        "description": "Sends the text you dictate (never audio) to tidy it up. Turn off to keep dictation on this computer."
+        "title": "Tidy up my dictation with AI",
+        "description": "Off, dictation types instantly. On, messy speech is cleaned up first (the text is sent, never audio). Either way, {{appName}} writes for you when you ask."
       },
       "finish": "Done",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "AI polish on every dictation."
         }
       },
-      "needsPolish": "Polishing needs AI polish on. Writing for you counts as an AI request."
+      "needsPolish": "AI polish is off, so dictation types instantly and messy speech stays as said. {{appName}} still writes for you when you ask (that counts as an AI request)."
     },
     "trial": {
       "daysLeft_one": "{{count}} day left",

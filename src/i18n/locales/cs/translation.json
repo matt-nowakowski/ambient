@@ -227,8 +227,8 @@
       "highFiveLabel": "Plácnout si",
       "atLogin": "Spustit {{appName}} po přihlášení",
       "polish": {
-        "title": "Ať {{appName}} vyladí text a píše za vás",
-        "description": "Odesílá nadiktovaný text (nikdy zvuk), aby ho vyladil. Vypněte, pokud má diktování zůstat v tomto počítači."
+        "title": "Učesat můj diktát pomocí AI",
+        "description": "Vypnuto: diktát se napíše okamžitě. Zapnuto: neuspořádaná řeč se nejdřív učeše (odesílá se text, nikdy zvuk). V obou případech za tebe {{appName}} napíše, co požádáš."
       },
       "finish": "Hotovo",
       "panel": {
@@ -1138,7 +1138,7 @@
           "description": "AI úprava u každého diktování."
         }
       },
-      "needsPolish": "Uhlazení vyžaduje zapnutou AI úpravu. Psaní za vás se počítá jako AI požadavek."
+      "needsPolish": "AI úprava je vypnutá, takže se diktát napíše okamžitě a neuspořádaná řeč zůstane, jak byla řečena. {{appName}} za tebe pořád napíše, co požádáš (počítá se to jako AI požadavek)."
     },
     "trial": {
       "daysLeft_one": "Zbývá {{count}} den",

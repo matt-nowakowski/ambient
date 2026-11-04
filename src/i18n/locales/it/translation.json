@@ -226,8 +226,8 @@
       "highFiveLabel": "Batti il cinque",
       "atLogin": "Avvia {{appName}} quando accedo",
       "polish": {
-        "title": "Lascia che {{appName}} rifinisca e scriva per te",
-        "description": "Invia il testo che detti (mai l'audio) per rifinirlo. Disattiva per tenere la dettatura su questo computer."
+        "title": "Rifinisci la mia dettatura con l'IA",
+        "description": "Spento, la dettatura viene scritta subito. Acceso, il parlato disordinato viene prima ripulito (si invia il testo, mai l'audio). In entrambi i casi, {{appName}} scrive per te quando glielo chiedi."
       },
       "finish": "Fatto",
       "panel": {
@@ -1133,7 +1133,7 @@
           "description": "Rifinitura IA su ogni dettatura."
         }
       },
-      "needsPolish": "Per rifinire serve la rifinitura IA attiva. Scrivere per te conta come una richiesta IA."
+      "needsPolish": "La rifinitura IA è spenta, quindi la dettatura viene scritta subito e il parlato disordinato resta com'è. {{appName}} scrive comunque per te quando glielo chiedi (conta come una richiesta IA)."
     },
     "trial": {
       "daysLeft_one": "{{count}} giorno rimasto",

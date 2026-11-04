@@ -176,8 +176,10 @@ fn polish_limits(transcription: &str) -> crate::llm_client::RequestLimits {
 const POLISH_TIMEOUT: Duration = Duration::from_secs(10);
 
 /// Warm the connection to the hosted AI while the user is still speaking, if
-/// this dictation will be polished there (or is an Ask): DNS, TCP and TLS
-/// are then done before the request is. Sends no token and no text.
+/// this dictation may need it (polish, an Ask, or Smart writing, which can
+/// draft): DNS, TCP and TLS are then done before the request is (measured
+/// 0.14–0.28 s of a cold request to our server). Sends no token and no
+/// text.
 fn warm_up_hosted_ai(app: &AppHandle, needs_ai: bool) {
     let settings = get_settings(app);
     if !needs_ai || settings.agent.device_only() {
@@ -584,6 +586,8 @@ struct SmartInputs {
     router_ran: bool,
     /// The router's polished text, when it polished.
     router_text: Option<String>,
+    /// Long enough to be worth polishing (`WritePlan::polish_worth_it`).
+    polish_worth_it: bool,
     started: Instant,
 }
 
@@ -612,9 +616,11 @@ async fn smart_write(
             }
         }
     };
-    // Polishing needs AI polish turned on; writing needs a model it may use
-    // ("On this computer only" without one never sends anything).
-    if (decision == Decision::Polished && !i.plan.polish_on)
+    // Polishing needs AI polish turned on (and more than a few words);
+    // writing for the user doesn't: it's an agent action, and needs only a
+    // model it may use ("On this computer only" without one never sends
+    // anything).
+    if (decision == Decision::Polished && !(i.plan.polish_on && i.polish_worth_it))
         || (decision == Decision::Written && crate::agent::llm::needs_cloud(app))
     {
         decision = Decision::AsSaid;
@@ -627,10 +633,12 @@ async fn smart_write(
     }
     crate::telemetry::write_mode(decision.name(), source.name(), &i.bundle);
     debug!(
-        "writing: {} by {} (category {}, selection {})",
+        "writing: {} by {} after {:?} (fresh {:?}, replying {}, selection {})",
         decision.name(),
         source.name(),
-        i.ctx.category,
+        i.started.elapsed(),
+        i.ctx.scene.fresh,
+        i.ctx.scene.replying,
         i.ctx.has_selection
     );
     let as_said = || ProcessedTranscription {
@@ -663,6 +671,10 @@ async fn smart_write(
                         .map(|t| keep_custom_spellings(settings, t))
                 }
             };
+            debug!(
+                "writing: polish ready {:?} after the transcript",
+                i.started.elapsed()
+            );
             crate::telemetry::dictation(polished.is_some(), i.started.elapsed());
             match polished {
                 // Polish changed something: say so, and offer their words.
@@ -712,8 +724,15 @@ pub(crate) async fn process_dictation_output(
     let started = Instant::now();
     let settings = get_settings(app);
     // Polish may happen: always (the polish shortcut, "Always polish"), or
-    // when smart writing decides so.
-    let post_process = plan.force_polish || (plan.smart() && plan.polish_on);
+    // when smart writing decides so; never for a few words ("sounds good"),
+    // which can't gain enough to wait for a model.
+    let polish_worth_it = plan.polish_worth_it(
+        transcription,
+        crate::remote_config::agent_config()
+            .writing
+            .skip_polish_words,
+    );
+    let post_process = (plan.force_polish || (plan.smart() && plan.polish_on)) && polish_worth_it;
     let working = || {
         if let Some(f) = &on_working {
             f();
@@ -783,7 +802,12 @@ pub(crate) async fn process_dictation_output(
                 || reminder.is_some()
                 || report.is_some()
                 || follow_up
-                || (!cues && post_process)));
+                // Languages the cues don't cover: in "Always polish" the
+                // router doubles as the polish, so routing every dictation
+                // costs nothing extra. In Smart it would put a model round
+                // trip in front of every dictation, even clean ones typed
+                // as said; there the cues (multilingual for drafting) decide.
+                || (!cues && post_process && !plan.smart())));
     // Smart writing decides per dictation, with a text field to write in.
     let smart_wanted =
         mode == OutputMode::Dictation && plan.smart() && !is_blank_transcription(transcription);
@@ -816,14 +840,16 @@ pub(crate) async fn process_dictation_output(
     // Written for the user without naming Ambient only in Smart; in "Always
     // as I said" and "Always polish" an instruction is typed like any words.
     let may_write = mode != OutputMode::Dictation || ask || addressed || plan.writes_unasked();
-    // A selection to rewrite (a metadata read: no text).
-    let has_selection = if smart_here {
+    // A selection to rewrite, and the field around the caret (a fresh
+    // message, a reply): read here, never sent.
+    let (has_selection, scene) = if smart_here {
         let a = app.clone();
-        tauri::async_runtime::spawn_blocking(move || writing::has_selection(&a))
+        let (app_name, title) = (place.app.clone(), place.title.clone());
+        tauri::async_runtime::spawn_blocking(move || writing::read_field(&a, &app_name, &title))
             .await
-            .unwrap_or(false)
+            .unwrap_or_default()
     } else {
-        false
+        Default::default()
     };
     let written = |instruction: String, source: writing::Source| {
         crate::telemetry::write_mode("written", source.name(), &place.bundle_id);
@@ -1035,10 +1061,12 @@ pub(crate) async fn process_dictation_output(
                     category: crate::telemetry::app_category(&place.bundle_id),
                     ai_chat: place.is_ai_chat(),
                     addressed,
+                    scene,
                 },
                 bundle: place.bundle_id.clone(),
                 router_ran,
                 router_text,
+                polish_worth_it,
                 started,
             },
             &working,
@@ -1237,8 +1265,11 @@ impl ShortcutAction for TranscribeAction {
             // Dynamically register the cancel shortcut in a separate task to avoid deadlock
             shortcut::register_cancel_shortcut(app);
             // Off the capture path: the connection opens while they speak.
+            // Smart writing may draft from an instruction even with polish
+            // off: drafts and answers share the pooled connection.
             let polish = self.post_process || crate::plan::polish_every_dictation(app);
-            warm_up_hosted_ai(app, polish || self.ask);
+            let smart = get_settings(app).writing_mode == crate::settings::WritingMode::Smart;
+            warm_up_hosted_ai(app, polish || smart || self.ask);
         } else {
             // Starting failed (for example due to blocked microphone permissions).
             // Revert UI state so we don't stay stuck in the recording overlay.

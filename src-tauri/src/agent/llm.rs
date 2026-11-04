@@ -136,17 +136,19 @@ pub async fn complete_on_device(system: &str, user: &str) -> Option<String> {
 }
 
 /// Skip the on-device attempt (used where the Mac's model already had its
-/// say, like routing). Still on-device in on-device-only mode.
-pub async fn complete_hosted(
+/// say, like routing), within `limits` (an output cap, a deadline). Still
+/// on-device in on-device-only mode.
+pub async fn complete_hosted_limited(
     app: &AppHandle,
     purpose: &str,
     system: &str,
     user: &str,
+    limits: crate::llm_client::RequestLimits,
 ) -> Option<String> {
     if get_settings(app).agent.device_only() {
-        return complete(app, purpose, system, user).await;
+        return complete_inner(app, purpose, system, user, true, limits).await;
     }
-    complete_inner(app, purpose, system, user, false).await
+    complete_inner(app, purpose, system, user, false, limits).await
 }
 
 /// System + user prompt → the model's text, or None on any failure.
@@ -156,7 +158,7 @@ pub async fn complete_hosted(
 /// model is the fallback for long text and Macs without Apple Intelligence
 /// (never in on-device-only mode).
 pub async fn complete(app: &AppHandle, purpose: &str, system: &str, user: &str) -> Option<String> {
-    complete_inner(app, purpose, system, user, true).await
+    complete_inner(app, purpose, system, user, true, Default::default()).await
 }
 
 async fn complete_inner(
@@ -165,6 +167,7 @@ async fn complete_inner(
     system: &str,
     user: &str,
     local_first: bool,
+    limits: crate::llm_client::RequestLimits,
 ) -> Option<String> {
     // Free's weekly AI pool is used: say so (for what the user asked for)
     // instead of sending a request the server would refuse.
@@ -212,14 +215,14 @@ async fn complete_inner(
         crate::plan::record_hosted_use(app, "ai");
     }
     let disable_reasoning = t.is_hosted();
-    match crate::llm_client::send_chat_completion_with_schema(
+    match crate::llm_client::send_chat_completion_bounded(
         &t.provider,
         t.api_key,
         &t.model,
         user.to_string(),
-        Some(system.to_string()),
-        None,
+        system.to_string(),
         disable_reasoning,
+        limits,
     )
     .await
     {

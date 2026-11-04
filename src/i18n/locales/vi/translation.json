@@ -225,8 +225,8 @@
       "highFiveLabel": "Đập tay",
       "atLogin": "Khởi động {{appName}} khi tôi đăng nhập",
       "polish": {
-        "title": "Để {{appName}} trau chuốt và viết giúp bạn",
-        "description": "Gửi văn bản bạn đọc (không bao giờ gửi âm thanh) để trau chuốt. Tắt để giữ việc đọc chính tả trên máy tính này."
+        "title": "Chỉnh chu phần đọc chính tả của tôi bằng AI",
+        "description": "Tắt: lời đọc được gõ ngay. Bật: lời nói lộn xộn được làm gọn trước (chỉ gửi văn bản, không bao giờ gửi âm thanh). Dù thế nào, {{appName}} vẫn viết giúp bạn khi bạn yêu cầu."
       },
       "finish": "Xong",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "Trau chuốt bằng AI cho mọi lần đọc."
         }
       },
-      "needsPolish": "Trau chuốt cần bật trau chuốt bằng AI. Viết giúp bạn được tính là một yêu cầu AI."
+      "needsPolish": "Trau chuốt bằng AI đang tắt, nên lời đọc được gõ ngay và lời nói lộn xộn giữ nguyên như đã nói. {{appName}} vẫn viết giúp bạn khi bạn yêu cầu (tính là một yêu cầu AI)."
     },
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",

@@ -226,8 +226,8 @@
       "highFiveLabel": "Xoqueu-la",
       "atLogin": "Inicia el {{appName}} quan entri a la sessió",
       "polish": {
-        "title": "Deixa que el {{appName}} poleixi i escrigui per tu",
-        "description": "Envia el text que dictes (mai l'àudio) per polir-lo. Desactiva-ho per mantenir el dictat en aquest ordinador."
+        "title": "Polir el meu dictat amb IA",
+        "description": "Desactivat, el dictat s'escriu a l'instant. Activat, primer es neteja la parla desordenada (s'envia el text, mai l'àudio). En tots dos casos, {{appName}} escriu per tu quan li ho demanes."
       },
       "finish": "Fet",
       "panel": {
@@ -1133,7 +1133,7 @@
           "description": "Polit amb IA a cada dictat."
         }
       },
-      "needsPolish": "Per polir cal activar el polit amb IA. Redactar per tu compta com una sol·licitud d'IA."
+      "needsPolish": "El poliment amb IA està desactivat, així que el dictat s'escriu a l'instant i la parla desordenada queda tal com l'has dita. {{appName}} encara escriu per tu quan li ho demanes (compta com una petició d'IA)."
     },
     "trial": {
       "daysLeft_one": "Queda {{count}} dia",

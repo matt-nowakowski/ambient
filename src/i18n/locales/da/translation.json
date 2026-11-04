@@ -225,8 +225,8 @@
       "highFiveLabel": "Highfive",
       "atLogin": "Start {{appName}}, når jeg logger ind",
       "polish": {
-        "title": "Lad {{appName}} finpudse og skrive for dig",
-        "description": "Sender den tekst, du dikterer (aldrig lyden), for at finpudse den. Slå fra for at holde diktering på denne computer."
+        "title": "Gør min diktering pæn med AI",
+        "description": "Fra: diktering skrives med det samme. Til: rodet tale ryddes op først (teksten sendes, aldrig lyd). Uanset hvad skriver {{appName}} for dig, når du beder om det."
       },
       "finish": "Færdig",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "AI-finpudsning på hver diktering."
         }
       },
-      "needsPolish": "Afpudsning kræver, at AI-finpudsning er slået til. At skrive for dig tæller som en AI-forespørgsel."
+      "needsPolish": "AI-polering er slået fra, så diktering skrives med det samme, og rodet tale bliver som sagt. {{appName}} skriver stadig for dig, når du beder om det (det tæller som en AI-forespørgsel)."
     },
     "trial": {
       "daysLeft_one": "{{count}} dag tilbage",
