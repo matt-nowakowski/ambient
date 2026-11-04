@@ -492,8 +492,11 @@ pub struct AppSettings {
     pub theme: Theme,
     #[serde(default)]
     pub experimental_enabled: bool,
-    #[serde(default)]
-    pub lazy_stream_close: bool,
+    /// Seconds the microphone stays open after a dictation, so the next one
+    /// starts at once and keeps its first word (see `MIC_PRE_ROLL`). 0 closes
+    /// it right away. Replaces the old experimental `lazy_stream_close`.
+    #[serde(default = "default_keep_mic_ready_secs")]
+    pub keep_mic_ready_secs: u64,
     #[serde(default)]
     pub keyboard_implementation: KeyboardImplementation,
     /// Swallow Ambient's shortcut presses so another dictation app bound to
@@ -766,6 +769,17 @@ fn default_auto_stop_pause_ms() -> u64 {
 
 fn default_always_on_microphone() -> bool {
     false
+}
+
+/// Keep the mic ready for a minute after each dictation on every OS: the
+/// first word of a back-to-back dictation is never lost, and the system's
+/// mic indicator turns off soon after. Audio held meanwhile is memory only.
+pub const DEFAULT_KEEP_MIC_READY_SECS: u64 = 60;
+/// The longest the mic may be kept ready (the settings UI offers up to this).
+pub const MAX_KEEP_MIC_READY_SECS: u64 = 300;
+
+fn default_keep_mic_ready_secs() -> u64 {
+    DEFAULT_KEEP_MIC_READY_SECS
 }
 
 fn default_translate_to_english() -> bool {
@@ -1064,7 +1078,7 @@ pub fn get_default_settings() -> AppSettings {
         app_language: default_app_language(),
         theme: default_theme(),
         experimental_enabled: false,
-        lazy_stream_close: false,
+        keep_mic_ready_secs: default_keep_mic_ready_secs(),
         keyboard_implementation: KeyboardImplementation::default(),
         exclusive_shortcuts: default_exclusive_shortcuts(),
         show_tray_icon: default_show_tray_icon(),

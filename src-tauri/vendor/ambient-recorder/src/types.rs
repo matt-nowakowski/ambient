@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use crate::{Error, InputDevice};
 
 /// Which device to open and what the sink receives. The device always runs at
@@ -19,6 +21,12 @@ pub struct RecorderConfig {
     /// Moves a Bluetooth headset (AirPods) to this Mac while recording.
     /// macOS only.
     pub take_headset: bool,
+    /// Audio kept from just before `start`. While the stream runs between
+    /// recordings, the most recent `pre_roll` of audio is held in memory and
+    /// handed to the next recording first, so a word begun as the user hits
+    /// the key is kept. Never written anywhere; dropped on close. Zero (the
+    /// default) keeps nothing.
+    pub pre_roll: Duration,
 }
 
 impl RecorderConfig {
@@ -30,6 +38,7 @@ impl RecorderConfig {
             channels: Channels::MixToMono,
             frames_per_chunk: Some(480),
             take_headset: false,
+            pre_roll: Duration::ZERO,
         }
     }
 }

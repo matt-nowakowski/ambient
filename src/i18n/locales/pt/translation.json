@@ -495,6 +495,17 @@
         "average": "Todos os canais, mixados",
         "channel": "Canal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Manter o microfone pronto",
+        "description": "Depois de ditar, o microfone fica ligado mais um pouco para que o próximo ditado comece na hora e capte sua primeira palavra. O computador mostra que o microfone está em uso até ele fechar. Esse áudio fica só na memória: nunca é salvo nem enviado.",
+        "options": {
+          "off": "Desativado",
+          "sec30": "30 segundos",
+          "min1": "1 minuto",
+          "min2": "2 minutos",
+          "min5": "5 minutos"
+        }
+      },
       "audioFeedback": {
         "label": "Feedback de áudio",
         "description": "Reproduzir som quando a gravação iniciar e parar"
@@ -521,10 +532,6 @@
       "experimentalToggle": {
         "label": "Recursos experimentais",
         "description": "Ativar recursos experimentais que ainda estão em desenvolvimento."
-      },
-      "lazyStreamClose": {
-        "label": "Manter microfone aberto entre transcrições",
-        "description": "Mantém o fluxo do microfone aberto por 30 segundos após parar a gravação, reduzindo a latência em transcrições consecutivas. Pode degradar a qualidade do áudio Bluetooth enquanto ativo."
       },
       "acceleration": {
         "transcribe": {

@@ -492,6 +492,17 @@
         "average": "Alla kanaler, mixade",
         "channel": "Kanal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Håll mikrofonen redo",
+        "description": "Efter att du dikterat förblir mikrofonen på en stund till, så att nästa diktering startar direkt och fångar ditt första ord. Datorn visar att mikrofonen används tills den stängs. Ljudet finns bara i minnet: det sparas aldrig och skickas aldrig.",
+        "options": {
+          "off": "Av",
+          "sec30": "30 sekunder",
+          "min1": "1 minut",
+          "min2": "2 minuter",
+          "min5": "5 minuter"
+        }
+      },
       "audioFeedback": {
         "label": "Ljudåterkoppling",
         "description": "Spela upp ljud när inspelningen startar och stoppar"
@@ -518,10 +529,6 @@
       "experimentalToggle": {
         "label": "Experimentella funktioner",
         "description": "Aktivera experimentella funktioner som fortfarande är under utveckling."
-      },
-      "lazyStreamClose": {
-        "label": "Håll mikrofonen öppen mellan transkriptioner",
-        "description": "Håller mikrofonströmmen öppen i 30 sekunder efter att inspelningen avslutats, vilket minskar latensen för transkriptioner efter varandra. Kan försämra Bluetooth-ljudkvaliteten medan den är aktiv."
       },
       "acceleration": {
         "transcribe": {

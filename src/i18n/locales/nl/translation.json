@@ -492,6 +492,17 @@
         "average": "Alle kanalen, gemixt",
         "channel": "Kanaal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Microfoon paraat houden",
+        "description": "Na het dicteren blijft de microfoon nog even aan, zodat je volgende dictaat meteen start en je eerste woord vangt. Je computer toont dat de microfoon in gebruik is tot hij sluit. Dat geluid blijft alleen in het geheugen: nooit opgeslagen, nooit verzonden.",
+        "options": {
+          "off": "Uit",
+          "sec30": "30 seconden",
+          "min1": "1 minuut",
+          "min2": "2 minuten",
+          "min5": "5 minuten"
+        }
+      },
       "audioFeedback": {
         "label": "Geluidsfeedback",
         "description": "Geluid afspelen wanneer de opname start en stopt"
@@ -518,10 +529,6 @@
       "experimentalToggle": {
         "label": "Experimentele functies",
         "description": "Schakel experimentele functies in die nog in ontwikkeling zijn."
-      },
-      "lazyStreamClose": {
-        "label": "Microfoon openhouden tussen transcripties",
-        "description": "Houdt de microfoonstream tot 30 seconden open nadat een opname stopt. Dit vermindert de vertraging bij opeenvolgende opnames, maar kan de Bluetooth-audiokwaliteit tijdelijk verminderen."
       },
       "acceleration": {
         "transcribe": {

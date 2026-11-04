@@ -371,9 +371,9 @@ async changeAppendTrailingSpaceSetting(enabled: boolean) : Promise<Result<null, 
     else return { status: "error", error: e  as any };
 }
 },
-async changeLazyStreamCloseSetting(enabled: boolean) : Promise<Result<null, string>> {
+async changeKeepMicReadySetting(secs: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("change_lazy_stream_close_setting", { enabled }) };
+    return { status: "ok", data: await TAURI_INVOKE("change_keep_mic_ready_setting", { secs }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -1571,7 +1571,13 @@ spoken_languages?: string[]; overlay_position?: OverlayPosition; debug_mode?: bo
  * API keys for bring-your-own-key providers; serde ignores those fields
  * and the settings migration rewrites the store without them.
  */
-post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation;
+post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; 
+/**
+ * Seconds the microphone stays open after a dictation, so the next one
+ * starts at once and keeps its first word (see `MIC_PRE_ROLL`). 0 closes
+ * it right away. Replaces the old experimental `lazy_stream_close`.
+ */
+keep_mic_ready_secs?: number; keyboard_implementation?: KeyboardImplementation;
 /**
  * Swallow Ambient's shortcut presses so another dictation app bound to
  * the same keys doesn't also start. ambient-keys only; Tauri's backend

@@ -498,6 +498,17 @@
         "average": "Wszystkie kanały razem",
         "channel": "Kanał {{n}}"
       },
+      "keepMicReady": {
+        "title": "Mikrofon w gotowości",
+        "description": "Po dyktowaniu mikrofon zostaje włączony jeszcze chwilę, więc następne dyktowanie zaczyna się od razu i łapie pierwsze słowo. Do zamknięcia mikrofonu komputer pokazuje, że jest on w użyciu. Ten dźwięk zostaje tylko w pamięci: nigdy nie jest zapisywany ani wysyłany.",
+        "options": {
+          "off": "Wyłączone",
+          "sec30": "30 sekund",
+          "min1": "1 minuta",
+          "min2": "2 minuty",
+          "min5": "5 minut"
+        }
+      },
       "audioFeedback": {
         "label": "Sygnały dźwiękowe",
         "description": "Odtwarzaj dźwięk na początku i na końcu nagrywania"
@@ -524,10 +535,6 @@
       "experimentalToggle": {
         "label": "Funkcje eksperymentalne",
         "description": "Włącz funkcje eksperymentalne, które są jeszcze w fazie rozwoju."
-      },
-      "lazyStreamClose": {
-        "label": "Pozostaw mikrofon otwarty między transkrypcjami",
-        "description": "Utrzymuje strumień mikrofonu otwarty przez 30 sekund po zatrzymaniu nagrywania, zmniejszając opóźnienie przy kolejnych transkrypcjach. Może pogorszyć jakość dźwięku Bluetooth."
       },
       "acceleration": {
         "transcribe": {

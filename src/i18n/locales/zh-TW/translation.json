@@ -492,6 +492,17 @@
         "average": "所有聲道混合",
         "channel": "聲道 {{n}}"
       },
+      "keepMicReady": {
+        "title": "保持麥克風就緒",
+        "description": "聽寫結束後，麥克風會再開一會兒，讓下一次聽寫立即開始，不漏掉第一個字。關閉前，電腦會顯示麥克風正在使用。這段音訊只在記憶體中：從不儲存，也從不傳送。",
+        "options": {
+          "off": "關閉",
+          "sec30": "30 秒",
+          "min1": "1 分鐘",
+          "min2": "2 分鐘",
+          "min5": "5 分鐘"
+        }
+      },
       "audioFeedback": {
         "label": "聲音回饋",
         "description": "錄製開始和停止時播放聲音"
@@ -518,10 +529,6 @@
       "experimentalToggle": {
         "label": "實驗性功能",
         "description": "啟用仍在開發中的實驗性功能。"
-      },
-      "lazyStreamClose": {
-        "label": "在轉錄之間保持麥克風開啟",
-        "description": "錄音停止後讓麥克風串流保持開啟 30 秒，減少連續轉錄時的延遲。開啟期間可能會降低藍牙音訊品質。"
       },
       "acceleration": {
         "transcribe": {
@@ -1843,10 +1850,7 @@
       },
       "recall": {
         "title": "回想",
-        "examples": [
-          "我昨天對定價說了什麼？",
-          "找出第三季的簡報。"
-        ],
+        "examples": ["我昨天對定價說了什麼？", "找出第三季的簡報。"],
         "hint": "你說過、看過或做過的事。"
       },
       "suggestions": {

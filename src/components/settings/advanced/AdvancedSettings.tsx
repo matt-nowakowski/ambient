@@ -22,7 +22,6 @@ import { VoiceActivityDetection } from "../VoiceActivityDetection";
 import { LongFormChunking } from "../LongFormChunking";
 import { LanguageDetection } from "../LanguageDetection";
 import { AccelerationSelector } from "../AccelerationSelector";
-import { LazyStreamClose } from "../LazyStreamClose";
 import { FillerWordRemoval } from "../FillerWordRemoval";
 import { VadBackendSelector } from "../VadBackendSelector";
 
@@ -73,7 +72,6 @@ export const AdvancedSettings: React.FC = () => {
             grouped={true}
           />
           <AccelerationSelector descriptionMode="tooltip" grouped={true} />
-          <LazyStreamClose descriptionMode="tooltip" grouped={true} />
           <VadBackendSelector descriptionMode="tooltip" grouped={true} />
           <LanguageDetection descriptionMode="tooltip" grouped={true} />
         </SettingsGroup>

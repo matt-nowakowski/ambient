@@ -492,6 +492,17 @@
         "average": "All channels, mixed",
         "channel": "Channel {{n}}"
       },
+      "keepMicReady": {
+        "title": "Keep mic ready",
+        "description": "After you dictate, the mic stays on a little longer so your next dictation starts instantly and catches your first word. Your computer shows the mic is in use until it closes. That audio stays in memory: never saved, never sent.",
+        "options": {
+          "off": "Off",
+          "sec30": "30 seconds",
+          "min1": "1 minute",
+          "min2": "2 minutes",
+          "min5": "5 minutes"
+        }
+      },
       "audioFeedback": {
         "label": "Audio Feedback",
         "description": "Play sound when recording starts and stops"
@@ -518,10 +529,6 @@
       "experimentalToggle": {
         "label": "Experimental Features",
         "description": "Enable experimental features that are still in development."
-      },
-      "lazyStreamClose": {
-        "label": "Keep Mic Open Between Transcriptions",
-        "description": "Keeps the microphone stream open for 30 seconds after recording stops, reducing latency for back-to-back transcriptions. May degrade Bluetooth audio quality while active."
       },
       "acceleration": {
         "transcribe": {

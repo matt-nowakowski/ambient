@@ -492,6 +492,17 @@
         "average": "Tüm kanallar, karışık",
         "channel": "Kanal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Mikrofonu hazır tut",
+        "description": "Dikte ettikten sonra mikrofon bir süre daha açık kalır; böylece sonraki dikte hemen başlar ve ilk kelimenizi kaçırmaz. Mikrofon kapanana kadar bilgisayarınız mikrofonun kullanımda olduğunu gösterir. Bu ses yalnızca bellekte kalır: asla kaydedilmez, asla gönderilmez.",
+        "options": {
+          "off": "Kapalı",
+          "sec30": "30 saniye",
+          "min1": "1 dakika",
+          "min2": "2 dakika",
+          "min5": "5 dakika"
+        }
+      },
       "audioFeedback": {
         "label": "Sesli Geri Bildirim",
         "description": "Kayıt başladığında ve bittiğinde ses çalar"
@@ -518,10 +529,6 @@
       "experimentalToggle": {
         "label": "Deneysel Özellikler",
         "description": "Hâlâ geliştirme aşamasında olan deneysel özellikleri etkinleştir."
-      },
-      "lazyStreamClose": {
-        "label": "Kayıtlar Arasında Mikrofonu Açık Tut",
-        "description": "Kayıt durduktan sonra mikrofon akışını 30 saniye açık tutar; art arda kayıtlarda gecikmeyi azaltır. Etkinken Bluetooth ses kalitesini düşürebilir."
       },
       "acceleration": {
         "transcribe": {

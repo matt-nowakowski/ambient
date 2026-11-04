@@ -116,6 +116,11 @@ const PLACES: Place[] = [
             description: "settings.sound.channel.description",
           },
           {
+            label: "settings.sound.keepMicReady.title",
+            description: "settings.sound.keepMicReady.description",
+            keywords: ["mic", "first word", "latency", "indicator"],
+          },
+          {
             label: "settings.debug.muteWhileRecording.label",
             description: "settings.debug.muteWhileRecording.description",
           },

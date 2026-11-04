@@ -1339,10 +1339,17 @@ pub fn change_append_trailing_space_setting(app: AppHandle, enabled: bool) -> Re
 
 #[tauri::command]
 #[specta::specta]
-pub fn change_lazy_stream_close_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+pub fn change_keep_mic_ready_setting(app: AppHandle, secs: u64) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
-    settings.lazy_stream_close = enabled;
+    settings.keep_mic_ready_secs = secs.min(settings::MAX_KEEP_MIC_READY_SECS);
     settings::write_settings(&app, settings);
+    // Closing a device can block (CoreAudio); keep it off the UI thread.
+    if let Some(rm) =
+        app.try_state::<std::sync::Arc<crate::managers::audio::AudioRecordingManager>>()
+    {
+        let rm = rm.inner().clone();
+        std::thread::spawn(move || rm.keep_ready_changed());
+    }
     Ok(())
 }
 
