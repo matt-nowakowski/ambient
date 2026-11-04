@@ -232,6 +232,14 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
+  /* backdrop-filter makes every panel its own stacking context, so a menu
+   * opening out of one would slide under the next panel down. Lift the panel
+   * whose menu is open (Dropdown, MoreMenu, the language search) above its
+   * siblings. */
+  .glass:has([aria-expanded="true"]),
+  .glass-strong:has([aria-expanded="true"]) {
+    z-index: 30;
+  }
 }
 
 /* Iridescent foil for the account card: a slow-turning conic sheen. */
