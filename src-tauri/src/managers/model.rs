@@ -1923,7 +1923,9 @@ impl ModelManager {
                 repo_id: &model.repo_id,
                 revision: &model.revision,
                 filename: &model.filename,
-                mirrors: crate::catalog::reasoning_model_mirrors(),
+                // Hugging Face only, by decision: the reasoning model is far
+                // too large for the model mirror, so it has no fallback.
+                mirrors: Vec::new(),
                 progress: ProgressTarget {
                     model_id: ON_DEVICE_AI_ID.to_string(),
                     offset: runtime.size,

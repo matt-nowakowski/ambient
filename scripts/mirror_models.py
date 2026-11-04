@@ -89,16 +89,16 @@ def make_s3():
 def offered_models(catalog):
     """Mirror every root-level ASR default Ambient can download, plus the
     language detector the catalog names (catalog::LANGUAGE_DETECTOR), which
-    Ambient fetches alongside models without their own language detection,
-    and the on-device reasoning model (catalog::REASONING_MODEL).
+    Ambient fetches alongside models without their own language detection.
+    The on-device reasoning model is deliberately NOT mirrored: it is far too
+    large for the shared R2 tier, so Hugging Face is its only source and
+    Ambient must not promise it a fallback.
     Matches catalog::CatalogModel::is_offered (the models directory is flat)."""
     detector = catalog.get("languageDetector")
-    reasoning = catalog.get("reasoningModel")
     for m in catalog["models"]:
         default = m["files"].get(m["quant"])
         wanted = (m["role"] == "asr"
-                  or (m["role"] == "langid" and m["id"] == detector)
-                  or (m["role"] == "llm" and m["id"] == reasoning))
+                  or (m["role"] == "langid" and m["id"] == detector))
         if wanted and default and "/" not in default["filename"]:
             yield m
 

@@ -435,19 +435,6 @@ pub static REASONING_MODEL: Lazy<Option<ReasoningModelFile>> = Lazy::new(|| {
     })
 });
 
-/// Ordered mirror URLs for the reasoning model's file.
-pub fn reasoning_model_mirrors() -> Vec<MirrorFile> {
-    REASONING_MODEL.as_ref().map_or_else(Vec::new, |m| {
-        mirror_files(
-            &m.repo_id,
-            &m.revision,
-            &m.filename,
-            &m.sha256,
-            m.size_bytes,
-        )
-    })
-}
-
 /// Ordered mirror URLs for the language detector's file.
 pub fn language_detector_mirrors() -> Vec<MirrorFile> {
     LANGUAGE_DETECTOR.as_ref().map_or_else(Vec::new, |d| {
@@ -563,10 +550,9 @@ mod tests {
         assert!(CATALOG
             .iter()
             .all(|d| !d.files.iter().any(|f| f.filename == model.filename)));
-        assert!(reasoning_model_mirrors()[0].url.ends_with(&format!(
-            "/{}/{}/{}",
-            model.repo_id, model.revision, model.filename
-        )));
+        // Deliberately not mirrored: the reasoning model is far too large for
+        // the shared R2 tier, so Hugging Face is its only source and there is
+        // no fallback URL to build (see scripts/mirror_models.py).
     }
 
     #[test]
