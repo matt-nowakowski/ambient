@@ -954,6 +954,7 @@
     "upToDate": "Aktualne",
     "updateCheckingDisabled": "Sprawdzanie aktualizacji wyłączone",
     "downloading": "Pobieranie… {{progress}}%",
+    "downloadingUpdate": "Pobieranie aktualizacji…",
     "installing": "Instalowanie…",
     "preparing": "Przygotowywanie…",
     "checkForUpdates": "Sprawdź aktualizacje",

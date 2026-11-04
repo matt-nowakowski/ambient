@@ -948,6 +948,7 @@
     "upToDate": "Senaste versionen",
     "updateCheckingDisabled": "Uppdateringskontroll inaktiverad",
     "downloading": "Laddar ner… {{progress}} %",
+    "downloadingUpdate": "Hämtar uppdateringen…",
     "installing": "Installerar…",
     "preparing": "Förbereder…",
     "checkForUpdates": "Sök efter uppdateringar",

@@ -948,6 +948,7 @@
     "upToDate": "Sudah versi terbaru",
     "updateCheckingDisabled": "Pemeriksaan Pembaruan Dinonaktifkan",
     "downloading": "Mengunduh… {{progress}}%",
+    "downloadingUpdate": "Mengunduh pembaruan…",
     "installing": "Menginstal…",
     "preparing": "Menyiapkan…",
     "checkForUpdates": "Periksa pembaruan",

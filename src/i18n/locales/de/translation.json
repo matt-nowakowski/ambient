@@ -948,6 +948,7 @@
     "upToDate": "Aktuell",
     "updateCheckingDisabled": "Update-Prüfung deaktiviert",
     "downloading": "Wird heruntergeladen… {{progress}} %",
+    "downloadingUpdate": "Update wird heruntergeladen…",
     "installing": "Wird installiert…",
     "preparing": "Wird vorbereitet…",
     "checkForUpdates": "Nach Updates suchen",

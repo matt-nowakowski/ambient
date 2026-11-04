@@ -951,6 +951,7 @@
     "upToDate": "Actualitzat",
     "updateCheckingDisabled": "Comprovació d'actualitzacions desactivada",
     "downloading": "S'està baixant… {{progress}} %",
+    "downloadingUpdate": "S'està baixant l'actualització…",
     "installing": "S'està instal·lant…",
     "preparing": "S'està preparant…",
     "checkForUpdates": "Comprova si hi ha actualitzacions",

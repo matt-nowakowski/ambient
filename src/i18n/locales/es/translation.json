@@ -951,6 +951,7 @@
     "upToDate": "Actualizado",
     "updateCheckingDisabled": "Búsqueda de actualizaciones deshabilitada",
     "downloading": "Descargando… {{progress}} %",
+    "downloadingUpdate": "Descargando la actualización…",
     "installing": "Instalando…",
     "preparing": "Preparando…",
     "checkForUpdates": "Buscar actualizaciones",

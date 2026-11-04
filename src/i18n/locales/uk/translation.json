@@ -954,6 +954,7 @@
     "upToDate": "Актуальна версія",
     "updateCheckingDisabled": "Перевірка оновлень вимкнена",
     "downloading": "Завантаження… {{progress}}%",
+    "downloadingUpdate": "Завантаження оновлення…",
     "installing": "Встановлення…",
     "preparing": "Підготовка…",
     "checkForUpdates": "Перевірити оновлення",

@@ -948,6 +948,7 @@
     "upToDate": "已是最新版本",
     "updateCheckingDisabled": "更新檢查已停用",
     "downloading": "下載中… {{progress}}%",
+    "downloadingUpdate": "正在下載更新…",
     "installing": "安裝中…",
     "preparing": "準備中…",
     "checkForUpdates": "檢查更新",

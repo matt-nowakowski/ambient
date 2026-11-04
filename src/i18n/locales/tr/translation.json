@@ -948,6 +948,7 @@
     "upToDate": "Güncel",
     "updateCheckingDisabled": "Güncelleme Kontrolü Devre Dışı",
     "downloading": "İndiriliyor… %{{progress}}",
+    "downloadingUpdate": "Güncelleme indiriliyor…",
     "installing": "Kuruluyor…",
     "preparing": "Hazırlanıyor…",
     "checkForUpdates": "Güncellemeleri kontrol et",

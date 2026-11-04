@@ -948,6 +948,7 @@
     "upToDate": "Up to date",
     "updateCheckingDisabled": "Update Checking Disabled",
     "downloading": "Downloading... {{progress}}%",
+    "downloadingUpdate": "Downloading the update…",
     "installing": "Installing...",
     "preparing": "Preparing...",
     "checkForUpdates": "Check for updates",

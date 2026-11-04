@@ -951,6 +951,7 @@
     "upToDate": "מעודכן",
     "updateCheckingDisabled": "בדיקת העדכונים כבויה",
     "downloading": "מוריד… {{progress}}%",
+    "downloadingUpdate": "מוריד את העדכון…",
     "installing": "מתקין…",
     "preparing": "מכין…",
     "checkForUpdates": "בדוק עדכונים",

@@ -954,6 +954,7 @@
     "upToDate": "Vše aktuální",
     "updateCheckingDisabled": "Kontrola aktualizací vypnuta",
     "downloading": "Stahování… {{progress}} %",
+    "downloadingUpdate": "Stahuje se aktualizace…",
     "installing": "Instalace…",
     "preparing": "Příprava…",
     "checkForUpdates": "Zkontrolovat aktualizace",

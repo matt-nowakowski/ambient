@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { check } from "@tauri-apps/plugin-updater";
-import { relaunch } from "@tauri-apps/plugin-process";
-import { listen } from "@tauri-apps/api/event";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { arch, platform } from "@tauri-apps/plugin-os";
-import { ProgressBar } from "../shared";
 import { useSettings } from "../../hooks/useSettings";
-import { commands } from "../../bindings";
+import { commands, events, type UpdateStatus } from "../../bindings";
 import { logError, showError } from "../../lib/errors";
 import {
   resolvePortableInstallerUrl,
@@ -18,25 +15,26 @@ interface UpdateCheckerProps {
   className?: string;
 }
 
+/**
+ * The update flow itself lives in Rust (it has to keep running with this window
+ * closed), so this reflects it: the phase arrives on the update-status event,
+ * plus one snapshot on mount for the first paint. Clicking restarts into the
+ * version Rust already downloaded and verified, or, for an install that can't
+ * replace itself, opens the installer link.
+ */
 const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
   const { t } = useTranslation();
-  // Update checking state
-  const [isChecking, setIsChecking] = useState(false);
-  const [updateAvailable, setUpdateAvailable] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
-  const [downloadProgress, setDownloadProgress] = useState(0);
   const [showUpToDate, setShowUpToDate] = useState(false);
+  // Null until the first snapshot arrives.
+  const [status, setStatus] = useState<UpdateStatus | null>(null);
   const [showPortableUpdateDialog, setShowPortableUpdateDialog] =
     useState(false);
   const [portableInstallerUrl, setPortableInstallerUrl] = useState<string>(
     PORTABLE_RELEASES_URL,
   );
 
-  const { settings, isLoading, updateChecksLocked } = useSettings();
-  // Wait for the lock state too (null = not loaded yet), otherwise the first
-  // render could fire an update check before AMBIENT_DISABLE_UPDATER is known.
-  const settingsLoaded =
-    !isLoading && settings !== null && updateChecksLocked !== null;
+  const { settings, updateChecksLocked } = useSettings();
   // Forced-off by system configuration (AMBIENT_DISABLE_UPDATER) overrides the
   // stored preference without persisting it, mirroring the backend's effective
   // updater state.
@@ -44,135 +42,85 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     (settings?.update_checks_enabled ?? false) && updateChecksLocked === false;
 
   const upToDateTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
-  const isManualCheckRef = useRef(false);
-  const downloadedBytesRef = useRef(0);
-  const contentLengthRef = useRef(0);
 
   useEffect(() => {
-    // Wait for settings to load before doing anything
-    if (!settingsLoaded) return;
+    let cancelled = false;
 
-    if (!updateChecksEnabled) {
-      if (upToDateTimeoutRef.current) {
-        clearTimeout(upToDateTimeoutRef.current);
+    // A background check stays quiet unless a version is ready; only a check
+    // the user asked for reports "up to date" or why it failed.
+    const announce = (next: UpdateStatus) => {
+      if (cancelled) return;
+      if (!next.manual) return;
+      if (next.phase === "error") {
+        showError("update", next.error ?? "errors.friendly.unknown", {
+          retry: () => void commands.triggerUpdateCheck(),
+        });
       }
-      setIsChecking(false);
-      setUpdateAvailable(false);
-      setShowUpToDate(false);
-      return;
-    }
+      if (next.phase === "upToDate") {
+        setShowUpToDate(true);
+        if (upToDateTimeoutRef.current) {
+          clearTimeout(upToDateTimeoutRef.current);
+        }
+        upToDateTimeoutRef.current = setTimeout(() => {
+          setShowUpToDate(false);
+        }, 3000);
+      }
+    };
 
-    checkForUpdates();
-
-    // Listen for update check events
-    const updateUnlisten = listen("check-for-updates", () => {
-      handleManualUpdateCheck();
+    const unlisten = events.updateStatus.listen((event) => {
+      if (cancelled) return;
+      setStatus(event.payload);
+      announce(event.payload);
     });
+    // The first paint. Not announced: a stale "up to date" from an earlier
+    // check shouldn't pop on mount.
+    commands
+      .updateStatus()
+      .then((snapshot) => {
+        if (!cancelled) setStatus(snapshot);
+      })
+      .catch((error) => logError("update", error));
 
     return () => {
+      cancelled = true;
       if (upToDateTimeoutRef.current) {
         clearTimeout(upToDateTimeoutRef.current);
       }
-      updateUnlisten.then((fn) => fn());
+      unlisten.then((fn) => fn());
     };
-  }, [settingsLoaded, updateChecksEnabled]);
-
-  // Update checking functions
-  const checkForUpdates = async () => {
-    if (!updateChecksEnabled || isChecking) return;
-
-    try {
-      setIsChecking(true);
-      const update = await check();
-
-      if (update) {
-        setUpdateAvailable(true);
-        setShowUpToDate(false);
-        // Portable installs can't self-update in place — the manual dialog links
-        // straight at the matching installer from this manifest instead.
-        setPortableInstallerUrl(
-          resolvePortableInstallerUrl(update.rawJson, platform(), arch()),
-        );
-      } else {
-        setUpdateAvailable(false);
-
-        if (isManualCheckRef.current) {
-          setShowUpToDate(true);
-          if (upToDateTimeoutRef.current) {
-            clearTimeout(upToDateTimeoutRef.current);
-          }
-          upToDateTimeoutRef.current = setTimeout(() => {
-            setShowUpToDate(false);
-          }, 3000);
-        }
-      }
-    } catch (error) {
-      // Background checks fail quietly (just the log); a check the user asked
-      // for says why.
-      if (isManualCheckRef.current)
-        showError("update", error, { retry: handleManualUpdateCheck });
-      else logError("update", error);
-    } finally {
-      setIsChecking(false);
-      isManualCheckRef.current = false;
-    }
-  };
+  }, []);
 
   const handleManualUpdateCheck = () => {
     if (!updateChecksEnabled) return;
-    isManualCheckRef.current = true;
-    checkForUpdates();
+    commands.triggerUpdateCheck().catch((error) => showError("update", error));
   };
 
   const installUpdate = async () => {
-    if (!updateChecksEnabled) return;
-
-    const portable = await commands.isPortable();
-    if (portable) {
-      setShowPortableUpdateDialog(true);
-      return;
+    setIsInstalling(true);
+    // Success never returns: the app restarts itself (on Windows the installer
+    // takes over). Only a refusal — recording, a meeting, an agent task — or a
+    // failed install comes back.
+    const result = await commands.installReadyUpdate();
+    setIsInstalling(false);
+    if (result.status === "error") {
+      showError("update", result.error, { retry: () => void installUpdate() });
     }
+  };
 
+  // A portable or package-managed install can't replace itself, so the click
+  // opens the installer the manifest names instead.
+  const openPortableUpdate = async () => {
     try {
-      setIsInstalling(true);
-      setDownloadProgress(0);
-      downloadedBytesRef.current = 0;
-      contentLengthRef.current = 0;
       const update = await check();
-
-      if (!update) {
-        console.log("No update available during install attempt");
-        return;
+      if (update) {
+        setPortableInstallerUrl(
+          resolvePortableInstallerUrl(update.rawJson, platform(), arch()),
+        );
       }
-
-      await update.downloadAndInstall((event) => {
-        switch (event.event) {
-          case "Started":
-            downloadedBytesRef.current = 0;
-            contentLengthRef.current = event.data.contentLength ?? 0;
-            break;
-          case "Progress":
-            downloadedBytesRef.current += event.data.chunkLength;
-            const progress =
-              contentLengthRef.current > 0
-                ? Math.round(
-                    (downloadedBytesRef.current / contentLengthRef.current) *
-                      100,
-                  )
-                : 0;
-            setDownloadProgress(Math.min(progress, 100));
-            break;
-        }
-      });
-      await relaunch();
     } catch (error) {
-      showError("update", error, { retry: () => void installUpdate() });
-    } finally {
-      setIsInstalling(false);
-      setDownloadProgress(0);
-      downloadedBytesRef.current = 0;
-      contentLengthRef.current = 0;
+      logError("update", error);
     }
+    setShowPortableUpdateDialog(true);
   };
 
   // Update status functions
@@ -180,32 +128,36 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     if (!updateChecksEnabled) {
       return t("footer.updateCheckingDisabled");
     }
-    if (isInstalling) {
-      return downloadProgress > 0 && downloadProgress < 100
-        ? t("footer.downloading", {
-            progress: downloadProgress.toString().padStart(3),
-          })
-        : downloadProgress === 100
-          ? t("footer.installing")
-          : t("footer.preparing");
-    }
-    if (isChecking) return t("footer.checkingUpdates");
+    if (isInstalling) return t("footer.installing");
+    if (status?.phase === "ready") return t("footer.restartToUpdate");
+    if (status?.phase === "available") return t("footer.updateAvailableShort");
+    if (status?.phase === "checking") return t("footer.checkingUpdates");
+    if (status?.phase === "downloading") return t("footer.downloadingUpdate");
     if (showUpToDate) return t("footer.upToDate");
-    if (updateAvailable) return t("footer.updateAvailableShort");
     return t("footer.checkForUpdates");
   };
 
   const getUpdateStatusAction = () => {
     if (!updateChecksEnabled) return undefined;
-    if (updateAvailable && !isInstalling) return installUpdate;
-    if (!isChecking && !isInstalling && !updateAvailable)
-      return handleManualUpdateCheck;
-    return undefined;
+    if (isInstalling) return undefined;
+    if (status?.phase === "ready") return installUpdate;
+    if (status?.phase === "available") return openPortableUpdate;
+    if (status?.phase === "checking" || status?.phase === "downloading")
+      return undefined;
+    if (showUpToDate) return undefined;
+    return handleManualUpdateCheck;
   };
 
-  const isUpdateDisabled = !updateChecksEnabled || isChecking || isInstalling;
+  const isUpdateDisabled =
+    !updateChecksEnabled ||
+    isInstalling ||
+    status?.phase === "checking" ||
+    status?.phase === "downloading";
+  // A version waiting for a restart, or an installer link, is the one thing
+  // here worth a click.
   const isUpdateClickable =
-    !isUpdateDisabled && (updateAvailable || (!isChecking && !showUpToDate));
+    !isUpdateDisabled && getUpdateStatusAction() !== undefined;
+  const restartReady = status?.phase === "ready";
 
   // When no installer could be resolved for this target the button falls back to
   // the releases index, so the dialog has to say "browse" rather than "download".
@@ -252,7 +204,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
             onClick={getUpdateStatusAction()}
             disabled={isUpdateDisabled}
             className={`transition-colors disabled:opacity-50 tabular-nums ${
-              updateAvailable
+              restartReady
                 ? "text-logo-primary hover:text-logo-primary font-medium"
                 : "text-ink-2 hover:text-text"
             }`}
@@ -263,18 +215,6 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
           <span className="text-ink-2 tabular-nums">
             {getUpdateStatusText()}
           </span>
-        )}
-
-        {isInstalling && downloadProgress > 0 && downloadProgress < 100 && (
-          <ProgressBar
-            progress={[
-              {
-                id: "update",
-                percentage: downloadProgress,
-              },
-            ]}
-            size="large"
-          />
         )}
       </div>
     </>

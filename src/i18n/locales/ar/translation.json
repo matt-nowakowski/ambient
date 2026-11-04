@@ -960,6 +960,7 @@
     "upToDate": "محدث",
     "updateCheckingDisabled": "التحقق من التحديثات معطّل",
     "downloading": "جارٍ التنزيل… {{progress}}%",
+    "downloadingUpdate": "جارٍ تنزيل التحديث…",
     "installing": "جارٍ التثبيت…",
     "preparing": "جارٍ التحضير…",
     "checkForUpdates": "التحقق من وجود تحديثات",

@@ -948,6 +948,7 @@
     "upToDate": "अप-टू-डेट",
     "updateCheckingDisabled": "अपडेट जांच बंद है",
     "downloading": "डाउनलोड हो रहा है… {{progress}}%",
+    "downloadingUpdate": "अपडेट डाउनलोड हो रहा है…",
     "installing": "इंस्टॉल हो रहा है…",
     "preparing": "तैयारी हो रही है…",
     "checkForUpdates": "अपडेट जांचें",

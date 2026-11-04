@@ -948,6 +948,7 @@
     "upToDate": "Актуална версия",
     "updateCheckingDisabled": "Проверката за актуализации е изключена",
     "downloading": "Изтегля се… {{progress}}%",
+    "downloadingUpdate": "Изтегляне на актуализацията…",
     "installing": "Инсталиране…",
     "preparing": "Подготовка…",
     "checkForUpdates": "Проверка за актуализации",

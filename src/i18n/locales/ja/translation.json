@@ -948,6 +948,7 @@
     "upToDate": "最新です",
     "updateCheckingDisabled": "アップデート確認無効",
     "downloading": "ダウンロード中… {{progress}}%",
+    "downloadingUpdate": "アップデートをダウンロード中…",
     "installing": "インストール中…",
     "preparing": "準備中…",
     "checkForUpdates": "アップデートを確認",

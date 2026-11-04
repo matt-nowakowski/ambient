@@ -954,6 +954,7 @@
     "upToDate": "Последняя версия",
     "updateCheckingDisabled": "Проверка обновлений отключена",
     "downloading": "Загрузка… {{progress}} %",
+    "downloadingUpdate": "Загрузка обновления…",
     "installing": "Установка…",
     "preparing": "Подготовка…",
     "checkForUpdates": "Проверить наличие обновлений",

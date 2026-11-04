@@ -948,6 +948,7 @@
     "upToDate": "Opdateret",
     "updateCheckingDisabled": "Tjek for opdateringer deaktiveret",
     "downloading": "Downloader… {{progress}} %",
+    "downloadingUpdate": "Henter opdateringen…",
     "installing": "Installerer…",
     "preparing": "Forbereder…",
     "checkForUpdates": "Tjek for opdateringer",

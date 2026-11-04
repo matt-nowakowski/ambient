@@ -948,6 +948,7 @@
     "upToDate": "Up-to-date",
     "updateCheckingDisabled": "Updatecontrole uitgeschakeld",
     "downloading": "Downloaden… {{progress}}%",
+    "downloadingUpdate": "Update wordt gedownload…",
     "installing": "Installeren…",
     "preparing": "Voorbereiden…",
     "checkForUpdates": "Controleren op updates",

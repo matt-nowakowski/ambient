@@ -948,6 +948,7 @@
     "upToDate": "Đã cập nhật",
     "updateCheckingDisabled": "Đã tắt kiểm tra cập nhật",
     "downloading": "Đang tải… {{progress}}%",
+    "downloadingUpdate": "Đang tải bản cập nhật…",
     "installing": "Đang cài đặt…",
     "preparing": "Đang chuẩn bị…",
     "checkForUpdates": "Kiểm tra cập nhật",
