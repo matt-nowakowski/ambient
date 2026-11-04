@@ -25,6 +25,13 @@ const PLAN: Record<ActivePlanKey, { name: string; color: string }> = {
   free: { name: "Free", color: "var(--a-s4)" },
 };
 const OS_NAME: Record<string, string> = { macos: "macOS", windows: "Windows", linux: "Linux" };
+const ARCH_NAME: Record<string, string> = { aarch64: "Arm", x86_64: "x64" };
+/** "macos/aarch64" → "macOS · Arm". */
+const osLabel = (key: string) => {
+  const [os, arch] = key.split("/");
+  const name = OS_NAME[os] ?? os;
+  return arch && arch !== "other" ? `${name} · ${ARCH_NAME[arch] ?? arch}` : name;
+};
 const fileLabel = (id: string) => (id in releases ? releases[id as keyof typeof releases].label : id);
 
 let regionNames: Intl.DisplayNames | null = null;
@@ -41,7 +48,7 @@ export async function Installs({ demo }: { demo: boolean }) {
   const v = await loadInstalls(demo);
   return (
     <>
-      <Section id="installs" title="Installs" sub="Every plan, Free included, from requests the app already makes">
+      <Section id="installs" title="Installs" sub="Every plan, Free included, from the app's anonymous daily check-in and its other requests">
         {!v.ok ? <Empty>Install data couldn&apos;t be read: {v.error.replace(/\.$/, "")}.</Empty> : <Overview d={v.data} v={v} />}
       </Section>
       {v.ok ? (
@@ -76,7 +83,7 @@ function Overview({ d, v }: { d: InstallsData; v: InstallsView }) {
           {anyActive ? (
             <StackedBars labels={labels} series={ACTIVE_PLANS.map((p) => ({ name: PLAN[p].name, values: d.activePerDay[p], color: PLAN[p].color }))} height={170} />
           ) : (
-            <Empty>No activity recorded yet. Devices appear here from their first trial check, Free usage check, hosted AI request or plan check.</Empty>
+            <Empty>No activity recorded yet. Devices appear here from their daily check-in (0.1.8 and later), trial check, Free usage check, hosted AI request or plan check.</Empty>
           )}
         </Panel>
         <Panel title="Plans">
@@ -110,15 +117,15 @@ function Overview({ d, v }: { d: InstallsData; v: InstallsView }) {
         </Panel>
       </div>
 
-      <Panel title="OS, version and plan" meta={`Opted-in installs only (anonymous usage counts), last 7 days · ${fmtInt(d.optedIn.installDays)} install-days`}>
-        {d.optedIn.os.length || d.optedIn.versions.length ? (
+      <Panel title="OS, version and plan" meta={`Every device that checked in, last 7 days · ${fmtInt(d.mix.deviceDays)} device-days`}>
+        {d.mix.os.length || d.mix.versions.length ? (
           <div className="grid grid-cols-[minmax(0,1fr)] gap-x-6 md:grid-cols-3">
-            <Mix rows={d.optedIn.os.map((r) => ({ label: OS_NAME[r.key] ?? r.key, n: r.n }))} />
-            <Mix rows={d.optedIn.versions.map((r) => ({ label: r.key, n: r.n }))} />
-            <Mix rows={d.optedIn.plans.map((r) => ({ label: PLAN[r.key as ActivePlanKey]?.name ?? r.key, n: r.n }))} />
+            <Mix rows={d.mix.os.map((r) => ({ label: osLabel(r.key), n: r.n }))} />
+            <Mix rows={d.mix.versions.map((r) => ({ label: r.key, n: r.n }))} />
+            <Mix rows={d.mix.plans.map((r) => ({ label: PLAN[r.key as ActivePlanKey]?.name ?? r.key, n: r.n }))} />
           </div>
         ) : (
-          <Empty>No opted-in installs with OS and version yet. Only installs that turned on anonymous usage counts report these.</Empty>
+          <Empty>No check-ins yet. Every install from 0.1.8 on checks in once a day with its OS, version and plan.</Empty>
         )}
       </Panel>
       {d.activeSince ? <p className="admin-meta">Activity counted since {dayLabel(d.activeSince)}.</p> : null}

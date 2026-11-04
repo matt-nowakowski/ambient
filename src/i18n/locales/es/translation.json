@@ -238,6 +238,11 @@
         "shortcut": "Atajo",
         "changeLanguages": "Cambiar idiomas, {{languages}}",
         "changeModel": "Cambiar modelo de voz, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Haz de {{appName}} tu app de dictado",
+        "description": "Si otra app de dictado usa el mismo atajo, {{appName}} se lo queda.",
+        "found": "Si otra app de dictado, como {{apps}}, usa el mismo atajo, {{appName}} se lo queda."
       }
     },
     "linux": {
@@ -1277,6 +1282,8 @@
       "summariseThread": "Hilo largo. ¿Resumirlo?",
       "draftReply": "¿Redactar una respuesta?",
       "addToCalendar": "Aquí hay una fecha. ¿Añadirla a tu calendario?",
+      "addReminder": "Hay una fecha límite. ¿Te lo recuerdo?",
+      "addReminderWhen": "Vence {{when}}. ¿Te lo recuerdo?",
       "summarisePage": "¿Resumir esta página?",
       "explainError": "¿Explicar este error?",
       "summarise": "Resumir",
@@ -1306,6 +1313,7 @@
       "summariseThreadCount": "¿Resumo este hilo de {{count}} mensajes?",
       "replyTo": "¿Responder a {{name}}?",
       "reply": "Responder",
+      "remind": "Recuérdamelo",
       "translatePageLang": "Esta página está en {{language}}. ¿La traduzco?",
       "explainErrorWhat": "Error «{{error}}». ¿Quieres la solución probable?"
     },
@@ -1552,7 +1560,8 @@
         "telemetry": "Recuentos de uso anónimos",
         "config": "Comprobación de ajustes (no se envía nada)",
         "meeting_email": "Correo con notas de reunión",
-        "feedback": "Comentarios"
+        "feedback": "Comentarios",
+        "checkin": "Registro diario"
       }
     },
     "engine": {
@@ -1565,6 +1574,7 @@
         "summarise_thread": "Resumir hilos de correo largos",
         "draft_reply": "Redactar respuestas",
         "add_to_calendar": "Añadir fechas a tu calendario",
+        "add_reminder": "Recordarte los plazos de los mensajes",
         "summarise_page": "Resumir páginas largas",
         "explain_error": "Explicar errores y pruebas fallidas",
         "tighten_draft": "Pulir borradores largos",

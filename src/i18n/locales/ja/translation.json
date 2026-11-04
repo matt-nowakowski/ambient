@@ -237,6 +237,11 @@
         "shortcut": "ショートカット",
         "changeLanguages": "言語を変更、{{languages}}",
         "changeModel": "音声モデルを変更、{{model}}"
+      },
+      "dictationApp": {
+        "title": "{{appName}} を音声入力アプリにする",
+        "description": "ほかの音声入力アプリが同じショートカットを使っていても、{{appName}} が優先されます。",
+        "found": "{{apps}} などほかの音声入力アプリが同じショートカットを使っていても、{{appName}} が優先されます。"
       }
     },
     "linux": {
@@ -1269,6 +1274,8 @@
       "summariseThread": "長いスレッドです。要約しますか？",
       "draftReply": "これへの返信を下書きしますか？",
       "addToCalendar": "日付が含まれています。カレンダーに追加しますか？",
+      "addReminder": "期限があります。リマインダーを設定しますか？",
+      "addReminderWhen": "期限は{{when}}です。リマインダーを設定しますか？",
       "summarisePage": "このページを要約しますか？",
       "explainError": "このエラーを説明しますか？",
       "summarise": "要約",
@@ -1298,6 +1305,7 @@
       "summariseThreadCount": "この{{count}}件のメッセージのスレッドを要約しましょうか？",
       "replyTo": "{{name}}さんに返信しますか？",
       "reply": "返信",
+      "remind": "リマインド",
       "translatePageLang": "このページは{{language}}です。翻訳しますか？",
       "explainErrorWhat": "「{{error}}」が出ました。考えられる解決策を見ますか？"
     },
@@ -1541,7 +1549,8 @@
         "telemetry": "匿名の利用回数",
         "config": "設定の確認（送信内容なし）",
         "meeting_email": "会議メモのメール",
-        "feedback": "フィードバック"
+        "feedback": "フィードバック",
+        "checkin": "毎日のチェックイン"
       }
     },
     "engine": {
@@ -1554,6 +1563,7 @@
         "summarise_thread": "長いメールのスレッドを要約",
         "draft_reply": "返信を下書き",
         "add_to_calendar": "日付をカレンダーに追加",
+        "add_reminder": "メッセージ内の期限をリマインド",
         "summarise_page": "長いページを要約",
         "explain_error": "エラーや失敗したテストを説明",
         "tighten_draft": "長い下書きを簡潔に",

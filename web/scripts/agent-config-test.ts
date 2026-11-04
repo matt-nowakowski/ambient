@@ -53,7 +53,7 @@ check(
     pub.hourly_budget === 10 &&
     pub.judge.timeout_ms === 8000 &&
     pub.judge.cloud_timeout_ms === 7000 &&
-    pub.judge.min_confidence === 0.6 &&
+    pub.judge.min_confidence === 0.55 &&
     pub.router.did_you_mean_bias === 0.5 &&
     pub.answer.first_byte_timeout_ms === 25000 &&
     pub.answer.idle_timeout_ms === 20000 &&
@@ -68,8 +68,9 @@ check(
     pub.free.meetings_per_month === 2 &&
     Object.keys(pub.kinds).length === KINDS.length &&
     pub.kinds.draft_reply.enabled === true &&
-    pub.kinds.draft_reply.min_confidence === 0.6 &&
-    pub.kinds.draft_reply.cooldown_min === 3 &&
+    pub.kinds.draft_reply.min_confidence === 0.55 &&
+    pub.kinds.draft_reply.cooldown_min === 2 &&
+    pub.kinds.add_reminder.enabled === true &&
     pub.generated_at === "2026-11-02T00:00:00.000Z",
 );
 
@@ -100,14 +101,14 @@ const d = defaults();
 const keys = (cs: { key: string }[]) => cs.map((c) => c.key).sort().join(",");
 
 let c = tune(d, stats({ kinds: { help_here: { offered: 60, accepted: 6 } } }));
-check("<15% over ≥50 offers → +0.05 min confidence", c.length === 1 && c[0].key === "kind.help_here.min_confidence" && c[0].new === 0.65 && c[0].old === 0.6);
+check("<15% over ≥50 offers → +0.05 min confidence", c.length === 1 && c[0].key === "kind.help_here.min_confidence" && c[0].new === 0.6 && c[0].old === 0.55);
 check("the change carries its reason and numbers", /10%/.test(c[0].reason) && c[0].stats.offered === 60 && c[0].stats.accepted === 6);
 
 c = tune(d, stats({ kinds: { help_here: { offered: 49, accepted: 0 } } }));
 check("low acceptance under the minimum sample → no change", c.length === 0);
 
 c = tune({ ...d, "kind.help_here.min_confidence": 0.95 }, stats({ kinds: { help_here: { offered: 60, accepted: 6 } } }));
-check("confidence at its ceiling → longer cooldown (×1.5)", c.length === 1 && c[0].key === "kind.help_here.cooldown_min" && c[0].new === 5);
+check("confidence at its ceiling → longer cooldown (×1.5)", c.length === 1 && c[0].key === "kind.help_here.cooldown_min" && c[0].new === 3);
 
 c = tune({ ...d, "kind.help_here.min_confidence": 0.95, "kind.help_here.cooldown_min": 1440 }, stats({ kinds: { help_here: { offered: 60, accepted: 6 } } }));
 check("both at their bounds → no change", c.length === 0);
@@ -122,10 +123,12 @@ c = tune({ ...d, "kind.price_check.enabled": false }, stats({ kinds: { price_che
 check("an already disabled kind isn't touched", c.length === 0);
 
 c = tune(d, stats({ kinds: { summarise_thread: { offered: 80, accepted: 48 } } }));
-check("≥50% over ≥50 offers → −0.02 min confidence", c.length === 1 && c[0].key === "kind.summarise_thread.min_confidence" && c[0].new === 0.58);
+check("≥50% over ≥50 offers → −0.02 min confidence", c.length === 1 && c[0].key === "kind.summarise_thread.min_confidence" && c[0].new === 0.53);
 
 c = tune({ ...d, "kind.summarise_thread.min_confidence": 0.5 }, stats({ kinds: { summarise_thread: { offered: 80, accepted: 48 } } }));
-check("confidence at its floor → shorter cooldown (÷1.25)", c.length === 1 && c[0].key === "kind.summarise_thread.cooldown_min" && c[0].new === 2);
+check("confidence at its floor → shorter cooldown (at least a minute shorter)", c.length === 1 && c[0].key === "kind.summarise_thread.cooldown_min" && c[0].new === 1);
+c = tune({ ...d, "kind.summarise_thread.min_confidence": 0.5, "kind.summarise_thread.cooldown_min": 20 }, stats({ kinds: { summarise_thread: { offered: 80, accepted: 48 } } }));
+check("a long cooldown shrinks by ÷1.25", c.length === 1 && c[0].new === 16);
 
 c = tune(d, stats({ kinds: { summarise_thread: { offered: 80, accepted: 20 } } }));
 check("25–50% acceptance → no change", c.length === 0);

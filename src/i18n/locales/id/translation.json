@@ -237,6 +237,11 @@
         "shortcut": "Pintasan",
         "changeLanguages": "Ubah bahasa, {{languages}}",
         "changeModel": "Ubah model ucapan, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Jadikan {{appName}} aplikasi dikte Anda",
+        "description": "Jika aplikasi dikte lain memakai pintasan yang sama, {{appName}} yang mengambilnya.",
+        "found": "Jika aplikasi dikte lain, seperti {{apps}}, memakai pintasan yang sama, {{appName}} yang mengambilnya."
       }
     },
     "linux": {
@@ -1269,6 +1274,8 @@
       "summariseThread": "Utas panjang. Ringkas?",
       "draftReply": "Buat draf balasan untuk ini?",
       "addToCalendar": "Ada tanggal di sini. Tambahkan ke kalender Anda?",
+      "addReminder": "Ada tenggat waktu. Mau diingatkan?",
+      "addReminderWhen": "Tenggat {{when}}. Mau diingatkan?",
       "summarisePage": "Ringkas halaman ini?",
       "explainError": "Jelaskan kesalahan ini?",
       "summarise": "Ringkas",
@@ -1298,6 +1305,7 @@
       "summariseThreadCount": "Mau saya ringkas utas berisi {{count}} pesan ini?",
       "replyTo": "Balas {{name}}?",
       "reply": "Balas",
+      "remind": "Ingatkan saya",
       "translatePageLang": "Halaman ini dalam {{language}}. Terjemahkan?",
       "explainErrorWhat": "Muncul “{{error}}”. Mau lihat kemungkinan solusinya?"
     },
@@ -1541,7 +1549,8 @@
         "telemetry": "Hitungan penggunaan anonim",
         "config": "Pemeriksaan pengaturan (tidak ada yang dikirim)",
         "meeting_email": "Email catatan rapat",
-        "feedback": "Masukan"
+        "feedback": "Masukan",
+        "checkin": "Check-in harian"
       }
     },
     "engine": {
@@ -1554,6 +1563,7 @@
         "summarise_thread": "Ringkas utas email panjang",
         "draft_reply": "Buat draf balasan",
         "add_to_calendar": "Tambahkan tanggal ke kalender",
+        "add_reminder": "Mengingatkan tenggat dari pesan",
         "summarise_page": "Ringkas halaman panjang",
         "explain_error": "Jelaskan kesalahan dan tes yang gagal",
         "tighten_draft": "Padatkan draf panjang",

@@ -238,6 +238,11 @@
         "shortcut": "Drecera",
         "changeLanguages": "Canvia les llengües, {{languages}}",
         "changeModel": "Canvia el model de veu, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Fes de {{appName}} la teva app de dictat",
+        "description": "Si una altra app de dictat fa servir la mateixa drecera, {{appName}} se la queda.",
+        "found": "Si una altra app de dictat, com {{apps}}, fa servir la mateixa drecera, {{appName}} se la queda."
       }
     },
     "linux": {
@@ -1277,6 +1282,8 @@
       "summariseThread": "Fil llarg. Voleu resumir-lo?",
       "draftReply": "Voleu redactar una resposta?",
       "addToCalendar": "Aquí hi ha una data. Voleu afegir-la al calendari?",
+      "addReminder": "Hi ha una data límit. Vols un recordatori?",
+      "addReminderWhen": "Venç {{when}}. Vols un recordatori?",
       "summarisePage": "Voleu resumir aquesta pàgina?",
       "explainError": "Voleu que us expliqui aquest error?",
       "summarise": "Resumeix",
@@ -1306,6 +1313,7 @@
       "summariseThreadCount": "Voleu que resumeixi aquest fil de {{count}} missatges?",
       "replyTo": "Respondre a {{name}}?",
       "reply": "Respon",
+      "remind": "Recorda-m'ho",
       "translatePageLang": "Aquesta pàgina és en {{language}}. La tradueixo?",
       "explainErrorWhat": "Error «{{error}}». Voleu la solució probable?"
     },
@@ -1551,7 +1559,8 @@
         "telemetry": "Recomptes d'ús anònims",
         "config": "Comprovació de la configuració (no s'envia res)",
         "meeting_email": "Correu amb les notes de la reunió",
-        "feedback": "Comentaris"
+        "feedback": "Comentaris",
+        "checkin": "Registre diari"
       },
       "bytes_many": "{{count}} bytes"
     },
@@ -1565,6 +1574,7 @@
         "summarise_thread": "Resumir fils de correu llargs",
         "draft_reply": "Redactar respostes",
         "add_to_calendar": "Afegir dates al calendari",
+        "add_reminder": "Recordar-te els terminis dels missatges",
         "summarise_page": "Resumir pàgines llargues",
         "explain_error": "Explicar errors i proves fallides",
         "tighten_draft": "Polir esborranys llargs",

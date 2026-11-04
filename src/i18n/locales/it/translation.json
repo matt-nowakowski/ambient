@@ -238,6 +238,11 @@
         "shortcut": "Scorciatoia",
         "changeLanguages": "Cambia lingue, {{languages}}",
         "changeModel": "Cambia modello vocale, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Fai di {{appName}} la tua app di dettatura",
+        "description": "Se un'altra app di dettatura usa la stessa scorciatoia, {{appName}} la prende.",
+        "found": "Se un'altra app di dettatura, come {{apps}}, usa la stessa scorciatoia, {{appName}} la prende."
       }
     },
     "linux": {
@@ -1277,6 +1282,8 @@
       "summariseThread": "Conversazione lunga. Riassumerla?",
       "draftReply": "Scrivere una risposta?",
       "addToCalendar": "C'è una data qui. Aggiungerla al calendario?",
+      "addReminder": "C'è una scadenza. Vuoi un promemoria?",
+      "addReminderWhen": "Scade {{when}}. Vuoi un promemoria?",
       "summarisePage": "Riassumere questa pagina?",
       "explainError": "Spiegare questo errore?",
       "summarise": "Riassumi",
@@ -1306,6 +1313,7 @@
       "summariseThreadCount": "Riassumo questa conversazione di {{count}} messaggi?",
       "replyTo": "Rispondere a {{name}}?",
       "reply": "Rispondi",
+      "remind": "Ricordamelo",
       "translatePageLang": "Questa pagina è in {{language}}. La traduco?",
       "explainErrorWhat": "Errore «{{error}}». Vuoi la soluzione probabile?"
     },
@@ -1551,7 +1559,8 @@
         "telemetry": "Conteggi d'uso anonimi",
         "config": "Controllo impostazioni (nulla inviato)",
         "meeting_email": "Email con le note della riunione",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Segnale giornaliero"
       },
       "bytes_many": "{{count}} byte"
     },
@@ -1565,6 +1574,7 @@
         "summarise_thread": "Riassumi lunghe conversazioni email",
         "draft_reply": "Scrivi risposte",
         "add_to_calendar": "Aggiungi date al calendario",
+        "add_reminder": "Ricordarti le scadenze nei messaggi",
         "summarise_page": "Riassumi pagine lunghe",
         "explain_error": "Spiega errori e test non riusciti",
         "tighten_draft": "Rendi più concise le bozze lunghe",

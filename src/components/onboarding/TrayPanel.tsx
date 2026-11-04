@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { listen } from "@tauri-apps/api/event";
+import { commands, type DictationConflicts } from "@/bindings";
 import {
   keycapLabel,
   spaceDoesNotClick,
@@ -97,6 +99,66 @@ const PolishRow: React.FC = () => {
         checked={on}
         onChange={toggle}
         ariaLabelledBy="try-panel-polish"
+      />
+    </div>
+  );
+};
+
+/** "Make Ambient your dictation app": the exclusive-shortcuts switch, on by
+ * default, as a choice made here rather than a setting found later. Names
+ * any other dictation app it spotted. Saved the moment it's switched (not in
+ * a preview). Hidden where the keyboard backend can't keep keys to itself. */
+const DictationAppRow: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const { getSetting, updateSetting } = useSettings();
+  const preview = useOnboardingStore((s) => s.preview);
+  const saved = getSetting("exclusive_shortcuts") ?? true;
+  const [on, setOn] = useState(saved);
+  const [apps, setApps] = useState<string[]>([]);
+  useEffect(() => setOn(saved), [saved]);
+
+  useEffect(() => {
+    commands
+      .getDictationConflicts()
+      .then((c) => setApps(c.apps))
+      .catch(() => {});
+    const unlisten = listen<DictationConflicts>(
+      "dictation-conflicts-changed",
+      (event) => setApps(event.payload.apps),
+    );
+    return () => {
+      unlisten.then((fn) => fn());
+    };
+  }, []);
+
+  if (getSetting("keyboard_implementation") !== "ambient_keys") return null;
+
+  const toggle = (next: boolean) => {
+    setOn(next);
+    if (!preview) updateSetting("exclusive_shortcuts", next);
+  };
+  const named = new Intl.ListFormat(i18n.language, {
+    style: "long",
+    type: "conjunction",
+  }).format(apps);
+
+  return (
+    <div className="try-panel-row is-switch">
+      {/* Switch draws its own <label>; the words toggle it too. */}
+      <span className="try-panel-text" onClick={() => toggle(!on)}>
+        <span id="try-panel-dictation" className="try-panel-label">
+          {t("onboarding.done.dictationApp.title")}
+        </span>
+        <span className="try-panel-sub">
+          {apps.length > 0
+            ? t("onboarding.done.dictationApp.found", { apps: named })
+            : t("onboarding.done.dictationApp.description")}
+        </span>
+      </span>
+      <Switch
+        checked={on}
+        onChange={toggle}
+        ariaLabelledBy="try-panel-dictation"
       />
     </div>
   );
@@ -229,6 +291,7 @@ export const TrayPanel: React.FC<TrayPanelProps> = ({
         </button>
       </div>
       <hr className="try-panel-rule" />
+      <DictationAppRow />
       <div className="try-panel-row is-switch">
         {/* Switch draws its own <label>; the words toggle it too. */}
         <span

@@ -238,6 +238,11 @@
         "shortcut": "קיצור מקשים",
         "changeLanguages": "שנה שפות, {{languages}}",
         "changeModel": "שנה מודל דיבור, {{model}}"
+      },
+      "dictationApp": {
+        "title": "הפכו את {{appName}} לאפליקציית ההכתבה שלכם",
+        "description": "אם אפליקציית הכתבה אחרת משתמשת באותו קיצור, {{appName}} לוקחת אותו.",
+        "found": "אם אפליקציית הכתבה אחרת, כמו {{apps}}, משתמשת באותו קיצור, {{appName}} לוקחת אותו."
       }
     },
     "linux": {
@@ -1277,6 +1282,8 @@
       "summariseThread": "שרשור ארוך. לסכם אותו?",
       "draftReply": "לנסח תשובה לזה?",
       "addToCalendar": "יש כאן תאריך. להוסיף אותו ללוח השנה?",
+      "addReminder": "יש כאן מועד אחרון. להזכיר לך?",
+      "addReminderWhen": "עד {{when}}. להזכיר לך?",
       "summarisePage": "לסכם את הדף הזה?",
       "explainError": "להסביר את השגיאה הזו?",
       "summarise": "סכם",
@@ -1306,6 +1313,7 @@
       "summariseThreadCount": "לסכם את השרשור הזה עם {{count}} הודעות?",
       "replyTo": "להשיב ל-{{name}}?",
       "reply": "השב",
+      "remind": "תזכיר לי",
       "translatePageLang": "שפת הדף: {{language}}. לתרגם?",
       "explainErrorWhat": "התקבלה השגיאה „{{error}}”. להציג את הפתרון הסביר?"
     },
@@ -1552,7 +1560,8 @@
         "telemetry": "ספירות שימוש אנונימיות",
         "config": "בדיקת הגדרות (שום דבר לא נשלח)",
         "meeting_email": "דוא״ל עם סיכום הפגישה",
-        "feedback": "משוב"
+        "feedback": "משוב",
+        "checkin": "דיווח יומי"
       }
     },
     "engine": {
@@ -1565,6 +1574,7 @@
         "summarise_thread": "סיכום שרשורי אימייל ארוכים",
         "draft_reply": "ניסוח תשובות",
         "add_to_calendar": "הוספת תאריכים ללוח השנה",
+        "add_reminder": "תזכורות למועדים מתוך הודעות",
         "summarise_page": "סיכום דפים ארוכים",
         "explain_error": "הסבר שגיאות ובדיקות שנכשלו",
         "tighten_draft": "חידוד טיוטות ארוכות",

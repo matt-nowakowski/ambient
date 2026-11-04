@@ -237,6 +237,11 @@
         "shortcut": "Sneltoets",
         "changeLanguages": "Talen wijzigen, {{languages}}",
         "changeModel": "Spraakmodel wijzigen, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Maak {{appName}} je dicteerapp",
+        "description": "Gebruikt een andere dicteerapp dezelfde sneltoets, dan neemt {{appName}} hem over.",
+        "found": "Gebruikt een andere dicteerapp, zoals {{apps}}, dezelfde sneltoets, dan neemt {{appName}} hem over."
       }
     },
     "linux": {
@@ -1269,6 +1274,8 @@
       "summariseThread": "Lange thread. Samenvatten?",
       "draftReply": "Een antwoord hierop opstellen?",
       "addToCalendar": "Hier staat een datum in. Toevoegen aan je agenda?",
+      "addReminder": "Er is een deadline. Zal ik je eraan herinneren?",
+      "addReminderWhen": "Deadline {{when}}. Zal ik je eraan herinneren?",
       "summarisePage": "Deze pagina samenvatten?",
       "explainError": "Deze foutmelding uitleggen?",
       "summarise": "Samenvatten",
@@ -1298,6 +1305,7 @@
       "summariseThreadCount": "Zal ik deze thread met {{count}} berichten samenvatten?",
       "replyTo": "{{name}} antwoorden?",
       "reply": "Beantwoorden",
+      "remind": "Herinner me",
       "translatePageLang": "Deze pagina is in het {{language}}. Vertalen?",
       "explainErrorWhat": "Fout ‘{{error}}’. Wil je de waarschijnlijke oplossing?"
     },
@@ -1541,7 +1549,8 @@
         "telemetry": "Anonieme gebruikstellingen",
         "config": "Instellingencheck (niets verstuurd)",
         "meeting_email": "E-mail met vergadernotities",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Dagelijkse check-in"
       }
     },
     "engine": {
@@ -1554,6 +1563,7 @@
         "summarise_thread": "Lange e-mailthreads samenvatten",
         "draft_reply": "Antwoorden opstellen",
         "add_to_calendar": "Datums aan je agenda toevoegen",
+        "add_reminder": "Je herinneren aan deadlines in berichten",
         "summarise_page": "Lange pagina’s samenvatten",
         "explain_error": "Fouten en mislukte tests uitleggen",
         "tighten_draft": "Lange concepten aanscherpen",

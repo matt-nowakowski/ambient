@@ -237,6 +237,11 @@
         "shortcut": "Tastenkürzel",
         "changeLanguages": "Sprachen ändern, {{languages}}",
         "changeModel": "Sprachmodell ändern, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Mach {{appName}} zu deiner Diktier-App",
+        "description": "Nutzt eine andere Diktier-App dasselbe Kürzel, übernimmt {{appName}} es.",
+        "found": "Nutzt eine andere Diktier-App, etwa {{apps}}, dasselbe Kürzel, übernimmt {{appName}} es."
       }
     },
     "linux": {
@@ -1269,6 +1274,8 @@
       "summariseThread": "Langer Thread. Zusammenfassen?",
       "draftReply": "Eine Antwort darauf entwerfen?",
       "addToCalendar": "Hier steht ein Datum. Zum Kalender hinzufügen?",
+      "addReminder": "Hier gibt es eine Frist. Soll ich dich erinnern?",
+      "addReminderWhen": "Fällig: {{when}}. Soll ich dich erinnern?",
       "summarisePage": "Diese Seite zusammenfassen?",
       "explainError": "Diesen Fehler erklären?",
       "summarise": "Zusammenfassen",
@@ -1298,6 +1305,7 @@
       "summariseThreadCount": "Soll ich diesen Thread mit {{count}} Nachrichten zusammenfassen?",
       "replyTo": "{{name}} antworten?",
       "reply": "Antworten",
+      "remind": "Erinnern",
       "translatePageLang": "Diese Seite ist auf {{language}}. Übersetzen?",
       "explainErrorWhat": "Fehler „{{error}}“. Willst du die wahrscheinliche Lösung?"
     },
@@ -1541,7 +1549,8 @@
         "telemetry": "Anonyme Nutzungszahlen",
         "config": "Einstellungsabgleich (nichts gesendet)",
         "meeting_email": "Meeting-Notizen per E-Mail",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Tägliche Anmeldung"
       }
     },
     "engine": {
@@ -1554,6 +1563,7 @@
         "summarise_thread": "Lange E-Mail-Threads zusammenfassen",
         "draft_reply": "Antworten entwerfen",
         "add_to_calendar": "Termine zum Kalender hinzufügen",
+        "add_reminder": "An Fristen in Nachrichten erinnern",
         "summarise_page": "Lange Seiten zusammenfassen",
         "explain_error": "Fehler und fehlschlagende Tests erklären",
         "tighten_draft": "Lange Entwürfe straffen",
