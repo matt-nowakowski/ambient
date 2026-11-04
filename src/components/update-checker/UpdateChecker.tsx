@@ -107,9 +107,14 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     }
   };
 
-  // A portable or package-managed install can't replace itself, so the click
-  // opens the installer the manifest names instead.
-  const openPortableUpdate = async () => {
+  // An install that can't replace itself: portable builds get the installer
+  // (and keep their Data/ folder), while a .deb/.rpm belongs to the package
+  // manager, so it just goes to the releases page.
+  const openManualUpdate = async () => {
+    if (!(await commands.isPortable())) {
+      openUrl(PORTABLE_RELEASES_URL);
+      return;
+    }
     try {
       const update = await check();
       if (update) {
@@ -141,7 +146,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
     if (!updateChecksEnabled) return undefined;
     if (isInstalling) return undefined;
     if (status?.phase === "ready") return installUpdate;
-    if (status?.phase === "available") return openPortableUpdate;
+    if (status?.phase === "available") return openManualUpdate;
     if (status?.phase === "checking" || status?.phase === "downloading")
       return undefined;
     if (showUpToDate) return undefined;
