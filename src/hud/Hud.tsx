@@ -516,7 +516,15 @@ export default function Hud() {
                   {t("hud.notNow")}
                   <kbd>{KEY_ESC}</kbd>
                 </button>
-                <Thumbs id={content.id} />
+                {/* The offer's own words: a new suggestion keeps the id. */}
+                <Thumbs
+                  id={content.id}
+                  token={JSON.stringify([
+                    content.title,
+                    content.accept_label,
+                    content.vars,
+                  ])}
+                />
                 {tip && (
                   <span className="hud-tip">
                     {t(
