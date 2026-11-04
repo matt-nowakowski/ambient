@@ -339,6 +339,11 @@ fn compute_desired(app: &AppHandle, icon_state: TrayIconState) -> TrayDesired {
         .collect();
     downloaded_models.sort_by(|a, b| a.1.cmp(&b.1));
 
+    // Turning checks off also hides a version that was already downloaded, so
+    // the menu matches the footer.
+    let update_ready = crate::updates::ready_version(app)
+        .filter(|_| settings::update_checks_effectively_enabled(&settings));
+
     TrayDesired {
         icon_path: get_icon_path(theme, icon_state, warning),
         menu: MenuInputs {
@@ -350,7 +355,7 @@ fn compute_desired(app: &AppHandle, icon_state: TrayIconState) -> TrayDesired {
             downloaded_models,
             locale: settings.app_language,
             update_checks_enabled: settings.update_checks_enabled,
-            update_ready: crate::updates::ready_version(app),
+            update_ready,
         },
     }
 }

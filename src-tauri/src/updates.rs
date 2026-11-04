@@ -351,6 +351,15 @@ pub fn install_on_quit(app: &AppHandle) {
     let Some(downloaded) = state.lock().downloaded.take() else {
         return;
     };
+    // Turning update checks off should take the ready version with it: don't
+    // quietly install something the user asked us to stop tracking.
+    if !enabled(app) {
+        debug!(
+            "update {} downloaded, but update checks are off; not installing",
+            downloaded.version
+        );
+        return;
+    }
     if !can_install_in_place() {
         warn!(
             "not installing update {} on quit: the app directory is not writable",
