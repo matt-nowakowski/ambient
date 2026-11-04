@@ -166,11 +166,18 @@ pub(crate) fn refresh_dock_icon(app: &AppHandle) {
     let spawned = std::thread::Builder::new()
         .name("dock-icon".into())
         .spawn(move || {
-            std::thread::sleep(std::time::Duration::from_millis(400));
-            set_dock_icon_from_bundle(&handle);
+            // The Dock builds its tile asynchronously and rebuilding the
+            // window recreates it, so a single 400 ms retry can land before
+            // the tile the Dock ends up drawing from exists. Keep handing the
+            // icon over for a few seconds instead, which costs nothing and
+            // covers a Dock that is slow to make up its mind.
+            for delay_ms in [400u64, 1100, 1600] {
+                std::thread::sleep(std::time::Duration::from_millis(delay_ms));
+                set_dock_icon_from_bundle(&handle);
+            }
         });
     if let Err(e) = spawned {
-        log::warn!("Dock icon: could not schedule the second refresh: {e}");
+        log::warn!("Dock icon: could not schedule the later refreshes: {e}");
     }
 }
 
@@ -182,18 +189,32 @@ fn set_dock_icon_from_bundle(app: &AppHandle) {
         use objc2_foundation::{ns_string, NSBundle};
 
         let Some(mtm) = objc2::MainThreadMarker::new() else {
+            log::warn!("Dock icon: not on the main thread, so the refresh was skipped");
             return;
         };
         // None outside a bundle (`tauri dev`), where Tauri sets the icon itself.
         let Some(path) = NSBundle::mainBundle()
             .pathForResource_ofType(Some(ns_string!("icon")), Some(ns_string!("icns")))
         else {
+            // Silent before 0.1.8, which made a failed lookup look like a Dock
+            // that had simply kept a stale icon.
+            log::warn!("Dock icon: the bundle has no icon.icns; leaving the Dock as it is");
             return;
         };
         let Some(image) = NSImage::initWithContentsOfFile(NSImage::alloc(), &path) else {
             log::warn!("Dock icon: could not load {path}");
             return;
         };
+        // A small image here is exactly the "speck in the Dock" report, so
+        // leave a trace of what we actually handed over.
+        let size = image.size();
+        if size.width < 128.0 || size.height < 128.0 {
+            log::warn!(
+                "Dock icon: {path} loaded at {}x{}, which the Dock will draw far too small",
+                size.width,
+                size.height
+            );
+        }
         let ns_app = NSApplication::sharedApplication(mtm);
         unsafe { ns_app.setApplicationIconImage(Some(&image)) };
         ns_app.dockTile().display();
