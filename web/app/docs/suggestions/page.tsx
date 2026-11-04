@@ -14,6 +14,7 @@ export default function SuggestionsPage() {
       <TrySaying title="When one appears, try saying" items={trySaying.suggestions} />
 
       <DocSection id="every-moment" title="Every moment it offers something">
+        <p>It looks again when something new appears in a window: a new message, a new error.</p>
         <DocRows items={suggestionMoments} />
       </DocSection>
 
@@ -47,8 +48,11 @@ export default function SuggestionsPage() {
           ).
         </p>
         <p>
-          It decides on your computer from the window’s text, and nothing is sent until you accept. On Pro you can choose
-          to have the cloud decide instead. Free gets up to {brand.freeSuggestionsPerWeek} suggestions a week.
+          It decides on your computer from the window’s text, and nothing is sent until you accept. With{" "}
+          <Link href="/docs/privacy#on-device-ai" className="text-foreground underline underline-offset-4">
+            on-device AI
+          </Link>{" "}
+          it judges better; without it, simple rules. On Pro you can choose to have the cloud decide instead. Free gets up to {brand.freeSuggestionsPerWeek} suggestions a week.
         </p>
       </DocSection>
 

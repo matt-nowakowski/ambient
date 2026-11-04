@@ -41,7 +41,7 @@ export const guidePages = [
     "Writing",
     "Smart writing",
     `How ${brand.name} decides, per dictation, whether to type what you said, polish it, or write it for you, and how to take it back.`,
-    "Dictate as usual. Each time, it types what you said, polishes it, or writes it for you. A small chip says which, and one click takes it back.",
+    "Dictate as usual. Each time, it types what you said, polishes it, or writes it for you, in any app and any language. A small chip says which, and one click takes it back.",
   ),
   page(
     "answers",
@@ -172,6 +172,7 @@ export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">
     { say: "Running ten minutes late, start without me.", then: "Typed as you said it. Plain speech never waits on a model." },
     { say: "So um the build is uh green now, let’s ship it.", then: "Polished: “The build is green now. Let’s ship it.”" },
     { say: "Tell him I can’t make it, be polite.", then: "Written for you: a proper message, typed where your cursor is." },
+    { say: "Reply that Thursday works.", then: "Under a message, it drafts the reply to the sender, not to you. “Odpisz, że wszystko ok” works too." },
     { say: "Make this more formal.", then: "With text selected, it rewrites the selection. The chip reads “Rewritten · Undo rewrite · Edit”." },
     { say: "Shorter.", then: "After it writes something, click Edit and say what to change: “shorter”, “warmer”." },
     { say: "Use my words.", then: "Swaps in exactly what you said. “Undo that” and “just what I said” work too." },
@@ -228,13 +229,16 @@ export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">
 export const suggestionMoments = [
   { k: "A long email thread", v: "“Long thread. Summarise it?”" },
   { k: "An email that needs a reply", v: "“Draft a reply to this?” Say the gist and get the full email in your tone." },
+  { k: "A question waiting for you in chat", v: "“Reply to Ana?” Say what to say." },
   { k: "A date in an email or Slack", v: "“There’s a date in this. Add it to your calendar?”" },
+  { k: "A deadline in a message", v: "“Due Friday. Want a reminder?” Say “remind me”." },
   { k: "A long draft you’re writing", v: "“Tighten this draft?” The shorter version appears with Replace, to swap it in." },
   { k: "A product page", v: "“Check if it’s cheaper elsewhere?”" },
   { k: "A search you keep rephrasing", v: "“Want me to just answer that?”" },
   { k: "A long article", v: "“Summarise this page?”" },
+  { k: "A page in another language", v: "“Translate this page?”" },
   { k: "Spreadsheet formula errors", v: "“Fix these formula errors?”" },
-  { k: "A stack trace or failing test", v: "“Explain this error?”" },
+  { k: "A stack trace, failing test or new terminal error", v: "“Explain this error?”" },
   { k: "A pull request in GitHub, GitLab or Bitbucket", v: "“Review this pull request?”" },
   { k: "A git diff in your terminal", v: "“Write a commit message for this?”" },
   { k: "A meeting in the next 10 minutes", v: "“Meeting coming up. Brief you?” From your own Calendar." },
@@ -244,9 +248,16 @@ export const suggestionMoments = [
 /** Smart writing: the three outcomes, as the chip names them. */
 export const writingOutcomes = [
   { k: "As said", v: "Your exact words, with your custom words applied. No chip. Used whenever it isn’t sure." },
-  { k: "Polished", v: "Messy speech cleaned up, in your words. Chip: “Polished · Use my words”. Needs AI polish on (the default for new installs)." },
-  { k: "Written for you", v: "An instruction turned into the message. Chip: “Written for you · Use my words · Edit”." },
+  { k: "Polished", v: "Messy speech cleaned up, in your words. Chip: “Polished · Use my words”. Needs AI polish on (off by default, so dictation is instant)." },
+  { k: "Written for you", v: "An instruction turned into the message. Chip: “Written for you · Use my words · Edit”. Works with AI polish off." },
   { k: "Rewritten", v: "Selected text rewritten as you asked. Chip: “Rewritten · Undo rewrite · Edit”." },
+] as const;
+
+/** Styles and words it follows. */
+export const writingYours = [
+  { k: "App and site styles", v: "Casual for Slack, polished for Gmail, as said in your terminal. In Account → Writing." },
+  { k: "Learns your fixes", v: "Correct the same word twice and it offers to remember it. In Settings → Advanced → Learn from my corrections." },
+  { k: "Custom words", v: "Names and terms spelled your way, in Settings → Advanced." },
 ] as const;
 
 /** The Writing setting, in Account. */

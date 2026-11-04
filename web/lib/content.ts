@@ -89,7 +89,7 @@ export const suggestions = {
   /** One line for the landing page. */
   short: "When it can help, it offers once. Say “yes”, or ignore it. It learns.",
   /** The examples as short chips, for the landing page. */
-  chips: ["Summarise a long thread", "Reply to Ana?", "Explain a failing test", "Translate a page", "Add a date to your calendar", "Tighten a draft", "Prep for a meeting"],
+  chips: ["Summarise a long thread", "Reply to Ana?", "Remind me?", "Explain a failing test", "Translate a page", "Add a date to your calendar", "Tighten a draft", "Prep for a meeting"],
   promiseShort: "Off until you turn it on. Nothing sent unless you accept.",
   examples: [
     "A long email thread: “Want me to summarise these 40 messages?”",
@@ -97,6 +97,7 @@ export const suggestions = {
     "A failing test or a stack trace: the likely fix",
     "A page in another language: translate it",
     "A date in an email or chat: add it to your calendar",
+    "A deadline in a message: “Remind me?”",
     "A long draft: tighten it",
     "A meeting in a few minutes: prep notes",
   ],
@@ -186,7 +187,7 @@ export const trust = {
     },
     {
       k: "On this computer only",
-      v: "An optional Intelligence mode: AI runs on your device (Apple Intelligence on a Mac) and web search is off, so nothing is sent.",
+      v: "An optional Intelligence mode: AI runs on your device (optional on-device AI on any computer, or Apple Intelligence on a Mac) and web search is off, so nothing is sent.",
     },
     { k: "Invisible in screen shares", v: "The HUD doesn’t appear in screen shares or recordings. One key pauses everything." },
     { k: "No bots, no accounts", v: "No bot joins your calls and there is nothing to connect. The only account is the email you sign in with for Pro, and Free needs none." },
@@ -386,10 +387,10 @@ export const featureGroups: FeatureGroup[] = [
     pro: true,
     intro: `Switch it on and it nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose Cloud (Pro), and nothing is sent unless you accept. Up to ${brand.freeSuggestionsPerWeek} a week on Free.`,
     items: [
-      { title: "Email", body: "Long threads: summarise them. Replies: dictate the gist, get the email. A date in an email or Slack message: add it to your calendar.", orb: "B4" },
+      { title: "Email and chat", body: "Long threads: summarise them. A question waiting for you: dictate the gist, get the reply. A date: add it to your calendar. A deadline: “Remind me?”", orb: "B4" },
       { title: "Writing", body: "A long draft: tighten it.", orb: "S4" },
-      { title: "Browsing", body: "A long page: summarise it. A product page: check prices elsewhere. Rephrasing the same search: just answer it.", orb: "G2" },
-      { title: "Work", body: "A spreadsheet formula error, a stack trace or a failing test: explain it and suggest a fix.", orb: "M3" },
+      { title: "Browsing", body: "A long page: summarise it. A page in another language: translate it. A product page: check prices elsewhere. Rephrasing the same search: just answer it.", orb: "G2" },
+      { title: "Work", body: "A spreadsheet formula error, a stack trace, a failing test or a new error in your terminal: explain it and suggest a fix.", orb: "M3" },
       { title: "Meeting prep", body: "A few minutes before an event in your calendar, it offers a short brief to get you ready.", orb: "C4" },
       { title: "Quiet by design", body: "One line, Enter or Esc, gone in seconds. Dismiss a kind of suggestion and it backs off.", orb: "G4" },
     ],
@@ -404,9 +405,10 @@ export const featureGroups: FeatureGroup[] = [
   {
     id: "dictation",
     heading: "Writing, unlimited and free",
-    intro: "Dictation that knows when to type what you said, when to polish it, and when to write it for you. Unlimited, on every platform, transcribed on your computer. On Free, polishing and writing for you count as AI uses.",
+    intro: "Dictation that knows when to type what you said, when to polish it, and when to write it for you, in any app and any language. Unlimited, on every platform, transcribed on your computer. On Free, polishing and writing for you count as AI uses.",
     items: [
-      { title: "Smart writing", body: "Say “tell him I can’t make it, be polite” and get a proper message. Messy speech gets polished; everything else is typed as you said it. A small chip shows what it did, and “Use my words” takes it back.", orb: "C1" },
+      { title: "Smart writing", body: "Say “tell him I can’t make it, be polite” or “reply that Thursday works”, in your language, and get a proper message to the right person. It judges from what’s on screen, in any app. A small chip shows what it did, and “Use my words” takes it back.", orb: "C1" },
+      { title: "Styles per app and site", body: "Casual for Slack, polished for Gmail, word for word in your code editor. Smart writing follows them.", orb: "M2" },
       { title: "Edit by voice", body: "Say “shorter” or “warmer” to change what it wrote. Select text and say “make this more formal” to rewrite it. It learns, per app, how much you want.", orb: "S5" },
       { title: "On-device transcription", body: "Speech-to-text runs locally with open models (Whisper, Parakeet, Moonshine, SenseVoice and more) with GPU acceleration where available. Your audio never leaves your computer.", orb: "B1" },
       { title: "Works offline", body: "Once a model is downloaded, dictation needs no connection at all.", orb: "G5" },
@@ -414,9 +416,10 @@ export const featureGroups: FeatureGroup[] = [
       { title: "Choose your model", body: "Trade speed for accuracy: small, fast models for quick notes, larger ones for long-form writing. Switch any time.", orb: "S2" },
       { title: "Any app", body: "Text is pasted wherever your cursor is: email, chat, docs, code editors, the terminal.", orb: "C2" },
       { title: "Push-to-talk or toggle", body: "Hold the shortcut while you speak, or tap once to start and again to stop. The shortcut is yours to choose.", orb: "C1" },
-      { title: "Custom words", body: "Add names, jargon and product terms so they come out spelled your way.", orb: "S4" },
+      { title: "Custom words", body: "Add names, jargon and product terms so they come out spelled your way. Fix the same word twice and it offers to remember it.", orb: "S4" },
       { title: "History and files", body: "Every transcription is kept on your device: search it, play it back, re-transcribe it. Drop in an audio file to get the text.", orb: "C3" },
-      { title: "AI polish", body: "Punctuation, no filler words, lists formatted, “scratch that” applied. Hosted with nothing to set up, or on your Mac with Apple Intelligence. Only text is sent, never audio.", orb: "S1" },
+      { title: "AI polish", body: "Punctuation, no filler words, lists formatted, “scratch that” applied. Off by default, so dictation is instant; turn it on when you want it. Hosted with nothing to set up, or on your computer with optional on-device AI (or Apple Intelligence on a Mac). Only text is sent, never audio.", orb: "S1" },
+      { title: "On-device AI (optional)", body: "Download a small model (about 1.7 GB) and polish, smart writing and suggestions run on your computer, on macOS, Windows and Linux.", orb: "B1" },
       { title: "macOS, Windows, Linux", body: "Native builds for all three, plus command-line flags for scripting and Wayland shortcuts.", orb: "M1" },
     ],
   },

@@ -30,7 +30,7 @@ export const faqs: FaqItem[] = [
   },
   {
     q: "Does it work offline?",
-    a: "Dictation does. Once a model is downloaded, it works with no connection: on a plane, behind a strict firewall. AI features use our server by default, or Apple Intelligence on your Mac if you choose. Web answers need a connection.",
+    a: "Dictation does. Once a model is downloaded, it works with no connection: on a plane, behind a strict firewall. AI features use our server by default. Download the optional on-device AI (about 1.7 GB, any computer), or use Apple Intelligence on a Mac, and polish, smart writing and suggestions run offline too. Web answers need a connection.",
   },
   {
     q: `How is it different from ${competitors.join(" or ")}?`,

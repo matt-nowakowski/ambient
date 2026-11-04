@@ -7,7 +7,7 @@ import { defaultShortcut } from "@/lib/releases";
 
 export const metadata: Metadata = pageMetadata({
   title: "Troubleshooting",
-  description: `Fix common ${brand.name} problems: shortcuts and macOS Secure Input, microphone and accessibility permissions, and pasting.`,
+  description: `Fix common ${brand.name} problems: shortcuts and macOS Secure Input, microphone and accessibility permissions, pasting, a cut-off first word, and other dictation apps.`,
   path: "/docs/troubleshooting",
 });
 
@@ -107,6 +107,28 @@ export default function TroubleshootingPage() {
             .
           </li>
         </ul>
+      </DocSection>
+
+      <DocSection id="first-word-cut-off" title="The first word is cut off">
+        <p>
+          Opening the mic takes a moment, longer with Bluetooth headsets. <strong>Keep mic ready</strong> keeps it open
+          for a minute after you dictate, so the next one catches your first word. Make it longer in {brand.name} →
+          Settings → Sound. While it’s open your computer shows the mic in use; that audio stays in memory, never saved or
+          sent.
+        </p>
+      </DocSection>
+
+      <DocSection id="another-dictation-app" title="Another dictation app types too">
+        <p>
+          If another dictation app uses the same shortcut, both may respond. Check that{" "}
+          <strong>Only {brand.name} responds to its shortcuts</strong> is on (the default) in {brand.name} → Settings →
+          General. Setup calls it “Make {brand.name} your dictation app”. Or pick a different shortcut. {brand.name} tells you when one is
+          running.
+        </p>
+        <p>
+          On a Mac, if Dictation or the emoji picker opens too, set “Press 🌐 key to” to Do Nothing in Keyboard settings.
+          On Windows, <C>Win + H</C> also starts voice typing; pick another shortcut.
+        </p>
       </DocSection>
 
       <DocSection id="still-stuck" title="Still stuck?">
