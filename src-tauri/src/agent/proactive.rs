@@ -282,10 +282,6 @@ const BROWSERS: &[&str] = &[
     "app.zen_browser.zen",
 ];
 
-/// A browser on any OS (Linux app ids come from the platform's list).
-fn is_browser(bundle: &str) -> bool {
-    BROWSERS.contains(&bundle) || crate::context::is_platform_browser(bundle)
-}
 /// Chat apps where "Thursday at 3?" means an invite worth offering.
 const CHAT_APPS: &[&str] = &[
     "com.tinyspeck.slackmacgap",
