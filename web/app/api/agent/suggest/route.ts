@@ -1,6 +1,6 @@
 import { authorize, complete, isConfigured, rateLimited, usagePlan, withinFairUse, type Message } from "@/lib/ai";
 import { recordUsage, scheduleUsageFlush, tokensFrom } from "@/lib/usage";
-import { MAX_TEXT, NO_HELP, allowedKinds, parseVerdict, safeLocale, systemPrompt } from "@/lib/suggest-core";
+import { MAX_CONTEXT, MAX_TEXT, NO_HELP, allowedKinds, parseVerdict, safeLocale, systemPrompt, userMessage } from "@/lib/suggest-core";
 
 export const maxDuration = 10;
 
@@ -8,7 +8,8 @@ export const maxDuration = 10;
  * The cloud suggestion judge: "is there something here I can help with?",
  * for computers without an on-device model (Windows, Linux, older Macs) when
  * the user chose the cloud. The app sends a redacted snippet of the window
- * the user has stayed on, `{app, title, text, kinds_allowed, locale}`, and
+ * the user has stayed on, `{app, title, context, text, kinds_allowed, locale}`
+ * (`context` is the moment: site, typing, local time, languages; 0.1.8+), and
  * gets back the same strict verdict its on-device judge produces:
  * `{help, kind, title, confidence}`.
  *
@@ -26,6 +27,8 @@ const BUDGET = { totalMs: 5_000, attemptMs: 3_500 };
 type Body = {
   app?: unknown;
   title?: unknown;
+  /** The moment: "Site: …", "Typing: …", "Now: …", "Reads: …" lines. */
+  context?: unknown;
   /** Window text, already redacted on the device. */
   text?: unknown;
   kinds_allowed?: unknown;
@@ -50,6 +53,7 @@ export async function POST(req: Request) {
   if (text.trim().length < 50) return Response.json({ error: "missing_text" }, { status: 400 });
   const app = typeof body.app === "string" ? body.app.slice(0, MAX_APP) : "";
   const title = typeof body.title === "string" ? body.title.slice(0, MAX_TITLE) : "";
+  const context = typeof body.context === "string" ? body.context.slice(0, MAX_CONTEXT) : "";
   const kinds = allowedKinds(body.kinds_allowed);
   // Nothing the user still wants offered: no need to ask the model.
   if (!kinds.length) return Response.json(NO_HELP);
@@ -60,7 +64,7 @@ export async function POST(req: Request) {
 
   const messages: Message[] = [
     { role: "system", content: systemPrompt(kinds, safeLocale(body.locale)) },
-    { role: "user", content: `App: ${app}\nWindow: ${title}\n---\n${text}` },
+    { role: "user", content: userMessage(app, title, context, text) },
   ];
   try {
     const data = await complete(messages, { max_tokens: MAX_TOKENS, temperature: 0 }, BUDGET);
