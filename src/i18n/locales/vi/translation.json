@@ -237,6 +237,11 @@
         "shortcut": "Phím tắt",
         "changeLanguages": "Đổi ngôn ngữ, {{languages}}",
         "changeModel": "Đổi mô hình giọng nói, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Đặt {{appName}} làm ứng dụng đọc chính tả của bạn",
+        "description": "Nếu một ứng dụng đọc chính tả khác dùng cùng phím tắt, {{appName}} sẽ nhận nó.",
+        "found": "Nếu một ứng dụng đọc chính tả khác, như {{apps}}, dùng cùng phím tắt, {{appName}} sẽ nhận nó."
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "Số liệu sử dụng ẩn danh",
         "config": "Kiểm tra cài đặt (không gửi gì)",
         "meeting_email": "Email ghi chú cuộc họp",
-        "feedback": "Phản hồi"
+        "feedback": "Phản hồi",
+        "checkin": "Điểm danh hằng ngày"
       }
     },
     "engine": {

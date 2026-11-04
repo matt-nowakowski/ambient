@@ -237,6 +237,11 @@
         "shortcut": "Tastenkürzel",
         "changeLanguages": "Sprachen ändern, {{languages}}",
         "changeModel": "Sprachmodell ändern, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Mach {{appName}} zu deiner Diktier-App",
+        "description": "Nutzt eine andere Diktier-App dasselbe Kürzel, übernimmt {{appName}} es.",
+        "found": "Nutzt eine andere Diktier-App, etwa {{apps}}, dasselbe Kürzel, übernimmt {{appName}} es."
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "Anonyme Nutzungszahlen",
         "config": "Einstellungsabgleich (nichts gesendet)",
         "meeting_email": "Meeting-Notizen per E-Mail",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Tägliche Anmeldung"
       }
     },
     "engine": {

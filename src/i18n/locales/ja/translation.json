@@ -237,6 +237,11 @@
         "shortcut": "ショートカット",
         "changeLanguages": "言語を変更、{{languages}}",
         "changeModel": "音声モデルを変更、{{model}}"
+      },
+      "dictationApp": {
+        "title": "{{appName}} を音声入力アプリにする",
+        "description": "ほかの音声入力アプリが同じショートカットを使っていても、{{appName}} が優先されます。",
+        "found": "{{apps}} などほかの音声入力アプリが同じショートカットを使っていても、{{appName}} が優先されます。"
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "匿名の利用回数",
         "config": "設定の確認（送信内容なし）",
         "meeting_email": "会議メモのメール",
-        "feedback": "フィードバック"
+        "feedback": "フィードバック",
+        "checkin": "毎日のチェックイン"
       }
     },
     "engine": {

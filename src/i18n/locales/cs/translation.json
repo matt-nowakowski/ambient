@@ -239,6 +239,11 @@
         "shortcut": "Zkratka",
         "changeLanguages": "Změnit jazyky, {{languages}}",
         "changeModel": "Změnit model řeči, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Udělejte z {{appName}} svou aplikaci na diktování",
+        "description": "Pokud jiná aplikace na diktování používá stejnou zkratku, {{appName}} ji převezme.",
+        "found": "Pokud jiná aplikace na diktování, například {{apps}}, používá stejnou zkratku, {{appName}} ji převezme."
       }
     },
     "linux": {
@@ -1559,7 +1564,8 @@
         "telemetry": "Anonymní statistiky používání",
         "config": "Kontrola nastavení (nic se neodesílá)",
         "meeting_email": "E-mail s poznámkami ze schůzky",
-        "feedback": "Zpětná vazba"
+        "feedback": "Zpětná vazba",
+        "checkin": "Denní ohlášení"
       }
     },
     "engine": {

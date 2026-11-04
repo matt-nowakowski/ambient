@@ -237,6 +237,11 @@
         "shortcut": "Genvej",
         "changeLanguages": "Skift sprog, {{languages}}",
         "changeModel": "Skift talemodel, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Gør {{appName}} til din dikteringsapp",
+        "description": "Hvis en anden dikteringsapp bruger samme genvej, tager {{appName}} den.",
+        "found": "Hvis en anden dikteringsapp, som {{apps}}, bruger samme genvej, tager {{appName}} den."
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "Anonyme brugstal",
         "config": "Tjek af indstillinger (intet sendt)",
         "meeting_email": "E-mail med mødenoter",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Daglig indtjekning"
       }
     },
     "engine": {

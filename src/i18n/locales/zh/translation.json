@@ -237,6 +237,11 @@
         "shortcut": "快捷键",
         "changeLanguages": "更改语言，当前为{{languages}}",
         "changeModel": "更改语音模型，当前为{{model}}"
+      },
+      "dictationApp": {
+        "title": "把 {{appName}} 设为你的听写应用",
+        "description": "如果其他听写应用使用相同的快捷键，{{appName}} 会接管它。",
+        "found": "如果其他听写应用（如 {{apps}}）使用相同的快捷键，{{appName}} 会接管它。"
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "匿名使用计数",
         "config": "设置检查（不发送任何内容）",
         "meeting_email": "会议笔记邮件",
-        "feedback": "反馈"
+        "feedback": "反馈",
+        "checkin": "每日签到"
       }
     },
     "engine": {

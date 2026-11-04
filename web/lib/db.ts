@@ -182,7 +182,8 @@ let activitySchemaReady: Promise<unknown> | null = null;
  *
  * - device_activity: one row per device (or paid account) per active day,
  *   week and month, as a keyed hash that differs per period, so a row can't
- *   be linked to another period's. Plan only. Pruned after
+ *   be linked to another period's, with the plan and, from the daily
+ *   check-in, the OS, architecture and app version. Pruned after
  *   PRODUCT_RETENTION_DAYS.
  * - daily_counts: plain totals per (UTC day, metric, dimension): installer
  *   downloads by file, version and country, first launches by country. No
@@ -201,6 +202,12 @@ export async function activityDb() {
       plan text not null,
       primary key (period, start, device)
     )`
+    // Added in 0.1.8 for the daily check-in (/api/ping): the OS, CPU
+    // architecture and app version the device reported. Null on rows from
+    // other requests and on rows written before.
+    .then(() => sql`alter table device_activity add column if not exists os text`)
+    .then(() => sql`alter table device_activity add column if not exists arch text`)
+    .then(() => sql`alter table device_activity add column if not exists version text`)
     .then(
       () => sql`
     create table if not exists daily_counts (

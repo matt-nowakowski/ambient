@@ -237,6 +237,11 @@
         "shortcut": "Kortkommando",
         "changeLanguages": "Ändra språk, {{languages}}",
         "changeModel": "Ändra talmodell, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Gör {{appName}} till din dikteringsapp",
+        "description": "Om en annan dikteringsapp använder samma kortkommando tar {{appName}} det.",
+        "found": "Om en annan dikteringsapp, som {{apps}}, använder samma kortkommando tar {{appName}} det."
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "Anonym användningsstatistik",
         "config": "Kontroll av inställningar (inget skickas)",
         "meeting_email": "E-post med mötesanteckningar",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Daglig incheckning"
       }
     },
     "engine": {

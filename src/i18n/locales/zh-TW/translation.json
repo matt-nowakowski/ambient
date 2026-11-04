@@ -237,6 +237,11 @@
         "shortcut": "快捷鍵",
         "changeLanguages": "變更語言，目前為{{languages}}",
         "changeModel": "變更語音模型，目前為{{model}}"
+      },
+      "dictationApp": {
+        "title": "把 {{appName}} 設為你的聽寫 App",
+        "description": "如果其他聽寫 App 使用相同的快速鍵，{{appName}} 會接手。",
+        "found": "如果其他聽寫 App（例如 {{apps}}）使用相同的快速鍵，{{appName}} 會接手。"
       }
     },
     "linux": {
@@ -1537,7 +1542,8 @@
         "telemetry": "匿名使用次數",
         "config": "設定檢查（不傳送任何內容）",
         "meeting_email": "會議筆記電子郵件",
-        "feedback": "意見回饋"
+        "feedback": "意見回饋",
+        "checkin": "每日報到"
       }
     },
     "engine": {
