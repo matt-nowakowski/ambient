@@ -5,11 +5,14 @@
 //! with a small HUD chip, and let the user take it back: "Use my words"
 //! replaces exactly the inserted text with what they said.
 //!
-//! The decision is cheap rules first (instruction forms, disfluency, length,
-//! a selection, the app's category), a model only for genuinely ambiguous
-//! phrasings (on this computer when it can, never sent in "On this computer
-//! only"), and "as said" whenever unsure. "As said" never calls a model, so
-//! it's exactly as fast as plain dictation. Thresholds are remote tunables
+//! The decision is cheap rules first (instruction forms in many languages,
+//! disfluency, length, a selection), a model only for genuinely ambiguous
+//! phrasings, told what's around the field (a fresh message, a reply) rather
+//! than which app it is (on this computer when it can, never sent in "On
+//! this computer only"), and "as said" whenever unsure. "As said" never calls
+//! a model, so it's exactly as fast as plain dictation (the rules take ~50 µs
+//! in a debug build). Drafting from an instruction is an agent action, not
+//! polish: it works with AI polish off. Thresholds are remote tunables
 //! (`remote_config::WritingConfig`), shifted per app by what the user taught
 //! it with "Use my words" (`AgentSettings::writing_prefs`).
 
@@ -63,7 +66,10 @@ impl Source {
     }
 }
 
-/// What the rules know about where the words go (metadata only).
+/// What the rules know about where the words go. Whether it's an
+/// instruction is decided from the words and the field (a fresh message, a
+/// reply under a quoted message), never from which app it is: the category
+/// only keeps code (terminals, editors) careful.
 #[derive(Debug, Clone, Default)]
 pub struct Ctx {
     /// Text is selected in the focused field.
@@ -74,6 +80,55 @@ pub struct Ctx {
     pub ai_chat: bool,
     /// Said to Ambient by name ("Hey Ambient, …").
     pub addressed: bool,
+    /// What's on screen around the field, for the model.
+    pub scene: Scene,
+}
+
+/// The focused field and window, as far as deciding needs: read on this
+/// computer; only these flags and the window's name reach a model.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct Scene {
+    /// "App — window title".
+    pub window: String,
+    /// Nothing typed before the caret (the start of a new message); None
+    /// when the field couldn't be read.
+    pub fresh: Option<bool>,
+    /// A reply: a quoted message in the field ("On Monday Sam wrote:", "> …")
+    /// or a reply's title ("Re: …", "Odp: …").
+    pub replying: bool,
+}
+
+/// Quoted-reply markers in a reply's body, in the languages mail apps use.
+static QUOTED: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?im)(?:\b(?:wrote|napisał(?:a)?|schrieb|a\s+écrit|escribió|ha\s+scritto|escreveu|schreef|написал(?:а)?|написав(?:ла)?|skrev|napsal(?:a)?)\s*:\s*$|^>\s|^-{2,}\s*(?:original\s+message|forwarded\s+message|ursprüngliche\s+nachricht|wiadomość\s+oryginalna|mensaje\s+original|message\s+d'origine)|^(?:from|von|od|de|da|van|от|från):\s.+\n(?:.*\n)?(?:sent|date|gesendet|wysłano|data|datum|enviado|envoyé|inviato|отправлено|skickat):)",
+    )
+    .expect("quoted reply")
+});
+
+/// A reply's window title ("Re: Budget", "AW: Budget", "Odp: Budżet").
+static REPLY_TITLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?i)^\s*(?:re|aw|odp|rv|r|antw|sv|vs|ynt|réf|ответ)\s*:").expect("reply title")
+});
+
+impl Scene {
+    /// From the field's text and caret and the window's title.
+    pub fn read(app: &str, title: &str, value: Option<&str>, caret: Option<usize>) -> Self {
+        let before: String = match (value, caret) {
+            (Some(v), Some(c)) => v.chars().take(c).collect(),
+            (Some(v), None) => v.to_string(),
+            _ => String::new(),
+        };
+        Self {
+            window: if title.trim().is_empty() {
+                app.to_string()
+            } else {
+                format!("{app} — {title}")
+            },
+            fresh: value.map(|_| before.trim().is_empty()),
+            replying: REPLY_TITLE.is_match(title) || value.is_some_and(|v| QUOTED.is_match(v)),
+        }
+    }
 }
 
 /// Thresholds in effect for one app: the remote config, shifted by what the
@@ -84,17 +139,25 @@ pub struct Tunables {
     pub ambiguous_floor: f32,
     pub polish_disfluency: f32,
     pub run_on_words: u32,
+    /// Dictations of this many words or fewer aren't polished.
+    pub skip_polish_words: u32,
 }
 
-impl Default for Tunables {
-    fn default() -> Self {
-        let c = crate::remote_config::WritingConfig::default();
+impl From<crate::remote_config::WritingConfig> for Tunables {
+    fn from(c: crate::remote_config::WritingConfig) -> Self {
         Self {
             written_threshold: c.written_threshold,
             ambiguous_floor: c.ambiguous_floor,
             polish_disfluency: c.polish_disfluency,
             run_on_words: c.run_on_words,
+            skip_polish_words: c.skip_polish_words,
         }
+    }
+}
+
+impl Default for Tunables {
+    fn default() -> Self {
+        crate::remote_config::WritingConfig::default().into()
     }
 }
 
@@ -337,14 +400,8 @@ pub fn classify(transcript: &str, ctx: &Ctx, t: &Tunables) -> Verdict {
 /// The thresholds for `bundle`: remote config, raised where the user took
 /// back what was written or polished (that app most, its category a little).
 pub fn tunables_for(settings: &AppSettings, bundle: &str) -> Tunables {
-    let c = crate::remote_config::agent_config().writing;
     adjust(
-        Tunables {
-            written_threshold: c.written_threshold,
-            ambiguous_floor: c.ambiguous_floor,
-            polish_disfluency: c.polish_disfluency,
-            run_on_words: c.run_on_words,
-        },
+        crate::remote_config::agent_config().writing.into(),
         &settings.agent.writing_prefs,
         bundle,
     )
@@ -377,15 +434,21 @@ pub fn adjust(
         ambiguous_floor: base.ambiguous_floor + shift,
         polish_disfluency: base.polish_disfluency * factor,
         run_on_words: (base.run_on_words as f32 * factor).round() as u32,
+        skip_polish_words: base.skip_polish_words,
     }
 }
 
 // ── The model, for ambiguous phrasings ──────────────────────────────────
 
-const MODEL_SYSTEM: &str = r#"You decide how to type what the user just dictated into a text field. Reply with exactly one word:
-as_said: the words are the text to type, word for word (a message, note, reply or prompt), even when they start with "tell", "ask", "let me know" or "thank" and are addressed to the person being written to.
-polished: the words are the text to type but the speech is messy (fillers, false starts, corrections) and needs cleaning up, keeping their words.
-written: they are instructing you to write or rewrite something for them ("tell him I can't make it, be polite", "write a quick thank-you to the team", "reply saying Thursday works", "make this more formal"); the text to type would differ from what they said.
+/// Keep the opening words: the server treats calls starting with them as
+/// routing, which never spends Free's AI uses (`completionKind` in
+/// web/lib/ai.ts).
+const MODEL_SYSTEM: &str = r#"You decide how to type what the user just dictated into a text field. Reply with exactly one word: as_said, polished or written.
+Decide from the words and the situation, never from which app it is. The words may be in any language; decide the same way.
+as_said: the words ARE the message, spoken to its reader: first and second person, a greeting, a question or request to them ("tell me when you're free", "let me know if that works", "thanks, all good", "dzięki, wszystko ok").
+polished: the same, but the speech is messy (fillers, false starts, corrections) and needs cleaning up, keeping their words.
+written: the words are an instruction to you ABOUT a message: they say what to write ("reply that everything's ok", "write back saying Thursday works", "draft a thank-you to the team"), speak of the recipient in the third person ("tell him I can't make it", "let Sam know I'm late"), or say how to write it ("be polite", "keep it short"), or ask to rewrite selected text ("make this more formal"). Also in other languages: "odpisz że wszystko ok", "napisz mu że będę o 5", "dile que llego tarde", "réponds-lui que c'est bon", "antworte, dass alles passt", "rispondi che va bene", "大丈夫だと返信して".
+A fresh reply under someone's message makes an instruction more likely, but words spoken to the reader are still as_said.
 If unsure, as_said."#;
 
 /// The label in a model reply.
@@ -406,6 +469,34 @@ pub fn parse_label(reply: &str) -> Option<Decision> {
 
 const MODEL_TIMEOUT: Duration = Duration::from_millis(3_000);
 
+/// What the model is told: where the words go (the window, whether it's a
+/// fresh message or a reply, a selection) and the words.
+pub fn model_input(transcript: &str, ctx: &Ctx) -> String {
+    let mut field = Vec::new();
+    match ctx.scene.fresh {
+        Some(true) => field.push("empty, a new message starts here"),
+        Some(false) => field.push("has text before the cursor"),
+        None => {}
+    }
+    if ctx.scene.replying {
+        field.push("a reply under someone's message");
+    }
+    if ctx.has_selection {
+        field.push("text is selected");
+    }
+    let window = if ctx.scene.window.is_empty() {
+        String::new()
+    } else {
+        format!("Window: {}\n", ctx.scene.window)
+    };
+    let field = if field.is_empty() {
+        String::new()
+    } else {
+        format!("Field: {}\n", field.join("; "))
+    };
+    format!("{window}{field}Dictated: {}", transcript.trim())
+}
+
 /// Ask a model about an ambiguous phrasing: Apple Intelligence on this Mac
 /// when it can run it (on a paid plan, "On this computer only", or when
 /// the user prefers it), else the hosted model the user chose, never in
@@ -416,16 +507,7 @@ const MODEL_TIMEOUT: Duration = Duration::from_millis(3_000);
 pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Option<Decision> {
     use crate::settings::Intelligence;
     let s = settings::get_settings(app);
-    let user = format!(
-        "App: {}{}\nDictated: {}",
-        ctx.category,
-        if ctx.has_selection {
-            ", text is selected"
-        } else {
-            ""
-        },
-        transcript.trim()
-    );
+    let user = model_input(transcript, ctx);
     if !crate::limits::ai_available(app) {
         return None;
     }
@@ -444,7 +526,19 @@ pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Optio
         if s.agent.device_only() || super::llm::target(app).is_none() {
             return None;
         }
-        super::llm::complete_hosted(app, "write_mode", MODEL_SYSTEM, &user).await
+        // One word back: a tiny output cap also gets the server's short
+        // time budget.
+        super::llm::complete_hosted_limited(
+            app,
+            "write_mode",
+            MODEL_SYSTEM,
+            &user,
+            crate::llm_client::RequestLimits {
+                max_tokens: Some(8),
+                timeout: Some(MODEL_TIMEOUT),
+            },
+        )
+        .await
     };
     let reply = tokio::time::timeout(MODEL_TIMEOUT, ask)
         .await
@@ -458,6 +552,17 @@ pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Optio
     label
 }
 
+/// Words, counting Chinese and Japanese (written without spaces) at about
+/// two characters a word.
+pub fn word_count(t: &str) -> usize {
+    let spaced = t.split_whitespace().count();
+    let cjk = t
+        .chars()
+        .filter(|c| matches!(*c as u32, 0x3040..=0x30FF | 0x3400..=0x4DBF | 0x4E00..=0x9FFF))
+        .count();
+    spaced.max(cjk.div_ceil(2))
+}
+
 // ── The plan for one dictation ──────────────────────────────────────────
 
 /// How this dictation may be written, from the Writing setting, AI polish
@@ -469,6 +574,9 @@ pub struct WritePlan {
     pub polish_on: bool,
     /// Polish this one regardless (the polish shortcut, "Always polish").
     pub force_polish: bool,
+    /// Asked for this one (the polish shortcut, a file): polished however
+    /// short it is.
+    pub explicit: bool,
 }
 
 impl WritePlan {
@@ -478,6 +586,7 @@ impl WritePlan {
             mode: WritingMode::AsSaid,
             polish_on: post_process,
             force_polish: post_process,
+            explicit: post_process,
         }
     }
 
@@ -489,7 +598,16 @@ impl WritePlan {
             mode,
             polish_on,
             force_polish: explicit_polish || (mode == WritingMode::Polish && polish_on),
+            explicit: explicit_polish,
         }
+    }
+
+    /// Whether this polish is worth a model round trip: a dictation of a
+    /// few words ("sounds good", "ok thanks") is typed at once instead,
+    /// unless polish was asked for (the shortcut). `max_words` is the
+    /// `writing.skip_polish_words` tunable (0 polishes everything).
+    pub fn polish_worth_it(&self, transcript: &str, max_words: u32) -> bool {
+        self.explicit || word_count(transcript) > max_words as usize
     }
 
     /// Decided per utterance.
@@ -504,10 +622,18 @@ impl WritePlan {
     }
 }
 
-/// Whether text is selected in the focused field (metadata only, no text).
-pub fn has_selection(app: &AppHandle) -> bool {
+/// Whether text is selected in the focused field, and the scene around it
+/// (`window` is "App — title"). The field's text is read here only to tell
+/// a fresh message or a reply; it never leaves this computer.
+pub fn read_field(app: &AppHandle, app_name: &str, title: &str) -> (bool, Scene) {
     let nw = settings::get_settings(app).agent.never_watch;
-    field::focused_field(false, &nw).is_some_and(|f| f.has_selection())
+    match field::focused_field(true, &nw) {
+        Some(f) => (
+            f.has_selection(),
+            Scene::read(app_name, title, f.value.as_deref(), f.caret),
+        ),
+        None => (false, Scene::read(app_name, title, None, None)),
+    }
 }
 
 // ── Out of allowance ─────────────────────────────────────────────────────
@@ -1039,6 +1165,156 @@ fn select_inserted(f: &FocusedField, inserted: &str, nw: &[String]) -> Option<Re
     }
 }
 
+// ── Who's who in a reply ──────────────────────────────────────────────────
+//
+// A draft is written as the user, to the other person. Mail shows both
+// ("From: Sam … To: Matt"), and without being told which one is the user
+// the model has addressed the reply to them.
+
+/// The user, as far as this computer knows.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct Me {
+    /// The account's full name on this computer ("Matt Nowakowski").
+    pub name: Option<String>,
+    /// The signed-in email.
+    pub email: Option<String>,
+}
+
+impl Me {
+    pub fn read(app: &AppHandle) -> Self {
+        Self {
+            name: full_user_name(),
+            email: crate::plan::account_email(app),
+        }
+    }
+
+    fn label(&self) -> Option<String> {
+        match (&self.name, &self.email) {
+            (Some(n), Some(e)) => Some(format!("{n} ({e})")),
+            (Some(n), None) => Some(n.clone()),
+            (None, Some(e)) => Some(e.clone()),
+            (None, None) => None,
+        }
+    }
+
+    /// Whether a name or address seen on screen is the user.
+    pub fn is(&self, who: &str) -> bool {
+        let who = who.trim().to_lowercase();
+        if who.is_empty() || matches!(who.as_str(), "me" | "you" | "ja" | "ich" | "moi" | "yo") {
+            return true;
+        }
+        if let Some(e) = &self.email {
+            let e = e.to_lowercase();
+            if who.contains(&e) || e.split('@').next() == Some(who.as_str()) {
+                return true;
+            }
+        }
+        self.name.as_ref().is_some_and(|n| {
+            let n = n.to_lowercase();
+            // The full name, or just the first name on its own ("Matt").
+            who == n || n.split_whitespace().next() == Some(who.as_str())
+        })
+    }
+}
+
+/// The login account's full name, read once.
+fn full_user_name() -> Option<String> {
+    static NAME: Lazy<Option<String>> = Lazy::new(|| {
+        #[cfg(target_os = "macos")]
+        let name = Some(objc2_foundation::NSFullUserName().to_string());
+        #[cfg(target_os = "linux")]
+        let name = std::env::var("USER").ok().and_then(|user| {
+            std::fs::read_to_string("/etc/passwd").ok().and_then(|p| {
+                p.lines()
+                    .find(|l| l.split(':').next() == Some(user.as_str()))
+                    .and_then(|l| l.split(':').nth(4))
+                    .and_then(|gecos| gecos.split(',').next())
+                    .map(str::to_string)
+            })
+        });
+        // Windows has no full name without a directory lookup: the signed-in
+        // email and the screen carry it there.
+        #[cfg(not(any(target_os = "macos", target_os = "linux")))]
+        let name: Option<String> = None;
+        name.map(|n| n.trim().to_string()).filter(|n| !n.is_empty())
+    });
+    NAME.clone()
+}
+
+/// "From: Sam Lee <sam@acme.com>" in a header (any of the usual languages).
+static FROM_LINE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)^\s*(?:from|von|od|de|da|van|от|від|från|fra|kimden)\s*:\s*(.+?)\s*$")
+        .expect("from line")
+});
+
+/// "On Mon, 2 Nov 2026 at 10:02, Sam Lee <sam@acme.com> wrote:" in a quoted
+/// reply.
+static WROTE_LINE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)(?:^|,\s*|\s)([^,\n<>]{2,60}?)\s*(?:<[^>\n]+>)?\s*(?:wrote|napisał(?:a)?|schrieb|a\s+écrit|escribió|ha\s+scritto|escreveu|schreef|написал(?:а)?|skrev)\s*:\s*$")
+        .expect("wrote line")
+});
+
+/// A chat message's header: "Sam Lee  10:42 AM", "Sam Lee 10:42", "Anna
+/// Kowalska — 14:05" (Slack, Teams, Discord).
+static CHAT_HEADER: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?m)^\s*(\p{Lu}[\p{L}'’.\-]*(?:[ \t]\p{Lu}[\p{L}'’.\-]*){0,3})\s*(?:[—–\-·,]\s*)?(?:\d{1,2}:\d{2}(?:\s?[AaPp]\.?[Mm]\.?)?|(?:Today|Yesterday)\s+at\s+\d{1,2}:\d{2}(?:\s?[AP]M)?)\s*$")
+        .expect("chat header")
+});
+
+/// "Sam Lee <sam@acme.com>" → "Sam Lee"; a bare address stays.
+fn display_name(s: &str) -> String {
+    let s = s.trim().trim_matches('"');
+    match s.find('<') {
+        Some(i) if i > 0 => s[..i].trim().trim_matches('"').to_string(),
+        _ => s.trim_matches(|c| c == '<' || c == '>').to_string(),
+    }
+}
+
+/// Who the user is replying to, from the window's text: the sender of the
+/// message on screen that isn't the user. Mail: the first "From:" (the
+/// message open) or "… wrote:" (quoted in the reply); chat: the latest
+/// message header that isn't the user's. None when nothing says.
+pub fn other_party(screen: &str, me: &Me) -> Option<String> {
+    let mail = FROM_LINE
+        .captures_iter(screen)
+        .chain(WROTE_LINE.captures_iter(screen))
+        .map(|c| display_name(&c[1]))
+        .find(|n| !n.is_empty() && !me.is(n));
+    if mail.is_some() {
+        return mail;
+    }
+    CHAT_HEADER
+        .captures_iter(screen)
+        .map(|c| c[1].trim().to_string())
+        .filter(|n| !me.is(n))
+        .last()
+}
+
+/// The instruction sent to write a reply: who the user is and who they're
+/// answering, so the draft is from them and to the other person.
+pub fn reply_brief(instruction: &str, me: &Me, screen: Option<&str>) -> String {
+    let other = screen.and_then(|s| other_party(s, me));
+    let mut note = String::from("(Who's who: ");
+    if let Some(me) = me.label() {
+        note.push_str(&format!("I am {me}. "));
+    }
+    note.push_str("Write as me, in the first person");
+    match other {
+        Some(o) => note.push_str(&format!(
+            ", to {o}: they wrote the message I'm answering. Address {o}, never me, and don't sign as {o}.)"
+        )),
+        None => note.push_str(
+            ", to the other person in the conversation (whoever wrote the last message that isn't mine); never address it to me.)",
+        ),
+    }
+    // This note is English; the reply isn't.
+    note.insert_str(
+        note.len() - 1,
+        " Write in the language of the conversation, or of my instruction above if there's none.",
+    );
+    format!("{instruction}\n\n{note}")
+}
+
 // ── Written for you ───────────────────────────────────────────────────────
 
 /// Write from the instruction (with the selection, or the text being
@@ -1541,6 +1817,7 @@ mod tests {
             mode: WritingMode::Smart,
             polish_on: true,
             force_polish: false,
+            explicit: false,
         };
         assert!(smart.smart() && smart.writes_unasked() && !smart.force_polish);
         // The polish shortcut always polishes.
@@ -1548,13 +1825,307 @@ mod tests {
             mode: WritingMode::Smart,
             polish_on: true,
             force_polish: true,
+            explicit: true,
         };
         assert!(!shortcut.smart());
         let as_said = WritePlan {
             mode: WritingMode::AsSaid,
             polish_on: true,
             force_polish: false,
+            explicit: false,
         };
         assert!(!as_said.smart() && !as_said.writes_unasked() && !as_said.force_polish);
+    }
+
+    /// The 0.1.8 default: polish off. Smart writing still drafts from an
+    /// instruction (an agent action), and types everything else as said.
+    #[test]
+    fn with_polish_off_smart_still_drafts() {
+        let plan = WritePlan {
+            mode: WritingMode::Smart,
+            polish_on: false,
+            force_polish: false,
+            explicit: false,
+        };
+        assert!(plan.smart() && plan.writes_unasked());
+        let c = ctx("chat");
+        assert!(written("odpisz że wszystko ok", &c));
+        assert!(written("reply saying Thursday works", &c));
+        assert_eq!(
+            decide("Thanks, see you Monday.", &c),
+            Verdict::Decided(Decision::AsSaid)
+        );
+    }
+
+    #[test]
+    fn a_few_words_are_never_worth_a_polish() {
+        let always = WritePlan {
+            mode: WritingMode::Polish,
+            polish_on: true,
+            force_polish: true,
+            explicit: false,
+        };
+        let t = Tunables::default();
+        assert_eq!(t.skip_polish_words, 3);
+        for s in ["ok", "sounds good", "um yes please", "了解しました"] {
+            assert!(!always.polish_worth_it(s, t.skip_polish_words), "{s}");
+        }
+        for s in [
+            "um so I think we should move the meeting",
+            "会議を木曜日に移動しましょうか",
+        ] {
+            assert!(always.polish_worth_it(s, t.skip_polish_words), "{s}");
+        }
+        // The polish shortcut polishes even "ok"; 0 turns the skip off.
+        let shortcut = WritePlan {
+            explicit: true,
+            ..always
+        };
+        assert!(shortcut.polish_worth_it("ok", 3));
+        assert!(always.polish_worth_it("ok", 0));
+    }
+
+    /// The founder's: Polish (and other languages) typed verbatim in 0.1.7.
+    #[test]
+    fn instructions_in_any_language_are_written() {
+        for c in [ctx("chat"), ctx("mail"), ctx("other"), ctx("browser")] {
+            for s in [
+                "odpisz że wszystko ok",
+                "Odpisz, że wszystko OK.",
+                "napisz mu że będę o piątej",
+                "antworte, dass alles passt",
+                "responde que sí",
+                "réponds-lui que c'est bon",
+                "rispondi che va bene",
+                "ответь что всё в порядке",
+                "大丈夫だと返信して",
+            ] {
+                assert!(written(s, &c), "{s} in {}: {:?}", c.category, decide(s, &c));
+            }
+            // "Tell him that…" is as often the message: a model decides.
+            for s in ["powiedz mu że będę o piątej", "dile que llego tarde"] {
+                assert!(
+                    matches!(decide(s, &c), Verdict::Ambiguous { .. }),
+                    "{s} in {}",
+                    c.category
+                );
+            }
+            for s in [
+                "Dzięki, wszystko ok, do jutra",
+                "Myślę że to dobry pomysł",
+                "Je pense que c'est bon",
+                "ありがとうございます",
+            ] {
+                assert_eq!(
+                    decide(s, &c),
+                    Verdict::Decided(Decision::AsSaid),
+                    "{s} in {}",
+                    c.category
+                );
+            }
+        }
+    }
+
+    /// Mail, Messages and Slack decide alike: the app's kind no longer moves
+    /// the decision (only code, in terminals and editors, stays careful).
+    #[test]
+    fn mail_messages_and_slack_decide_alike() {
+        let apps = [
+            "com.apple.mail",
+            "com.apple.MobileSMS",
+            "com.tinyspeck.slackmacgap",
+            "net.whatsapp.WhatsApp",
+            "com.google.Chrome",
+        ];
+        for s in [
+            "tell him I can't make it, be polite",
+            "reply that everything's ok",
+            "odpisz że wszystko ok",
+            "let her know I'll be late",
+            "tell them we're happy",
+            "Tell me when you're free.",
+            "Thanks, see you Monday.",
+            "um so I think uh we should probably um move the meeting",
+        ] {
+            let verdicts: Vec<Verdict> = apps
+                .iter()
+                .map(|b| {
+                    let c = Ctx {
+                        category: crate::telemetry::app_category(b),
+                        ..Default::default()
+                    };
+                    decide(s, &c)
+                })
+                .collect();
+            assert!(
+                verdicts.windows(2).all(|v| v[0] == v[1]),
+                "{s}: {verdicts:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn the_model_hears_the_scene_not_the_app() {
+        let mut c = ctx("chat");
+        c.scene = Scene::read("Messages", "Anna Kowalska", Some(""), Some(0));
+        let input = model_input("odpisz że wszystko ok", &c);
+        assert_eq!(
+            input,
+            "Window: Messages — Anna Kowalska\nField: empty, a new message starts here\nDictated: odpisz że wszystko ok"
+        );
+        assert!(!input.contains("chat"));
+        // A field that couldn't be read says nothing about it.
+        c.scene = Scene::read("Slack", "", None, None);
+        assert_eq!(
+            model_input("tell him hi", &c),
+            "Window: Slack\nDictated: tell him hi"
+        );
+        // Starts with the router-like prefix the server counts as routing.
+        assert!(MODEL_SYSTEM.starts_with("You decide how to type what the user just dictated"));
+    }
+
+    #[test]
+    fn reads_a_reply_from_the_field() {
+        // Mail: a reply window, the quoted message below the caret.
+        let body = "\n\nOn Mon, 2 Nov 2026 at 10:02, Sam Lee <sam@acme.com> wrote:\n> Can you confirm the budget by Friday?\n> Sam";
+        let s = Scene::read("Mail", "Re: Q4 budget", Some(body), Some(0));
+        assert_eq!(s.fresh, Some(true));
+        assert!(s.replying);
+        // Polish Mail: "napisał:".
+        let pl = "\n\nW dniu 2.11.2026 o 10:02 Anna Kowalska <anna@firma.pl> napisał(a):\n> Czy wszystko gra?";
+        assert!(Scene::read("Mail", "Odp: Projekt", Some(pl), Some(0)).replying);
+        // Slack: an empty message box; a reply only if the title says so.
+        let s = Scene::read("Slack", "Sam Lee (DM) - Acme - Slack", Some(""), Some(0));
+        assert_eq!(s.fresh, Some(true));
+        assert!(!s.replying);
+        // Mid-sentence in Messages.
+        let s = Scene::read("Messages", "Anna", Some("Sounds good, and "), Some(16));
+        assert_eq!(s.fresh, Some(false));
+    }
+
+    fn matt() -> Me {
+        Me {
+            name: Some("Matt Nowakowski".into()),
+            email: Some("matt@example.com".into()),
+        }
+    }
+
+    const MAIL_SCREEN: &str = "Mail — Re: Q4 budget
+From: Sam Lee <sam@acme.com>
+Subject: Q4 budget
+Date: 2 November 2026 at 10:02
+To: Matt Nowakowski <matt@example.com>
+
+Hi Matt,
+Can you confirm the budget by Friday?
+Thanks,
+Sam";
+
+    #[test]
+    fn a_mail_reply_goes_to_the_sender_not_to_me() {
+        assert_eq!(
+            other_party(MAIL_SCREEN, &matt()).as_deref(),
+            Some("Sam Lee")
+        );
+        let brief = reply_brief("odpisz że wszystko ok", &matt(), Some(MAIL_SCREEN));
+        assert!(brief.starts_with("odpisz że wszystko ok\n\n"));
+        assert!(brief.contains("I am Matt Nowakowski (matt@example.com)"));
+        assert!(brief.contains("to Sam Lee"));
+        assert!(brief.contains("Address Sam Lee, never me"));
+        // My own sent message open (From: me): the reply is to whoever else
+        // wrote, here quoted below.
+        let sent = "Mail — Re: Q4 budget
+From: Matt Nowakowski <matt@example.com>
+To: Sam Lee <sam@acme.com>
+
+Sure, see below.
+
+On Mon, 2 Nov 2026 at 10:02, Sam Lee <sam@acme.com> wrote:
+> Can you confirm the budget by Friday?";
+        assert_eq!(other_party(sent, &matt()).as_deref(), Some("Sam Lee"));
+    }
+
+    #[test]
+    fn a_slack_reply_goes_to_the_latest_other_person() {
+        let slack = "Slack — Sam Lee (DM) - Acme
+Sam Lee  10:42 AM
+are we still on for the demo?
+Matt Nowakowski  10:44 AM
+yes, one sec
+Priya Shah  10:45 AM
+can I join?";
+        assert_eq!(other_party(slack, &matt()).as_deref(), Some("Priya Shah"));
+        // My message last: still the latest other person.
+        let mine_last = "Slack — #launch
+Anna Kowalska
+14:05
+czy wszystko gra?
+Matt
+14:07
+sprawdzam";
+        assert_eq!(
+            other_party(mine_last, &matt()).as_deref(),
+            Some("Anna Kowalska")
+        );
+    }
+
+    #[test]
+    fn messages_without_names_get_the_general_rule() {
+        // Messages shows bubbles, not names: no guess, just "the other person".
+        let messages = "Messages — Anna\nAre you coming tonight?\nYes!\nGreat, 8pm?";
+        assert_eq!(other_party(messages, &matt()), None);
+        let brief = reply_brief("tell her 8 works", &matt(), Some(messages));
+        assert!(brief.contains("to the other person in the conversation"));
+        assert!(brief.contains("never address it to me"));
+        // Nothing known about me at all: still never addressed to me.
+        let brief = reply_brief("reply ok", &Me::default(), None);
+        assert!(!brief.contains("I am"));
+        assert!(brief.contains("never address it to me"));
+    }
+
+    #[test]
+    fn knows_me_by_name_email_or_first_name() {
+        let me = matt();
+        for s in [
+            "Matt Nowakowski",
+            "matt nowakowski",
+            "Matt",
+            "matt@example.com",
+            "Matt Nowakowski <matt@example.com>",
+            "me",
+        ] {
+            assert!(me.is(s), "{s}");
+        }
+        for s in ["Sam Lee", "Matthew Perry", "Matt Smith"] {
+            assert!(!me.is(s), "{s}");
+        }
+    }
+
+    /// Unit timing for the report: the local decision costs microseconds,
+    /// so "as said" is as fast as plain dictation.
+    #[test]
+    fn the_local_decision_is_cheap() {
+        let c = ctx("chat");
+        let t = Tunables::default();
+        let samples = [
+            "Thanks for the update, I'll send the numbers tomorrow.",
+            "odpisz że wszystko ok",
+            "tell him I can't make it, be polite",
+            "um so I think uh we should probably um move the meeting",
+        ];
+        // Warm the regexes.
+        for s in samples {
+            classify(s, &c, &t);
+        }
+        let n = 2_000;
+        let started = Instant::now();
+        for _ in 0..n {
+            for s in samples {
+                std::hint::black_box(classify(s, &c, &t));
+            }
+        }
+        let per = started.elapsed() / (n * samples.len() as u32);
+        eprintln!("writing::classify: {per:?} per dictation");
+        assert!(per < Duration::from_millis(2), "{per:?}");
     }
 }

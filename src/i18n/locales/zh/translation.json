@@ -225,8 +225,8 @@
       "highFiveLabel": "击掌",
       "atLogin": "登录时启动 {{appName}}",
       "polish": {
-        "title": "让 {{appName}} 帮你润色和撰写",
-        "description": "发送你听写的文字（绝不发送音频）来润色。关闭后，听写只留在这台电脑上。"
+        "title": "用 AI 整理我的听写",
+        "description": "关闭时，听写会立即输入。开启时，会先整理凌乱的口语（只发送文字，从不发送音频）。无论哪种，你开口要求时 {{appName}} 都会替你写。"
       },
       "finish": "完成",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "每次口述都用 AI 润色。"
         }
       },
-      "needsPolish": "润色需要开启 AI 润色。替你撰写计为一次 AI 请求。"
+      "needsPolish": "AI 润色已关闭，所以听写会立即输入，凌乱的口语保持原样。你开口要求时 {{appName}} 仍会替你写（计为一次 AI 请求）。"
     },
     "trial": {
       "daysLeft_one": "还剩 {{count}} 天",

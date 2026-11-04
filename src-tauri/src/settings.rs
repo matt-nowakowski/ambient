@@ -875,11 +875,14 @@ fn default_theme() -> Theme {
     Theme::System
 }
 
-/// AI polish is on for new installs (it's what lets smart writing polish);
-/// onboarding's All set panel has the switch to turn it off. Stores written
-/// before this default keep their own value (see `apply_settings_migrations`).
+/// AI polish is off for new installs, so dictation starts at plain speed (no
+/// model round trip before the paste). Smart writing still drafts when the
+/// user gives an instruction: that's an agent action, not polish, and uses
+/// the provider below. Onboarding's All set panel and Account turn polish
+/// on. Every existing store keeps its own value, on (0.1.7 installs) or off
+/// (see `apply_settings_migrations`).
 fn default_post_process_enabled() -> bool {
-    true
+    false
 }
 
 fn default_app_language() -> String {
@@ -892,9 +895,10 @@ fn default_show_tray_icon() -> bool {
     true
 }
 
-/// Our hosted model for new installs, so the on-by-default polish works.
-/// It still runs on device where it can, and never leaves this computer with
-/// Intelligence set to "On this computer only" (see actions.rs).
+/// Our hosted model for new installs: what smart writing's drafts, the
+/// router and AI polish (once turned on) use. It still runs on device where
+/// it can, and never leaves this computer with Intelligence set to "On this
+/// computer only" (see actions.rs). Plain dictation sends nothing.
 fn default_post_process_provider_id() -> String {
     AMBIENT_AI_PROVIDER_ID.to_string()
 }
@@ -1329,9 +1333,10 @@ fn apply_settings_migrations(
         updated = true;
     }
 
-    // AI polish became on by default (hosted) for new installs only. A store
-    // written before then without these keys had polish off and no provider:
-    // keep exactly that, so no one's text starts being sent without choosing.
+    // A store written before 0.1.7 has neither key: it had polish off and no
+    // provider, so keep exactly that and no one's text starts being sent
+    // without choosing. (0.1.7 turned polish on for new installs and 0.1.8
+    // off again; stores from either keep whatever they saved.)
     if settings_value.get("post_process_enabled").is_none() {
         settings.post_process_enabled = false;
         updated = true;
@@ -2166,20 +2171,32 @@ mod tests {
         assert!(ai_provider("openai").is_none());
     }
 
-    /// New installs get AI polish on with our hosted model; nothing about an
-    /// existing store changes.
+    /// New installs start at plain dictation speed (polish off) but keep our
+    /// hosted model, so smart writing can still draft from an instruction.
     #[test]
-    fn fresh_store_has_polish_on_with_the_hosted_provider() {
+    fn fresh_store_has_polish_off_with_the_hosted_provider() {
         let settings = get_default_settings();
-        assert!(settings.post_process_enabled);
+        assert!(!settings.post_process_enabled);
         assert_eq!(settings.post_process_provider_id, AMBIENT_AI_PROVIDER_ID);
         assert!(settings.active_post_process_provider().is_some());
+        assert_eq!(settings.writing_mode, WritingMode::Smart);
         // What a fresh store is written as reads back the same, untouched.
         let stored = default_settings_json();
         let mut reread: AppSettings = serde_json::from_value(stored.clone()).unwrap();
         apply_settings_migrations(&mut reread, &stored);
-        assert!(reread.post_process_enabled);
+        assert!(!reread.post_process_enabled);
         assert_eq!(reread.post_process_provider_id, AMBIENT_AI_PROVIDER_ID);
+    }
+
+    /// A 0.1.7 install saved polish on: it stays on.
+    #[test]
+    fn a_0_1_7_store_with_polish_on_keeps_it_on() {
+        let mut stored = default_settings_json();
+        stored["post_process_enabled"] = serde_json::json!(true);
+        let mut settings: AppSettings = serde_json::from_value(stored.clone()).unwrap();
+        apply_settings_migrations(&mut settings, &stored);
+        assert!(settings.post_process_enabled);
+        assert_eq!(settings.post_process_provider_id, AMBIENT_AI_PROVIDER_ID);
     }
 
     #[test]

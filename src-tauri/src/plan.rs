@@ -234,7 +234,8 @@ pub fn session_token(app: &AppHandle) -> Option<String> {
     stored_session(app)
 }
 
-fn account_email(app: &AppHandle) -> Option<String> {
+/// The signed-in account's email, while signed in.
+pub fn account_email(app: &AppHandle) -> Option<String> {
     stored_session(app).and(stored_str(app, ACCOUNT_EMAIL_FIELD))
 }
 

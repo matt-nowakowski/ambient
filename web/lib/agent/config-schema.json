@@ -20,6 +20,7 @@
     "writing.ambiguous_floor": { "min": 0.2, "max": 0.7, "default": 0.45 },
     "writing.polish_disfluency": { "min": 0.02, "max": 0.3, "default": 0.06 },
     "writing.run_on_words": { "min": 15, "max": 80, "default": 35 },
+    "writing.skip_polish_words": { "min": 0, "max": 10, "default": 3 },
     "free.ai_per_week": { "min": 5, "max": 500, "default": 25 },
     "free.suggestions_per_week": { "min": 1, "max": 200, "default": 10 },
     "free.memory_hours": { "min": 1, "max": 168, "default": 24 },

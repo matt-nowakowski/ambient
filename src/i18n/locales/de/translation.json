@@ -225,8 +225,8 @@
       "highFiveLabel": "High Five",
       "atLogin": "{{appName}} beim Anmelden starten",
       "polish": {
-        "title": "{{appName}} feilen und für dich schreiben lassen",
-        "description": "Sendet den diktierten Text (nie Audio), um ihm den Feinschliff zu geben. Schalte es aus, damit Diktate auf diesem Computer bleiben."
+        "title": "Mein Diktat mit KI glätten",
+        "description": "Aus: Diktat wird sofort getippt. An: Unsaubere Sprache wird zuerst geglättet (gesendet wird der Text, nie Audio). So oder so schreibt {{appName}} für dich, wenn du darum bittest."
       },
       "finish": "Fertig",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "KI-Feinschliff bei jedem Diktat."
         }
       },
-      "needsPolish": "Glätten braucht eingeschalteten KI-Feinschliff. Für dich schreiben zählt als KI-Anfrage."
+      "needsPolish": "KI-Feinschliff ist aus, deshalb wird Diktat sofort getippt und unsaubere Sprache bleibt wie gesagt. {{appName}} schreibt weiterhin für dich, wenn du darum bittest (zählt als KI-Anfrage)."
     },
     "trial": {
       "daysLeft_one": "Noch {{count}} Tag",

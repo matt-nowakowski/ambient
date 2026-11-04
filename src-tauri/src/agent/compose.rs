@@ -43,6 +43,35 @@ const POLITE: &[&[&str]] = &[
     &["i", "need", "you", "to"],
     &["go", "ahead", "and"],
     &["help", "me"],
+    // The same in the other languages people dictate in most.
+    &["proszę"],
+    &["prosze"],
+    &["możesz"],
+    &["mozesz"],
+    &["czy", "możesz"],
+    &["czy", "mozesz"],
+    &["bitte"],
+    &["kannst", "du"],
+    &["könntest", "du"],
+    &["por", "favor"],
+    &["puedes"],
+    &["podrías"],
+    &["s'il", "te", "plaît"],
+    &["s'il", "vous", "plaît"],
+    &["peux-tu"],
+    &["pourrais-tu"],
+    &["per", "favore"],
+    &["puoi"],
+    &["potresti"],
+    &["pode"],
+    &["podes"],
+    &["alsjeblieft"],
+    &["kun", "je"],
+    &["пожалуйста"],
+    &["можешь"],
+    &["будь", "ласка"],
+    &["prosím"],
+    &["snälla"],
 ];
 
 /// "We" forms ("can we reply…", "let's tell them…"): as often said to a
@@ -317,6 +346,211 @@ fn tell_form(w: &[String]) -> bool {
     }
 }
 
+// ── Other languages ──────────────────────────────────────────────────────
+//
+// A small fast path, not a dictionary: the model decides everything these
+// don't (see `writing::MODEL_SYSTEM`). The shape is the same in every
+// language: a verb telling someone to reply or write, then "that" and what
+// to say ("odpisz że wszystko ok", "dile que llego tarde").
+
+/// "Reply", "answer", "write back", imperative or after "can you" (Polish,
+/// German, Spanish, French, Italian, Portuguese, Dutch, Russian, Ukrainian,
+/// Czech, Slovak, Swedish, Danish, Norwegian).
+const REPLY_VERBS: &[&str] = &[
+    "odpisz",
+    "odpowiedz",
+    "odpisać",
+    "odpowiedzieć",
+    "antworte",
+    "antworten",
+    "beantworte",
+    "responde",
+    "contesta",
+    "respóndele",
+    "contéstale",
+    "respondele",
+    "contestale",
+    "responder",
+    "contestar",
+    "réponds",
+    "répondez",
+    "réponds-lui",
+    "répondez-lui",
+    "réponds-leur",
+    "répondre",
+    "rispondi",
+    "rispondigli",
+    "rispondile",
+    "rispondere",
+    "responda",
+    "antwoord",
+    "beantwoord",
+    "ответь",
+    "ответьте",
+    "ответить",
+    "відповідай",
+    "відповідайте",
+    "відповісти",
+    "відпиши",
+    "odpověz",
+    "odepiš",
+    "odpovedz",
+    "odpíš",
+    "svara",
+    "svar",
+];
+
+/// "Write", "send": with "that …" an instruction to write it.
+const WRITE_VERBS: &[&str] = &[
+    "napisz",
+    "napisać",
+    "wyślij",
+    "schreib",
+    "schreibe",
+    "schreiben",
+    "escribe",
+    "escríbele",
+    "escribir",
+    "écris",
+    "écris-lui",
+    "écrivez",
+    "écrire",
+    "scrivi",
+    "scrivigli",
+    "scrivile",
+    "scrivere",
+    "escreve",
+    "escreva",
+    "escrever",
+    "schrijf",
+    "напиши",
+    "напишите",
+    "написать",
+    "напишіть",
+    "napiš",
+    "skriv",
+];
+
+/// "Tell", "say", "let know": as often the message itself as an instruction
+/// (like English "tell them…"), so at most `Maybe` unless asked politely.
+const TELL_VERBS: &[&str] = &[
+    "powiedz",
+    "przekaż",
+    "daj",
+    "sag",
+    "sage",
+    "sagen",
+    "dile",
+    "diles",
+    "di",
+    "dígale",
+    "decir",
+    "dis",
+    "dis-lui",
+    "dis-leur",
+    "dites-lui",
+    "dire",
+    "digli",
+    "dille",
+    "di'",
+    "diga",
+    "diz",
+    "diz-lhe",
+    "dizer",
+    "zeg",
+    "скажи",
+    "скажите",
+    "передай",
+    "сказати",
+    "řekni",
+    "povedz",
+    "säg",
+    "sig",
+];
+
+/// "That", introducing what to say.
+const THAT: &[&str] = &[
+    "że",
+    "ze",
+    "iż",
+    "dass",
+    "daß",
+    "que",
+    "qu'",
+    "che",
+    "dat",
+    "что",
+    "чтобы",
+    "що",
+    "že",
+    "att",
+    "at",
+];
+
+fn is_that(w: &str) -> bool {
+    THAT.contains(&w) || w.starts_with("qu'")
+}
+
+/// Verb-final languages: the instruction ends the sentence ("大丈夫だと返信して",
+/// "告诉他我晚点到" starts with it). Matched as text, not words.
+const CJK_INSTRUCTIONS: &[&str] = &[
+    "と返信して",
+    "って返信して",
+    "と返事して",
+    "って返事して",
+    "と伝えて",
+    "って伝えて",
+    "と書いて",
+    "回复说",
+    "回覆說",
+    "回复他",
+    "回复她",
+    "回信说",
+    "告诉他",
+    "告诉她",
+    "告诉他们",
+    "告訴他",
+    "跟他说",
+    "跟她说",
+    "고 답장해",
+    "고 답장 해",
+    "고 전해",
+    "라고 써",
+];
+
+/// The other languages' first pass: `Yes` for "reply/write (to X) that …",
+/// `Maybe` for "tell X that …" or a bare "reply …", else `No`.
+fn other_languages(instruction: &str, w: &[String], polite: bool) -> ComposeIntent {
+    let yes = || ComposeIntent::Yes(instruction.to_string());
+    if CJK_INSTRUCTIONS.iter().any(|c| instruction.contains(c)) {
+        return yes();
+    }
+    let Some(first) = w.first().map(String::as_str) else {
+        return ComposeIntent::No;
+    };
+    // "that" within the next few words ("odpisz Ani że…", "dile a Juan que…").
+    let then_that = w.iter().skip(1).take(4).any(|x| is_that(x));
+    if REPLY_VERBS.contains(&first) {
+        return if then_that || polite {
+            yes()
+        } else if w.len() >= 2 {
+            ComposeIntent::Maybe
+        } else {
+            ComposeIntent::No
+        };
+    }
+    if WRITE_VERBS.contains(&first) && then_that {
+        return yes();
+    }
+    // "daj znać że…" (let know that…).
+    let tell =
+        TELL_VERBS.contains(&first) && (first != "daj" || w.get(1).is_some_and(|x| x == "znać"));
+    if tell && then_that {
+        return if polite { yes() } else { ComposeIntent::Maybe };
+    }
+    ComposeIntent::No
+}
+
 /// The first pass. `transcript` may start with "Hey Ambient,".
 pub fn compose_intent(transcript: &str) -> ComposeIntent {
     let instruction = without_address(transcript).trim();
@@ -330,7 +564,11 @@ pub fn compose_intent(transcript: &str) -> ComposeIntent {
             _ => ComposeIntent::Maybe,
         };
     }
-    first_pass(instruction, w, w.len() < all.len())
+    let polite = w.len() < all.len();
+    match first_pass(instruction, w, polite) {
+        ComposeIntent::No => other_languages(instruction, w, polite),
+        intent => intent,
+    }
 }
 
 fn first_pass(instruction: &str, w: &[String], polite: bool) -> ComposeIntent {
@@ -493,6 +731,70 @@ mod tests {
             "I told them we're happy",
             "",
             "   ",
+        ] {
+            assert_eq!(compose_intent(s), ComposeIntent::No, "{s}");
+        }
+    }
+
+    #[test]
+    fn hears_instructions_in_other_languages() {
+        for s in [
+            // The founder's: typed verbatim in 0.1.7.
+            "odpisz że wszystko ok",
+            "Odpisz, że wszystko OK.",
+            "odpisz mu że będę o piątej",
+            "proszę odpowiedz że się zgadzamy",
+            "napisz jej że spotkanie jest przeniesione",
+            "możesz odpisać że dziękuję",
+            "antworte, dass alles passt",
+            "Bitte sag ihm, dass ich später komme",
+            "responde que sí, que nos vemos el lunes",
+            "contéstale que todo bien",
+            "réponds-lui que c'est bon",
+            "Réponds que je suis d'accord",
+            "rispondi che va bene",
+            "responda que está tudo certo",
+            "antwoord dat het goed is",
+            "ответь что всё в порядке",
+            "напиши что я опоздаю",
+            "svara att det går bra",
+            "大丈夫だと返信して",
+            "回复说没问题",
+            "괜찮다고 답장해",
+        ] {
+            assert!(yes(s), "{s}: {:?}", compose_intent(s));
+        }
+    }
+
+    #[test]
+    fn other_languages_leave_the_unsure_ones_to_a_model() {
+        for s in [
+            "powiedz mu że będę o piątej",
+            "dile que llego tarde",
+            "sag ihr, dass es klappt",
+            "dis-lui que c'est bon",
+            "скажи что я опоздаю",
+            "odpowiedz na tego maila",
+            "daj znać że wszystko gra",
+        ] {
+            assert_eq!(compose_intent(s), ComposeIntent::Maybe, "{s}");
+        }
+    }
+
+    #[test]
+    fn other_languages_dictation_stays_dictation() {
+        for s in [
+            "Dzięki, wszystko ok, do jutra",
+            "Myślę że to dobry pomysł",
+            "Odpisałem mu wczoraj że wszystko ok",
+            "Ich glaube, dass alles passt",
+            "Creo que nos vemos el lunes",
+            "Je pense que c'est bon",
+            "Penso che vada bene",
+            "Я думаю что всё в порядке",
+            "ありがとうございます",
+            "谢谢，没问题",
+            "odpisz",
         ] {
             assert_eq!(compose_intent(s), ComposeIntent::No, "{s}");
         }

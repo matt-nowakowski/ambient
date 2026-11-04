@@ -226,8 +226,8 @@
       "highFiveLabel": "Toca aqui",
       "atLogin": "Abrir o {{appName}} ao iniciar a sessão",
       "polish": {
-        "title": "Deixar o {{appName}} refinar e escrever por você",
-        "description": "Envia o texto que você dita (nunca o áudio) para refiná-lo. Desative para manter o ditado neste computador."
+        "title": "Refinar meu ditado com IA",
+        "description": "Desligado, o ditado é digitado na hora. Ligado, a fala bagunçada é limpa primeiro (o texto é enviado, nunca o áudio). De qualquer forma, o {{appName}} escreve por você quando você pede."
       },
       "finish": "Concluído",
       "panel": {
@@ -1133,7 +1133,7 @@
           "description": "Polimento com IA em todo ditado."
         }
       },
-      "needsPolish": "Polir requer o polimento com IA ativado. Escrever por você conta como uma solicitação de IA."
+      "needsPolish": "O refinamento com IA está desligado, então o ditado é digitado na hora e a fala bagunçada fica como foi dita. O {{appName}} ainda escreve por você quando você pede (isso conta como uma solicitação de IA)."
     },
     "trial": {
       "daysLeft_one": "Resta {{count}} dia",

@@ -364,6 +364,36 @@ pub async fn send_chat_completion_limited(
     .await
 }
 
+/// A system and user message within `limits`: a small output cap also gets
+/// the hosted endpoint's short time budget (one-word decisions, routing).
+pub async fn send_chat_completion_bounded(
+    provider: &AiProvider,
+    api_key: String,
+    model: &str,
+    user_content: String,
+    system_prompt: String,
+    disable_reasoning: bool,
+    limits: RequestLimits,
+) -> Result<Option<String>, String> {
+    send_request(
+        provider,
+        api_key,
+        model,
+        user_content,
+        Some(system_prompt),
+        None,
+        disable_reasoning,
+        limits,
+    )
+    .await
+}
+
+/// The pooled client, for other requests to our own server (answers and
+/// drafts), so a connection warmed while the user speaks serves them too.
+pub fn http_client() -> Option<&'static reqwest::Client> {
+    shared_client().ok()
+}
+
 /// Send a chat completion request with structured output support.
 /// When json_schema is provided, uses structured outputs mode.
 /// system_prompt is used as the system message when provided.

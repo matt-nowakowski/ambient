@@ -225,8 +225,8 @@
       "highFiveLabel": "擊掌",
       "atLogin": "登入時啟動 {{appName}}",
       "polish": {
-        "title": "讓 {{appName}} 幫你潤飾和撰寫",
-        "description": "傳送你聽寫的文字（絕不傳送音訊）來潤飾。關閉後，聽寫只留在這台電腦上。"
+        "title": "用 AI 整理我的聽寫",
+        "description": "關閉時，聽寫會立即輸入。開啟時，會先整理凌亂的口語（只傳送文字，從不傳送音訊）。無論哪種，你開口要求時 {{appName}} 都會替你寫。"
       },
       "finish": "完成",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "每次口述都用 AI 潤飾。"
         }
       },
-      "needsPolish": "潤飾需要開啟 AI 潤飾。替你撰寫算一次 AI 請求。"
+      "needsPolish": "AI 潤飾已關閉，所以聽寫會立即輸入，凌亂的口語保持原樣。你開口要求時 {{appName}} 仍會替你寫（計為一次 AI 請求）。"
     },
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",

@@ -225,8 +225,8 @@
       "highFiveLabel": "High five",
       "atLogin": "Starta {{appName}} när jag loggar in",
       "polish": {
-        "title": "Låt {{appName}} finslipa och skriva åt dig",
-        "description": "Skickar texten du dikterar (aldrig ljud) för att finslipa den. Stäng av för att hålla dikteringen på den här datorn."
+        "title": "Snygga till min diktering med AI",
+        "description": "Av: dikteringen skrivs direkt. På: rörigt tal städas upp först (texten skickas, aldrig ljud). Oavsett skriver {{appName}} åt dig när du ber om det."
       },
       "finish": "Klar",
       "panel": {
@@ -1128,7 +1128,7 @@
           "description": "AI-putsning på varje diktering."
         }
       },
-      "needsPolish": "Putsning kräver att AI-putsning är på. Att skriva åt dig räknas som en AI-förfrågan."
+      "needsPolish": "AI-putsning är av, så dikteringen skrivs direkt och rörigt tal blir som det sades. {{appName}} skriver fortfarande åt dig när du ber om det (det räknas som en AI-förfrågan)."
     },
     "trial": {
       "daysLeft_one": "{{count}} dag kvar",

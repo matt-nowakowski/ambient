@@ -227,8 +227,8 @@
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
       "polish": {
-        "title": "Niech {{appName}} szlifuje i pisze za Ciebie",
-        "description": "Wysyła dyktowany tekst (nigdy dźwięk), żeby go oszlifować. Wyłącz, aby dyktowanie zostało na tym komputerze."
+        "title": "Wygładzaj moje dyktowanie z AI",
+        "description": "Wyłączone: dyktowanie wpisuje się od razu. Włączone: chaotyczna mowa jest najpierw wygładzana (wysyłany jest tekst, nigdy dźwięk). Tak czy inaczej {{appName}} napisze za Ciebie, gdy poprosisz."
       },
       "finish": "Gotowe",
       "panel": {
@@ -1138,7 +1138,7 @@
           "description": "Szlif AI przy każdym dyktowaniu."
         }
       },
-      "needsPolish": "Wygładzanie wymaga włączonego szlifu AI. Pisanie za ciebie liczy się jako zapytanie AI."
+      "needsPolish": "Wygładzanie AI jest wyłączone, więc dyktowanie wpisuje się od razu, a chaotyczna mowa zostaje tak, jak ją powiedziałeś. {{appName}} nadal napisze za Ciebie, gdy poprosisz (to liczy się jako zapytanie AI)."
     },
     "trial": {
       "daysLeft_one": "Pozostał {{count}} dzień",
