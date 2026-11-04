@@ -11,6 +11,50 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.8",
+    date: "2026-11-04",
+    title: "Faster, sharper, more yours",
+    summary:
+      "Dictation is instant by default, smart writing works in every app and language, suggestions show up when they can help, and Ambient learns your words. Optional on-device AI on every computer.",
+    sections: [
+      {
+        heading: "Speed",
+        items: [
+          "New installs start with AI polish off, so your words appear the moment you stop. Turn polish on any time.",
+          "Your first word is never cut off: the mic stays ready for a minute after you dictate. You choose how long in Settings › Sound.",
+          "Polish skips very short dictations and no longer waits on an extra check when you speak a language other than English.",
+        ],
+      },
+      {
+        heading: "Smart writing",
+        items: [
+          "Say “reply that…” or “write that…” in your language and Ambient drafts the message. “Odpisz, że wszystko ok” works too.",
+          "It decides from what's on screen, not from a list of apps, so Messages, Slack and Mail behave the same.",
+          "Replies go to the right person: it knows who you are and who you're answering.",
+          "Give apps and sites a style: casual for Slack, polished for Gmail, word for word in your code editor.",
+          "It learns your corrections. Fix the same word twice and it offers to remember it.",
+        ],
+      },
+      {
+        heading: "The colleague",
+        items: [
+          "Suggestions on every computer, more often and at better moments: a question in Slack, a deadline in an email (“Remind me?”), a new error in your terminal, a page in another language.",
+          "Questions like “what's the weather” are answered in Ambient's card, never by opening your browser. Say “close that” to dismiss a card.",
+          "Optional on-device AI: download a small model (about 1.7 GB) and polish, decisions and suggestions run on your computer. On a Mac it's an alternative to Apple Intelligence.",
+        ],
+      },
+      {
+        heading: "Settings and setup",
+        items: [
+          "Every setting says what it changes and what it doesn't, with a “Right now” summary of what reads your screen and what can use the cloud.",
+          "Make Ambient your dictation app: if another app uses the same shortcut, Ambient takes it, and tells you when one is running.",
+          "Your clipboard comes back exactly as it was after Ambient pastes, files and formatting included.",
+          "Windows and Linux fixes across the agent, menus that open in front, and clearer Polish.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.7",
     date: "2026-11-03",
     title: "Your desktop colleague",
