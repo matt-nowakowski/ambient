@@ -48,7 +48,7 @@ pub async fn run(app: AppHandle, action: Action) {
         Action::CalendarEvent { .. } => Some("calendar"),
         Action::OpenApp { .. } => Some("open_app"),
         Action::Shortcut { .. } => Some("shortcut"),
-        Action::Unsupported { .. } => Some("unsupported"),
+        Action::Unsupported { .. } | Action::CloseWindow { .. } => Some("unsupported"),
         _ => None,
     };
     let notice = tauri::async_runtime::spawn_blocking({
@@ -133,6 +133,12 @@ fn perform(app: &AppHandle, action: Action) -> Notice {
                 ),
             ),
         },
+        // Ambient doesn't close other apps' windows on any OS (its own
+        // cards close by voice: "close that"). Say so, with the keys.
+        Action::CloseWindow { what } => {
+            let (key, keys) = close_notice(&what, os_name());
+            Notice::cant(key).var("keys", keys).var("name", what)
+        }
         Action::Unsupported { description } => {
             let what = description.trim().to_string();
             Notice::cant(if what.is_empty() {
@@ -150,6 +156,29 @@ fn perform(app: &AppHandle, action: Action) -> Notice {
                 ),
             )
         }
+    }
+}
+
+/// "Close that window" / "quit Slack": the notice key and the keys that do
+/// it on `os` (names of keys, not translated).
+fn close_notice(what: &str, os: &str) -> (&'static str, &'static str) {
+    let mac = os == "macOS";
+    match what {
+        "tab" => ("hud.notice.cantCloseTab", if mac { "⌘W" } else { "Ctrl+W" }),
+        "window" => (
+            "hud.notice.cantCloseWindow",
+            if mac { "⌘W" } else { "Alt+F4" },
+        ),
+        "app" => ("hud.notice.cantQuitApp", quit_keys(os)),
+        _ => ("hud.notice.cantQuitNamed", quit_keys(os)),
+    }
+}
+
+fn quit_keys(os: &str) -> &'static str {
+    match os {
+        "macOS" => "⌘Q",
+        "Windows" => "Alt+F4",
+        _ => "Ctrl+Q",
     }
 }
 
@@ -410,7 +439,8 @@ fn open_app(name: &str) -> Result<(), String> {
         .status()
         .map(|s| s.success())
         .unwrap_or(false);
-    if ok {
+    // Otherwise by its desktop entry's name ("Visual Studio Code").
+    if ok || super::linux::shortcut::open_app(name) {
         Ok(())
     } else {
         Err("hud.status.appNotFound".into())
@@ -498,5 +528,28 @@ mod native {
     pub fn delete(id: &str) -> bool {
         let i = c(id);
         unsafe { ambient_delete_item(i.as_ptr()) }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn close_notices_name_the_keys_for_each_os() {
+        assert_eq!(
+            close_notice("window", "Windows"),
+            ("hud.notice.cantCloseWindow", "Alt+F4")
+        );
+        assert_eq!(close_notice("window", "macOS").1, "⌘W");
+        assert_eq!(
+            close_notice("tab", "Linux"),
+            ("hud.notice.cantCloseTab", "Ctrl+W")
+        );
+        assert_eq!(close_notice("app", "Windows").1, "Alt+F4");
+        assert_eq!(
+            close_notice("Slack", "Linux"),
+            ("hud.notice.cantQuitNamed", "Ctrl+Q")
+        );
     }
 }

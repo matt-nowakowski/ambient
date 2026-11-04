@@ -771,6 +771,19 @@ pub(crate) async fn process_dictation_output(
         if crate::agent::proactive::handle_voice_feedback(app, transcription).await {
             return handled();
         }
+        // "Close that", "never mind" with one of Ambient's cards up: close
+        // it (every OS). The smart-writing chip fades by itself, and words
+        // said beside it are dictation.
+        let card_up = crate::hud::is_visible()
+            && !matches!(
+                crate::hud::current(),
+                None | Some(crate::hud::HudContent::Writing { .. })
+            );
+        if card_up && router::dismiss_request(transcription) {
+            debug!("agent: card dismissed by voice");
+            crate::hud::hide(app);
+            return handled();
+        }
     }
     let cues = router::cues_cover(&settings.spoken_languages);
     // An answer card is up: what's said next may be a follow-up to it.

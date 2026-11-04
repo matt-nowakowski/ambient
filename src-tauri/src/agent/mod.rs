@@ -114,6 +114,10 @@ const BROWSERS: &[&str] = &[
     "firefox.exe",
     "arc.exe",
 ];
+/// A browser on any OS (Linux app ids come from the platform's list).
+pub(crate) fn is_browser(bundle: &str) -> bool {
+    BROWSERS.contains(&bundle) || context::is_platform_browser(bundle)
+}
 /// Ask at most once per call app in this window.
 const OFFER_COOLDOWN: Duration = Duration::from_secs(30 * 60);
 pub const MEETING_OFFER_ID: &str = "meeting-offer";
@@ -765,8 +769,7 @@ const RICH_EDITORS: &[&str] = &[
 /// games) a "not a text field" reading can be wrong, so dictation is typed
 /// as before.
 pub(crate) fn focus_is_reliable(bundle: &str) -> bool {
-    BROWSERS.contains(&bundle)
-        || (bundle.starts_with("com.apple.") && bundle != "com.apple.Terminal")
+    is_browser(bundle) || (bundle.starts_with("com.apple.") && bundle != "com.apple.Terminal")
 }
 
 /// Focus in the app in front (metadata only, never its text).
@@ -952,19 +955,20 @@ fn wait_for_field(timeout: Duration) -> Option<bool> {
 /// shortcuts are on), else its "r" shortcut. Ok once a text field has focus.
 fn open_reply_box(app: &AppHandle) -> Result<&'static str, &'static str> {
     let place = router::place();
-    if place.bundle_id == "com.apple.mail" {
+    // Apple Mail (⌘R) and Outlook on Windows (Ctrl+R).
+    if context::is_mail_app(&place.bundle_id) {
         if !send_key(app, 'r', true) {
             return Err("mail: couldn't send cmd-r");
         }
-        // Mail's compose body doesn't always report itself as a text field;
-        // ⌘R reliably opens and focuses it, so paste unless focus is
-        // certainly elsewhere.
+        // The compose body doesn't always report itself as a text field;
+        // ⌘R / Ctrl+R reliably opens and focuses it, so paste unless focus
+        // is certainly elsewhere.
         return match wait_for_field(Duration::from_millis(1500)) {
             Some(false) => Err("mail: cmd-r opened no reply"),
             _ => Ok("mail cmd-r"),
         };
     }
-    if BROWSERS.contains(&place.bundle_id.as_str()) && is_webmail_window(&place.url, &place.title) {
+    if is_browser(&place.bundle_id) && is_webmail_window(&place.url, &place.title) {
         let pressed = context::press_labeled(REPLY_LABELS);
         log::debug!(
             "compose: gmail reply button press result {pressed} (0 pressed, 1 not found, 2 failed, 3 unavailable)"

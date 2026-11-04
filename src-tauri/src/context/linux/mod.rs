@@ -24,6 +24,55 @@ pub use appid::{is_browser, is_call_app, NEVER_WATCH};
 #[cfg(target_os = "linux")]
 pub use imp::*;
 
+/// An AT-SPI role (at-spi2-core `AtspiRole`) under the macOS name the
+/// agent's focus rules use, as Windows maps UI Automation's control types:
+/// without it, "no text field is focused" was never known on Linux.
+pub fn ax_role(role: Option<u32>, editable: bool) -> &'static str {
+    match role.unwrap_or(0) {
+        61 | 79 | 40 => "AXTextField", // text, entry, password text
+        82 | 95 if editable => "AXTextArea",
+        82 | 95 => "AXWebArea", // document frame, document web
+        11 => "AXComboBox",
+        43 | 62 => "AXButton", // push button, toggle button
+        7 => "AXCheckBox",
+        44 | 37 => "AXRadioButton", // radio button, page tab
+        38 => "AXTabGroup",
+        88 => "AXLink",
+        27 => "AXImage",
+        31 | 98 => "AXList",     // list, list box
+        32 | 90 | 91 => "AXRow", // list item, table row, tree item
+        65 => "AXOutline",
+        55 | 66 => "AXTable", // table, tree table
+        56 => "AXCell",
+        35 => "AXMenuItem",
+        29 | 116 => "AXStaticText", // label, static
+        83 => "AXHeading",
+        23 | 69 => "AXWindow", // frame, window
+        _ if editable => "AXTextArea",
+        _ => "AXUnknown",
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ax_role;
+
+    #[test]
+    fn atspi_roles_read_like_the_mac_ones() {
+        assert_eq!(ax_role(Some(95), false), "AXWebArea");
+        assert_eq!(ax_role(Some(95), true), "AXTextArea");
+        assert_eq!(ax_role(Some(43), false), "AXButton");
+        assert_eq!(ax_role(Some(79), false), "AXTextField");
+        assert_eq!(ax_role(Some(85), true), "AXTextArea");
+        assert_eq!(ax_role(None, false), "AXUnknown");
+        // A web page with focus on it is "certainly not a field"; unknown
+        // roles stay "can't tell".
+        let not_field = |r| crate::agent::classify_focus(Some(ax_role(r, false)), false, "", "");
+        assert_eq!(not_field(Some(95)), Some(false));
+        assert_eq!(not_field(Some(67)), None);
+    }
+}
+
 #[cfg(target_os = "linux")]
 mod imp {
     use std::time::{Duration, Instant};
@@ -106,9 +155,9 @@ mod imp {
         if let Some(focused) = bus.focused(&window, Instant::now() + Duration::from_millis(150)) {
             let r = bus.role(&focused);
             let st = bus.states(&focused);
-            snap.focused_role = bus.role_name(&focused).filter(|s| !s.is_empty());
             snap.secure = r == Some(role::PASSWORD_TEXT);
             snap.editable = !snap.secure && atspi::is_editable(r, st);
+            snap.focused_role = Some(super::ax_role(r, snap.editable).to_string());
             if let Some(doc) = bus.enclosing_document(&focused) {
                 if let Some(url) = bus.doc_url(&doc) {
                     frame_urls.push(url);

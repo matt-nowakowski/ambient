@@ -58,6 +58,11 @@ pub enum Action {
     Shortcut {
         name: String,
     },
+    /// "Close that window", "quit Slack": another app's window, tab or the
+    /// app itself. `what` is "window", "tab", "app" or the app's name.
+    CloseWindow {
+        what: String,
+    },
     Unsupported {
         description: String,
     },
@@ -214,6 +219,107 @@ pub fn is_help_request(transcript: &str) -> bool {
     HELP.is_match(without_address(transcript))
 }
 
+/// "Close that", "dismiss it", "hide this card", "go away", "never mind":
+/// said while one of Ambient's cards is up, it closes the card. The same on
+/// every OS; "close the tab" or "quit Slack" are about other apps instead.
+static DISMISS: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)^\W*(?:(?:please|pls|ok(?:ay)?|thanks|thank\s+you|cool|great|now|just|can\s+you|could\s+you)[\s,.!]+)*(?:
+            (?:close|dismiss|hide|clear)(?:\s+(?:it|this|that|the|your))?(?:\s+(?:card|answer|window|box|popup|pop-up|panel|note|notice|message|thing|one))?
+          | go\s+away
+          | never\s*mind
+          | that'?s\s+all
+        )(?:[\s,]+(?:please|thanks|thank\s+you|now))?\W*$",
+    )
+    .expect("dismiss cues")
+});
+
+pub fn dismiss_request(transcript: &str) -> bool {
+    DISMISS.is_match(without_address(transcript))
+}
+
+/// "Close this tab", "close the browser", "quit Slack": closing another
+/// app's window, tab or the app. Short commands only, so a sentence that
+/// mentions closing a window ("can you close the window, it's cold") is
+/// left alone. Returns what to close: "window", "tab", "app" or a name.
+static CLOSE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)^\W*(?:(?:please|pls|ok(?:ay)?|hey|now|just|can\s+you|could\s+you|would\s+you)[\s,]+)*
+        (?:close|quit)\s+
+        (?:(?:this|that|the|my|current|active|front|open)\s+)*
+        (?P<what>[\w.\-]+(?:\s+[\w.\-]+)?)
+        (?:\s+please)?\W*$",
+    )
+    .expect("close cues")
+});
+
+pub fn close_request(transcript: &str) -> Option<String> {
+    let caps = CLOSE.captures(without_address(transcript))?;
+    let said = caps.name("what")?.as_str().trim();
+    let said = said.strip_suffix(" please").unwrap_or(said);
+    let said = said
+        .strip_suffix(" app")
+        .or_else(|| said.strip_suffix(" App"))
+        .unwrap_or(said);
+    let kind = match said.to_lowercase().as_str() {
+        "window" | "windows" | "browser window" => "window",
+        "tab" | "tabs" | "browser tab" => "tab",
+        "app" | "application" | "program" | "browser" => "app",
+        // Pronouns and Ambient's own cards are dismissals, not this.
+        "it" | "this" | "that" | "everything" | "all" | "card" | "answer" | "box" | "popup"
+        | "pop-up" | "panel" | "notice" => return None,
+        // A name, as said ("Slack").
+        _ => return Some(said.to_string()),
+    };
+    Some(kind.to_string())
+}
+
+/// The user asked for the browser: to open or visit something, or to
+/// search in the browser ("google it", "search Google for …"). A question
+/// alone ("what's the weather") is answered in the card, even when it
+/// needs the web.
+static WANTS_BROWSER: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)\b(?:open|launch|go\s+to|visit|navigate\s+to|take\s+me\s+to|bring\s+up|pull\s+up)\b
+        | \bin\s+(?:a|the|my)\s+(?:new\s+)?(?:browser|tab|window)\b
+        | \b(?:browser|website|web\s+site|web\s+page|url)\b
+        | ^\W*(?:(?:please|can\s+you|could\s+you)[\s,]+)*(?:google|bing)\b
+        | \b(?:on|with|in|using)\s+(?:google|bing|duckduckgo)\b
+        | \bgoogle\s+(?:it|that|this)\b
+        | \bsearch\s+(?:google|bing)\b",
+    )
+    .expect("browser cues")
+});
+
+pub fn wants_browser(transcript: &str) -> bool {
+    WANTS_BROWSER.is_match(without_address(transcript))
+}
+
+/// Questions are answered in the card on every OS. The router sometimes
+/// picks "search the web in the browser" (or a site to open) for "what's
+/// the weather"; unless the user asked for the browser, answer it here
+/// with a web search instead.
+pub fn answer_in_card(route: Route, transcript: &str) -> Route {
+    let question = || {
+        starts_like_question(without_address(transcript)) || transcript.trim_end().ends_with('?')
+    };
+    match route {
+        Route::Act(Action::WebSearch { query }) if !wants_browser(transcript) => Route::Answer {
+            query,
+            needs_web: true,
+            about_screen: false,
+        },
+        Route::Act(Action::OpenUrl { .. }) if !wants_browser(transcript) && question() => {
+            Route::Answer {
+                query: without_address(transcript).trim().to_string(),
+                needs_web: true,
+                about_screen: false,
+            }
+        }
+        other => other,
+    }
+}
+
 /// Where the user is, as far as routing cares.
 #[derive(Debug, Clone, Default)]
 pub struct Place {
@@ -245,6 +351,10 @@ const AI_CHAT_APPS: &[&str] = &[
     "perplexity.exe",
     "cursor.exe",
     "zed.exe",
+    // Linux (lowercased app ids: executable, Snap or Flatpak).
+    "cursor",
+    "zed",
+    "dev.zed.zed",
 ];
 const AI_CHAT_SITES: &[&str] = &[
     "chatgpt.com",
@@ -284,6 +394,25 @@ const MESSAGING_APPS: &[&str] = &[
     "telegram.exe",
     "notion.exe",
     "linear.exe",
+    // Linux (lowercased app ids: executable, Snap or Flatpak).
+    "slack",
+    "com.slack.slack",
+    "teams-for-linux",
+    "com.github.ismaelmartinez.teams_for_linux",
+    "discord",
+    "com.discordapp.discord",
+    "thunderbird",
+    "org.mozilla.thunderbird",
+    "evolution",
+    "org.gnome.evolution",
+    "geary",
+    "org.gnome.geary",
+    "telegram-desktop",
+    "org.telegram.desktop",
+    "signal-desktop",
+    "org.signal.signal",
+    "element-desktop",
+    "im.riot.riot",
 ];
 const MESSAGING_SITES: &[&str] = &[
     "mail.google.com",
@@ -436,6 +565,14 @@ pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> De
             }));
         }
     }
+    // "Close that window", "quit Slack": said plainly how, on any OS. Where
+    // it could be words to type ("close the window" in a note), the router
+    // decides (it knows "close_window" too).
+    if let Some(what) = close_request(transcript) {
+        if s.ask || s.no_field || s.follow_up || addresses_ambient(transcript) {
+            return decided(Route::Act(Action::CloseWindow { what }));
+        }
+    }
     let to_agent = s.ask
         || (s.follow_up && !s.editable)
         || (s.no_field && no_field_agent(transcript, s.did_you_mean_bias))
@@ -456,7 +593,7 @@ pub fn always_write_here(place: &Place, transcript: &str) -> bool {
 const SYSTEM: &str = r#"You route a voice transcript the user just spoke on their computer. Decide what they want:
 - "write": they are dictating text to be typed where their cursor is: messages, emails, notes, documents, code comments. This includes questions or requests addressed to OTHER PEOPLE ("can we move the call to Thursday?", "please send me the deck"), and anything asking for someone's opinion, plans or status, in any language ("what do you think about…", "qué te parece…", "co myślisz o…", "how's it going…", "are you free…"). The transcript may be in any language; decide the same way.
 - "answer": they ask YOU, the assistant, for facts, an explanation, a calculation, a translation, or about what's on their screen ("summarise this", "translate this into Spanish", "what does this error mean"). Translating or rewriting text is always "answer", never "act".
-- "act": they want something done on the computer: open an app or website, search the web in the browser, create a reminder or calendar event, run one of their Shortcuts.
+- "act": they want something done on the computer: open an app or website, search in the browser (only when they ask for the browser: "google it", "open …"), create a reminder or calendar event, run one of their Shortcuts. A question they want answered, even one needing the web (weather, news, prices, scores), is "answer" with needs_web, never a browser search.
 - "recall": they ask about something they said, dictated, read or saw earlier ("what did I say about pricing", "what was that number on the page").
 - "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply that everything's ok", "reply to Sam" (with an email or chat open), in any language ("odpisz że wszystko ok", "napisz mu że będę o 5", "dile que llego tarde", "réponds-lui que c'est bon", "antworte, dass alles passt"). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). Decide from the words, not from which app is open. If the transcript reads as the message itself, spoken to its reader, it's "write".
 If unsure, choose "write". A message or email being dictated word for word is always "write".
@@ -474,6 +611,7 @@ Reply with JSON only, no prose:
   {"type":"reminder","title":"...","due":"YYYY-MM-DDTHH:MM or null"}
   {"type":"calendar_event","title":"...","start":"YYYY-MM-DDTHH:MM","end":"YYYY-MM-DDTHH:MM or null","location":null}
   {"type":"shortcut","name":"..."}
+  {"type":"close_window","what":"window|tab|app|<app name>"}
   {"type":"unsupported","description":"..."}
 Resolve relative dates ("Friday", "at 5") against NOW below, in local time. Parts of the day: morning 09:00, afternoon 14:00, evening 18:00, tonight 20:00; a day with no time is 09:00 that day.
 - "act" with "unsupported" when it's something to do on the computer that the actions above can't do; "description" = what they asked, in a few words starting with a verb ("rename all the files on my desktop").
@@ -666,7 +804,7 @@ pub async fn route(
         timeout: None,
     };
     let reply = llm::complete_hosted_limited(app, "route", &system, &user, limits).await?;
-    let route = parse(&reply);
+    let route = parse(&reply).map(|r| answer_in_card(r, transcript));
     log::debug!(
         "router decided {} ({} words, messaging={}, editable={})",
         route_name(route.as_ref()),
@@ -946,6 +1084,124 @@ mod tests {
         ] {
             assert!(!sounds_like_request(s), "{s}");
         }
+    }
+
+    /// A Windows tester's "what's the weather" opened a browser: the router
+    /// had picked a browser search. Questions stay in the card.
+    #[test]
+    fn questions_are_answered_in_the_card() {
+        let search = |q: &str| Route::Act(Action::WebSearch { query: q.into() });
+        for s in [
+            "what's the weather",
+            "Hey Ambient, what's the weather in Lisbon tomorrow?",
+            "search for the best ramen near me",
+            "look up the Lakers score",
+            "who won the game last night",
+        ] {
+            assert!(
+                matches!(
+                    answer_in_card(search(s), s),
+                    Route::Answer {
+                        needs_web: true,
+                        ..
+                    }
+                ),
+                "{s}"
+            );
+        }
+        let site = Route::Act(Action::OpenUrl {
+            url: "https://weather.com".into(),
+        });
+        assert!(matches!(
+            answer_in_card(site.clone(), "what's the weather today?"),
+            Route::Answer {
+                needs_web: true,
+                ..
+            }
+        ));
+        // Asked for the browser: it opens.
+        for s in [
+            "google the weather in Lisbon",
+            "search Google for flights to Porto",
+            "open the weather website",
+            "show me the weather in my browser",
+            "go to weather.com",
+        ] {
+            assert!(matches!(answer_in_card(search(s), s), Route::Act(_)), "{s}");
+        }
+        assert_eq!(answer_in_card(site.clone(), "weather.com"), site);
+        let app = Route::Act(Action::OpenApp {
+            name: "Slack".into(),
+        });
+        assert_eq!(answer_in_card(app.clone(), "what's in Slack"), app);
+    }
+
+    #[test]
+    fn dismisses_its_own_cards_by_voice() {
+        for s in [
+            "close that",
+            "close that window",
+            "Close it.",
+            "dismiss",
+            "hide this card",
+            "thanks, close it",
+            "never mind",
+            "go away",
+            "Hey Ambient, close this please",
+        ] {
+            assert!(dismiss_request(s), "{s}");
+        }
+        for s in [
+            "close the tab",
+            "quit Slack",
+            "close the deal by Friday",
+            "Thanks for the update",
+            "can you close the window, it's cold",
+        ] {
+            assert!(!dismiss_request(s), "{s}");
+        }
+    }
+
+    #[test]
+    fn close_requests_say_how_on_every_os() {
+        assert_eq!(
+            close_request("close that window").as_deref(),
+            Some("window")
+        );
+        assert_eq!(
+            close_request("close this tab please").as_deref(),
+            Some("tab")
+        );
+        assert_eq!(close_request("quit the browser").as_deref(), Some("app"));
+        assert_eq!(close_request("Quit Slack").as_deref(), Some("Slack"));
+        assert_eq!(
+            close_request("close the Spotify app").as_deref(),
+            Some("Spotify")
+        );
+        assert_eq!(close_request("close it"), None);
+        assert_eq!(close_request("close the card"), None);
+        assert_eq!(close_request("can you close the window, it's cold"), None);
+        // With the Ask key or nothing to type into it's decided here…
+        let ask = Situation {
+            ask: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            decide("close that window", &ask, now()).route,
+            Some(Route::Act(Action::CloseWindow {
+                what: "window".into()
+            }))
+        );
+        // …with a field focused it may be words to type: the router's call.
+        let notes = Situation {
+            editable: true,
+            ..Default::default()
+        };
+        assert_eq!(decide("close the window", &notes, now()).route, None);
+        assert_eq!(
+            parse(r#"{"intent":"act","action":{"type":"close_window","what":"tab"}}"#),
+            Some(Route::Act(Action::CloseWindow { what: "tab".into() }))
+        );
     }
 
     #[test]
