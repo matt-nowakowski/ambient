@@ -638,7 +638,9 @@
         "placeholder": "Tilføj et ord",
         "add": "Tilføj",
         "remove": "Fjern {{word}}",
-        "duplicate": "»{{word}}« findes allerede"
+        "duplicate": "»{{word}}« findes allerede",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Fjern {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Stemmeaktivitetsdetektion",
@@ -675,6 +677,11 @@
           "traditionalTw": "Traditionelle (Taiwan)",
           "traditionalHk": "Traditionelle (Hongkong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Lær af mine rettelser",
+        "description": "Når du retter det samme ord efter diktering, fx et navn, tilbyder {{appName}} at huske det. Den læser tekstfeltet et øjeblik efter indtastning, kun på denne computer og aldrig adgangskodefelter.",
+        "unavailable": "{{appName}} kan ikke læse tekstfelter på denne computer, så der er intet at lære af endnu. Tillad Tilgængelighed på macOS, eller slå hjælpeteknologier til på Linux."
       }
     },
     "postProcessing": {
@@ -1167,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "{{count}} dag tilbage",
       "daysLeft_other": "{{count}} dage tilbage"
+    },
+    "styles": {
+      "title": "Stilarter for apps og websteder",
+      "description": "En standardstil efter hvor du skriver. Smart skrivning følger den der.",
+      "empty": "Ingen endnu. Fx: Slack afslappet, Gmail poleret, Terminal som sagt.",
+      "add": "Tilføj app eller websted",
+      "addButton": "Tilføj",
+      "placeholder": "Appnavn eller websted",
+      "recent": "Seneste:",
+      "cancel": "Annuller",
+      "remove": "Fjern {{name}}",
+      "duplicate": "{{name}} har allerede en stil",
+      "options": {
+        "as_said": "Som sagt",
+        "casual": "Afslappet",
+        "polished": "Poleret"
+      },
+      "hints": {
+        "as_said": "Dine præcise ord",
+        "casual": "Afslappet, uden slutpunktum",
+        "polished": "Hele sætninger, omhyggelig tegnsætning"
+      }
     }
   },
   "home": {
@@ -1436,7 +1465,13 @@
       "copiedOriginal": "Din oprindelige tekst er kopieret. Indsæt for at erstatte.",
       "couldntRewrite": "Det kunne ikke omskrives lige nu, så din tekst er uændret."
     },
-    "firstSuggestionTip": "Dit første forslag. Sig »ja«, »ikke nu« eller »vis mig ikke disse«. Den lærer."
+    "firstSuggestionTip": "Dit første forslag. Sig »ja«, »ikke nu« eller »vis mig ikke disse«. Den lærer.",
+    "learn": {
+      "offer": "Skriv altid “{{to}}” i stedet for “{{from}}”?",
+      "remember": "Husk",
+      "never": "Spørg ikke",
+      "added": "“{{to}}” er føjet til dine ord."
+    }
   },
   "privacy": {
     "title": "Privatliv",

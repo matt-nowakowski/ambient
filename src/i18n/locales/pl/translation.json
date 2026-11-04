@@ -644,7 +644,9 @@
         "placeholder": "Dodaj słowo",
         "add": "Dodaj",
         "remove": "Usuń {{word}}",
-        "duplicate": "„{{word}}” już istnieje"
+        "duplicate": "„{{word}}” już istnieje",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Usuń {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Wykrywanie aktywności głosowej",
@@ -681,6 +683,11 @@
           "traditionalTw": "Tradycyjne (Tajwan)",
           "traditionalHk": "Tradycyjne (Hongkong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Ucz się z moich poprawek",
+        "description": "Gdy po dyktowaniu poprawiasz ciągle to samo słowo, na przykład imię, {{appName}} zaproponuje, że je zapamięta. Na chwilę po wpisaniu czyta pole tekstowe, tylko na tym komputerze, i nigdy pól haseł.",
+        "unavailable": "{{appName}} nie może czytać pól tekstowych na tym komputerze, więc na razie nie ma się z czego uczyć. Zezwól na Dostępność w macOS albo włącz technologie wspomagające w Linuksie."
       }
     },
     "postProcessing": {
@@ -1179,6 +1186,28 @@
       "daysLeft_few": "Pozostały {{count}} dni",
       "daysLeft_many": "Pozostało {{count}} dni",
       "daysLeft_other": "Pozostało {{count}} dnia"
+    },
+    "styles": {
+      "title": "Style dla aplikacji i stron",
+      "description": "Domyślny styl tam, gdzie piszesz. Inteligentne pisanie się go trzyma.",
+      "empty": "Jeszcze żadnych. Na przykład: Slack swobodnie, Gmail starannie, Terminal tak, jak mówię.",
+      "add": "Dodaj aplikację lub stronę",
+      "addButton": "Dodaj",
+      "placeholder": "Nazwa aplikacji lub strona",
+      "recent": "Ostatnie:",
+      "cancel": "Anuluj",
+      "remove": "Usuń {{name}}",
+      "duplicate": "{{name}} ma już styl",
+      "options": {
+        "as_said": "Tak, jak mówię",
+        "casual": "Swobodnie",
+        "polished": "Starannie"
+      },
+      "hints": {
+        "as_said": "Dokładnie Twoje słowa",
+        "casual": "Luźno, bez kropki na końcu",
+        "polished": "Pełne zdania, staranna interpunkcja"
+      }
     }
   },
   "home": {
@@ -1452,7 +1481,13 @@
       "copiedOriginal": "Skopiowano twój oryginalny tekst. Wklej, aby zastąpić.",
       "couldntRewrite": "Nie udało się teraz tego przepisać, więc twój tekst się nie zmienił."
     },
-    "firstSuggestionTip": "Twoja pierwsza sugestia. Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”. Uczy się."
+    "firstSuggestionTip": "Twoja pierwsza sugestia. Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”. Uczy się.",
+    "learn": {
+      "offer": "Zawsze pisać „{{to}}” zamiast „{{from}}”?",
+      "remember": "Zapamiętaj",
+      "never": "Nie pytaj",
+      "added": "Dodano „{{to}}” do Twoich słów."
+    }
   },
   "privacy": {
     "title": "Prywatność",

@@ -222,6 +222,11 @@ const PLACES: Place[] = [
             keywords: ["vocabulary", "dictionary", "names", "spelling"],
           },
           {
+            label: "settings.advanced.learnCorrections.label",
+            description: "settings.advanced.learnCorrections.description",
+            keywords: ["dictionary", "learn", "corrections", "spelling"],
+          },
+          {
             label: "settings.debug.appendTrailingSpace.label",
             description: "settings.debug.appendTrailingSpace.description",
           },
@@ -405,6 +410,11 @@ const PLACES: Place[] = [
             description: `account.writing.options.${key}.description`,
             keywords: ["writing", "dictation"],
           })),
+          {
+            label: "account.styles.title",
+            description: "account.styles.description",
+            keywords: ["style", "tone", "app", "website", "casual", "formal"],
+          },
           {
             label: "account.signIn.sectionTitle",
             keywords: [

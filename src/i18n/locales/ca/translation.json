@@ -641,7 +641,9 @@
         "placeholder": "Afegiu una paraula",
         "add": "Afegeix",
         "remove": "Suprimeix {{word}}",
-        "duplicate": "«{{word}}» ja existeix"
+        "duplicate": "«{{word}}» ja existeix",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Treu {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Detecció d'activitat de veu",
@@ -678,6 +680,11 @@
           "traditionalTw": "Tradicional (Taiwan)",
           "traditionalHk": "Tradicional (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Aprèn de les meves correccions",
+        "description": "Quan corregeixes la mateixa paraula després de dictar, com un nom, {{appName}} s'ofereix a recordar-la. Llegeix el camp de text un moment després d'escriure, només en aquest ordinador, i mai en camps de contrasenya.",
+        "unavailable": "{{appName}} no pot llegir camps de text en aquest ordinador, així que encara no hi ha res a aprendre. Permet Accessibilitat al macOS o activa les tecnologies d'assistència al Linux."
       }
     },
     "postProcessing": {
@@ -1173,6 +1180,28 @@
       "daysLeft_one": "Queda {{count}} dia",
       "daysLeft_other": "Queden {{count}} dies",
       "daysLeft_many": "Queden {{count}} dies"
+    },
+    "styles": {
+      "title": "Estils per app i lloc web",
+      "description": "Un estil per defecte segons on escrius. L'escriptura intel·ligent el segueix.",
+      "empty": "Encara cap. Per exemple: Slack informal, Gmail polit, Terminal tal com ho dic.",
+      "add": "Afegeix una app o un lloc",
+      "addButton": "Afegeix",
+      "placeholder": "Nom de l'app o lloc web",
+      "recent": "Recents:",
+      "cancel": "Cancel·la",
+      "remove": "Treu {{name}}",
+      "duplicate": "{{name}} ja té un estil",
+      "options": {
+        "as_said": "Tal com ho dic",
+        "casual": "Informal",
+        "polished": "Polit"
+      },
+      "hints": {
+        "as_said": "Les teves paraules exactes",
+        "casual": "Relaxat, sense punt final",
+        "polished": "Frases completes, puntuació acurada"
+      }
     }
   },
   "home": {
@@ -1444,7 +1473,13 @@
       "copiedOriginal": "S'ha copiat el text original. Enganxa per substituir.",
       "couldntRewrite": "Ara no s'ha pogut reescriure, així que el teu text no ha canviat."
     },
-    "firstSuggestionTip": "El vostre primer suggeriment. Digueu «sí», «ara no» o «no me'ls mostris». Aprèn."
+    "firstSuggestionTip": "El vostre primer suggeriment. Digueu «sí», «ara no» o «no me'ls mostris». Aprèn.",
+    "learn": {
+      "offer": "Escriure sempre «{{to}}» en lloc de «{{from}}»?",
+      "remember": "Recorda-ho",
+      "never": "No ho preguntis",
+      "added": "«{{to}}» afegida a les teves paraules."
+    }
   },
   "privacy": {
     "title": "Privadesa",

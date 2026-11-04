@@ -644,7 +644,9 @@
         "placeholder": "Přidat slovo",
         "add": "Přidat",
         "remove": "Odebrat {{word}}",
-        "duplicate": "„{{word}}“ již existuje"
+        "duplicate": "„{{word}}“ již existuje",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Odebrat {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Detekce hlasové aktivity",
@@ -681,6 +683,11 @@
           "traditionalTw": "Tradiční (Tchaj-wan)",
           "traditionalHk": "Tradiční (Hongkong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Učit se z mých oprav",
+        "description": "Když po diktování opravujete pořád stejné slovo, třeba jméno, {{appName}} nabídne, že si ho zapamatuje. Krátce po napsání čte textové pole, jen na tomto počítači, a nikdy pole s heslem.",
+        "unavailable": "{{appName}} na tomto počítači nemůže číst textová pole, takže se zatím nemá z čeho učit. Povolte Zpřístupnění v macOS nebo zapněte asistivní technologie v Linuxu."
       }
     },
     "postProcessing": {
@@ -1179,6 +1186,28 @@
       "daysLeft_few": "Zbývají {{count}} dny",
       "daysLeft_many": "Zbývá {{count}} dne",
       "daysLeft_other": "Zbývá {{count}} dní"
+    },
+    "styles": {
+      "title": "Styly pro aplikace a weby",
+      "description": "Výchozí styl podle toho, kde píšete. Chytré psaní se ho tam drží.",
+      "empty": "Zatím žádné. Například: Slack neformálně, Gmail uhlazeně, Terminál jak řečeno.",
+      "add": "Přidat aplikaci nebo web",
+      "addButton": "Přidat",
+      "placeholder": "Název aplikace nebo web",
+      "recent": "Nedávné:",
+      "cancel": "Zrušit",
+      "remove": "Odebrat {{name}}",
+      "duplicate": "{{name}} už styl má",
+      "options": {
+        "as_said": "Jak řečeno",
+        "casual": "Neformálně",
+        "polished": "Uhlazeně"
+      },
+      "hints": {
+        "as_said": "Přesně vaše slova",
+        "casual": "Uvolněně, bez tečky na konci",
+        "polished": "Celé věty, pečlivá interpunkce"
+      }
     }
   },
   "home": {
@@ -1452,7 +1481,13 @@
       "copiedOriginal": "Váš původní text je zkopírovaný. Vložte ho pro nahrazení.",
       "couldntRewrite": "Teď to nešlo přepsat, takže váš text zůstal beze změny."
     },
-    "firstSuggestionTip": "Váš první návrh. Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“. Učí se."
+    "firstSuggestionTip": "Váš první návrh. Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“. Učí se.",
+    "learn": {
+      "offer": "Vždy psát „{{to}}“ místo „{{from}}“?",
+      "remember": "Zapamatovat",
+      "never": "Neptat se",
+      "added": "„{{to}}“ přidáno do vašich slov."
+    }
   },
   "privacy": {
     "title": "Soukromí",

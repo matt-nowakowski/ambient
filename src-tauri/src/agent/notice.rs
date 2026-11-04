@@ -30,6 +30,10 @@ pub mod offer {
     pub const COPY: &str = "copy";
     /// Open the pricing page to upgrade (a Free limit was reached).
     pub const UPGRADE: &str = "upgrade";
+    /// Remember a word fix (`corrections`; the value is the pair as JSON).
+    pub const LEARN_WORD: &str = "learn_word";
+    /// Never offer that word fix again.
+    pub const LEARN_SKIP: &str = "learn_skip";
 }
 
 /// A notice, built up and then shown.
@@ -172,6 +176,11 @@ pub fn on_action(app: &AppHandle, _id: &str, action: &str, value: Option<String>
                 log::warn!("notice: couldn't open the pricing page: {e}");
             }
         }
+        offer::LEARN_WORD => {
+            hud::hide(app);
+            crate::corrections::accept(app, &value);
+        }
+        offer::LEARN_SKIP => crate::corrections::decline(app, &value),
         offer::OPEN_FILE => {
             hud::hide(app);
             use tauri_plugin_opener::OpenerExt;

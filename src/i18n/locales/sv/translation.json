@@ -638,7 +638,9 @@
         "placeholder": "Lägg till ett ord",
         "add": "Lägg till",
         "remove": "Ta bort {{word}}",
-        "duplicate": "”{{word}}” finns redan"
+        "duplicate": "”{{word}}” finns redan",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Ta bort {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Röstaktivitetsdetektering",
@@ -675,6 +677,11 @@
           "traditionalTw": "Traditionella (Taiwan)",
           "traditionalHk": "Traditionella (Hongkong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Lär av mina rättelser",
+        "description": "När du rättar samma ord efter diktering, till exempel ett namn, erbjuder sig {{appName}} att komma ihåg det. Den läser textfältet en kort stund efter inmatningen, bara på den här datorn och aldrig lösenordsfält.",
+        "unavailable": "{{appName}} kan inte läsa textfält på den här datorn, så det finns inget att lära av än. Tillåt Hjälpmedel i macOS eller slå på hjälpmedelsteknik i Linux."
       }
     },
     "postProcessing": {
@@ -1167,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "{{count}} dag kvar",
       "daysLeft_other": "{{count}} dagar kvar"
+    },
+    "styles": {
+      "title": "Stilar för appar och webbplatser",
+      "description": "En standardstil för där du skriver. Smart skrivning följer den där.",
+      "empty": "Inga ännu. Till exempel: Slack avslappnat, Gmail genomarbetat, Terminal som sagt.",
+      "add": "Lägg till app eller webbplats",
+      "addButton": "Lägg till",
+      "placeholder": "Appnamn eller webbplats",
+      "recent": "Senaste:",
+      "cancel": "Avbryt",
+      "remove": "Ta bort {{name}}",
+      "duplicate": "{{name}} har redan en stil",
+      "options": {
+        "as_said": "Som sagt",
+        "casual": "Avslappnat",
+        "polished": "Genomarbetat"
+      },
+      "hints": {
+        "as_said": "Exakt dina ord",
+        "casual": "Avslappnat, ingen slutpunkt",
+        "polished": "Hela meningar, noggrann interpunktion"
+      }
     }
   },
   "home": {
@@ -1436,7 +1465,13 @@
       "copiedOriginal": "Din ursprungliga text är kopierad. Klistra in för att ersätta.",
       "couldntRewrite": "Det gick inte att skriva om just nu, så din text är oförändrad."
     },
-    "firstSuggestionTip": "Ditt första förslag. Säg ”ja”, ”inte nu” eller ”visa inte sådana”. Den lär sig."
+    "firstSuggestionTip": "Ditt första förslag. Säg ”ja”, ”inte nu” eller ”visa inte sådana”. Den lär sig.",
+    "learn": {
+      "offer": "Skriv alltid ”{{to}}” i stället för ”{{from}}”?",
+      "remember": "Kom ihåg",
+      "never": "Fråga inte",
+      "added": "”{{to}}” har lagts till bland dina ord."
+    }
   },
   "privacy": {
     "title": "Integritet",

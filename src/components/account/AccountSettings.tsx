@@ -8,6 +8,7 @@ import { Button } from "../ui/Button";
 import { AccountCard } from "./AccountCard";
 import { AiPolishCard } from "./AiPolishCard";
 import { WritingCard } from "./WritingCard";
+import { WritingStylesCard } from "./WritingStylesCard";
 import { isPaid, openUpgrade, usePlan } from "./usePlan";
 
 const PRO_FEATURES = ["noLimits", "meetings", "memory", "priority"] as const;
@@ -132,6 +133,7 @@ export const AccountSettings: React.FC = () => {
 
         <AiPolishCard paid={paid} />
         <WritingCard />
+        <WritingStylesCard />
 
         <section className="space-y-label">
           <h2 className="px-hero text-section font-medium text-ink-3">

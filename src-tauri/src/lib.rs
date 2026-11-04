@@ -13,6 +13,7 @@ mod clipboard;
 mod clipboard_snapshot;
 mod commands;
 mod context;
+mod corrections;
 mod dictation_apps;
 pub mod engine_supervisor;
 mod feedback;
@@ -893,6 +894,11 @@ pub fn run(cli_args: CliArgs) {
             meeting::deliver::email_meeting_notes,
             meeting::deliver::change_meetings_email_setting,
             agent::writing::change_writing_mode_setting,
+            corrections::change_learn_corrections_setting,
+            corrections::update_word_replacements,
+            corrections::can_read_text_fields,
+            agent::styles::update_app_styles,
+            agent::styles::recent_style_places,
             telemetry::change_telemetry_setting,
             telemetry::record_ui_error,
             feedback::feedback_preview,

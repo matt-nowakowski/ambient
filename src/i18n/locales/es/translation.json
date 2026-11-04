@@ -641,7 +641,9 @@
         "placeholder": "Añadir una palabra",
         "add": "Añadir",
         "remove": "Quitar {{word}}",
-        "duplicate": "«{{word}}» ya existe"
+        "duplicate": "«{{word}}» ya existe",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Quitar {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Detección de actividad de voz",
@@ -678,6 +680,11 @@
           "traditionalTw": "Tradicional (Taiwán)",
           "traditionalHk": "Tradicional (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Aprender de mis correcciones",
+        "description": "Cuando corriges la misma palabra después de dictar, como un nombre, {{appName}} se ofrece a recordarla. Lee el campo de texto un momento después de escribir, solo en este ordenador, y nunca en campos de contraseña.",
+        "unavailable": "{{appName}} no puede leer campos de texto en este ordenador, así que aún no hay nada de qué aprender. Permite Accesibilidad en macOS o activa las tecnologías de asistencia en Linux."
       }
     },
     "postProcessing": {
@@ -1173,6 +1180,28 @@
       "daysLeft_one": "Queda {{count}} día",
       "daysLeft_many": "Quedan {{count}} días",
       "daysLeft_other": "Quedan {{count}} días"
+    },
+    "styles": {
+      "title": "Estilos por app y sitio",
+      "description": "Un estilo predeterminado según dónde escribes. La escritura inteligente lo sigue ahí.",
+      "empty": "Ninguno todavía. Por ejemplo: Slack informal, Gmail pulido, Terminal tal cual.",
+      "add": "Añadir app o sitio",
+      "addButton": "Añadir",
+      "placeholder": "Nombre de app o sitio web",
+      "recent": "Recientes:",
+      "cancel": "Cancelar",
+      "remove": "Quitar {{name}}",
+      "duplicate": "{{name}} ya tiene un estilo",
+      "options": {
+        "as_said": "Tal cual",
+        "casual": "Informal",
+        "polished": "Pulido"
+      },
+      "hints": {
+        "as_said": "Tus palabras exactas",
+        "casual": "Relajado, sin punto final",
+        "polished": "Frases completas, puntuación cuidada"
+      }
     }
   },
   "home": {
@@ -1444,7 +1473,13 @@
       "copiedOriginal": "Copiamos tu texto original. Pega para reemplazar.",
       "couldntRewrite": "No se pudo reescribir ahora, así que tu texto no cambió."
     },
-    "firstSuggestionTip": "Tu primera sugerencia. Di «sí», «ahora no» o «no me muestres esto». Aprende."
+    "firstSuggestionTip": "Tu primera sugerencia. Di «sí», «ahora no» o «no me muestres esto». Aprende.",
+    "learn": {
+      "offer": "¿Escribir siempre «{{to}}» en lugar de «{{from}}»?",
+      "remember": "Recordar",
+      "never": "No preguntar",
+      "added": "«{{to}}» añadida a tus palabras."
+    }
   },
   "privacy": {
     "title": "Privacidad",

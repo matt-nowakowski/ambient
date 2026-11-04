@@ -638,7 +638,9 @@
         "placeholder": "単語を追加",
         "add": "追加",
         "remove": "{{word}}を削除",
-        "duplicate": "「{{word}}」は既に存在します"
+        "duplicate": "「{{word}}」は既に存在します",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "{{from}} → {{to}} を削除"
       },
       "voiceActivityDetection": {
         "title": "音声区間検出（VAD）",
@@ -675,6 +677,11 @@
           "traditionalTw": "繁体字（台湾）",
           "traditionalHk": "繁体字（香港）"
         }
+      },
+      "learnCorrections": {
+        "label": "修正から学ぶ",
+        "description": "音声入力のあとに同じ単語（名前など）を何度も直すと、{{appName}} が覚えるか尋ねます。入力直後に少しだけテキストフィールドを読み取ります。このコンピュータ上だけで行い、パスワード欄は読みません。",
+        "unavailable": "このコンピュータでは {{appName}} がテキストフィールドを読み取れないため、まだ学べることがありません。macOS ではアクセシビリティを許可し、Linux では支援技術をオンにしてください。"
       }
     },
     "postProcessing": {
@@ -1167,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "残り {{count}} 日",
       "daysLeft_other": "残り {{count}} 日"
+    },
+    "styles": {
+      "title": "アプリとサイトごとのスタイル",
+      "description": "書く場所ごとの既定のスタイルです。スマートライティングはそこでこれに従います。",
+      "empty": "まだありません。例：Slack はカジュアル、Gmail は丁寧、ターミナルは話したまま。",
+      "add": "アプリまたはサイトを追加",
+      "addButton": "追加",
+      "placeholder": "アプリ名またはウェブサイト",
+      "recent": "最近:",
+      "cancel": "キャンセル",
+      "remove": "{{name}} を削除",
+      "duplicate": "{{name}} にはすでにスタイルがあります",
+      "options": {
+        "as_said": "話したまま",
+        "casual": "カジュアル",
+        "polished": "丁寧"
+      },
+      "hints": {
+        "as_said": "話した言葉そのまま",
+        "casual": "くだけた感じ、文末の句点なし",
+        "polished": "完全な文、丁寧な句読点"
+      }
     }
   },
   "home": {
@@ -1436,7 +1465,13 @@
       "copiedOriginal": "元の文をコピーしました。貼り付けて置き換えてください。",
       "couldntRewrite": "今は書き直せなかったため、文はそのままです。"
     },
-    "firstSuggestionTip": "最初の提案です。「はい」「今はいい」「これは表示しないで」と言ってください。学習していきます。"
+    "firstSuggestionTip": "最初の提案です。「はい」「今はいい」「これは表示しないで」と言ってください。学習していきます。",
+    "learn": {
+      "offer": "「{{from}}」をいつも「{{to}}」と書きますか？",
+      "remember": "覚える",
+      "never": "今後尋ねない",
+      "added": "「{{to}}」を単語に追加しました。"
+    }
   },
   "privacy": {
     "title": "プライバシー",

@@ -638,7 +638,9 @@
         "placeholder": "단어 추가",
         "add": "추가",
         "remove": "{{word}} 제거",
-        "duplicate": "\"{{word}}\"이(가) 이미 존재합니다"
+        "duplicate": "\"{{word}}\"이(가) 이미 존재합니다",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "{{from}} → {{to}} 삭제"
       },
       "voiceActivityDetection": {
         "title": "음성 활동 감지",
@@ -675,6 +677,11 @@
           "traditionalTw": "번체 (대만)",
           "traditionalHk": "번체 (홍콩)"
         }
+      },
+      "learnCorrections": {
+        "label": "내 수정에서 배우기",
+        "description": "받아쓰기 후 같은 단어(예: 이름)를 반복해서 고치면 {{appName}}이(가) 기억할지 묻습니다. 입력 직후 잠깐 텍스트 필드를 읽으며, 이 컴퓨터에서만 처리하고 비밀번호 필드는 읽지 않습니다.",
+        "unavailable": "이 컴퓨터에서는 {{appName}}이(가) 텍스트 필드를 읽을 수 없어 아직 배울 것이 없습니다. macOS에서는 손쉬운 사용을 허용하고, Linux에서는 보조 기술을 켜세요."
       }
     },
     "postProcessing": {
@@ -1167,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "{{count}}일 남음",
       "daysLeft_other": "{{count}}일 남음"
+    },
+    "styles": {
+      "title": "앱 및 사이트별 스타일",
+      "description": "글을 쓰는 곳에 맞춘 기본 스타일입니다. 스마트 작성이 그곳에서 이를 따릅니다.",
+      "empty": "아직 없습니다. 예: Slack은 편하게, Gmail은 다듬어서, 터미널은 말한 그대로.",
+      "add": "앱 또는 사이트 추가",
+      "addButton": "추가",
+      "placeholder": "앱 이름 또는 웹사이트",
+      "recent": "최근:",
+      "cancel": "취소",
+      "remove": "{{name}} 삭제",
+      "duplicate": "{{name}}에는 이미 스타일이 있습니다",
+      "options": {
+        "as_said": "말한 그대로",
+        "casual": "편하게",
+        "polished": "다듬어서"
+      },
+      "hints": {
+        "as_said": "말한 단어 그대로",
+        "casual": "편안하게, 끝에 마침표 없이",
+        "polished": "완전한 문장, 꼼꼼한 문장 부호"
+      }
     }
   },
   "home": {
@@ -1436,7 +1465,13 @@
       "copiedOriginal": "원래 텍스트를 복사했습니다. 붙여넣어 바꾸세요.",
       "couldntRewrite": "지금은 다시 쓸 수 없어서 텍스트를 그대로 두었습니다."
     },
-    "firstSuggestionTip": "첫 번째 제안입니다. “응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요. 점점 배워 갑니다."
+    "firstSuggestionTip": "첫 번째 제안입니다. “응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요. 점점 배워 갑니다.",
+    "learn": {
+      "offer": "항상 “{{from}}” 대신 “{{to}}”(으)로 쓸까요?",
+      "remember": "기억하기",
+      "never": "묻지 않기",
+      "added": "“{{to}}”을(를) 내 단어에 추가했습니다."
+    }
   },
   "privacy": {
     "title": "개인정보 보호",

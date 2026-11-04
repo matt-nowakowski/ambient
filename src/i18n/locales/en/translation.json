@@ -638,7 +638,9 @@
         "placeholder": "Add a word",
         "add": "Add",
         "remove": "Remove {{word}}",
-        "duplicate": "\"{{word}}\" already exists"
+        "duplicate": "\"{{word}}\" already exists",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Remove {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Voice Activity Detection",
@@ -675,6 +677,11 @@
           "traditionalTw": "Traditional (Taiwan)",
           "traditionalHk": "Traditional (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Learn from my corrections",
+        "description": "When you fix the same word after dictating, like a name, {{appName}} offers to remember it. It reads the text field for a moment after typing, only on this computer, and never password fields.",
+        "unavailable": "{{appName}} can't read text fields on this computer, so there's nothing to learn from yet. Allow Accessibility on macOS, or turn on assistive technologies on Linux."
       }
     },
     "postProcessing": {
@@ -1167,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "{{count}} day left",
       "daysLeft_other": "{{count}} days left"
+    },
+    "styles": {
+      "title": "App and site styles",
+      "description": "A default style for where you write. Smart writing follows it there.",
+      "empty": "None yet. For example: Slack casual, Gmail polished, Terminal as said.",
+      "add": "Add app or site",
+      "addButton": "Add",
+      "placeholder": "App name or website",
+      "recent": "Recent:",
+      "cancel": "Cancel",
+      "remove": "Remove {{name}}",
+      "duplicate": "{{name}} already has a style",
+      "options": {
+        "as_said": "As said",
+        "casual": "Casual",
+        "polished": "Polished"
+      },
+      "hints": {
+        "as_said": "Your exact words",
+        "casual": "Relaxed, no trailing period",
+        "polished": "Full sentences, careful punctuation"
+      }
     }
   },
   "home": {
@@ -1436,7 +1465,13 @@
       "copiedOriginal": "Copied your original text. Paste to replace.",
       "couldntRewrite": "Couldn't rewrite that just now, so your text is unchanged."
     },
-    "firstSuggestionTip": "Your first suggestion. Say “yes”, “not now” or “don't show me these”. It learns."
+    "firstSuggestionTip": "Your first suggestion. Say “yes”, “not now” or “don't show me these”. It learns.",
+    "learn": {
+      "offer": "Always write “{{to}}” instead of “{{from}}”?",
+      "remember": "Remember",
+      "never": "Don't ask",
+      "added": "Added “{{to}}” to your words."
+    }
   },
   "privacy": {
     "title": "Privacy",
