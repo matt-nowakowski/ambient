@@ -46,6 +46,24 @@ export type CatalogModel = {
     readonly curated: boolean;
     /** Oldest transcribe.cpp release that publishes these exact files. */
     readonly minEngine?: string;
+    /** On-device reasoning models (role "llm"): the one pre-selected for new
+     * installs. */
+    readonly recommended?: boolean;
+    /** On-device reasoning models (role "llm"): small enough that answers and
+     * writing are noticeably weaker; offered with a "Basic" note. */
+    readonly basic?: boolean;
+    /**
+     * On-device reasoning models (role "llm"): quality and speed on the same
+     * 0-1 scale as the speech bars. Derived, not measured locally: accuracy
+     * from the Qwen3 published benchmarks (multilingual and
+     * instruction-following), speed from size and quant against the 1.7B Q8
+     * baseline. The catalog note says so too.
+     */
+    readonly scores?: {
+        readonly accuracy: number;
+        readonly speed: number;
+        readonly note: string;
+    };
     /** Every published file by quant, the default included. */
     readonly files: Readonly<Record<string, ModelFile>>;
 };
@@ -104,7 +122,9 @@ export type CatalogData = {
     readonly benchmarks: unknown;
     /** Id of the shared spoken-language detector. */
     readonly languageDetector: string;
-    /** Id of the optional on-device reasoning model (role `llm`), run by llama.cpp, not transcribe.cpp. */
+    /** Id of the on-device reasoning model (role `llm`) pre-selected for new
+     * installs; the other `llm` entries are offered alongside it. Run by
+     * llama.cpp, not transcribe.cpp. */
     readonly reasoningModel?: string;
     /** Every published model: curated first, then the rest by id. */
     readonly models: readonly CatalogModel[];
