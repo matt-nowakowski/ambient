@@ -1542,7 +1542,9 @@
     },
     "engine": {
       "title": "Brug også Apple Intelligence til svar",
-      "description": "Svar og finpudsning kører på denne Mac, når det kan lade sig gøre. Resultaterne er mindre finpudsede, så det er slået fra som standard."
+      "description": "Svar og finpudsning kører på denne Mac, når det kan lade sig gøre. Resultaterne er mindre finpudsede, så det er slået fra som standard.",
+      "titleDownloaded": "Brug AI på enheden til svar også",
+      "descriptionDownloaded": "Svar og finpudsning kører på denne computer, når de kan være der. Resultaterne er mindre polerede, så det er slået fra som standard."
     },
     "suggestions": {
       "title": "Forslag, du får",
@@ -1597,7 +1599,8 @@
       "description": "Hvor svar, skrivning for dig, forslag, mødeopsummeringer og AI-finpudsning udregnes. Alle funktioner virker med hvert valg.",
       "capability": {
         "apple": "Apple Intelligence er tilgængelig på denne computer",
-        "none": "Ingen model på enheden på denne computer"
+        "none": "Ingen model på enheden på denne computer",
+        "downloaded": "AI på enheden er hentet på denne computer"
       },
       "options": {
         "auto": {
@@ -1606,7 +1609,9 @@
         },
         "device": {
           "title": "Kun på denne computer",
-          "description": "Intet sendes for at afgøre eller svare. Funktioner, der kræver en model, falder tilbage til simple regler eller siger, at de ikke kan."
+          "description": "Intet sendes for at afgøre eller svare. Funktioner, der kræver en model, falder tilbage til simple regler eller siger, at de ikke kan.",
+          "titleBasic": "Kun på denne computer (grundlæggende, uden AI)",
+          "descriptionBasic": "Intet sendes. Kun enkle regler: svar og skrivning kræver skyen, indtil du henter AI på enheden."
         },
         "cloud": {
           "title": "Skyen",
@@ -1616,6 +1621,22 @@
       "cloudSuggestions": {
         "title": "Forslag fra skyen",
         "description": "Sender et maskeret udsnit af et vindue, du er blevet på, for at afgøre, om der skal tilbydes hjælp. Hver anmodning er listet nedenfor."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI på enheden",
+      "download": "Hent AI på enheden (≈{{size}})",
+      "description": "En lille AI-model, der kører på denne computer, så finpudsning, smart skrivning, forslag og korte svar virker uden skyen.",
+      "descriptionMac": "Et alternativ til Apple Intelligence: en lille AI-model, der kører på denne computer til finpudsning, smart skrivning, forslag og korte svar.",
+      "downloadButton": "Hent",
+      "downloading": "Henter… {{percent}} %",
+      "cancel": "Annuller",
+      "ready": "Hentet ({{size}}). Finpudsning, smart skrivning, forslag og korte svar kan køre på denne computer.",
+      "remove": "Fjern",
+      "use": "Kører på denne Mac:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Hentet model"
       }
     },
     "telemetry": {

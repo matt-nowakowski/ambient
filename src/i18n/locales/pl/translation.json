@@ -1564,7 +1564,9 @@
     },
     "engine": {
       "title": "Używaj Apple Intelligence także do odpowiedzi",
-      "description": "Odpowiedzi i szlifowanie działają na tym Macu, gdy się zmieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone."
+      "description": "Odpowiedzi i szlifowanie działają na tym Macu, gdy się zmieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone.",
+      "titleDownloaded": "Używaj AI na urządzeniu także do odpowiedzi",
+      "descriptionDownloaded": "Odpowiedzi i dopracowanie działają na tym komputerze, gdy się mieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone."
     },
     "suggestions": {
       "title": "Otrzymywane sugestie",
@@ -1621,7 +1623,8 @@
       "description": "Gdzie powstają odpowiedzi, teksty pisane za Ciebie, sugestie, podsumowania spotkań i szlifowanie AI. Każda funkcja działa przy każdym wyborze.",
       "capability": {
         "apple": "Apple Intelligence jest dostępne na tym komputerze",
-        "none": "Ten komputer nie ma lokalnego modelu AI"
+        "none": "Ten komputer nie ma lokalnego modelu AI",
+        "downloaded": "AI na urządzeniu pobrane na ten komputer"
       },
       "options": {
         "auto": {
@@ -1630,7 +1633,9 @@
         },
         "device": {
           "title": "Tylko na tym komputerze",
-          "description": "Nic nie jest wysyłane, by decydować lub odpowiadać. Funkcje wymagające modelu korzystają z prostych reguł albo informują, że nie mogą działać."
+          "description": "Nic nie jest wysyłane, by decydować lub odpowiadać. Funkcje wymagające modelu korzystają z prostych reguł albo informują, że nie mogą działać.",
+          "titleBasic": "Tylko na tym komputerze (podstawowe, bez AI)",
+          "descriptionBasic": "Nic nie jest wysyłane. Tylko proste reguły: odpowiedzi i pisanie wymagają chmury, dopóki nie pobierzesz AI na urządzenie."
         },
         "cloud": {
           "title": "Chmura",
@@ -1640,6 +1645,22 @@
       "cloudSuggestions": {
         "title": "Sugestie z chmury",
         "description": "Wysyła fragment okna, na którym zostajesz dłużej, z ukrytymi poufnymi danymi, by zdecydować, czy zaproponować pomoc. Każde żądanie jest wymienione poniżej."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI na urządzeniu",
+      "download": "Pobierz AI na urządzenie (≈{{size}})",
+      "description": "Mały model AI działający na tym komputerze, dzięki któremu dopracowanie, inteligentne pisanie, sugestie i krótkie odpowiedzi działają bez chmury.",
+      "descriptionMac": "Alternatywa dla Apple Intelligence: mały model AI działający na tym komputerze do dopracowania, inteligentnego pisania, sugestii i krótkich odpowiedzi.",
+      "downloadButton": "Pobierz",
+      "downloading": "Pobieranie… {{percent}}%",
+      "cancel": "Anuluj",
+      "ready": "Pobrano ({{size}}). Dopracowanie, inteligentne pisanie, sugestie i krótkie odpowiedzi mogą działać na tym komputerze.",
+      "remove": "Usuń",
+      "use": "Na tym Macu działa:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Pobrany model"
       }
     },
     "telemetry": {

@@ -115,3 +115,11 @@ and attribution, shown in its model card; most are Apache-2.0, MIT or
 CC-BY-4.0, some carry vendor licences (NVIDIA Open Model License, FunASR
 Model License) and a few are licensed for non-commercial use only. The
 catalog's `license` field records each model's licence.
+
+## On-device AI (optional download)
+
+Not bundled. "Download on-device AI" fetches two things on request:
+llama.cpp's `llama-server` from the unmodified release archives published by
+the ggml-org/llama.cpp project (MIT; the archive includes its LICENSE), and
+the Qwen3 1.7B model (GGUF, Q8_0) published by the Qwen team at
+huggingface.co/Qwen/Qwen3-1.7B-GGUF (Apache-2.0).

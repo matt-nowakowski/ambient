@@ -1553,7 +1553,9 @@
     },
     "engine": {
       "title": "Fer servir Apple Intelligence també per a les respostes",
-      "description": "Les respostes i el poliment s'executen en aquest Mac quan és possible. Els resultats són menys polits, per això està desactivat per defecte."
+      "description": "Les respostes i el poliment s'executen en aquest Mac quan és possible. Els resultats són menys polits, per això està desactivat per defecte.",
+      "titleDownloaded": "Fes servir la IA al dispositiu també per a respostes",
+      "descriptionDownloaded": "Les respostes i el polit s'executen en aquest ordinador quan hi caben. Els resultats són menys polits, per això està desactivat per defecte."
     },
     "suggestions": {
       "title": "Suggeriments que rebeu",
@@ -1608,7 +1610,8 @@
       "description": "On es processen les respostes, l'escriptura per vós, els suggeriments, els resums de reunions i el poliment amb IA. Cada funció funciona amb qualsevol opció.",
       "capability": {
         "apple": "Apple Intelligence disponible en aquest ordinador",
-        "none": "Cap model al dispositiu en aquest ordinador"
+        "none": "Cap model al dispositiu en aquest ordinador",
+        "downloaded": "IA al dispositiu baixada en aquest ordinador"
       },
       "options": {
         "auto": {
@@ -1617,7 +1620,9 @@
         },
         "device": {
           "title": "Només en aquest ordinador",
-          "description": "No s'envia res per decidir ni respondre. Les funcions que necessiten un model passen a regles simples, o diuen que no poden."
+          "description": "No s'envia res per decidir ni respondre. Les funcions que necessiten un model passen a regles simples, o diuen que no poden.",
+          "titleBasic": "Només en aquest ordinador (bàsic, sense IA)",
+          "descriptionBasic": "No s'envia res. Només regles simples: les respostes i l'escriptura necessiten el núvol fins que baixis la IA al dispositiu."
         },
         "cloud": {
           "title": "Núvol",
@@ -1627,6 +1632,22 @@
       "cloudSuggestions": {
         "title": "Suggeriments des del núvol",
         "description": "Envia un fragment, sense dades sensibles, d'una finestra on us heu aturat, per decidir si cal oferir ajuda. Cada petició apareix a sota."
+      }
+    },
+    "onDeviceAi": {
+      "title": "IA al dispositiu",
+      "download": "Baixa la IA al dispositiu (≈{{size}})",
+      "description": "Un model d'IA petit que funciona en aquest ordinador, perquè el polit, l'escriptura intel·ligent, els suggeriments i les respostes curtes funcionin sense el núvol.",
+      "descriptionMac": "Una alternativa a Apple Intelligence: un model d'IA petit que funciona en aquest ordinador per al polit, l'escriptura intel·ligent, els suggeriments i les respostes curtes.",
+      "downloadButton": "Baixa",
+      "downloading": "Baixant… {{percent}}%",
+      "cancel": "Cancel·la",
+      "ready": "Baixada ({{size}}). El polit, l'escriptura intel·ligent, els suggeriments i les respostes curtes poden funcionar en aquest ordinador.",
+      "remove": "Elimina",
+      "use": "Funciona en aquest Mac:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Model baixat"
       }
     },
     "telemetry": {

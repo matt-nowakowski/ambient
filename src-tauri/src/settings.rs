@@ -640,6 +640,10 @@ pub struct AgentSettings {
     /// and routed 29/33 vs 33/33. Quality first; users can still choose
     /// privacy over quality. Ignored in the other two modes.
     pub on_device_when_possible: bool,
+    /// Which on-device model runs on-device tasks when both are there: Apple
+    /// Intelligence or the downloaded one ("Download on-device AI"). The
+    /// other is used when the chosen one isn't available.
+    pub on_device_model: OnDeviceModel,
     /// Unix seconds until which all watching is paused.
     pub paused_until: Option<i64>,
     /// Max unprompted suggestions per hour.
@@ -680,6 +684,17 @@ pub enum Intelligence {
     Cloud,
 }
 
+/// The on-device model to prefer (see `AgentSettings::on_device_model`).
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
+#[serde(rename_all = "lowercase")]
+pub enum OnDeviceModel {
+    /// Apple Intelligence (Apple silicon Macs that have it).
+    #[default]
+    Apple,
+    /// The downloaded model, run by llama.cpp (every platform).
+    Downloaded,
+}
+
 /// The one-time cloud suggestions offer and its answer.
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
 #[serde(rename_all = "snake_case")]
@@ -713,6 +728,7 @@ impl Default for AgentSettings {
             cloud_suggestions: CloudSuggestions::Unasked,
             on_device_only: false,
             on_device_when_possible: false,
+            on_device_model: OnDeviceModel::Apple,
             paused_until: None,
             suggestions_per_hour: crate::agent::budget::HOURLY_CAP,
             suggestion_prefs: Default::default(),

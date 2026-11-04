@@ -65,6 +65,10 @@ struct CatalogRoot {
     /// without their own language detection.
     #[serde(default)]
     language_detector: Option<String>,
+    /// Catalog id of the optional on-device reasoning model (role `llm`),
+    /// run by llama.cpp's server rather than transcribe.cpp.
+    #[serde(default)]
+    reasoning_model: Option<String>,
     /// Benchmark results keyed by catalog id.
     #[serde(default)]
     results: HashMap<String, ModelResults>,
@@ -408,6 +412,42 @@ pub fn mirror_fallbacks(model_id: &str) -> Vec<MirrorFile> {
     )
 }
 
+/// The on-device reasoning model the catalog names (`reasoningModel`): the
+/// file Ambient fetches for "Download on-device AI", at the default quant.
+pub struct ReasoningModelFile {
+    pub repo_id: String,
+    pub revision: String,
+    pub filename: String,
+    pub size_bytes: u64,
+    sha256: String,
+}
+
+pub static REASONING_MODEL: Lazy<Option<ReasoningModelFile>> = Lazy::new(|| {
+    let id = ROOT.reasoning_model.as_deref()?;
+    let model = ROOT.models.iter().find(|m| m.id == id && m.role == "llm")?;
+    let file = model.default_file()?;
+    Some(ReasoningModelFile {
+        repo_id: model.repository.clone(),
+        revision: model.revision.clone(),
+        filename: file.filename.clone(),
+        size_bytes: file.size,
+        sha256: file.sha256.clone(),
+    })
+});
+
+/// Ordered mirror URLs for the reasoning model's file.
+pub fn reasoning_model_mirrors() -> Vec<MirrorFile> {
+    REASONING_MODEL.as_ref().map_or_else(Vec::new, |m| {
+        mirror_files(
+            &m.repo_id,
+            &m.revision,
+            &m.filename,
+            &m.sha256,
+            m.size_bytes,
+        )
+    })
+}
+
 /// Ordered mirror URLs for the language detector's file.
 pub fn language_detector_mirrors() -> Vec<MirrorFile> {
     LANGUAGE_DETECTOR.as_ref().map_or_else(Vec::new, |d| {
@@ -510,6 +550,23 @@ mod tests {
         assert!(detector.filename.ends_with(".gguf"));
         assert!(detector.labels.iter().any(|l| l == "en"));
         assert!(detector.labels.iter().any(|l| l == "iw"));
+    }
+
+    #[test]
+    fn names_a_reasoning_model_that_is_never_transcription() {
+        let model = REASONING_MODEL
+            .as_ref()
+            .expect("catalog names an on-device reasoning model");
+        assert!(model.filename.ends_with(".gguf") && !model.filename.contains('/'));
+        assert!(model.size_bytes > 500_000_000 && model.size_bytes < 2_500_000_000);
+        assert_eq!(model.sha256.len(), 64);
+        assert!(CATALOG
+            .iter()
+            .all(|d| !d.files.iter().any(|f| f.filename == model.filename)));
+        assert!(reasoning_model_mirrors()[0].url.ends_with(&format!(
+            "/{}/{}/{}",
+            model.repo_id, model.revision, model.filename
+        )));
     }
 
     #[test]

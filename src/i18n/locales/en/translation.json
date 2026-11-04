@@ -1542,7 +1542,9 @@
     },
     "engine": {
       "title": "Use Apple Intelligence for answers too",
-      "description": "Answers and polish run on this Mac when they fit. Results are less polished, so it's off by default."
+      "description": "Answers and polish run on this Mac when they fit. Results are less polished, so it's off by default.",
+      "titleDownloaded": "Use on-device AI for answers too",
+      "descriptionDownloaded": "Answers and polish run on this computer when they fit. Results are less polished, so it's off by default."
     },
     "suggestions": {
       "title": "Suggestions you get",
@@ -1597,7 +1599,8 @@
       "description": "Where answers, writing for you, suggestions, meeting summaries and AI polish are worked out. Every feature works with each choice.",
       "capability": {
         "apple": "Apple Intelligence available on this computer",
-        "none": "No on-device model on this computer"
+        "none": "No on-device model on this computer",
+        "downloaded": "On-device AI downloaded on this computer"
       },
       "options": {
         "auto": {
@@ -1606,7 +1609,9 @@
         },
         "device": {
           "title": "On this computer only",
-          "description": "Nothing is sent to decide or answer. Features that need a model fall back to simple rules, or say they can't."
+          "description": "Nothing is sent to decide or answer. Features that need a model fall back to simple rules, or say they can't.",
+          "titleBasic": "On this computer only (basic, no AI)",
+          "descriptionBasic": "Nothing is sent. Simple rules only: answers and writing need the cloud until you download on-device AI."
         },
         "cloud": {
           "title": "Cloud",
@@ -1616,6 +1621,22 @@
       "cloudSuggestions": {
         "title": "Suggestions from the cloud",
         "description": "Sends a redacted snippet of a window you've stayed on to decide whether to offer help. Every request is listed below."
+      }
+    },
+    "onDeviceAi": {
+      "title": "On-device AI",
+      "download": "Download on-device AI (≈{{size}})",
+      "description": "A small AI model that runs on this computer, so polish, smart writing, suggestions and short answers work without the cloud.",
+      "descriptionMac": "An alternative to Apple Intelligence: a small AI model that runs on this computer for polish, smart writing, suggestions and short answers.",
+      "downloadButton": "Download",
+      "downloading": "Downloading… {{percent}}%",
+      "cancel": "Cancel",
+      "ready": "Downloaded ({{size}}). Polish, smart writing, suggestions and short answers can run on this computer.",
+      "remove": "Remove",
+      "use": "Runs on this Mac:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Downloaded model"
       }
     },
     "telemetry": {

@@ -1542,7 +1542,9 @@
     },
     "engine": {
       "title": "Dùng Apple Intelligence cho cả câu trả lời",
-      "description": "Câu trả lời và bước trau chuốt chạy trên máy Mac này khi phù hợp. Kết quả kém trau chuốt hơn, nên tính năng này tắt theo mặc định."
+      "description": "Câu trả lời và bước trau chuốt chạy trên máy Mac này khi phù hợp. Kết quả kém trau chuốt hơn, nên tính năng này tắt theo mặc định.",
+      "titleDownloaded": "Dùng AI trên thiết bị cho cả câu trả lời",
+      "descriptionDownloaded": "Câu trả lời và trau chuốt chạy trên máy tính này khi vừa. Kết quả kém trau chuốt hơn nên mặc định tắt."
     },
     "suggestions": {
       "title": "Gợi ý bạn nhận được",
@@ -1597,7 +1599,8 @@
       "description": "Nơi xử lý câu trả lời, viết giúp bạn, gợi ý, tóm tắt cuộc họp và trau chuốt bằng AI. Mọi tính năng đều chạy với mỗi lựa chọn.",
       "capability": {
         "apple": "Apple Intelligence khả dụng trên máy tính này",
-        "none": "Máy tính này không có mô hình chạy trên thiết bị"
+        "none": "Máy tính này không có mô hình chạy trên thiết bị",
+        "downloaded": "AI trên thiết bị đã được tải về máy tính này"
       },
       "options": {
         "auto": {
@@ -1606,7 +1609,9 @@
         },
         "device": {
           "title": "Chỉ trên máy tính này",
-          "description": "Không gửi gì để quyết định hay trả lời. Các tính năng cần mô hình sẽ dùng quy tắc đơn giản, hoặc báo là không làm được."
+          "description": "Không gửi gì để quyết định hay trả lời. Các tính năng cần mô hình sẽ dùng quy tắc đơn giản, hoặc báo là không làm được.",
+          "titleBasic": "Chỉ trên máy tính này (cơ bản, không có AI)",
+          "descriptionBasic": "Không gửi gì đi. Chỉ quy tắc đơn giản: câu trả lời và viết cần đám mây cho đến khi bạn tải AI trên thiết bị."
         },
         "cloud": {
           "title": "Đám mây",
@@ -1616,6 +1621,22 @@
       "cloudSuggestions": {
         "title": "Gợi ý từ đám mây",
         "description": "Gửi một đoạn trích đã ẩn thông tin nhạy cảm từ cửa sổ bạn đang dừng lại, để quyết định có nên đề nghị trợ giúp. Mọi yêu cầu đều được liệt kê bên dưới."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI trên thiết bị",
+      "download": "Tải AI trên thiết bị (≈{{size}})",
+      "description": "Một mô hình AI nhỏ chạy trên máy tính này, để trau chuốt, viết thông minh, gợi ý và câu trả lời ngắn hoạt động không cần đám mây.",
+      "descriptionMac": "Một lựa chọn thay cho Apple Intelligence: mô hình AI nhỏ chạy trên máy tính này để trau chuốt, viết thông minh, gợi ý và câu trả lời ngắn.",
+      "downloadButton": "Tải về",
+      "downloading": "Đang tải… {{percent}}%",
+      "cancel": "Hủy",
+      "ready": "Đã tải ({{size}}). Trau chuốt, viết thông minh, gợi ý và câu trả lời ngắn có thể chạy trên máy tính này.",
+      "remove": "Xóa",
+      "use": "Chạy trên máy Mac này:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Mô hình đã tải"
       }
     },
     "telemetry": {
@@ -1847,10 +1868,7 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": [
-          "Hôm qua tôi đã nói gì về giá?",
-          "Tìm bản trình bày Q3."
-        ],
+        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

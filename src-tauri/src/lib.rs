@@ -25,6 +25,7 @@ mod intro;
 mod language_detection;
 mod limits;
 mod llm_client;
+mod local_llm;
 mod managers;
 mod meeting;
 mod memory;
@@ -299,6 +300,9 @@ fn should_force_show_permissions_window(app: &AppHandle) -> bool {
 fn initialize_core_logic(app_handle: &AppHandle) {
     // Start the trial on first launch, and keep the account and Pro token fresh.
     plan::spawn_refresh_task(app_handle.clone());
+
+    // The downloaded on-device model (started on demand, stopped when idle).
+    local_llm::init(app_handle);
 
     // Note: Enigo (keyboard/mouse simulation) is NOT initialized here.
     // The frontend is responsible for calling the `initialize_enigo` command
@@ -921,6 +925,9 @@ pub fn run(cli_args: CliArgs) {
             commands::models::download_model,
             commands::models::download_language_detector,
             commands::models::is_language_detector_downloaded,
+            commands::models::get_on_device_ai_status,
+            commands::models::download_on_device_ai,
+            commands::models::delete_on_device_ai,
             commands::models::delete_model,
             commands::models::get_retired_models,
             commands::models::delete_retired_model,
@@ -1363,6 +1370,7 @@ pub fn run(cli_args: CliArgs) {
         tauri::RunEvent::Exit => {
             arm_exit_watchdog();
             telemetry::flush_on_quit(app);
+            local_llm::stop();
         }
         // No transcription teardown on exit: transcribe.cpp runs only in the
         // worker process, which exits by itself as soon as this process's end

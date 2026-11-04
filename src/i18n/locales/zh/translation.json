@@ -1542,7 +1542,9 @@
     },
     "engine": {
       "title": "回答也使用 Apple Intelligence",
-      "description": "条件允许时，回答和润色会在这台 Mac 上运行。效果不如云端精致，因此默认关闭。"
+      "description": "条件允许时，回答和润色会在这台 Mac 上运行。效果不如云端精致，因此默认关闭。",
+      "titleDownloaded": "回答也使用设备端 AI",
+      "descriptionDownloaded": "回答和润色在放得下时于这台电脑上运行。效果不如云端，因此默认关闭。"
     },
     "suggestions": {
       "title": "你收到的建议",
@@ -1597,7 +1599,8 @@
       "description": "回答、代写、建议、会议摘要和 AI 润色在哪里处理。每个功能在任何选项下都能用。",
       "capability": {
         "apple": "这台电脑上可使用 Apple Intelligence",
-        "none": "这台电脑上没有设备端模型"
+        "none": "这台电脑上没有设备端模型",
+        "downloaded": "已在这台电脑上下载设备端 AI"
       },
       "options": {
         "auto": {
@@ -1606,7 +1609,9 @@
         },
         "device": {
           "title": "仅在这台电脑上",
-          "description": "不会发送任何内容来做决定或回答。需要模型的功能会退回到简单规则，或告知无法完成。"
+          "description": "不会发送任何内容来做决定或回答。需要模型的功能会退回到简单规则，或告知无法完成。",
+          "titleBasic": "仅限这台电脑（基础，无 AI）",
+          "descriptionBasic": "不会发送任何内容。仅使用简单规则：在下载设备端 AI 之前，回答和写作需要云端。"
         },
         "cloud": {
           "title": "云端",
@@ -1616,6 +1621,22 @@
       "cloudSuggestions": {
         "title": "云端建议",
         "description": "发送你停留过的窗口的脱敏片段，以判断是否提供帮助。每条请求都会列在下方。"
+      }
+    },
+    "onDeviceAi": {
+      "title": "设备端 AI",
+      "download": "下载设备端 AI（约 {{size}}）",
+      "description": "一个在这台电脑上运行的小型 AI 模型，让润色、智能写作、建议和简短回答无需云端。",
+      "descriptionMac": "Apple Intelligence 的替代方案：一个在这台电脑上运行的小型 AI 模型，用于润色、智能写作、建议和简短回答。",
+      "downloadButton": "下载",
+      "downloading": "正在下载… {{percent}}%",
+      "cancel": "取消",
+      "ready": "已下载（{{size}}）。润色、智能写作、建议和简短回答可以在这台电脑上运行。",
+      "remove": "移除",
+      "use": "这台 Mac 使用：",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "已下载的模型"
       }
     },
     "telemetry": {
@@ -1847,10 +1868,7 @@
       },
       "recall": {
         "title": "回忆",
-        "examples": [
-          "我昨天关于定价说了什么？",
-          "找到第三季度的演示文稿。"
-        ],
+        "examples": ["我昨天关于定价说了什么？", "找到第三季度的演示文稿。"],
         "hint": "你说过、看过或做过的事。"
       },
       "suggestions": {

@@ -522,6 +522,11 @@ fn local_caps(probe: &CapabilityProbe) -> LocalCaps {
 /// progress, completion and cancellation, like a model's.
 pub const LANGUAGE_DETECTOR_ID: &str = "language-detector";
 
+/// Download id under which "Download on-device AI" (llama.cpp's server, then
+/// the reasoning model, filling one bar) reports progress, completion,
+/// cancellation and failure, like a model's.
+pub const ON_DEVICE_AI_ID: &str = "on-device-ai";
+
 /// Where one file's download progress is reported: under `model_id`, its bytes
 /// counted from `offset`, out of `total` (default: `offset` + the file's own
 /// size). Lets two files (the language detector, then a model) fill one bar.
@@ -915,6 +920,8 @@ pub struct ModelManager {
     /// One language detector transfer at a time, however many downloads
     /// want it.
     detector_download: tokio::sync::Mutex<()>,
+    /// One "Download on-device AI" transfer at a time.
+    on_device_ai_download: tokio::sync::Mutex<()>,
 }
 
 impl ModelManager {
@@ -952,6 +959,7 @@ impl ModelManager {
             cancel_flags: Arc::new(Mutex::new(HashMap::new())),
             is_rescanning: Arc::new(AtomicBool::new(false)),
             detector_download: tokio::sync::Mutex::new(()),
+            on_device_ai_download: tokio::sync::Mutex::new(()),
         };
 
         // Check which models are already downloaded
@@ -1414,6 +1422,9 @@ impl ModelManager {
                 || crate::catalog::LANGUAGE_DETECTOR
                     .as_ref()
                     .is_some_and(|detector| detector.filename == filename)
+                || crate::catalog::REASONING_MODEL
+                    .as_ref()
+                    .is_some_and(|model| model.filename == filename)
             {
                 continue;
             }
@@ -1829,6 +1840,116 @@ impl ModelManager {
             progress,
         };
         self.fetch_hf_file(&transfer, cancel_token).await
+    }
+
+    /// "Download on-device AI": llama.cpp's server for this platform, then
+    /// the reasoning model, as one download under [`ON_DEVICE_AI_ID`].
+    pub async fn download_on_device_ai(&self) -> Result<()> {
+        let cancel_token = CancellationToken::new();
+        self.cancel_flags
+            .lock()
+            .unwrap()
+            .insert(ON_DEVICE_AI_ID.to_string(), cancel_token.clone());
+        let fetched = self.fetch_on_device_ai(&cancel_token).await;
+        self.cancel_flags.lock().unwrap().remove(ON_DEVICE_AI_ID);
+        if fetched? {
+            let _ = self
+                .app_handle
+                .emit("model-download-complete", ON_DEVICE_AI_ID);
+        }
+        Ok(())
+    }
+
+    /// `Ok(false)` if cancelled (partials kept for resume).
+    async fn fetch_on_device_ai(&self, cancel_token: &CancellationToken) -> Result<bool> {
+        let model = crate::catalog::REASONING_MODEL
+            .as_ref()
+            .ok_or_else(|| anyhow::anyhow!("The catalog names no on-device AI model"))?;
+        let runtime = crate::local_llm::runtime_asset()
+            .ok_or_else(|| anyhow::anyhow!("On-device AI isn't available on this computer"))?;
+        let _single = tokio::select! {
+            guard = self.on_device_ai_download.lock() => guard,
+            _ = cancel_token.cancelled() => return Ok(false),
+        };
+        let total = Some(runtime.size + model.size_bytes);
+
+        if !crate::local_llm::runtime_installed() {
+            let archive = crate::local_llm::archive_path()?;
+            let progress = ProgressTarget {
+                model_id: ON_DEVICE_AI_ID.to_string(),
+                offset: 0,
+                total,
+            };
+            let mut last_error = None;
+            let mut done = false;
+            for url in runtime.urls() {
+                info!("Downloading the on-device AI runtime from {url}");
+                match self
+                    .download_http_resumable(
+                        &progress,
+                        &url,
+                        &archive,
+                        Some(runtime.size),
+                        Some(runtime.sha256),
+                        cancel_token,
+                    )
+                    .await
+                {
+                    Ok(HttpDownloadOutcome::Cancelled) => return Ok(false),
+                    Ok(HttpDownloadOutcome::Completed) => {
+                        done = true;
+                        break;
+                    }
+                    Err(e) => {
+                        warn!("On-device AI runtime download from {url} failed: {e}");
+                        last_error = Some(e);
+                    }
+                }
+            }
+            if !done {
+                return Err(last_error
+                    .unwrap_or_else(|| anyhow::anyhow!("No source for the on-device AI runtime")));
+            }
+            tauri::async_runtime::spawn_blocking(move || {
+                crate::local_llm::install_runtime(&archive)
+            })
+            .await
+            .map_err(|e| anyhow::anyhow!("Installing the on-device AI runtime panicked: {e}"))??;
+        }
+
+        if self.reasoning_model_path().is_none() {
+            let transfer = FileTransfer {
+                label: "the on-device AI model",
+                repo_id: &model.repo_id,
+                revision: &model.revision,
+                filename: &model.filename,
+                mirrors: crate::catalog::reasoning_model_mirrors(),
+                progress: ProgressTarget {
+                    model_id: ON_DEVICE_AI_ID.to_string(),
+                    offset: runtime.size,
+                    total,
+                },
+            };
+            if !self.fetch_hf_file(&transfer, cancel_token).await? {
+                return Ok(false);
+            }
+        }
+        Ok(true)
+    }
+
+    /// Remove on-device AI: stop its server, delete the model and runtime.
+    pub fn delete_on_device_ai(&self) -> Result<()> {
+        crate::local_llm::stop();
+        if let Some(model) = crate::catalog::REASONING_MODEL.as_ref() {
+            Self::delete_hf_cache_file(&model.repo_id, &model.revision, &model.filename)?;
+            let local = self.models_dir.join(&model.filename);
+            if local.is_file() {
+                fs::remove_file(local)?;
+            }
+        }
+        crate::local_llm::remove_runtime()?;
+        let _ = self.app_handle.emit("model-deleted", ON_DEVICE_AI_ID);
+        Ok(())
     }
 
     /// Fetch one file from Hugging Face into the shared cache, retrying, then
@@ -2329,6 +2450,16 @@ impl ModelManager {
         let detector = crate::catalog::LANGUAGE_DETECTOR.as_ref()?;
         hf_cached_path(&detector.repo_id, &detector.revision, &detector.filename).or_else(|| {
             let local = self.models_dir.join(&detector.filename);
+            local.is_file().then_some(local)
+        })
+    }
+
+    /// The on-device AI model file, if downloaded (HF cache or a mirror copy
+    /// in the models dir).
+    pub fn reasoning_model_path(&self) -> Option<PathBuf> {
+        let model = crate::catalog::REASONING_MODEL.as_ref()?;
+        hf_cached_path(&model.repo_id, &model.revision, &model.filename).or_else(|| {
+            let local = self.models_dir.join(&model.filename);
             local.is_file().then_some(local)
         })
     }

@@ -1553,7 +1553,9 @@
     },
     "engine": {
       "title": "Utiliser aussi Apple Intelligence pour les réponses",
-      "description": "Les réponses et le peaufinage s’exécutent sur ce Mac quand c’est possible. Le résultat est moins soigné, c’est pourquoi l’option est désactivée par défaut."
+      "description": "Les réponses et le peaufinage s’exécutent sur ce Mac quand c’est possible. Le résultat est moins soigné, c’est pourquoi l’option est désactivée par défaut.",
+      "titleDownloaded": "Utiliser l'IA sur l'appareil aussi pour les réponses",
+      "descriptionDownloaded": "Les réponses et le peaufinage tournent sur cet ordinateur quand ils tiennent. Les résultats sont moins soignés, c'est donc désactivé par défaut."
     },
     "suggestions": {
       "title": "Suggestions que vous recevez",
@@ -1608,7 +1610,8 @@
       "description": "Où sont traités les réponses, l’écriture à votre place, les suggestions, les résumés de réunion et le peaufinage par IA. Chaque fonction marche avec chaque choix.",
       "capability": {
         "apple": "Apple Intelligence disponible sur cet ordinateur",
-        "none": "Aucun modèle local sur cet ordinateur"
+        "none": "Aucun modèle local sur cet ordinateur",
+        "downloaded": "IA sur l'appareil téléchargée sur cet ordinateur"
       },
       "options": {
         "auto": {
@@ -1617,7 +1620,9 @@
         },
         "device": {
           "title": "Sur cet ordinateur uniquement",
-          "description": "Rien n’est envoyé pour décider ou répondre. Les fonctions qui ont besoin d’un modèle se rabattent sur des règles simples, ou indiquent qu’elles ne peuvent pas."
+          "description": "Rien n’est envoyé pour décider ou répondre. Les fonctions qui ont besoin d’un modèle se rabattent sur des règles simples, ou indiquent qu’elles ne peuvent pas.",
+          "titleBasic": "Sur cet ordinateur uniquement (basique, sans IA)",
+          "descriptionBasic": "Rien n'est envoyé. Règles simples uniquement : les réponses et la rédaction ont besoin du cloud tant que vous n'avez pas téléchargé l'IA sur l'appareil."
         },
         "cloud": {
           "title": "Cloud",
@@ -1627,6 +1632,22 @@
       "cloudSuggestions": {
         "title": "Suggestions via le cloud",
         "description": "Envoie un extrait (données sensibles masquées) d’une fenêtre où vous vous attardez, pour décider s’il faut proposer de l’aide. Chaque requête est listée ci-dessous."
+      }
+    },
+    "onDeviceAi": {
+      "title": "IA sur l'appareil",
+      "download": "Télécharger l'IA sur l'appareil (≈{{size}})",
+      "description": "Un petit modèle d'IA qui tourne sur cet ordinateur : peaufinage, rédaction intelligente, suggestions et réponses courtes fonctionnent sans le cloud.",
+      "descriptionMac": "Une alternative à Apple Intelligence : un petit modèle d'IA qui tourne sur cet ordinateur pour le peaufinage, la rédaction intelligente, les suggestions et les réponses courtes.",
+      "downloadButton": "Télécharger",
+      "downloading": "Téléchargement… {{percent}} %",
+      "cancel": "Annuler",
+      "ready": "Téléchargée ({{size}}). Le peaufinage, la rédaction intelligente, les suggestions et les réponses courtes peuvent tourner sur cet ordinateur.",
+      "remove": "Supprimer",
+      "use": "Sur ce Mac :",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Modèle téléchargé"
       }
     },
     "telemetry": {

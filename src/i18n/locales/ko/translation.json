@@ -1542,7 +1542,9 @@
     },
     "engine": {
       "title": "답변에도 Apple Intelligence 사용",
-      "description": "가능한 경우 답변과 다듬기를 이 Mac에서 실행합니다. 결과의 완성도가 낮아 기본적으로 꺼져 있습니다."
+      "description": "가능한 경우 답변과 다듬기를 이 Mac에서 실행합니다. 결과의 완성도가 낮아 기본적으로 꺼져 있습니다.",
+      "titleDownloaded": "답변에도 기기 내 AI 사용",
+      "descriptionDownloaded": "답변과 다듬기는 크기가 맞으면 이 컴퓨터에서 실행됩니다. 결과가 덜 다듬어져서 기본값은 꺼짐입니다."
     },
     "suggestions": {
       "title": "받는 제안",
@@ -1597,7 +1599,8 @@
       "description": "답변, 대신 쓰기, 제안, 회의 요약, AI 다듬기가 처리되는 곳입니다. 어떤 선택이든 모든 기능이 작동합니다.",
       "capability": {
         "apple": "이 컴퓨터에서 Apple Intelligence 사용 가능",
-        "none": "이 컴퓨터에 온디바이스 모델 없음"
+        "none": "이 컴퓨터에 온디바이스 모델 없음",
+        "downloaded": "기기 내 AI가 이 컴퓨터에 다운로드됨"
       },
       "options": {
         "auto": {
@@ -1606,7 +1609,9 @@
         },
         "device": {
           "title": "이 컴퓨터에서만",
-          "description": "판단이나 답변을 위해 아무것도 전송하지 않습니다. 모델이 필요한 기능은 단순 규칙으로 대체되거나 할 수 없다고 알려 줍니다."
+          "description": "판단이나 답변을 위해 아무것도 전송하지 않습니다. 모델이 필요한 기능은 단순 규칙으로 대체되거나 할 수 없다고 알려 줍니다.",
+          "titleBasic": "이 컴퓨터에서만 (기본, AI 없음)",
+          "descriptionBasic": "아무것도 전송되지 않습니다. 간단한 규칙만 사용: 기기 내 AI를 다운로드하기 전까지 답변과 글쓰기에는 클라우드가 필요합니다."
         },
         "cloud": {
           "title": "클라우드",
@@ -1616,6 +1621,22 @@
       "cloudSuggestions": {
         "title": "클라우드 제안",
         "description": "머물러 있던 창에서 민감한 정보를 가린 일부를 보내 도움을 제안할지 판단합니다. 모든 요청은 아래에 표시됩니다."
+      }
+    },
+    "onDeviceAi": {
+      "title": "기기 내 AI",
+      "download": "기기 내 AI 다운로드 (약 {{size}})",
+      "description": "이 컴퓨터에서 실행되는 작은 AI 모델로, 다듬기, 스마트 글쓰기, 제안, 짧은 답변이 클라우드 없이 작동합니다.",
+      "descriptionMac": "Apple Intelligence의 대안: 다듬기, 스마트 글쓰기, 제안, 짧은 답변을 위해 이 컴퓨터에서 실행되는 작은 AI 모델입니다.",
+      "downloadButton": "다운로드",
+      "downloading": "다운로드 중… {{percent}}%",
+      "cancel": "취소",
+      "ready": "다운로드됨 ({{size}}). 다듬기, 스마트 글쓰기, 제안, 짧은 답변을 이 컴퓨터에서 실행할 수 있습니다.",
+      "remove": "제거",
+      "use": "이 Mac에서 사용:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "다운로드한 모델"
       }
     },
     "telemetry": {
@@ -1847,10 +1868,7 @@
       },
       "recall": {
         "title": "기억하기",
-        "examples": [
-          "어제 가격에 대해 뭐라고 했지?",
-          "3분기 자료 찾아 줘."
-        ],
+        "examples": ["어제 가격에 대해 뭐라고 했지?", "3분기 자료 찾아 줘."],
         "hint": "내가 말하고, 보고, 작업한 내용."
       },
       "suggestions": {

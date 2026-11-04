@@ -329,6 +329,11 @@ const PLACES: Place[] = [
             when: (c) => c.isMac,
           },
           {
+            label: "privacy.onDeviceAi.title",
+            description: "privacy.onDeviceAi.description",
+            keywords: ["download", "local model", "llama", "qwen", "offline"],
+          },
+          {
             label: "privacy.intelligence.cloudSuggestions.title",
             description: "privacy.intelligence.cloudSuggestions.description",
             keywords: ["suggestions", "cloud"],

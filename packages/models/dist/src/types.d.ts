@@ -1,5 +1,5 @@
 /** What a published model is for. Only `asr` models transcribe or get recommended. */
-export type ModelRole = "asr" | "langid" | "vad" | "diarize";
+export type ModelRole = "asr" | "langid" | "vad" | "diarize" | "llm";
 export type ModelFile = {
     /** Path within the repository at `revision`. */
     readonly filename: string;
@@ -104,6 +104,8 @@ export type CatalogData = {
     readonly benchmarks: unknown;
     /** Id of the shared spoken-language detector. */
     readonly languageDetector: string;
+    /** Id of the optional on-device reasoning model (role `llm`), run by llama.cpp, not transcribe.cpp. */
+    readonly reasoningModel?: string;
     /** Every published model: curated first, then the rest by id. */
     readonly models: readonly CatalogModel[];
     /** Benchmark results keyed by model id. */

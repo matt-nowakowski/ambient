@@ -1542,7 +1542,9 @@
     },
     "engine": {
       "title": "Använd Apple Intelligence för svar också",
-      "description": "Svar och finslipning körs på den här Macen när de får plats. Resultaten blir mindre finslipade, så det är avstängt som standard."
+      "description": "Svar och finslipning körs på den här Macen när de får plats. Resultaten blir mindre finslipade, så det är avstängt som standard.",
+      "titleDownloaded": "Använd AI på enheten för svar också",
+      "descriptionDownloaded": "Svar och finputsning körs på den här datorn när de får plats. Resultaten är mindre putsade, så det är av som standard."
     },
     "suggestions": {
       "title": "Förslag du får",
@@ -1597,7 +1599,8 @@
       "description": "Var svar, skrivande åt dig, förslag, mötessammanfattningar och AI-finslipning tas fram. Alla funktioner fungerar med varje val.",
       "capability": {
         "apple": "Apple Intelligence finns på den här datorn",
-        "none": "Ingen modell på enheten på den här datorn"
+        "none": "Ingen modell på enheten på den här datorn",
+        "downloaded": "AI på enheten är hämtad på den här datorn"
       },
       "options": {
         "auto": {
@@ -1606,7 +1609,9 @@
         },
         "device": {
           "title": "Bara på den här datorn",
-          "description": "Inget skickas för att avgöra eller svara. Funktioner som behöver en modell faller tillbaka på enkla regler eller säger att de inte kan."
+          "description": "Inget skickas för att avgöra eller svara. Funktioner som behöver en modell faller tillbaka på enkla regler eller säger att de inte kan.",
+          "titleBasic": "Bara på den här datorn (grundläggande, utan AI)",
+          "descriptionBasic": "Inget skickas. Bara enkla regler: svar och skrivande behöver molnet tills du hämtar AI på enheten."
         },
         "cloud": {
           "title": "Molnet",
@@ -1616,6 +1621,22 @@
       "cloudSuggestions": {
         "title": "Förslag från molnet",
         "description": "Skickar ett maskerat utdrag av ett fönster du stannat kvar i för att avgöra om hjälp ska erbjudas. Varje förfrågan listas nedan."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI på enheten",
+      "download": "Hämta AI på enheten (≈{{size}})",
+      "description": "En liten AI-modell som körs på den här datorn, så att finputsning, smart skrivande, förslag och korta svar fungerar utan molnet.",
+      "descriptionMac": "Ett alternativ till Apple Intelligence: en liten AI-modell som körs på den här datorn för finputsning, smart skrivande, förslag och korta svar.",
+      "downloadButton": "Hämta",
+      "downloading": "Hämtar… {{percent}} %",
+      "cancel": "Avbryt",
+      "ready": "Hämtad ({{size}}). Finputsning, smart skrivande, förslag och korta svar kan köras på den här datorn.",
+      "remove": "Ta bort",
+      "use": "Körs på den här Macen:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Hämtad modell"
       }
     },
     "telemetry": {
