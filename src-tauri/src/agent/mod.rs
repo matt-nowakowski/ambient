@@ -233,12 +233,14 @@ fn run(app: AppHandle) {
     let mut current: Option<(i32, Instant)> = None; // pid, when it came to front
     let mut last_capture: Option<Instant> = None;
     let mut offered: std::collections::HashMap<String, Instant> = std::collections::HashMap::new();
-    // Proactive suggestions look at each window (app + title) once, after
-    // the user has stayed on it for DWELL.
-    let mut window: Option<(i32, String, Instant)> = None;
+    // Proactive suggestions look at each window once, after the user has
+    // stayed on it for DWELL. The window's identity is the app, its process
+    // and the page (see `proactive::window_identity`): a title that churns
+    // under the user's feet is not a new window.
+    let mut window: Option<(String, Instant)> = None;
     let mut last_prep: Option<Instant> = None;
     let mut notified_sensitive: Option<String> = None;
-    let mut considered: Option<(i32, String)> = None;
+    let mut considered: Option<String> = None;
     // When it was considered (or last checked for something new).
     let mut considered_at = Instant::now();
     // The last skip reason logged at debug, so it's logged once per window.
@@ -353,21 +355,20 @@ fn run(app: AppHandle) {
             match &meta {
                 Err(reason) => Some(format!("no snapshot ({reason:?})")),
                 Ok(meta) => {
-                    let key = (front.pid, meta.window_title.clone());
-                    if window
-                        .as_ref()
-                        .map_or(true, |(p, t, _)| (p, t) != (&key.0, &key.1))
-                    {
-                        window = Some((key.0, key.1.clone(), Instant::now()));
+                    let key = proactive::window_identity(
+                        &front.bundle_id,
+                        front.pid,
+                        meta.url.as_deref(),
+                    );
+                    if window.as_ref().map_or(true, |(k, _)| k != &key) {
+                        window = Some((key.clone(), Instant::now()));
                     }
-                    let dwelled = window
-                        .as_ref()
-                        .is_some_and(|(_, _, at)| at.elapsed() >= DWELL);
+                    let dwelled = window.as_ref().is_some_and(|(_, at)| at.elapsed() >= DWELL);
                     if !dwelled {
                         log::trace!("proactive: not dwelled yet on {}", front.bundle_id);
                         None
-                    } else if considered.as_ref() == Some(&key)
-                        && !proactive::deferred_due(&format!("{}|{}", front.bundle_id, key.1))
+                    } else if considered.as_deref() == Some(key.as_str())
+                        && !proactive::deferred_due(&key)
                         && !something_new(&agent, &mut considered_at)
                     {
                         log::trace!("proactive: already considered this window");

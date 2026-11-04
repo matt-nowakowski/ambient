@@ -783,10 +783,7 @@ fn rules_fired(snap: &ContextSnapshot, languages: &[String]) -> Vec<Kind> {
     if dev && DIFF.find_iter(text).count() >= 2 && !ERROR.is_match(text) {
         out.push(Kind::CommitMessage);
     }
-    let sheet = is_in(SHEET_APPS, bundle)
-        || url.contains("docs.google.com/spreadsheets")
-        || snap.window_title.ends_with("- Google Sheets");
-    if sheet && SHEET_ERROR.is_match(text) {
+    if sheet_screen(snap) && SHEET_ERROR.is_match(text) {
         out.push(Kind::FixFormula);
     }
     // A form being filled in: focus in a field, several field labels, and
@@ -935,6 +932,11 @@ fn moment_key(kind: Kind, snap: &ContextSnapshot, window_key: &str) -> String {
             .find(&STAMP_LINE.replace_all(text, ""))
             .map(|m| m.as_str().to_lowercase()),
         Kind::AddReminder => mentions_deadline(text),
+        // A mail thread's title names the thread and stays put, and the
+        // app's process is one for every mailbox window; the title is what
+        // tells two threads apart. A terminal never gets here (it isn't
+        // mail), so its churning title can't leak into an offer key.
+        Kind::SummariseThread if is_mail(snap) => Some(snap.window_title.clone()),
         _ => None,
     };
     match about {
@@ -988,6 +990,41 @@ fn long_prose(text: &str, min_chars: usize) -> bool {
     text.len() > min_chars && text.lines().filter(|l| l.len() > 160).count() >= 6
 }
 
+/// A spreadsheet showing: a sheet app, Google Sheets, or a sheet title.
+fn sheet_screen(snap: &ContextSnapshot) -> bool {
+    is_in(SHEET_APPS, snap.app.bundle_id.as_str())
+        || snap
+            .url
+            .as_deref()
+            .unwrap_or("")
+            .contains("docs.google.com/spreadsheets")
+        || snap.window_title.ends_with("- Google Sheets")
+}
+
+/// A surface a page summary makes sense on: a browser, a document app, a
+/// Google Doc, or anything showing long prose. A terminal transcript is none
+/// of them, which is the point: the judge offered "summarise this email
+/// thread" over one (Matt's report), and a summary offer there is a promise
+/// the answer has to walk back.
+fn page_surface(snap: &ContextSnapshot) -> bool {
+    let bundle = snap.app.bundle_id.as_str();
+    let url = snap.url.as_deref().unwrap_or("");
+    is_in(BROWSERS, bundle)
+        || is_in(DOC_APPS, bundle)
+        || url.contains("docs.google.com/document")
+        // A terminal or editor is a stream of output, not a page, however
+        // long its lines come back from accessibility.
+        || (!is_in(DEV_APPS, bundle) && long_prose(snap.text.as_deref().unwrap_or(""), 4000))
+}
+
+/// Somewhere a summary of what's on screen is worth offering at all: mail, a
+/// chat, or a page. Everything else (a terminal, a spreadsheet, settings)
+/// has its own offers, and a "summary" there is the model misreading the
+/// screen.
+fn reading_surface(snap: &ContextSnapshot) -> bool {
+    is_mail(snap) || is_in(CHAT_APPS, snap.app.bundle_id.as_str()) || page_surface(snap)
+}
+
 /// The language a page is written in, when it's clearly one (ISO 639-1).
 fn page_language(text: &str) -> Option<String> {
     crate::audio_toolkit::lang_id::detect_text_language(text)
@@ -1023,8 +1060,21 @@ fn recent_lines(snap: &ContextSnapshot) -> Vec<String> {
         .collect()
 }
 
+/// The window's identity for cooldowns, repeats and "already judged": the
+/// app and its process, plus the page when there is one. The visible title
+/// is left out on purpose: a terminal rewrites its own title constantly
+/// (the log showed one Terminal as five windows in 23 seconds), so keying
+/// on it made the same screen look like a new window every snapshot and the
+/// same offer came back. Two pages in one browser are still two windows;
+/// two messages in one chat are one window, and their own key carries the
+/// new moment.
+pub(crate) fn window_identity(bundle: &str, pid: i32, url: Option<&str>) -> String {
+    let url = url.filter(|u| !u.is_empty()).unwrap_or("");
+    format!("{bundle}|{pid}|{url}")
+}
+
 fn window_key(snap: &ContextSnapshot) -> String {
-    format!("{}|{}", snap.app.bundle_id, snap.window_title)
+    window_identity(&snap.app.bundle_id, snap.app.pid, snap.url.as_deref())
 }
 
 /// Remember what this window showed when it was considered.
@@ -1220,6 +1270,7 @@ fn verdict_fits(
     let text = snap.text.as_deref().unwrap_or("");
     let url = snap.url.as_deref().unwrap_or("");
     let chat = is_in(CHAT_APPS, snap.app.bundle_id.as_str());
+    let bundle = snap.app.bundle_id.as_str();
     let foreign = || {
         !languages.is_empty()
             && page_language(text).is_some_and(|lang| {
@@ -1229,8 +1280,15 @@ fn verdict_fits(
             })
     };
     match kind {
+        // A summary of a screen that holds no page and no conversation: the
+        // judge is eager here, and a summary of a terminal transcript is the
+        // misread Matt reported. There is nothing to summarise.
+        Kind::SummarisePage | Kind::SummariseThread if !reading_surface(snap) => {
+            Err("nothing to read here")
+        }
         // A long page in another language: a translation first.
         Kind::SummarisePage | Kind::SummariseThread if foreign() => Ok(Kind::TranslatePage),
+        // Not a thread (a document, an article): a page summary still helps.
         Kind::SummariseThread if !(is_mail(snap) || chat) => Ok(Kind::SummarisePage),
         Kind::ExplainError if !ERROR.is_match(text) => Err("no error on screen"),
         Kind::FixFormula if !SHEET_ERROR.is_match(text) => Err("no formula error"),
@@ -1252,10 +1310,111 @@ fn verdict_fits(
         Kind::AddReminder if mentions_deadline(text).is_none() && !DUE.is_match(text) => {
             Err("nothing due")
         }
-        Kind::DraftReply if !(is_mail(snap) || chat || snap.editable || text.contains('?')) => {
+        // A reply needs a message to answer: mail, a chat, or a field the
+        // user is writing in. A question mark in a terminal's output isn't a
+        // message waiting on them.
+        Kind::DraftReply if !(is_mail(snap) || chat || (snap.editable && writing_app(bundle))) => {
             Err("nothing to answer")
         }
         k => Ok(k),
+    }
+}
+
+/// Whether the judge's own wording is true of the window it will be done on.
+/// The judge is eager and sometimes names the wrong thing: it offered
+/// "Summarise this email thread: who wants what…" over a terminal transcript
+/// (Matt's report), and the answer, handed the same screen, said there was no
+/// email thread. The card and the answer have to say the same thing, so an
+/// offer that claims a medium the window doesn't show is dropped. Only claims
+/// the window can't back are, so an offer about the error on screen or the
+/// numbers in a table still stands.
+fn title_fits(title: &str, snap: &ContextSnapshot) -> bool {
+    let words: Vec<String> = title
+        .to_lowercase()
+        .split(|c: char| !c.is_alphanumeric())
+        .filter(|w| !w.is_empty())
+        .map(String::from)
+        .collect();
+    let says = |roots: &[&str]| words.iter().any(|w| roots.iter().any(|r| w.starts_with(r)));
+    let text = snap.text.as_deref().unwrap_or("");
+    let bundle = snap.app.bundle_id.as_str();
+    // An email, a thread or a chat to catch up on.
+    if says(&[
+        "email",
+        "inbox",
+        "thread",
+        "conversation",
+        "chat",
+        "message",
+        "mail",
+        "reply",
+        "respond",
+        "sender",
+    ]) && !(is_mail(snap) || is_in(CHAT_APPS, bundle))
+    {
+        return false;
+    }
+    // A page or document to read.
+    if says(&[
+        "article",
+        "document",
+        "report",
+        "pdf",
+        "paper",
+        "page",
+        "essay",
+        "paragraph",
+        "transcript",
+    ]) && !page_surface(snap)
+    {
+        return false;
+    }
+    // A spreadsheet.
+    if says(&["spreadsheet", "formula", "cell", "sheet"]) && !sheet_screen(snap) {
+        return false;
+    }
+    // A failure to explain.
+    if says(&[
+        "error",
+        "exception",
+        "traceback",
+        "crash",
+        "panic",
+        "bug",
+        "fail",
+        "broken",
+    ]) && !ERROR.is_match(text)
+    {
+        return false;
+    }
+    true
+}
+
+/// The judge's verdict, held to the window: the offer to show, or why it
+/// doesn't fit. The kind is corrected for this window (a "thread" over a
+/// document is a page), and its wording goes with it — a corrected kind uses
+/// its own wording, and words that name something the window isn't ("this
+/// email thread" over a terminal) are dropped. For "anything else" the words
+/// were the offer, so there is nothing left to show.
+fn judge_offer(
+    named: Kind,
+    title: Option<String>,
+    snap: &ContextSnapshot,
+    languages: &[String],
+) -> Result<(Kind, Option<String>), &'static str> {
+    let kind = verdict_fits(named, snap, languages)?;
+    if kind != named {
+        return Ok((kind, None));
+    }
+    match title {
+        Some(t) if !title_fits(&t, snap) => {
+            if kind == Kind::Help {
+                Err("its offer isn't about this window")
+            } else {
+                Ok((kind, None))
+            }
+        }
+        other => Ok((kind, other)),
     }
 }
 
@@ -1421,8 +1580,12 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         log::debug!("proactive: {bundle} title[{tag}] nothing to offer on {why}");
         return;
     }
-    // Each state of a window is judged once (a new message is a new state).
-    let judged_key = format!("{key}|{}", fingerprint(&recent_lines(&snap).join("\n")));
+    // Each window is judged once: its text churning (a terminal printing, a
+    // live page) is not a new moment, and treating it as one brought the same
+    // offer back every few minutes (Matt's report). A window that really
+    // changed — another page, another chat — has its own identity, and the
+    // rules still catch a new message or a new error with their own keys.
+    let judged_key = window_key(&snap);
     if route == super::judge::Route::Rules {
         log::debug!(
             "proactive: {bundle} title[{tag}] no judge here ({:?}, on-device model: {on_device}); rules only, nothing to offer",
@@ -1532,13 +1695,13 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
     // The judge's own concrete question ("Want me to summarise this
     // 40-message thread?"), in the user's language; the kind's wording if
     // it gave none.
-    let mut title =
+    let title =
         Some(v.title).filter(|t| !t.trim().is_empty() && super::judge::title_grounded(t, text_raw));
     let named = Kind::from_name(&v.kind).unwrap_or(Kind::Help);
-    // Apple's model says yes to nearly every window; hold its kind to what
-    // the window shows. A corrected kind uses its own wording.
-    let kind = match verdict_fits(named, &snap, &languages) {
-        Ok(k) => k,
+    // Apple's model says yes to nearly every window; hold its kind and its
+    // words to what the window shows.
+    let (kind, title) = match judge_offer(named, title, &snap, &languages) {
+        Ok(x) => x,
         Err(why) => {
             log::debug!(
                 "proactive: the judge's {} doesn't fit this window ({why}); no offer",
@@ -1553,7 +1716,6 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
             named.name(),
             kind.name()
         );
-        title = None;
     }
     // The same offer is never made twice for a window: a judged offer's key
     // is what it offers. "Anything else" without its own words (they named
@@ -1566,8 +1728,23 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         }
         _ => moment_key(kind, &snap, &key),
     };
+    log::debug!(
+        "proactive: {bundle} title[{tag}] judge offer {} key[{}]",
+        kind.name(),
+        crate::context::title_tag(&offer_key)
+    );
     crate::telemetry::next_offer_judge(engine);
-    offer_for(app, &snap, kind, title, offer_key, per_hour);
+    // This window has had its judgement only once the offer actually shows:
+    // its text churning doesn't earn another, and a new offer there would be
+    // a repeat with new words. A cooldown that held the offer back must not
+    // count as judged, or the offer it waited for would never come.
+    if offer_for(app, &snap, kind, title, offer_key, per_hour) {
+        STATE
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .budget
+            .mark_offered(Kind::Help, &judged_key, Instant::now());
+    }
 }
 
 /// A window whose offer waited for its app's cooldown: looked at again
@@ -1726,7 +1903,7 @@ fn offer_for(
     title: Option<String>,
     key: String,
     per_hour: u32,
-) {
+) -> bool {
     let text = redact(snap.text.as_deref().unwrap_or("")).0;
     let focus = match kind {
         Kind::TightenDraft => redact(snap.focused_text.as_deref().unwrap_or("")).0,
@@ -1748,7 +1925,7 @@ fn offer_for(
         title,
         vars_for(kind, snap),
         per_hour,
-    );
+    )
 }
 
 /// Whether the user has turned this type off, everywhere or in this app.
@@ -1772,10 +1949,10 @@ fn offer(
     title: Option<String>,
     vars: BTreeMap<String, String>,
     per_hour: u32,
-) {
+) -> bool {
     if let Some((why, _)) = blocked(app, kind, bundle, &key, per_hour) {
         log::debug!("proactive: not offering {}: {why}", kind.name());
-        return;
+        return false;
     }
     // Free: one of the week's suggestions (`free.suggestions_per_week`).
     // At the limit nothing is offered; the first time, the HUD says so once.
@@ -1784,7 +1961,7 @@ fn offer(
             "proactive: not offering {}: Free's suggestions this week are used",
             kind.name()
         );
-        return;
+        return false;
     }
     let mut st = STATE
         .lock()
@@ -1832,6 +2009,7 @@ fn offer(
     );
     // "Yes" / "not now" by voice while it's up, without the shortcut.
     super::wake::listen_for_reply(app);
+    true
 }
 
 pub fn text_chars() -> usize {
@@ -2776,6 +2954,137 @@ mod tests {
 
     /// Apple's model, on this Mac, said yes to every one of these (see
     /// `judge::live_on_device_judge`); what's shown is held to the window.
+    #[test]
+    fn a_terminal_transcript_is_not_an_email_thread() {
+        // Matt's report: a coding agent's terminal on screen, and Ambient
+        // offering to summarise an email thread that was never there.
+        let session = on(
+            "com.apple.Terminal",
+            "~/Downloads/ai/ambient — codex",
+            "",
+            "$ cargo test\nrunning 3 tests\ntest result: ok. 3 passed\n",
+        );
+        assert!(!kinds(&session).contains(&Kind::SummariseThread));
+        assert_eq!(
+            verdict_fits(Kind::SummariseThread, &session, &["en".to_string()]),
+            Err("nothing to read here")
+        );
+        assert_eq!(
+            verdict_fits(Kind::SummarisePage, &session, &["en".to_string()]),
+            Err("nothing to read here")
+        );
+    }
+
+    #[test]
+    fn the_judges_words_have_to_survive_the_window() {
+        let en = ["en".to_string()];
+        let thread = "Summarise this email thread: who wants what, and anything I need to do.";
+        let terminal = on(
+            "com.apple.Terminal",
+            "~/Downloads/ai/ambient — codex",
+            "",
+            "$ cargo test\nerror: 1 test failed\n",
+        );
+        // The offer's words claim an email thread; the window is a terminal.
+        // The card would promise what the answer then denies, so it is no
+        // offer, whatever kind the judge named.
+        assert!(!title_fits(thread, &terminal));
+        assert!(!title_fits(
+            "Summarise this transcript of the session.",
+            &terminal
+        ));
+        assert_eq!(
+            judge_offer(Kind::Help, Some(thread.into()), &terminal, &en),
+            Err("its offer isn't about this window")
+        );
+        assert_eq!(
+            judge_offer(Kind::SummariseThread, Some(thread.into()), &terminal, &en),
+            Err("nothing to read here")
+        );
+        // An error on the same terminal is still worth offering: the words
+        // match the window.
+        assert!(title_fits(
+            "Explain this error and the likely fix.",
+            &terminal
+        ));
+
+        // On mail the same words stand, and the kind's own answer prompt
+        // ("summarise this conversation") says what the card said.
+        let mail = on(
+            "com.apple.mail",
+            "Re: Q4 pricing - Q4 Mail",
+            "",
+            "From: Ana Lopez <ana@x.com>\nThanks!\n",
+        );
+        assert!(title_fits(thread, &mail));
+        assert_eq!(
+            judge_offer(Kind::SummariseThread, Some(thread.into()), &mail, &en),
+            Ok((Kind::SummariseThread, Some(thread.into())))
+        );
+    }
+
+    #[test]
+    fn a_window_whose_text_churns_is_not_re_offered() {
+        // One Terminal whose title and output move on under the user (the
+        // log showed five "windows" in 23 seconds): still one window, so the
+        // same offer is never made again.
+        let first = on(
+            "com.apple.Terminal",
+            "codex — 12:01",
+            "",
+            "$ npm test\nrunning tests…\n",
+        );
+        let later = on(
+            "com.apple.Terminal",
+            "codex — 12:04",
+            "",
+            "$ npm test\nrunning tests…\nbuilt 42 modules\nerror: 1 test failed\n",
+        );
+        assert_eq!(window_key(&first), window_key(&later));
+        assert_eq!(
+            window_key(&first),
+            window_identity("com.apple.Terminal", 1, None)
+        );
+        assert_eq!(
+            moment_key(Kind::SummarisePage, &first, &window_key(&first)),
+            moment_key(Kind::SummarisePage, &later, &window_key(&later))
+        );
+        let mut b = super::super::budget::Budget::default();
+        let t0 = Instant::now();
+        let cooldown = super::super::budget::APP_COOLDOWN;
+        let key = window_key(&first);
+        b.record_shown(
+            Kind::SummarisePage,
+            "com.apple.Terminal",
+            &key,
+            cooldown,
+            t0,
+        );
+        assert_eq!(
+            b.check(
+                Kind::SummarisePage,
+                "com.apple.Terminal",
+                &key,
+                10,
+                t0 + cooldown
+            ),
+            Err(super::super::budget::Block::Repeat)
+        );
+
+        // A genuinely new window is still new: another page in the browser,
+        // another thread in Mail.
+        assert_ne!(
+            window_key(&on("firefox", "One", "https://example.com/a", "text")),
+            window_key(&on("firefox", "Two", "https://example.com/b", "text"))
+        );
+        let q4 = on("com.apple.mail", "Re: Q4 pricing", "", "From: Ana\n");
+        let launch = on("com.apple.mail", "Re: Launch plan", "", "From: Ben\n");
+        assert_ne!(
+            moment_key(Kind::SummariseThread, &q4, &window_key(&q4)),
+            moment_key(Kind::SummariseThread, &launch, &window_key(&launch))
+        );
+    }
+
     #[test]
     fn the_judges_yes_is_held_to_the_window() {
         let en = ["en".to_string()];
