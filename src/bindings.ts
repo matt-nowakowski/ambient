@@ -1575,7 +1575,8 @@ never_watch_defaults: string[];
  */
 stats: RecallStats | null; 
 /**
- * An on-device model (Apple Intelligence) can run tasks on this computer.
+ * An on-device model (Apple Intelligence or the downloaded one) can run
+ * tasks on this computer.
  */
 on_device_ready: boolean; 
 /**
@@ -1650,7 +1651,7 @@ post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_proc
  * starts at once and keeps its first word (see `MIC_PRE_ROLL`). 0 closes
  * it right away. Replaces the old experimental `lazy_stream_close`.
  */
-keep_mic_ready_secs?: number; keyboard_implementation?: KeyboardImplementation;
+keep_mic_ready_secs?: number; keyboard_implementation?: KeyboardImplementation; 
 /**
  * Swallow Ambient's shortcut presses so another dictation app bound to
  * the same keys doesn't also start. ambient-keys only; Tauri's backend
@@ -1717,18 +1718,18 @@ meetings_email?: MeetingsEmail;
  * How dictation is written: decided per utterance (Smart), always as
  * said, or always polished. See `agent::writing`.
  */
-writing_mode?: WritingMode;
+writing_mode?: WritingMode; 
 /**
  * "Learn from my corrections": after a paste, watch the field briefly
  * and offer to remember a word the user fixed more than once
  * (`corrections`). Reads only what accessibility already allows.
  */
-learn_corrections?: boolean;
+learn_corrections?: boolean; 
 /**
  * Exact word swaps the user confirmed ("Anna" → "Ana"), applied after
  * custom words.
  */
-word_replacements?: WordReplacement[];
+word_replacements?: WordReplacement[]; 
 /**
  * A writing style per app or website (`agent::styles`): an explicit
  * preference smart writing follows there.
@@ -1738,11 +1739,11 @@ app_styles?: AppStyle[] }
  * A user-set style for an app (bundle id or process name, or its name) or
  * a website (a host; its subdomains match too).
  */
-export type AppStyle = {
+export type AppStyle = { 
 /**
  * The bundle id, process name or app name; or the site's host.
  */
-target: string;
+target: string; 
 /**
  * What the list shows ("Slack", "mail.google.com").
  */
@@ -1815,6 +1816,26 @@ frame_urls?: string[];
  */
 frame_titles?: string[] }
 export type CustomSounds = { start: boolean; stop: boolean }
+/**
+ * What the UI needs to warn about a shortcut shared with another app.
+ */
+export type DictationConflicts = { 
+/**
+ * Known dictation apps that are running.
+ */
+apps: string[]; 
+/**
+ * Built-in dictation that can share the keys, if any.
+ */
+system_dictation: SystemDictation | null; 
+/**
+ * Whether this keyboard backend can keep shortcuts to Ambient.
+ */
+exclusive_supported: boolean; 
+/**
+ * Whether Ambient is keeping its shortcut presses from other apps now.
+ */
+exclusive_active: boolean }
 /**
  * What the dialog starts with.
  */
@@ -2154,17 +2175,10 @@ can_email: boolean;
  * `sending`, `sent` or `failed` once an email is under way.
  */
 email: string | null }
-export type OverlayPosition = "top" | "bottom"
-/**
- * Which recording overlay to display. `Minimal` and `Live` share one base
- * (the pill); `Live` grows into the panel that shows live transcription text.
- * `None` hides the overlay entirely. Decoupled from whether the model runs in
- * streaming mode (that is driven purely by model capability).
- */
 /**
  * "Download on-device AI": what this computer can run and what's there.
  */
-export type OnDeviceAiStatus = {
+export type OnDeviceAiStatus = { 
 /**
  * llama.cpp is built for this computer (every platform we ship).
  */
@@ -2188,15 +2202,22 @@ engine: string | null }
 /**
  * The on-device model to prefer (see `AgentSettings::on_device_model`).
  */
-export type OnDeviceModel =
+export type OnDeviceModel = 
 /**
  * Apple Intelligence (Apple silicon Macs that have it).
  */
-"apple" |
+"apple" | 
 /**
  * The downloaded model, run by llama.cpp (every platform).
  */
 "downloaded"
+export type OverlayPosition = "top" | "bottom"
+/**
+ * Which recording overlay to display. `Minimal` and `Live` share one base
+ * (the pill); `Live` grows into the panel that shows live transcription text.
+ * `None` hides the overlay entirely. Decoupled from whether the model runs in
+ * streaming mode (that is driven purely by model capability).
+ */
 export type OverlayStyle = "none" | "minimal" | "live"
 export type PaginatedHistory = { entries: HistoryEntry[]; has_more: boolean }
 export type PasteMethod = "ctrl_v" | "direct" | "none" | "shift_insert" | "ctrl_shift_v" | "external_script"
@@ -2273,26 +2294,6 @@ export type RetiredModel = { id: string; name: string; size_mb: number; replacem
  * The sealed part of a screen snapshot.
  */
 export type ScreenEntry = { id: number; ts: number; bundle_id: string; app: string; title: string; url: string | null; text: string }
-/**
- * What the UI needs to warn about a shortcut shared with another app.
- */
-export type DictationConflicts = {
-/**
- * Known dictation apps that are running, or installed (macOS).
- */
-apps: string[];
-/**
- * Built-in dictation that can share the keys, if any.
- */
-system_dictation: SystemDictation | null;
-/**
- * Whether this keyboard backend can keep shortcuts to Ambient.
- */
-exclusive_supported: boolean;
-/**
- * Whether Ambient is keeping its shortcut presses from other apps now.
- */
-exclusive_active: boolean }
 export type SecureInputStatus = { 
 /**
  * Secure input is currently enabled (live check)
@@ -2401,28 +2402,32 @@ export type StreamTextEvent = { committed: string; tentative: string }
  * Semantic kind of "working" phase, used to localize the spinner label.
  */
 export type StreamWorkKind = "transcribing" | "polishing"
+/**
+ * An app or website the user dictated into, offered when adding a style.
+ */
+export type StylePlace = { target: string; label: string; site: boolean }
 export type SuggestionPref = { off: boolean; 
 /**
  * Bundle ids where this type is never offered.
  */
 muted_apps: string[] }
 /**
- * UI appearance mode. `System` follows the OS `prefers-color-scheme`; `Light`
- * and `Dark` force one of the two palettes Ambient already ships.
- */
-/**
  * The operating system's own dictation that can share Ambient's keys.
  */
-export type SystemDictation =
+export type SystemDictation = 
 /**
  * An Ambient shortcut uses Fn, and macOS also acts on the Fn/Globe key
  * (Dictation, emoji or input source). Event taps can't stop that.
  */
-"macos_fn_key" |
+"macos_fn_key" | 
 /**
  * An Ambient shortcut is Win+H, Windows voice typing.
  */
 "windows_voice_typing"
+/**
+ * UI appearance mode. `System` follows the OS `prefers-color-scheme`; `Light`
+ * and `Dark` force one of the two palettes Ambient already ships.
+ */
 export type Theme = "system" | "light" | "dark"
 export type TranscribeAcceleratorSetting = "auto" | "cpu" | "gpu"
 /**
@@ -2498,6 +2503,10 @@ memory_hours_limit: number | null }
 export type VadBackend = "silero" | "earshot"
 export type WindowsMicrophonePermissionStatus = { supported: boolean; overall_access: PermissionAccess; device_access: PermissionAccess; app_access: PermissionAccess; desktop_app_access: PermissionAccess }
 /**
+ * A word (or short phrase) always typed as another.
+ */
+export type WordReplacement = { from: string; to: string }
+/**
  * The Writing setting.
  */
 export type WritingMode = 
@@ -2532,27 +2541,19 @@ polished_reverts: number }
 /**
  * How to write in one app or on one website.
  */
-export type WritingStyle =
+export type WritingStyle = 
 /**
  * The words as said: never polished or written unasked.
  */
-"as_said" |
+"as_said" | 
 /**
  * Relaxed: contractions, no trailing period on a short message.
  */
-"casual" |
+"casual" | 
 /**
  * Polished: full sentences, careful punctuation.
  */
 "polished"
-/**
- * A word (or short phrase) always typed as another.
- */
-export type WordReplacement = { from: string; to: string }
-/**
- * An app or website the user dictated into, offered when adding a style.
- */
-export type StylePlace = { target: string; label: string; site: boolean }
 
 /** tauri-specta globals **/
 
