@@ -116,6 +116,11 @@ const PLACES: Place[] = [
             description: "settings.sound.channel.description",
           },
           {
+            label: "settings.sound.keepMicReady.title",
+            description: "settings.sound.keepMicReady.description",
+            keywords: ["mic", "first word", "latency", "indicator"],
+          },
+          {
             label: "settings.debug.muteWhileRecording.label",
             description: "settings.debug.muteWhileRecording.description",
           },
@@ -215,6 +220,11 @@ const PLACES: Place[] = [
             label: "settings.advanced.customWords.title",
             description: "settings.advanced.customWords.description",
             keywords: ["vocabulary", "dictionary", "names", "spelling"],
+          },
+          {
+            label: "settings.advanced.learnCorrections.label",
+            description: "settings.advanced.learnCorrections.description",
+            keywords: ["dictionary", "learn", "corrections", "spelling"],
           },
           {
             label: "settings.debug.appendTrailingSpace.label",
@@ -405,6 +415,11 @@ const PLACES: Place[] = [
             description: `account.writing.options.${key}.description`,
             keywords: ["writing", "dictation"],
           })),
+          {
+            label: "account.styles.title",
+            description: "account.styles.description",
+            keywords: ["style", "tone", "app", "website", "casual", "formal"],
+          },
           {
             label: "account.signIn.sectionTitle",
             keywords: [

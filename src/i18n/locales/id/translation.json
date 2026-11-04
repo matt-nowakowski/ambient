@@ -237,6 +237,11 @@
         "shortcut": "Pintasan",
         "changeLanguages": "Ubah bahasa, {{languages}}",
         "changeModel": "Ubah model ucapan, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Jadikan {{appName}} aplikasi dikte Anda",
+        "description": "Jika aplikasi dikte lain memakai pintasan yang sama, {{appName}} yang mengambilnya.",
+        "found": "Jika aplikasi dikte lain, seperti {{apps}}, memakai pintasan yang sama, {{appName}} yang mengambilnya."
       }
     },
     "linux": {
@@ -492,6 +497,17 @@
         "average": "Semua kanal, digabung",
         "channel": "Kanal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Biarkan mikrofon siap",
+        "description": "Setelah Anda mendikte, mikrofon tetap menyala sebentar agar dikte berikutnya langsung mulai dan menangkap kata pertama Anda. Komputer menunjukkan mikrofon sedang dipakai sampai ditutup. Audio itu hanya ada di memori: tidak pernah disimpan atau dikirim.",
+        "options": {
+          "off": "Mati",
+          "sec30": "30 detik",
+          "min1": "1 menit",
+          "min2": "2 menit",
+          "min5": "5 menit"
+        }
+      },
       "audioFeedback": {
         "label": "Umpan Balik Audio",
         "description": "Putar suara saat perekaman dimulai dan dihentikan"
@@ -518,10 +534,6 @@
       "experimentalToggle": {
         "label": "Fitur Eksperimental",
         "description": "Aktifkan fitur eksperimental yang masih dalam pengembangan."
-      },
-      "lazyStreamClose": {
-        "label": "Biarkan Mikrofon Tetap Aktif di Antara Transkripsi",
-        "description": "Membiarkan aliran mikrofon tetap terbuka selama 30 detik setelah perekaman berhenti untuk mengurangi latensi pada transkripsi beruntun. Dapat menurunkan kualitas audio Bluetooth saat aktif."
       },
       "acceleration": {
         "transcribe": {
@@ -626,7 +638,9 @@
         "placeholder": "Tambahkan kata",
         "add": "Tambah",
         "remove": "Hapus {{word}}",
-        "duplicate": "“{{word}}” sudah ada"
+        "duplicate": "“{{word}}” sudah ada",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Hapus {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Deteksi Aktivitas Suara",
@@ -663,6 +677,11 @@
           "traditionalTw": "Tradisional (Taiwan)",
           "traditionalHk": "Tradisional (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Belajar dari koreksi saya",
+        "description": "Saat Anda memperbaiki kata yang sama setelah mendikte, seperti nama, {{appName}} menawarkan untuk mengingatnya. Ia membaca kolom teks sebentar setelah mengetik, hanya di komputer ini, dan tidak pernah kolom kata sandi.",
+        "unavailable": "{{appName}} tidak bisa membaca kolom teks di komputer ini, jadi belum ada yang bisa dipelajari. Izinkan Aksesibilitas di macOS, atau aktifkan teknologi bantu di Linux."
       }
     },
     "postProcessing": {
@@ -1155,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",
       "daysLeft_other": "Sisa {{count}} hari"
+    },
+    "styles": {
+      "title": "Gaya per aplikasi dan situs",
+      "description": "Gaya bawaan sesuai tempat Anda menulis. Penulisan cerdas mengikutinya di sana.",
+      "empty": "Belum ada. Misalnya: Slack santai, Gmail rapi, Terminal apa adanya.",
+      "add": "Tambah aplikasi atau situs",
+      "addButton": "Tambah",
+      "placeholder": "Nama aplikasi atau situs web",
+      "recent": "Terbaru:",
+      "cancel": "Batal",
+      "remove": "Hapus {{name}}",
+      "duplicate": "{{name}} sudah punya gaya",
+      "options": {
+        "as_said": "Apa adanya",
+        "casual": "Santai",
+        "polished": "Rapi"
+      },
+      "hints": {
+        "as_said": "Kata-kata Anda persis",
+        "casual": "Santai, tanpa titik di akhir",
+        "polished": "Kalimat lengkap, tanda baca cermat"
+      }
     }
   },
   "home": {
@@ -1424,7 +1465,13 @@
       "copiedOriginal": "Teks asli Anda sudah disalin. Tempel untuk mengganti.",
       "couldntRewrite": "Tidak bisa menulis ulang sekarang, jadi teks Anda tidak berubah."
     },
-    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar."
+    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar.",
+    "learn": {
+      "offer": "Selalu tulis “{{to}}” alih-alih “{{from}}”?",
+      "remember": "Ingat",
+      "never": "Jangan tanya",
+      "added": "“{{to}}” ditambahkan ke kata-kata Anda."
+    }
   },
   "privacy": {
     "title": "Privasi",
@@ -1537,7 +1584,8 @@
         "telemetry": "Hitungan penggunaan anonim",
         "config": "Pemeriksaan pengaturan (tidak ada yang dikirim)",
         "meeting_email": "Email catatan rapat",
-        "feedback": "Masukan"
+        "feedback": "Masukan",
+        "checkin": "Check-in harian"
       }
     },
     "engine": {

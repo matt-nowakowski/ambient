@@ -1638,6 +1638,12 @@ fn post_process_transcription_text(
         } else {
             raw
         };
+        // Then the exact swaps the user confirmed ("Anna" → "Ana").
+        let corrected = if settings.word_replacements.is_empty() {
+            corrected
+        } else {
+            crate::corrections::apply(&corrected, &settings.word_replacements)
+        };
 
         let without_fillers = remove_filler_words(
             &corrected,

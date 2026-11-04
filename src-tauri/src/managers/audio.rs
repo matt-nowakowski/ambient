@@ -1,8 +1,8 @@
 use crate::audio_toolkit::{
     audio::{AudioFrameCallback, LevelCallback},
     vad::{
-        frames_for_duration_ms, EarshotVad, SmoothedVad, VAD_OFFLINE_HANGOVER_MS, VAD_ONSET_MS,
-        VAD_PREFILL_MS, VAD_STREAMING_HANGOVER_MS,
+        frames_for_duration_ms, EarshotVad, SmoothedVad, VAD_INITIAL_PREFILL_MS,
+        VAD_OFFLINE_HANGOVER_MS, VAD_ONSET_MS, VAD_PREFILL_MS, VAD_STREAMING_HANGOVER_MS,
     },
     CaptureSink, CaptureVad, SileroVad, SpeechActivity, SpeechScorer, VadPolicy,
     VoiceActivityDetector,
@@ -18,7 +18,11 @@ use std::sync::{mpsc, Arc, Mutex};
 use std::time::{Duration, Instant};
 use tauri::{Emitter, Manager};
 
-const STREAM_IDLE_TIMEOUT: Duration = Duration::from_secs(30);
+/// Audio kept from just before the key while the mic is open (kept ready
+/// after a dictation, or always on), so a word begun with the keypress isn't
+/// clipped. Memory only: the recorder overwrites it continuously and drops it
+/// when the mic closes; nothing is written or sent.
+const MIC_PRE_ROLL: Duration = Duration::from_millis(750);
 const SILERO_VAD_THRESHOLD: f32 = 0.3;
 const EARSHOT_VAD_THRESHOLD: f32 = 0.5;
 
@@ -377,6 +381,12 @@ fn create_capture_vad(
 ) -> Result<CaptureVad, anyhow::Error> {
     let smoothed_vad = create_smoothed_detector(backend, app_handle)?;
     let frame_samples = smoothed_vad.frame_samples();
+    // A recording's first word is the one most often clipped; reach back
+    // further for it.
+    let smoothed_vad = smoothed_vad.with_initial_prefill(frames_for_duration_ms(
+        VAD_INITIAL_PREFILL_MS,
+        frame_samples,
+    ));
     let offline_hangover_frames = frames_for_duration_ms(VAD_OFFLINE_HANGOVER_MS, frame_samples);
     let streaming_hangover_frames =
         frames_for_duration_ms(VAD_STREAMING_HANGOVER_MS, frame_samples);
@@ -405,6 +415,7 @@ fn microphone_config(
         device,
         channels: channel.map_or(Channels::MixToMono, Channels::Only),
         frames_per_chunk: Some(frames_per_chunk),
+        pre_roll: MIC_PRE_ROLL,
         ..RecorderConfig::speech()
     }
 }
@@ -667,11 +678,11 @@ impl AudioRecordingManager {
         );
     }
 
-    fn schedule_lazy_close(&self) {
+    fn schedule_lazy_close(&self, after: Duration) {
         let gen = self.close_generation.fetch_add(1, Ordering::SeqCst) + 1;
         let app = self.app_handle.clone();
         std::thread::spawn(move || {
-            std::thread::sleep(STREAM_IDLE_TIMEOUT);
+            std::thread::sleep(after);
             let rm = app.state::<Arc<AudioRecordingManager>>();
             // Hold state lock across the check AND close to serialize against
             // try_start_recording, preventing a race where the stream is closed
@@ -682,13 +693,37 @@ impl AudioRecordingManager {
             {
                 // stop_microphone_stream does not acquire the state lock,
                 // so holding it here is safe (no deadlock).
-                info!(
-                    "Closing idle microphone stream after {:?}",
-                    STREAM_IDLE_TIMEOUT
-                );
+                info!("Closing idle microphone stream after {:?}", after);
                 rm.stop_microphone_stream();
             }
         });
+    }
+
+    /// After a recording in on-demand mode: keep the mic ready for the
+    /// configured while (so the next dictation starts at once, with its
+    /// pre-roll), or close it now.
+    fn release_microphone(&self) {
+        if !matches!(*self.mode.lock().unwrap(), MicrophoneMode::OnDemand) {
+            return;
+        }
+        let keep_ready = get_settings(&self.app_handle).keep_mic_ready_secs;
+        if keep_ready > 0 {
+            self.schedule_lazy_close(Duration::from_secs(keep_ready));
+        } else {
+            self.close_generation.fetch_add(1, Ordering::SeqCst);
+            self.stop_microphone_stream();
+        }
+    }
+
+    /// The keep-ready time changed: a mic kept open between dictations now
+    /// closes on the new schedule (at once when turned off).
+    pub fn keep_ready_changed(&self) {
+        // Held throughout so a recording can't start under a close.
+        let state = self.state.lock().unwrap();
+        let is_open = *self.is_open.lock().unwrap();
+        if matches!(*state, RecordingState::Idle) && is_open {
+            self.release_microphone();
+        }
     }
 
     /* ---------- VAD --------------------------------------------------------- */
@@ -1243,14 +1278,8 @@ impl AudioRecordingManager {
                 *self.is_recording.lock().unwrap() = false;
                 self.set_state(&mut self.state.lock().unwrap(), RecordingState::Idle);
 
-                // In on-demand mode, close the mic (lazily if the setting is enabled)
-                if matches!(*self.mode.lock().unwrap(), MicrophoneMode::OnDemand) {
-                    if get_settings(&self.app_handle).lazy_stream_close {
-                        self.schedule_lazy_close();
-                    } else {
-                        self.stop_microphone_stream();
-                    }
-                }
+                // In on-demand mode, keep the mic ready for a while or close it.
+                self.release_microphone();
 
                 if self.was_cancelled_since(cancel_generation) {
                     debug!("Recording stop cancelled; discarding captured samples");
@@ -1311,14 +1340,8 @@ impl AudioRecordingManager {
 
                 *self.is_recording.lock().unwrap() = false;
 
-                // In on-demand mode, close the mic (lazily if the setting is enabled)
-                if matches!(*self.mode.lock().unwrap(), MicrophoneMode::OnDemand) {
-                    if get_settings(&self.app_handle).lazy_stream_close {
-                        self.schedule_lazy_close();
-                    } else {
-                        self.stop_microphone_stream();
-                    }
-                }
+                // In on-demand mode, keep the mic ready for a while or close it.
+                self.release_microphone();
             }
             RecordingState::Stopping => {
                 debug!("Cancellation requested while recording is stopping");

@@ -11,6 +11,8 @@ import type {
   LanguageDetectionMode,
   MeetingsEmail,
   WritingMode,
+  WordReplacement,
+  AppStyle,
 } from "@/bindings";
 import { commands } from "@/bindings";
 import { showError } from "@/lib/errors";
@@ -133,6 +135,11 @@ const settingUpdaters: {
     commands.changeOverlayPositionSetting(value as string),
   debug_mode: (value) => commands.changeDebugModeSetting(value as boolean),
   custom_words: (value) => commands.updateCustomWords(value as string[]),
+  learn_corrections: (value) =>
+    commands.changeLearnCorrectionsSetting(value as boolean),
+  word_replacements: (value) =>
+    commands.updateWordReplacements(value as WordReplacement[]),
+  app_styles: (value) => commands.updateAppStyles(value as AppStyle[]),
   word_correction_threshold: (value) =>
     commands.changeWordCorrectionThresholdSetting(value as number),
   paste_delay_ms: (value) =>
@@ -166,8 +173,8 @@ const settingUpdaters: {
   theme: (value) => commands.changeThemeSetting(value as string),
   experimental_enabled: (value) =>
     commands.changeExperimentalEnabledSetting(value as boolean),
-  lazy_stream_close: (value) =>
-    commands.changeLazyStreamCloseSetting(value as boolean),
+  keep_mic_ready_secs: (value) =>
+    commands.changeKeepMicReadySetting(value as number),
   overlay_style: (value) => commands.changeOverlayStyleSetting(value as string),
   vad_enabled: (value) => commands.changeVadEnabledSetting(value as boolean),
   long_form_chunking: (value) =>

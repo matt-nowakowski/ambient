@@ -237,6 +237,11 @@
         "shortcut": "Phím tắt",
         "changeLanguages": "Đổi ngôn ngữ, {{languages}}",
         "changeModel": "Đổi mô hình giọng nói, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Đặt {{appName}} làm ứng dụng đọc chính tả của bạn",
+        "description": "Nếu một ứng dụng đọc chính tả khác dùng cùng phím tắt, {{appName}} sẽ nhận nó.",
+        "found": "Nếu một ứng dụng đọc chính tả khác, như {{apps}}, dùng cùng phím tắt, {{appName}} sẽ nhận nó."
       }
     },
     "linux": {
@@ -492,6 +497,17 @@
         "average": "Tất cả kênh, trộn chung",
         "channel": "Kênh {{n}}"
       },
+      "keepMicReady": {
+        "title": "Giữ micrô sẵn sàng",
+        "description": "Sau khi đọc chính tả, micrô vẫn bật thêm một lúc để lần tiếp theo bắt đầu ngay và không mất từ đầu tiên. Máy tính sẽ hiển thị micrô đang được dùng cho đến khi nó đóng. Âm thanh đó chỉ nằm trong bộ nhớ: không bao giờ được lưu hay gửi đi.",
+        "options": {
+          "off": "Tắt",
+          "sec30": "30 giây",
+          "min1": "1 phút",
+          "min2": "2 phút",
+          "min5": "5 phút"
+        }
+      },
       "audioFeedback": {
         "label": "Phản hồi âm thanh",
         "description": "Phát âm thanh khi bắt đầu và kết thúc ghi âm"
@@ -518,10 +534,6 @@
       "experimentalToggle": {
         "label": "Tính năng thử nghiệm",
         "description": "Bật các tính năng thử nghiệm đang trong quá trình phát triển."
-      },
-      "lazyStreamClose": {
-        "label": "Giữ micrô mở giữa các lần chép lời",
-        "description": "Giữ luồng micrô mở trong 30 giây sau khi dừng ghi âm, giảm độ trễ khi chép lời liên tiếp. Có thể làm giảm chất lượng âm thanh Bluetooth khi đang hoạt động."
       },
       "acceleration": {
         "transcribe": {
@@ -626,7 +638,9 @@
         "placeholder": "Thêm một từ",
         "add": "Thêm",
         "remove": "Xóa {{word}}",
-        "duplicate": "“{{word}}” đã có"
+        "duplicate": "“{{word}}” đã có",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Xóa {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Phát hiện hoạt động giọng nói",
@@ -663,6 +677,11 @@
           "traditionalTw": "Phồn thể (Đài Loan)",
           "traditionalHk": "Phồn thể (Hồng Kông)"
         }
+      },
+      "learnCorrections": {
+        "label": "Học từ các chỉnh sửa của tôi",
+        "description": "Khi bạn sửa cùng một từ sau khi đọc chính tả, chẳng hạn một cái tên, {{appName}} sẽ đề nghị ghi nhớ nó. Ứng dụng đọc ô văn bản một lúc sau khi gõ, chỉ trên máy tính này, và không bao giờ đọc ô mật khẩu.",
+        "unavailable": "{{appName}} không đọc được ô văn bản trên máy tính này, nên chưa có gì để học. Hãy cho phép Trợ năng trên macOS, hoặc bật công nghệ hỗ trợ trên Linux."
       }
     },
     "postProcessing": {
@@ -1155,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",
       "daysLeft_other": "Còn {{count}} ngày"
+    },
+    "styles": {
+      "title": "Kiểu viết theo ứng dụng và trang web",
+      "description": "Kiểu mặc định cho nơi bạn viết. Viết thông minh sẽ làm theo ở đó.",
+      "empty": "Chưa có. Ví dụ: Slack thoải mái, Gmail chỉn chu, Terminal như đã nói.",
+      "add": "Thêm ứng dụng hoặc trang web",
+      "addButton": "Thêm",
+      "placeholder": "Tên ứng dụng hoặc trang web",
+      "recent": "Gần đây:",
+      "cancel": "Hủy",
+      "remove": "Xóa {{name}}",
+      "duplicate": "{{name}} đã có kiểu viết",
+      "options": {
+        "as_said": "Như đã nói",
+        "casual": "Thoải mái",
+        "polished": "Chỉn chu"
+      },
+      "hints": {
+        "as_said": "Đúng từng chữ của bạn",
+        "casual": "Thoải mái, không có dấu chấm cuối",
+        "polished": "Câu đầy đủ, dấu câu cẩn thận"
+      }
     }
   },
   "home": {
@@ -1424,7 +1465,13 @@
       "copiedOriginal": "Đã sao chép văn bản gốc của bạn. Dán để thay thế.",
       "couldntRewrite": "Không viết lại được lúc này, nên văn bản của bạn không đổi."
     },
-    "firstSuggestionTip": "Gợi ý đầu tiên của bạn. Nói “có”, “để sau” hoặc “đừng hiện những cái này”. Nó sẽ học."
+    "firstSuggestionTip": "Gợi ý đầu tiên của bạn. Nói “có”, “để sau” hoặc “đừng hiện những cái này”. Nó sẽ học.",
+    "learn": {
+      "offer": "Luôn viết “{{to}}” thay cho “{{from}}”?",
+      "remember": "Ghi nhớ",
+      "never": "Đừng hỏi",
+      "added": "Đã thêm “{{to}}” vào từ của bạn."
+    }
   },
   "privacy": {
     "title": "Quyền riêng tư",
@@ -1537,7 +1584,8 @@
         "telemetry": "Số liệu sử dụng ẩn danh",
         "config": "Kiểm tra cài đặt (không gửi gì)",
         "meeting_email": "Email ghi chú cuộc họp",
-        "feedback": "Phản hồi"
+        "feedback": "Phản hồi",
+        "checkin": "Điểm danh hằng ngày"
       }
     },
     "engine": {

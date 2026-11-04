@@ -238,6 +238,11 @@
         "shortcut": "Scorciatoia",
         "changeLanguages": "Cambia lingue, {{languages}}",
         "changeModel": "Cambia modello vocale, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Fai di {{appName}} la tua app di dettatura",
+        "description": "Se un'altra app di dettatura usa la stessa scorciatoia, {{appName}} la prende.",
+        "found": "Se un'altra app di dettatura, come {{apps}}, usa la stessa scorciatoia, {{appName}} la prende."
       }
     },
     "linux": {
@@ -495,6 +500,17 @@
         "average": "Tutti i canali, mixati",
         "channel": "Canale {{n}}"
       },
+      "keepMicReady": {
+        "title": "Tieni pronto il microfono",
+        "description": "Dopo una dettatura il microfono resta acceso ancora un po', così la successiva parte subito e coglie la tua prima parola. Il computer mostra che il microfono è in uso finché non si chiude. Quell'audio resta solo in memoria: mai salvato, mai inviato.",
+        "options": {
+          "off": "Disattivato",
+          "sec30": "30 secondi",
+          "min1": "1 minuto",
+          "min2": "2 minuti",
+          "min5": "5 minuti"
+        }
+      },
       "audioFeedback": {
         "label": "Feedback audio",
         "description": "Riproduci un suono quando la registrazione inizia e finisce"
@@ -521,10 +537,6 @@
       "experimentalToggle": {
         "label": "Funzionalità sperimentali",
         "description": "Abilita le funzionalità sperimentali ancora in fase di sviluppo."
-      },
-      "lazyStreamClose": {
-        "label": "Mantieni il microfono aperto tra le trascrizioni",
-        "description": "Mantiene lo stream del microfono aperto per 30 secondi dopo l'arresto della registrazione, riducendo la latenza per trascrizioni consecutive. Potrebbe degradare la qualità audio Bluetooth."
       },
       "acceleration": {
         "transcribe": {
@@ -629,7 +641,9 @@
         "placeholder": "Aggiungi una parola",
         "add": "Aggiungi",
         "remove": "Rimuovi {{word}}",
-        "duplicate": "«{{word}}» esiste già"
+        "duplicate": "«{{word}}» esiste già",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Rimuovi {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Rilevamento dell'attività vocale",
@@ -666,6 +680,11 @@
           "traditionalTw": "Tradizionale (Taiwan)",
           "traditionalHk": "Tradizionale (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Impara dalle mie correzioni",
+        "description": "Quando correggi la stessa parola dopo aver dettato, come un nome, {{appName}} propone di ricordarla. Legge il campo di testo per un attimo dopo la scrittura, solo su questo computer, e mai nei campi password.",
+        "unavailable": "{{appName}} non può leggere i campi di testo su questo computer, quindi non c'è ancora nulla da imparare. Consenti Accessibilità su macOS o attiva le tecnologie assistive su Linux."
       }
     },
     "postProcessing": {
@@ -1161,6 +1180,28 @@
       "daysLeft_one": "{{count}} giorno rimasto",
       "daysLeft_other": "{{count}} giorni rimasti",
       "daysLeft_many": "{{count}} giorni rimasti"
+    },
+    "styles": {
+      "title": "Stili per app e siti",
+      "description": "Uno stile predefinito in base a dove scrivi. La scrittura smart lo segue lì.",
+      "empty": "Ancora nessuno. Per esempio: Slack informale, Gmail curato, Terminale così com'è.",
+      "add": "Aggiungi app o sito",
+      "addButton": "Aggiungi",
+      "placeholder": "Nome app o sito web",
+      "recent": "Recenti:",
+      "cancel": "Annulla",
+      "remove": "Rimuovi {{name}}",
+      "duplicate": "{{name}} ha già uno stile",
+      "options": {
+        "as_said": "Così com'è",
+        "casual": "Informale",
+        "polished": "Curato"
+      },
+      "hints": {
+        "as_said": "Le tue parole esatte",
+        "casual": "Rilassato, senza punto finale",
+        "polished": "Frasi complete, punteggiatura accurata"
+      }
     }
   },
   "home": {
@@ -1432,7 +1473,13 @@
       "copiedOriginal": "Ho copiato il testo originale. Incolla per sostituire.",
       "couldntRewrite": "Non è stato possibile riscriverlo ora, quindi il testo è invariato."
     },
-    "firstSuggestionTip": "Il tuo primo suggerimento. Di' «sì», «non ora» o «non mostrarmeli». Impara."
+    "firstSuggestionTip": "Il tuo primo suggerimento. Di' «sì», «non ora» o «non mostrarmeli». Impara.",
+    "learn": {
+      "offer": "Scrivere sempre “{{to}}” invece di “{{from}}”?",
+      "remember": "Ricorda",
+      "never": "Non chiedere",
+      "added": "“{{to}}” aggiunta alle tue parole."
+    }
   },
   "privacy": {
     "title": "Privacy",
@@ -1547,7 +1594,8 @@
         "telemetry": "Conteggi d'uso anonimi",
         "config": "Controllo impostazioni (nulla inviato)",
         "meeting_email": "Email con le note della riunione",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Segnale giornaliero"
       },
       "bytes_many": "{{count}} byte"
     },

@@ -237,6 +237,11 @@
         "shortcut": "Sneltoets",
         "changeLanguages": "Talen wijzigen, {{languages}}",
         "changeModel": "Spraakmodel wijzigen, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Maak {{appName}} je dicteerapp",
+        "description": "Gebruikt een andere dicteerapp dezelfde sneltoets, dan neemt {{appName}} hem over.",
+        "found": "Gebruikt een andere dicteerapp, zoals {{apps}}, dezelfde sneltoets, dan neemt {{appName}} hem over."
       }
     },
     "linux": {
@@ -492,6 +497,17 @@
         "average": "Alle kanalen, gemixt",
         "channel": "Kanaal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Microfoon paraat houden",
+        "description": "Na het dicteren blijft de microfoon nog even aan, zodat je volgende dictaat meteen start en je eerste woord vangt. Je computer toont dat de microfoon in gebruik is tot hij sluit. Dat geluid blijft alleen in het geheugen: nooit opgeslagen, nooit verzonden.",
+        "options": {
+          "off": "Uit",
+          "sec30": "30 seconden",
+          "min1": "1 minuut",
+          "min2": "2 minuten",
+          "min5": "5 minuten"
+        }
+      },
       "audioFeedback": {
         "label": "Geluidsfeedback",
         "description": "Geluid afspelen wanneer de opname start en stopt"
@@ -518,10 +534,6 @@
       "experimentalToggle": {
         "label": "Experimentele functies",
         "description": "Schakel experimentele functies in die nog in ontwikkeling zijn."
-      },
-      "lazyStreamClose": {
-        "label": "Microfoon openhouden tussen transcripties",
-        "description": "Houdt de microfoonstream tot 30 seconden open nadat een opname stopt. Dit vermindert de vertraging bij opeenvolgende opnames, maar kan de Bluetooth-audiokwaliteit tijdelijk verminderen."
       },
       "acceleration": {
         "transcribe": {
@@ -626,7 +638,9 @@
         "placeholder": "Woord toevoegen",
         "add": "Toevoegen",
         "remove": "{{word}} verwijderen",
-        "duplicate": "‘{{word}}’ bestaat al"
+        "duplicate": "‘{{word}}’ bestaat al",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "{{from}} → {{to}} verwijderen"
       },
       "voiceActivityDetection": {
         "title": "Spraakactiviteitsdetectie (VAD)",
@@ -663,6 +677,11 @@
           "traditionalTw": "Traditioneel (Taiwan)",
           "traditionalHk": "Traditioneel (Hongkong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Leren van mijn correcties",
+        "description": "Als je na het dicteren steeds hetzelfde woord verbetert, zoals een naam, biedt {{appName}} aan het te onthouden. Het leest het tekstveld even na het typen, alleen op deze computer, en nooit wachtwoordvelden.",
+        "unavailable": "{{appName}} kan op deze computer geen tekstvelden lezen, dus er valt nog niets te leren. Sta Toegankelijkheid toe op macOS of zet hulptechnologieën aan op Linux."
       }
     },
     "postProcessing": {
@@ -1155,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "Nog {{count}} dag",
       "daysLeft_other": "Nog {{count}} dagen"
+    },
+    "styles": {
+      "title": "Stijlen per app en site",
+      "description": "Een standaardstijl voor waar je schrijft. Slim schrijven volgt die daar.",
+      "empty": "Nog geen. Bijvoorbeeld: Slack informeel, Gmail verzorgd, Terminal zoals gezegd.",
+      "add": "App of site toevoegen",
+      "addButton": "Toevoegen",
+      "placeholder": "Appnaam of website",
+      "recent": "Recent:",
+      "cancel": "Annuleren",
+      "remove": "{{name}} verwijderen",
+      "duplicate": "{{name}} heeft al een stijl",
+      "options": {
+        "as_said": "Zoals gezegd",
+        "casual": "Informeel",
+        "polished": "Verzorgd"
+      },
+      "hints": {
+        "as_said": "Precies je woorden",
+        "casual": "Ontspannen, zonder slotpunt",
+        "polished": "Hele zinnen, zorgvuldige interpunctie"
+      }
     }
   },
   "home": {
@@ -1424,7 +1465,13 @@
       "copiedOriginal": "Je oorspronkelijke tekst is gekopieerd. Plak om te vervangen.",
       "couldntRewrite": "Herschrijven lukte nu niet, dus je tekst is ongewijzigd."
     },
-    "firstSuggestionTip": "Je eerste suggestie. Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’. Het leert ervan."
+    "firstSuggestionTip": "Je eerste suggestie. Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’. Het leert ervan.",
+    "learn": {
+      "offer": "Altijd “{{to}}” schrijven in plaats van “{{from}}”?",
+      "remember": "Onthouden",
+      "never": "Niet vragen",
+      "added": "“{{to}}” toegevoegd aan je woorden."
+    }
   },
   "privacy": {
     "title": "Privacy",
@@ -1537,7 +1584,8 @@
         "telemetry": "Anonieme gebruikstellingen",
         "config": "Instellingencheck (niets verstuurd)",
         "meeting_email": "E-mail met vergadernotities",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Dagelijkse check-in"
       }
     },
     "engine": {

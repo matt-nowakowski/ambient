@@ -237,6 +237,11 @@
         "shortcut": "快捷鍵",
         "changeLanguages": "變更語言，目前為{{languages}}",
         "changeModel": "變更語音模型，目前為{{model}}"
+      },
+      "dictationApp": {
+        "title": "把 {{appName}} 設為你的聽寫 App",
+        "description": "如果其他聽寫 App 使用相同的快速鍵，{{appName}} 會接手。",
+        "found": "如果其他聽寫 App（例如 {{apps}}）使用相同的快速鍵，{{appName}} 會接手。"
       }
     },
     "linux": {
@@ -492,6 +497,17 @@
         "average": "所有聲道混合",
         "channel": "聲道 {{n}}"
       },
+      "keepMicReady": {
+        "title": "保持麥克風就緒",
+        "description": "聽寫結束後，麥克風會再開一會兒，讓下一次聽寫立即開始，不漏掉第一個字。關閉前，電腦會顯示麥克風正在使用。這段音訊只在記憶體中：從不儲存，也從不傳送。",
+        "options": {
+          "off": "關閉",
+          "sec30": "30 秒",
+          "min1": "1 分鐘",
+          "min2": "2 分鐘",
+          "min5": "5 分鐘"
+        }
+      },
       "audioFeedback": {
         "label": "聲音回饋",
         "description": "錄製開始和停止時播放聲音"
@@ -518,10 +534,6 @@
       "experimentalToggle": {
         "label": "實驗性功能",
         "description": "啟用仍在開發中的實驗性功能。"
-      },
-      "lazyStreamClose": {
-        "label": "在轉錄之間保持麥克風開啟",
-        "description": "錄音停止後讓麥克風串流保持開啟 30 秒，減少連續轉錄時的延遲。開啟期間可能會降低藍牙音訊品質。"
       },
       "acceleration": {
         "transcribe": {
@@ -626,7 +638,9 @@
         "placeholder": "新增詞彙",
         "add": "新增",
         "remove": "刪除 {{word}}",
-        "duplicate": "「{{word}}」已存在"
+        "duplicate": "「{{word}}」已存在",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "移除 {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "語音活動偵測",
@@ -663,6 +677,11 @@
           "traditionalTw": "繁體（臺灣）",
           "traditionalHk": "繁體（香港）"
         }
+      },
+      "learnCorrections": {
+        "label": "從我的修改中學習",
+        "description": "如果你在聽寫後反覆修改同一個詞（例如人名），{{appName}} 會提議記住它。它只在輸入後短暫讀取文字欄位，僅在這台電腦上進行，從不讀取密碼欄位。",
+        "unavailable": "{{appName}} 無法讀取這台電腦上的文字欄位，所以暫時沒有可學習的內容。請在 macOS 上允許輔助使用，或在 Linux 上開啟輔助技術。"
       }
     },
     "postProcessing": {
@@ -1155,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",
       "daysLeft_other": "還剩 {{count}} 天"
+    },
+    "styles": {
+      "title": "App 與網站風格",
+      "description": "依書寫位置設定預設風格，智慧寫作會在那裡遵循它。",
+      "empty": "還沒有。例如：Slack 隨性、Gmail 精煉、終端機照原話。",
+      "add": "新增 App 或網站",
+      "addButton": "新增",
+      "placeholder": "App 名稱或網站",
+      "recent": "最近：",
+      "cancel": "取消",
+      "remove": "移除 {{name}}",
+      "duplicate": "{{name}} 已有風格",
+      "options": {
+        "as_said": "照原話",
+        "casual": "隨性",
+        "polished": "精煉"
+      },
+      "hints": {
+        "as_said": "你的原話",
+        "casual": "輕鬆，結尾不加句號",
+        "polished": "完整句子，標點嚴謹"
+      }
     }
   },
   "home": {
@@ -1424,7 +1465,13 @@
       "copiedOriginal": "已複製你的原文。貼上即可取代。",
       "couldntRewrite": "暫時無法改寫，你的文字保持不變。"
     },
-    "firstSuggestionTip": "這是你的第一則建議。說「好」「稍後再說」或「別給我看這些」。它會學習。"
+    "firstSuggestionTip": "這是你的第一則建議。說「好」「稍後再說」或「別給我看這些」。它會學習。",
+    "learn": {
+      "offer": "以後都把「{{from}}」寫成「{{to}}」嗎？",
+      "remember": "記住",
+      "never": "不再詢問",
+      "added": "已將「{{to}}」加入你的字詞。"
+    }
   },
   "privacy": {
     "title": "隱私",
@@ -1537,7 +1584,8 @@
         "telemetry": "匿名使用次數",
         "config": "設定檢查（不傳送任何內容）",
         "meeting_email": "會議筆記電子郵件",
-        "feedback": "意見回饋"
+        "feedback": "意見回饋",
+        "checkin": "每日報到"
       }
     },
     "engine": {

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ShowOverlay } from "../ShowOverlay";
 import { ModelUnloadTimeoutSetting } from "../ModelUnloadTimeout";
 import { CustomWords } from "../CustomWords";
+import { LearnCorrections } from "../LearnCorrections";
 import { SettingsGroup } from "../../ui/SettingsGroup";
 import { StartHidden } from "../StartHidden";
 import { AutostartToggle } from "../AutostartToggle";
@@ -22,7 +23,6 @@ import { VoiceActivityDetection } from "../VoiceActivityDetection";
 import { LongFormChunking } from "../LongFormChunking";
 import { LanguageDetection } from "../LanguageDetection";
 import { AccelerationSelector } from "../AccelerationSelector";
-import { LazyStreamClose } from "../LazyStreamClose";
 import { FillerWordRemoval } from "../FillerWordRemoval";
 import { VadBackendSelector } from "../VadBackendSelector";
 
@@ -54,6 +54,7 @@ export const AdvancedSettings: React.FC = () => {
         <LongFormChunking descriptionMode="tooltip" grouped={true} />
         <FillerWordRemoval descriptionMode="tooltip" grouped={true} />
         <CustomWords descriptionMode="tooltip" grouped />
+        <LearnCorrections descriptionMode="tooltip" grouped />
         <AppendTrailingSpace descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
 
@@ -73,7 +74,6 @@ export const AdvancedSettings: React.FC = () => {
             grouped={true}
           />
           <AccelerationSelector descriptionMode="tooltip" grouped={true} />
-          <LazyStreamClose descriptionMode="tooltip" grouped={true} />
           <VadBackendSelector descriptionMode="tooltip" grouped={true} />
           <LanguageDetection descriptionMode="tooltip" grouped={true} />
         </SettingsGroup>

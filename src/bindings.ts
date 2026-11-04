@@ -371,9 +371,9 @@ async changeAppendTrailingSpaceSetting(enabled: boolean) : Promise<Result<null, 
     else return { status: "error", error: e  as any };
 }
 },
-async changeLazyStreamCloseSetting(enabled: boolean) : Promise<Result<null, string>> {
+async changeKeepMicReadySetting(secs: number) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("change_lazy_stream_close_setting", { enabled }) };
+    return { status: "ok", data: await TAURI_INVOKE("change_keep_mic_ready_setting", { secs }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -835,6 +835,44 @@ async changeWritingModeSetting(mode: WritingMode) : Promise<Result<null, string>
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async changeLearnCorrectionsSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_learn_corrections_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async updateWordReplacements(replacements: WordReplacement[]) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_word_replacements", { replacements }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Whether text fields can be read here at all (macOS: Accessibility
+ * allowed; Linux: AT-SPI on; Windows: always).
+ */
+async canReadTextFields() : Promise<boolean> {
+    return await TAURI_INVOKE("can_read_text_fields");
+},
+async updateAppStyles(styles: AppStyle[]) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_app_styles", { styles }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Recent apps and sites without a style yet, then apps smart writing
+ * learned about.
+ */
+async recentStylePlaces() : Promise<StylePlace[]> {
+    return await TAURI_INVOKE("recent_style_places");
 },
 /**
  * Turn anonymous usage counts on or off. Off clears anything queued.
@@ -1606,7 +1644,13 @@ spoken_languages?: string[]; overlay_position?: OverlayPosition; debug_mode?: bo
  * API keys for bring-your-own-key providers; serde ignores those fields
  * and the settings migration rewrites the store without them.
  */
-post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation;
+post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; 
+/**
+ * Seconds the microphone stays open after a dictation, so the next one
+ * starts at once and keeps its first word (see `MIC_PRE_ROLL`). 0 closes
+ * it right away. Replaces the old experimental `lazy_stream_close`.
+ */
+keep_mic_ready_secs?: number; keyboard_implementation?: KeyboardImplementation;
 /**
  * Swallow Ambient's shortcut presses so another dictation app bound to
  * the same keys doesn't also start. ambient-keys only; Tauri's backend
@@ -1673,7 +1717,36 @@ meetings_email?: MeetingsEmail;
  * How dictation is written: decided per utterance (Smart), always as
  * said, or always polished. See `agent::writing`.
  */
-writing_mode?: WritingMode }
+writing_mode?: WritingMode;
+/**
+ * "Learn from my corrections": after a paste, watch the field briefly
+ * and offer to remember a word the user fixed more than once
+ * (`corrections`). Reads only what accessibility already allows.
+ */
+learn_corrections?: boolean;
+/**
+ * Exact word swaps the user confirmed ("Anna" → "Ana"), applied after
+ * custom words.
+ */
+word_replacements?: WordReplacement[];
+/**
+ * A writing style per app or website (`agent::styles`): an explicit
+ * preference smart writing follows there.
+ */
+app_styles?: AppStyle[] }
+/**
+ * A user-set style for an app (bundle id or process name, or its name) or
+ * a website (a host; its subdomains match too).
+ */
+export type AppStyle = {
+/**
+ * The bundle id, process name or app name; or the site's host.
+ */
+target: string;
+/**
+ * What the list shows ("Slack", "mail.google.com").
+ */
+label: string; site: boolean; style: WritingStyle }
 export type AppUsage = { bundle_id: string; entries: number }
 export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
@@ -2456,6 +2529,30 @@ written_reverts: number;
  * "Polished" turned back into the user's words.
  */
 polished_reverts: number }
+/**
+ * How to write in one app or on one website.
+ */
+export type WritingStyle =
+/**
+ * The words as said: never polished or written unasked.
+ */
+"as_said" |
+/**
+ * Relaxed: contractions, no trailing period on a short message.
+ */
+"casual" |
+/**
+ * Polished: full sentences, careful punctuation.
+ */
+"polished"
+/**
+ * A word (or short phrase) always typed as another.
+ */
+export type WordReplacement = { from: string; to: string }
+/**
+ * An app or website the user dictated into, offered when adding a style.
+ */
+export type StylePlace = { target: string; label: string; site: boolean }
 
 /** tauri-specta globals **/
 

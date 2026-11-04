@@ -13,6 +13,7 @@ import { AudioFeedback } from "../AudioFeedback";
 import { useSettings } from "../../../hooks/useSettings";
 import { VolumeSlider } from "../VolumeSlider";
 import { MuteWhileRecording } from "../MuteWhileRecording";
+import { KeepMicReady } from "../KeepMicReady";
 import { ExclusiveShortcuts } from "../ExclusiveShortcuts";
 import { ModelSettingsCard } from "./ModelSettingsCard";
 import { PreferredLanguages } from "../PreferredLanguages";
@@ -55,6 +56,7 @@ export const GeneralSettings: React.FC = () => {
       <SettingsGroup title={t("settings.sound.title")}>
         <MicrophoneSelector descriptionMode="tooltip" grouped={true} />
         <ChannelSelector descriptionMode="tooltip" grouped={true} />
+        <KeepMicReady descriptionMode="tooltip" grouped={true} />
         <MuteWhileRecording descriptionMode="tooltip" grouped={true} />
         <AudioFeedback descriptionMode="tooltip" grouped={true} />
         <OutputDeviceSelector

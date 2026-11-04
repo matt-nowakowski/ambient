@@ -237,6 +237,11 @@
         "shortcut": "快捷键",
         "changeLanguages": "更改语言，当前为{{languages}}",
         "changeModel": "更改语音模型，当前为{{model}}"
+      },
+      "dictationApp": {
+        "title": "把 {{appName}} 设为你的听写应用",
+        "description": "如果其他听写应用使用相同的快捷键，{{appName}} 会接管它。",
+        "found": "如果其他听写应用（如 {{apps}}）使用相同的快捷键，{{appName}} 会接管它。"
       }
     },
     "linux": {
@@ -492,6 +497,17 @@
         "average": "所有通道混合",
         "channel": "通道 {{n}}"
       },
+      "keepMicReady": {
+        "title": "保持麦克风就绪",
+        "description": "听写结束后，麦克风会再开一会儿，让下一次听写立即开始，不漏掉第一个词。关闭前，电脑会显示麦克风正在使用。这段音频只在内存中：从不保存，也从不发送。",
+        "options": {
+          "off": "关闭",
+          "sec30": "30 秒",
+          "min1": "1 分钟",
+          "min2": "2 分钟",
+          "min5": "5 分钟"
+        }
+      },
       "audioFeedback": {
         "label": "音频反馈",
         "description": "录制开始和停止时播放声音"
@@ -518,10 +534,6 @@
       "experimentalToggle": {
         "label": "实验性功能",
         "description": "启用仍在开发中的实验性功能。"
-      },
-      "lazyStreamClose": {
-        "label": "在转录之间保持麦克风开启",
-        "description": "录音停止后让麦克风流保持开启 30 秒，减少连续转录时的延迟。开启期间可能会降低蓝牙音频质量。"
       },
       "acceleration": {
         "transcribe": {
@@ -626,7 +638,9 @@
         "placeholder": "添加词汇",
         "add": "添加",
         "remove": "删除 {{word}}",
-        "duplicate": "“{{word}}”已存在"
+        "duplicate": "“{{word}}”已存在",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "移除 {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "语音活动检测",
@@ -663,6 +677,11 @@
           "traditionalTw": "繁体（台湾）",
           "traditionalHk": "繁体（香港）"
         }
+      },
+      "learnCorrections": {
+        "label": "从我的修改中学习",
+        "description": "如果你在听写后反复修改同一个词（比如人名），{{appName}} 会提出记住它。它只在输入后短暂读取文本框，仅在这台电脑上进行，从不读取密码框。",
+        "unavailable": "{{appName}} 无法读取这台电脑上的文本框，所以暂时没有可学习的内容。请在 macOS 上允许辅助功能，或在 Linux 上开启辅助技术。"
       }
     },
     "postProcessing": {
@@ -1155,6 +1174,28 @@
     "trial": {
       "daysLeft_one": "还剩 {{count}} 天",
       "daysLeft_other": "还剩 {{count}} 天"
+    },
+    "styles": {
+      "title": "应用和网站风格",
+      "description": "按书写位置设定默认风格，智能写作会在那里遵循它。",
+      "empty": "还没有。例如：Slack 随意，Gmail 精炼，终端按原话。",
+      "add": "添加应用或网站",
+      "addButton": "添加",
+      "placeholder": "应用名称或网站",
+      "recent": "最近：",
+      "cancel": "取消",
+      "remove": "移除 {{name}}",
+      "duplicate": "{{name}} 已有风格",
+      "options": {
+        "as_said": "按原话",
+        "casual": "随意",
+        "polished": "精炼"
+      },
+      "hints": {
+        "as_said": "你的原话",
+        "casual": "轻松，结尾不加句号",
+        "polished": "完整句子，标点严谨"
+      }
     }
   },
   "home": {
@@ -1424,7 +1465,13 @@
       "copiedOriginal": "已复制你的原文。粘贴即可替换。",
       "couldntRewrite": "暂时无法改写，你的文字保持不变。"
     },
-    "firstSuggestionTip": "这是你的第一条建议。说“好”“以后再说”或“别给我看这些”。它会学习。"
+    "firstSuggestionTip": "这是你的第一条建议。说“好”“以后再说”或“别给我看这些”。它会学习。",
+    "learn": {
+      "offer": "以后都把“{{from}}”写成“{{to}}”吗？",
+      "remember": "记住",
+      "never": "不再询问",
+      "added": "已将“{{to}}”加入你的词汇。"
+    }
   },
   "privacy": {
     "title": "隐私",
@@ -1537,7 +1584,8 @@
         "telemetry": "匿名使用计数",
         "config": "设置检查（不发送任何内容）",
         "meeting_email": "会议笔记邮件",
-        "feedback": "反馈"
+        "feedback": "反馈",
+        "checkin": "每日签到"
       }
     },
     "engine": {

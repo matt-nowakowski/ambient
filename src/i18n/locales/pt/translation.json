@@ -238,6 +238,11 @@
         "shortcut": "Atalho",
         "changeLanguages": "Alterar idiomas, {{languages}}",
         "changeModel": "Alterar modelo de fala, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Faça do {{appName}} seu app de ditado",
+        "description": "Se outro app de ditado usar o mesmo atalho, o {{appName}} fica com ele.",
+        "found": "Se outro app de ditado, como {{apps}}, usar o mesmo atalho, o {{appName}} fica com ele."
       }
     },
     "linux": {
@@ -495,6 +500,17 @@
         "average": "Todos os canais, mixados",
         "channel": "Canal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Manter o microfone pronto",
+        "description": "Depois de ditar, o microfone fica ligado mais um pouco para que o próximo ditado comece na hora e capte sua primeira palavra. O computador mostra que o microfone está em uso até ele fechar. Esse áudio fica só na memória: nunca é salvo nem enviado.",
+        "options": {
+          "off": "Desativado",
+          "sec30": "30 segundos",
+          "min1": "1 minuto",
+          "min2": "2 minutos",
+          "min5": "5 minutos"
+        }
+      },
       "audioFeedback": {
         "label": "Feedback de áudio",
         "description": "Reproduzir som quando a gravação iniciar e parar"
@@ -521,10 +537,6 @@
       "experimentalToggle": {
         "label": "Recursos experimentais",
         "description": "Ativar recursos experimentais que ainda estão em desenvolvimento."
-      },
-      "lazyStreamClose": {
-        "label": "Manter microfone aberto entre transcrições",
-        "description": "Mantém o fluxo do microfone aberto por 30 segundos após parar a gravação, reduzindo a latência em transcrições consecutivas. Pode degradar a qualidade do áudio Bluetooth enquanto ativo."
       },
       "acceleration": {
         "transcribe": {
@@ -629,7 +641,9 @@
         "placeholder": "Adicionar uma palavra",
         "add": "Adicionar",
         "remove": "Remover {{word}}",
-        "duplicate": "“{{word}}” já existe"
+        "duplicate": "“{{word}}” já existe",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Remover {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Detecção de atividade de voz",
@@ -666,6 +680,11 @@
           "traditionalTw": "Tradicional (Taiwan)",
           "traditionalHk": "Tradicional (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Aprender com minhas correções",
+        "description": "Quando você corrige a mesma palavra depois de ditar, como um nome, o {{appName}} oferece lembrar dela. Ele lê o campo de texto por um instante depois de digitar, só neste computador, e nunca campos de senha.",
+        "unavailable": "O {{appName}} não consegue ler campos de texto neste computador, então ainda não há o que aprender. Permita Acessibilidade no macOS ou ative as tecnologias assistivas no Linux."
       }
     },
     "postProcessing": {
@@ -1161,6 +1180,28 @@
       "daysLeft_one": "Resta {{count}} dia",
       "daysLeft_other": "Restam {{count}} dias",
       "daysLeft_many": "Restam {{count}} dias"
+    },
+    "styles": {
+      "title": "Estilos por app e site",
+      "description": "Um estilo padrão para onde você escreve. A escrita inteligente segue ele lá.",
+      "empty": "Nenhum ainda. Por exemplo: Slack casual, Gmail caprichado, Terminal como falado.",
+      "add": "Adicionar app ou site",
+      "addButton": "Adicionar",
+      "placeholder": "Nome do app ou site",
+      "recent": "Recentes:",
+      "cancel": "Cancelar",
+      "remove": "Remover {{name}}",
+      "duplicate": "{{name}} já tem um estilo",
+      "options": {
+        "as_said": "Como falado",
+        "casual": "Casual",
+        "polished": "Caprichado"
+      },
+      "hints": {
+        "as_said": "Suas palavras exatas",
+        "casual": "Descontraído, sem ponto final",
+        "polished": "Frases completas, pontuação cuidadosa"
+      }
     }
   },
   "home": {
@@ -1432,7 +1473,13 @@
       "copiedOriginal": "Seu texto original foi copiado. Cole para substituir.",
       "couldntRewrite": "Não deu para reescrever agora, então seu texto não mudou."
     },
-    "firstSuggestionTip": "Sua primeira sugestão. Diga “sim”, “agora não” ou “não me mostre isso”. Ele aprende."
+    "firstSuggestionTip": "Sua primeira sugestão. Diga “sim”, “agora não” ou “não me mostre isso”. Ele aprende.",
+    "learn": {
+      "offer": "Sempre escrever “{{to}}” em vez de “{{from}}”?",
+      "remember": "Lembrar",
+      "never": "Não perguntar",
+      "added": "“{{to}}” adicionada às suas palavras."
+    }
   },
   "privacy": {
     "title": "Privacidade",
@@ -1547,7 +1594,8 @@
         "telemetry": "Contagens de uso anônimas",
         "config": "Verificação de configurações (nada enviado)",
         "meeting_email": "E-mail com notas da reunião",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Check-in diário"
       },
       "bytes_many": "{{count}} bytes"
     },

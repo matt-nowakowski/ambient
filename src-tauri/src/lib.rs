@@ -6,11 +6,14 @@ mod audio_feedback;
 pub mod audio_toolkit;
 mod autostart;
 mod catalog;
+mod checkin;
 mod chinese_script;
 pub mod cli;
 mod clipboard;
+mod clipboard_snapshot;
 mod commands;
 mod context;
+mod corrections;
 mod dictation_apps;
 pub mod engine_supervisor;
 mod feedback;
@@ -506,6 +509,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     hud::create(app_handle);
     agent::start(app_handle.clone());
     telemetry::init(app_handle);
+    checkin::spawn(app_handle.clone());
     remote_config::start(app_handle);
 }
 
@@ -839,7 +843,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_mute_while_recording_setting,
             shortcut::change_exclusive_shortcuts_setting,
             shortcut::change_append_trailing_space_setting,
-            shortcut::change_lazy_stream_close_setting,
+            shortcut::change_keep_mic_ready_setting,
             shortcut::change_vad_enabled_setting,
             shortcut::change_long_form_chunking_setting,
             shortcut::change_vad_backend_setting,
@@ -894,6 +898,11 @@ pub fn run(cli_args: CliArgs) {
             meeting::deliver::email_meeting_notes,
             meeting::deliver::change_meetings_email_setting,
             agent::writing::change_writing_mode_setting,
+            corrections::change_learn_corrections_setting,
+            corrections::update_word_replacements,
+            corrections::can_read_text_fields,
+            agent::styles::update_app_styles,
+            agent::styles::recent_style_places,
             telemetry::change_telemetry_setting,
             telemetry::record_ui_error,
             feedback::feedback_preview,

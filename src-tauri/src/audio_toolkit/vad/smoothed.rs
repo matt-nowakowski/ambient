@@ -13,8 +13,14 @@ struct BufferedFrame {
 pub struct SmoothedVad {
     inner_vad: Box<dyn VoiceActivityDetector>,
     prefill_frames: usize,
+    /// Pre-roll for the first speech since `reset`: speech at the very start
+    /// of a recording is often soft ("so…", "hi"), and the detector can be
+    /// slow to call it, so the first onset reaches further back.
+    initial_prefill_frames: usize,
     hangover_frames: usize,
     onset_frames: usize,
+    /// Speech has been confirmed since the last `reset`.
+    heard_speech: bool,
 
     frame_buffer: VecDeque<BufferedFrame>,
     hangover_counter: usize,
@@ -34,13 +40,30 @@ impl SmoothedVad {
         Self {
             inner_vad,
             prefill_frames,
+            initial_prefill_frames: prefill_frames,
             hangover_frames,
             onset_frames,
+            heard_speech: false,
             frame_buffer: VecDeque::new(),
             hangover_counter: 0,
             onset_counter: 0,
             in_speech: false,
             temp_out: Vec::new(),
+        }
+    }
+
+    /// A longer pre-roll for the first speech after each `reset` (never
+    /// shorter than the usual one).
+    pub fn with_initial_prefill(mut self, frames: usize) -> Self {
+        self.initial_prefill_frames = frames.max(self.prefill_frames);
+        self
+    }
+
+    fn prefill_limit(&self) -> usize {
+        if self.heard_speech {
+            self.prefill_frames
+        } else {
+            self.initial_prefill_frames
         }
     }
 
@@ -59,7 +82,8 @@ impl VoiceActivityDetector for SmoothedVad {
             emitted: false,
             voiced: false,
         });
-        while self.frame_buffer.len() > self.prefill_frames + 1 {
+        let limit = self.prefill_limit();
+        while self.frame_buffer.len() > limit + 1 {
             self.frame_buffer.pop_front();
         }
 
@@ -76,6 +100,7 @@ impl VoiceActivityDetector for SmoothedVad {
                 if self.onset_counter >= self.onset_frames {
                     // We have enough consecutive voice frames to trigger speech
                     self.in_speech = true;
+                    self.heard_speech = true;
                     self.hangover_counter = self.hangover_frames;
                     self.onset_counter = 0; // Reset for next time
 
@@ -159,6 +184,7 @@ impl VoiceActivityDetector for SmoothedVad {
         self.hangover_counter = 0;
         self.onset_counter = 0;
         self.in_speech = false;
+        self.heard_speech = false;
         self.temp_out.clear();
     }
 }
@@ -200,6 +226,49 @@ mod tests {
 
     fn smoothed(script: &[bool], onset_frames: usize) -> SmoothedVad {
         SmoothedVad::new(Box::new(ScriptedVad::new(script)), 3, 2, onset_frames)
+    }
+
+    fn emitted(vad: &mut SmoothedVad, values: &[f32]) -> Vec<f32> {
+        let mut out = Vec::new();
+        for &v in values {
+            if let VadFrame::Speech(samples) = vad.push_frame(&frame(v)).unwrap() {
+                out.extend_from_slice(samples);
+            }
+        }
+        out
+    }
+
+    #[test]
+    fn first_speech_keeps_the_longer_initial_prefill() {
+        // 5 silent frames, then speech: the first onset reaches back 4
+        // frames (initial prefill), not 3.
+        let script = [false, false, false, false, false, true, true];
+        let mut vad = smoothed(&script, 1).with_initial_prefill(4);
+        let out = emitted(&mut vad, &[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]);
+        let firsts: Vec<f32> = out.chunks(4).map(|f| f[0]).collect();
+        assert_eq!(firsts, vec![0.2, 0.3, 0.4, 0.5, 0.6, 0.7]);
+    }
+
+    #[test]
+    fn later_speech_uses_the_usual_prefill() {
+        // Speech, silence past the hangover, then speech again: the second
+        // onset gets the usual 3-frame prefill.
+        let script = [true, false, false, false, false, false, false, false, true];
+        let mut vad = smoothed(&script, 1).with_initial_prefill(6);
+        let values = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0];
+        let out = emitted(&mut vad, &values);
+        let firsts: Vec<f32> = out.chunks(4).map(|f| f[0]).collect();
+        // 1 + 2 hangover frames, then 6..=8 prefill and the onset frame 9.
+        assert_eq!(firsts, vec![1.0, 2.0, 3.0, 6.0, 7.0, 8.0, 9.0]);
+    }
+
+    #[test]
+    fn reset_restores_the_initial_prefill() {
+        let mut vad = smoothed(&[true], 1).with_initial_prefill(5);
+        let _ = emitted(&mut vad, &[1.0]);
+        assert_eq!(vad.prefill_limit(), 3);
+        vad.reset();
+        assert_eq!(vad.prefill_limit(), 5);
     }
 
     #[test]
