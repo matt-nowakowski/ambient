@@ -152,6 +152,12 @@ pub fn ready_version(app: &AppHandle) -> Option<String> {
     })
 }
 
+/// True when an update is downloaded and would go in on the quit path. Costs
+/// only a lock, for the exit watchdog's timeout.
+pub fn install_pending(app: &AppHandle) -> bool {
+    manager(app).is_some_and(|m| m.lock().downloaded.is_some())
+}
+
 /// Starts the background schedule. Call once at startup, next to the tray.
 pub fn spawn(app: AppHandle) {
     tauri::async_runtime::spawn(async move {
@@ -183,10 +189,6 @@ pub fn on_main_window_focus(app: &AppHandle) {
 }
 
 async fn run_check(app: AppHandle, manual: bool) {
-    if !enabled(&app) {
-        return;
-    }
-
     let Some(state) = manager(&app) else {
         return;
     };
@@ -202,8 +204,17 @@ async fn run_check(app: AppHandle, manual: bool) {
         if !manual && !check_due_on_focus(inner.last_check, Instant::now()) {
             return;
         }
+        // Record the attempt even when checks are off, so a disabled install
+        // doesn't re-read the settings store on every window focus.
         inner.checking = true;
         inner.last_check = Some(Instant::now());
+    }
+
+    if !enabled(&app) {
+        if let Some(state) = manager(&app) {
+            state.lock().checking = false;
+        }
+        return;
     }
 
     set_status(&app, UpdatePhase::Checking, None, false, manual, None);

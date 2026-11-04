@@ -124,30 +124,43 @@ fn build_console_filter() -> env_filter::Filter {
 
 /// How long a quit may take before the process is ended outright.
 const EXIT_WATCHDOG: std::time::Duration = std::time::Duration::from_secs(4);
+/// The same, while an update is installing on the way out: the bundle swap
+/// must not be killed halfway through, which would leave no app behind.
+const EXIT_WATCHDOG_INSTALLING: std::time::Duration = std::time::Duration::from_secs(30);
 
 /// Quitting must end the process. If teardown hangs (a plugin's exit hook, an
 /// audio device or thread that won't let go), the old process lingers with no
 /// windows, and macOS keeps its Dock tile with a running dot that does
 /// nothing: the ghost left behind after Quit and reopen. Arm once per quit; a
 /// normal exit finishes long before it fires.
-fn arm_exit_watchdog() {
+fn arm_exit_watchdog(timeout: std::time::Duration) {
     static ARMED: AtomicBool = AtomicBool::new(false);
     if ARMED.swap(true, Ordering::SeqCst) {
         return;
     }
     let spawned = std::thread::Builder::new()
         .name("exit-watchdog".into())
-        .spawn(|| {
-            std::thread::sleep(EXIT_WATCHDOG);
+        .spawn(move || {
+            std::thread::sleep(timeout);
             log::warn!(
                 "Quit did not finish within {:?}; ending the process",
-                EXIT_WATCHDOG
+                timeout
             );
             log::logger().flush();
             std::process::exit(0);
         });
     if let Err(e) = spawned {
         log::error!("Failed to start the exit watchdog: {}", e);
+    }
+}
+
+/// How long to give a quit: the usual few seconds, or longer when an update
+/// is going in on the way out.
+fn exit_watchdog_timeout(app: &AppHandle) -> std::time::Duration {
+    if updates::install_pending(app) {
+        EXIT_WATCHDOG_INSTALLING
+    } else {
+        EXIT_WATCHDOG
     }
 }
 
@@ -466,7 +479,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
                 cancel_current_operation(app);
             }
             "quit" => {
-                arm_exit_watchdog();
+                arm_exit_watchdog(exit_watchdog_timeout(app));
                 app.exit(0);
             }
             id if id.starts_with("model_select:") => {
@@ -1411,13 +1424,13 @@ pub fn run(cli_args: CliArgs) {
         // However the app is quitting (tray, Cmd+Q, the menu bar, a
         // signal), make sure the process actually ends.
         tauri::RunEvent::Exit => {
-            // A version the user ignored installs here, so the next launch is
-            // already on it. Runs before the watchdog is armed: a half-finished
-            // bundle swap is worse than a slow quit.
-            updates::install_on_quit(app);
-            arm_exit_watchdog();
+            arm_exit_watchdog(exit_watchdog_timeout(app));
             telemetry::flush_on_quit(app);
             local_llm::stop();
+            // A version the user ignored installs here, so the next launch is
+            // already on it. On Windows this ends the process itself, after the
+            // flush above; the watchdog's longer timeout covers the swap.
+            updates::install_on_quit(app);
         }
         // No transcription teardown on exit: transcribe.cpp runs only in the
         // worker process, which exits by itself as soon as this process's end
