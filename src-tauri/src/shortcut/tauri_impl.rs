@@ -189,4 +189,14 @@ mod tests {
             assert_eq!(validate_shortcut(raw), Ok(()), "{raw} should be accepted");
         }
     }
+
+    #[test]
+    fn rejects_mouse_buttons_the_plugin_cannot_register() {
+        // Mouse buttons only exist in the ambient-keys backend; the recorder
+        // and the picker both stay away from these, but a store carried over
+        // from ambient-keys must reset rather than fail silently.
+        for raw in ["mouse4", "mouse5", "mousemiddle"] {
+            assert!(validate_shortcut(raw).is_err(), "{raw} should be rejected");
+        }
+    }
 }

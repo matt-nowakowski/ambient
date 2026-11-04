@@ -4,6 +4,6 @@ mod hotkey;
 mod key;
 mod modifiers;
 
-pub use hotkey::{Hotkey, HotkeyEvent, HotkeyId, HotkeyState, KeyEvent};
+pub use hotkey::{Hotkey, HotkeyEvent, HotkeyId, HotkeyState, KeyEvent, DOUBLE_TAP_PREFIX};
 pub use key::Key;
 pub use modifiers::Modifiers;

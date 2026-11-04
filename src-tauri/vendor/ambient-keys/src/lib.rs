@@ -143,7 +143,9 @@ mod types;
 pub use error::{Error, Result};
 pub use listener::{BlockingHotkeys, KeyboardListener};
 pub use manager::HotkeyManager;
-pub use types::{Hotkey, HotkeyEvent, HotkeyId, HotkeyState, Key, KeyEvent, Modifiers};
+pub use types::{
+    Hotkey, HotkeyEvent, HotkeyId, HotkeyState, Key, KeyEvent, Modifiers, DOUBLE_TAP_PREFIX,
+};
 
 #[cfg(target_os = "macos")]
 pub use platform::macos::{check_accessibility, open_accessibility_settings};
