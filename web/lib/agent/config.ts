@@ -252,7 +252,8 @@ export function tune(current: Flat, stats: TuneStats, locked: ReadonlySet<string
       }
     } else if (k.offered >= RULES.highMinOffers && rate >= RULES.highRate) {
       if (!propose(confKey, conf - RULES.confidenceDown, `Accepted ${pct(rate)} of ${k.offered} offers (${pct(RULES.highRate)}+): slightly lower minimum confidence`, s)) {
-        propose(coolKey, cool / RULES.cooldownShrink, `Accepted ${pct(rate)} of ${k.offered} offers (${pct(RULES.highRate)}+), confidence at its floor: shorter cooldown`, s);
+        // At least a minute shorter, so a short cooldown doesn't round back to itself.
+        propose(coolKey, Math.min(cool - 1, cool / RULES.cooldownShrink), `Accepted ${pct(rate)} of ${k.offered} offers (${pct(RULES.highRate)}+), confidence at its floor: shorter cooldown`, s);
       }
     }
   }

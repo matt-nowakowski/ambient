@@ -3,15 +3,16 @@
   "kinds": [
     "summarise_thread", "draft_reply", "add_to_calendar", "summarise_page", "explain_error",
     "tighten_draft", "price_check", "answer_search", "fix_formula", "meeting_prep",
-    "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge"
+    "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge",
+    "add_reminder"
   ],
   "bounds": {
-    "kind.min_confidence": { "min": 0.5, "max": 0.95, "default": 0.6 },
-    "kind.cooldown_min": { "min": 1, "max": 1440, "default": 3 },
+    "kind.min_confidence": { "min": 0.5, "max": 0.95, "default": 0.55 },
+    "kind.cooldown_min": { "min": 1, "max": 1440, "default": 2 },
     "hourly_budget": { "min": 1, "max": 20, "default": 10 },
     "judge.timeout_ms": { "min": 3000, "max": 15000, "default": 8000 },
     "judge.cloud_timeout_ms": { "min": 3000, "max": 12000, "default": 7000 },
-    "judge.min_confidence": { "min": 0.5, "max": 0.95, "default": 0.6 },
+    "judge.min_confidence": { "min": 0.5, "max": 0.95, "default": 0.55 },
     "router.did_you_mean_bias": { "min": 0, "max": 1, "default": 0.5 },
     "answer.first_byte_timeout_ms": { "min": 8000, "max": 40000, "default": 25000 },
     "answer.idle_timeout_ms": { "min": 5000, "max": 30000, "default": 20000 },
