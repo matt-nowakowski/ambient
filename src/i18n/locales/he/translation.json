@@ -731,7 +731,17 @@
       "noResultsTitle": "אין התאמות",
       "noResultsDescription": "שום דבר בהיסטוריה שלך לא תואם ל„{{query}}”.",
       "loadingMore": "טוען עוד…",
-      "searchingOlder": "מחפש ברשומות ישנות יותר…"
+      "searchingOlder": "מחפש ברשומות ישנות יותר…",
+      "details": "פרטים",
+      "detail": {
+        "model": "מודל",
+        "decided": "החלטה",
+        "as_said": "כפי שנאמר",
+        "polished": "מלוטש",
+        "written": "נכתב עבורך",
+        "recorded": "הקלטה",
+        "total": "סהכ"
+      }
     },
     "debug": {
       "title": "ניפוי שגיאות",

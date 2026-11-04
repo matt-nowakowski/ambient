@@ -728,7 +728,17 @@
       "noResultsTitle": "沒有符合的項目",
       "noResultsDescription": "歷史紀錄中沒有符合「{{query}}」的內容。",
       "loadingMore": "正在載入更多…",
-      "searchingOlder": "正在搜尋較早的紀錄…"
+      "searchingOlder": "正在搜尋較早的紀錄…",
+      "details": "詳細資訊",
+      "detail": {
+        "model": "模型",
+        "decided": "判定",
+        "as_said": "原話",
+        "polished": "潤飾",
+        "written": "代寫",
+        "recorded": "錄音",
+        "total": "總計"
+      }
     },
     "debug": {
       "title": "偵錯",

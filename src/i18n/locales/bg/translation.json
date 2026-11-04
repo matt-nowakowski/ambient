@@ -728,7 +728,17 @@
       "noResultsTitle": "Няма съвпадения",
       "noResultsDescription": "Нищо в историята ви не съвпада с „{{query}}“.",
       "loadingMore": "Зареждане на още…",
-      "searchingOlder": "Търсене в по-стари записи…"
+      "searchingOlder": "Търсене в по-стари записи…",
+      "details": "Подробности",
+      "detail": {
+        "model": "Модел",
+        "decided": "Решение",
+        "as_said": "Както е казано",
+        "polished": "Изгладено",
+        "written": "Написано за вас",
+        "recorded": "Запис",
+        "total": "Общо"
+      }
     },
     "debug": {
       "title": "Отстраняване",

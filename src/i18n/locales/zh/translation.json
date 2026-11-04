@@ -728,7 +728,17 @@
       "noResultsTitle": "没有匹配项",
       "noResultsDescription": "历史记录中没有与“{{query}}”匹配的内容。",
       "loadingMore": "正在加载更多…",
-      "searchingOlder": "正在搜索较早的记录…"
+      "searchingOlder": "正在搜索较早的记录…",
+      "details": "详细信息",
+      "detail": {
+        "model": "模型",
+        "decided": "判定",
+        "as_said": "原话",
+        "polished": "润色",
+        "written": "代写",
+        "recorded": "录音",
+        "total": "总计"
+      }
     },
     "debug": {
       "title": "调试",

@@ -728,7 +728,17 @@
       "noResultsTitle": "Eşleşme yok",
       "noResultsDescription": "Geçmişinizde “{{query}}” ile eşleşen bir şey yok.",
       "loadingMore": "Daha fazlası yükleniyor…",
-      "searchingOlder": "Eski kayıtlar aranıyor…"
+      "searchingOlder": "Eski kayıtlar aranıyor…",
+      "details": "Ayrıntılar",
+      "detail": {
+        "model": "Model",
+        "decided": "Karar",
+        "as_said": "Söylendiği gibi",
+        "polished": "Düzeltildi",
+        "written": "Senin için yazıldı",
+        "recorded": "Kayıt",
+        "total": "Toplam"
+      }
     },
     "debug": {
       "title": "Hata Ayıklama",

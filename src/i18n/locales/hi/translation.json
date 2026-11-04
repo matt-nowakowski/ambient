@@ -728,7 +728,17 @@
       "noResultsTitle": "कोई मिलान नहीं",
       "noResultsDescription": "आपके इतिहास में “{{query}}” से कुछ भी मेल नहीं खाता।",
       "loadingMore": "और लोड हो रहा है…",
-      "searchingOlder": "पुरानी प्रविष्टियाँ खोजी जा रही हैं…"
+      "searchingOlder": "पुरानी प्रविष्टियाँ खोजी जा रही हैं…",
+      "details": "विवरण",
+      "detail": {
+        "model": "मॉडल",
+        "decided": "निर्णय",
+        "as_said": "जैसा कहा",
+        "polished": "परिष्कृत",
+        "written": "आपके लिए लिखा",
+        "recorded": "रिकॉर्डिंग",
+        "total": "कुल"
+      }
     },
     "debug": {
       "title": "डिबग",

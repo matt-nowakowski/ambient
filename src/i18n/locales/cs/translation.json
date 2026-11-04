@@ -734,7 +734,17 @@
       "noResultsTitle": "Žádné shody",
       "noResultsDescription": "V historii nic neodpovídá „{{query}}“.",
       "loadingMore": "Načítání dalších…",
-      "searchingOlder": "Prohledávání starších záznamů…"
+      "searchingOlder": "Prohledávání starších záznamů…",
+      "details": "Podrobnosti",
+      "detail": {
+        "model": "Model",
+        "decided": "Rozhodnutí",
+        "as_said": "Jak řečeno",
+        "polished": "Vyhlazeno",
+        "written": "Napsáno za vás",
+        "recorded": "Nahrávka",
+        "total": "Celkem"
+      }
     },
     "debug": {
       "title": "Ladění",

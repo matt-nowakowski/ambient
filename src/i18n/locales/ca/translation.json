@@ -731,7 +731,17 @@
       "noResultsTitle": "Cap coincidència",
       "noResultsDescription": "Res de l'historial coincideix amb «{{query}}».",
       "loadingMore": "S'estan carregant més…",
-      "searchingOlder": "S'estan cercant entrades anteriors…"
+      "searchingOlder": "S'estan cercant entrades anteriors…",
+      "details": "Detalls",
+      "detail": {
+        "model": "Model",
+        "decided": "Decisió",
+        "as_said": "Tal com es va dir",
+        "polished": "Polit",
+        "written": "Escrit per a tu",
+        "recorded": "Enregistrament",
+        "total": "Total"
+      }
     },
     "debug": {
       "title": "Depuració",

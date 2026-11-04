@@ -53,6 +53,31 @@ const ActionButton: React.FC<{
   </button>
 );
 
+/** The Details rows for one entry: only what was actually recorded. */
+function detailLines(
+  entry: HistoryEntry,
+  t: (key: string) => string,
+): [string, string][] {
+  const d = entry.details;
+  const ms = (v?: number | null) =>
+    v == null ? null : v >= 1000 ? (v / 1000).toFixed(1) + " s" : v + " ms";
+  const rows: [string, string][] = [];
+  if (d.speech_model) {
+    rows.push([t("settings.history.detail.model"), d.speech_model]);
+  }
+  if (d.write_decision) {
+    rows.push([
+      t("settings.history.detail.decided"),
+      t("settings.history.detail." + d.write_decision),
+    ]);
+  }
+  const recorded = ms(d.recording_ms);
+  if (recorded) rows.push([t("settings.history.detail.recorded"), recorded]);
+  const total = ms(d.total_ms);
+  if (total) rows.push([t("settings.history.detail.total"), total]);
+  return rows;
+}
+
 interface HistoryEntryRowProps {
   entry: HistoryEntry;
   job?: ActiveJobStatus;
@@ -148,6 +173,8 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
 
   const playerOpen = audioSrc !== null;
   const pinActions = retrying || playerOpen;
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const detailRows = detailLines(entry, t);
 
   return (
     <div className="group relative rounded-control px-item-x py-item-y transition-colors duration-150 hover:bg-glass-hover focus-within:bg-glass-hover">
@@ -292,6 +319,31 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
           t("settings.history.transcriptionFailed")
         )}
       </p>
+      {detailRows.length > 0 && (
+        <button
+          type="button"
+          onClick={() => setDetailsOpen(!detailsOpen)}
+          aria-expanded={detailsOpen}
+          className={
+            "-mx-1.5 mt-1 cursor-pointer rounded-full px-1.5 py-0.5 text-small font-medium text-ink-3 transition-colors hover:text-text " +
+            focusRing
+          }
+        >
+          {t("settings.history.details")}
+        </button>
+      )}
+
+      {detailsOpen && detailRows.length > 0 && (
+        <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 rounded-card border-[0.5px] border-glass-edge bg-glass-strong px-3 py-2 text-meta">
+          {detailRows.map(([label, value]) => (
+            <React.Fragment key={label}>
+              <dt className="text-ink-3">{label}</dt>
+              <dd className="truncate text-text">{value}</dd>
+            </React.Fragment>
+          ))}
+        </dl>
+      )}
+
       {hasTranscription && !retrying && (expanded || overflows) && (
         <button
           type="button"

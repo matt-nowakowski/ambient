@@ -728,7 +728,17 @@
       "noResultsTitle": "No matches",
       "noResultsDescription": "Nothing in your history matches “{{query}}”.",
       "loadingMore": "Loading more…",
-      "searchingOlder": "Searching older entries…"
+      "searchingOlder": "Searching older entries…",
+      "details": "Details",
+      "detail": {
+        "model": "Model",
+        "decided": "Decided",
+        "as_said": "As said",
+        "polished": "Polished",
+        "written": "Written for you",
+        "recorded": "Recorded",
+        "total": "Total"
+      }
     },
     "debug": {
       "title": "Debug",

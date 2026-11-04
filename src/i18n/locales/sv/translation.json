@@ -728,7 +728,17 @@
       "noResultsTitle": "Inga träffar",
       "noResultsDescription": "Inget i din historik matchar ”{{query}}”.",
       "loadingMore": "Laddar fler…",
-      "searchingOlder": "Söker bland äldre poster…"
+      "searchingOlder": "Söker bland äldre poster…",
+      "details": "Detaljer",
+      "detail": {
+        "model": "Modell",
+        "decided": "Beslut",
+        "as_said": "Som sagt",
+        "polished": "Polerad",
+        "written": "Skrivet åt dig",
+        "recorded": "Inspelning",
+        "total": "Totalt"
+      }
     },
     "debug": {
       "title": "Felsökning",

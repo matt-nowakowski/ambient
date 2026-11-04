@@ -1891,6 +1891,49 @@ export type FeedbackSource =
 "thumbs"
 export type FrontmostApp = { pid: number; bundle_id: string; name: string }
 export type GpuDeviceOption = { id: string; name: string; total_vram_mb: number }
+/**
+ * How one dictation was written and what ran, shown in History's Details
+ * row. Ids, enums and durations only: never the prompt text, the screen
+ * text or any AI output beyond the transcript already stored.
+ */
+export type EntryDetails = { 
+/**
+ * The speech model that transcribed it (the loaded model id).
+ */
+speech_model: string | null; 
+/**
+ * `as_said`, `polished` or `written`; `None` when nothing was typed.
+ */
+write_decision: string | null; 
+/**
+ * The AI engine that polished or drafted: \`ambient\` (cloud),
+ * `apple_intelligence` or `local_model` (the downloaded model).
+ */
+ai_engine: string | null; 
+/**
+ * The model id behind that engine, when it has one.
+ */
+ai_model: string | null; 
+/**
+ * The polish prompt's id (`id`), never its text.
+ */
+prompt_id: string | null; 
+/**
+ * How long the recording was.
+ */
+recording_ms: number | null; 
+/**
+ * Time from stop to the transcript (the model run).
+ */
+transcription_ms: number | null; 
+/**
+ * Time spent in AI calls (polish, drafting) after the transcript.
+ */
+ai_ms: number | null; 
+/**
+ * Stop to the text being pasted. Filled in just after the paste.
+ */
+total_ms: number | null }
 export type HistoryEntry = { id: number; file_name: string; timestamp: number; saved: boolean; title: string; transcription_text: string; post_processed_text: string | null; post_process_prompt: string | null; post_process_requested: boolean; 
 /**
  * The name of the file this entry was transcribed from; `None` for a
@@ -1904,7 +1947,11 @@ language: string | null;
 /**
  * How that language was chosen; `None` before it was recorded.
  */
-language_source: LanguageSource | null }
+language_source: LanguageSource | null; 
+/**
+ * What ran and how long it took; empty for files and old entries.
+ */
+details: EntryDetails }
 export type HistoryUpdatePayload = { action: "added"; entry: HistoryEntry } | { action: "updated"; entry: HistoryEntry } | { action: "deleted"; id: number } | { action: "toggled"; id: number }
 export type HudActionEvent = { id: string; action: string }
 /**

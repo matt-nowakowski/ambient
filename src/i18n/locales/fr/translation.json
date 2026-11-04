@@ -731,7 +731,17 @@
       "noResultsTitle": "Aucun résultat",
       "noResultsDescription": "Rien dans votre historique ne correspond à « {{query}} ».",
       "loadingMore": "Chargement de la suite…",
-      "searchingOlder": "Recherche dans les anciennes entrées…"
+      "searchingOlder": "Recherche dans les anciennes entrées…",
+      "details": "Détails",
+      "detail": {
+        "model": "Modèle",
+        "decided": "Décision",
+        "as_said": "Tel quel",
+        "polished": "Poli",
+        "written": "Écrit pour vous",
+        "recorded": "Enregistrement",
+        "total": "Total"
+      }
     },
     "debug": {
       "title": "Débogage",

@@ -731,7 +731,17 @@
       "noResultsTitle": "Nessun risultato",
       "noResultsDescription": "Nessun elemento della cronologia corrisponde a «{{query}}».",
       "loadingMore": "Caricamento di altri…",
-      "searchingOlder": "Ricerca tra le voci meno recenti…"
+      "searchingOlder": "Ricerca tra le voci meno recenti…",
+      "details": "Dettagli",
+      "detail": {
+        "model": "Modello",
+        "decided": "Decisione",
+        "as_said": "Come detto",
+        "polished": "Levigato",
+        "written": "Scritto per te",
+        "recorded": "Registrazione",
+        "total": "Totale"
+      }
     },
     "debug": {
       "title": "Debug",
