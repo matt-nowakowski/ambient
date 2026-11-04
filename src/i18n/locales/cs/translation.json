@@ -422,6 +422,10 @@
           "toggle": "Klepněte na zkratku pro zahájení nahrávání, klepněte znovu pro zastavení"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Na své zkratky reaguje jen {{appName}}",
+        "description": "Ostatní aplikace, včetně jiných diktovacích, neuvidí klávesy vašich zkratek {{appName}}. Vypněte, pokud stejné klávesy potřebuje jiná aplikace."
+      },
       "autoStop": {
         "label": "Zastavit po pauze",
         "description": "Když nahrávání spustíte klepnutím, diktování se také samo zastaví, jakmile po mluvení uděláte pauzu. Krátké pauzy uprostřed věty se nepočítají a nikdy se nezastaví dřív, než něco řeknete.",
@@ -1026,6 +1030,15 @@
     "recorderBlockedNoCulprit": "macOS dočasně blokuje změny zkratek",
     "learnMore": "Jak to vyřešit",
     "recorderBlocked": "Zkratky teď nelze nahrát – Secure Input v macOS blokuje události kláves. Nejprve vyřešte upozornění na Secure Input.",
+    "dismiss": "Zavřít"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} tu také umí diktovat. Pokud se zkratka shoduje se zkratkou {{appName}}, mohou zareagovat obě.",
+    "macosFn": "macOS také používá klávesu Fn (🌐). Pokud se otevře i Diktování nebo emoji, nastavte v Nastavení klávesnice „Stisknutím klávesy 🌐“ na Nedělat nic.",
+    "windowsVoiceTyping": "Win + H také spouští hlasové psaní Windows. Zvolte jinou zkratku, aby reagovala jen {{appName}}.",
+    "makeExclusive": "Ať reaguje jen {{appName}}",
+    "changeShortcut": "Změnit zkratku",
+    "openKeyboardSettings": "Otevřít nastavení klávesnice",
     "dismiss": "Zavřít"
   },
   "account": {

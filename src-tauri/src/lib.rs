@@ -11,6 +11,7 @@ pub mod cli;
 mod clipboard;
 mod commands;
 mod context;
+mod dictation_apps;
 pub mod engine_supervisor;
 mod feedback;
 mod helpers;
@@ -832,6 +833,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::suspend_all_bindings,
             shortcut::resume_all_bindings,
             shortcut::change_mute_while_recording_setting,
+            shortcut::change_exclusive_shortcuts_setting,
             shortcut::change_append_trailing_space_setting,
             shortcut::change_lazy_stream_close_setting,
             shortcut::change_vad_enabled_setting,
@@ -894,6 +896,7 @@ pub fn run(cli_args: CliArgs) {
             feedback::send_feedback,
             feedback::feedback_draft,
             secure_input::get_secure_input_status,
+            dictation_apps::get_dictation_conflicts,
             secure_input::run_keyboard_diagnostic,
             trigger_update_check,
             show_main_window_command,
@@ -1236,6 +1239,9 @@ pub fn run(cli_args: CliArgs) {
             // silently blocks keyed shortcuts, warns the user, and activates
             // the Carbon fallback. See secure_input.rs and issue #1578.
             secure_input::init(&app_handle);
+
+            // Other dictation apps that may share Ambient's shortcut.
+            dictation_apps::init(&app_handle);
 
             // Populate the overlay-enabled cache from initial settings so the
             // audio path (overlay::emit_levels, called ~24 Hz during recording)

@@ -252,6 +252,7 @@ pub fn change_binding(
     // Save the settings and synchronize any active Secure Input shadows.
     settings::write_settings(&app, settings);
     crate::secure_input::reconcile_fallback(&app);
+    crate::dictation_apps::refresh(&app);
 
     // Return the updated binding
     Ok(BindingResponse {
@@ -411,6 +412,7 @@ pub fn change_keyboard_implementation_setting(
         }),
     );
 
+    crate::dictation_apps::refresh(&app);
     info!("Keyboard implementation switched to {:?}", new_impl);
 
     Ok(ImplementationChangeResult {
@@ -1307,6 +1309,22 @@ pub fn change_mute_while_recording_setting(app: AppHandle, enabled: bool) -> Res
     let mut settings = settings::get_settings(&app);
     settings.mute_while_recording = enabled;
     settings::write_settings(&app, settings);
+    Ok(())
+}
+
+/// Keep Ambient's shortcuts to itself (swallow the press) or share them with
+/// other apps. Takes effect at once by recreating the keyboard listener.
+#[tauri::command]
+#[specta::specta]
+pub fn change_exclusive_shortcuts_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
+    let mut settings = settings::get_settings(&app);
+    settings.exclusive_shortcuts = enabled;
+    let implementation = settings.keyboard_implementation;
+    settings::write_settings(&app, settings);
+    if implementation == KeyboardImplementation::AmbientKeys {
+        ambient_keys::rebuild_listener(&app, enabled)?;
+    }
+    crate::dictation_apps::refresh(&app);
     Ok(())
 }
 

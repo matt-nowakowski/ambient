@@ -420,6 +420,10 @@
           "toggle": "Toque no atalho para começar a gravar, toque novamente para parar"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Só o {{appName}} responde aos seus atalhos",
+        "description": "Outros apps, incluindo outros apps de ditado, não verão as teclas dos seus atalhos do {{appName}}. Desative se outro app precisar das mesmas teclas."
+      },
       "autoStop": {
         "label": "Parar após uma pausa",
         "description": "Quando você começa com um toque, o ditado também para sozinho assim que você faz uma pausa depois de falar. Pausas curtas no meio da frase não contam, e ele nunca para antes de você dizer algo.",
@@ -1022,6 +1026,15 @@
     "dismiss": "Dispensar",
     "blockedWithCulprit_many": "{{name}} pode estar bloqueando {{count}} atalhos",
     "blockedNoCulprit_many": "O macOS está bloqueando temporariamente {{count}} atalhos"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} também pode ditar aqui. Se um atalho for igual ao do {{appName}}, os dois podem responder.",
+    "macosFn": "O macOS também usa a tecla Fn (🌐). Se o Ditado ou os emojis também abrirem, defina “Pressionar a tecla 🌐 para” como Não Fazer Nada nos ajustes de Teclado.",
+    "windowsVoiceTyping": "Win + H também inicia a digitação por voz do Windows. Escolha outro atalho para que só o {{appName}} responda.",
+    "makeExclusive": "Deixar só o {{appName}} responder",
+    "changeShortcut": "Mudar atalho",
+    "openKeyboardSettings": "Abrir ajustes de Teclado",
+    "dismiss": "Fechar"
   },
   "account": {
     "currentPlan": "Plano atual",

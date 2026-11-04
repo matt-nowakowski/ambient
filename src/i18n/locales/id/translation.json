@@ -418,6 +418,10 @@
           "toggle": "Ketuk pintasan untuk mulai merekam, lalu ketuk lagi untuk berhenti"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Hanya {{appName}} yang merespons pintasannya",
+        "description": "Aplikasi lain, termasuk aplikasi dikte lain, tidak akan melihat tombol pintasan {{appName}} Anda. Matikan jika aplikasi lain butuh tombol yang sama."
+      },
       "autoStop": {
         "label": "Berhenti setelah jeda",
         "description": "Saat Anda mulai dengan ketukan, dikte juga berhenti sendiri begitu Anda berhenti bicara sejenak. Jeda singkat di tengah kalimat tidak dihitung, dan dikte tidak pernah berhenti sebelum Anda mengatakan sesuatu.",
@@ -1016,6 +1020,15 @@
     "recorderBlockedNoCulprit": "macOS untuk sementara memblokir perubahan pintasan",
     "learnMore": "Cara memperbaiki",
     "recorderBlocked": "Pintasan tidak dapat direkam saat ini — macOS Secure Input memblokir peristiwa tombol. Selesaikan peringatan Secure Input terlebih dahulu.",
+    "dismiss": "Tutup"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} juga bisa mendikte di sini. Jika pintasannya sama dengan {{appName}}, keduanya bisa merespons.",
+    "macosFn": "macOS juga memakai tombol Fn (🌐). Jika Dikte atau emoji ikut terbuka, atur “Tekan tombol 🌐 untuk” ke Jangan Lakukan Apa-apa di pengaturan Papan Ketik.",
+    "windowsVoiceTyping": "Win + H juga memulai pengetikan suara Windows. Pilih pintasan lain agar hanya {{appName}} yang merespons.",
+    "makeExclusive": "Biarkan hanya {{appName}} merespons",
+    "changeShortcut": "Ubah pintasan",
+    "openKeyboardSettings": "Buka pengaturan Papan Ketik",
     "dismiss": "Tutup"
   },
   "account": {

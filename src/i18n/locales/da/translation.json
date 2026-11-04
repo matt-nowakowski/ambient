@@ -418,6 +418,10 @@
           "toggle": "Tryk på genvejen for at starte optagelsen, tryk igen for at stoppe"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Kun {{appName}} reagerer på sine genveje",
+        "description": "Andre apps, også andre dikteringsapps, ser ikke tasterne i dine {{appName}}-genveje. Slå fra, hvis en anden app skal bruge de samme taster."
+      },
       "autoStop": {
         "label": "Stop efter en pause",
         "description": "Når du starter med et tryk, stopper diktering også af sig selv, når du holder en pause efter at have talt. Korte pauser midt i en sætning tæller ikke, og den stopper aldrig, før du har sagt noget.",
@@ -1017,6 +1021,15 @@
     "learnMore": "Sådan løser du det",
     "recorderBlocked": "Genveje kan ikke optages lige nu — macOS Secure Input blokerer tastehændelser. Løs advarslen om Secure Input først.",
     "dismiss": "Afvis"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} kan også diktere her. Hvis en genvej er den samme som {{appName}}s, kan begge reagere.",
+    "macosFn": "macOS bruger også Fn-tasten (🌐). Hvis Diktering eller emoji også åbner, så sæt “Tryk på 🌐-tasten for at” til Gør intet i Tastatur-indstillinger.",
+    "windowsVoiceTyping": "Win + H starter også Windows stemmeskrivning. Vælg en anden genvej, så kun {{appName}} reagerer.",
+    "makeExclusive": "Lad kun {{appName}} reagere",
+    "changeShortcut": "Skift genvej",
+    "openKeyboardSettings": "Åbn Tastatur-indstillinger",
+    "dismiss": "Luk"
   },
   "account": {
     "currentPlan": "Nuværende abonnement",

@@ -420,6 +420,10 @@
           "toggle": "Appuyez sur le raccourci pour démarrer l’enregistrement, appuyez à nouveau pour arrêter"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "Seul {{appName}} répond à ses raccourcis",
+        "description": "Les autres apps, y compris les autres apps de dictée, ne verront pas les touches de vos raccourcis {{appName}}. Désactivez si une autre app a besoin des mêmes touches."
+      },
       "autoStop": {
         "label": "Arrêter après une pause",
         "description": "Quand vous démarrez d’un appui, la dictée s’arrête aussi d’elle-même dès que vous marquez une pause après avoir parlé. Les courtes pauses en milieu de phrase ne comptent pas, et elle ne s’arrête jamais avant que vous ayez dit quelque chose.",
@@ -1022,6 +1026,15 @@
     "dismiss": "Ignorer",
     "blockedWithCulprit_many": "{{name}} bloque peut-être {{count}} raccourcis",
     "blockedNoCulprit_many": "macOS bloque temporairement {{count}} raccourcis"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} peut aussi dicter ici. Si un raccourci est le même que celui de {{appName}}, les deux peuvent répondre.",
+    "macosFn": "macOS utilise aussi la touche Fn (🌐). Si la Dictée ou les emoji s’ouvrent aussi, réglez « Appuyer sur la touche 🌐 pour » sur Ne rien faire dans les réglages Clavier.",
+    "windowsVoiceTyping": "Win + H lance aussi la saisie vocale de Windows. Choisissez un autre raccourci pour que seul {{appName}} réponde.",
+    "makeExclusive": "Laisser {{appName}} seul répondre",
+    "changeShortcut": "Changer le raccourci",
+    "openKeyboardSettings": "Ouvrir les réglages Clavier",
+    "dismiss": "Fermer"
   },
   "account": {
     "currentPlan": "Offre actuelle",

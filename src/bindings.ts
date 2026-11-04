@@ -351,6 +351,18 @@ async changeMuteWhileRecordingSetting(enabled: boolean) : Promise<Result<null, s
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Keep Ambient's shortcuts to itself (swallow the press) or share them with
+ * other apps. Takes effect at once by recreating the keyboard listener.
+ */
+async changeExclusiveShortcutsSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_exclusive_shortcuts_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async changeAppendTrailingSpaceSetting(enabled: boolean) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_append_trailing_space_setting", { enabled }) };
@@ -868,6 +880,12 @@ async feedbackDraft(cardId: string | null) : Promise<FeedbackDraft> {
 },
 async getSecureInputStatus() : Promise<SecureInputStatus> {
     return await TAURI_INVOKE("get_secure_input_status");
+},
+/**
+ * Other dictation apps that may answer the same shortcut, as of the last check.
+ */
+async getDictationConflicts() : Promise<DictationConflicts> {
+    return await TAURI_INVOKE("get_dictation_conflicts");
 },
 async runKeyboardDiagnostic(durationSecs: number | null) : Promise<Result<KeyboardDiagnosticReport, string>> {
     try {
@@ -1553,7 +1571,13 @@ spoken_languages?: string[]; overlay_position?: OverlayPosition; debug_mode?: bo
  * API keys for bring-your-own-key providers; serde ignores those fields
  * and the settings migration rewrites the store without them.
  */
-post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; 
+post_process_provider_id?: string; post_process_prompts?: LLMPrompt[]; post_process_selected_prompt_id?: string | null; mute_while_recording?: boolean; append_trailing_space?: boolean; app_language?: string; theme?: Theme; experimental_enabled?: boolean; lazy_stream_close?: boolean; keyboard_implementation?: KeyboardImplementation;
+/**
+ * Swallow Ambient's shortcut presses so another dictation app bound to
+ * the same keys doesn't also start. ambient-keys only; Tauri's backend
+ * can't block.
+ */
+exclusive_shortcuts?: boolean; show_tray_icon?: boolean; paste_delay_ms?: number; paste_delay_after_ms?: number; 
 /**
  * Debug-gated ("beta") receipt-sequenced paste: restore the clipboard only
  * after the target app actually reads the transcript, instead of after a
@@ -2105,6 +2129,26 @@ export type RetiredModel = { id: string; name: string; size_mb: number; replacem
  * The sealed part of a screen snapshot.
  */
 export type ScreenEntry = { id: number; ts: number; bundle_id: string; app: string; title: string; url: string | null; text: string }
+/**
+ * What the UI needs to warn about a shortcut shared with another app.
+ */
+export type DictationConflicts = {
+/**
+ * Known dictation apps that are running, or installed (macOS).
+ */
+apps: string[];
+/**
+ * Built-in dictation that can share the keys, if any.
+ */
+system_dictation: SystemDictation | null;
+/**
+ * Whether this keyboard backend can keep shortcuts to Ambient.
+ */
+exclusive_supported: boolean;
+/**
+ * Whether Ambient is keeping its shortcut presses from other apps now.
+ */
+exclusive_active: boolean }
 export type SecureInputStatus = { 
 /**
  * Secure input is currently enabled (live check)
@@ -2222,6 +2266,19 @@ muted_apps: string[] }
  * UI appearance mode. `System` follows the OS `prefers-color-scheme`; `Light`
  * and `Dark` force one of the two palettes Ambient already ships.
  */
+/**
+ * The operating system's own dictation that can share Ambient's keys.
+ */
+export type SystemDictation =
+/**
+ * An Ambient shortcut uses Fn, and macOS also acts on the Fn/Globe key
+ * (Dictation, emoji or input source). Event taps can't stop that.
+ */
+"macos_fn_key" |
+/**
+ * An Ambient shortcut is Win+H, Windows voice typing.
+ */
+"windows_voice_typing"
 export type Theme = "system" | "light" | "dark"
 export type TranscribeAcceleratorSetting = "auto" | "cpu" | "gpu"
 /**

@@ -317,6 +317,7 @@ fn settings_summary(app: &AppHandle) -> Value {
             "post_process_enabled",
             "post_process_provider_id",
             "keyboard_implementation",
+            "exclusive_shortcuts",
             "typing_tool",
             "overlay_style",
             "vad_enabled",

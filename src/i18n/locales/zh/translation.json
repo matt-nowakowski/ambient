@@ -418,6 +418,10 @@
           "toggle": "轻按快捷键开始录音，再次轻按停止"
         }
       },
+      "exclusiveShortcuts": {
+        "label": "只有 {{appName}} 响应它的快捷键",
+        "description": "其他应用（包括其他听写应用）不会收到 {{appName}} 快捷键的按键。如果其他应用需要相同的按键，请关闭此项。"
+      },
       "autoStop": {
         "label": "停顿后自动停止",
         "description": "轻点开始时，说完话停顿一会儿，听写也会自动停止。句子中间的短暂停顿不算，在你开口之前也绝不会停止。",
@@ -1016,6 +1020,15 @@
     "recorderBlockedNoCulprit": "macOS 正在暂时阻止快捷键更改",
     "learnMore": "如何解决",
     "recorderBlocked": "当前无法录制快捷键——macOS 的 Secure Input 正在阻止按键事件。请先解决 Secure Input 警告。",
+    "dismiss": "关闭"
+  },
+  "dictationConflict": {
+    "apps": "{{apps}} 也能在这里听写。如果快捷键与 {{appName}} 相同，两者可能都会响应。",
+    "macosFn": "macOS 也使用 Fn（🌐）键。如果听写或表情符号也会打开，请在键盘设置中将“按下 🌐 键时”设为“不执行任何操作”。",
+    "windowsVoiceTyping": "Win + H 也会启动 Windows 语音输入。请换一个快捷键，让只有 {{appName}} 响应。",
+    "makeExclusive": "只让 {{appName}} 响应",
+    "changeShortcut": "更改快捷键",
+    "openKeyboardSettings": "打开键盘设置",
     "dismiss": "关闭"
   },
   "account": {
