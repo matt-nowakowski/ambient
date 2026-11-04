@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { arch, platform } from "@tauri-apps/plugin-os";
 import { Sparkles } from "lucide-react";
+import { commands } from "@/bindings";
+import {
+  HOSTED_PROVIDER as HOSTED,
+  ON_DEVICE_PROVIDER as ON_DEVICE,
+  polishRoute,
+} from "@/lib/whereItRuns";
 import { useSettings } from "../../hooks/useSettings";
 import { Button } from "../ui/Button";
+import { DependencyNote } from "../ui/SettingLink";
 import { Switch } from "../ui/Switch";
 import { openUpgrade, usePlan, usePolishUsage } from "./usePlan";
 
-// Provider ids from settings.rs.
-const HOSTED = "ambient";
-const ON_DEVICE = "apple_intelligence";
 // settings.rs offers Apple Intelligence only on Apple silicon Macs.
 const onDeviceAvailable = platform() === "macos" && arch() === "aarch64";
 
@@ -28,6 +32,29 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
   const selectedPrompt = getSetting("post_process_selected_prompt_id");
   const on = enabled && (provider === HOSTED || provider === ON_DEVICE);
   const local = provider === ON_DEVICE;
+  const agent = getSetting("agent");
+  const intelligence = agent?.intelligence ?? "auto";
+
+  // Whether Apple Intelligence is usable right now (settings can't tell).
+  const [onDeviceReady, setOnDeviceReady] = useState(false);
+  useEffect(() => {
+    commands
+      .getAgentStatus()
+      .then((s) => setOnDeviceReady(s.on_device_ready))
+      .catch(() => {});
+  }, []);
+  const route = polishRoute(
+    on,
+    provider,
+    intelligence,
+    agent?.on_device_when_possible ?? false,
+    onDeviceReady,
+  );
+  const intelligenceLink = {
+    section: "privacy" as const,
+    label: t("privacy.intelligence.title"),
+    children: t("privacy.intelligence.title"),
+  };
 
   const turnOn = async (useDevice: boolean) => {
     await setPostProcessProvider(useDevice ? ON_DEVICE : HOSTED);
@@ -49,6 +76,19 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
             <p className="mt-0.5 max-w-md text-small text-ink-2">
               {t("account.polish.description")}
             </p>
+            {/* What it doesn't touch: the question people actually ask. */}
+            <p className="mt-1 max-w-md text-meta text-ink-3">
+              {t("account.polish.scope")}
+            </p>
+            {route !== "off" && (
+              <DependencyNote
+                tone={route === "blocked" ? "warn" : "info"}
+                className="mt-2 max-w-md"
+                link={intelligenceLink}
+              >
+                {t(`account.polish.where.${route}`)}
+              </DependencyNote>
+            )}
             {!paid && usage && (
               <p className="mt-2 text-small font-medium tabular-nums">
                 {t("account.polish.freeUsesLeft", {
@@ -84,6 +124,12 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
             <p className="mt-0.5 text-small text-ink-2">
               {t("account.polish.onDeviceDescription")}
             </p>
+            {/* Automatic follows the polish provider for answers too. */}
+            {intelligence === "auto" && (
+              <p className="mt-0.5 text-meta text-ink-3">
+                {t("account.polish.onDeviceAnswers")}
+              </p>
+            )}
           </div>
           <Switch
             checked={local}

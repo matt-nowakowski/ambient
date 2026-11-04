@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Giriş Kanalı",
-        "description": "Kayıt yapılacak giriş kanalını seçin. Ses arabiriminizde birden fazla giriş varsa bu seçeneği kullanın.",
-        "average": "Tüm kanalların ortalaması",
+        "description": "Birden fazla girişi olan ses arabirimleri için: mikrofonunuzun bağlı olduğu girişi seçin. Aksi halde tüm kanallarda bırakın.",
+        "average": "Tüm kanallar, karışık",
         "channel": "Kanal {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Yazmak yerine bir soru sorun veya bir şey yapmasını isteyin.",
       "routing": {
         "label": "Dikte sırasında istekleri anla",
-        "description": "İstekler yerine getirilir; geri kalan her şey her zamanki gibi yazılır. Her zaman yazmak için kapatın."
+        "description": "İstekler yerine getirilir; geri kalan her şey her zamanki gibi yazılır. Her zaman yazmak için kapatın. Sorma kısayolu her durumda çalışır.",
+        "needsScreen": "Ekranınız hakkında sormak için şunu da açın:"
       },
       "wake": {
         "label": "Eller serbest: “Hey Ambient” deyin",
@@ -1109,7 +1110,14 @@
       "unlock": "Sınırsıza geç",
       "onDevice": "Bu Mac’te tutun",
       "onDeviceDescription": "Bunun yerine Apple Intelligence kullanın. Hiçbir şey Mac’inizden çıkmaz.",
-      "freeUsesLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ kullanımından {{left}} tanesi kaldı"
+      "freeUsesLeft": "Bu hafta {{limit}} ücretsiz yapay zekâ kullanımından {{left}} tanesi kaldı",
+      "scope": "Yalnızca dikte ettiklerinizin nasıl düzenlendiğini değiştirir. Yanıtlar, öneriler ve ekran okuma ayrıdır.",
+      "where": {
+        "on_device": "Bu bilgisayarda cilalanır.",
+        "cloud": "Bulutta cilalanır.",
+        "blocked": "Atlandı: “Yalnızca bu bilgisayarda” açık ve bu bilgisayarda yerel model yok, bu yüzden dikte söylendiği gibi yazılır."
+      },
+      "onDeviceAnswers": "Yapay zekâ Otomatik'teyken yanıtlar da bunu kullanır."
     },
     "writing": {
       "title": "Yazma",
@@ -1128,7 +1136,8 @@
           "description": "Her diktede yapay zekâ düzeltmesi."
         }
       },
-      "needsPolish": "Yapay zekâ cilası kapalı; bu yüzden dikte anında yazılır ve dağınık konuşma söylendiği gibi kalır. İstediğinde {{appName}} yine senin için yazar (bu bir yapay zekâ isteği sayılır)."
+      "needsPolish": "Yapay zekâ cilası kapalı; bu yüzden dikte anında yazılır ve dağınık konuşma söylendiği gibi kalır. İstediğinde {{appName}} yine senin için yazar (bu bir yapay zekâ isteği sayılır).",
+      "scope": "Yalnızca metin alanlarına yazılanı değiştirir. {{appName}} uygulamasına sormak ve öneriler ayrıdır."
     },
     "trial": {
       "daysLeft_one": "{{count}} gün kaldı",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "Öneriler sun",
         "reads": "Doğru anda bir sonraki adımı önerir: yazışmalar, taslaklar, tarihler, hatalar, toplantılar.",
-        "leaves": "Bu bilgisayarda ya da aşağıda seçerseniz bulutta karar verilir. Toplantı hatırlatmaları dışında, siz kabul etmedikçe başka hiçbir şey gönderilmez."
+        "leaves": "Karar dışında, bir öneriyi kabul edene kadar hiçbir şey gönderilmez."
       },
       "meetings": {
         "title": "Toplantı notları",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "Yapay zekânın çalıştığı yer",
-      "description": "Önerilere karar veren ve yanıtları yazan şey. Her seçimde tüm özellikler çalışır.",
+      "description": "Yanıtların, sizin yerinize yazmanın, önerilerin, toplantı özetlerinin ve yapay zekâ cilasının nerede işlendiği. Her özellik her seçimle çalışır.",
       "capability": {
         "apple": "Apple Intelligence bu bilgisayarda kullanılabilir",
         "none": "Bu bilgisayarda cihaz içi model yok"
@@ -1602,6 +1611,34 @@
       "perMonth": "Ücretsiz: ayda {{limit}}",
       "hours": "Ücretsiz: {{limit}} saat",
       "retention": "Ücretsiz plan son {{limit}} saati saklar. Pro 90 güne kadar saklar."
+    },
+    "depends": {
+      "screenContext": "Öneriler ve bellek buna ihtiyaç duymaz.",
+      "screenMemory": "Kapatmak sakladıklarını siler.",
+      "route": {
+        "on_device": "Şu an: bu bilgisayarda karar verilir.",
+        "cloud": "Şu an: hassas bilgileri gizlenmiş bir parçayla bulutta karar verilir.",
+        "offer": "Şu an: basit kurallar. Bulutu kullanmadan önce bir kez sorar.",
+        "rules": "Şu an: bu bilgisayarda basit kurallar."
+      },
+      "meetingTips": "Görüşme sırasındaki ipuçları için şu da gerekir:"
+    },
+    "glance": {
+      "title": "Şu an",
+      "reads": "Ekranınızı okur",
+      "cloud": "Buluta metin gönderebilir",
+      "nothing": "Hiçbir şey. Dikte her zamanki gibi çalışır.",
+      "pausedNothing": "Duraklatılmışken hiçbir şey.",
+      "nothingCloud": "Hiçbir şey. Hiçbir metin bu bilgisayardan çıkmaz.",
+      "items": {
+        "screen_context": "Sorduğunuzda",
+        "screen_memory": "Bellek",
+        "proactive": "Öneriler",
+        "answers": "Yanıtlar ve sizin yerinize yazma",
+        "polish": "Yapay zekâ cilası",
+        "meetings": "Toplantı özetleri",
+        "telemetry": "Kullanım sayıları"
+      }
     }
   },
   "meetings": {

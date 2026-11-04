@@ -487,8 +487,8 @@
       },
       "channel": {
         "title": "Canale di ingresso",
-        "description": "Seleziona il canale di ingresso da cui registrare. Usa questa opzione se l'interfaccia audio dispone di più ingressi.",
-        "average": "Media di tutti i canali",
+        "description": "Per interfacce audio con più ingressi: scegli quello del microfono. Altrimenti lascia tutti i canali.",
+        "average": "Tutti i canali, mixati",
         "channel": "Canale {{n}}"
       },
       "audioFeedback": {
@@ -910,7 +910,8 @@
       "description": "Fai una domanda o chiedi di fare qualcosa, invece di scrivere.",
       "routing": {
         "label": "Riconosci le richieste durante la dettatura",
-        "description": "Le richieste vengono gestite; tutto il resto viene scritto come al solito. Disattiva per scrivere sempre."
+        "description": "Le richieste vengono gestite; il resto viene scritto come sempre. Disattiva per scrivere sempre. La scorciatoia Chiedi funziona comunque.",
+        "needsScreen": "Per chiedere del tuo schermo, attiva anche"
       },
       "wake": {
         "label": "Mani libere: di' «Ciao Ambient»",
@@ -1114,7 +1115,14 @@
       "unlock": "Passa a illimitato",
       "onDevice": "Tienilo su questo Mac",
       "onDeviceDescription": "Usa invece Apple Intelligence. Nulla lascia il tuo Mac.",
-      "freeUsesLeft": "Restano {{left}} di {{limit}} usi gratuiti dell'IA questa settimana"
+      "freeUsesLeft": "Restano {{left}} di {{limit}} usi gratuiti dell'IA questa settimana",
+      "scope": "Cambia solo come viene sistemato il tuo dettato. Risposte, suggerimenti e lettura dello schermo sono separati.",
+      "where": {
+        "on_device": "Rifinito su questo computer.",
+        "cloud": "Rifinito nel cloud.",
+        "blocked": "Saltato: è attivo “Solo su questo computer” e questo computer non ha un modello locale, quindi il dettato viene scritto così come l'hai detto."
+      },
+      "onDeviceAnswers": "Con l'intelligenza su Automatica, la usano anche le risposte."
     },
     "writing": {
       "title": "Scrittura",
@@ -1133,7 +1141,8 @@
           "description": "Rifinitura IA su ogni dettatura."
         }
       },
-      "needsPolish": "La rifinitura IA è spenta, quindi la dettatura viene scritta subito e il parlato disordinato resta com'è. {{appName}} scrive comunque per te quando glielo chiedi (conta come una richiesta IA)."
+      "needsPolish": "La rifinitura IA è spenta, quindi la dettatura viene scritta subito e il parlato disordinato resta com'è. {{appName}} scrive comunque per te quando glielo chiedi (conta come una richiesta IA).",
+      "scope": "Cambia solo ciò che viene scritto nei campi di testo. Le domande a {{appName}} e i suggerimenti sono separati."
     },
     "trial": {
       "daysLeft_one": "{{count}} giorno rimasto",
@@ -1448,7 +1457,7 @@
       "proactive": {
         "title": "Offri suggerimenti",
         "reads": "Propone un passo successivo al momento giusto: conversazioni, bozze, date, errori, riunioni.",
-        "leaves": "Deciso su questo computer, o nel cloud se lo scegli qui sotto. Non viene inviato nient'altro se non accetti, tranne i promemoria in riunione."
+        "leaves": "A parte la decisione, non viene inviato nulla finché non ne accetti uno."
       },
       "meetings": {
         "title": "Appunti delle riunioni",
@@ -1579,7 +1588,7 @@
     },
     "intelligence": {
       "title": "Dove lavora l'intelligenza",
-      "description": "Ciò che decide i suggerimenti e scrive le risposte. Tutte le funzioni sono disponibili con qualsiasi scelta.",
+      "description": "Dove vengono elaborati risposte, scrittura per te, suggerimenti, riassunti delle riunioni e rifinitura con IA. Ogni funzione va con qualsiasi scelta.",
       "capability": {
         "apple": "Apple Intelligence disponibile su questo computer",
         "none": "Nessun modello locale su questo computer"
@@ -1614,6 +1623,34 @@
       "perMonth": "Gratuito: {{limit}} al mese",
       "hours": "Gratuito: {{limit}} ore",
       "retention": "Il piano Gratuito conserva le ultime {{limit}} ore. Pro conserva fino a 90 giorni."
+    },
+    "depends": {
+      "screenContext": "Suggerimenti e memoria non ne hanno bisogno.",
+      "screenMemory": "Disattivarla cancella ciò che ha conservato.",
+      "route": {
+        "on_device": "Ora: decide questo computer.",
+        "cloud": "Ora: decide il cloud, da un estratto senza dati sensibili.",
+        "offer": "Ora: regole semplici. Chiede una volta prima di usare il cloud.",
+        "rules": "Ora: regole semplici su questo computer."
+      },
+      "meetingTips": "I consigli durante una chiamata richiedono anche"
+    },
+    "glance": {
+      "title": "In questo momento",
+      "reads": "Legge il tuo schermo",
+      "cloud": "Può inviare testo al cloud",
+      "nothing": "Niente. La dettatura funziona come sempre.",
+      "pausedNothing": "Niente mentre è in pausa.",
+      "nothingCloud": "Niente. Nessun testo lascia questo computer.",
+      "items": {
+        "screen_context": "Quando chiedi",
+        "screen_memory": "Memoria",
+        "proactive": "Suggerimenti",
+        "answers": "Risposte e scrittura per te",
+        "polish": "Rifinitura con IA",
+        "meetings": "Riassunti delle riunioni",
+        "telemetry": "Statistiche d'uso"
+      }
     }
   },
   "meetings": {

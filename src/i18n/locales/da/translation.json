@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Inputkanal",
-        "description": "Vælg, hvilken inputkanal der skal optages fra. Brug dette, hvis din lydgrænseflade har flere indgange.",
-        "average": "Gennemsnit af alle kanaler",
+        "description": "Til lydinterfaces med flere indgange: vælg den, din mikrofon sidder i. Ellers lad den stå på alle kanaler.",
+        "average": "Alle kanaler, mixet",
         "channel": "Kanal {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Stil et spørgsmål, eller bed den gøre noget, i stedet for at skrive.",
       "routing": {
         "label": "Forstå anmodninger under diktering",
-        "description": "Anmodninger bliver håndteret; alt andet skrives som normalt. Slå fra for altid at skrive."
+        "description": "Anmodninger bliver håndteret; alt andet skrives som normalt. Slå fra for altid at skrive. Spørg-genvejen virker uanset.",
+        "needsScreen": "For at spørge om din skærm skal du også slå"
       },
       "wake": {
         "label": "Håndfri: sig »Hej Ambient«",
@@ -1109,7 +1110,14 @@
       "unlock": "Få ubegrænset",
       "onDevice": "Behold det på denne Mac",
       "onDeviceDescription": "Brug Apple Intelligence i stedet. Intet forlader din Mac.",
-      "freeUsesLeft": "{{left}} af {{limit}} gratis AI-brug tilbage denne uge"
+      "freeUsesLeft": "{{left}} af {{limit}} gratis AI-brug tilbage denne uge",
+      "scope": "Ændrer kun, hvordan din diktering bliver ryddet op. Svar, forslag og skærmlæsning er separate.",
+      "where": {
+        "on_device": "Finpudses på denne computer.",
+        "cloud": "Finpudses i skyen.",
+        "blocked": "Springes over: “Kun på denne computer” er slået til, og denne computer har ingen lokal model, så dikteringen skrives som sagt."
+      },
+      "onDeviceAnswers": "Med intelligensen på Automatisk bruger svar den også."
     },
     "writing": {
       "title": "Skrivning",
@@ -1128,7 +1136,8 @@
           "description": "AI-finpudsning på hver diktering."
         }
       },
-      "needsPolish": "AI-polering er slået fra, så diktering skrives med det samme, og rodet tale bliver som sagt. {{appName}} skriver stadig for dig, når du beder om det (det tæller som en AI-forespørgsel)."
+      "needsPolish": "AI-polering er slået fra, så diktering skrives med det samme, og rodet tale bliver som sagt. {{appName}} skriver stadig for dig, når du beder om det (det tæller som en AI-forespørgsel).",
+      "scope": "Ændrer kun, hvad der skrives i tekstfelter. At spørge {{appName}} og forslag er separate."
     },
     "trial": {
       "daysLeft_one": "{{count}} dag tilbage",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "Kom med forslag",
         "reads": "Foreslår et næste skridt på det rigtige tidspunkt: tråde, udkast, datoer, fejl, møder.",
-        "leaves": "Afgøres på denne computer, eller i skyen, hvis du vælger det nedenfor. Intet andet sendes, medmindre du accepterer, undtagen påmindelser under møder."
+        "leaves": "Ud over afgørelsen sendes intet, før du accepterer et."
       },
       "meetings": {
         "title": "Mødenoter",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "Hvor intelligensen kører",
-      "description": "Hvad der afgør forslag og skriver svar. Alle funktioner virker med hvert valg.",
+      "description": "Hvor svar, skrivning for dig, forslag, mødeopsummeringer og AI-finpudsning udregnes. Alle funktioner virker med hvert valg.",
       "capability": {
         "apple": "Apple Intelligence er tilgængelig på denne computer",
         "none": "Ingen model på enheden på denne computer"
@@ -1602,6 +1611,34 @@
       "perMonth": "Gratis: {{limit}} om måneden",
       "hours": "Gratis: {{limit}} timer",
       "retention": "Gratis gemmer de seneste {{limit}} timer. Pro gemmer i op til 90 dage."
+    },
+    "depends": {
+      "screenContext": "Forslag og hukommelse har ikke brug for det.",
+      "screenMemory": "Slår du det fra, slettes det, der er gemt.",
+      "route": {
+        "on_device": "Lige nu: afgøres på denne computer.",
+        "cloud": "Lige nu: afgøres i skyen ud fra et uddrag uden følsomme data.",
+        "offer": "Lige nu: enkle regler. Spørger én gang, før skyen bruges.",
+        "rules": "Lige nu: enkle regler på denne computer."
+      },
+      "meetingTips": "Tips under et opkald kræver også"
+    },
+    "glance": {
+      "title": "Lige nu",
+      "reads": "Læser din skærm",
+      "cloud": "Kan sende tekst til skyen",
+      "nothing": "Intet. Diktering virker som normalt.",
+      "pausedNothing": "Intet, mens der er pause.",
+      "nothingCloud": "Intet. Ingen tekst forlader denne computer.",
+      "items": {
+        "screen_context": "Når du spørger",
+        "screen_memory": "Hukommelse",
+        "proactive": "Forslag",
+        "answers": "Svar og skrivning for dig",
+        "polish": "AI-finpudsning",
+        "meetings": "Mødeopsummeringer",
+        "telemetry": "Brugstal"
+      }
     }
   },
   "meetings": {

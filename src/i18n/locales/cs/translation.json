@@ -490,8 +490,8 @@
       },
       "channel": {
         "title": "Vstupní kanál",
-        "description": "Vyberte vstupní kanál, ze kterého se má nahrávat. Tuto možnost použijte, pokud má vaše zvukové rozhraní více vstupů.",
-        "average": "Průměr všech kanálů",
+        "description": "Pro zvuková rozhraní s více vstupy: vyberte ten, kde je mikrofon. Jinak nechte všechny kanály.",
+        "average": "Všechny kanály, smíchané",
         "channel": "Kanál {{n}}"
       },
       "audioFeedback": {
@@ -913,7 +913,8 @@
       "description": "Položte otázku nebo ho požádejte, ať něco udělá, místo psaní.",
       "routing": {
         "label": "Rozpoznávat požadavky při diktování",
-        "description": "Požadavky se vyřídí; vše ostatní se napíše jako obvykle. Vypněte, chcete-li vždy psát."
+        "description": "Požadavky se vyřídí, vše ostatní se zapíše jako obvykle. Vypněte, aby se vždy psalo. Zkratka pro dotaz funguje tak jako tak.",
+        "needsScreen": "Chcete-li se ptát na obrazovku, zapněte také"
       },
       "wake": {
         "label": "Bez rukou: řekněte „Ahoj Ambient“",
@@ -1119,7 +1120,14 @@
       "unlock": "Získat neomezeně",
       "onDevice": "Nechat na tomto Macu",
       "onDeviceDescription": "Použijte místo toho Apple Intelligence. Nic neopustí váš Mac.",
-      "freeUsesLeft": "Zbývá {{left}} z {{limit}} bezplatných použití AI tento týden"
+      "freeUsesLeft": "Zbývá {{left}} z {{limit}} bezplatných použití AI tento týden",
+      "scope": "Mění jen to, jak se upraví váš diktát. Odpovědi, návrhy a čtení obrazovky jsou zvlášť.",
+      "where": {
+        "on_device": "Vylaďuje se na tomto počítači.",
+        "cloud": "Vylaďuje se v cloudu.",
+        "blocked": "Přeskočeno: je zapnuto „Jen na tomto počítači“ a tento počítač nemá místní model, takže se diktát zapíše tak, jak jste ho řekli."
+      },
+      "onDeviceAnswers": "S inteligencí na Automaticky ho používají i odpovědi."
     },
     "writing": {
       "title": "Psaní",
@@ -1138,7 +1146,8 @@
           "description": "AI úprava u každého diktování."
         }
       },
-      "needsPolish": "AI úprava je vypnutá, takže se diktát napíše okamžitě a neuspořádaná řeč zůstane, jak byla řečena. {{appName}} za tebe pořád napíše, co požádáš (počítá se to jako AI požadavek)."
+      "needsPolish": "AI úprava je vypnutá, takže se diktát napíše okamžitě a neuspořádaná řeč zůstane, jak byla řečena. {{appName}} za tebe pořád napíše, co požádáš (počítá se to jako AI požadavek).",
+      "scope": "Mění jen to, co se píše do textových polí. Dotazy na {{appName}} a návrhy jsou zvlášť."
     },
     "trial": {
       "daysLeft_one": "Zbývá {{count}} den",
@@ -1456,7 +1465,7 @@
       "proactive": {
         "title": "Nabízet návrhy",
         "reads": "Ve správnou chvíli navrhne další krok: konverzace, koncepty, data, chyby, schůzky.",
-        "leaves": "Rozhoduje se na tomto počítači, nebo v cloudu, pokud to níže zvolíte. Dokud návrh nepřijmete, nic dalšího se neodešle, s výjimkou tipů během schůzek."
+        "leaves": "Kromě rozhodování se nic neodešle, dokud návrh nepřijmete."
       },
       "meetings": {
         "title": "Poznámky ze schůzek",
@@ -1592,7 +1601,7 @@
     },
     "intelligence": {
       "title": "Kde běží inteligence",
-      "description": "Co rozhoduje o návrzích a píše odpovědi. Každá funkce funguje s každou volbou.",
+      "description": "Kde se zpracovávají odpovědi, psaní za vás, návrhy, shrnutí schůzek a AI vyladění. Každá funkce funguje s každou volbou.",
       "capability": {
         "apple": "Apple Intelligence je dostupná na tomto počítači",
         "none": "Na tomto počítači není k dispozici lokální model"
@@ -1626,6 +1635,34 @@
       "perMonth": "Zdarma: {{limit}} měsíčně",
       "hours": "Zdarma: {{limit}} hodin",
       "retention": "Bezplatný tarif uchovává posledních {{limit}} hodin. Pro uchovává až 90 dní."
+    },
+    "depends": {
+      "screenContext": "Návrhy a paměť to nepotřebují.",
+      "screenMemory": "Vypnutím se smaže, co si uložila.",
+      "route": {
+        "on_device": "Teď: rozhoduje se na tomto počítači.",
+        "cloud": "Teď: rozhoduje se v cloudu podle úryvku bez citlivých údajů.",
+        "offer": "Teď: jednoduchá pravidla. Před použitím cloudu se jednou zeptá.",
+        "rules": "Teď: jednoduchá pravidla na tomto počítači."
+      },
+      "meetingTips": "Tipy během hovoru potřebují také"
+    },
+    "glance": {
+      "title": "Právě teď",
+      "reads": "Čte vaši obrazovku",
+      "cloud": "Může posílat text do cloudu",
+      "nothing": "Nic. Diktování funguje jako obvykle.",
+      "pausedNothing": "Nic, dokud je pozastaveno.",
+      "nothingCloud": "Nic. Žádný text neopouští tento počítač.",
+      "items": {
+        "screen_context": "Když se zeptáte",
+        "screen_memory": "Paměť",
+        "proactive": "Návrhy",
+        "answers": "Odpovědi a psaní za vás",
+        "polish": "AI vyladění",
+        "meetings": "Shrnutí schůzek",
+        "telemetry": "Statistiky používání"
+      }
     }
   },
   "meetings": {

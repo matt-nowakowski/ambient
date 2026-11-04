@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "輸入聲道",
-        "description": "選擇要錄音的輸入聲道。如果你的音訊介面有多個輸入，請使用此選項。",
-        "average": "所有聲道的平均值",
+        "description": "適用於有多個輸入的音訊介面：選擇麥克風所接的輸入。否則保留所有聲道即可。",
+        "average": "所有聲道混合",
         "channel": "聲道 {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "提出問題或請它做事，無須打字。",
       "routing": {
         "label": "聽寫時理解請求",
-        "description": "請求會被處理，其他內容照常輸入。關閉後一律輸入文字。"
+        "description": "請求會被處理，其他內容照常輸入。關閉後一律直接輸入。提問快速鍵始終可用。",
+        "needsScreen": "若要詢問螢幕上的內容，還需開啟"
       },
       "wake": {
         "label": "免持：說「Hey Ambient」",
@@ -1109,7 +1110,14 @@
       "unlock": "取得無限次",
       "onDevice": "僅在這台 Mac 上處理",
       "onDeviceDescription": "改用 Apple Intelligence。任何內容都不會離開你的 Mac。",
-      "freeUsesLeft": "本週還剩 {{left}} / {{limit}} 次免費 AI 使用"
+      "freeUsesLeft": "本週還剩 {{left}} / {{limit}} 次免費 AI 使用",
+      "scope": "只會改變聽寫內容的整理方式。回答、建議和讀取螢幕是各自的設定。",
+      "where": {
+        "on_device": "在這台電腦上潤飾。",
+        "cloud": "在雲端潤飾。",
+        "blocked": "已略過：已開啟「僅在這台電腦上」，而這台電腦沒有本機模型，所以照原話輸入。"
+      },
+      "onDeviceAnswers": "智慧功能設為「自動」時，回答也會使用它。"
     },
     "writing": {
       "title": "寫作",
@@ -1128,7 +1136,8 @@
           "description": "每次口述都用 AI 潤飾。"
         }
       },
-      "needsPolish": "AI 潤飾已關閉，所以聽寫會立即輸入，凌亂的口語保持原樣。你開口要求時 {{appName}} 仍會替你寫（計為一次 AI 請求）。"
+      "needsPolish": "AI 潤飾已關閉，所以聽寫會立即輸入，凌亂的口語保持原樣。你開口要求時 {{appName}} 仍會替你寫（計為一次 AI 請求）。",
+      "scope": "只會改變輸入到文字欄位的內容。向 {{appName}} 提問和建議是各自的設定。"
     },
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "提供建議",
         "reads": "在適當時機建議下一步：對話、草稿、日期、錯誤、會議。",
-        "leaves": "在這台電腦上決定，或依你在下方的選擇在雲端決定。除會議提示外，除非你接受，否則不會傳送任何內容。"
+        "leaves": "除了判斷之外，在你接受建議前不會傳送任何內容。"
       },
       "meetings": {
         "title": "會議記錄",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "智慧功能在哪裡執行",
-      "description": "由它決定何時給出建議並撰寫回答。無論選擇哪一項，所有功能都可使用。",
+      "description": "回答、代寫、建議、會議摘要和 AI 潤飾在哪裡處理。每個功能在任何選項下都能使用。",
       "capability": {
         "apple": "這台電腦上可使用 Apple Intelligence",
         "none": "這台電腦上沒有裝置端模型"
@@ -1602,6 +1611,34 @@
       "perMonth": "免費版：每月 {{limit}} 場",
       "hours": "免費版：{{limit}} 小時",
       "retention": "免費版保留最近 {{limit}} 小時。Pro 最長保留 90 天。"
+    },
+    "depends": {
+      "screenContext": "建議和記憶不需要它。",
+      "screenMemory": "關閉後會刪除已保存的內容。",
+      "route": {
+        "on_device": "目前：在這台電腦上判斷。",
+        "cloud": "目前：在雲端判斷，依據已去除敏感資訊的片段。",
+        "offer": "目前：簡單規則。使用雲端前會先詢問一次。",
+        "rules": "目前：這台電腦上的簡單規則。"
+      },
+      "meetingTips": "通話中的提示還需開啟"
+    },
+    "glance": {
+      "title": "目前狀態",
+      "reads": "讀取你的螢幕",
+      "cloud": "可能將文字傳送到雲端",
+      "nothing": "無。聽寫照常運作。",
+      "pausedNothing": "暫停期間無。",
+      "nothingCloud": "無。沒有文字離開這台電腦。",
+      "items": {
+        "screen_context": "你提問時",
+        "screen_memory": "記憶",
+        "proactive": "建議",
+        "answers": "回答和代寫",
+        "polish": "AI 潤飾",
+        "meetings": "會議摘要",
+        "telemetry": "使用統計"
+      }
     }
   },
   "meetings": {

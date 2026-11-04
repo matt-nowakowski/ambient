@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Kanal Masukan",
-        "description": "Pilih kanal masukan yang akan direkam. Gunakan ini jika antarmuka audio Anda memiliki beberapa masukan.",
-        "average": "Rata-ratakan semua kanal",
+        "description": "Untuk antarmuka audio dengan beberapa input: pilih input mikrofon Anda. Jika tidak, biarkan di semua kanal.",
+        "average": "Semua kanal, digabung",
         "channel": "Kanal {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Ajukan pertanyaan atau minta ia melakukan sesuatu, alih-alih mengetik.",
       "routing": {
         "label": "Pahami permintaan saat mendikte",
-        "description": "Permintaan ditangani; selebihnya diketik seperti biasa. Matikan untuk selalu mengetik."
+        "description": "Permintaan ditangani; selebihnya diketik seperti biasa. Matikan agar selalu mengetik. Pintasan Tanya tetap berfungsi.",
+        "needsScreen": "Untuk bertanya tentang layar Anda, aktifkan juga"
       },
       "wake": {
         "label": "Tanpa tangan: ucapkan “Hey Ambient”",
@@ -1109,7 +1110,14 @@
       "unlock": "Dapatkan tanpa batas",
       "onDevice": "Simpan di Mac ini",
       "onDeviceDescription": "Gunakan Apple Intelligence sebagai gantinya. Tidak ada yang keluar dari Mac Anda.",
-      "freeUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI gratis minggu ini"
+      "freeUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI gratis minggu ini",
+      "scope": "Hanya mengubah cara dikte Anda dirapikan. Jawaban, saran, dan pembacaan layar terpisah.",
+      "where": {
+        "on_device": "Dipoles di komputer ini.",
+        "cloud": "Dipoles di cloud.",
+        "blocked": "Dilewati: “Hanya di komputer ini” aktif dan komputer ini tidak punya model lokal, jadi dikte diketik apa adanya."
+      },
+      "onDeviceAnswers": "Dengan kecerdasan di Otomatis, jawaban juga memakainya."
     },
     "writing": {
       "title": "Menulis",
@@ -1128,7 +1136,8 @@
           "description": "Perapian AI di setiap dikte."
         }
       },
-      "needsPolish": "Poles AI mati, jadi dikte langsung diketik dan ucapan yang berantakan tetap seperti diucapkan. {{appName}} tetap menuliskan untukmu saat kamu minta (dihitung sebagai permintaan AI)."
+      "needsPolish": "Poles AI mati, jadi dikte langsung diketik dan ucapan yang berantakan tetap seperti diucapkan. {{appName}} tetap menuliskan untukmu saat kamu minta (dihitung sebagai permintaan AI).",
+      "scope": "Hanya mengubah yang diketik ke kolom teks. Bertanya ke {{appName}} dan saran terpisah."
     },
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "Tawarkan saran",
         "reads": "Menawarkan langkah berikutnya di saat yang tepat: utas, draf, tanggal, kesalahan, rapat.",
-        "leaves": "Diputuskan di komputer ini, atau di cloud jika Anda memilihnya di bawah. Tidak ada yang lain dikirim kecuali Anda menerimanya, selain pengingat dalam rapat."
+        "leaves": "Selain untuk memutuskan, tidak ada yang dikirim sampai Anda menerima saran."
       },
       "meetings": {
         "title": "Catatan rapat",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "Tempat kecerdasan berjalan",
-      "description": "Yang memutuskan saran dan menulis jawaban. Semua fitur berfungsi dengan setiap pilihan.",
+      "description": "Tempat jawaban, menulis untuk Anda, saran, ringkasan rapat, dan Poles AI diproses. Setiap fitur berjalan dengan pilihan apa pun.",
       "capability": {
         "apple": "Apple Intelligence tersedia di komputer ini",
         "none": "Tidak ada model di perangkat pada komputer ini"
@@ -1602,6 +1611,34 @@
       "perMonth": "Gratis: {{limit}} per bulan",
       "hours": "Gratis: {{limit}} jam",
       "retention": "Paket Gratis menyimpan {{limit}} jam terakhir. Pro menyimpan hingga 90 hari."
+    },
+    "depends": {
+      "screenContext": "Saran dan memori tidak memerlukannya.",
+      "screenMemory": "Mematikannya menghapus yang sudah disimpan.",
+      "route": {
+        "on_device": "Saat ini: diputuskan di komputer ini.",
+        "cloud": "Saat ini: diputuskan di cloud, dari cuplikan yang sudah disamarkan.",
+        "offer": "Saat ini: aturan sederhana. Bertanya sekali sebelum memakai cloud.",
+        "rules": "Saat ini: aturan sederhana di komputer ini."
+      },
+      "meetingTips": "Tips selama panggilan juga memerlukan"
+    },
+    "glance": {
+      "title": "Saat ini",
+      "reads": "Membaca layar Anda",
+      "cloud": "Dapat mengirim teks ke cloud",
+      "nothing": "Tidak ada. Dikte berjalan seperti biasa.",
+      "pausedNothing": "Tidak ada selama dijeda.",
+      "nothingCloud": "Tidak ada. Tidak ada teks yang keluar dari komputer ini.",
+      "items": {
+        "screen_context": "Saat Anda bertanya",
+        "screen_memory": "Memori",
+        "proactive": "Saran",
+        "answers": "Jawaban dan menulis untuk Anda",
+        "polish": "Poles AI",
+        "meetings": "Ringkasan rapat",
+        "telemetry": "Statistik penggunaan"
+      }
     }
   },
   "meetings": {

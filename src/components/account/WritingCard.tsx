@@ -4,6 +4,7 @@ import { PenLine, Quote, Sparkles, WandSparkles } from "lucide-react";
 import type { WritingMode } from "@/bindings";
 import { useSettings } from "../../hooks/useSettings";
 import { Radio } from "../ui/Radio";
+import { DependencyNote } from "../ui/SettingLink";
 
 const MODES: { key: WritingMode; icon: React.ElementType }[] = [
   { key: "smart", icon: WandSparkles },
@@ -30,6 +31,9 @@ export const WritingCard: React.FC = () => {
           <h2 className="text-ui font-medium">{t("account.writing.title")}</h2>
           <p className="mt-0.5 max-w-md text-small text-ink-2">
             {t("account.writing.description")}
+          </p>
+          <p className="mt-1 max-w-md text-meta text-ink-3">
+            {t("account.writing.scope")}
           </p>
         </div>
       </div>
@@ -68,9 +72,17 @@ export const WritingCard: React.FC = () => {
         })}
       </div>
       {!polishOn && mode !== "as_said" && (
-        <p className="mt-2 text-small text-ink-3">
+        <DependencyNote
+          tone={mode === "polish" ? "warn" : "info"}
+          className="mt-2"
+          link={{
+            section: "account",
+            label: t("account.polish.title"),
+            children: t("account.polish.title"),
+          }}
+        >
           {t("account.writing.needsPolish")}
-        </p>
+        </DependencyNote>
       )}
     </section>
   );

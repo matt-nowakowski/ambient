@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Ingångskanal",
-        "description": "Välj vilken ingångskanal du vill spela in från. Använd detta om ditt ljudgränssnitt har flera ingångar.",
-        "average": "Medelvärde av alla kanaler",
+        "description": "För ljudgränssnitt med flera ingångar: välj den mikrofonen sitter i. Annars låt det stå på alla kanaler.",
+        "average": "Alla kanaler, mixade",
         "channel": "Kanal {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Ställ en fråga eller be den göra något, i stället för att skriva.",
       "routing": {
         "label": "Förstå förfrågningar under diktering",
-        "description": "Förfrågningar tas om hand; allt annat skrivs som vanligt. Stäng av för att alltid skriva."
+        "description": "Förfrågningar hanteras; allt annat skrivs som vanligt. Stäng av för att alltid skriva. Fråga-kortkommandot fungerar ändå.",
+        "needsScreen": "För att fråga om din skärm, slå också på"
       },
       "wake": {
         "label": "Handsfree: säg ”Hej Ambient”",
@@ -1109,7 +1110,14 @@
       "unlock": "Skaffa obegränsat",
       "onDevice": "Behåll det på den här Macen",
       "onDeviceDescription": "Använd Apple Intelligence i stället. Inget lämnar din Mac.",
-      "freeUsesLeft": "{{left}} av {{limit}} gratis AI-användningar kvar den här veckan"
+      "freeUsesLeft": "{{left}} av {{limit}} gratis AI-användningar kvar den här veckan",
+      "scope": "Ändrar bara hur din diktering städas upp. Svar, förslag och skärmläsning är separata.",
+      "where": {
+        "on_device": "Finslipas på den här datorn.",
+        "cloud": "Finslipas i molnet.",
+        "blocked": "Hoppas över: ”Bara på den här datorn” är på och datorn har ingen lokal modell, så dikteringen skrivs som du sa den."
+      },
+      "onDeviceAnswers": "Med intelligensen på Automatiskt använder svar den också."
     },
     "writing": {
       "title": "Skrivande",
@@ -1128,7 +1136,8 @@
           "description": "AI-putsning på varje diktering."
         }
       },
-      "needsPolish": "AI-putsning är av, så dikteringen skrivs direkt och rörigt tal blir som det sades. {{appName}} skriver fortfarande åt dig när du ber om det (det räknas som en AI-förfrågan)."
+      "needsPolish": "AI-putsning är av, så dikteringen skrivs direkt och rörigt tal blir som det sades. {{appName}} skriver fortfarande åt dig när du ber om det (det räknas som en AI-förfrågan).",
+      "scope": "Ändrar bara vad som skrivs i textfält. Att fråga {{appName}} och förslag är separata."
     },
     "trial": {
       "daysLeft_one": "{{count}} dag kvar",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "Ge förslag",
         "reads": "Föreslår ett nästa steg i rätt ögonblick: trådar, utkast, datum, fel, möten.",
-        "leaves": "Avgörs på den här datorn, eller i molnet om du väljer det nedan. Inget annat skickas om du inte godkänner, utom påminnelser under möten."
+        "leaves": "Utöver avgörandet skickas inget förrän du accepterar ett."
       },
       "meetings": {
         "title": "Mötesanteckningar",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "Var intelligensen körs",
-      "description": "Vad som avgör förslag och skriver svar. Alla funktioner fungerar med varje val.",
+      "description": "Var svar, skrivande åt dig, förslag, mötessammanfattningar och AI-finslipning tas fram. Alla funktioner fungerar med varje val.",
       "capability": {
         "apple": "Apple Intelligence finns på den här datorn",
         "none": "Ingen modell på enheten på den här datorn"
@@ -1602,6 +1611,34 @@
       "perMonth": "Gratis: {{limit}} i månaden",
       "hours": "Gratis: {{limit}} timmar",
       "retention": "Gratis sparar de senaste {{limit}} timmarna. Pro sparar i upp till 90 dagar."
+    },
+    "depends": {
+      "screenContext": "Förslag och minne behöver det inte.",
+      "screenMemory": "Att stänga av raderar det som sparats.",
+      "route": {
+        "on_device": "Just nu: avgörs på den här datorn.",
+        "cloud": "Just nu: avgörs i molnet, utifrån ett rensat utdrag.",
+        "offer": "Just nu: enkla regler. Frågar en gång innan molnet används.",
+        "rules": "Just nu: enkla regler på den här datorn."
+      },
+      "meetingTips": "Tips under ett samtal kräver också"
+    },
+    "glance": {
+      "title": "Just nu",
+      "reads": "Läser din skärm",
+      "cloud": "Kan skicka text till molnet",
+      "nothing": "Inget. Diktering fungerar som vanligt.",
+      "pausedNothing": "Inget medan det är pausat.",
+      "nothingCloud": "Inget. Ingen text lämnar den här datorn.",
+      "items": {
+        "screen_context": "När du frågar",
+        "screen_memory": "Minne",
+        "proactive": "Förslag",
+        "answers": "Svar och skrivande åt dig",
+        "polish": "AI-finslipning",
+        "meetings": "Mötessammanfattningar",
+        "telemetry": "Användningsstatistik"
+      }
     }
   },
   "meetings": {

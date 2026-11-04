@@ -12,6 +12,7 @@ interface ToggleSwitchProps {
   descriptionMode?: "inline" | "tooltip";
   grouped?: boolean;
   tooltipPosition?: "top" | "bottom";
+  note?: React.ReactNode;
 }
 
 export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
@@ -24,6 +25,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   descriptionMode = "tooltip",
   grouped = false,
   tooltipPosition = "top",
+  note,
 }) => {
   return (
     <SettingContainer
@@ -33,6 +35,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
       grouped={grouped}
       disabled={disabled}
       tooltipPosition={tooltipPosition}
+      note={note}
     >
       <Switch
         checked={checked}

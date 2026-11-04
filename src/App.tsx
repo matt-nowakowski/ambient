@@ -37,6 +37,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { FileDropOverlay } from "./components/FileDropOverlay";
 import { Sidebar, SidebarSection, SECTIONS_CONFIG } from "./components/Sidebar";
 import { GlobalSearch, useSearchJump } from "./components/search/GlobalSearch";
+import { useSearch } from "./components/search/searchStore";
 import { FeedbackGate } from "./components/feedback/FeedbackGate";
 import { WhatsNewGate } from "./components/whats-new";
 import { useSettings } from "./hooks/useSettings";
@@ -143,6 +144,12 @@ function App() {
   }, [currentSection]);
   // A global search result scrolls to (and highlights) its row.
   useSearchJump(currentSection, settingsScrollRef);
+  // A link from one setting to another (SettingLink) jumps the same way;
+  // open the page it points at.
+  const jumpSection = useSearch((s) => s.target?.section);
+  useEffect(() => {
+    if (jumpSection) setCurrentSection(jumpSection);
+  }, [jumpSection]);
 
   useEffect(() => {
     checkOnboardingStatus();

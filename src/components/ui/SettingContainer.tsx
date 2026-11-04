@@ -10,6 +10,8 @@ interface SettingContainerProps {
   layout?: "horizontal" | "stacked";
   disabled?: boolean;
   tooltipPosition?: "top" | "bottom";
+  /** A short line under the title: what this depends on (a DependencyNote). */
+  note?: React.ReactNode;
 }
 
 export const SettingContainer: React.FC<SettingContainerProps> = ({
@@ -21,7 +23,9 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   layout = "horizontal",
   disabled = false,
   tooltipPosition = "top",
+  note,
 }) => {
+  const noteLine = note ? <div className="mt-1">{note}</div> : null;
   const info = (
     <InfoTooltip
       text={description}
@@ -84,6 +88,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
             </h3>
             {info}
           </div>
+          {noteLine}
         </div>
         <div className="relative">{children}</div>
       </div>
@@ -99,6 +104,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
         <p className={`text-small text-ink-2 ${disabled ? "opacity-50" : ""}`}>
           {description}
         </p>
+        {noteLine}
       </div>
       <div className="relative">{children}</div>
     </div>

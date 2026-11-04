@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Input Channel",
-        "description": "Select which input channel to record from. Use this if your audio interface has multiple inputs.",
-        "average": "Average all channels",
+        "description": "For audio interfaces with several inputs: pick the one your mic is on. Otherwise leave it on all channels.",
+        "average": "All channels, mixed",
         "channel": "Channel {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Ask a question or tell it to do something, instead of typing.",
       "routing": {
         "label": "Understand requests while dictating",
-        "description": "Requests get handled; everything else types as usual. Turn off to always type."
+        "description": "Requests get handled; everything else types as usual. Turn off to always type. The Ask shortcut works either way.",
+        "needsScreen": "To ask about your screen, also turn on"
       },
       "wake": {
         "label": "Hands-free: say “Hey Ambient”",
@@ -1109,7 +1110,14 @@
       "unlock": "Get unlimited",
       "onDevice": "Keep it on this Mac",
       "onDeviceDescription": "Use Apple Intelligence instead. Nothing leaves your Mac.",
-      "freeUsesLeft": "{{left}} of {{limit}} free AI uses left this week"
+      "freeUsesLeft": "{{left}} of {{limit}} free AI uses left this week",
+      "scope": "Only changes how your dictation is tidied. Answers, suggestions and screen reading are separate.",
+      "where": {
+        "on_device": "Polished on this computer.",
+        "cloud": "Polished in the cloud.",
+        "blocked": "Skipped: “On this computer only” is on and this computer has no on-device model, so dictation is typed as said."
+      },
+      "onDeviceAnswers": "With Intelligence on Automatic, answers use it too."
     },
     "writing": {
       "title": "Writing",
@@ -1128,7 +1136,8 @@
           "description": "AI polish on every dictation."
         }
       },
-      "needsPolish": "AI polish is off, so dictation types instantly and messy speech stays as said. {{appName}} still writes for you when you ask (that counts as an AI request)."
+      "needsPolish": "AI polish is off, so dictation types instantly and messy speech stays as said. {{appName}} still writes for you when you ask (that counts as an AI request).",
+      "scope": "Only changes what's typed into text fields. Asking {{appName}} and suggestions are separate."
     },
     "trial": {
       "daysLeft_one": "{{count}} day left",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "Offer suggestions",
         "reads": "Offers a next step at the right moment: threads, drafts, dates, errors, meetings.",
-        "leaves": "Decided on this computer, or in the cloud if you choose it below. Nothing else is sent unless you accept, except meeting nudges."
+        "leaves": "Beyond deciding, nothing is sent until you accept one."
       },
       "meetings": {
         "title": "Meeting notes",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "Where the intelligence runs",
-      "description": "What decides on suggestions and writes answers. Every feature works with each choice.",
+      "description": "Where answers, writing for you, suggestions, meeting summaries and AI polish are worked out. Every feature works with each choice.",
       "capability": {
         "apple": "Apple Intelligence available on this computer",
         "none": "No on-device model on this computer"
@@ -1602,6 +1611,34 @@
       "perMonth": "Free: {{limit}} a month",
       "hours": "Free: {{limit}} hours",
       "retention": "Free keeps the last {{limit}} hours. Pro keeps up to 90 days."
+    },
+    "depends": {
+      "screenContext": "Suggestions and memory don't need it.",
+      "screenMemory": "Turning it off deletes what it kept.",
+      "route": {
+        "on_device": "Right now: decided on this computer.",
+        "cloud": "Right now: decided in the cloud, from a redacted snippet.",
+        "offer": "Right now: simple rules. It asks once before using the cloud.",
+        "rules": "Right now: simple rules on this computer."
+      },
+      "meetingTips": "Tips during a call also need"
+    },
+    "glance": {
+      "title": "Right now",
+      "reads": "Reads your screen",
+      "cloud": "Can send text to the cloud",
+      "nothing": "Nothing. Dictation works as normal.",
+      "pausedNothing": "Nothing while paused.",
+      "nothingCloud": "Nothing. No text leaves this computer.",
+      "items": {
+        "screen_context": "When you ask",
+        "screen_memory": "Memory",
+        "proactive": "Suggestions",
+        "answers": "Answers and writing for you",
+        "polish": "AI polish",
+        "meetings": "Meeting summaries",
+        "telemetry": "Usage counts"
+      }
     }
   },
   "meetings": {

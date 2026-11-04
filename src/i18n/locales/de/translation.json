@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Eingangskanal",
-        "description": "Wähle den Eingangskanal aus, von dem aufgenommen werden soll. Verwende diese Option, wenn dein Audio-Interface mehrere Eingänge hat.",
-        "average": "Alle Kanäle mitteln",
+        "description": "Für Audio-Interfaces mit mehreren Eingängen: Wähle den, an dem dein Mikrofon hängt. Sonst bleib bei allen Kanälen.",
+        "average": "Alle Kanäle, gemischt",
         "channel": "Kanal {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Stell eine Frage oder gib einen Auftrag, statt zu tippen.",
       "routing": {
         "label": "Anfragen beim Diktieren erkennen",
-        "description": "Anfragen werden erledigt, alles andere wird wie gewohnt getippt. Ausschalten, um immer zu tippen."
+        "description": "Bitten werden erledigt, alles andere wird wie gewohnt getippt. Ausschalten, um immer zu tippen. Das Frage-Kürzel funktioniert so oder so.",
+        "needsScreen": "Für Fragen zu deinem Bildschirm brauchst du auch"
       },
       "wake": {
         "label": "Freihändig: Sag „Hallo Ambient“",
@@ -1109,7 +1110,14 @@
       "unlock": "Unbegrenzt freischalten",
       "onDevice": "Auf diesem Mac behalten",
       "onDeviceDescription": "Nutze stattdessen Apple Intelligence. Nichts verlässt deinen Mac.",
-      "freeUsesLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Nutzungen diese Woche"
+      "freeUsesLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Nutzungen diese Woche",
+      "scope": "Ändert nur, wie dein Diktat aufgeräumt wird. Antworten, Vorschläge und das Lesen des Bildschirms sind getrennt.",
+      "where": {
+        "on_device": "Wird auf diesem Computer verfeinert.",
+        "cloud": "Wird in der Cloud verfeinert.",
+        "blocked": "Übersprungen: „Nur auf diesem Computer“ ist an und dieser Computer hat kein lokales Modell, daher wird das Diktat wie gesagt getippt."
+      },
+      "onDeviceAnswers": "Mit der KI auf „Automatisch“ nutzen auch Antworten es."
     },
     "writing": {
       "title": "Schreiben",
@@ -1128,7 +1136,8 @@
           "description": "KI-Feinschliff bei jedem Diktat."
         }
       },
-      "needsPolish": "KI-Feinschliff ist aus, deshalb wird Diktat sofort getippt und unsaubere Sprache bleibt wie gesagt. {{appName}} schreibt weiterhin für dich, wenn du darum bittest (zählt als KI-Anfrage)."
+      "needsPolish": "KI-Feinschliff ist aus, deshalb wird Diktat sofort getippt und unsaubere Sprache bleibt wie gesagt. {{appName}} schreibt weiterhin für dich, wenn du darum bittest (zählt als KI-Anfrage).",
+      "scope": "Ändert nur, was in Textfelder getippt wird. Fragen an {{appName}} und Vorschläge sind getrennt."
     },
     "trial": {
       "daysLeft_one": "Noch {{count}} Tag",
@@ -1440,7 +1449,7 @@
       "proactive": {
         "title": "Vorschläge machen",
         "reads": "Schlägt im richtigen Moment einen nächsten Schritt vor: Threads, Entwürfe, Termine, Fehler, Meetings.",
-        "leaves": "Wird auf diesem Computer entschieden oder in der Cloud, wenn du das unten auswählst. Sonst wird nur gesendet, was du annimmst – mit Ausnahme von Hinweisen in Meetings."
+        "leaves": "Außer für die Entscheidung wird nichts gesendet, bis du einen annimmst."
       },
       "meetings": {
         "title": "Meeting-Notizen",
@@ -1568,7 +1577,7 @@
     },
     "intelligence": {
       "title": "Wo die KI läuft",
-      "description": "Was über Vorschläge entscheidet und Antworten schreibt. Jede Funktion arbeitet mit jeder Auswahl.",
+      "description": "Wo Antworten, Schreiben für dich, Vorschläge, Meeting-Zusammenfassungen und der KI-Feinschliff entstehen. Jede Funktion klappt mit jeder Wahl.",
       "capability": {
         "apple": "Apple Intelligence auf diesem Computer verfügbar",
         "none": "Kein lokales Modell auf diesem Computer"
@@ -1602,6 +1611,34 @@
       "perMonth": "Kostenlos: {{limit}} pro Monat",
       "hours": "Kostenlos: {{limit}} Stunden",
       "retention": "Kostenlos bleiben die letzten {{limit}} Stunden gespeichert. Pro behält bis zu 90 Tage."
+    },
+    "depends": {
+      "screenContext": "Vorschläge und Gedächtnis brauchen das nicht.",
+      "screenMemory": "Ausschalten löscht, was gespeichert wurde.",
+      "route": {
+        "on_device": "Gerade: Entscheidung auf diesem Computer.",
+        "cloud": "Gerade: Entscheidung in der Cloud, anhand eines bereinigten Ausschnitts.",
+        "offer": "Gerade: einfache Regeln. Fragt einmal, bevor die Cloud genutzt wird.",
+        "rules": "Gerade: einfache Regeln auf diesem Computer."
+      },
+      "meetingTips": "Tipps während eines Anrufs brauchen auch"
+    },
+    "glance": {
+      "title": "Gerade jetzt",
+      "reads": "Liest deinen Bildschirm",
+      "cloud": "Kann Text in die Cloud senden",
+      "nothing": "Nichts. Diktieren funktioniert wie gewohnt.",
+      "pausedNothing": "Nichts, solange pausiert.",
+      "nothingCloud": "Nichts. Kein Text verlässt diesen Computer.",
+      "items": {
+        "screen_context": "Wenn du fragst",
+        "screen_memory": "Gedächtnis",
+        "proactive": "Vorschläge",
+        "answers": "Antworten und Schreiben für dich",
+        "polish": "KI-Feinschliff",
+        "meetings": "Meeting-Zusammenfassungen",
+        "telemetry": "Nutzungszahlen"
+      }
     }
   },
   "meetings": {

@@ -487,8 +487,8 @@
       },
       "channel": {
         "title": "Canal de entrada",
-        "description": "Selecciona el canal de entrada desde el que se grabará. Usa esta opción si tu interfaz de audio tiene varias entradas.",
-        "average": "Promediar todos los canales",
+        "description": "Para interfaces de audio con varias entradas: elige la de tu micrófono. Si no, déjalo en todos los canales.",
+        "average": "Todos los canales, mezclados",
         "channel": "Canal {{n}}"
       },
       "audioFeedback": {
@@ -910,7 +910,8 @@
       "description": "Haz una pregunta o pídele que haga algo, en lugar de escribir.",
       "routing": {
         "label": "Entender peticiones al dictar",
-        "description": "Las peticiones se atienden; todo lo demás se escribe como siempre. Desactívalo para escribir siempre."
+        "description": "Las peticiones se atienden; todo lo demás se escribe como siempre. Desactívalo para escribir siempre. El atajo de preguntar funciona igual.",
+        "needsScreen": "Para preguntar sobre tu pantalla, activa también"
       },
       "wake": {
         "label": "Manos libres: di «Hola Ambient»",
@@ -1114,7 +1115,14 @@
       "unlock": "Sin límites",
       "onDevice": "Mantenlo en este Mac",
       "onDeviceDescription": "Usa Apple Intelligence en su lugar. Nada sale de tu Mac.",
-      "freeUsesLeft": "Te quedan {{left}} de {{limit}} usos gratuitos de IA esta semana"
+      "freeUsesLeft": "Te quedan {{left}} de {{limit}} usos gratuitos de IA esta semana",
+      "scope": "Solo cambia cómo se pule tu dictado. Las respuestas, las sugerencias y la lectura de pantalla van aparte.",
+      "where": {
+        "on_device": "Se pule en este equipo.",
+        "cloud": "Se pule en la nube.",
+        "blocked": "Omitido: «Solo en este equipo» está activado y este equipo no tiene un modelo local, así que el dictado se escribe tal como lo dijiste."
+      },
+      "onDeviceAnswers": "Con la inteligencia en Automático, las respuestas también lo usan."
     },
     "writing": {
       "title": "Escritura",
@@ -1133,7 +1141,8 @@
           "description": "Pulido con IA en cada dictado."
         }
       },
-      "needsPolish": "El pulido con IA está desactivado, así que el dictado se escribe al instante y el habla desordenada queda tal como la dijiste. {{appName}} sigue escribiendo por ti cuando se lo pides (cuenta como una solicitud de IA)."
+      "needsPolish": "El pulido con IA está desactivado, así que el dictado se escribe al instante y el habla desordenada queda tal como la dijiste. {{appName}} sigue escribiendo por ti cuando se lo pides (cuenta como una solicitud de IA).",
+      "scope": "Solo cambia lo que se escribe en los campos de texto. Preguntar a {{appName}} y las sugerencias van aparte."
     },
     "trial": {
       "daysLeft_one": "Queda {{count}} día",
@@ -1448,7 +1457,7 @@
       "proactive": {
         "title": "Ofrecer sugerencias",
         "reads": "Sugiere un siguiente paso en el momento justo: hilos, borradores, fechas, errores, reuniones.",
-        "leaves": "Se decide en este equipo, o en la nube si la eliges abajo. No se envía nada más a menos que aceptes, salvo los avisos en reuniones."
+        "leaves": "Aparte de decidir, no se envía nada hasta que aceptes una."
       },
       "meetings": {
         "title": "Notas de reuniones",
@@ -1580,7 +1589,7 @@
     },
     "intelligence": {
       "title": "Dónde se ejecuta la inteligencia",
-      "description": "Lo que decide las sugerencias y escribe las respuestas. Todas las funciones van bien con cualquier opción.",
+      "description": "Dónde se procesan las respuestas, la escritura por ti, las sugerencias, los resúmenes de reuniones y el pulido con IA. Cada función sirve con cualquier opción.",
       "capability": {
         "apple": "Apple Intelligence disponible en este equipo",
         "none": "Sin modelo local en este equipo"
@@ -1614,6 +1623,34 @@
       "perMonth": "Gratis: {{limit}} al mes",
       "hours": "Gratis: {{limit}} horas",
       "retention": "Gratis guarda las últimas {{limit}} horas. Pro guarda hasta 90 días."
+    },
+    "depends": {
+      "screenContext": "Las sugerencias y la memoria no lo necesitan.",
+      "screenMemory": "Al desactivarlo se borra lo que guardó.",
+      "route": {
+        "on_device": "Ahora: se decide en este equipo.",
+        "cloud": "Ahora: se decide en la nube, con un fragmento sin datos sensibles.",
+        "offer": "Ahora: reglas simples. Pregunta una vez antes de usar la nube.",
+        "rules": "Ahora: reglas simples en este equipo."
+      },
+      "meetingTips": "Los consejos durante una llamada también necesitan"
+    },
+    "glance": {
+      "title": "Ahora mismo",
+      "reads": "Lee tu pantalla",
+      "cloud": "Puede enviar texto a la nube",
+      "nothing": "Nada. El dictado funciona como siempre.",
+      "pausedNothing": "Nada mientras está en pausa.",
+      "nothingCloud": "Nada. Ningún texto sale de este equipo.",
+      "items": {
+        "screen_context": "Cuando preguntas",
+        "screen_memory": "Memoria",
+        "proactive": "Sugerencias",
+        "answers": "Respuestas y escritura por ti",
+        "polish": "Pulido con IA",
+        "meetings": "Resúmenes de reuniones",
+        "telemetry": "Estadísticas de uso"
+      }
     }
   },
   "meetings": {
