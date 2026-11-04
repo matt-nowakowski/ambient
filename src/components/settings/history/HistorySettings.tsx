@@ -322,7 +322,7 @@ export const HistorySettings: React.FC = () => {
         description={t("settings.history.emptyDescription")}
         action={
           <Button variant="secondary" onClick={transcribeFile}>
-            <FilePlus width={14} height={14} />
+            <FilePlus width={14} height={14} strokeWidth={1.75} />
             {t("settings.history.transcribeFile")}
           </Button>
         }

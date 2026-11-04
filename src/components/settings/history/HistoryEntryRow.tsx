@@ -178,7 +178,7 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
             className="flex min-w-0 items-center gap-1 rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2"
             title={entry.source_name}
           >
-            <FileAudio width={11} height={11} className="shrink-0" />
+            <FileAudio width={11} height={11} strokeWidth={1.75} className="shrink-0" />
             <span className="truncate">{entry.source_name}</span>
           </span>
         )}
