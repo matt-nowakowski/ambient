@@ -648,9 +648,9 @@ struct Raw {
 }
 
 fn parse(reply: &str) -> Option<Route> {
-    let start = reply.find('{')?;
-    let end = reply.rfind('}')?;
-    let raw: Raw = serde_json::from_str(reply.get(start..=end)?).ok()?;
+    // Shared with the judge: a reply that says the right thing in a slightly
+    // untidy way still routes, instead of quietly becoming something else.
+    let raw: Raw = super::judge::parse_json_object(reply)?;
     let nonempty = |s: Option<String>| s.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
     match raw.intent.as_str() {
         "write" => nonempty(raw.text).map(Route::Write),
@@ -813,7 +813,13 @@ pub async fn route(
         place.editable
     );
     if route.is_none() {
-        log::debug!("router reply didn't parse; writing instead");
+        // A reply we can't read decides what the user's dictation does, so it
+        // belongs in the log at a level the next repro will actually show.
+        log::warn!(
+            "router reply didn't parse ({} chars for {} words); falling back",
+            reply.chars().count(),
+            transcript.split_whitespace().count()
+        );
     }
     route
 }

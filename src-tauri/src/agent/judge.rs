@@ -132,12 +132,69 @@ struct Raw {
     confidence: serde_json::Value,
 }
 
+/// The reply's JSON object, however the model dressed it up.
+///
+/// Both engines used to take everything from the first `{` to the last `}`
+/// and hand that to serde, so a reply with prose after the object, a second
+/// object, or a trailing comma failed to parse even though the answer was
+/// right there. A failed parse is not a failed decision: it silently dropped
+/// an offer, or (in the router) silently changed what a dictation did. So walk
+/// the braces properly — strings and escapes respected — and take the first
+/// balanced object that deserialises, trying each `{` in turn.
+pub fn parse_json_object<T: serde::de::DeserializeOwned>(reply: &str) -> Option<T> {
+    for (start, _) in reply.match_indices('{') {
+        let Some(candidate) = balanced_object(reply, start) else {
+            continue;
+        };
+        if let Ok(value) = serde_json::from_str::<T>(candidate) {
+            return Some(value);
+        }
+        // A trailing comma before `}` is the one malformation small models
+        // produce often enough to be worth a second attempt.
+        let relaxed = candidate.replace(",}", "}").replace(",]", "]");
+        if let Ok(value) = serde_json::from_str::<T>(&relaxed) {
+            return Some(value);
+        }
+    }
+    None
+}
+
+/// The substring from `start` (a `{`) to its matching `}`, ignoring braces
+/// inside strings.
+fn balanced_object(reply: &str, start: usize) -> Option<&str> {
+    let mut depth = 0usize;
+    let mut in_string = false;
+    let mut escaped = false;
+    for (offset, byte) in reply.as_bytes()[start..].iter().enumerate() {
+        if in_string {
+            if escaped {
+                escaped = false;
+            } else if *byte == b'\\' {
+                escaped = true;
+            } else if *byte == b'"' {
+                in_string = false;
+            }
+            continue;
+        }
+        match byte {
+            b'"' => in_string = true,
+            b'{' => depth += 1,
+            b'}' => {
+                depth = depth.saturating_sub(1);
+                if depth == 0 {
+                    return reply.get(start..=start + offset);
+                }
+            }
+            _ => {}
+        }
+    }
+    None
+}
+
 /// Parse the model's reply, tolerating prose around the JSON, a confidence
 /// given as a string or a percentage, and unknown kinds (→ "other").
 pub fn parse_verdict(reply: &str) -> Option<Verdict> {
-    let start = reply.find('{')?;
-    let end = reply.rfind('}')?;
-    let raw: Raw = serde_json::from_str(reply.get(start..=end)?).ok()?;
+    let raw: Raw = parse_json_object(reply)?;
     let mut confidence = match &raw.confidence {
         serde_json::Value::Number(n) => n.as_f64()? as f32,
         serde_json::Value::String(s) => s.trim().trim_end_matches('%').parse::<f32>().ok()?,
@@ -554,6 +611,41 @@ pub fn title_grounded(title: &str, window_text: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn reads_the_object_out_of_an_untidy_reply() {
+        // Every one of these used to come back as Unparsable, which dropped an
+        // offer without a trace or silently changed what a dictation did.
+        let wrapped = r#"Sure, here it is: ```json {"help":true,"kind":"draft_reply","title":"Reply to Sam?","confidence":0.8} ```"#;
+        assert_eq!(
+            parse_verdict(wrapped).map(|v| v.kind),
+            Some("draft_reply".into())
+        );
+
+        // Two objects: scanning to the last brace used to hand serde both.
+        let two =
+            r#"{"help":false,"kind":"other","title":"","confidence":0} and {"note":"ignore"}"#;
+        assert_eq!(parse_verdict(two).map(|v| v.help), Some(false));
+
+        // A trailing comma, which small models produce often.
+        let comma =
+            r#"{"help":true,"kind":"other","title":"Explain this paragraph?","confidence":0.6,}"#;
+        assert_eq!(
+            parse_verdict(comma).map(|v| v.title),
+            Some("Explain this paragraph?".into())
+        );
+
+        // A brace inside a string must not end the object early.
+        let quoted =
+            r#"{"help":true,"kind":"other","title":"What does \"{\" mean?","confidence":0.5}"#;
+        assert!(parse_verdict(quoted).is_some());
+
+        // A stray brace in the prose before the object.
+        let prose = r#"Use { and } to group. {"help":true,"kind":"other","title":"Explain the braces?","confidence":0.4}"#;
+        assert_eq!(parse_verdict(prose).map(|v| v.help), Some(true));
+
+        assert!(parse_verdict("no object at all").is_none());
+    }
 
     #[test]
     fn parses_verdicts() {
