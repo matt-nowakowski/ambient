@@ -157,21 +157,30 @@ pub fn run(name: &str) -> Result<(), String> {
         }
     }
     if let Some((id, path)) = find_desktop(name) {
-        let launched = Command::new("gtk-launch")
-            .arg(&id)
-            .stdin(Stdio::null())
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
-            .status()
-            .is_ok_and(|s| s.success())
-            || spawn(Command::new("gio").arg("launch").arg(&path));
-        return if launched {
+        return if launch(&id, &path) {
             Ok(())
         } else {
             Err("hud.status.failed".into())
         };
     }
     Err("hud.status.cantDoYet".into())
+}
+
+/// Open an installed app by the name people call it ("Visual Studio
+/// Code" is `code.desktop`), with gio where gtk-launch isn't installed.
+pub fn open_app(name: &str) -> bool {
+    find_desktop(name).is_some_and(|(id, path)| launch(&id, &path))
+}
+
+fn launch(id: &str, path: &Path) -> bool {
+    Command::new("gtk-launch")
+        .arg(id)
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+        .is_ok_and(|s| s.success())
+        || spawn(Command::new("gio").arg("launch").arg(path))
 }
 
 #[cfg(test)]

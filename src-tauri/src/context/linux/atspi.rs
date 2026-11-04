@@ -260,10 +260,6 @@ impl Bus {
         call(&self.conn, n, ACCESSIBLE, "GetRole", &())
     }
 
-    pub fn role_name(&self, n: &Node) -> Option<String> {
-        call(&self.conn, n, ACCESSIBLE, "GetRoleName", &())
-    }
-
     pub fn name(&self, n: &Node) -> String {
         property(&self.conn, n, ACCESSIBLE, "Name")
             .and_then(|v| String::try_from(v).ok())

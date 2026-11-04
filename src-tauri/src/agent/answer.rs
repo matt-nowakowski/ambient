@@ -396,7 +396,7 @@ pub async fn run_with(
                 (
                     super::can_insert_here(),
                     crate::context::is_mail_app(&place.bundle_id)
-                        || (super::BROWSERS.contains(&place.bundle_id.as_str())
+                        || (super::is_browser(&place.bundle_id)
                             && super::is_webmail_window(&place.url, &place.title)),
                 )
             })

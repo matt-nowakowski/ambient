@@ -404,9 +404,16 @@ pub fn frontmost_app() -> Option<FrontmostApp> {
 }
 
 /// Mail apps where Reply (Cmd+R / Ctrl+R) opens a reply to the message in
-/// front: Apple Mail, and Outlook on Windows.
+/// front: Apple Mail, Outlook on Windows, Thunderbird on Linux.
 pub fn is_mail_app(bundle_id: &str) -> bool {
-    bundle_id == "com.apple.mail" || ["outlook.exe", "olk.exe"].contains(&bundle_id)
+    [
+        "com.apple.mail",
+        "outlook.exe",
+        "olk.exe",
+        "thunderbird",
+        "org.mozilla.thunderbird",
+    ]
+    .contains(&bundle_id)
 }
 
 /// The last sensitive-check outcome per window, so a decision is logged at

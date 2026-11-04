@@ -234,6 +234,11 @@ const BROWSERS: &[&str] = &[
     "firefox.exe",
     "arc.exe",
 ];
+
+/// A browser on any OS (Linux app ids come from the platform's list).
+fn is_browser(bundle: &str) -> bool {
+    BROWSERS.contains(&bundle) || crate::context::is_platform_browser(bundle)
+}
 /// Chat apps where "Thursday at 3?" means an invite worth offering.
 const CHAT_APPS: &[&str] = &[
     "com.tinyspeck.slackmacgap",
@@ -570,11 +575,11 @@ fn rules_fired(snap: &ContextSnapshot) -> Vec<Kind> {
             out.push(Kind::AddToCalendar);
         }
     }
-    if BROWSERS.contains(&bundle) && BUY.is_match(text) && PRICE.is_match(text) {
+    if is_browser(bundle) && BUY.is_match(text) && PRICE.is_match(text) {
         out.push(Kind::PriceCheck);
     }
     // Code review: a PR/MR or a diff page.
-    if BROWSERS.contains(&bundle)
+    if is_browser(bundle)
         && (url.contains("github.com/") && url.contains("/pull/")
             || url.contains("gitlab.") && url.contains("/merge_requests/")
             || url.contains("bitbucket.org/") && url.contains("/pull-requests/"))
@@ -590,8 +595,7 @@ fn rules_fired(snap: &ContextSnapshot) -> Vec<Kind> {
         out.push(Kind::FixFormula);
     }
     let mail = MAIL_APPS.contains(&bundle)
-        || (BROWSERS.contains(&bundle)
-            && (is_webmail(url) || is_webmail_title(&snap.window_title)));
+        || (is_browser(bundle) && (is_webmail(url) || is_webmail_title(&snap.window_title)));
     if mail {
         // The inbox list mentions dates and questions from many threads:
         // nothing there is "this" thread.
@@ -613,10 +617,10 @@ fn rules_fired(snap: &ContextSnapshot) -> Vec<Kind> {
         }
         return out;
     }
-    if (DEV_APPS.contains(&bundle) || BROWSERS.contains(&bundle)) && ERROR.is_match(text) {
+    if (DEV_APPS.contains(&bundle) || is_browser(bundle)) && ERROR.is_match(text) {
         out.push(Kind::ExplainError);
     }
-    if BROWSERS.contains(&bundle) && text.len() > 5000 {
+    if is_browser(bundle) && text.len() > 5000 {
         // Long prose, not a feed or a search page: mostly long lines.
         let long_lines = text.lines().filter(|l| l.len() > 160).count();
         if long_lines >= 8 {
@@ -727,7 +731,7 @@ pub(crate) fn classify_more(snap: &ContextSnapshot, languages: &[String]) -> Opt
     let text = snap.text.as_deref().unwrap_or("");
     let bundle = snap.app.bundle_id.as_str();
     let url = snap.url.as_deref().unwrap_or("");
-    let browser = BROWSERS.contains(&bundle);
+    let browser = is_browser(bundle);
     let mail = MAIL_APPS.contains(&bundle)
         || (browser && (is_webmail(url) || is_webmail_title(&snap.window_title)));
 
