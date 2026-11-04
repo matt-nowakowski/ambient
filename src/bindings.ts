@@ -1116,6 +1116,35 @@ async downloadLanguageDetector() : Promise<Result<null, string>> {
 async isLanguageDetectorDownloaded() : Promise<boolean> {
     return await TAURI_INVOKE("is_language_detector_downloaded");
 },
+async getOnDeviceAiStatus() : Promise<OnDeviceAiStatus> {
+    return await TAURI_INVOKE("get_on_device_ai_status");
+},
+/**
+ * Download on-device AI. Progress, completion, cancellation and failure use
+ * the model download events under `ON_DEVICE_AI_ID`. Once it's there it
+ * becomes the on-device model (on a Mac, instead of Apple Intelligence;
+ * the user can switch back).
+ */
+async downloadOnDeviceAi() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("download_on_device_ai") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Delete on-device AI (runtime and model) and go back to Apple
+ * Intelligence where there is one.
+ */
+async deleteOnDeviceAi() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_on_device_ai") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async deleteModel(modelId: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("delete_model", { modelId }) };
@@ -1506,6 +1535,12 @@ on_device_only: boolean;
  * privacy over quality. Ignored in the other two modes.
  */
 on_device_when_possible: boolean; 
+/**
+ * Which on-device model runs on-device tasks when both are there: Apple
+ * Intelligence or the downloaded one ("Download on-device AI"). The
+ * other is used when the chosen one isn't available.
+ */
+on_device_model: OnDeviceModel; 
 /**
  * Unix seconds until which all watching is paused.
  */
@@ -2126,6 +2161,42 @@ export type OverlayPosition = "top" | "bottom"
  * `None` hides the overlay entirely. Decoupled from whether the model runs in
  * streaming mode (that is driven purely by model capability).
  */
+/**
+ * "Download on-device AI": what this computer can run and what's there.
+ */
+export type OnDeviceAiStatus = {
+/**
+ * llama.cpp is built for this computer (every platform we ship).
+ */
+supported: boolean; 
+/**
+ * The runtime and the model are both on disk.
+ */
+downloaded: boolean; 
+/**
+ * The whole download (runtime + model), in MB.
+ */
+size_mb: number; 
+/**
+ * Apple Intelligence is usable here (a Mac that has it).
+ */
+apple_available: boolean; 
+/**
+ * What runs on-device tasks now: "apple", "downloaded", or None.
+ */
+engine: string | null }
+/**
+ * The on-device model to prefer (see `AgentSettings::on_device_model`).
+ */
+export type OnDeviceModel =
+/**
+ * Apple Intelligence (Apple silicon Macs that have it).
+ */
+"apple" |
+/**
+ * The downloaded model, run by llama.cpp (every platform).
+ */
+"downloaded"
 export type OverlayStyle = "none" | "minimal" | "live"
 export type PaginatedHistory = { entries: HistoryEntry[]; has_more: boolean }
 export type PasteMethod = "ctrl_v" | "direct" | "none" | "shift_insert" | "ctrl_shift_v" | "external_script"

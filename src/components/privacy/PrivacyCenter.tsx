@@ -36,6 +36,7 @@ import {
   type ContextSnapshot,
   type Intelligence,
   type LedgerEntry,
+  type OnDeviceAiStatus,
   type UsageToday,
 } from "@/bindings";
 import { Button } from "../ui/Button";
@@ -54,6 +55,7 @@ import { AtAGlance, type GlanceItem } from "./AtAGlance";
 import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
 import { UsageStats } from "./UsageStats";
+import { OnDeviceAi } from "./OnDeviceAi";
 
 const RETENTION_CHOICES = [1, 3, 7, 14, 30];
 /** The guarantees, always shown at the top: four short lines. */
@@ -186,6 +188,8 @@ export const PrivacyCenter: React.FC = () => {
   const [previewNote, setPreviewNote] = useState<string | null>(null);
   // Free's limits, for the small "Free: 10 a week" hints.
   const [limits, setLimits] = useState<UsageToday | null>(null);
+  // "Download on-device AI", and which on-device model runs tasks.
+  const [onDeviceAi, setOnDeviceAi] = useState<OnDeviceAiStatus | null>(null);
   // AI polish and telemetry live in app settings, not the agent's.
   const { getSetting } = useSettings();
   const polishOn = getSetting("post_process_enabled") ?? false;
@@ -195,6 +199,7 @@ export const PrivacyCenter: React.FC = () => {
   const refresh = useCallback(async () => {
     setStatus(await commands.getAgentStatus());
     setLimits(await commands.getUsageToday());
+    setOnDeviceAi(await commands.getOnDeviceAiStatus());
     const l = await commands.getNetworkLedger(50);
     if (l.status === "ok") setLedger(l.data);
   }, []);
@@ -795,9 +800,11 @@ export const PrivacyCenter: React.FC = () => {
         >
           <div className="flex items-center gap-2 px-row-x pt-3 pb-1 text-meta text-ink-3">
             <Cpu width={12} height={12} strokeWidth={1.75} aria-hidden="true" />
-            {status.on_device_ready
-              ? t("privacy.intelligence.capability.apple")
-              : t("privacy.intelligence.capability.none")}
+            {!status.on_device_ready
+              ? t("privacy.intelligence.capability.none")
+              : onDeviceAi?.engine === "downloaded"
+                ? t("privacy.intelligence.capability.downloaded")
+                : t("privacy.intelligence.capability.apple")}
           </div>
           <div
             role="radiogroup"
@@ -806,6 +813,9 @@ export const PrivacyCenter: React.FC = () => {
           >
             {INTELLIGENCE.map(({ key, icon: Icon }) => {
               const picked = s.intelligence === key;
+              // Without an on-device model, "On this computer only" is
+              // rules only: say so plainly.
+              const basic = key === "device" && !status.on_device_ready;
               return (
                 <button
                   key={key}
@@ -821,10 +831,16 @@ export const PrivacyCenter: React.FC = () => {
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-ui">
-                      {t(`privacy.intelligence.options.${key}.title`)}
+                      {basic
+                        ? t("privacy.intelligence.options.device.titleBasic")
+                        : t(`privacy.intelligence.options.${key}.title`)}
                     </span>
                     <span className="mt-0.5 block text-small text-ink-2">
-                      {t(`privacy.intelligence.options.${key}.description`)}
+                      {basic
+                        ? t(
+                            "privacy.intelligence.options.device.descriptionBasic",
+                          )
+                        : t(`privacy.intelligence.options.${key}.description`)}
                     </span>
                   </span>
                   <Radio checked={picked} className="mt-1.5" />
@@ -832,13 +848,28 @@ export const PrivacyCenter: React.FC = () => {
               );
             })}
           </div>
-          {/* Automatic, with Apple Intelligence: also use it for answers? */}
+          {/* Download on-device AI (or, on a Mac, choose it over Apple's). */}
+          {onDeviceAi && (
+            <OnDeviceAi
+              status={onDeviceAi}
+              settings={s}
+              save={save}
+              refresh={refresh}
+            />
+          )}
+          {/* Automatic, with an on-device model: also use it for answers? */}
           {s.intelligence === "auto" && status.on_device_ready && (
             <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
               <div className="min-w-0">
-                <p className="text-ui">{t("privacy.engine.title")}</p>
+                <p className="text-ui">
+                  {onDeviceAi?.engine === "downloaded"
+                    ? t("privacy.engine.titleDownloaded")
+                    : t("privacy.engine.title")}
+                </p>
                 <p className="mt-0.5 max-w-lg text-small text-ink-2">
-                  {t("privacy.engine.description")}
+                  {onDeviceAi?.engine === "downloaded"
+                    ? t("privacy.engine.descriptionDownloaded")
+                    : t("privacy.engine.description")}
                 </p>
               </div>
               <Switch

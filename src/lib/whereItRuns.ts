@@ -42,7 +42,8 @@ export const suggestionRoute = (
 export type PolishRoute = "off" | "on_device" | "cloud" | "blocked";
 
 /** Where AI polish runs. "On this computer only" swaps hosted polish for
- * Apple Intelligence when it's there, and skips it (types as said) when not. */
+ * the on-device model (Apple Intelligence or the downloaded one) when it's
+ * there, and skips it (types as said) when not. */
 export const polishRoute = (
   enabled: boolean,
   provider: string,

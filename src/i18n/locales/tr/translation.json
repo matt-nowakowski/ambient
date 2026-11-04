@@ -1590,7 +1590,9 @@
     },
     "engine": {
       "title": "Yanıtlar için de Apple Intelligence kullan",
-      "description": "Yanıtlar ve cila, uygun olduğunda bu Mac’te çalışır. Sonuçlar daha az özenli olduğundan varsayılan olarak kapalıdır."
+      "description": "Yanıtlar ve cila, uygun olduğunda bu Mac’te çalışır. Sonuçlar daha az özenli olduğundan varsayılan olarak kapalıdır.",
+      "titleDownloaded": "Yanıtlar için de cihaz üzerinde yapay zekâyı kullan",
+      "descriptionDownloaded": "Yanıtlar ve düzeltme sığdığında bu bilgisayarda çalışır. Sonuçlar daha az özenli olduğu için varsayılan olarak kapalıdır."
     },
     "suggestions": {
       "title": "Aldığınız öneriler",
@@ -1645,7 +1647,8 @@
       "description": "Yanıtların, sizin yerinize yazmanın, önerilerin, toplantı özetlerinin ve yapay zekâ cilasının nerede işlendiği. Her özellik her seçimle çalışır.",
       "capability": {
         "apple": "Apple Intelligence bu bilgisayarda kullanılabilir",
-        "none": "Bu bilgisayarda cihaz içi model yok"
+        "none": "Bu bilgisayarda cihaz içi model yok",
+        "downloaded": "Cihaz üzerinde yapay zekâ bu bilgisayara indirildi"
       },
       "options": {
         "auto": {
@@ -1654,7 +1657,9 @@
         },
         "device": {
           "title": "Yalnızca bu bilgisayarda",
-          "description": "Karar vermek veya yanıtlamak için hiçbir şey gönderilmez. Model gerektiren özellikler basit kurallara geçer ya da yapamayacaklarını söyler."
+          "description": "Karar vermek veya yanıtlamak için hiçbir şey gönderilmez. Model gerektiren özellikler basit kurallara geçer ya da yapamayacaklarını söyler.",
+          "titleBasic": "Yalnızca bu bilgisayarda (temel, yapay zekâ yok)",
+          "descriptionBasic": "Hiçbir şey gönderilmez. Yalnızca basit kurallar: cihaz üzerinde yapay zekâyı indirene kadar yanıtlar ve yazma bulut gerektirir."
         },
         "cloud": {
           "title": "Bulut",
@@ -1664,6 +1669,22 @@
       "cloudSuggestions": {
         "title": "Buluttan öneriler",
         "description": "Yardım önerip önermeyeceğine karar vermek için üzerinde kaldığınız pencerenin hassas bilgileri çıkarılmış bir parçasını gönderir. Her istek aşağıda listelenir."
+      }
+    },
+    "onDeviceAi": {
+      "title": "Cihaz üzerinde yapay zekâ",
+      "download": "Cihaz üzerinde yapay zekâyı indir (≈{{size}})",
+      "description": "Bu bilgisayarda çalışan küçük bir yapay zekâ modeli; düzeltme, akıllı yazma, öneriler ve kısa yanıtlar bulut olmadan çalışır.",
+      "descriptionMac": "Apple Intelligence'a bir alternatif: düzeltme, akıllı yazma, öneriler ve kısa yanıtlar için bu bilgisayarda çalışan küçük bir yapay zekâ modeli.",
+      "downloadButton": "İndir",
+      "downloading": "İndiriliyor… %{{percent}}",
+      "cancel": "İptal",
+      "ready": "İndirildi ({{size}}). Düzeltme, akıllı yazma, öneriler ve kısa yanıtlar bu bilgisayarda çalışabilir.",
+      "remove": "Kaldır",
+      "use": "Bu Mac'te çalışan:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "İndirilen model"
       }
     },
     "telemetry": {

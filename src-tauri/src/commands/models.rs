@@ -1,4 +1,6 @@
-use crate::managers::model::{ModelInfo, ModelManager, RetiredModel, LANGUAGE_DETECTOR_ID};
+use crate::managers::model::{
+    ModelInfo, ModelManager, RetiredModel, LANGUAGE_DETECTOR_ID, ON_DEVICE_AI_ID,
+};
 use crate::managers::transcription::{ModelStateEvent, TranscriptionManager};
 use crate::settings::{get_settings, write_settings, ModelUnloadTimeout};
 use log::error;
@@ -89,6 +91,92 @@ pub async fn download_language_detector(
         );
     }
     result
+}
+
+/// "Download on-device AI": what this computer can run and what's there.
+#[derive(serde::Serialize, specta::Type)]
+pub struct OnDeviceAiStatus {
+    /// llama.cpp is built for this computer (every platform we ship).
+    pub supported: bool,
+    /// The runtime and the model are both on disk.
+    pub downloaded: bool,
+    /// The whole download (runtime + model), in MB.
+    pub size_mb: u64,
+    /// Apple Intelligence is usable here (a Mac that has it).
+    pub apple_available: bool,
+    /// What runs on-device tasks now: "apple", "downloaded", or None.
+    pub engine: Option<String>,
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_on_device_ai_status() -> OnDeviceAiStatus {
+    let runtime = crate::local_llm::runtime_asset();
+    let model = crate::catalog::REASONING_MODEL.as_ref();
+    let size = runtime.map_or(0, |r| r.size) + model.map_or(0, |m| m.size_bytes);
+    OnDeviceAiStatus {
+        supported: runtime.is_some() && model.is_some(),
+        downloaded: crate::local_llm::ready(),
+        size_mb: size / (1024 * 1024),
+        apple_available: crate::agent::llm::apple_ready(),
+        engine: crate::agent::llm::engine().map(|e| {
+            match e {
+                crate::agent::llm::Engine::Apple => "apple",
+                crate::agent::llm::Engine::Local => "downloaded",
+            }
+            .to_string()
+        }),
+    }
+}
+
+/// Download on-device AI. Progress, completion, cancellation and failure use
+/// the model download events under `ON_DEVICE_AI_ID`. Once it's there it
+/// becomes the on-device model (on a Mac, instead of Apple Intelligence;
+/// the user can switch back).
+#[tauri::command]
+#[specta::specta]
+pub async fn download_on_device_ai(
+    app_handle: AppHandle,
+    model_manager: State<'_, Arc<ModelManager>>,
+) -> Result<(), String> {
+    let result = model_manager
+        .download_on_device_ai()
+        .await
+        .map_err(|e| e.to_string());
+    match &result {
+        Ok(()) if crate::local_llm::ready() => {
+            let mut settings = get_settings(&app_handle);
+            settings.agent.on_device_model = crate::settings::OnDeviceModel::Downloaded;
+            write_settings(&app_handle, settings);
+        }
+        Ok(()) => {}
+        Err(error) => {
+            error!("On-device AI download failed: {}", error);
+            let _ = app_handle.emit(
+                "model-download-failed",
+                serde_json::json!({ "model_id": ON_DEVICE_AI_ID, "error": error }),
+            );
+        }
+    }
+    result
+}
+
+/// Delete on-device AI (runtime and model) and go back to Apple
+/// Intelligence where there is one.
+#[tauri::command]
+#[specta::specta]
+pub fn delete_on_device_ai(
+    app_handle: AppHandle,
+    model_manager: State<'_, Arc<ModelManager>>,
+) -> Result<(), String> {
+    model_manager.delete_on_device_ai().map_err(|e| {
+        error!("On-device AI delete failed: {}", e);
+        e.to_string()
+    })?;
+    let mut settings = get_settings(&app_handle);
+    settings.agent.on_device_model = crate::settings::OnDeviceModel::Apple;
+    write_settings(&app_handle, settings);
+    Ok(())
 }
 
 #[tauri::command]

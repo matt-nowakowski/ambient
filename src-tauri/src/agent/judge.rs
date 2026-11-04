@@ -111,8 +111,7 @@ Don't offer for: an inbox or feed list, a home or search page, settings, a login
     )
 }
 
-/// The same, asking for JSON (models without guided generation).
-#[cfg_attr(not(test), allow(dead_code))]
+/// The same, asking for JSON (the downloaded model; no guided generation).
 fn system_prompt(language: &str) -> String {
     format!(
         "{}\nReply with JSON only, no prose:\n{{\"help\":true,\"kind\":\"{kinds}\",\"title\":\"...\",\"confidence\":0.0}} (confidence from 0 to 1).",
@@ -199,7 +198,8 @@ pub enum JudgeError {
     Limited,
 }
 
-/// Apple Intelligence can judge on this computer right now.
+/// An on-device model (Apple Intelligence or the downloaded one) can judge
+/// on this computer right now.
 pub fn available() -> bool {
     super::llm::on_device_ready()
 }
@@ -207,7 +207,7 @@ pub fn available() -> bool {
 /// Who judges a window.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Route {
-    /// Apple Intelligence, on this computer.
+    /// The on-device model, on this computer.
     OnDevice,
     /// Our server, with a redacted snippet (falls back to `OnDevice` on
     /// network errors when that's available).
@@ -407,8 +407,11 @@ pub fn judge(
     }
     let text = excerpt(text);
     let user = judge_input(app_name, title, hints, &text);
-    let system = instructions(language);
     let timeout = crate::remote_config::agent_config().judge_timeout;
+    if super::llm::engine() == Some(super::llm::Engine::Local) {
+        return judge_local(&system_prompt(language), &user, timeout);
+    }
+    let system = instructions(language);
     let (tx, rx) = mpsc::sync_channel(1);
     let started = Instant::now();
     std::thread::Builder::new()
@@ -452,6 +455,37 @@ pub fn judge(
     );
     result
 }
+
+/// The downloaded model judges with the JSON prompt (same instructions and
+/// kinds as the guided one). It may need to start its server first, so it
+/// gets a little longer than Apple's deadline; it runs on the proactive
+/// worker, so the wait only delays the offer.
+fn judge_local(system: &str, user: &str, timeout: Duration) -> Result<Verdict, JudgeError> {
+    let started = Instant::now();
+    let reply = crate::local_llm::complete_blocking(
+        system,
+        user,
+        crate::llm_client::RequestLimits {
+            max_tokens: Some(160),
+            timeout: Some(timeout.max(LOCAL_TIMEOUT)),
+        },
+    );
+    let result = reply.map_or(Err(JudgeError::Failed), |r| {
+        parse_verdict(&r).ok_or(JudgeError::Unparsable)
+    });
+    log::debug!(
+        "judge: on device (downloaded model) {} in {}ms",
+        match &result {
+            Ok(_) => "answered".to_string(),
+            Err(e) => format!("failed ({e:?})"),
+        },
+        started.elapsed().as_millis()
+    );
+    result
+}
+
+/// The downloaded model's judging deadline, its server's start included.
+const LOCAL_TIMEOUT: Duration = Duration::from_secs(20);
 
 /// The Swift judge's reply: a verdict, or `{"error": …}`.
 pub fn read_guided(reply: &str) -> Result<Verdict, JudgeError> {

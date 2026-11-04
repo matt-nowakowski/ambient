@@ -1590,7 +1590,9 @@
     },
     "engine": {
       "title": "Gunakan Apple Intelligence untuk jawaban juga",
-      "description": "Jawaban dan poles AI berjalan di Mac ini bila memungkinkan. Hasilnya kurang rapi, jadi nonaktif secara default."
+      "description": "Jawaban dan poles AI berjalan di Mac ini bila memungkinkan. Hasilnya kurang rapi, jadi nonaktif secara default.",
+      "titleDownloaded": "Gunakan AI di perangkat untuk jawaban juga",
+      "descriptionDownloaded": "Jawaban dan pemolesan berjalan di komputer ini jika muat. Hasilnya kurang rapi, jadi nonaktif secara default."
     },
     "suggestions": {
       "title": "Saran yang Anda terima",
@@ -1645,7 +1647,8 @@
       "description": "Tempat jawaban, menulis untuk Anda, saran, ringkasan rapat, dan Poles AI diproses. Setiap fitur berjalan dengan pilihan apa pun.",
       "capability": {
         "apple": "Apple Intelligence tersedia di komputer ini",
-        "none": "Tidak ada model di perangkat pada komputer ini"
+        "none": "Tidak ada model di perangkat pada komputer ini",
+        "downloaded": "AI di perangkat sudah diunduh di komputer ini"
       },
       "options": {
         "auto": {
@@ -1654,7 +1657,9 @@
         },
         "device": {
           "title": "Hanya di komputer ini",
-          "description": "Tidak ada yang dikirim untuk memutuskan atau menjawab. Fitur yang memerlukan model beralih ke aturan sederhana, atau menyatakan tidak bisa."
+          "description": "Tidak ada yang dikirim untuk memutuskan atau menjawab. Fitur yang memerlukan model beralih ke aturan sederhana, atau menyatakan tidak bisa.",
+          "titleBasic": "Hanya di komputer ini (dasar, tanpa AI)",
+          "descriptionBasic": "Tidak ada yang dikirim. Hanya aturan sederhana: jawaban dan penulisan butuh cloud sampai Anda mengunduh AI di perangkat."
         },
         "cloud": {
           "title": "Cloud",
@@ -1664,6 +1669,22 @@
       "cloudSuggestions": {
         "title": "Saran dari cloud",
         "description": "Mengirim cuplikan jendela yang telah disamarkan, yang Anda buka cukup lama, untuk memutuskan apakah akan menawarkan bantuan. Setiap permintaan tercantum di bawah."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI di perangkat",
+      "download": "Unduh AI di perangkat (≈{{size}})",
+      "description": "Model AI kecil yang berjalan di komputer ini, sehingga pemolesan, penulisan pintar, saran, dan jawaban singkat bekerja tanpa cloud.",
+      "descriptionMac": "Alternatif untuk Apple Intelligence: model AI kecil yang berjalan di komputer ini untuk pemolesan, penulisan pintar, saran, dan jawaban singkat.",
+      "downloadButton": "Unduh",
+      "downloading": "Mengunduh… {{percent}}%",
+      "cancel": "Batal",
+      "ready": "Sudah diunduh ({{size}}). Pemolesan, penulisan pintar, saran, dan jawaban singkat bisa berjalan di komputer ini.",
+      "remove": "Hapus",
+      "use": "Berjalan di Mac ini:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Model yang diunduh"
       }
     },
     "telemetry": {

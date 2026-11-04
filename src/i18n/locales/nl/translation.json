@@ -1590,7 +1590,9 @@
     },
     "engine": {
       "title": "Apple Intelligence ook voor antwoorden gebruiken",
-      "description": "Antwoorden en AI-afwerking draaien op deze Mac als dat kan. De resultaten zijn minder verfijnd, dus dit staat standaard uit."
+      "description": "Antwoorden en AI-afwerking draaien op deze Mac als dat kan. De resultaten zijn minder verfijnd, dus dit staat standaard uit.",
+      "titleDownloaded": "AI op het apparaat ook voor antwoorden gebruiken",
+      "descriptionDownloaded": "Antwoorden en oppoetsen draaien op deze computer als ze passen. De resultaten zijn minder verzorgd, dus het staat standaard uit."
     },
     "suggestions": {
       "title": "Suggesties die je krijgt",
@@ -1645,7 +1647,8 @@
       "description": "Waar antwoorden, schrijven voor jou, suggesties, vergaderverslagen en AI-afwerking worden verwerkt. Elke functie werkt met elke keuze.",
       "capability": {
         "apple": "Apple Intelligence beschikbaar op deze computer",
-        "none": "Geen lokaal model op deze computer"
+        "none": "Geen lokaal model op deze computer",
+        "downloaded": "AI op het apparaat is gedownload op deze computer"
       },
       "options": {
         "auto": {
@@ -1654,7 +1657,9 @@
         },
         "device": {
           "title": "Alleen op deze computer",
-          "description": "Er wordt niets verstuurd om te beslissen of te antwoorden. Functies die een model nodig hebben, vallen terug op eenvoudige regels of melden dat ze niet kunnen."
+          "description": "Er wordt niets verstuurd om te beslissen of te antwoorden. Functies die een model nodig hebben, vallen terug op eenvoudige regels of melden dat ze niet kunnen.",
+          "titleBasic": "Alleen op deze computer (basis, zonder AI)",
+          "descriptionBasic": "Er wordt niets verstuurd. Alleen eenvoudige regels: antwoorden en schrijven hebben de cloud nodig tot je AI op het apparaat downloadt."
         },
         "cloud": {
           "title": "Cloud",
@@ -1664,6 +1669,22 @@
       "cloudSuggestions": {
         "title": "Suggesties uit de cloud",
         "description": "Stuurt een geschoond fragment van een venster waar je een tijdje bent gebleven om te beslissen of er hulp wordt aangeboden. Elk verzoek staat hieronder."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI op het apparaat",
+      "download": "AI op het apparaat downloaden (≈{{size}})",
+      "description": "Een klein AI-model dat op deze computer draait, zodat oppoetsen, slim schrijven, suggesties en korte antwoorden zonder de cloud werken.",
+      "descriptionMac": "Een alternatief voor Apple Intelligence: een klein AI-model dat op deze computer draait voor oppoetsen, slim schrijven, suggesties en korte antwoorden.",
+      "downloadButton": "Downloaden",
+      "downloading": "Downloaden… {{percent}}%",
+      "cancel": "Annuleren",
+      "ready": "Gedownload ({{size}}). Oppoetsen, slim schrijven, suggesties en korte antwoorden kunnen op deze computer draaien.",
+      "remove": "Verwijderen",
+      "use": "Draait op deze Mac:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Gedownload model"
       }
     },
     "telemetry": {

@@ -1590,7 +1590,9 @@
     },
     "engine": {
       "title": "回答也使用 Apple Intelligence",
-      "description": "條件允許時，回答和潤飾會在這台 Mac 上執行。效果不如雲端精緻，因此預設為關閉。"
+      "description": "條件允許時，回答和潤飾會在這台 Mac 上執行。效果不如雲端精緻，因此預設為關閉。",
+      "titleDownloaded": "回答也使用裝置端 AI",
+      "descriptionDownloaded": "回答和潤飾在放得下時於這台電腦上執行。效果不如雲端，因此預設關閉。"
     },
     "suggestions": {
       "title": "你收到的建議",
@@ -1645,7 +1647,8 @@
       "description": "回答、代寫、建議、會議摘要和 AI 潤飾在哪裡處理。每個功能在任何選項下都能使用。",
       "capability": {
         "apple": "這台電腦上可使用 Apple Intelligence",
-        "none": "這台電腦上沒有裝置端模型"
+        "none": "這台電腦上沒有裝置端模型",
+        "downloaded": "已在這台電腦上下載裝置端 AI"
       },
       "options": {
         "auto": {
@@ -1654,7 +1657,9 @@
         },
         "device": {
           "title": "僅在這台電腦上",
-          "description": "不會傳送任何內容來做決定或回答。需要模型的功能會退回到簡單規則，或告知無法完成。"
+          "description": "不會傳送任何內容來做決定或回答。需要模型的功能會退回到簡單規則，或告知無法完成。",
+          "titleBasic": "僅限這台電腦（基本，無 AI）",
+          "descriptionBasic": "不會傳送任何內容。僅使用簡單規則：在下載裝置端 AI 之前，回答和寫作需要雲端。"
         },
         "cloud": {
           "title": "雲端",
@@ -1664,6 +1669,22 @@
       "cloudSuggestions": {
         "title": "雲端建議",
         "description": "傳送你停留過的視窗片段（已移除機密資訊），以判斷是否提供協助。每筆請求都會列在下方。"
+      }
+    },
+    "onDeviceAi": {
+      "title": "裝置端 AI",
+      "download": "下載裝置端 AI（約 {{size}}）",
+      "description": "一個在這台電腦上執行的小型 AI 模型，讓潤飾、智慧寫作、建議和簡短回答不需要雲端。",
+      "descriptionMac": "Apple Intelligence 的替代方案：一個在這台電腦上執行的小型 AI 模型，用於潤飾、智慧寫作、建議和簡短回答。",
+      "downloadButton": "下載",
+      "downloading": "正在下載… {{percent}}%",
+      "cancel": "取消",
+      "ready": "已下載（{{size}}）。潤飾、智慧寫作、建議和簡短回答可以在這台電腦上執行。",
+      "remove": "移除",
+      "use": "這台 Mac 使用：",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "已下載的模型"
       }
     },
     "telemetry": {

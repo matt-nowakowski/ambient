@@ -20,7 +20,8 @@ pub struct AgentStatus {
     pub never_watch_defaults: Vec<String>,
     /// None until the local store has opened.
     pub stats: Option<RecallStats>,
-    /// An on-device model (Apple Intelligence) can run tasks on this computer.
+    /// An on-device model (Apple Intelligence or the downloaded one) can run
+    /// tasks on this computer.
     pub on_device_ready: bool,
     /// Suggestion types, in display order (keys of `suggestion_prefs`).
     pub suggestion_kinds: Vec<String>,

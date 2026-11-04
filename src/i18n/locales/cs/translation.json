@@ -1612,7 +1612,9 @@
     },
     "engine": {
       "title": "Používat Apple Intelligence i pro odpovědi",
-      "description": "Odpovědi a vyladění běží na tomto Macu, když to zvládne. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté."
+      "description": "Odpovědi a vyladění běží na tomto Macu, když to zvládne. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté.",
+      "titleDownloaded": "Používat AI v zařízení i pro odpovědi",
+      "descriptionDownloaded": "Odpovědi a úpravy běží na tomto počítači, když se vejdou. Výsledky jsou méně vyladěné, proto je to ve výchozím stavu vypnuté."
     },
     "suggestions": {
       "title": "Návrhy, které dostáváte",
@@ -1669,7 +1671,8 @@
       "description": "Kde se zpracovávají odpovědi, psaní za vás, návrhy, shrnutí schůzek a AI vyladění. Každá funkce funguje s každou volbou.",
       "capability": {
         "apple": "Apple Intelligence je dostupná na tomto počítači",
-        "none": "Na tomto počítači není k dispozici lokální model"
+        "none": "Na tomto počítači není k dispozici lokální model",
+        "downloaded": "AI v zařízení je na tomto počítači stažená"
       },
       "options": {
         "auto": {
@@ -1678,7 +1681,9 @@
         },
         "device": {
           "title": "Jen na tomto počítači",
-          "description": "Nic se neodesílá kvůli rozhodování ani odpovědím. Funkce, které potřebují model, se uchýlí k jednoduchým pravidlům, nebo oznámí, že to nejde."
+          "description": "Nic se neodesílá kvůli rozhodování ani odpovědím. Funkce, které potřebují model, se uchýlí k jednoduchým pravidlům, nebo oznámí, že to nejde.",
+          "titleBasic": "Jen na tomto počítači (základní, bez AI)",
+          "descriptionBasic": "Nic se neodesílá. Jen jednoduchá pravidla: odpovědi a psaní potřebují cloud, dokud si nestáhnete AI v zařízení."
         },
         "cloud": {
           "title": "Cloud",
@@ -1688,6 +1693,22 @@
       "cloudSuggestions": {
         "title": "Návrhy z cloudu",
         "description": "Odešle výřez okna, u kterého se zdržíte (očištěný od citlivých údajů), aby se rozhodlo, zda nabídnout pomoc. Každý požadavek je uvedený níže."
+      }
+    },
+    "onDeviceAi": {
+      "title": "AI v zařízení",
+      "download": "Stáhnout AI v zařízení (≈{{size}})",
+      "description": "Malý AI model, který běží na tomto počítači, takže úpravy, chytré psaní, návrhy a krátké odpovědi fungují bez cloudu.",
+      "descriptionMac": "Alternativa k Apple Intelligence: malý AI model, který běží na tomto počítači pro úpravy, chytré psaní, návrhy a krátké odpovědi.",
+      "downloadButton": "Stáhnout",
+      "downloading": "Stahování… {{percent}} %",
+      "cancel": "Zrušit",
+      "ready": "Staženo ({{size}}). Úpravy, chytré psaní, návrhy a krátké odpovědi mohou běžet na tomto počítači.",
+      "remove": "Odebrat",
+      "use": "Na tomto Macu běží:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Stažený model"
       }
     },
     "telemetry": {

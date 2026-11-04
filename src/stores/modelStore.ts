@@ -290,11 +290,14 @@ export const useModelStore = create<ModelsStore>()(
               state.error = error;
             }),
           );
-          // The language detector downloads through its own command.
+          // The language detector and on-device AI download through their
+          // own commands.
           const retry =
             modelId === "language-detector"
               ? () => void commands.downloadLanguageDetector()
-              : () => void get().downloadModel(modelId);
+              : modelId === "on-device-ai"
+                ? () => void commands.downloadOnDeviceAi()
+                : () => void get().downloadModel(modelId);
           showError("download", error, { id: `download-${modelId}`, retry });
         },
       );

@@ -1601,7 +1601,9 @@
     },
     "engine": {
       "title": "Usar Apple Intelligence también para las respuestas",
-      "description": "Las respuestas y el pulido se ejecutan en este Mac cuando es posible. Los resultados son menos pulidos, por eso está desactivado de forma predeterminada."
+      "description": "Las respuestas y el pulido se ejecutan en este Mac cuando es posible. Los resultados son menos pulidos, por eso está desactivado de forma predeterminada.",
+      "titleDownloaded": "Usar la IA en el dispositivo también para respuestas",
+      "descriptionDownloaded": "Las respuestas y el pulido se ejecutan en este ordenador cuando caben. Los resultados son menos pulidos, por eso está desactivado por defecto."
     },
     "suggestions": {
       "title": "Sugerencias que recibes",
@@ -1657,7 +1659,8 @@
       "description": "Dónde se procesan las respuestas, la escritura por ti, las sugerencias, los resúmenes de reuniones y el pulido con IA. Cada función sirve con cualquier opción.",
       "capability": {
         "apple": "Apple Intelligence disponible en este equipo",
-        "none": "Sin modelo local en este equipo"
+        "none": "Sin modelo local en este equipo",
+        "downloaded": "IA en el dispositivo descargada en este ordenador"
       },
       "options": {
         "auto": {
@@ -1666,7 +1669,9 @@
         },
         "device": {
           "title": "Solo en este equipo",
-          "description": "No se envía nada para decidir ni responder. Las funciones que necesitan un modelo usan reglas simples o avisan de que no pueden."
+          "description": "No se envía nada para decidir ni responder. Las funciones que necesitan un modelo usan reglas simples o avisan de que no pueden.",
+          "titleBasic": "Solo en este ordenador (básico, sin IA)",
+          "descriptionBasic": "No se envía nada. Solo reglas simples: las respuestas y la escritura necesitan la nube hasta que descargues la IA en el dispositivo."
         },
         "cloud": {
           "title": "Nube",
@@ -1676,6 +1681,22 @@
       "cloudSuggestions": {
         "title": "Sugerencias desde la nube",
         "description": "Envía un fragmento, sin datos sensibles, de una ventana en la que te detienes para decidir si ofrecer ayuda. Cada petición aparece en la lista de abajo."
+      }
+    },
+    "onDeviceAi": {
+      "title": "IA en el dispositivo",
+      "download": "Descargar IA en el dispositivo (≈{{size}})",
+      "description": "Un modelo de IA pequeño que funciona en este ordenador, para que el pulido, la escritura inteligente, las sugerencias y las respuestas cortas funcionen sin la nube.",
+      "descriptionMac": "Una alternativa a Apple Intelligence: un modelo de IA pequeño que funciona en este ordenador para el pulido, la escritura inteligente, las sugerencias y las respuestas cortas.",
+      "downloadButton": "Descargar",
+      "downloading": "Descargando… {{percent}} %",
+      "cancel": "Cancelar",
+      "ready": "Descargada ({{size}}). El pulido, la escritura inteligente, las sugerencias y las respuestas cortas pueden funcionar en este ordenador.",
+      "remove": "Quitar",
+      "use": "Funciona en este Mac:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Modelo descargado"
       }
     },
     "telemetry": {

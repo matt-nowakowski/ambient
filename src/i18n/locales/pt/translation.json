@@ -1601,7 +1601,9 @@
     },
     "engine": {
       "title": "Usar o Apple Intelligence também para respostas",
-      "description": "Respostas e refinamento rodam neste Mac quando possível. Os resultados são menos refinados, por isso fica desativado por padrão."
+      "description": "Respostas e refinamento rodam neste Mac quando possível. Os resultados são menos refinados, por isso fica desativado por padrão.",
+      "titleDownloaded": "Usar a IA no dispositivo também para respostas",
+      "descriptionDownloaded": "Respostas e polimento rodam neste computador quando cabem. Os resultados são menos refinados, então fica desligado por padrão."
     },
     "suggestions": {
       "title": "Sugestões que você recebe",
@@ -1656,7 +1658,8 @@
       "description": "Onde respostas, escrita por você, sugestões, resumos de reuniões e o refinamento com IA são processados. Todo recurso funciona com qualquer escolha.",
       "capability": {
         "apple": "Apple Intelligence disponível neste computador",
-        "none": "Nenhum modelo local neste computador"
+        "none": "Nenhum modelo local neste computador",
+        "downloaded": "IA no dispositivo baixada neste computador"
       },
       "options": {
         "auto": {
@@ -1665,7 +1668,9 @@
         },
         "device": {
           "title": "Somente neste computador",
-          "description": "Nada é enviado para decidir ou responder. Recursos que precisam de um modelo recorrem a regras simples ou avisam que não conseguem."
+          "description": "Nada é enviado para decidir ou responder. Recursos que precisam de um modelo recorrem a regras simples ou avisam que não conseguem.",
+          "titleBasic": "Só neste computador (básico, sem IA)",
+          "descriptionBasic": "Nada é enviado. Só regras simples: respostas e escrita precisam da nuvem até você baixar a IA no dispositivo."
         },
         "cloud": {
           "title": "Nuvem",
@@ -1675,6 +1680,22 @@
       "cloudSuggestions": {
         "title": "Sugestões da nuvem",
         "description": "Envia um trecho sem dados sensíveis de uma janela em que você ficou, para decidir se oferece ajuda. Cada solicitação aparece na lista abaixo."
+      }
+    },
+    "onDeviceAi": {
+      "title": "IA no dispositivo",
+      "download": "Baixar IA no dispositivo (≈{{size}})",
+      "description": "Um pequeno modelo de IA que roda neste computador, para que polimento, escrita inteligente, sugestões e respostas curtas funcionem sem a nuvem.",
+      "descriptionMac": "Uma alternativa ao Apple Intelligence: um pequeno modelo de IA que roda neste computador para polimento, escrita inteligente, sugestões e respostas curtas.",
+      "downloadButton": "Baixar",
+      "downloading": "Baixando… {{percent}}%",
+      "cancel": "Cancelar",
+      "ready": "Baixada ({{size}}). Polimento, escrita inteligente, sugestões e respostas curtas podem rodar neste computador.",
+      "remove": "Remover",
+      "use": "Roda neste Mac:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Modelo baixado"
       }
     },
     "telemetry": {

@@ -30,6 +30,7 @@
     }
   },
   "languageDetector": "lang-id-voxlingua107-ecapa",
+  "reasoningModel": "qwen3-1.7b",
   "models": [
     {
       "id": "parakeet-unified-en-0.6b",
@@ -1808,6 +1809,25 @@
         "F32": {"filename": "lang-id-voxlingua107-ecapa-F32.gguf", "size": 84993184, "sha256": "d0420e485112ca05e31aa06e1615556102083a9725e89b55a1f0963c0c0ead66"},
         "F16": {"filename": "lang-id-voxlingua107-ecapa-F16.gguf", "size": 45299872, "sha256": "1f4f1a8279a3bf6eef63ff1fe2b6e5328adb184d43cacab55557592b6197530e"},
         "Q8_0": {"filename": "lang-id-voxlingua107-ecapa-Q8_0.gguf", "size": 26693632, "sha256": "063e6cb0af3d53085fc7d68356dfde5ecee2ffa7bc79855f7e4ff930081bfe3a"}
+      }
+    },
+    {
+      "id": "qwen3-1.7b",
+      "name": "Qwen3 1.7B",
+      "description": "On-device AI: polish, smart writing, routing, suggestions and short answers without the cloud",
+      "repository": "Qwen/Qwen3-1.7B-GGUF",
+      "revision": "90862c4b9d2787eaed51d12237eafdfe7c5f6077",
+      "previousRevisions": [],
+      "license": "apache-2.0",
+      "family": "qwen3",
+      "parameters": "1.7B",
+      "languages": [],
+      "capabilities": {"streaming": false, "translate": false, "languageDetection": false, "timestamps": false},
+      "quant": "Q8_0",
+      "role": "llm",
+      "curated": false,
+      "files": {
+        "Q8_0": {"filename": "Qwen3-1.7B-Q8_0.gguf", "size": 1834426016, "sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a"}
       }
     },
     {

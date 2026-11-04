@@ -182,15 +182,24 @@ const POLISH_TIMEOUT: Duration = Duration::from_secs(10);
 /// text.
 fn warm_up_hosted_ai(app: &AppHandle, needs_ai: bool) {
     let settings = get_settings(app);
-    if !needs_ai || settings.agent.device_only() {
+    if !needs_ai {
         return;
     }
-    // Polish that runs on this Mac needs no connection.
+    // Polish that runs on this computer needs no connection; the downloaded
+    // model's server starts now, so the model is loaded by the time it's
+    // asked.
     if crate::agent::llm::prefers_on_device(
         settings.agent.intelligence,
         settings.agent.on_device_when_possible,
-    ) && crate::agent::llm::on_device_ready()
-    {
+    ) {
+        if let Some(engine) = crate::agent::llm::engine() {
+            if engine == crate::agent::llm::Engine::Local {
+                crate::local_llm::warm_up();
+            }
+            return;
+        }
+    }
+    if settings.agent.device_only() {
         return;
     }
     let Some(provider) = settings.active_post_process_provider() else {
@@ -273,31 +282,31 @@ async fn post_process_transcription(
         crate::limits::ai_spent(app, crate::limits::Show::Once);
         return None;
     }
-    // Hosted Ambient AI polish runs on this Mac instead whenever Apple
-    // Intelligence can do it: no cost, and the text never leaves.
+    // Hosted Ambient AI polish runs on this computer instead whenever an
+    // on-device model can do it: no cost, and the text never leaves.
     let mut took_local = false;
     if provider.id == AMBIENT_AI_PROVIDER_ID
         && crate::agent::llm::use_on_device(app, transcription.len() + 2_000)
         && crate::plan::consume_local_ai(app)
     {
         took_local = true;
-        if let Some(local) = crate::settings::ai_provider(APPLE_INTELLIGENCE_PROVIDER_ID) {
-            debug!("Polishing on device (Apple Intelligence) instead of hosted");
-            provider = local;
+        if let Some(engine) = crate::agent::llm::engine() {
+            debug!("Polishing on device ({engine:?}) instead of hosted");
+            provider = crate::agent::llm::device_provider(engine);
         }
     }
 
     // "On this computer only" covers polish too: without an on-device model
     // the plain transcript is typed instead of sending it anywhere.
-    if settings.agent.device_only() && provider.id != APPLE_INTELLIGENCE_PROVIDER_ID {
+    if settings.agent.device_only() && !crate::agent::llm::is_device_provider(&provider.id) {
         debug!("Post-processing skipped: Intelligence is set to on this computer only");
         return None;
     }
 
-    // Apple Intelligence chosen directly works on every plan; on Free it takes
-    // an AI use from the same weekly pool as hosted polish (which the server
-    // counts).
-    if provider.id == APPLE_INTELLIGENCE_PROVIDER_ID
+    // An on-device model chosen directly works on every plan; on Free it
+    // takes an AI use from the same weekly pool as hosted polish (which the
+    // server counts).
+    if crate::agent::llm::is_device_provider(&provider.id)
         && !took_local
         && !crate::plan::consume_local_ai(app)
     {
@@ -342,7 +351,7 @@ async fn post_process_transcription(
     let disable_reasoning = provider.id == AMBIENT_AI_PROVIDER_ID;
 
     // The Privacy Center's ledger lists every request that leaves the Mac.
-    if provider.id != APPLE_INTELLIGENCE_PROVIDER_ID {
+    if !crate::agent::llm::is_device_provider(&provider.id) {
         let host = provider
             .base_url
             .split("://")
@@ -363,6 +372,26 @@ async fn post_process_transcription(
 
         let system_prompt = build_system_prompt(&prompt);
         let user_content = transcription.to_string();
+
+        // The downloaded model: plain text back from llama.cpp's server.
+        if provider.id == crate::agent::llm::LOCAL_MODEL_PROVIDER_ID {
+            let reply = crate::agent::llm::run_on(
+                crate::agent::llm::Engine::Local,
+                &system_prompt,
+                &user_content,
+                polish_limits(transcription),
+            )
+            .await;
+            debug!(
+                "On-device model post-processing {}",
+                if reply.is_some() {
+                    "succeeded"
+                } else {
+                    "failed"
+                }
+            );
+            return reply.map(|r| strip_invisible_chars(strip_think_block(&r)));
+        }
 
         // Handle Apple Intelligence separately since it uses native Swift APIs
         if provider.id == APPLE_INTELLIGENCE_PROVIDER_ID {

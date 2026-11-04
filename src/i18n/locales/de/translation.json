@@ -1590,7 +1590,9 @@
     },
     "engine": {
       "title": "Apple Intelligence auch für Antworten nutzen",
-      "description": "Antworten und Feinschliff laufen auf diesem Mac, wenn es passt. Die Ergebnisse sind weniger ausgefeilt, daher ist es standardmäßig aus."
+      "description": "Antworten und Feinschliff laufen auf diesem Mac, wenn es passt. Die Ergebnisse sind weniger ausgefeilt, daher ist es standardmäßig aus.",
+      "titleDownloaded": "KI auf dem Gerät auch für Antworten nutzen",
+      "descriptionDownloaded": "Antworten und Feinschliff laufen auf diesem Computer, wenn sie passen. Die Ergebnisse sind weniger ausgefeilt, daher ist es standardmäßig aus."
     },
     "suggestions": {
       "title": "Vorschläge, die du bekommst",
@@ -1645,7 +1647,8 @@
       "description": "Wo Antworten, Schreiben für dich, Vorschläge, Meeting-Zusammenfassungen und der KI-Feinschliff entstehen. Jede Funktion klappt mit jeder Wahl.",
       "capability": {
         "apple": "Apple Intelligence auf diesem Computer verfügbar",
-        "none": "Kein lokales Modell auf diesem Computer"
+        "none": "Kein lokales Modell auf diesem Computer",
+        "downloaded": "KI auf dem Gerät ist auf diesem Computer geladen"
       },
       "options": {
         "auto": {
@@ -1654,7 +1657,9 @@
         },
         "device": {
           "title": "Nur auf diesem Computer",
-          "description": "Zum Entscheiden oder Antworten wird nichts gesendet. Funktionen, die ein Modell brauchen, nutzen einfache Regeln oder melden, dass sie das nicht können."
+          "description": "Zum Entscheiden oder Antworten wird nichts gesendet. Funktionen, die ein Modell brauchen, nutzen einfache Regeln oder melden, dass sie das nicht können.",
+          "titleBasic": "Nur auf diesem Computer (einfach, ohne KI)",
+          "descriptionBasic": "Nichts wird gesendet. Nur einfache Regeln: Antworten und Schreiben brauchen die Cloud, bis du KI auf dem Gerät lädst."
         },
         "cloud": {
           "title": "Cloud",
@@ -1664,6 +1669,22 @@
       "cloudSuggestions": {
         "title": "Vorschläge aus der Cloud",
         "description": "Sendet einen bereinigten Ausschnitt eines Fensters, in dem du länger bleibst, um zu entscheiden, ob Hilfe angeboten wird. Jede Anfrage steht unten in der Liste."
+      }
+    },
+    "onDeviceAi": {
+      "title": "KI auf dem Gerät",
+      "download": "KI auf dem Gerät laden (≈{{size}})",
+      "description": "Ein kleines KI-Modell, das auf diesem Computer läuft: Feinschliff, smartes Schreiben, Vorschläge und kurze Antworten funktionieren ohne Cloud.",
+      "descriptionMac": "Eine Alternative zu Apple Intelligence: ein kleines KI-Modell auf diesem Computer für Feinschliff, smartes Schreiben, Vorschläge und kurze Antworten.",
+      "downloadButton": "Laden",
+      "downloading": "Wird geladen… {{percent}} %",
+      "cancel": "Abbrechen",
+      "ready": "Geladen ({{size}}). Feinschliff, smartes Schreiben, Vorschläge und kurze Antworten können auf diesem Computer laufen.",
+      "remove": "Entfernen",
+      "use": "Auf diesem Mac läuft:",
+      "engines": {
+        "apple": "Apple Intelligence",
+        "downloaded": "Geladenes Modell"
       }
     },
     "telemetry": {
