@@ -94,7 +94,7 @@ static COMMON_WORDS: Lazy<std::collections::HashSet<&'static str>> = Lazy::new(|
         .collect()
 });
 
-fn is_common_word(key: &str) -> bool {
+pub(crate) fn is_common_word(key: &str) -> bool {
     COMMON_WORDS.contains(key)
 }
 
@@ -571,6 +571,42 @@ pub fn normalize_transcription_output(text: &str) -> String {
     normalized.trim().to_string()
 }
 
+/// Applies the user's confirmed word swaps ("Anna" → "Ana"): whole words
+/// only, case aside, keeping the punctuation around them. Unlike custom
+/// words there's no fuzzy matching: the user said exactly this one is wrong.
+pub fn apply_word_replacements(text: &str, replacements: &[(String, String)]) -> String {
+    let mut out = text.to_string();
+    for (from, to) in replacements {
+        let from = from.trim();
+        if from.is_empty() || to.trim().is_empty() {
+            continue;
+        }
+        // Words in the phrase may be separated by any run of spaces.
+        let pattern = from
+            .split_whitespace()
+            .map(regex::escape)
+            .collect::<Vec<_>>()
+            .join(r"\s+");
+        let Ok(re) = Regex::new(&format!(r"(?iu)(^|[^\w])({pattern})([^\w]|$)")) else {
+            continue;
+        };
+        // `replace_all` skips overlapping matches ("Anna Anna" shares the
+        // space), so run until nothing changes (bounded).
+        for _ in 0..8 {
+            let next = re
+                .replace_all(&out, |c: &regex::Captures| {
+                    format!("{}{}{}", &c[1], to.trim(), &c[3])
+                })
+                .into_owned();
+            if next == out {
+                break;
+            }
+            out = next;
+        }
+    }
+    out
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -586,6 +622,25 @@ mod tests {
         let language = OutputLanguageEvidence::UserSelected(language.to_string());
         let filtered = remove_filler_words(text, &language, custom_filler_words, true);
         normalize_transcription_output(&filtered)
+    }
+
+    #[test]
+    fn word_replacements_swap_whole_words_only() {
+        let r = vec![("Anna".to_string(), "Ana".to_string())];
+        assert_eq!(
+            apply_word_replacements("Thanks anna, see you. Anna!", &r),
+            "Thanks Ana, see you. Ana!"
+        );
+        assert_eq!(
+            apply_word_replacements("Annabel and Anna Anna", &r),
+            "Annabel and Ana Ana"
+        );
+        let r = vec![("chat gpt".to_string(), "ChatGPT".to_string())];
+        assert_eq!(
+            apply_word_replacements("Ask Chat  GPT now", &r),
+            "Ask ChatGPT now"
+        );
+        assert_eq!(apply_word_replacements("nothing here", &[]), "nothing here");
     }
 
     #[test]

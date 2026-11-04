@@ -16,6 +16,7 @@ pub mod proactive;
 pub mod reminders;
 pub mod report;
 pub mod router;
+pub mod styles;
 pub mod wake;
 pub mod when;
 pub mod writing;

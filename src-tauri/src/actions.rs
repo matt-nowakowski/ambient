@@ -252,6 +252,7 @@ async fn post_process_transcription(
     app: &AppHandle,
     settings: &AppSettings,
     transcription: &str,
+    style_note: Option<&str>,
 ) -> Option<String> {
     if is_blank_transcription(transcription) {
         debug!("Post-processing skipped because the transcription is empty");
@@ -320,6 +321,11 @@ async fn post_process_transcription(
         debug!("Post-processing skipped because the selected prompt is empty");
         return None;
     }
+    // The user's style for this app or site (`agent::styles`).
+    let prompt = match style_note {
+        Some(note) => format!("{prompt}\n\n{note}"),
+        None => prompt,
+    };
 
     debug!(
         "Starting LLM post-processing with provider '{}' (model: {})",
@@ -539,6 +545,7 @@ fn selected_polish_prompt(settings: &AppSettings) -> Option<String> {
 /// AI polish may "fix" a custom word's spelling back ("payro" → "Pairo"):
 /// the same conservative custom-word pass runs over its output too.
 fn keep_custom_spellings(settings: &AppSettings, polished: String) -> String {
+    let polished = crate::corrections::apply(&polished, &settings.word_replacements);
     if settings.custom_words.is_empty() {
         return polished;
     }
@@ -588,6 +595,8 @@ struct SmartInputs {
     router_text: Option<String>,
     /// Long enough to be worth polishing (`WritePlan::polish_worth_it`).
     polish_worth_it: bool,
+    /// The user's style for this app or site.
+    style: Option<crate::settings::WritingStyle>,
     started: Instant,
 }
 
@@ -620,6 +629,22 @@ async fn smart_write(
     // writing for the user doesn't: it's an agent action, and needs only a
     // model it may use ("On this computer only" without one never sends
     // anything).
+    // The user's style here: "as said" types their words unless polish
+    // was asked for or Ambient was addressed; "polished" polishes clean
+    // speech too.
+    use crate::settings::WritingStyle;
+    match i.style {
+        Some(WritingStyle::AsSaid) if !i.plan.explicit => {
+            if decision == Decision::Polished || (decision == Decision::Written && !i.ctx.addressed)
+            {
+                decision = Decision::AsSaid;
+            }
+        }
+        Some(WritingStyle::Polished) if decision == Decision::AsSaid => {
+            decision = Decision::Polished;
+        }
+        _ => {}
+    }
     if (decision == Decision::Polished && !(i.plan.polish_on && i.polish_worth_it))
         || (decision == Decision::Written && crate::agent::llm::needs_cloud(app))
     {
@@ -642,7 +667,7 @@ async fn smart_write(
         i.ctx.has_selection
     );
     let as_said = || ProcessedTranscription {
-        final_text: transcription.to_string(),
+        final_text: crate::agent::styles::finish(i.style, transcription),
         post_processed_text: None,
         post_process_prompt: None,
         agent_route: None,
@@ -666,9 +691,14 @@ async fn smart_write(
                 Some(t) => Some(t),
                 None => {
                     working();
-                    post_process_transcription(app, settings, transcription)
-                        .await
-                        .map(|t| keep_custom_spellings(settings, t))
+                    post_process_transcription(
+                        app,
+                        settings,
+                        transcription,
+                        crate::agent::styles::note(i.style),
+                    )
+                    .await
+                    .map(|t| keep_custom_spellings(settings, t))
                 }
             };
             debug!(
@@ -679,6 +709,7 @@ async fn smart_write(
             match polished {
                 // Polish changed something: say so, and offer their words.
                 Some(text) if !text.trim().is_empty() && text.trim() != transcription.trim() => {
+                    let text = crate::agent::styles::finish(i.style, &text);
                     ProcessedTranscription {
                         final_text: text.clone(),
                         post_processed_text: Some(text),
@@ -826,7 +857,9 @@ pub(crate) async fn process_dictation_output(
         mode == OutputMode::Dictation && plan.smart() && !is_blank_transcription(transcription);
     // Where the user is: needed to route, and to know whether there's a
     // text field at all (with none, speech is for the agent by default).
-    let place = if cued || agent_on || smart_wanted {
+    // A style set for some app or site needs to know where this goes.
+    let styled = mode == OutputMode::Dictation && !settings.app_styles.is_empty();
+    let place = if cued || agent_on || smart_wanted || styled {
         tauri::async_runtime::spawn_blocking(router::place)
             .await
             .unwrap_or_default()
@@ -834,6 +867,16 @@ pub(crate) async fn process_dictation_output(
         Default::default()
     };
     let no_field = place.no_field;
+    crate::agent::styles::note_place(&place);
+    let style = if mode == OutputMode::Dictation {
+        crate::agent::styles::for_place(&settings, &place)
+    } else {
+        None
+    };
+    let style_note = crate::agent::styles::note(style);
+    // "As said" here: no polish unless asked for (the polish shortcut).
+    let post_process =
+        post_process && !(style == Some(crate::settings::WritingStyle::AsSaid) && !plan.explicit);
     // Typing a prompt into ChatGPT/Claude is writing, however it sounds.
     let routable = (cued || (agent_on && no_field))
         && (ask || !router::always_write_here(&place, transcription));
@@ -852,7 +895,10 @@ pub(crate) async fn process_dictation_output(
     let addressed = router::addresses_ambient(transcription);
     // Written for the user without naming Ambient only in Smart; in "Always
     // as I said" and "Always polish" an instruction is typed like any words.
-    let may_write = mode != OutputMode::Dictation || ask || addressed || plan.writes_unasked();
+    let may_write = mode != OutputMode::Dictation
+        || ask
+        || addressed
+        || (plan.writes_unasked() && style != Some(crate::settings::WritingStyle::AsSaid));
     // A selection to rewrite, and the field around the caret (a fresh
     // message, a reply): read here, never sent.
     let (has_selection, scene) = if smart_here {
@@ -884,6 +930,7 @@ pub(crate) async fn process_dictation_output(
                 has_selection,
                 context: None,
                 replaces: None,
+                style,
             }),
         }
     };
@@ -982,7 +1029,11 @@ pub(crate) async fn process_dictation_output(
         && crate::agent::llm::target(app).is_some()
     {
         let rules = if post_process {
-            selected_polish_prompt(&settings).unwrap_or_default()
+            let prompt = selected_polish_prompt(&settings).unwrap_or_default();
+            match style_note {
+                Some(note) => format!("{prompt}\n\n{note}"),
+                None => prompt,
+            }
         } else {
             String::new()
         };
@@ -1033,6 +1084,7 @@ pub(crate) async fn process_dictation_output(
                     post_process_prompt = Some(rules);
                     final_text = text;
                 }
+                let final_text = crate::agent::styles::finish(style, &final_text);
                 // Only where a search is plausible: not when writing to people
                 // (messaging, email, docs) or prompting an AI assistant, and
                 // not with no field (that card offers "Ask instead").
@@ -1080,6 +1132,7 @@ pub(crate) async fn process_dictation_output(
                 router_ran,
                 router_text,
                 polish_worth_it,
+                style,
                 started,
             },
             &working,
@@ -1090,7 +1143,8 @@ pub(crate) async fn process_dictation_output(
 
     if post_process {
         working();
-        if let Some(processed_text) = post_process_transcription(app, &settings, &final_text).await
+        if let Some(processed_text) =
+            post_process_transcription(app, &settings, &final_text, style_note).await
         {
             let processed_text = keep_custom_spellings(&settings, processed_text);
             post_processed_text = Some(processed_text.clone());
@@ -1103,6 +1157,7 @@ pub(crate) async fn process_dictation_output(
     }
     if mode == OutputMode::Dictation {
         crate::telemetry::dictation(post_processed_text.is_some(), started.elapsed());
+        final_text = crate::agent::styles::finish(style, &final_text);
     }
 
     ProcessedTranscription {
@@ -1594,6 +1649,11 @@ impl ShortcutAction for TranscribeAction {
                                                     crate::plan::record_words(
                                                         &ah_clone,
                                                         dictated_words,
+                                                    );
+                                                    // Watch for word fixes to learn.
+                                                    crate::corrections::watch(
+                                                        &ah_clone,
+                                                        &typed_text,
                                                     );
                                                     // Polished: the chip with
                                                     // "Use my words" (a note

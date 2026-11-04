@@ -673,6 +673,8 @@ pub struct WriteRequest {
     pub context: Option<String>,
     /// Replace this earlier insertion instead of inserting (Edit by voice).
     pub replaces: Option<Inserted>,
+    /// The user's style for this app or site (`agent::styles`).
+    pub style: Option<crate::settings::WritingStyle>,
 }
 
 /// What the answer flow needs to finish a smart write.
@@ -898,6 +900,7 @@ pub fn handle_voice(app: &AppHandle, transcript: &str) -> bool {
                     has_selection: false,
                     context: Some(current),
                     replaces: Some(ins),
+                    style: None,
                 },
             );
             return true;
@@ -1371,6 +1374,7 @@ pub fn write_for_you(app: &AppHandle, req: WriteRequest) {
                 write: true,
                 compose: true,
                 smart: Some(smart),
+                style_note: super::styles::note(req.style),
                 ..Default::default()
             },
         )
@@ -1393,6 +1397,9 @@ pub fn deliver_written(app: &AppHandle, text: &str, smart: &SmartWrite) -> bool 
     } else if let Err(e) = crate::clipboard::paste(text.to_string(), app.clone()) {
         log::warn!("inserting the written text failed: {e}");
         return false;
+    } else {
+        // Watch for word fixes to learn.
+        crate::corrections::watch(app, text);
     }
     after_insert(
         app,

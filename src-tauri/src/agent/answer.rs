@@ -163,6 +163,8 @@ pub struct Opts {
     /// words"), or replacing the text being edited; on failure the words
     /// are typed as said with a note.
     pub smart: Option<super::writing::SmartWrite>,
+    /// The user's style where the draft goes (`agent::styles::note`).
+    pub style_note: Option<&'static str>,
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -349,7 +351,11 @@ pub async fn run_with(
     // who they're answering, so it's from them and to the other person.
     let prompt = if opts.compose && !rewriting {
         let me = super::writing::Me::read(&app);
-        super::writing::reply_brief(&question, &me, context.as_deref())
+        let brief = super::writing::reply_brief(&question, &me, context.as_deref());
+        match opts.style_note {
+            Some(note) => format!("{brief}\n\n{note}"),
+            None => brief,
+        }
     } else {
         question.clone()
     };

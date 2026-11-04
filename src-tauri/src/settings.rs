@@ -575,6 +575,55 @@ pub struct AppSettings {
     /// said, or always polished. See `agent::writing`.
     #[serde(default)]
     pub writing_mode: WritingMode,
+    /// "Learn from my corrections": after a paste, watch the field briefly
+    /// and offer to remember a word the user fixed more than once
+    /// (`corrections`). Reads only what accessibility already allows.
+    #[serde(default = "default_learn_corrections")]
+    pub learn_corrections: bool,
+    /// Exact word swaps the user confirmed ("Anna" → "Ana"), applied after
+    /// custom words.
+    #[serde(default)]
+    pub word_replacements: Vec<WordReplacement>,
+    /// A writing style per app or website (`agent::styles`): an explicit
+    /// preference smart writing follows there.
+    #[serde(default)]
+    pub app_styles: Vec<AppStyle>,
+}
+
+fn default_learn_corrections() -> bool {
+    true
+}
+
+/// A word (or short phrase) always typed as another.
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct WordReplacement {
+    pub from: String,
+    pub to: String,
+}
+
+/// How to write in one app or on one website.
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Default, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum WritingStyle {
+    /// The words as said: never polished or written unasked.
+    #[default]
+    AsSaid,
+    /// Relaxed: contractions, no trailing period on a short message.
+    Casual,
+    /// Polished: full sentences, careful punctuation.
+    Polished,
+}
+
+/// A user-set style for an app (bundle id or process name, or its name) or
+/// a website (a host; its subdomains match too).
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Type)]
+pub struct AppStyle {
+    /// The bundle id, process name or app name; or the site's host.
+    pub target: String,
+    /// What the list shows ("Slack", "mail.google.com").
+    pub label: String,
+    pub site: bool,
+    pub style: WritingStyle,
 }
 
 /// The Writing setting.
@@ -1090,6 +1139,9 @@ pub fn get_default_settings() -> AppSettings {
         meetings_email: MeetingsEmail::default(),
         writing_mode: WritingMode::default(),
         intro_seen: false,
+        learn_corrections: default_learn_corrections(),
+        word_replacements: Vec::new(),
+        app_styles: Vec::new(),
     }
 }
 
