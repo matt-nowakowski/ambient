@@ -334,6 +334,28 @@ export default function PrivacyPage() {
           ),
         },
         {
+          id: "active-counts",
+          title: "How many people use the app",
+          body: (
+            <>
+              <p>
+                To know how many computers use {brand.name}, on every plan, we count the requests the app already makes to our
+                server (the trial check, the Free allowance check, hosted AI, and plan checks). For each day, week and month a
+                computer (or, on a paid plan, an account) makes one of these requests, we keep a keyed one-way hash that is
+                different for every day, week and month, so one period’s record can’t be linked to another’s, with your plan.
+                Nothing else is kept: no IP address, no content, no email. These records are deleted after 180 days. The app
+                sends nothing extra for this.
+              </p>
+              <p>
+                We also count how often the installers on our website are downloaded, and how many computers launch{" "}
+                {brand.name} for the first time, by day, file, app version and country. The country comes from your IP address
+                as our hosting provider reads it; we keep only the country, added to a total, never the IP address or anything
+                that identifies you or your computer.
+              </p>
+            </>
+          ),
+        },
+        {
           id: "billing",
           title: "Your account, payments and billing",
           body: (
@@ -352,9 +374,12 @@ export default function PrivacyPage() {
                 <strong>Signing in.</strong> You only need an account for a paid plan; Free and the trial work without
                 one. To use Pro you sign in to the app with your email address and a 6-digit code we email you. We use
                 your email to sign you in, to look up your subscription with Polar, and to send account emails (sign-in
-                codes, and messages about your plan and billing). We do not keep a separate user database: the code is
-                checked against a signed challenge, and while it is valid our database holds only a short-lived counter
-                of attempts, keyed by a one-way hash of your email and deleted within about an hour.
+                codes, and messages about your plan and billing). The code is checked against a signed challenge, and while it is
+                valid our database holds only a short-lived counter of attempts, keyed by a one-way hash of your email and
+                deleted within about an hour. You can also sign in on Free. When you sign in, and when the app checks your plan
+                while you are signed in, we record your email address, your plan, and the dates you first and most recently
+                signed in, so we know who uses {brand.name}. This record is deleted 12 months after your latest sign-in, or
+                sooner if you ask us.
               </p>
               <p>
                 Once you are signed in, the app keeps a signed session on your device and receives a signed license
@@ -384,7 +409,8 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Installer downloads:</strong> installers on the website are served from our storage at
-                Cloudflare, which sees your IP address and the file requested.
+                Cloudflare, which sees your IP address and the file requested. Our website counts each download by file,
+                version and country, as a total only (see “How many people use the app”).
               </li>
               <li>
                 <strong>Sign-in and plan checks:</strong> described above.
@@ -408,7 +434,8 @@ export default function PrivacyPage() {
           body: (
             <>
               <p>
-                We do not use analytics, advertising or tracking on this website. Our hosting provider processes standard
+                We do not use analytics, advertising or tracking on this website, beyond counting installer downloads as
+                totals, described above. Our hosting provider processes standard
                 server logs (such as IP address, user agent and the page requested) to deliver the site and keep it
                 secure. If we add analytics in the future we will update this policy first.
               </p>
@@ -436,6 +463,10 @@ export default function PrivacyPage() {
                 trials — our legitimate interests.
               </li>
               <li>To collect anonymous usage statistics — your consent, which you can withdraw at any time in the app.</li>
+              <li>
+                To count how many computers use the app and download it, and to keep a record of who signed in — our
+                legitimate interests in understanding how {brand.name} is used.
+              </li>
               <li>To email you your meeting notes when you ask — performance of a contract.</li>
               <li>To read, answer and act on feedback you send us — our legitimate interests, and your consent for diagnostics and examples.</li>
               <li>To keep records required for tax and accounting — legal obligation.</li>
@@ -457,8 +488,8 @@ export default function PrivacyPage() {
                 <li>Tavily (web search; receives only the search query, through our server),</li>
                 <li>Vercel (hosts the website and our server),</li>
                 <li>
-                  Neon (database holding the hashed trial, weekly allowance and sign-in attempt records, the daily usage
-                  totals if you share them, and feedback you send),
+                  Neon (database holding the hashed trial, weekly allowance, activity and sign-in attempt records, the
+                  email and plan of people who signed in, download and usage totals, and feedback you send),
                 </li>
                 <li>Cloudflare (stores and delivers installers, updates and backup model files),</li>
                 <li>Resend (sends sign-in codes, account emails and the meeting notes you ask us to email you),</li>
@@ -487,6 +518,9 @@ export default function PrivacyPage() {
               </li>
               <li>Weekly AI allowance: only the current week’s count; earlier weeks are deleted.</li>
               <li>Sign-in attempt counters: about an hour, keyed by a one-way hash of your email.</li>
+              <li>Signed-in email, plan and sign-in dates: 12 months after your latest sign-in.</li>
+              <li>Daily, weekly and monthly activity hashes: 180 days.</li>
+              <li>Download and first-launch totals (by day, file, version and country): kept as totals, with no identifiers.</li>
               <li>
                 Text sent for hosted AI processing: not stored by us after the response is returned.
               </li>

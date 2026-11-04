@@ -12,7 +12,8 @@ import { propsKey, type TelemetryBatch } from "./telemetry";
  * holds when it stops are lost (a slight undercount, never a wrong number).
  *
  * Nothing raw is kept: per (day, event, canonical props, version) counters,
- * plus a per-day hash of each install id for "opted-in installs per day".
+ * plus a per-day hash of each install id for "opted-in installs per day",
+ * with the OS, app version and plan the batch came with.
  * Recording never throws.
  */
 // 30 minutes: fewer Neon wake-ups; the daily tuning job doesn't need fresher counts.
@@ -22,7 +23,8 @@ const MAX_KEYS = 20_000;
 const MAX_INSTALLS = 50_000;
 
 let counts = new Map<string, number>();
-let installs = new Set<string>();
+/** `day\tinstall hash` → `os\tversion\tplan` (the latest batch wins). */
+let installs = new Map<string, string>();
 let pending = 0;
 let oldestPending = 0;
 let flushing: Promise<void> | null = null;
@@ -47,7 +49,9 @@ export function recordBatch(batch: TelemetryBatch) {
       if (pending === 0) oldestPending = Date.now();
       pending += e.n;
     }
-    if (installs.size < MAX_INSTALLS) installs.add(`${day}\t${installHash(batch.install, day)}`);
+    if (installs.size < MAX_INSTALLS) {
+      installs.set(`${day}\t${installHash(batch.install, day)}`, `${batch.os}\t${batch.version}\t${batch.plan}`);
+    }
     if (counts.size > MAX_KEYS) {
       // A long-lived instance that can't reach the database must not grow forever.
       counts.clear();
@@ -81,7 +85,7 @@ export async function flushTelemetry() {
   const restorePending = pending;
   const restoreOldest = oldestPending;
   counts = new Map();
-  installs = new Set();
+  installs = new Map();
   pending = 0;
   oldestPending = 0;
 
@@ -92,7 +96,7 @@ export async function flushTelemetry() {
         const [day, name, props, version] = k.split("\t");
         return { day, name, props, version, n };
       });
-      const inst = [...i].map((k) => k.split("\t"));
+      const inst = [...i].map(([k, v]) => [...k.split("\t"), ...v.split("\t")]);
       const queries = [];
       if (rows.length) {
         queries.push(sql`
@@ -109,9 +113,16 @@ export async function flushTelemetry() {
       }
       if (inst.length) {
         queries.push(sql`
-          insert into product_installs_daily (day, install_hash)
-          select * from unnest(${inst.map((x) => x[0])}::date[], ${inst.map((x) => x[1])}::text[])
-          on conflict do nothing`);
+          insert into product_installs_daily (day, install_hash, os, version, plan)
+          select * from unnest(
+            ${inst.map((x) => x[0])}::date[],
+            ${inst.map((x) => x[1])}::text[],
+            ${inst.map((x) => x[2])}::text[],
+            ${inst.map((x) => x[3])}::text[],
+            ${inst.map((x) => x[4])}::text[]
+          )
+          on conflict (day, install_hash) do update set
+            os = excluded.os, version = excluded.version, plan = excluded.plan`);
       }
       const day = today();
       if (lastPruneDay !== day) {
@@ -124,7 +135,7 @@ export async function flushTelemetry() {
       console.error("[telemetry] flush failed:", err instanceof Error ? err.message.slice(0, 80) : "error");
       // Put the counts back so a later flush retries them.
       for (const [k, n] of c) counts.set(k, (counts.get(k) ?? 0) + n);
-      for (const x of i) installs.add(x);
+      for (const [k, v] of i) if (!installs.has(k)) installs.set(k, v);
       pending += restorePending;
       if (!oldestPending || restoreOldest < oldestPending) oldestPending = restoreOldest;
     } finally {
