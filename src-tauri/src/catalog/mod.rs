@@ -100,8 +100,27 @@ struct CatalogModel {
     /// Oldest transcribe.cpp release that can load these files.
     #[cfg_attr(not(test), allow(dead_code))]
     min_engine: Option<String>,
+    /// On-device reasoning models (role `llm`): the one pre-selected for new
+    /// installs.
+    #[serde(default)]
+    recommended: bool,
+    /// On-device reasoning models (role `llm`): small enough that answers and
+    /// writing are noticeably weaker.
+    #[serde(default)]
+    basic: bool,
+    /// On-device reasoning models (role `llm`): derived quality/speed on the
+    /// same 0-1 bar as the speech models (see the catalog's `note`).
+    #[serde(default)]
+    scores: Option<ModelScores>,
     /// Every published file, keyed by quant.
     files: HashMap<String, CatalogFile>,
+}
+
+/// A reasoning model's derived scores, on the speech catalog's 0-1 bar.
+#[derive(Deserialize)]
+struct ModelScores {
+    accuracy: f64,
+    speed: f64,
 }
 
 #[derive(Deserialize)]
@@ -412,40 +431,106 @@ pub fn mirror_fallbacks(model_id: &str) -> Vec<MirrorFile> {
     )
 }
 
-/// The on-device reasoning model the catalog names (`reasoningModel`): the
-/// file Ambient fetches for "Download on-device AI", at the default quant.
+/// One on-device reasoning model (role `llm`) Ambient can download and run
+/// through llama.cpp for "On this computer" AI.
 pub struct ReasoningModelFile {
+    pub id: String,
+    pub name: String,
+    pub description: String,
     pub repo_id: String,
     pub revision: String,
     pub filename: String,
     pub size_bytes: u64,
+    /// Quality on the speech catalog's 0-1 bar (see the catalog's derivation
+    /// note); `None` when the catalog lists no scores.
+    pub accuracy_score: Option<f32>,
+    pub speed_score: Option<f32>,
+    /// Pre-selected for new installs.
+    pub recommended: bool,
+    /// Small enough that answers and writing are noticeably weaker.
+    pub basic: bool,
     sha256: String,
 }
 
-pub static REASONING_MODEL: Lazy<Option<ReasoningModelFile>> = Lazy::new(|| {
-    let id = ROOT.reasoning_model.as_deref()?;
-    let model = ROOT.models.iter().find(|m| m.id == id && m.role == "llm")?;
-    let file = model.default_file()?;
-    Some(ReasoningModelFile {
-        repo_id: model.repository.clone(),
-        revision: model.revision.clone(),
-        filename: file.filename.clone(),
-        size_bytes: file.size,
-        sha256: file.sha256.clone(),
-    })
+/// Every on-device reasoning model in the catalog, in catalog order. The first
+/// with `recommended` is the default for new installs; the catalog's
+/// `reasoningModel` id is the fallback when none is marked.
+pub static REASONING_MODELS: Lazy<Vec<ReasoningModelFile>> = Lazy::new(|| {
+    ROOT.models
+        .iter()
+        .filter(|m| m.role == "llm")
+        .filter_map(|m| {
+            let file = m.default_file()?;
+            Some(ReasoningModelFile {
+                id: m.id.clone(),
+                name: m.name.clone(),
+                description: m.description.clone(),
+                repo_id: m.repository.clone(),
+                revision: m.revision.clone(),
+                filename: file.filename.clone(),
+                size_bytes: file.size,
+                accuracy_score: m.scores.as_ref().map(|s| s.accuracy as f32),
+                speed_score: m.scores.as_ref().map(|s| s.speed as f32),
+                recommended: m.recommended,
+                basic: m.basic,
+                sha256: file.sha256.clone(),
+            })
+        })
+        .collect()
 });
 
-/// Ordered mirror URLs for the reasoning model's file.
-pub fn reasoning_model_mirrors() -> Vec<MirrorFile> {
-    REASONING_MODEL.as_ref().map_or_else(Vec::new, |m| {
-        mirror_files(
-            &m.repo_id,
-            &m.revision,
-            &m.filename,
-            &m.sha256,
-            m.size_bytes,
-        )
-    })
+/// One reasoning model by catalog id.
+pub fn reasoning_model(id: &str) -> Option<&'static ReasoningModelFile> {
+    REASONING_MODELS.iter().find(|m| m.id == id)
+}
+
+/// Whether a file on disk belongs to any catalog-listed reasoning model, so a
+/// downloaded one is never mistaken for a model the user added by hand.
+pub fn is_reasoning_model_filename(filename: &str) -> bool {
+    REASONING_MODELS.iter().any(|m| m.filename == filename)
+}
+
+/// The catalog's own default (`reasoningModel`): what an install with no
+/// choice saved — including one that already downloaded the old 1.7B Q8
+/// model — keeps using. New installs are pointed at the recommended entry
+/// instead (see `recommended_reasoning_model_id`).
+pub fn default_reasoning_model() -> Option<&'static ReasoningModelFile> {
+    let root = Lazy::force(&ROOT);
+    let id = root.reasoning_model.as_deref()?;
+    reasoning_model_fallback(id)
+}
+
+fn reasoning_model_fallback(id: &str) -> Option<&'static ReasoningModelFile> {
+    reasoning_model(id).or_else(|| REASONING_MODELS.first())
+}
+
+/// The id a fresh install should offer first: the recommended entry, else the
+/// catalog's `reasoningModel`, else the first listed.
+pub fn recommended_reasoning_model() -> Option<&'static ReasoningModelFile> {
+    REASONING_MODELS
+        .iter()
+        .find(|m| m.recommended)
+        .or_else(|| default_reasoning_model())
+        .or_else(|| REASONING_MODELS.first())
+}
+
+/// The model a saved selection refers to, falling back to the catalog default
+/// so a missing or stale id never leaves the app without an on-device model.
+pub fn resolve_reasoning_model(selected: Option<&str>) -> Option<&'static ReasoningModelFile> {
+    selected
+        .and_then(reasoning_model)
+        .or_else(default_reasoning_model)
+}
+
+/// Ordered mirror URLs for one reasoning model's file.
+pub fn reasoning_model_mirrors(model: &ReasoningModelFile) -> Vec<MirrorFile> {
+    mirror_files(
+        &model.repo_id,
+        &model.revision,
+        &model.filename,
+        &model.sha256,
+        model.size_bytes,
+    )
 }
 
 /// Ordered mirror URLs for the language detector's file.
@@ -553,20 +638,56 @@ mod tests {
     }
 
     #[test]
-    fn names_a_reasoning_model_that_is_never_transcription() {
-        let model = REASONING_MODEL
-            .as_ref()
-            .expect("catalog names an on-device reasoning model");
-        assert!(model.filename.ends_with(".gguf") && !model.filename.contains('/'));
-        assert!(model.size_bytes > 500_000_000 && model.size_bytes < 2_500_000_000);
-        assert_eq!(model.sha256.len(), 64);
-        assert!(CATALOG
-            .iter()
-            .all(|d| !d.files.iter().any(|f| f.filename == model.filename)));
-        assert!(reasoning_model_mirrors()[0].url.ends_with(&format!(
-            "/{}/{}/{}",
-            model.repo_id, model.revision, model.filename
-        )));
+    fn offers_reasoning_models_that_are_never_transcription() {
+        assert_eq!(REASONING_MODELS.len(), 4, "four on-device LLMs");
+        let mut ids: Vec<&str> = REASONING_MODELS.iter().map(|m| m.id.as_str()).collect();
+        ids.sort_unstable();
+        ids.dedup();
+        assert_eq!(ids.len(), REASONING_MODELS.len(), "ids are unique");
+        for model in REASONING_MODELS.iter() {
+            assert!(model.filename.ends_with(".gguf") && !model.filename.contains('/'));
+            assert!(model.size_bytes > 500_000_000 && model.size_bytes < 3_000_000_000);
+            assert_eq!(model.sha256.len(), 64);
+            assert!(model.accuracy_score.is_some() && model.speed_score.is_some());
+            assert!(CATALOG
+                .iter()
+                .all(|d| !d.files.iter().any(|f| f.filename == model.filename)));
+            let mirrors = reasoning_model_mirrors(model);
+            assert!(mirrors[0].url.ends_with(&format!(
+                "/{}/{}/{}",
+                model.repo_id, model.revision, model.filename
+            )));
+        }
+    }
+
+    #[test]
+    fn keeps_the_old_qwen3_1_7b_q8_entry_and_its_default() {
+        // Anyone who already downloaded the old model keeps working: its id
+        // and file are unchanged, and it stays the catalog's default.
+        let old = reasoning_model("qwen3-1.7b").expect("the previous id still resolves");
+        assert_eq!(old.filename, "Qwen3-1.7B-Q8_0.gguf");
+        assert_eq!(old.revision, "90862c4b9d2787eaed51d12237eafdfe7c5f6077");
+        assert_eq!(
+            default_reasoning_model().map(|m| m.id.as_str()),
+            Some("qwen3-1.7b")
+        );
+        assert_eq!(
+            recommended_reasoning_model().map(|m| m.id.as_str()),
+            Some("qwen3-1.7b-q4")
+        );
+        // A saved id resolves to itself; a stale one to the default.
+        assert_eq!(
+            resolve_reasoning_model(Some("qwen3-4b")).map(|m| m.id.as_str()),
+            Some("qwen3-4b")
+        );
+        assert_eq!(
+            resolve_reasoning_model(Some("gone")).map(|m| m.id.as_str()),
+            Some("qwen3-1.7b")
+        );
+        assert_eq!(
+            resolve_reasoning_model(None).map(|m| m.id.as_str()),
+            Some("qwen3-1.7b")
+        );
     }
 
     #[test]
