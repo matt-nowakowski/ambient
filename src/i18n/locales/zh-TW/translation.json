@@ -2,6 +2,9 @@
   "tray": {
     "settings": "設定…",
     "checkUpdates": "檢查更新…",
+    "restartToUpdate": "重新啟動以更新",
+    "updateNotificationTitle": "{{appName}} {{version}} 已準備就緒",
+    "updateNotificationBody": "重新啟動以完成更新。",
     "copyLastTranscript": "複製最新轉錄",
     "unloadModel": "卸載模型",
     "model": "模型",
@@ -948,11 +951,19 @@
     "installing": "安裝中…",
     "preparing": "準備中…",
     "checkForUpdates": "檢查更新",
+    "restartToUpdate": "重新啟動以更新",
     "portableUpdateTitle": "需要手動更新",
     "portableUpdateMessage": "可攜式安裝無法自動更新。請透過下方按鈕下載適用於你的系統的安裝程式，執行後安裝到相同資料夾，你的 Data/ 資料夾（設定、模型、錄音）會保留在原處。",
     "portableUpdateButton": "下載安裝程式",
     "portableUpdateBrowseMessage": "可攜式安裝無法自動更新。請從 GitHub Releases 下載適用於你的系統的最新版本，並安裝到相同資料夾，你的 Data/ 資料夾（設定、模型、錄音）會保留在原處。",
     "portableUpdateBrowseButton": "開啟 GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} 正在忙碌。可以等你忙完後再重新啟動。",
+    "notReady": "更新尚未準備好。請稍後再試。",
+    "installFailed": "無法安裝更新。請稍後再試。",
+    "checkFailed": "無法檢查更新。請檢查網路連線後再試一次。",
+    "downloadFailed": "無法下載更新。請檢查網路連線後再試一次。"
   },
   "whatsNew": {
     "title": "{{appName}} v{{version}} 新功能"

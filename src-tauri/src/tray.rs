@@ -66,6 +66,9 @@ struct MenuInputs {
     downloaded_models: Vec<(String, String)>,
     locale: String,
     update_checks_enabled: bool,
+    /// Version downloaded and waiting for a restart, if any. Drives the
+    /// "Restart to update" item at the top of the menu.
+    update_ready: Option<String>,
 }
 
 /// Complete description of what the tray should look like.
@@ -347,6 +350,7 @@ fn compute_desired(app: &AppHandle, icon_state: TrayIconState) -> TrayDesired {
             downloaded_models,
             locale: settings.app_language,
             update_checks_enabled: settings.update_checks_enabled,
+            update_ready: crate::updates::ready_version(app),
         },
     }
 }
@@ -505,6 +509,26 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
     // Create common menu items
     let version_label = version_label();
     let version_i = MenuItem::with_id(app, "version", &version_label, false, None::<&str>)?;
+    // A downloaded update gets the first actionable line: restarting is what
+    // the user wants, and it goes away the moment they do.
+    let restart_i = match &inputs.update_ready {
+        Some(_) => {
+            // English when a locale hasn't translated it yet (build.rs emits "").
+            let label = if strings.restart_to_update.is_empty() {
+                get_tray_translations(Some("en".to_string())).restart_to_update
+            } else {
+                strings.restart_to_update.clone()
+            };
+            Some(MenuItem::with_id(
+                app,
+                "restart_to_update",
+                &label,
+                true,
+                None::<&str>,
+            )?)
+        }
+        None => None,
+    };
     let settings_i = MenuItem::with_id(
         app,
         "settings",
@@ -607,6 +631,13 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
     // enabled flag.
     if settings::update_checks_forced_disabled() {
         menu.remove(&check_updates_i)?;
+    }
+
+    // Below the version line, above everything else, so it's the first thing
+    // seen when a version is sitting ready.
+    if let Some(restart_i) = restart_i {
+        menu.insert(&restart_i, 2)?;
+        menu.insert(&separator()?, 3)?;
     }
 
     // Both layouts start with [version, separator, ...]; slot the warning in
@@ -725,6 +756,7 @@ mod tests {
             downloaded_models: vec![("small".to_string(), "Small".to_string())],
             locale: "en".to_string(),
             update_checks_enabled: true,
+            update_ready: None,
         }
     }
 

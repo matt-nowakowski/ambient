@@ -47,6 +47,7 @@ mod telemetry;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
+mod updates;
 mod utils;
 #[cfg(any(target_os = "windows", test))]
 mod win;
@@ -348,6 +349,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(transcription_manager.clone());
     app_handle.manage(history_manager.clone());
     app_handle.manage(tray::TrayState::new());
+    app_handle.manage(updates::UpdateManager::new());
     app_handle.manage(TranscriptionJobManager::new(app_handle));
 
     // Note: Shortcuts are NOT initialized here.
@@ -427,7 +429,14 @@ fn initialize_core_logic(app_handle: &AppHandle) {
                 let settings = settings::get_settings(app);
                 if settings::update_checks_effectively_enabled(&settings) {
                     show_main_window(app);
-                    let _ = app.emit("check-for-updates", ());
+                    updates::trigger(app, true);
+                }
+            }
+            "restart_to_update" => {
+                if let Err(e) = updates::install_from_ui(app) {
+                    // Refused (mid-recording, or nothing downloaded): leave the
+                    // item in place and say why in the log.
+                    log::warn!("restart-to-update ignored: {e}");
                 }
             }
             "copy_last_transcript" => {
@@ -511,6 +520,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     telemetry::init(app_handle);
     checkin::spawn(app_handle.clone());
     remote_config::start(app_handle);
+    updates::spawn(app_handle.clone());
 }
 
 #[tauri::command]
@@ -520,9 +530,25 @@ fn trigger_update_check(app: AppHandle) -> Result<(), String> {
     if !settings::update_checks_effectively_enabled(&settings) {
         return Ok(());
     }
-    app.emit("check-for-updates", ())
-        .map_err(|e| e.to_string())?;
+    // The Rust side owns the check; the footer reflects the result through the
+    // update-status event. manual = true so a failure says why.
+    updates::trigger(&app, true);
     Ok(())
+}
+
+/// The footer's first paint: what the update flow is doing right now.
+#[tauri::command]
+#[specta::specta]
+fn update_status(app: AppHandle) -> updates::UpdateStatus {
+    updates::status(&app)
+}
+
+/// Install the version that is already downloaded and restart. Refused while
+/// recording, transcribing, in a meeting or running an agent task.
+#[tauri::command]
+#[specta::specta]
+fn install_ready_update(app: AppHandle) -> Result<(), String> {
+    updates::install_from_ui(&app)
 }
 
 #[tauri::command]
@@ -912,6 +938,8 @@ pub fn run(cli_args: CliArgs) {
             dictation_apps::get_dictation_conflicts,
             secure_input::run_keyboard_diagnostic,
             trigger_update_check,
+            update_status,
+            install_ready_update,
             show_main_window_command,
             commands::cancel_operation,
             commands::frontend_error,
@@ -985,6 +1013,7 @@ pub fn run(cli_args: CliArgs) {
             managers::transcription::StreamPhaseEvent,
             transcription_coordinator::RecordingStateEvent,
             actions::TranscriptionCompleteEvent,
+            updates::UpdateStatus,
         ])
         // Sent to the HUD window as plain events, so not reachable from any command.
         .typ::<hud::HudContent>()
@@ -1097,6 +1126,8 @@ pub fn run(cli_args: CliArgs) {
         .plugin(tauri_plugin_os::init())
         .plugin(system_languages::init())
         .plugin(tauri_plugin_clipboard_manager::init())
+        // The "new version is ready, restart to update" system notification.
+        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_macos_permissions::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_store::Builder::default().build())
@@ -1335,6 +1366,9 @@ pub fn run(cli_args: CliArgs) {
             }
             tauri::WindowEvent::Focused(true) if window.label() == "main" => {
                 plan::on_main_window_focus(window.app_handle());
+                // A returning user is a good moment to check for a new version
+                // (throttled to once an hour inside).
+                updates::on_main_window_focus(window.app_handle());
             }
             tauri::WindowEvent::Focused(false) if window.label() == "main" => {
                 intro::on_main_focus_lost(window.app_handle());
@@ -1377,6 +1411,10 @@ pub fn run(cli_args: CliArgs) {
         // However the app is quitting (tray, Cmd+Q, the menu bar, a
         // signal), make sure the process actually ends.
         tauri::RunEvent::Exit => {
+            // A version the user ignored installs here, so the next launch is
+            // already on it. Runs before the watchdog is armed: a half-finished
+            // bundle swap is worse than a slow quit.
+            updates::install_on_quit(app);
             arm_exit_watchdog();
             telemetry::flush_on_quit(app);
             local_llm::stop();

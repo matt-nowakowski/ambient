@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Nastavení…",
     "checkUpdates": "Zkontrolovat aktualizace…",
+    "restartToUpdate": "Restartovat a aktualizovat",
+    "updateNotificationTitle": "{{appName}} {{version}} je připraven",
+    "updateNotificationBody": "Restartujte a aktualizujte.",
     "copyLastTranscript": "Zkopírovat poslední přepis",
     "unloadModel": "Uvolnit model",
     "model": "Model",
@@ -954,11 +957,19 @@
     "installing": "Instalace…",
     "preparing": "Příprava…",
     "checkForUpdates": "Zkontrolovat aktualizace",
+    "restartToUpdate": "Restartovat a aktualizovat",
     "portableUpdateTitle": "Vyžadována ruční aktualizace",
     "portableUpdateMessage": "Přenosné instalace nelze aktualizovat automaticky. Níže stáhněte instalátor pro svůj systém, spusťte jej a nainstalujte do stejné složky – vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
     "portableUpdateButton": "Stáhnout instalátor",
     "portableUpdateBrowseMessage": "Přenosné instalace nelze aktualizovat automaticky. Stáhněte nejnovější verzi pro svůj systém z GitHub Releases a nainstalujte ji do stejné složky – vaše složka Data/ (nastavení, modely, nahrávky) zůstane na místě.",
     "portableUpdateBrowseButton": "Otevřít GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} je teď zaneprázdněný. Restart může počkat, až budete hotovi.",
+    "notReady": "Aktualizace ještě není připravená. Zkuste to za chvíli znovu.",
+    "installFailed": "Aktualizaci se nepodařilo nainstalovat. Zkuste to později.",
+    "checkFailed": "Aktualizace se nepodařilo zkontrolovat. Zkontrolujte připojení a zkuste to znovu.",
+    "downloadFailed": "Aktualizaci se nepodařilo stáhnout. Zkontrolujte připojení a zkuste to znovu."
   },
   "whatsNew": {
     "title": "Novinky v {{appName}} v{{version}}"

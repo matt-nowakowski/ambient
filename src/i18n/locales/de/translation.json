@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Einstellungen…",
     "checkUpdates": "Nach Updates suchen…",
+    "restartToUpdate": "Neu starten zum Aktualisieren",
+    "updateNotificationTitle": "{{appName}} {{version}} ist bereit",
+    "updateNotificationBody": "Neu starten, um zu aktualisieren.",
     "copyLastTranscript": "Letzte Transkription kopieren",
     "unloadModel": "Modell entladen",
     "model": "Modell",
@@ -948,11 +951,19 @@
     "installing": "Wird installiert…",
     "preparing": "Wird vorbereitet…",
     "checkForUpdates": "Nach Updates suchen",
+    "restartToUpdate": "Zum Aktualisieren neu starten",
     "portableUpdateTitle": "Manuelles Update erforderlich",
     "portableUpdateMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Lade unten den Installer für dein System herunter, führe ihn aus und installiere in denselben Ordner – dein Data/-Ordner (Einstellungen, Modelle, Aufnahmen) bleibt erhalten.",
     "portableUpdateButton": "Installer herunterladen",
     "portableUpdateBrowseMessage": "Portable Installationen können nicht automatisch aktualisiert werden. Lade die neueste Version für dein System von GitHub Releases herunter und installiere sie in denselben Ordner – dein Data/-Ordner (Einstellungen, Modelle, Aufnahmen) bleibt erhalten.",
     "portableUpdateBrowseButton": "GitHub Releases öffnen"
+  },
+  "updates": {
+    "busy": "{{appName}} ist gerade beschäftigt. Der Neustart kann warten, bis du fertig bist.",
+    "notReady": "Das Update ist noch nicht bereit. Versuche es gleich noch einmal.",
+    "installFailed": "Das Update konnte nicht installiert werden. Versuche es später erneut.",
+    "checkFailed": "Die Suche nach Updates ist fehlgeschlagen. Prüfe deine Verbindung und versuche es erneut.",
+    "downloadFailed": "Das Update konnte nicht heruntergeladen werden. Prüfe deine Verbindung und versuche es erneut."
   },
   "whatsNew": {
     "title": "Neu in {{appName}} v{{version}}"

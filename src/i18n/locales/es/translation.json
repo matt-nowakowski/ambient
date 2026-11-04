@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Configuración…",
     "checkUpdates": "Buscar actualizaciones…",
+    "restartToUpdate": "Reiniciar para actualizar",
+    "updateNotificationTitle": "{{appName}} {{version}} está listo",
+    "updateNotificationBody": "Reinicia para actualizar.",
     "copyLastTranscript": "Copiar la última transcripción",
     "unloadModel": "Liberar modelo",
     "model": "Modelo",
@@ -951,11 +954,19 @@
     "installing": "Instalando…",
     "preparing": "Preparando…",
     "checkForUpdates": "Buscar actualizaciones",
+    "restartToUpdate": "Reiniciar para actualizar",
     "portableUpdateTitle": "Actualización manual necesaria",
     "portableUpdateMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga abajo el instalador para tu sistema, ejecútalo e instálalo en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
     "portableUpdateButton": "Descargar instalador",
     "portableUpdateBrowseMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga la versión más reciente para tu sistema desde GitHub Releases e instálala en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
     "portableUpdateBrowseButton": "Abrir GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} está ocupado ahora mismo. El reinicio puede esperar a que termines.",
+    "notReady": "La actualización aún no está lista. Vuelve a intentarlo en un momento.",
+    "installFailed": "No se pudo instalar la actualización. Inténtalo de nuevo más tarde.",
+    "checkFailed": "No se pudieron buscar actualizaciones. Revisa tu conexión e inténtalo de nuevo.",
+    "downloadFailed": "No se pudo descargar la actualización. Revisa tu conexión e inténtalo de nuevo."
   },
   "whatsNew": {
     "title": "Nuevo en {{appName}} v{{version}}"

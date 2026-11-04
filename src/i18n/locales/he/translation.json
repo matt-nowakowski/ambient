@@ -2,6 +2,9 @@
   "tray": {
     "settings": "הגדרות…",
     "checkUpdates": "בדוק עדכונים…",
+    "restartToUpdate": "הפעלה מחדש לעדכון",
+    "updateNotificationTitle": "{{appName}} {{version}} מוכן",
+    "updateNotificationBody": "הפעילו מחדש כדי לעדכן.",
     "copyLastTranscript": "העתק את התמלול האחרון",
     "unloadModel": "פרוק מודל",
     "model": "מודל",
@@ -951,11 +954,19 @@
     "installing": "מתקין…",
     "preparing": "מכין…",
     "checkForUpdates": "בדוק עדכונים",
+    "restartToUpdate": "הפעלה מחדש לעדכון",
     "portableUpdateTitle": "נדרש עדכון ידני",
     "portableUpdateMessage": "התקנות ניידות אינן מתעדכנות אוטומטית. הורד למטה את המתקין המתאים למערכת שלך, הפעל אותו והתקן לאותה תיקייה — תיקיית Data/ (הגדרות, מודלים, הקלטות) נשמרת במקומה.",
     "portableUpdateButton": "הורדת המתקין",
     "portableUpdateBrowseMessage": "התקנות ניידות אינן מתעדכנות אוטומטית. הורד את הגרסה האחרונה המתאימה למערכת שלך מ-GitHub Releases והתקן אותה לאותה תיקייה — תיקיית Data/ (הגדרות, מודלים, הקלטות) נשמרת במקומה.",
     "portableUpdateBrowseButton": "פתח את GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} עסוק כרגע. אפשר לחכות עם ההפעלה מחדש עד שתסיימו.",
+    "notReady": "העדכון עדיין לא מוכן. נסו שוב בעוד רגע.",
+    "installFailed": "לא ניתן להתקין את העדכון. נסו שוב מאוחר יותר.",
+    "checkFailed": "לא ניתן לבדוק עדכונים. בדקו את החיבור ונסו שוב.",
+    "downloadFailed": "לא ניתן להוריד את העדכון. בדקו את החיבור ונסו שוב."
   },
   "whatsNew": {
     "title": "חדש ב-{{appName}} v{{version}}"

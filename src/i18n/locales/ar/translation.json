@@ -2,6 +2,9 @@
   "tray": {
     "settings": "الإعدادات…",
     "checkUpdates": "التحقق من وجود تحديثات…",
+    "restartToUpdate": "إعادة التشغيل للتحديث",
+    "updateNotificationTitle": "{{appName}} {{version}} جاهز",
+    "updateNotificationBody": "أعد التشغيل للتحديث.",
     "copyLastTranscript": "نسخ آخر نص تم تفريغه",
     "unloadModel": "إلغاء تحميل النموذج",
     "model": "النموذج",
@@ -960,11 +963,19 @@
     "installing": "جارٍ التثبيت…",
     "preparing": "جارٍ التحضير…",
     "checkForUpdates": "التحقق من وجود تحديثات",
+    "restartToUpdate": "إعادة التشغيل للتحديث",
     "portableUpdateTitle": "التحديث اليدوي مطلوب",
     "portableUpdateMessage": "لا يمكن تحديث التثبيتات المحمولة تلقائيًا. نزّل المثبّت المناسب لنظامك من الزر أدناه، شغّله، وثبّته في المجلد نفسه — يبقى مجلد Data/ (الإعدادات والنماذج والتسجيلات) في مكانه.",
     "portableUpdateButton": "تنزيل المثبّت",
     "portableUpdateBrowseMessage": "لا يمكن تحديث التثبيتات المحمولة تلقائيًا. نزّل أحدث إصدار مناسب لنظامك من GitHub Releases وثبّته في المجلد نفسه — يبقى مجلد Data/ (الإعدادات والنماذج والتسجيلات) في مكانه.",
     "portableUpdateBrowseButton": "فتح GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} مشغول الآن. يمكن تأجيل إعادة التشغيل إلى أن تنتهي.",
+    "notReady": "التحديث ليس جاهزًا بعد. حاول مرة أخرى بعد قليل.",
+    "installFailed": "تعذّر تثبيت التحديث. حاول مرة أخرى لاحقًا.",
+    "checkFailed": "تعذّر البحث عن تحديثات. تحقّق من اتصالك وحاول مرة أخرى.",
+    "downloadFailed": "تعذّر تنزيل التحديث. تحقّق من اتصالك وحاول مرة أخرى."
   },
   "whatsNew": {
     "title": "الجديد في {{appName}} v{{version}}"
