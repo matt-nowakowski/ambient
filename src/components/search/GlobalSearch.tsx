@@ -278,6 +278,8 @@ const findLabel = (root: HTMLElement, label: string): HTMLElement | null => {
   );
   let loose: HTMLElement | null = null;
   for (const el of candidates) {
+    // Links and summaries that repeat a title aren't where it lives.
+    if (el.closest("[data-search-skip]")) continue;
     if (ownText(el) === label) return el;
     if (!loose && el.textContent?.trim() === label) loose = el;
   }

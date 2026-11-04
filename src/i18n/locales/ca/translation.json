@@ -487,8 +487,8 @@
       },
       "channel": {
         "title": "Canal d'entrada",
-        "description": "Seleccioneu el canal d'entrada des del qual voleu enregistrar. Feu servir aquesta opció si la interfície d'àudio té diverses entrades.",
-        "average": "Fes la mitjana de tots els canals",
+        "description": "Per a interfícies d'àudio amb diverses entrades: trieu la del micròfon. Si no, deixeu-ho en tots els canals.",
+        "average": "Tots els canals, barrejats",
         "channel": "Canal {{n}}"
       },
       "audioFeedback": {
@@ -910,7 +910,8 @@
       "description": "Feu una pregunta o demaneu que faci alguna cosa, en lloc d'escriure.",
       "routing": {
         "label": "Entendre peticions mentre dicteu",
-        "description": "Les peticions es gestionen; tota la resta s'escriu com sempre. Desactiveu-ho per escriure sempre."
+        "description": "Les peticions es gestionen; la resta s'escriu com sempre. Desactiveu-ho per escriure sempre. La drecera de preguntar funciona igualment.",
+        "needsScreen": "Per preguntar sobre la pantalla, activeu també"
       },
       "wake": {
         "label": "Mans lliures: digueu «Hola Ambient»",
@@ -1114,7 +1115,14 @@
       "unlock": "Desbloqueja'l",
       "onDevice": "Mantén-ho en aquest Mac",
       "onDeviceDescription": "Feu servir Apple Intelligence. Res no surt del vostre Mac.",
-      "freeUsesLeft": "Queden {{left}} de {{limit}} usos gratuïts d'IA aquesta setmana"
+      "freeUsesLeft": "Queden {{left}} de {{limit}} usos gratuïts d'IA aquesta setmana",
+      "scope": "Només canvia com es poleix el que dicteu. Les respostes, els suggeriments i la lectura de pantalla són a part.",
+      "where": {
+        "on_device": "Es poleix en aquest ordinador.",
+        "cloud": "Es poleix al núvol.",
+        "blocked": "Omès: «Només en aquest ordinador» és actiu i aquest ordinador no té cap model local, així que el dictat s'escriu tal com el dieu."
+      },
+      "onDeviceAnswers": "Amb la intel·ligència en Automàtic, les respostes també l'utilitzen."
     },
     "writing": {
       "title": "Escriptura",
@@ -1133,7 +1141,8 @@
           "description": "Polit amb IA a cada dictat."
         }
       },
-      "needsPolish": "Per polir cal activar el polit amb IA. Redactar per tu compta com una sol·licitud d'IA."
+      "needsPolish": "Per polir cal activar el polit amb IA. Redactar per tu compta com una sol·licitud d'IA.",
+      "scope": "Només canvia el que s'escriu als camps de text. Preguntar a {{appName}} i els suggeriments són a part."
     },
     "trial": {
       "daysLeft_one": "Queda {{count}} dia",
@@ -1444,7 +1453,7 @@
       "proactive": {
         "title": "Oferir suggeriments",
         "reads": "Proposa un pas següent en el moment just: fils, esborranys, dates, errors, reunions.",
-        "leaves": "Es decideix en aquest ordinador, o al núvol si ho trieu a sota. No s'envia res més si no ho accepteu, excepte els avisos de les reunions."
+        "leaves": "A part de decidir, no s'envia res fins que n'accepteu un."
       },
       "meetings": {
         "title": "Notes de reunions",
@@ -1575,7 +1584,7 @@
     },
     "intelligence": {
       "title": "On s'executa la intel·ligència",
-      "description": "Què decideix els suggeriments i escriu les respostes. Totes les funcions van bé amb qualsevol opció.",
+      "description": "On es processen les respostes, l'escriptura per vós, els suggeriments, els resums de reunions i el poliment amb IA. Cada funció funciona amb qualsevol opció.",
       "capability": {
         "apple": "Apple Intelligence disponible en aquest ordinador",
         "none": "Cap model al dispositiu en aquest ordinador"
@@ -1610,6 +1619,34 @@
       "perMonth": "Gratuït: {{limit}} al mes",
       "hours": "Gratuït: {{limit}} hores",
       "retention": "El pla Gratuït conserva les últimes {{limit}} hores. Pro conserva fins a 90 dies."
+    },
+    "depends": {
+      "screenContext": "Els suggeriments i la memòria no ho necessiten.",
+      "screenMemory": "Desactivar-ho esborra el que havia guardat.",
+      "route": {
+        "on_device": "Ara: es decideix en aquest ordinador.",
+        "cloud": "Ara: es decideix al núvol, amb un fragment sense dades sensibles.",
+        "offer": "Ara: regles simples. Pregunta una vegada abans de fer servir el núvol.",
+        "rules": "Ara: regles simples en aquest ordinador."
+      },
+      "meetingTips": "Els consells durant una trucada també necessiten"
+    },
+    "glance": {
+      "title": "Ara mateix",
+      "reads": "Llegeix la pantalla",
+      "cloud": "Pot enviar text al núvol",
+      "nothing": "Res. El dictat funciona com sempre.",
+      "pausedNothing": "Res mentre està en pausa.",
+      "nothingCloud": "Res. Cap text surt d'aquest ordinador.",
+      "items": {
+        "screen_context": "Quan pregunteu",
+        "screen_memory": "Memòria",
+        "proactive": "Suggeriments",
+        "answers": "Respostes i escriure per vós",
+        "polish": "Poliment amb IA",
+        "meetings": "Resums de reunions",
+        "telemetry": "Estadístiques d'ús"
+      }
     }
   },
   "meetings": {

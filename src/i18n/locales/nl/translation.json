@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Ingangskanaal",
-        "description": "Selecteer het ingangskanaal waarvan moet worden opgenomen. Gebruik dit als je audio-interface meerdere ingangen heeft.",
-        "average": "Gemiddelde van alle kanalen",
+        "description": "Voor audio-interfaces met meerdere ingangen: kies die van je microfoon. Laat het anders op alle kanalen staan.",
+        "average": "Alle kanalen, gemixt",
         "channel": "Kanaal {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Stel een vraag of laat iets doen, in plaats van te typen.",
       "routing": {
         "label": "Verzoeken herkennen tijdens dicteren",
-        "description": "Verzoeken worden afgehandeld; al het andere wordt gewoon getypt. Zet uit om altijd te typen."
+        "description": "Verzoeken worden afgehandeld; de rest wordt gewoon getypt. Zet uit om altijd te typen. De Vraag-sneltoets werkt hoe dan ook.",
+        "needsScreen": "Om iets over je scherm te vragen, zet ook aan:"
       },
       "wake": {
         "label": "Handsfree: zeg ‘Hallo Ambient’",
@@ -1109,7 +1110,14 @@
       "unlock": "Ga voor onbeperkt",
       "onDevice": "Houd het op deze Mac",
       "onDeviceDescription": "Gebruik in plaats daarvan Apple Intelligence. Er verlaat niets je Mac.",
-      "freeUsesLeft": "Nog {{left}} van {{limit}} gratis AI-gebruiken deze week"
+      "freeUsesLeft": "Nog {{left}} van {{limit}} gratis AI-gebruiken deze week",
+      "scope": "Verandert alleen hoe je dictaat wordt opgeschoond. Antwoorden, suggesties en het lezen van je scherm staan hier los van.",
+      "where": {
+        "on_device": "Afgewerkt op deze computer.",
+        "cloud": "Afgewerkt in de cloud.",
+        "blocked": "Overgeslagen: ‘Alleen op deze computer’ staat aan en deze computer heeft geen lokaal model, dus je dictaat wordt getypt zoals gezegd."
+      },
+      "onDeviceAnswers": "Met de intelligentie op Automatisch gebruiken antwoorden het ook."
     },
     "writing": {
       "title": "Schrijven",
@@ -1128,7 +1136,8 @@
           "description": "AI-polish bij elk dictaat."
         }
       },
-      "needsPolish": "Oppoetsen werkt alleen met AI-polish aan. Voor je schrijven telt als AI-verzoek."
+      "needsPolish": "Oppoetsen werkt alleen met AI-polish aan. Voor je schrijven telt als AI-verzoek.",
+      "scope": "Verandert alleen wat er in tekstvelden wordt getypt. Vragen aan {{appName}} en suggesties staan hier los van."
     },
     "trial": {
       "daysLeft_one": "Nog {{count}} dag",
@@ -1436,7 +1445,7 @@
       "proactive": {
         "title": "Suggesties doen",
         "reads": "Stelt op het juiste moment een volgende stap voor: threads, concepten, datums, fouten, vergaderingen.",
-        "leaves": "Wordt op deze computer bepaald, of in de cloud als je dat hieronder kiest. Verder wordt er niets verstuurd tenzij je accepteert, behalve tips tijdens vergaderingen."
+        "leaves": "Behalve om te beslissen wordt niets verstuurd tot je er een accepteert."
       },
       "meetings": {
         "title": "Vergadernotities",
@@ -1564,7 +1573,7 @@
     },
     "intelligence": {
       "title": "Waar de intelligentie draait",
-      "description": "Wat over suggesties beslist en antwoorden schrijft. Elke functie werkt met elke keuze.",
+      "description": "Waar antwoorden, schrijven voor jou, suggesties, vergaderverslagen en AI-afwerking worden verwerkt. Elke functie werkt met elke keuze.",
       "capability": {
         "apple": "Apple Intelligence beschikbaar op deze computer",
         "none": "Geen lokaal model op deze computer"
@@ -1598,6 +1607,34 @@
       "perMonth": "Gratis: {{limit}} per maand",
       "hours": "Gratis: {{limit}} uur",
       "retention": "Gratis bewaart de laatste {{limit}} uur. Pro bewaart tot 90 dagen."
+    },
+    "depends": {
+      "screenContext": "Suggesties en geheugen hebben dit niet nodig.",
+      "screenMemory": "Uitzetten wist wat het bewaard had.",
+      "route": {
+        "on_device": "Nu: besloten op deze computer.",
+        "cloud": "Nu: besloten in de cloud, op basis van een geschoond fragment.",
+        "offer": "Nu: eenvoudige regels. Vraagt één keer voordat de cloud wordt gebruikt.",
+        "rules": "Nu: eenvoudige regels op deze computer."
+      },
+      "meetingTips": "Tips tijdens een gesprek hebben ook nodig:"
+    },
+    "glance": {
+      "title": "Op dit moment",
+      "reads": "Leest je scherm",
+      "cloud": "Kan tekst naar de cloud sturen",
+      "nothing": "Niets. Dicteren werkt gewoon.",
+      "pausedNothing": "Niets zolang het gepauzeerd is.",
+      "nothingCloud": "Niets. Er verlaat geen tekst deze computer.",
+      "items": {
+        "screen_context": "Als je iets vraagt",
+        "screen_memory": "Geheugen",
+        "proactive": "Suggesties",
+        "answers": "Antwoorden en schrijven voor jou",
+        "polish": "AI-afwerking",
+        "meetings": "Vergaderverslagen",
+        "telemetry": "Gebruikscijfers"
+      }
     }
   },
   "meetings": {

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { showError } from "@/lib/errors";
 import { commands } from "@/bindings";
 import { ToggleSwitch } from "../ui/ToggleSwitch";
+import { DependencyNote } from "../ui/SettingLink";
 import { useSettings } from "../../hooks/useSettings";
 
 /** Hands-free "Hey Ambient" (opt-in). */
@@ -50,6 +51,20 @@ export const AgentRouting: React.FC<{ grouped?: boolean }> = ({
       description={t("settings.agent.routing.description")}
       descriptionMode="tooltip"
       grouped={grouped}
+      note={
+        // Questions about the window in front need screen reading.
+        !agent.screen_context && (
+          <DependencyNote
+            link={{
+              section: "privacy",
+              label: t("privacy.capabilities.screen_context.title"),
+              children: t("privacy.capabilities.screen_context.title"),
+            }}
+          >
+            {t("settings.agent.routing.needsScreen")}
+          </DependencyNote>
+        )
+      }
     />
   );
 };

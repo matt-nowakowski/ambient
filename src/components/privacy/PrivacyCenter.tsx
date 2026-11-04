@@ -43,6 +43,14 @@ import { Radio } from "../ui/Radio";
 import { Switch } from "../ui/Switch";
 import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SettingsGroup } from "../ui/SettingsGroup";
+import { DependencyNote } from "../ui/SettingLink";
+import { useSettings } from "../../hooks/useSettings";
+import {
+  answersMayUseCloud,
+  polishRoute,
+  suggestionRoute,
+} from "@/lib/whereItRuns";
+import { AtAGlance, type GlanceItem } from "./AtAGlance";
 import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
 import { UsageStats } from "./UsageStats";
@@ -178,6 +186,11 @@ export const PrivacyCenter: React.FC = () => {
   const [previewNote, setPreviewNote] = useState<string | null>(null);
   // Free's limits, for the small "Free: 10 a week" hints.
   const [limits, setLimits] = useState<UsageToday | null>(null);
+  // AI polish and telemetry live in app settings, not the agent's.
+  const { getSetting } = useSettings();
+  const polishOn = getSetting("post_process_enabled") ?? false;
+  const polishProvider = getSetting("post_process_provider_id") ?? "";
+  const telemetry = getSetting("telemetry") ?? false;
 
   const refresh = useCallback(async () => {
     setStatus(await commands.getAgentStatus());
@@ -244,6 +257,111 @@ export const PrivacyCenter: React.FC = () => {
       ? "on"
       : "off";
 
+  const route = suggestionRoute(
+    s.intelligence,
+    status.on_device_ready,
+    s.cloud_suggestions,
+    paid,
+  );
+  const intelligenceLink = {
+    section: "privacy" as const,
+    label: t("privacy.intelligence.title"),
+    children: t("privacy.intelligence.title"),
+  };
+
+  /** One line under a capability: what it depends on, or what it doesn't. */
+  const dependency = (cap: Capability): React.ReactNode => {
+    switch (cap) {
+      case "screen_context":
+        return (
+          <DependencyNote>{t("privacy.depends.screenContext")}</DependencyNote>
+        );
+      case "screen_memory":
+        return (
+          <DependencyNote>{t("privacy.depends.screenMemory")}</DependencyNote>
+        );
+      case "proactive":
+        return s.proactive ? (
+          <DependencyNote link={intelligenceLink}>
+            {t(`privacy.depends.route.${route}`)}
+          </DependencyNote>
+        ) : null;
+      case "meetings":
+        return s.meetings && !s.proactive ? (
+          <DependencyNote
+            link={{
+              section: "privacy",
+              label: t("privacy.capabilities.proactive.title"),
+              children: t("privacy.capabilities.proactive.title"),
+            }}
+          >
+            {t("privacy.depends.meetingTips")}
+          </DependencyNote>
+        ) : null;
+      default:
+        return null;
+    }
+  };
+
+  /** The summary up top: what reads the screen and what can reach the
+   * cloud, each a jump to the switch that controls it. */
+  const reads: GlanceItem[] = status.paused
+    ? []
+    : (["screen_context", "screen_memory", "proactive"] as const)
+        .filter((cap) => s[cap] && !UNSUPPORTED.includes(cap))
+        .map((cap) => ({
+          key: cap,
+          label: t(`privacy.glance.items.${cap}`),
+          target: {
+            section: "privacy",
+            label: t(`privacy.capabilities.${cap}.title`),
+          },
+        }));
+  const polish = polishRoute(
+    polishOn,
+    polishProvider,
+    s.intelligence,
+    s.on_device_when_possible,
+    status.on_device_ready,
+  );
+  const cloudCandidates: (GlanceItem | false)[] = [
+    answersMayUseCloud(s.intelligence, polishProvider) && {
+      key: "answers",
+      label: t("privacy.glance.items.answers"),
+      target: { section: "privacy", label: t("privacy.intelligence.title") },
+    },
+    polish === "cloud" && {
+      key: "polish",
+      label: t("privacy.glance.items.polish"),
+      target: { section: "account", label: t("account.polish.title") },
+    },
+    s.proactive &&
+      !status.paused &&
+      route === "cloud" && {
+        key: "proactive",
+        label: t("privacy.glance.items.proactive"),
+        target: {
+          section: "privacy",
+          label: t("privacy.capabilities.proactive.title"),
+        },
+      },
+    s.meetings &&
+      answersMayUseCloud(s.intelligence, polishProvider) && {
+        key: "meetings",
+        label: t("privacy.glance.items.meetings"),
+        target: {
+          section: "privacy",
+          label: t("privacy.capabilities.meetings.title"),
+        },
+      },
+    telemetry && {
+      key: "telemetry",
+      label: t("privacy.glance.items.telemetry"),
+      target: { section: "privacy", label: t("privacy.telemetry.label") },
+    },
+  ];
+  const cloud = cloudCandidates.filter((x): x is GlanceItem => !!x);
+
   /** Free's limit on a capability, as a short hint ("Free: 10 a week"). */
   const freeHint = (cap: Capability): string | null => {
     if (paid || !limits) return null;
@@ -298,6 +416,9 @@ export const PrivacyCenter: React.FC = () => {
             />
             {t(`privacy.capabilities.${cap}.leaves`)}
           </p>
+          {!unsupported && dependency(cap) && (
+            <div className="mt-1">{dependency(cap)}</div>
+          )}
           {/* Free keeps a day of memory; the choices are Pro's. */}
           {cap === "screen_memory" && s.screen_memory && hint && (
             <p className="mt-2 text-small text-ink-2">
@@ -534,6 +655,8 @@ export const PrivacyCenter: React.FC = () => {
             </div>
           )}
         </div>
+
+        <AtAGlance reads={reads} cloud={cloud} paused={status.paused} />
 
         {/* Capabilities, grouped by what they touch. Each row: what it reads,
             then (smaller) what leaves the Mac. */}

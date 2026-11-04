@@ -484,8 +484,8 @@
       },
       "channel": {
         "title": "Kênh đầu vào",
-        "description": "Chọn kênh đầu vào để ghi âm. Sử dụng tùy chọn này nếu giao diện âm thanh của bạn có nhiều đầu vào.",
-        "average": "Trung bình tất cả các kênh",
+        "description": "Cho giao diện âm thanh có nhiều đầu vào: chọn đầu vào gắn micro. Nếu không, cứ để tất cả kênh.",
+        "average": "Tất cả kênh, trộn chung",
         "channel": "Kênh {{n}}"
       },
       "audioFeedback": {
@@ -907,7 +907,8 @@
       "description": "Đặt câu hỏi hoặc nhờ làm việc gì đó, thay vì gõ.",
       "routing": {
         "label": "Hiểu yêu cầu khi đọc chính tả",
-        "description": "Yêu cầu sẽ được xử lý; mọi thứ khác vẫn được nhập như thường. Tắt để luôn nhập văn bản."
+        "description": "Yêu cầu sẽ được xử lý; mọi thứ khác được gõ như thường. Tắt để luôn gõ. Phím tắt Hỏi vẫn hoạt động.",
+        "needsScreen": "Để hỏi về màn hình, hãy bật thêm"
       },
       "wake": {
         "label": "Rảnh tay: nói “Hey Ambient”",
@@ -1109,7 +1110,14 @@
       "unlock": "Nhận không giới hạn",
       "onDevice": "Giữ trên Mac này",
       "onDeviceDescription": "Hãy dùng Apple Intelligence thay thế. Không có gì rời khỏi Mac của bạn.",
-      "freeUsesLeft": "Còn {{left}}/{{limit}} lượt dùng AI miễn phí tuần này"
+      "freeUsesLeft": "Còn {{left}}/{{limit}} lượt dùng AI miễn phí tuần này",
+      "scope": "Chỉ thay đổi cách nội dung bạn đọc chính tả được chỉnh gọn. Câu trả lời, gợi ý và việc đọc màn hình là riêng.",
+      "where": {
+        "on_device": "Trau chuốt trên máy tính này.",
+        "cloud": "Trau chuốt trên đám mây.",
+        "blocked": "Bỏ qua: “Chỉ trên máy tính này” đang bật và máy tính này không có mô hình cục bộ, nên nội dung được gõ đúng như bạn nói."
+      },
+      "onDeviceAnswers": "Khi Trí tuệ ở chế độ Tự động, câu trả lời cũng dùng nó."
     },
     "writing": {
       "title": "Viết",
@@ -1128,7 +1136,8 @@
           "description": "Trau chuốt bằng AI cho mọi lần đọc."
         }
       },
-      "needsPolish": "Trau chuốt cần bật trau chuốt bằng AI. Viết giúp bạn được tính là một yêu cầu AI."
+      "needsPolish": "Trau chuốt cần bật trau chuốt bằng AI. Viết giúp bạn được tính là một yêu cầu AI.",
+      "scope": "Chỉ thay đổi nội dung gõ vào ô văn bản. Việc hỏi {{appName}} và gợi ý là riêng."
     },
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",
@@ -1436,7 +1445,7 @@
       "proactive": {
         "title": "Đưa ra gợi ý",
         "reads": "Gợi ý bước tiếp theo đúng lúc: chuỗi tin nhắn, bản nháp, ngày tháng, lỗi, cuộc họp.",
-        "leaves": "Được quyết định trên máy tính này, hoặc trên đám mây nếu bạn chọn bên dưới. Không gửi gì khác trừ khi bạn chấp nhận, ngoại trừ nhắc nhở trong cuộc họp."
+        "leaves": "Ngoài việc quyết định, không gì được gửi cho đến khi bạn chấp nhận một gợi ý."
       },
       "meetings": {
         "title": "Ghi chú cuộc họp",
@@ -1564,7 +1573,7 @@
     },
     "intelligence": {
       "title": "Nơi Trí tuệ hoạt động",
-      "description": "Quyết định gợi ý và viết câu trả lời. Mọi tính năng đều hoạt động với mỗi lựa chọn.",
+      "description": "Nơi xử lý câu trả lời, viết giúp bạn, gợi ý, tóm tắt cuộc họp và trau chuốt bằng AI. Mọi tính năng đều chạy với mỗi lựa chọn.",
       "capability": {
         "apple": "Apple Intelligence khả dụng trên máy tính này",
         "none": "Máy tính này không có mô hình chạy trên thiết bị"
@@ -1598,6 +1607,34 @@
       "perMonth": "Miễn phí: {{limit}} mỗi tháng",
       "hours": "Miễn phí: {{limit}} giờ",
       "retention": "Gói Miễn phí giữ {{limit}} giờ gần nhất. Pro giữ tối đa 90 ngày."
+    },
+    "depends": {
+      "screenContext": "Gợi ý và bộ nhớ không cần tùy chọn này.",
+      "screenMemory": "Tắt sẽ xóa những gì đã lưu.",
+      "route": {
+        "on_device": "Hiện tại: quyết định trên máy tính này.",
+        "cloud": "Hiện tại: quyết định trên đám mây, từ một đoạn đã ẩn dữ liệu nhạy cảm.",
+        "offer": "Hiện tại: quy tắc đơn giản. Hỏi một lần trước khi dùng đám mây.",
+        "rules": "Hiện tại: quy tắc đơn giản trên máy tính này."
+      },
+      "meetingTips": "Mẹo trong cuộc gọi cũng cần"
+    },
+    "glance": {
+      "title": "Hiện tại",
+      "reads": "Đọc màn hình của bạn",
+      "cloud": "Có thể gửi văn bản lên đám mây",
+      "nothing": "Không có gì. Đọc chính tả vẫn hoạt động bình thường.",
+      "pausedNothing": "Không có gì khi đang tạm dừng.",
+      "nothingCloud": "Không có gì. Không văn bản nào rời khỏi máy tính này.",
+      "items": {
+        "screen_context": "Khi bạn hỏi",
+        "screen_memory": "Bộ nhớ",
+        "proactive": "Gợi ý",
+        "answers": "Câu trả lời và viết giúp bạn",
+        "polish": "Trau chuốt bằng AI",
+        "meetings": "Tóm tắt cuộc họp",
+        "telemetry": "Số liệu sử dụng"
+      }
     }
   },
   "meetings": {
@@ -1789,10 +1826,7 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": [
-          "Hôm qua tôi đã nói gì về giá?",
-          "Tìm bản trình bày Q3."
-        ],
+        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

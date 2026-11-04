@@ -487,8 +487,8 @@
       },
       "channel": {
         "title": "Canal d’entrée",
-        "description": "Sélectionnez le canal d’entrée à enregistrer. Utilisez cette option si votre interface audio possède plusieurs entrées.",
-        "average": "Moyenne de tous les canaux",
+        "description": "Pour les interfaces audio à plusieurs entrées : choisissez celle de votre micro. Sinon, laissez tous les canaux.",
+        "average": "Tous les canaux, mixés",
         "channel": "Canal {{n}}"
       },
       "audioFeedback": {
@@ -910,7 +910,8 @@
       "description": "Posez une question ou demandez-lui de faire quelque chose, au lieu de taper.",
       "routing": {
         "label": "Comprendre les demandes pendant la dictée",
-        "description": "Les demandes sont prises en charge ; tout le reste est tapé normalement. Désactivez pour toujours taper."
+        "description": "Les demandes sont traitées ; le reste est saisi comme d’habitude. Désactivez pour toujours saisir. Le raccourci Demander fonctionne dans tous les cas.",
+        "needsScreen": "Pour poser des questions sur votre écran, activez aussi"
       },
       "wake": {
         "label": "Mains libres : dites « Salut Ambient »",
@@ -1114,7 +1115,14 @@
       "unlock": "Passer en illimité",
       "onDevice": "Rester sur ce Mac",
       "onDeviceDescription": "Utilisez plutôt Apple Intelligence. Rien ne quitte votre Mac.",
-      "freeUsesLeft": "{{left}} utilisations gratuites de l'IA sur {{limit}} restantes cette semaine"
+      "freeUsesLeft": "{{left}} utilisations gratuites de l'IA sur {{limit}} restantes cette semaine",
+      "scope": "Change seulement la façon dont votre dictée est mise au propre. Les réponses, les suggestions et la lecture de l’écran sont à part.",
+      "where": {
+        "on_device": "Peaufiné sur cet ordinateur.",
+        "cloud": "Peaufiné dans le cloud.",
+        "blocked": "Ignoré : « Sur cet ordinateur uniquement » est activé et cet ordinateur n’a pas de modèle local, donc la dictée est saisie telle quelle."
+      },
+      "onDeviceAnswers": "Avec l’intelligence en mode Automatique, les réponses l’utilisent aussi."
     },
     "writing": {
       "title": "Écriture",
@@ -1133,7 +1141,8 @@
           "description": "Finition IA sur chaque dictée."
         }
       },
-      "needsPolish": "Peaufiner nécessite la finition IA. Rédiger pour vous compte comme une requête IA."
+      "needsPolish": "Peaufiner nécessite la finition IA. Rédiger pour vous compte comme une requête IA.",
+      "scope": "Change seulement ce qui est saisi dans les champs de texte. Les questions à {{appName}} et les suggestions sont à part."
     },
     "trial": {
       "daysLeft_one": "{{count}} jour restant",
@@ -1444,7 +1453,7 @@
       "proactive": {
         "title": "Proposer des suggestions",
         "reads": "Propose une étape suivante au bon moment : fils, brouillons, dates, erreurs, réunions.",
-        "leaves": "Décidé sur cet ordinateur, ou dans le cloud si vous le choisissez ci-dessous. Rien d’autre n’est envoyé sans votre accord, sauf les rappels pendant les réunions."
+        "leaves": "En dehors de la décision, rien n’est envoyé tant que vous n’en acceptez pas une."
       },
       "meetings": {
         "title": "Notes de réunion",
@@ -1575,7 +1584,7 @@
     },
     "intelligence": {
       "title": "Où s’exécute l’intelligence",
-      "description": "Ce qui décide des suggestions et rédige les réponses. Toutes les fonctions marchent avec chacun de ces choix.",
+      "description": "Où sont traités les réponses, l’écriture à votre place, les suggestions, les résumés de réunion et le peaufinage par IA. Chaque fonction marche avec chaque choix.",
       "capability": {
         "apple": "Apple Intelligence disponible sur cet ordinateur",
         "none": "Aucun modèle local sur cet ordinateur"
@@ -1610,6 +1619,34 @@
       "perMonth": "Gratuit : {{limit}} par mois",
       "hours": "Gratuit : {{limit}} heures",
       "retention": "L'offre Gratuit garde les {{limit}} dernières heures. Pro garde jusqu'à 90 jours."
+    },
+    "depends": {
+      "screenContext": "Les suggestions et la mémoire n’en ont pas besoin.",
+      "screenMemory": "Le désactiver supprime ce qui a été gardé.",
+      "route": {
+        "on_device": "Actuellement : décidé sur cet ordinateur.",
+        "cloud": "Actuellement : décidé dans le cloud, à partir d’un extrait expurgé.",
+        "offer": "Actuellement : règles simples. Demande une fois avant d’utiliser le cloud.",
+        "rules": "Actuellement : règles simples sur cet ordinateur."
+      },
+      "meetingTips": "Les conseils pendant un appel nécessitent aussi"
+    },
+    "glance": {
+      "title": "En ce moment",
+      "reads": "Lit votre écran",
+      "cloud": "Peut envoyer du texte dans le cloud",
+      "nothing": "Rien. La dictée fonctionne normalement.",
+      "pausedNothing": "Rien pendant la pause.",
+      "nothingCloud": "Rien. Aucun texte ne quitte cet ordinateur.",
+      "items": {
+        "screen_context": "Quand vous demandez",
+        "screen_memory": "Mémoire",
+        "proactive": "Suggestions",
+        "answers": "Réponses et écriture à votre place",
+        "polish": "Peaufinage par IA",
+        "meetings": "Résumés de réunion",
+        "telemetry": "Statistiques d’utilisation"
+      }
     }
   },
   "meetings": {

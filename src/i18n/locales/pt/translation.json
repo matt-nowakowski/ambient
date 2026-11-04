@@ -487,8 +487,8 @@
       },
       "channel": {
         "title": "Canal de entrada",
-        "description": "Selecione o canal de entrada que será gravado. Use esta opção se a sua interface de áudio tiver várias entradas.",
-        "average": "Média de todos os canais",
+        "description": "Para interfaces de áudio com várias entradas: escolha a do seu microfone. Caso contrário, deixe em todos os canais.",
+        "average": "Todos os canais, mixados",
         "channel": "Canal {{n}}"
       },
       "audioFeedback": {
@@ -910,7 +910,8 @@
       "description": "Faça uma pergunta ou peça algo, em vez de digitar.",
       "routing": {
         "label": "Entender pedidos durante o ditado",
-        "description": "Pedidos são atendidos; todo o resto é digitado normalmente. Desative para sempre digitar."
+        "description": "Pedidos são atendidos; o resto é digitado normalmente. Desative para sempre digitar. O atalho de perguntar funciona de qualquer forma.",
+        "needsScreen": "Para perguntar sobre sua tela, ative também"
       },
       "wake": {
         "label": "Mãos livres: diga “Oi Ambient”",
@@ -1114,7 +1115,14 @@
       "unlock": "Obter ilimitado",
       "onDevice": "Manter neste Mac",
       "onDeviceDescription": "Use o Apple Intelligence em vez disso. Nada sai do seu Mac.",
-      "freeUsesLeft": "{{left}} de {{limit}} usos gratuitos de IA restantes nesta semana"
+      "freeUsesLeft": "{{left}} de {{limit}} usos gratuitos de IA restantes nesta semana",
+      "scope": "Só muda como seu ditado é arrumado. Respostas, sugestões e leitura da tela são separadas.",
+      "where": {
+        "on_device": "Refinado neste computador.",
+        "cloud": "Refinado na nuvem.",
+        "blocked": "Ignorado: “Somente neste computador” está ativado e este computador não tem um modelo local, então o ditado é digitado como foi dito."
+      },
+      "onDeviceAnswers": "Com a inteligência em Automático, as respostas também usam isso."
     },
     "writing": {
       "title": "Escrita",
@@ -1133,7 +1141,8 @@
           "description": "Polimento com IA em todo ditado."
         }
       },
-      "needsPolish": "Polir requer o polimento com IA ativado. Escrever por você conta como uma solicitação de IA."
+      "needsPolish": "Polir requer o polimento com IA ativado. Escrever por você conta como uma solicitação de IA.",
+      "scope": "Só muda o que é digitado nos campos de texto. Perguntar ao {{appName}} e as sugestões são separados."
     },
     "trial": {
       "daysLeft_one": "Resta {{count}} dia",
@@ -1444,7 +1453,7 @@
       "proactive": {
         "title": "Oferecer sugestões",
         "reads": "Sugere um próximo passo na hora certa: conversas, rascunhos, datas, erros, reuniões.",
-        "leaves": "Decidido neste computador, ou na nuvem se você escolher abaixo. Nada mais é enviado a menos que você aceite, exceto os lembretes em reuniões."
+        "leaves": "Fora a decisão, nada é enviado até você aceitar uma."
       },
       "meetings": {
         "title": "Notas de reunião",
@@ -1575,7 +1584,7 @@
     },
     "intelligence": {
       "title": "Onde a inteligência roda",
-      "description": "O que decide as sugestões e escreve as respostas. Todos os recursos funcionam com qualquer opção.",
+      "description": "Onde respostas, escrita por você, sugestões, resumos de reuniões e o refinamento com IA são processados. Todo recurso funciona com qualquer escolha.",
       "capability": {
         "apple": "Apple Intelligence disponível neste computador",
         "none": "Nenhum modelo local neste computador"
@@ -1610,6 +1619,34 @@
       "perMonth": "Grátis: {{limit}} por mês",
       "hours": "Grátis: {{limit}} horas",
       "retention": "O plano Grátis guarda as últimas {{limit}} horas. O Pro guarda até 90 dias."
+    },
+    "depends": {
+      "screenContext": "Sugestões e memória não precisam disso.",
+      "screenMemory": "Desativar apaga o que foi guardado.",
+      "route": {
+        "on_device": "Agora: decidido neste computador.",
+        "cloud": "Agora: decidido na nuvem, a partir de um trecho sem dados sensíveis.",
+        "offer": "Agora: regras simples. Pergunta uma vez antes de usar a nuvem.",
+        "rules": "Agora: regras simples neste computador."
+      },
+      "meetingTips": "Dicas durante uma chamada também precisam de"
+    },
+    "glance": {
+      "title": "Agora",
+      "reads": "Lê sua tela",
+      "cloud": "Pode enviar texto para a nuvem",
+      "nothing": "Nada. O ditado funciona normalmente.",
+      "pausedNothing": "Nada enquanto está pausado.",
+      "nothingCloud": "Nada. Nenhum texto sai deste computador.",
+      "items": {
+        "screen_context": "Quando você pergunta",
+        "screen_memory": "Memória",
+        "proactive": "Sugestões",
+        "answers": "Respostas e escrita por você",
+        "polish": "Refinamento com IA",
+        "meetings": "Resumos de reuniões",
+        "telemetry": "Estatísticas de uso"
+      }
     }
   },
   "meetings": {
