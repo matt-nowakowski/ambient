@@ -631,7 +631,9 @@
         "placeholder": "Kelime ekle",
         "add": "Ekle",
         "remove": "{{word}} sözcüğünü kaldır",
-        "duplicate": "“{{word}}” zaten mevcut"
+        "duplicate": "“{{word}}” zaten mevcut",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "{{from}} → {{to}} kaldır"
       },
       "voiceActivityDetection": {
         "title": "Ses Etkinliği Algılama",
@@ -668,6 +670,11 @@
           "traditionalTw": "Geleneksel (Tayvan)",
           "traditionalHk": "Geleneksel (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Düzeltmelerimden öğren",
+        "description": "Dikteden sonra aynı kelimeyi, örneğin bir ismi, düzelttiğinde {{appName}} onu hatırlamayı önerir. Yazdıktan sonra metin alanını kısa bir süre okur; yalnızca bu bilgisayarda ve asla parola alanlarında.",
+        "unavailable": "{{appName}} bu bilgisayarda metin alanlarını okuyamıyor, bu yüzden henüz öğrenecek bir şey yok. macOS'ta Erişilebilirlik'e izin ver ya da Linux'ta yardımcı teknolojileri aç."
       }
     },
     "postProcessing": {
@@ -1160,6 +1167,28 @@
     "trial": {
       "daysLeft_one": "{{count}} gün kaldı",
       "daysLeft_other": "{{count}} gün kaldı"
+    },
+    "styles": {
+      "title": "Uygulama ve site stilleri",
+      "description": "Yazdığın yere göre varsayılan bir stil. Akıllı yazım orada buna uyar.",
+      "empty": "Henüz yok. Örneğin: Slack rahat, Gmail özenli, Terminal söylendiği gibi.",
+      "add": "Uygulama veya site ekle",
+      "addButton": "Ekle",
+      "placeholder": "Uygulama adı veya web sitesi",
+      "recent": "Son kullanılanlar:",
+      "cancel": "İptal",
+      "remove": "{{name}} kaldır",
+      "duplicate": "{{name}} için zaten bir stil var",
+      "options": {
+        "as_said": "Söylendiği gibi",
+        "casual": "Rahat",
+        "polished": "Özenli"
+      },
+      "hints": {
+        "as_said": "Tam olarak senin kelimelerin",
+        "casual": "Rahat, sonda nokta yok",
+        "polished": "Tam cümleler, özenli noktalama"
+      }
     }
   },
   "home": {
@@ -1429,7 +1458,13 @@
       "copiedOriginal": "Özgün metniniz kopyalandı. Değiştirmek için yapıştırın.",
       "couldntRewrite": "Şu anda yeniden yazılamadı, metniniz değişmedi."
     },
-    "firstSuggestionTip": "İlk öneriniz. “Evet”, “şimdi değil” veya “bunları gösterme” deyin. Öğrenir."
+    "firstSuggestionTip": "İlk öneriniz. “Evet”, “şimdi değil” veya “bunları gösterme” deyin. Öğrenir.",
+    "learn": {
+      "offer": "Her zaman “{{from}}” yerine “{{to}}” yazılsın mı?",
+      "remember": "Hatırla",
+      "never": "Sorma",
+      "added": "“{{to}}” kelimelerine eklendi."
+    }
   },
   "privacy": {
     "title": "Gizlilik",

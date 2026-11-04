@@ -631,7 +631,9 @@
         "placeholder": "新增詞彙",
         "add": "新增",
         "remove": "刪除 {{word}}",
-        "duplicate": "「{{word}}」已存在"
+        "duplicate": "「{{word}}」已存在",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "移除 {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "語音活動偵測",
@@ -668,6 +670,11 @@
           "traditionalTw": "繁體（臺灣）",
           "traditionalHk": "繁體（香港）"
         }
+      },
+      "learnCorrections": {
+        "label": "從我的修改中學習",
+        "description": "如果你在聽寫後反覆修改同一個詞（例如人名），{{appName}} 會提議記住它。它只在輸入後短暫讀取文字欄位，僅在這台電腦上進行，從不讀取密碼欄位。",
+        "unavailable": "{{appName}} 無法讀取這台電腦上的文字欄位，所以暫時沒有可學習的內容。請在 macOS 上允許輔助使用，或在 Linux 上開啟輔助技術。"
       }
     },
     "postProcessing": {
@@ -1160,6 +1167,28 @@
     "trial": {
       "daysLeft_one": "還剩 {{count}} 天",
       "daysLeft_other": "還剩 {{count}} 天"
+    },
+    "styles": {
+      "title": "App 與網站風格",
+      "description": "依書寫位置設定預設風格，智慧寫作會在那裡遵循它。",
+      "empty": "還沒有。例如：Slack 隨性、Gmail 精煉、終端機照原話。",
+      "add": "新增 App 或網站",
+      "addButton": "新增",
+      "placeholder": "App 名稱或網站",
+      "recent": "最近：",
+      "cancel": "取消",
+      "remove": "移除 {{name}}",
+      "duplicate": "{{name}} 已有風格",
+      "options": {
+        "as_said": "照原話",
+        "casual": "隨性",
+        "polished": "精煉"
+      },
+      "hints": {
+        "as_said": "你的原話",
+        "casual": "輕鬆，結尾不加句號",
+        "polished": "完整句子，標點嚴謹"
+      }
     }
   },
   "home": {
@@ -1429,7 +1458,13 @@
       "copiedOriginal": "已複製你的原文。貼上即可取代。",
       "couldntRewrite": "暫時無法改寫，你的文字保持不變。"
     },
-    "firstSuggestionTip": "這是你的第一則建議。說「好」「稍後再說」或「別給我看這些」。它會學習。"
+    "firstSuggestionTip": "這是你的第一則建議。說「好」「稍後再說」或「別給我看這些」。它會學習。",
+    "learn": {
+      "offer": "以後都把「{{from}}」寫成「{{to}}」嗎？",
+      "remember": "記住",
+      "never": "不再詢問",
+      "added": "已將「{{to}}」加入你的字詞。"
+    }
   },
   "privacy": {
     "title": "隱私",
@@ -1853,10 +1888,7 @@
       },
       "recall": {
         "title": "回想",
-        "examples": [
-          "我昨天對定價說了什麼？",
-          "找出第三季的簡報。"
-        ],
+        "examples": ["我昨天對定價說了什麼？", "找出第三季的簡報。"],
         "hint": "你說過、看過或做過的事。"
       },
       "suggestions": {

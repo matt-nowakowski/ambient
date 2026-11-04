@@ -604,12 +604,14 @@ mod tests {
 
     #[test]
     fn knows_what_is_already_remembered() {
-        let mut s = AppSettings::default();
-        s.custom_words = vec!["Kubernetes".into()];
-        s.word_replacements = vec![WordReplacement {
-            from: "Anna".into(),
-            to: "Ana".into(),
-        }];
+        let s = AppSettings {
+            custom_words: vec!["Kubernetes".into()],
+            word_replacements: vec![WordReplacement {
+                from: "Anna".into(),
+                to: "Ana".into(),
+            }],
+            ..Default::default()
+        };
         assert!(known(&s, "kubernetes", "Kubernetes"));
         assert!(known(&s, "anna", "Ana"));
         assert!(!known(&s, "Jon", "John"));

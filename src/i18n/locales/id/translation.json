@@ -631,7 +631,9 @@
         "placeholder": "Tambahkan kata",
         "add": "Tambah",
         "remove": "Hapus {{word}}",
-        "duplicate": "“{{word}}” sudah ada"
+        "duplicate": "“{{word}}” sudah ada",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Hapus {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Deteksi Aktivitas Suara",
@@ -668,6 +670,11 @@
           "traditionalTw": "Tradisional (Taiwan)",
           "traditionalHk": "Tradisional (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Belajar dari koreksi saya",
+        "description": "Saat Anda memperbaiki kata yang sama setelah mendikte, seperti nama, {{appName}} menawarkan untuk mengingatnya. Ia membaca kolom teks sebentar setelah mengetik, hanya di komputer ini, dan tidak pernah kolom kata sandi.",
+        "unavailable": "{{appName}} tidak bisa membaca kolom teks di komputer ini, jadi belum ada yang bisa dipelajari. Izinkan Aksesibilitas di macOS, atau aktifkan teknologi bantu di Linux."
       }
     },
     "postProcessing": {
@@ -1160,6 +1167,28 @@
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",
       "daysLeft_other": "Sisa {{count}} hari"
+    },
+    "styles": {
+      "title": "Gaya per aplikasi dan situs",
+      "description": "Gaya bawaan sesuai tempat Anda menulis. Penulisan cerdas mengikutinya di sana.",
+      "empty": "Belum ada. Misalnya: Slack santai, Gmail rapi, Terminal apa adanya.",
+      "add": "Tambah aplikasi atau situs",
+      "addButton": "Tambah",
+      "placeholder": "Nama aplikasi atau situs web",
+      "recent": "Terbaru:",
+      "cancel": "Batal",
+      "remove": "Hapus {{name}}",
+      "duplicate": "{{name}} sudah punya gaya",
+      "options": {
+        "as_said": "Apa adanya",
+        "casual": "Santai",
+        "polished": "Rapi"
+      },
+      "hints": {
+        "as_said": "Kata-kata Anda persis",
+        "casual": "Santai, tanpa titik di akhir",
+        "polished": "Kalimat lengkap, tanda baca cermat"
+      }
     }
   },
   "home": {
@@ -1429,7 +1458,13 @@
       "copiedOriginal": "Teks asli Anda sudah disalin. Tempel untuk mengganti.",
       "couldntRewrite": "Tidak bisa menulis ulang sekarang, jadi teks Anda tidak berubah."
     },
-    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar."
+    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar.",
+    "learn": {
+      "offer": "Selalu tulis “{{to}}” alih-alih “{{from}}”?",
+      "remember": "Ingat",
+      "never": "Jangan tanya",
+      "added": "“{{to}}” ditambahkan ke kata-kata Anda."
+    }
   },
   "privacy": {
     "title": "Privasi",

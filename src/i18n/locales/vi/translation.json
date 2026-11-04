@@ -631,7 +631,9 @@
         "placeholder": "Thêm một từ",
         "add": "Thêm",
         "remove": "Xóa {{word}}",
-        "duplicate": "“{{word}}” đã có"
+        "duplicate": "“{{word}}” đã có",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Xóa {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Phát hiện hoạt động giọng nói",
@@ -668,6 +670,11 @@
           "traditionalTw": "Phồn thể (Đài Loan)",
           "traditionalHk": "Phồn thể (Hồng Kông)"
         }
+      },
+      "learnCorrections": {
+        "label": "Học từ các chỉnh sửa của tôi",
+        "description": "Khi bạn sửa cùng một từ sau khi đọc chính tả, chẳng hạn một cái tên, {{appName}} sẽ đề nghị ghi nhớ nó. Ứng dụng đọc ô văn bản một lúc sau khi gõ, chỉ trên máy tính này, và không bao giờ đọc ô mật khẩu.",
+        "unavailable": "{{appName}} không đọc được ô văn bản trên máy tính này, nên chưa có gì để học. Hãy cho phép Trợ năng trên macOS, hoặc bật công nghệ hỗ trợ trên Linux."
       }
     },
     "postProcessing": {
@@ -1160,6 +1167,28 @@
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",
       "daysLeft_other": "Còn {{count}} ngày"
+    },
+    "styles": {
+      "title": "Kiểu viết theo ứng dụng và trang web",
+      "description": "Kiểu mặc định cho nơi bạn viết. Viết thông minh sẽ làm theo ở đó.",
+      "empty": "Chưa có. Ví dụ: Slack thoải mái, Gmail chỉn chu, Terminal như đã nói.",
+      "add": "Thêm ứng dụng hoặc trang web",
+      "addButton": "Thêm",
+      "placeholder": "Tên ứng dụng hoặc trang web",
+      "recent": "Gần đây:",
+      "cancel": "Hủy",
+      "remove": "Xóa {{name}}",
+      "duplicate": "{{name}} đã có kiểu viết",
+      "options": {
+        "as_said": "Như đã nói",
+        "casual": "Thoải mái",
+        "polished": "Chỉn chu"
+      },
+      "hints": {
+        "as_said": "Đúng từng chữ của bạn",
+        "casual": "Thoải mái, không có dấu chấm cuối",
+        "polished": "Câu đầy đủ, dấu câu cẩn thận"
+      }
     }
   },
   "home": {
@@ -1429,7 +1458,13 @@
       "copiedOriginal": "Đã sao chép văn bản gốc của bạn. Dán để thay thế.",
       "couldntRewrite": "Không viết lại được lúc này, nên văn bản của bạn không đổi."
     },
-    "firstSuggestionTip": "Gợi ý đầu tiên của bạn. Nói “có”, “để sau” hoặc “đừng hiện những cái này”. Nó sẽ học."
+    "firstSuggestionTip": "Gợi ý đầu tiên của bạn. Nói “có”, “để sau” hoặc “đừng hiện những cái này”. Nó sẽ học.",
+    "learn": {
+      "offer": "Luôn viết “{{to}}” thay cho “{{from}}”?",
+      "remember": "Ghi nhớ",
+      "never": "Đừng hỏi",
+      "added": "Đã thêm “{{to}}” vào từ của bạn."
+    }
   },
   "privacy": {
     "title": "Quyền riêng tư",
@@ -1853,10 +1888,7 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": [
-          "Hôm qua tôi đã nói gì về giá?",
-          "Tìm bản trình bày Q3."
-        ],
+        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

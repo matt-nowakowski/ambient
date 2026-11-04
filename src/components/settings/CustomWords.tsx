@@ -17,12 +17,37 @@ const normalizeCustomWord = (word: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
+const XIcon: React.FC = () => (
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
 export const CustomWords: React.FC<CustomWordsProps> = React.memo(
   ({ descriptionMode = "tooltip", grouped = false }) => {
     const { t } = useTranslation();
     const { getSetting, updateSetting, isUpdating } = useSettings();
     const [newWord, setNewWord] = useState("");
     const customWords = getSetting("custom_words") || [];
+    // Fixes learned from corrections ("Anna" → "Ana"), shown first.
+    const replacements = getSetting("word_replacements") || [];
+
+    const handleRemoveReplacement = (from: string) => {
+      updateSetting(
+        "word_replacements",
+        replacements.filter((r) => r.from !== from),
+      );
+    };
     const normalizedWord = normalizeCustomWord(newWord);
 
     const handleAddWord = () => {
@@ -87,10 +112,32 @@ export const CustomWords: React.FC<CustomWordsProps> = React.memo(
             </Button>
           </div>
         </SettingContainer>
-        {customWords.length > 0 && (
+        {(customWords.length > 0 || replacements.length > 0) && (
           <div
             className={`px-row-x pt-1 pb-row-y ${grouped ? "" : "rounded-card border border-line"} flex flex-wrap gap-1.5`}
           >
+            {replacements.map((r) => (
+              <Button
+                key={`${r.from}->${r.to}`}
+                onClick={() => handleRemoveReplacement(r.from)}
+                disabled={isUpdating("word_replacements")}
+                variant="secondary"
+                size="sm"
+                className="inline-flex items-center gap-1 cursor-pointer"
+                aria-label={t("settings.advanced.customWords.removeSwap", {
+                  from: r.from,
+                  to: r.to,
+                })}
+              >
+                <span>
+                  {t("settings.advanced.customWords.swap", {
+                    from: r.from,
+                    to: r.to,
+                  })}
+                </span>
+                <XIcon />
+              </Button>
+            ))}
             {customWords.map((word) => (
               <Button
                 key={word}
@@ -102,19 +149,7 @@ export const CustomWords: React.FC<CustomWordsProps> = React.memo(
                 aria-label={t("settings.advanced.customWords.remove", { word })}
               >
                 <span>{word}</span>
-                <svg
-                  className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <XIcon />
               </Button>
             ))}
           </div>

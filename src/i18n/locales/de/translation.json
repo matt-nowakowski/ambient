@@ -631,7 +631,9 @@
         "placeholder": "Wort hinzufügen",
         "add": "Hinzufügen",
         "remove": "{{word}} entfernen",
-        "duplicate": "„{{word}}“ existiert bereits"
+        "duplicate": "„{{word}}“ existiert bereits",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "{{from}} → {{to}} entfernen"
       },
       "voiceActivityDetection": {
         "title": "Sprachaktivitätserkennung (VAD)",
@@ -668,6 +670,11 @@
           "traditionalTw": "Traditionell (Taiwan)",
           "traditionalHk": "Traditionell (Hongkong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Aus meinen Korrekturen lernen",
+        "description": "Wenn du nach dem Diktieren immer wieder dasselbe Wort korrigierst, etwa einen Namen, bietet {{appName}} an, es sich zu merken. Dafür liest es das Textfeld kurz nach dem Tippen, nur auf diesem Computer und nie in Passwortfeldern.",
+        "unavailable": "{{appName}} kann auf diesem Computer keine Textfelder lesen, daher gibt es noch nichts zu lernen. Erlaube unter macOS die Bedienungshilfen oder aktiviere unter Linux die Hilfstechnologien."
       }
     },
     "postProcessing": {
@@ -1160,6 +1167,28 @@
     "trial": {
       "daysLeft_one": "Noch {{count}} Tag",
       "daysLeft_other": "Noch {{count}} Tage"
+    },
+    "styles": {
+      "title": "Stile für Apps und Websites",
+      "description": "Ein Standardstil dafür, wo du schreibst. Smartes Schreiben hält sich dort daran.",
+      "empty": "Noch keine. Zum Beispiel: Slack locker, Gmail ausgefeilt, Terminal wie gesagt.",
+      "add": "App oder Website hinzufügen",
+      "addButton": "Hinzufügen",
+      "placeholder": "App-Name oder Website",
+      "recent": "Zuletzt:",
+      "cancel": "Abbrechen",
+      "remove": "{{name}} entfernen",
+      "duplicate": "{{name}} hat schon einen Stil",
+      "options": {
+        "as_said": "Wie gesagt",
+        "casual": "Locker",
+        "polished": "Ausgefeilt"
+      },
+      "hints": {
+        "as_said": "Genau deine Worte",
+        "casual": "Entspannt, ohne Schlusspunkt",
+        "polished": "Ganze Sätze, sorgfältige Zeichensetzung"
+      }
     }
   },
   "home": {
@@ -1429,7 +1458,13 @@
       "copiedOriginal": "Dein ursprünglicher Text ist kopiert. Zum Ersetzen einfügen.",
       "couldntRewrite": "Das ließ sich gerade nicht umschreiben, dein Text bleibt unverändert."
     },
-    "firstSuggestionTip": "Dein erster Vorschlag. Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“. Es lernt dazu."
+    "firstSuggestionTip": "Dein erster Vorschlag. Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“. Es lernt dazu.",
+    "learn": {
+      "offer": "Immer „{{to}}“ statt „{{from}}“ schreiben?",
+      "remember": "Merken",
+      "never": "Nicht fragen",
+      "added": "„{{to}}“ zu deinen Wörtern hinzugefügt."
+    }
   },
   "privacy": {
     "title": "Datenschutz",

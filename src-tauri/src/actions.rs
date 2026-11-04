@@ -876,7 +876,7 @@ pub(crate) async fn process_dictation_output(
     let style_note = crate::agent::styles::note(style);
     // "As said" here: no polish unless asked for (the polish shortcut).
     let post_process =
-        post_process && !(style == Some(crate::settings::WritingStyle::AsSaid) && !plan.explicit);
+        post_process && (plan.explicit || style != Some(crate::settings::WritingStyle::AsSaid));
     // Typing a prompt into ChatGPT/Claude is writing, however it sounds.
     let routable = (cued || (agent_on && no_field))
         && (ask || !router::always_write_here(&place, transcription));

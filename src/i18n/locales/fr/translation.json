@@ -634,7 +634,9 @@
         "placeholder": "Ajouter un mot",
         "add": "Ajouter",
         "remove": "Supprimer {{word}}",
-        "duplicate": "« {{word}} » existe déjà"
+        "duplicate": "« {{word}} » existe déjà",
+        "swap": "{{from}} → {{to}}",
+        "removeSwap": "Retirer {{from}} → {{to}}"
       },
       "voiceActivityDetection": {
         "title": "Détection d’activité vocale (VAD)",
@@ -671,6 +673,11 @@
           "traditionalTw": "Traditionnel (Taïwan)",
           "traditionalHk": "Traditionnel (Hong Kong)"
         }
+      },
+      "learnCorrections": {
+        "label": "Apprendre de mes corrections",
+        "description": "Quand vous corrigez le même mot après une dictée, comme un nom, {{appName}} propose de le retenir. Il lit le champ de texte un instant après la saisie, uniquement sur cet ordinateur, et jamais les champs de mot de passe.",
+        "unavailable": "{{appName}} ne peut pas lire les champs de texte sur cet ordinateur, il n'a donc encore rien à apprendre. Autorisez l'Accessibilité sur macOS ou activez les technologies d'assistance sous Linux."
       }
     },
     "postProcessing": {
@@ -1166,6 +1173,28 @@
       "daysLeft_one": "{{count}} jour restant",
       "daysLeft_other": "{{count}} jours restants",
       "daysLeft_many": "{{count}} jours restants"
+    },
+    "styles": {
+      "title": "Styles par app et site",
+      "description": "Un style par défaut selon l'endroit où vous écrivez. L'écriture intelligente le suit.",
+      "empty": "Aucun pour l'instant. Par exemple : Slack décontracté, Gmail soigné, Terminal tel quel.",
+      "add": "Ajouter une app ou un site",
+      "addButton": "Ajouter",
+      "placeholder": "Nom d'app ou site web",
+      "recent": "Récents :",
+      "cancel": "Annuler",
+      "remove": "Retirer {{name}}",
+      "duplicate": "{{name}} a déjà un style",
+      "options": {
+        "as_said": "Tel quel",
+        "casual": "Décontracté",
+        "polished": "Soigné"
+      },
+      "hints": {
+        "as_said": "Vos mots exacts",
+        "casual": "Détendu, sans point final",
+        "polished": "Phrases complètes, ponctuation soignée"
+      }
     }
   },
   "home": {
@@ -1437,7 +1466,13 @@
       "copiedOriginal": "Votre texte d'origine est copié. Collez pour remplacer.",
       "couldntRewrite": "Impossible de réécrire pour l'instant, votre texte n'a pas changé."
     },
-    "firstSuggestionTip": "Votre première suggestion. Dites « oui », « pas maintenant » ou « ne me montre plus ça ». Il apprend."
+    "firstSuggestionTip": "Votre première suggestion. Dites « oui », « pas maintenant » ou « ne me montre plus ça ». Il apprend.",
+    "learn": {
+      "offer": "Toujours écrire « {{to}} » au lieu de « {{from}} » ?",
+      "remember": "Retenir",
+      "never": "Ne pas demander",
+      "added": "« {{to}} » ajouté à vos mots."
+    }
   },
   "privacy": {
     "title": "Confidentialité",
