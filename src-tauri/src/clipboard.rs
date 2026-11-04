@@ -1,3 +1,4 @@
+use crate::clipboard_snapshot::ClipboardSnapshot;
 use crate::input::{self, EnigoState};
 #[cfg(target_os = "linux")]
 use crate::settings::TypingTool;
@@ -78,23 +79,14 @@ fn paste_via_clipboard(
     paste_delay_ms: u64,
     paste_delay_after_ms: u64,
 ) -> Result<(), String> {
-    let clipboard = app_handle.clipboard();
-    let saved_text = clipboard.read_text().ok().filter(|t| !t.is_empty());
-    // Only probe for an image when there is no text to restore. Text is by far the
-    // common case, and reading an image decodes the full bitmap, so this keeps the
-    // text path exactly as cheap as it was before.
-    let saved_image = if saved_text.is_none() {
-        clipboard.read_image().ok().map(|image| image.to_owned())
-    } else {
-        None
-    };
+    let saved = SavedClipboard::capture(app_handle);
 
     // Write text to clipboard first, and make sure it's there: ⌘V with the
     // old contents still on the clipboard pastes them instead of the speech.
     let ours = match write_and_verify(app_handle, text) {
         Ok(stamp) => stamp,
         Err(e) => {
-            restore_saved(app_handle, saved_text, saved_image);
+            saved.restore(app_handle);
             return Err(e);
         }
     };
@@ -144,7 +136,7 @@ fn paste_via_clipboard(
             log::debug!("clipboard changed after the paste; leaving it as is");
             return;
         }
-        restore_saved(app_handle, saved_text, saved_image);
+        saved.restore(app_handle);
     })
 }
 
@@ -153,32 +145,83 @@ fn paste_via_clipboard(
 /// app's actual read instead).
 const RESTORE_FLOOR_MS: u64 = 500;
 
-/// Restore what the clipboard held before. Text takes priority; an image is
-/// only restored when there was no text, and an empty clipboard is cleared
-/// so the transcript isn't left behind.
-fn restore_saved(
-    app_handle: &AppHandle,
-    saved_text: Option<String>,
-    saved_image: Option<tauri::image::Image<'static>>,
-) {
-    let clipboard = app_handle.clipboard();
-    if let Some(clipboard_content) = saved_text {
-        let _ = write_text_to_clipboard(app_handle, &clipboard_content);
-    } else if let Some(image) = saved_image {
-        info!("Restoring image to clipboard");
-        let _ = clipboard.write_image(&image);
-    } else {
-        let _ = clipboard.clear();
+/// What the clipboard held before a paste, to put back after it.
+enum SavedClipboard {
+    /// Every format (macOS, Windows): rich text, files and app data survive.
+    Whole(ClipboardSnapshot),
+    /// Text, or else an image; neither means it was empty.
+    Basic {
+        text: Option<String>,
+        image: Option<tauri::image::Image<'static>>,
+    },
+}
+
+impl SavedClipboard {
+    fn capture(app_handle: &AppHandle) -> Self {
+        let started = std::time::Instant::now();
+        if let Some(snapshot) = ClipboardSnapshot::capture() {
+            log::debug!("saved the whole clipboard in {:?}", started.elapsed());
+            return Self::Whole(snapshot);
+        }
+        let clipboard = app_handle.clipboard();
+        let text = clipboard.read_text().ok().filter(|t| !t.is_empty());
+        // Only probe for an image when there is no text to restore. Text is by
+        // far the common case, and reading an image decodes the full bitmap.
+        let image = if text.is_none() {
+            clipboard.read_image().ok().map(|image| image.to_owned())
+        } else {
+            None
+        };
+        Self::Basic { text, image }
+    }
+
+    /// Restore what the clipboard held before. An empty clipboard is cleared
+    /// so the transcript isn't left behind.
+    fn restore(self, app_handle: &AppHandle) {
+        let clipboard = app_handle.clipboard();
+        match self {
+            Self::Whole(snapshot) => {
+                if !snapshot.restore() {
+                    log::warn!("couldn't put the previous clipboard back");
+                }
+            }
+            Self::Basic {
+                text: Some(text), ..
+            } => {
+                let _ = write_text_to_clipboard(app_handle, &text);
+            }
+            Self::Basic {
+                image: Some(image), ..
+            } => {
+                info!("Restoring image to clipboard");
+                let _ = clipboard.write_image(&image);
+            }
+            Self::Basic { .. } => {
+                let _ = clipboard.clear();
+            }
+        }
     }
 }
 
-/// The pasteboard's change count (macOS), which moves on every write.
+/// The clipboard's change counter, which moves on every write: the
+/// pasteboard's change count on macOS, the clipboard sequence number on
+/// Windows. Tells a newer copy (the user's, a clipboard manager's) from ours.
 #[cfg(target_os = "macos")]
 fn pasteboard_change_count() -> Option<isize> {
     Some(objc2_app_kit::NSPasteboard::generalPasteboard().changeCount())
 }
 
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "windows")]
+fn pasteboard_change_count() -> Option<isize> {
+    use windows::Win32::System::DataExchange::GetClipboardSequenceNumber;
+    // 0 means the window station has no access to the clipboard.
+    match unsafe { GetClipboardSequenceNumber() } {
+        0 => None,
+        sequence => Some(sequence as isize),
+    }
+}
+
+#[cfg(not(any(target_os = "macos", target_os = "windows")))]
 fn pasteboard_change_count() -> Option<isize> {
     None
 }

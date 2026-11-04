@@ -10,6 +10,7 @@ mod checkin;
 mod chinese_script;
 pub mod cli;
 mod clipboard;
+mod clipboard_snapshot;
 mod commands;
 mod context;
 mod dictation_apps;
@@ -837,7 +838,7 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_mute_while_recording_setting,
             shortcut::change_exclusive_shortcuts_setting,
             shortcut::change_append_trailing_space_setting,
-            shortcut::change_lazy_stream_close_setting,
+            shortcut::change_keep_mic_ready_setting,
             shortcut::change_vad_enabled_setting,
             shortcut::change_long_form_chunking_setting,
             shortcut::change_vad_backend_setting,

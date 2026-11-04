@@ -500,6 +500,17 @@
         "average": "Tots els canals, barrejats",
         "channel": "Canal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Micròfon a punt",
+        "description": "Després de dictar, el micròfon es queda obert una estona perquè el següent dictat comenci a l'instant i no perdi la primera paraula. L'ordinador mostra que el micròfon està en ús fins que es tanca. Aquest àudio només és a la memòria: mai no es desa ni s'envia.",
+        "options": {
+          "off": "Desactivat",
+          "sec30": "30 segons",
+          "min1": "1 minut",
+          "min2": "2 minuts",
+          "min5": "5 minuts"
+        }
+      },
       "audioFeedback": {
         "label": "Avisos sonors",
         "description": "Reprodueix un so quan s'inicia i s'atura l'enregistrament"
@@ -526,10 +537,6 @@
       "experimentalToggle": {
         "label": "Funcions experimentals",
         "description": "Activa les funcions experimentals que encara estan en desenvolupament."
-      },
-      "lazyStreamClose": {
-        "label": "Mantén el micròfon obert entre transcripcions",
-        "description": "Manté el flux d'àudio del micròfon obert durant 30 segons després d'aturar l'enregistrament per reduir la latència entre transcripcions consecutives. Mentre és actiu, pot reduir la qualitat de l'àudio Bluetooth."
       },
       "acceleration": {
         "transcribe": {

@@ -497,6 +497,17 @@
         "average": "Tất cả kênh, trộn chung",
         "channel": "Kênh {{n}}"
       },
+      "keepMicReady": {
+        "title": "Giữ micrô sẵn sàng",
+        "description": "Sau khi đọc chính tả, micrô vẫn bật thêm một lúc để lần tiếp theo bắt đầu ngay và không mất từ đầu tiên. Máy tính sẽ hiển thị micrô đang được dùng cho đến khi nó đóng. Âm thanh đó chỉ nằm trong bộ nhớ: không bao giờ được lưu hay gửi đi.",
+        "options": {
+          "off": "Tắt",
+          "sec30": "30 giây",
+          "min1": "1 phút",
+          "min2": "2 phút",
+          "min5": "5 phút"
+        }
+      },
       "audioFeedback": {
         "label": "Phản hồi âm thanh",
         "description": "Phát âm thanh khi bắt đầu và kết thúc ghi âm"
@@ -523,10 +534,6 @@
       "experimentalToggle": {
         "label": "Tính năng thử nghiệm",
         "description": "Bật các tính năng thử nghiệm đang trong quá trình phát triển."
-      },
-      "lazyStreamClose": {
-        "label": "Giữ micrô mở giữa các lần chép lời",
-        "description": "Giữ luồng micrô mở trong 30 giây sau khi dừng ghi âm, giảm độ trễ khi chép lời liên tiếp. Có thể làm giảm chất lượng âm thanh Bluetooth khi đang hoạt động."
       },
       "acceleration": {
         "transcribe": {
@@ -1853,10 +1860,7 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": [
-          "Hôm qua tôi đã nói gì về giá?",
-          "Tìm bản trình bày Q3."
-        ],
+        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

@@ -497,6 +497,17 @@
         "average": "所有通道混合",
         "channel": "通道 {{n}}"
       },
+      "keepMicReady": {
+        "title": "保持麦克风就绪",
+        "description": "听写结束后，麦克风会再开一会儿，让下一次听写立即开始，不漏掉第一个词。关闭前，电脑会显示麦克风正在使用。这段音频只在内存中：从不保存，也从不发送。",
+        "options": {
+          "off": "关闭",
+          "sec30": "30 秒",
+          "min1": "1 分钟",
+          "min2": "2 分钟",
+          "min5": "5 分钟"
+        }
+      },
       "audioFeedback": {
         "label": "音频反馈",
         "description": "录制开始和停止时播放声音"
@@ -523,10 +534,6 @@
       "experimentalToggle": {
         "label": "实验性功能",
         "description": "启用仍在开发中的实验性功能。"
-      },
-      "lazyStreamClose": {
-        "label": "在转录之间保持麦克风开启",
-        "description": "录音停止后让麦克风流保持开启 30 秒，减少连续转录时的延迟。开启期间可能会降低蓝牙音频质量。"
       },
       "acceleration": {
         "transcribe": {
@@ -1853,10 +1860,7 @@
       },
       "recall": {
         "title": "回忆",
-        "examples": [
-          "我昨天关于定价说了什么？",
-          "找到第三季度的演示文稿。"
-        ],
+        "examples": ["我昨天关于定价说了什么？", "找到第三季度的演示文稿。"],
         "hint": "你说过、看过或做过的事。"
       },
       "suggestions": {

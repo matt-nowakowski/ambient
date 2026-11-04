@@ -3,6 +3,10 @@ use anyhow::Result;
 use crate::audio_toolkit::constants;
 
 pub const VAD_PREFILL_MS: u64 = 450;
+/// Pre-roll for a recording's first speech: generous, so a soft first word
+/// the detector is slow to call is still kept whole. Covers the microphone
+/// pre-roll (`MIC_PRE_ROLL` in managers/audio.rs) too.
+pub const VAD_INITIAL_PREFILL_MS: u64 = 1000;
 pub const VAD_OFFLINE_HANGOVER_MS: u64 = 450;
 pub const VAD_STREAMING_HANGOVER_MS: u64 = 1650;
 pub const VAD_ONSET_MS: u64 = 60;
