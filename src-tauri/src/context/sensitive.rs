@@ -26,9 +26,6 @@ static KEYS: Lazy<Vec<Regex>> = Lazy::new(|| {
         r"\b[xyzt]prv[1-9A-HJ-NP-Za-km-z]{100,}\b",
         // Bitcoin WIF private keys.
         r"\b[5KL][1-9A-HJ-NP-Za-km-z]{50,51}\b",
-        // Raw 32-byte keys as hex, as wallets export them (no 0x: an 0x-prefixed
-        // 64-hex string is usually a transaction hash on an explorer).
-        r"(?:^|[^0-9A-Za-z])[0-9a-fA-F]{64}(?:$|[^0-9A-Za-z])",
         // Solana-style base58 secret keys (64 bytes).
         r"\b[1-9A-HJ-NP-Za-km-z]{86,88}\b",
     ]
@@ -36,6 +33,48 @@ static KEYS: Lazy<Vec<Regex>> = Lazy::new(|| {
     .map(|p| Regex::new(p).expect("key pattern"))
     .collect()
 });
+
+/// The weak form of the same thing: 32 raw bytes as hex, which is how a wallet
+/// exports a key. It is deliberately not part of KEYS, because 64 hex characters
+/// is also a sha256, a git object id, a checksum, a build hash — all of which
+/// cover a developer's screen — and treating one as a key made Ambient back away
+/// from an ordinary terminal, announcing it had found private material. The
+/// patterns in KEYS carry their own proof (a PEM header, a WIF or xprv prefix, a
+/// 64-byte base58 key); this one needs the text to say what it is, nearby.
+static RAW_HEX: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?:^|[^0-9A-Za-z])[0-9a-fA-F]{64}(?:$|[^0-9A-Za-z])").expect("raw hex")
+});
+
+/// Words someone writes next to a key they are exporting or backing up.
+static KEY_HINTS: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        "(?i)(?:private key|secret key|signing key|key pair|keypair|keystore|passphrase|wallet|mnemonic|seed phrase|recovery phrase|backup key|exported key)",
+    )
+    .expect("key hints")
+});
+
+/// How far either side of the hex string a hint may sit.
+const KEY_HINT_WINDOW: usize = 160;
+
+/// Whether a bare 64-hex string on this screen is labelled as a key nearby.
+fn labelled_raw_hex(text: &str) -> bool {
+    for found in RAW_HEX.find_iter(text) {
+        let mut lo = found.start().saturating_sub(KEY_HINT_WINDOW);
+        while lo > 0 && !text.is_char_boundary(lo) {
+            lo -= 1;
+        }
+        let mut hi = found.end() + KEY_HINT_WINDOW;
+        while hi < text.len() && !text.is_char_boundary(hi) {
+            hi += 1;
+        }
+        if let Some(window) = text.get(lo..hi.min(text.len())) {
+            if KEY_HINTS.is_match(window) {
+                return true;
+            }
+        }
+    }
+    false
+}
 
 static PHRASE_WORDS: Lazy<Regex> = Lazy::new(|| {
     Regex::new(r"(?i)\b(?:secret recovery phrase|recovery phrase|seed phrase|mnemonic|backup phrase|private key)\b").expect("hint")
@@ -398,6 +437,9 @@ pub fn detect(text: &str) -> Option<Sensitive> {
     if KEYS.iter().any(|re| re.is_match(text)) {
         return Some(Sensitive::PrivateKey);
     }
+    if labelled_raw_hex(text) {
+        return Some(Sensitive::PrivateKey);
+    }
     None
 }
 
@@ -429,6 +471,30 @@ mod tests {
         );
         assert_eq!(
             detect("-----BEGIN OPENSSH PRIVATE KEY-----\nabc"),
+            Some(Sensitive::PrivateKey)
+        );
+    }
+
+    #[test]
+    fn a_bare_hash_is_not_a_key() {
+        // 64 hex characters is also a sha256, a git object id, a checksum or a
+        // build hash. Treating one as a wallet key made Ambient back away from
+        // an ordinary terminal on a developer's machine.
+        assert_eq!(
+            detect("a8bf3de2b393bd14ead5a858c3748d5e3b07a20fdeabdd3b498fba4f463fa929"),
+            None
+        );
+        assert_eq!(
+            detect("All six verified against their pinned checksums: 4b50b6dd862bf6e346929aaf4f5eaacec003bfa3f56462d6c874b41ef2f38795"),
+            None
+        );
+        // Labelled as a key, the same shape is still caught.
+        assert_eq!(
+            detect("Private key: 4c0883a69102937d6231471b5dbb6204fe5129617082792ae468d01a3f362318"),
+            Some(Sensitive::PrivateKey)
+        );
+        assert_eq!(
+            detect("exported from the wallet\n2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a"),
             Some(Sensitive::PrivateKey)
         );
     }
