@@ -294,17 +294,27 @@ export default function Hud() {
   const hidden = reduceMotion
     ? { opacity: 0 }
     : { opacity: 0, scale: 0.97, filter: "blur(2px)" };
-  // Leaving is a quick dissolve: it fades, drifts up a touch and softens,
-  // with no spring. It finishes inside Rust's CLOSE_MS (200 ms), before the
-  // panel is ordered out. Reduced motion: a very short fade.
+  // Leaving is a dissolve: the card softens, lifts and opens a touch while the
+  // dots below scatter out of it, so a dismissal reads as the card coming
+  // apart rather than switching off. It finishes inside Rust's CLOSE_MS
+  // (200 ms), before the panel is ordered out. Reduced motion: a short fade,
+  // and no dots at all.
   const gone = reduceMotion
     ? { opacity: 0, transition: { duration: 0.08, ease: "linear" as const } }
     : {
         opacity: 0,
         y: -6,
-        filter: "blur(6px)",
-        transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+        scale: 1.015,
+        filter: "blur(9px)",
+        transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const },
       };
+  // The dots the card comes apart into. Angles are derived from the index
+  // rather than randomised, so a re-render never reshuffles them mid-flight.
+  const dissolveDots = Array.from({ length: 14 }, (_, i) => {
+    const angle = (i / 14) * Math.PI * 2;
+    const reach = 30 + (i % 4) * 11;
+    return { x: Math.cos(angle) * reach, y: Math.sin(angle) * reach };
+  });
 
   return (
     <div className="hud-stage" onPointerDown={onStagePointerDown}>
@@ -314,6 +324,7 @@ export default function Hud() {
             key="card"
             ref={cardRef}
             className="hud-card"
+            style={{ position: "relative" }}
             initial={hidden}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={gone}
@@ -731,6 +742,25 @@ export default function Hud() {
                   </footer>
                 )}
               </>
+            )}
+            {!reduceMotion && (
+              <span className="hud-dissolve" aria-hidden="true">
+                {dissolveDots.map((dot, i) => (
+                  <motion.i
+                    key={i}
+                    className="hud-dot"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0 }}
+                    exit={{
+                      opacity: [0, 0.9, 0],
+                      scale: [0.5, 1, 0.35],
+                      x: dot.x,
+                      y: dot.y,
+                      transition: { duration: 0.22, ease: "easeOut" },
+                    }}
+                  />
+                ))}
+              </span>
             )}
           </motion.div>
         )}

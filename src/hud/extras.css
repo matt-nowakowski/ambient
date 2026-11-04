@@ -35,6 +35,24 @@
   margin-left: 4px;
 }
 
+/* A dismissed card comes apart into its own dots rather than just fading. */
+.hud-dissolve {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.hud-dot {
+  grid-area: 1 / 1;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: var(--h-ink, currentColor);
+  opacity: 0;
+}
+
 .hud-notes-meta {
   margin-top: 6px;
   font-size: 12px;
