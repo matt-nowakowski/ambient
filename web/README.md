@@ -152,7 +152,7 @@ reason and the numbers behind it). Event and install rows are pruned after **180
 
 **Tuning rules** (`lib/agent/config.ts`, over 14 days): a suggestion kind accepted < 15% over ≥ 50
 offers gets +0.05 minimum confidence (×1.5 cooldown once confidence is at its ceiling); < 5% over
-≥ 100 offers turns it off; ≥ 50% over ≥ 50 offers relaxes −0.02 (÷1.25 cooldown at the floor). A
+≥ 100 offers turns it off; ≥ 50% over ≥ 50 offers relaxes −0.02 (cooldown ÷1.25, at least a minute shorter, at the floor). A
 judge timing out on > 20% of ≥ 50 runs gets +1000 ms (device and cloud separately). Over 25% of ≥ 50
 requests ending on "did you mean to type this?" moves the router bias +0.05. "Written for you"
 (smart writing) reverted with "Use my words" on over 20% of ≥ 50 cases (`write_mode` /
@@ -161,12 +161,12 @@ requests ending on "did you mean to type this?" moves the router bias +0.05. "Wr
 | Key | Min | Max | Default |
 | --- | --- | --- | --- |
 | `kind.<kind>.enabled` | — | — | on |
-| `kind.<kind>.min_confidence` | 0.5 | 0.95 | 0.6 |
-| `kind.<kind>.cooldown_min` | 1 | 1440 | 3 |
+| `kind.<kind>.min_confidence` | 0.5 | 0.95 | 0.55 |
+| `kind.<kind>.cooldown_min` | 1 | 1440 | 2 |
 | `hourly_budget` | 1 | 20 | 10 |
 | `judge.timeout_ms` | 3000 | 15000 | 8000 |
 | `judge.cloud_timeout_ms` | 3000 | 12000 | 7000 |
-| `judge.min_confidence` | 0.5 | 0.95 | 0.6 |
+| `judge.min_confidence` | 0.5 | 0.95 | 0.55 |
 | `router.did_you_mean_bias` | 0 | 1 | 0.5 |
 | `answer.first_byte_timeout_ms` | 8000 | 40000 | 25000 |
 | `answer.idle_timeout_ms` | 5000 | 30000 | 20000 |

@@ -239,6 +239,11 @@
         "shortcut": "Skrót",
         "changeLanguages": "Zmień języki, {{languages}}",
         "changeModel": "Zmień model mowy, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Ustaw {{appName}} jako swoją aplikację do dyktowania",
+        "description": "Jeśli inna aplikacja do dyktowania używa tego samego skrótu, {{appName}} go przejmuje.",
+        "found": "Jeśli inna aplikacja do dyktowania, np. {{apps}}, używa tego samego skrótu, {{appName}} go przejmuje."
       }
     },
     "linux": {
@@ -1278,6 +1283,8 @@
       "summariseThread": "Długi wątek. Podsumować?",
       "draftReply": "Przygotować odpowiedź?",
       "addToCalendar": "Jest tu data. Dodać do kalendarza?",
+      "addReminder": "Jest termin. Ustawić przypomnienie?",
+      "addReminderWhen": "Termin: {{when}}. Ustawić przypomnienie?",
       "summarisePage": "Podsumować tę stronę?",
       "explainError": "Wyjaśnić ten błąd?",
       "summarise": "Podsumuj",
@@ -1307,6 +1314,7 @@
       "summariseThreadCount": "Podsumować ten wątek ({{count}} wiadomości)?",
       "replyTo": "Odpowiedzieć: {{name}}?",
       "reply": "Odpowiedz",
+      "remind": "Przypomnij",
       "translatePageLang": "Ta strona jest w języku: {{language}}. Przetłumaczyć?",
       "explainErrorWhat": "Błąd „{{error}}”. Pokazać prawdopodobne rozwiązanie?"
     },
@@ -1556,7 +1564,8 @@
         "telemetry": "Anonimowe statystyki użycia",
         "config": "Sprawdzenie ustawień (nic nie wysłano)",
         "meeting_email": "E-mail z notatkami ze spotkania",
-        "feedback": "Opinia"
+        "feedback": "Opinia",
+        "checkin": "Codzienne zgłoszenie"
       }
     },
     "engine": {
@@ -1569,6 +1578,7 @@
         "summarise_thread": "Podsumowywanie długich wątków e-mail",
         "draft_reply": "Szkice odpowiedzi",
         "add_to_calendar": "Dodawanie dat do kalendarza",
+        "add_reminder": "Przypominanie o terminach z wiadomości",
         "summarise_page": "Podsumowywanie długich stron",
         "explain_error": "Wyjaśnianie błędów i nieudanych testów",
         "tighten_draft": "Skracanie długich szkiców",

@@ -237,6 +237,11 @@
         "shortcut": "Kortkommando",
         "changeLanguages": "Ändra språk, {{languages}}",
         "changeModel": "Ändra talmodell, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Gör {{appName}} till din dikteringsapp",
+        "description": "Om en annan dikteringsapp använder samma kortkommando tar {{appName}} det.",
+        "found": "Om en annan dikteringsapp, som {{apps}}, använder samma kortkommando tar {{appName}} det."
       }
     },
     "linux": {
@@ -1262,6 +1267,8 @@
       "summariseThread": "Lång tråd. Sammanfatta den?",
       "draftReply": "Skriva ett svar på det här?",
       "addToCalendar": "Det finns ett datum här. Lägga till det i kalendern?",
+      "addReminder": "Något har en deadline. Vill du ha en påminnelse?",
+      "addReminderWhen": "Deadline {{when}}. Vill du ha en påminnelse?",
       "summarisePage": "Sammanfatta den här sidan?",
       "explainError": "Förklara det här felet?",
       "summarise": "Sammanfatta",
@@ -1291,6 +1298,7 @@
       "summariseThreadCount": "Vill du att jag sammanfattar den här tråden med {{count}} meddelanden?",
       "replyTo": "Svara {{name}}?",
       "reply": "Svara",
+      "remind": "Påminn mig",
       "translatePageLang": "Sidan är på {{language}}. Översätta den?",
       "explainErrorWhat": "Felet ”{{error}}”. Vill du ha den troliga lösningen?"
     },
@@ -1534,7 +1542,8 @@
         "telemetry": "Anonym användningsstatistik",
         "config": "Kontroll av inställningar (inget skickas)",
         "meeting_email": "E-post med mötesanteckningar",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Daglig incheckning"
       }
     },
     "engine": {
@@ -1547,6 +1556,7 @@
         "summarise_thread": "Sammanfatta långa mejltrådar",
         "draft_reply": "Skriva utkast till svar",
         "add_to_calendar": "Lägga till datum i kalendern",
+        "add_reminder": "Påminna dig om deadlines i meddelanden",
         "summarise_page": "Sammanfatta långa sidor",
         "explain_error": "Förklara fel och misslyckade tester",
         "tighten_draft": "Strama upp långa utkast",

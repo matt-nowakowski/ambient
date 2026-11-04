@@ -237,6 +237,11 @@
         "shortcut": "Kısayol",
         "changeLanguages": "Dilleri değiştir, {{languages}}",
         "changeModel": "Konuşma modelini değiştir, {{model}}"
+      },
+      "dictationApp": {
+        "title": "{{appName}} dikte uygulamanız olsun",
+        "description": "Başka bir dikte uygulaması aynı kısayolu kullanırsa {{appName}} onu alır.",
+        "found": "{{apps}} gibi başka bir dikte uygulaması aynı kısayolu kullanırsa {{appName}} onu alır."
       }
     },
     "linux": {
@@ -1262,6 +1267,8 @@
       "summariseThread": "Uzun yazışma. Özetlensin mi?",
       "draftReply": "Buna bir yanıt taslağı yazılsın mı?",
       "addToCalendar": "Burada bir tarih var. Takviminize eklensin mi?",
+      "addReminder": "Bir son tarih var. Hatırlatayım mı?",
+      "addReminderWhen": "Son tarih: {{when}}. Hatırlatayım mı?",
       "summarisePage": "Bu sayfa özetlensin mi?",
       "explainError": "Bu hata açıklansın mı?",
       "summarise": "Özetle",
@@ -1291,6 +1298,7 @@
       "summariseThreadCount": "{{count}} mesajlık bu yazışmayı özetleyeyim mi?",
       "replyTo": "{{name}} kişisine yanıt verilsin mi?",
       "reply": "Yanıtla",
+      "remind": "Hatırlat",
       "translatePageLang": "Bu sayfanın dili: {{language}}. Çevrilsin mi?",
       "explainErrorWhat": "“{{error}}” hatası alındı. Olası çözümü göstereyim mi?"
     },
@@ -1534,7 +1542,8 @@
         "telemetry": "Anonim kullanım sayıları",
         "config": "Ayar kontrolü (hiçbir şey gönderilmez)",
         "meeting_email": "Toplantı notları e-postası",
-        "feedback": "Geri bildirim"
+        "feedback": "Geri bildirim",
+        "checkin": "Günlük yoklama"
       }
     },
     "engine": {
@@ -1547,6 +1556,7 @@
         "summarise_thread": "Uzun e-posta yazışmalarını özetle",
         "draft_reply": "Yanıt taslakları yaz",
         "add_to_calendar": "Tarihleri takviminize ekle",
+        "add_reminder": "Mesajlardaki son tarihleri hatırlatma",
         "summarise_page": "Uzun sayfaları özetle",
         "explain_error": "Hataları ve başarısız testleri açıkla",
         "tighten_draft": "Uzun taslakları toparla",

@@ -237,6 +237,11 @@
         "shortcut": "快捷键",
         "changeLanguages": "更改语言，当前为{{languages}}",
         "changeModel": "更改语音模型，当前为{{model}}"
+      },
+      "dictationApp": {
+        "title": "把 {{appName}} 设为你的听写应用",
+        "description": "如果其他听写应用使用相同的快捷键，{{appName}} 会接管它。",
+        "found": "如果其他听写应用（如 {{apps}}）使用相同的快捷键，{{appName}} 会接管它。"
       }
     },
     "linux": {
@@ -1262,6 +1267,8 @@
       "summariseThread": "对话很长。要总结吗？",
       "draftReply": "要起草回复吗？",
       "addToCalendar": "这里有一个日期。要添加到日历吗？",
+      "addReminder": "这里有截止时间。要设个提醒吗？",
+      "addReminderWhen": "截止时间：{{when}}。要设个提醒吗？",
       "summarisePage": "要总结此页面吗？",
       "explainError": "要解释这个错误吗？",
       "summarise": "总结",
@@ -1291,6 +1298,7 @@
       "summariseThreadCount": "要我总结这个包含 {{count}} 条消息的对话吗？",
       "replyTo": "回复 {{name}}？",
       "reply": "回复",
+      "remind": "提醒我",
       "translatePageLang": "此页面为{{language}}。要翻译吗？",
       "explainErrorWhat": "出现“{{error}}”。想看看可能的解决方法吗？"
     },
@@ -1534,7 +1542,8 @@
         "telemetry": "匿名使用计数",
         "config": "设置检查（不发送任何内容）",
         "meeting_email": "会议笔记邮件",
-        "feedback": "反馈"
+        "feedback": "反馈",
+        "checkin": "每日签到"
       }
     },
     "engine": {
@@ -1547,6 +1556,7 @@
         "summarise_thread": "总结长邮件对话",
         "draft_reply": "起草回复",
         "add_to_calendar": "将日期添加到日历",
+        "add_reminder": "提醒你消息中的截止时间",
         "summarise_page": "总结长网页",
         "explain_error": "解释错误和失败的测试",
         "tighten_draft": "精简长草稿",

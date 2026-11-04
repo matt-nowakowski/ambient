@@ -4,9 +4,11 @@ import { after } from "next/server";
 import { ACCOUNT_RETENTION_DAYS, PRODUCT_RETENTION_DAYS, activityDb, isDatabaseConfigured } from "./db";
 
 /**
- * Who uses the app, Free included, for the admin's Installs tab. Fed only by
- * requests the app already makes (trial check, Free usage, hosted AI, sign-in
- * and plan checks) and by the website's download links; nothing new is sent.
+ * Who uses the app, Free included, for the admin's Installs tab. Fed by the
+ * app's anonymous daily check-in (/api/ping: machine hash, OS, version and
+ * plan, nothing else), by requests the app already makes (trial check, Free
+ * usage, hosted AI, sign-in and plan checks) and by the website's download
+ * links.
  *
  * Every write runs after the response (`after()`), never throws, and is
  * deduplicated per server instance per day, so a busy device costs at most a
@@ -74,37 +76,67 @@ export function activityIdentity(subject: string, plan: ActivePlan): string {
   return `a:${subject}`;
 }
 
+/** What the daily check-in adds to a device's rows (`/api/ping`). */
+export type CheckinDetails = { os: string; arch: string; version: string };
+
 /** Marks a device or account active today (and this week and month). */
 export function noteActive(subject: string, plan: ActivePlan) {
   try {
     if (!isDatabaseConfigured() || !subject) return;
     const identity = activityIdentity(subject, plan);
     if (alreadySeen(`active|${identity}|${plan}`)) return;
-    const day = today();
-    const starts = periodStarts(day);
-    const rows = PERIODS.map((p) => ({ period: p, start: starts[p], device: periodHash(identity, p, starts[p]) }));
-    run(async () => {
-      const sql = await activityDb();
-      const queries = [
-        sql`
-          insert into device_activity (period, start, device, plan)
-          select p, s, d, ${plan}::text from unnest(
-            ${rows.map((r) => r.period)}::text[],
-            ${rows.map((r) => r.start)}::date[],
-            ${rows.map((r) => r.device)}::text[]
-          ) as t(p, s, d)
-          on conflict (period, start, device) do update set plan = excluded.plan`,
-      ];
-      if (lastPrune !== day) {
-        queries.push(sql`delete from device_activity where start < current_date - ${PRODUCT_RETENTION_DAYS}::int`);
-        queries.push(sql`delete from accounts where last_seen < now() - make_interval(days => ${ACCOUNT_RETENTION_DAYS}::int)`);
-      }
-      await sql.transaction(queries);
-      lastPrune = day;
-    }, "active");
+    writeActive(identity, plan, null);
   } catch {
     // Counting never affects the response.
   }
+}
+
+/**
+ * The app's daily check-in: always counts the computer (by its machine hash,
+ * on every plan), with its OS, architecture and app version. Free and trial
+ * land on the same rows as noteActive's; Pro and Team get a device row beside
+ * their account row (the Installs tab counts the larger of the two, so a paid
+ * user isn't counted twice).
+ */
+export function noteCheckin(machineSubject: string, plan: ActivePlan, details: CheckinDetails) {
+  try {
+    if (!isDatabaseConfigured() || !machineSubject) return;
+    const identity = `d:${machineSubject.slice(0, 24)}`;
+    if (alreadySeen(`checkin|${identity}|${plan}|${details.version}`)) return;
+    writeActive(identity, plan, details);
+  } catch {
+    // Counting never affects the response.
+  }
+}
+
+function writeActive(identity: string, plan: ActivePlan, details: CheckinDetails | null) {
+  const day = today();
+  const starts = periodStarts(day);
+  const rows = PERIODS.map((p) => ({ period: p, start: starts[p], device: periodHash(identity, p, starts[p]) }));
+  run(async () => {
+    const sql = await activityDb();
+    const queries = [
+      sql`
+        insert into device_activity (period, start, device, plan, os, arch, version)
+        select p, s, d, ${plan}::text, ${details?.os ?? null}::text, ${details?.arch ?? null}::text, ${details?.version ?? null}::text
+        from unnest(
+          ${rows.map((r) => r.period)}::text[],
+          ${rows.map((r) => r.start)}::date[],
+          ${rows.map((r) => r.device)}::text[]
+        ) as t(p, s, d)
+        on conflict (period, start, device) do update set
+          plan = excluded.plan,
+          os = coalesce(excluded.os, device_activity.os),
+          arch = coalesce(excluded.arch, device_activity.arch),
+          version = coalesce(excluded.version, device_activity.version)`,
+    ];
+    if (lastPrune !== day) {
+      queries.push(sql`delete from device_activity where start < current_date - ${PRODUCT_RETENTION_DAYS}::int`);
+      queries.push(sql`delete from accounts where last_seen < now() - make_interval(days => ${ACCOUNT_RETENTION_DAYS}::int)`);
+    }
+    await sql.transaction(queries);
+    lastPrune = day;
+  }, details ? "checkin" : "active");
 }
 
 /** Adds to plain daily totals, e.g. `[["download", "macArm"], ["download_country", "PL"]]`. */

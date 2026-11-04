@@ -239,6 +239,11 @@
         "shortcut": "Zkratka",
         "changeLanguages": "Změnit jazyky, {{languages}}",
         "changeModel": "Změnit model řeči, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Udělejte z {{appName}} svou aplikaci na diktování",
+        "description": "Pokud jiná aplikace na diktování používá stejnou zkratku, {{appName}} ji převezme.",
+        "found": "Pokud jiná aplikace na diktování, například {{apps}}, používá stejnou zkratku, {{appName}} ji převezme."
       }
     },
     "linux": {
@@ -1278,6 +1283,8 @@
       "summariseThread": "Dlouhá konverzace. Shrnout ji?",
       "draftReply": "Navrhnout odpověď?",
       "addToCalendar": "Je tu datum. Přidat ho do kalendáře?",
+      "addReminder": "Něco má termín. Chcete připomenutí?",
+      "addReminderWhen": "Termín: {{when}}. Chcete připomenutí?",
       "summarisePage": "Shrnout tuto stránku?",
       "explainError": "Vysvětlit tuto chybu?",
       "summarise": "Shrnout",
@@ -1307,6 +1314,7 @@
       "summariseThreadCount": "Mám shrnout toto vlákno o {{count}} zprávách?",
       "replyTo": "Odpovědět: {{name}}?",
       "reply": "Odpovědět",
+      "remind": "Připomeň mi to",
       "translatePageLang": "Jazyk stránky: {{language}}. Přeložit?",
       "explainErrorWhat": "Chyba „{{error}}“. Chcete pravděpodobné řešení?"
     },
@@ -1556,7 +1564,8 @@
         "telemetry": "Anonymní statistiky používání",
         "config": "Kontrola nastavení (nic se neodesílá)",
         "meeting_email": "E-mail s poznámkami ze schůzky",
-        "feedback": "Zpětná vazba"
+        "feedback": "Zpětná vazba",
+        "checkin": "Denní ohlášení"
       }
     },
     "engine": {
@@ -1569,6 +1578,7 @@
         "summarise_thread": "Shrnovat dlouhá e-mailová vlákna",
         "draft_reply": "Navrhovat odpovědi",
         "add_to_calendar": "Přidávat data do kalendáře",
+        "add_reminder": "Připomínat termíny ze zpráv",
         "summarise_page": "Shrnovat dlouhé stránky",
         "explain_error": "Vysvětlovat chyby a neúspěšné testy",
         "tighten_draft": "Zestručňovat dlouhé koncepty",

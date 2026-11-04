@@ -238,6 +238,11 @@
         "shortcut": "Atalho",
         "changeLanguages": "Alterar idiomas, {{languages}}",
         "changeModel": "Alterar modelo de fala, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Faça do {{appName}} seu app de ditado",
+        "description": "Se outro app de ditado usar o mesmo atalho, o {{appName}} fica com ele.",
+        "found": "Se outro app de ditado, como {{apps}}, usar o mesmo atalho, o {{appName}} fica com ele."
       }
     },
     "linux": {
@@ -1270,6 +1275,8 @@
       "summariseThread": "Conversa longa. Resumir?",
       "draftReply": "Rascunhar uma resposta?",
       "addToCalendar": "Há uma data aqui. Adicionar ao seu calendário?",
+      "addReminder": "Há um prazo. Quer um lembrete?",
+      "addReminderWhen": "Prazo: {{when}}. Quer um lembrete?",
       "summarisePage": "Resumir esta página?",
       "explainError": "Explicar este erro?",
       "summarise": "Resumir",
@@ -1299,6 +1306,7 @@
       "summariseThreadCount": "Quer que eu resuma esta conversa de {{count}} mensagens?",
       "replyTo": "Responder a {{name}}?",
       "reply": "Responder",
+      "remind": "Lembrar-me",
       "translatePageLang": "Esta página está em {{language}}. Traduzir?",
       "explainErrorWhat": "Deu “{{error}}”. Quer a provável solução?"
     },
@@ -1544,7 +1552,8 @@
         "telemetry": "Contagens de uso anônimas",
         "config": "Verificação de configurações (nada enviado)",
         "meeting_email": "E-mail com notas da reunião",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Check-in diário"
       },
       "bytes_many": "{{count}} bytes"
     },
@@ -1558,6 +1567,7 @@
         "summarise_thread": "Resumir conversas longas de e-mail",
         "draft_reply": "Rascunhar respostas",
         "add_to_calendar": "Adicionar datas ao seu calendário",
+        "add_reminder": "Lembrar prazos nas mensagens",
         "summarise_page": "Resumir páginas longas",
         "explain_error": "Explicar erros e testes com falha",
         "tighten_draft": "Enxugar rascunhos longos",

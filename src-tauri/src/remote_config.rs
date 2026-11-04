@@ -23,14 +23,14 @@ const SCHEMA: u64 = 1;
 
 /// (min, max, default) for each tunable. Never widen these from the server.
 pub mod bounds {
-    pub const KIND_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.6);
+    pub const KIND_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.55);
     /// After a kind is offered in an app, that app gets no other offer for
     /// this many minutes (`agent::budget`).
-    pub const KIND_COOLDOWN_MIN: (f64, f64, f64) = (1.0, 1440.0, 3.0);
+    pub const KIND_COOLDOWN_MIN: (f64, f64, f64) = (1.0, 1440.0, 2.0);
     pub const HOURLY_BUDGET: (f64, f64, f64) = (1.0, 20.0, 10.0);
     pub const JUDGE_TIMEOUT_MS: (f64, f64, f64) = (3000.0, 15000.0, 8000.0);
     pub const JUDGE_CLOUD_TIMEOUT_MS: (f64, f64, f64) = (3000.0, 12000.0, 7000.0);
-    pub const JUDGE_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.6);
+    pub const JUDGE_MIN_CONFIDENCE: (f64, f64, f64) = (0.5, 0.95, 0.55);
     pub const ROUTER_DID_YOU_MEAN_BIAS: (f64, f64, f64) = (0.0, 1.0, 0.5);
     pub const ANSWER_FIRST_BYTE_TIMEOUT_MS: (f64, f64, f64) = (8000.0, 40000.0, 25000.0);
     pub const ANSWER_IDLE_TIMEOUT_MS: (f64, f64, f64) = (5000.0, 30000.0, 20000.0);
@@ -401,9 +401,9 @@ mod tests {
         assert_eq!(c.judge_cloud_timeout, Duration::from_secs(7));
         assert_eq!(c.answer_first_byte_timeout, Duration::from_secs(25));
         assert_eq!(c.answer_idle_timeout, Duration::from_secs(20));
-        assert!((c.min_confidence_for("draft_reply") - 0.6).abs() < 1e-6);
+        assert!((c.min_confidence_for("draft_reply") - 0.55).abs() < 1e-6);
         assert!(c.kind("summarise_thread").enabled);
-        assert_eq!(c.kind("draft_reply").cooldown, Duration::from_secs(180));
+        assert_eq!(c.kind("draft_reply").cooldown, Duration::from_secs(120));
         assert_eq!(
             c.free,
             FreeLimits {

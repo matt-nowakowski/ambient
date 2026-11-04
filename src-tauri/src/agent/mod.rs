@@ -44,6 +44,22 @@ const SNAPSHOT_CHARS: usize = 6000;
 /// How long the user stays on a window before a suggestion is considered.
 const DWELL: Duration = Duration::from_secs(6);
 
+/// On a window already considered, every `proactive::RECHECK`: has something
+/// new appeared in it (a message, an error)? Then it's considered again.
+/// Reads the window's text, so only while nothing else is up or running.
+fn something_new(agent: &settings::AgentSettings, at: &mut Instant) -> bool {
+    if at.elapsed() < proactive::RECHECK
+        || crate::hud::is_visible()
+        || crate::meeting::is_active()
+        || proactive::busy()
+    {
+        return false;
+    }
+    *at = Instant::now();
+    context::snapshot(proactive::text_chars(), &agent.never_watch)
+        .is_ok_and(|snap| proactive::changed_since_seen(&snap))
+}
+
 fn agent_prep_due(last: &mut Option<Instant>) -> bool {
     if last.is_some_and(|t| t.elapsed() < Duration::from_secs(60)) {
         return false;
@@ -223,6 +239,8 @@ fn run(app: AppHandle) {
     let mut last_prep: Option<Instant> = None;
     let mut notified_sensitive: Option<String> = None;
     let mut considered: Option<(i32, String)> = None;
+    // When it was considered (or last checked for something new).
+    let mut considered_at = Instant::now();
     // The last skip reason logged at debug, so it's logged once per window.
     let mut last_skip: Option<String> = None;
 
@@ -350,6 +368,7 @@ fn run(app: AppHandle) {
                         None
                     } else if considered.as_ref() == Some(&key)
                         && !proactive::deferred_due(&format!("{}|{}", front.bundle_id, key.1))
+                        && !something_new(&agent, &mut considered_at)
                     {
                         log::trace!("proactive: already considered this window");
                         None
@@ -363,6 +382,7 @@ fn run(app: AppHandle) {
                         Some("still judging the previous window".into())
                     } else {
                         considered = Some(key);
+                        considered_at = Instant::now();
                         match context::snapshot(proactive::text_chars(), &agent.never_watch) {
                             Ok(snap) => {
                                 log::debug!(

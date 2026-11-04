@@ -237,6 +237,11 @@
         "shortcut": "Shortcut",
         "changeLanguages": "Change languages, {{languages}}",
         "changeModel": "Change speech model, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Make {{appName}} your dictation app",
+        "description": "If another dictation app uses the same shortcut, {{appName}} takes it.",
+        "found": "If another dictation app, like {{apps}}, uses the same shortcut, {{appName}} takes it."
       }
     },
     "linux": {
@@ -1262,6 +1267,8 @@
       "summariseThread": "Long thread. Summarise it?",
       "draftReply": "Draft a reply to this?",
       "addToCalendar": "There's a date in this. Add it to your calendar?",
+      "addReminder": "Something's due. Want a reminder?",
+      "addReminderWhen": "Due {{when}}. Want a reminder?",
       "summarisePage": "Summarise this page?",
       "explainError": "Explain this error?",
       "summarise": "Summarise",
@@ -1291,6 +1298,7 @@
       "summariseThreadCount": "Want me to summarise this {{count}}-message thread?",
       "replyTo": "Reply to {{name}}?",
       "reply": "Reply",
+      "remind": "Remind me",
       "translatePageLang": "This page is in {{language}}. Translate it?",
       "explainErrorWhat": "Hit “{{error}}”. Want the likely fix?"
     },
@@ -1534,7 +1542,8 @@
         "telemetry": "Anonymous usage counts",
         "config": "Settings check (nothing sent)",
         "meeting_email": "Meeting notes email",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Daily check-in"
       }
     },
     "engine": {
@@ -1547,6 +1556,7 @@
         "summarise_thread": "Summarise long email threads",
         "draft_reply": "Draft replies",
         "add_to_calendar": "Add dates to your calendar",
+        "add_reminder": "Remind you of deadlines in messages",
         "summarise_page": "Summarise long pages",
         "explain_error": "Explain errors and failing tests",
         "tighten_draft": "Tighten long drafts",

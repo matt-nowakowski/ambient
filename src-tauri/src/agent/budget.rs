@@ -8,7 +8,7 @@
 //! - the same kind is never offered twice for the same window or thread
 //!   (and repeats are dropped before they count against anything);
 //! - each app has a short cooldown after an offer (the offered kind's
-//!   `cooldown_min` in the agent config, 3 minutes by default), longer after
+//!   `cooldown_min` in the agent config, 2 minutes by default), longer after
 //!   a dismissal there;
 //! - the hourly cap is higher (the agent config's `hourly_budget`, 10 by
 //!   default), and each dismissal in the last hour lowers it, so a user who
@@ -29,7 +29,7 @@ const MIN_CAP: u32 = 3;
 /// Each dismissal in the last hour lowers the cap by this much.
 const CAP_PER_DISMISSAL: u32 = 2;
 /// Between two offers in the same app (the default `cooldown_min`).
-pub const APP_COOLDOWN: Duration = Duration::from_secs(3 * 60);
+pub const APP_COOLDOWN: Duration = Duration::from_secs(2 * 60);
 /// Added to an app's cooldown after a dismissal there.
 const APP_COOLDOWN_AFTER_DISMISS: Duration = Duration::from_secs(15 * 60);
 /// A window or thread offered a kind isn't offered it again for this long.

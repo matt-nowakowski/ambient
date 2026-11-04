@@ -238,6 +238,11 @@
         "shortcut": "Raccourci",
         "changeLanguages": "Modifier les langues, {{languages}}",
         "changeModel": "Modifier le modèle vocal, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Faites de {{appName}} votre app de dictée",
+        "description": "Si une autre app de dictée utilise le même raccourci, {{appName}} le prend.",
+        "found": "Si une autre app de dictée, comme {{apps}}, utilise le même raccourci, {{appName}} le prend."
       }
     },
     "linux": {
@@ -1270,6 +1275,8 @@
       "summariseThread": "Fil très long. Le résumer ?",
       "draftReply": "Rédiger une réponse ?",
       "addToCalendar": "Il y a une date ici. L’ajouter à votre calendrier ?",
+      "addReminder": "Il y a une échéance. Je te le rappelle ?",
+      "addReminderWhen": "Échéance : {{when}}. Je te le rappelle ?",
       "summarisePage": "Résumer cette page ?",
       "explainError": "Expliquer cette erreur ?",
       "summarise": "Résumer",
@@ -1299,6 +1306,7 @@
       "summariseThreadCount": "Je résume ce fil de {{count}} messages ?",
       "replyTo": "Répondre à {{name}} ?",
       "reply": "Répondre",
+      "remind": "Me le rappeler",
       "translatePageLang": "Cette page est en {{language}}. La traduire ?",
       "explainErrorWhat": "Erreur « {{error}} ». Voulez-vous la solution probable ?"
     },
@@ -1544,7 +1552,8 @@
         "telemetry": "Statistiques d'usage anonymes",
         "config": "Vérification des réglages (rien n'est envoyé)",
         "meeting_email": "E-mail des notes de réunion",
-        "feedback": "Avis"
+        "feedback": "Avis",
+        "checkin": "Signal quotidien"
       },
       "bytes_many": "{{count}} octets"
     },
@@ -1558,6 +1567,7 @@
         "summarise_thread": "Résumer les longs fils d’e-mails",
         "draft_reply": "Rédiger des réponses",
         "add_to_calendar": "Ajouter des dates à votre calendrier",
+        "add_reminder": "Te rappeler les échéances des messages",
         "summarise_page": "Résumer les longues pages",
         "explain_error": "Expliquer les erreurs et les tests en échec",
         "tighten_draft": "Condenser les longs brouillons",
