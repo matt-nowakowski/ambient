@@ -66,10 +66,12 @@ export default function PrivacyPage() {
               </p>
               <ul>
                 <li>
-                  <strong>On your device.</strong> On Macs with Apple Intelligence, suggestions are always decided on the
-                  device, and you can choose to run other AI tasks there whenever they fit (polish, answers that don’t
-                  need the web, drafts, summaries and meeting nudges); nothing is sent for them. Apple Intelligence is
-                  Apple’s on-device model; {brand.name} sends nothing to Apple.
+                  <strong>On your device.</strong> On Macs with Apple Intelligence, or on any computer where you have
+                  downloaded the optional on-device AI model, suggestions are decided on the device, and you can choose
+                  to run other AI tasks there whenever they fit (polish, answers that don’t need the web, drafts,
+                  summaries and meeting nudges); nothing is sent for them. Apple Intelligence is Apple’s on-device model;
+                  {brand.name} sends nothing to Apple. The downloaded model runs in a separate program on your computer
+                  that only talks to {brand.name}, never to the internet.
                 </li>
                 <li>
                   <strong>On our server.</strong> Otherwise, when text is too long for the on-device model, and for
@@ -87,9 +89,11 @@ export default function PrivacyPage() {
                 said, never what is on your screen.
               </p>
               <p>
-                <strong>AI polish.</strong> AI polish tidies the text you dictate and can write a message for you. It is
-                on by default for new installs and can be turned off during setup or at any time in Account; turning it
-                off keeps dictation on your computer. When it is on, the text you dictate (never audio) is processed as
+                <strong>AI polish.</strong> AI polish tidies the text you dictate. It is off by default for new installs
+                and can be turned on during setup or at any time in Account; while it is off, ordinary dictation stays on
+                your computer. When you ask {brand.name} to write a message for you, it does so whether or not polish is
+                on; for a reply, the request also includes your name and signed-in email and the name of the person
+                you’re answering, so the message is addressed to the right person. When it is on, the text you dictate (never audio) is processed as
                 described above, and each request sent to our server is listed on the app’s Privacy page.
                 </p>
                 <p>
@@ -410,8 +414,10 @@ export default function PrivacyPage() {
           body: (
             <ul>
               <li>
-                <strong>Model downloads:</strong> when you choose a speech model, the app downloads it from Hugging Face
-                (huggingface.co), and from our backup storage at Cloudflare if that fails. The host sees your IP address
+                <strong>Model downloads:</strong> when you choose a speech model, or the optional on-device AI model,
+                the app downloads it from Hugging Face (huggingface.co), and from our backup storage at Cloudflare if that
+                fails. The on-device AI also needs the llama.cpp program that runs it, downloaded from GitHub (or our
+                backup storage). The host sees your IP address
                 and the file requested, as with any download. Nothing about your audio or transcripts is sent.
               </li>
               <li>
