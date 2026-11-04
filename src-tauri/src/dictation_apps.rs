@@ -3,7 +3,7 @@
 //! Dictation apps tend to share the same handful of shortcuts (Fn, right
 //! Option, Ctrl+Win, Option+Space), and when two of them are bound to the same
 //! keys both start listening and both type. This module spots the common ones
-//! (running, or installed on macOS) and macOS's own Fn/Globe dictation, so the
+//! (while running) and macOS's own Fn/Globe dictation, so the
 //! UI can say so in plain words and offer the fix: keep the shortcut to
 //! Ambient (`exclusive_shortcuts`), or change one of the shortcuts.
 //!
@@ -116,7 +116,7 @@ pub enum SystemDictation {
 /// What the UI needs to warn about a shortcut shared with another app.
 #[derive(Serialize, Type, Clone, Debug, Default, PartialEq)]
 pub struct DictationConflicts {
-    /// Known dictation apps that are running, or installed (macOS).
+    /// Known dictation apps that are running.
     pub apps: Vec<String>,
     /// Built-in dictation that can share the keys, if any.
     pub system_dictation: Option<SystemDictation>,
@@ -316,34 +316,6 @@ fn windows_process_names() -> Vec<String> {
     names
 }
 
-/// Known apps installed but not necessarily running. macOS only: app
-/// bundles have stable names there; Windows/Linux installs don't.
-fn installed_apps() -> BTreeSet<&'static str> {
-    #[cfg(target_os = "macos")]
-    {
-        let mut dirs = vec![std::path::PathBuf::from("/Applications")];
-        if let Some(home) = std::env::var_os("HOME") {
-            let home = std::path::PathBuf::from(home);
-            dirs.push(home.join("Applications"));
-        }
-        let mut bundles = Vec::new();
-        for dir in dirs {
-            if let Ok(entries) = std::fs::read_dir(dir) {
-                bundles.extend(
-                    entries
-                        .flatten()
-                        .map(|e| e.file_name().to_string_lossy().into_owned()),
-                );
-            }
-        }
-        match_known(std::iter::empty(), bundles.iter().map(String::as_str))
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        BTreeSet::new()
-    }
-}
-
 /// Check now, update the cache, tell the UI if anything changed, and go
 /// back in front of a dictation app that just started.
 fn check(app: &AppHandle) {
@@ -380,8 +352,9 @@ fn check(app: &AppHandle) {
         }
     }
 
-    let mut apps: BTreeSet<&str> = running;
-    apps.extend(installed_apps());
+    // Only running apps: one kept installed for other jobs (say, transcribing
+    // files) isn't listening to the keyboard, so it shouldn't nag.
+    let apps: BTreeSet<&str> = running;
     let bindings: Vec<String> = settings
         .bindings
         .values()
