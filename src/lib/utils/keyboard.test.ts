@@ -1,8 +1,14 @@
 import assert from "node:assert/strict";
 import {
+  bindingKeys,
+  bindsPrimaryMouseButton,
   ChordRecorder,
   formatKeyCombination,
   getKeyName,
+  isDoubleTapBinding,
+  isModifierOnlyBinding,
+  keycapLabel,
+  keycapLabels,
   type RecordedKeyEvent,
   typesText,
 } from "./keyboard";
@@ -106,3 +112,77 @@ assert.deepEqual(record([ev("d", "d", true), ev("d", "d", false)]), ["d"]);
 assert.deepEqual(record([ev("enter", "enter", false)]), []);
 
 console.log("keyboard: chord assertions passed");
+
+// Mouse buttons and double-tap triggers read as words, not parser tokens.
+assert.equal(
+  formatKeyCombination("double_tap+option_right", "macos"),
+  "Right Option ×2",
+);
+assert.equal(formatKeyCombination("double_tap+fn", "macos"), "fn ×2");
+assert.equal(
+  formatKeyCombination("double_tap+ctrl_left", "windows"),
+  "Left Ctrl ×2",
+);
+assert.equal(
+  formatKeyCombination("double_tap+option_right+space", "macos"),
+  "Right Option + Space ×2",
+);
+assert.equal(formatKeyCombination("mousex1", "windows"), "Mouse 4");
+assert.equal(formatKeyCombination("mouse4", "linux"), "Mouse 4");
+assert.equal(formatKeyCombination("mouse5", "macos"), "Mouse 5");
+assert.equal(formatKeyCombination("mousemiddle", "windows"), "Mouse 3");
+assert.equal(formatKeyCombination("mouseleft", "windows"), "Mouse 1");
+
+assert.deepEqual(keycapLabels("double_tap+option_right", "macos"), ["⌥", "×2"]);
+assert.deepEqual(keycapLabels("option_right", "windows"), ["Alt"]);
+assert.deepEqual(keycapLabels("mousex2", "windows"), ["Mouse 5"]);
+assert.equal(keycapLabel("double_tap+ctrl_left", "windows"), "Ctrl + ×2");
+
+// The marker is not a key: binding logic sees only the key it marks.
+assert.deepEqual(bindingKeys("double_tap+option_right"), ["option_right"]);
+assert.deepEqual(bindingKeys("option_right"), ["option_right"]);
+assert.deepEqual(bindingKeys(""), []);
+assert.equal(isDoubleTapBinding("double_tap+fn"), true);
+assert.equal(isDoubleTapBinding("fn"), false);
+assert.equal(isDoubleTapBinding(null), false);
+
+// A double tap rides on a modifier on its own; a chord or a typing key is out.
+for (const binding of [
+  "double_tap+option_right",
+  "option_right",
+  "fn",
+  "double_tap+fn",
+])
+  assert.equal(isModifierOnlyBinding(binding), true, binding);
+for (const binding of [
+  "double_tap+ctrl+space",
+  "ctrl+space",
+  "space",
+  "double_tap+d",
+  "",
+])
+  assert.equal(isModifierOnlyBinding(binding), false, binding);
+
+// A lone modifier, double tap or not, still isn't a typing key.
+for (const binding of ["double_tap+option_right", "double_tap+fn"])
+  assert.equal(typesText(binding), false, binding);
+
+// Left and right click stay the user's; the extra buttons don't.
+for (const binding of [
+  "mouseleft",
+  "mouse1",
+  "mouseright",
+  "rmb",
+  "ctrl+mouseleft",
+])
+  assert.equal(bindsPrimaryMouseButton(binding), true, binding);
+for (const binding of [
+  "mouse4",
+  "mouse5",
+  "mousex1",
+  "mousemiddle",
+  "double_tap+mouse5",
+])
+  assert.equal(bindsPrimaryMouseButton(binding), false, binding);
+
+console.log("keyboard: double-tap and mouse assertions passed");

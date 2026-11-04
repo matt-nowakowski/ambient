@@ -367,6 +367,11 @@
         "none": "No hi ha cap drecera configurada",
         "notFound": "No s'ha trobat la drecera",
         "pressKeys": "Premeu les tecles…",
+        "keepClicks": "El clic esquerre i el dret són teus; tria una altra tecla.",
+        "doubleTap": {
+          "label": "Doble toc",
+          "description": "Toqueu dues vegades per començar i dues més per aturar. Un sol toc o mantenir la tecla continuen funcionant com sempre."
+        },
         "bindings": {
           "transcribe": {
             "name": "Drecera de transcripció",

@@ -8,6 +8,7 @@ import { commands } from "@/bindings";
 import { SECURE_INPUT_HELP_URL } from "@/components/SecureInputWarning";
 import { useSettings } from "@/hooks/useSettings";
 import {
+  bindsPrimaryMouseButton,
   ChordRecorder,
   getKeyName,
   MODIFIERS,
@@ -41,6 +42,8 @@ export const useShortcutCapture = (
   const [partial, setPartial] = useState("");
   // The last combo was a lone typing key; the hint asks for a modifier.
   const [refused, setRefused] = useState(false);
+  // The last combo used left or right click; the hint asks for another key.
+  const [refusedMouse, setRefusedMouse] = useState(false);
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
 
@@ -65,6 +68,7 @@ export const useShortcutCapture = (
     setCapturing(false);
     setPartial("");
     setRefused(false);
+    setRefusedMouse(false);
     await release();
     onDoneRef.current?.();
   }, [release]);
@@ -74,6 +78,13 @@ export const useShortcutCapture = (
     async (binding: string) => {
       if (bindingId !== "cancel" && typesText(binding)) {
         setRefused(true);
+        setPartial("");
+        return false;
+      }
+      // Left and right click stay the user's, whatever the modifiers: a
+      // binding on a click would swallow the click itself.
+      if (bindsPrimaryMouseButton(binding)) {
+        setRefusedMouse(true);
         setPartial("");
         return false;
       }
@@ -119,6 +130,7 @@ export const useShortcutCapture = (
     }
     setPartial("");
     setRefused(false);
+    setRefusedMouse(false);
     setCapturing(true);
     return true;
   }, [bindingId, ambientKeys, inert, t]);
@@ -150,6 +162,7 @@ export const useShortcutCapture = (
       if (!done) {
         if (held) {
           setRefused(false);
+          setRefusedMouse(false);
           setPartial(held);
         }
         return;
@@ -178,6 +191,7 @@ export const useShortcutCapture = (
       pressed.add(key);
       if (!recorded.includes(key)) recorded.push(key);
       setRefused(false);
+      setRefusedMouse(false);
       setPartial(recorded.join("+"));
     };
     const onUp = (e: KeyboardEvent) => {
@@ -202,5 +216,5 @@ export const useShortcutCapture = (
     };
   }, [capturing, ambientKeys, commit, escapeCancels, osType]);
 
-  return { capturing, partial, refused, start, cancel };
+  return { capturing, partial, refused, refusedMouse, start, cancel };
 };

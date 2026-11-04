@@ -369,6 +369,11 @@
         "none": "Brak skonfigurowanych skrótów",
         "notFound": "Nie znaleziono skrótu",
         "pressKeys": "Naciśnij klawisze…",
+        "keepClicks": "Kliknięcie lewym i prawym przyciskiem zostaje twoje; wybierz inny klawisz.",
+        "doubleTap": {
+          "label": "Podwójne naciśnięcie",
+          "description": "Naciśnij dwa razy, aby zacząć, i dwa razy, aby zatrzymać. Pojedyncze naciśnięcie lub przytrzymanie działa jak dotąd."
+        },
         "bindings": {
           "transcribe": {
             "name": "Skrót transkrypcji",

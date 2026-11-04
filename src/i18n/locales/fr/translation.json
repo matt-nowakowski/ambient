@@ -367,6 +367,11 @@
         "none": "Aucun raccourci configuré",
         "notFound": "Raccourci non trouvé",
         "pressKeys": "Appuyez sur les touches…",
+        "keepClicks": "Les clics gauche et droit restent les vôtres ; choisissez une autre touche.",
+        "doubleTap": {
+          "label": "Double appui",
+          "description": "Appuyez deux fois pour démarrer, deux fois encore pour arrêter. Un appui simple ou maintenu fonctionne comme d'habitude."
+        },
         "bindings": {
           "transcribe": {
             "name": "Raccourci de transcription",

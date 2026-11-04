@@ -367,6 +367,11 @@
         "none": "Nessuna scorciatoia configurata",
         "notFound": "Scorciatoia non trovata",
         "pressKeys": "Premi i tasti…",
+        "keepClicks": "Il clic sinistro e destro restano tuoi; scegli un altro tasto.",
+        "doubleTap": {
+          "label": "Doppio tocco",
+          "description": "Tocca due volte per iniziare e due volte per fermarti. Un tocco singolo o una pressione prolungata funzionano come sempre."
+        },
         "bindings": {
           "transcribe": {
             "name": "Scorciatoia di trascrizione",

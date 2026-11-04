@@ -365,6 +365,11 @@
         "none": "No shortcuts configured",
         "notFound": "Shortcut not found",
         "pressKeys": "Press keys...",
+        "keepClicks": "Left and right click stay yours; pick another key.",
+        "doubleTap": {
+          "label": "Double-tap",
+          "description": "Tap twice to start, and twice again to stop. A single tap or a hold still works as usual."
+        },
         "bindings": {
           "transcribe": {
             "name": "Transcribe Shortcut",

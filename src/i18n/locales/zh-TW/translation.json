@@ -365,6 +365,11 @@
         "none": "未設定快捷鍵",
         "notFound": "未找到快捷鍵",
         "pressKeys": "請按鍵…",
+        "keepClicks": "滑鼠左鍵和右鍵留給你自己，請換一個按鍵。",
+        "doubleTap": {
+          "label": "連按兩下",
+          "description": "連按兩下開始，再連按兩下停止。單按或長按仍照常使用。"
+        },
         "bindings": {
           "transcribe": {
             "name": "轉錄快捷鍵",

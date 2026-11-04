@@ -1,8 +1,17 @@
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { formatKeyCombination } from "../../lib/utils/keyboard";
+import {
+  bindingKeys,
+  DOUBLE_TAP_PREFIX,
+  formatKeyCombination,
+  isDoubleTapBinding,
+  isModifierOnlyBinding,
+} from "../../lib/utils/keyboard";
+import { showError } from "../../lib/errors";
 import { ResetButton } from "../ui/ResetButton";
 import { SettingContainer } from "../ui/SettingContainer";
+import { Switch } from "../ui/Switch";
+import { Tooltip } from "../ui/Tooltip";
 import { useSettings } from "../../hooks/useSettings";
 import { useOsType } from "../../hooks/useOsType";
 import { useShortcutCapture } from "../../hooks/useShortcutCapture";
@@ -26,12 +35,11 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
   disabled = false,
 }) => {
   const { t } = useTranslation();
-  const { getSetting, resetBinding, isUpdating, isLoading } = useSettings();
+  const { getSetting, resetBinding, updateBinding, isUpdating, isLoading } =
+    useSettings();
   const osType = useOsType();
-  const { capturing, partial, refused, start, cancel } = useShortcutCapture(
-    shortcutId,
-    osType,
-  );
+  const { capturing, partial, refused, refusedMouse, start, cancel } =
+    useShortcutCapture(shortcutId, osType);
   const shortcutRef = useRef<HTMLDivElement | null>(null);
 
   const bindings = getSetting("bindings") || {};
@@ -96,6 +104,21 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
     binding.description,
   );
 
+  // A double tap only makes sense on a key held for its own sake, and only the
+  // ambient-keys backend can watch for one.
+  const canDoubleTap =
+    getSetting("keyboard_implementation") === "ambient_keys" &&
+    isModifierOnlyBinding(binding.current_binding);
+
+  const setDoubleTap = async (on: boolean) => {
+    const base = bindingKeys(binding.current_binding).join("+");
+    try {
+      await updateBinding(shortcutId, on ? DOUBLE_TAP_PREFIX + base : base);
+    } catch (error) {
+      showError("settings", error, { title: t("errors.titles.shortcut") });
+    }
+  };
+
   return (
     <SettingContainer
       title={translatedName}
@@ -113,9 +136,11 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
           >
             {partial
               ? formatKeyCombination(partial, osType)
-              : refused
-                ? t("onboarding.demo.addModifier")
-                : t("settings.general.shortcut.pressKeys")}
+              : refusedMouse
+                ? t("settings.general.shortcut.keepClicks")
+                : refused
+                  ? t("onboarding.demo.addModifier")
+                  : t("settings.general.shortcut.pressKeys")}
           </div>
         ) : (
           <div
@@ -124,6 +149,21 @@ export const ShortcutInput: React.FC<ShortcutInputProps> = ({
           >
             {formatKeyCombination(binding.current_binding, osType)}
           </div>
+        )}
+        {!capturing && canDoubleTap && (
+          <Tooltip text={t("settings.general.shortcut.doubleTap.description")}>
+            <span className="inline-flex items-center gap-2 ps-1">
+              <span className="text-small text-ink-3">
+                {t("settings.general.shortcut.doubleTap.label")}
+              </span>
+              <Switch
+                checked={isDoubleTapBinding(binding.current_binding)}
+                onChange={setDoubleTap}
+                disabled={isUpdating(`binding_${shortcutId}`) || disabled}
+                ariaLabel={t("settings.general.shortcut.doubleTap.label")}
+              />
+            </span>
+          </Tooltip>
         )}
         <ResetButton
           onClick={() => resetBinding(shortcutId)}
