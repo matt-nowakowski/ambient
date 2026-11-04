@@ -712,6 +712,7 @@ mod tests {
             source_name: None,
             language: None,
             language_source: None,
+            details: Default::default(),
         }
     }
 
