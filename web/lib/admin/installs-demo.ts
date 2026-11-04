@@ -64,12 +64,13 @@ export function demoInstallsData(days: string[]): InstallsData {
       ["BR", 49, 21],
       ["JP", 31, 18],
     ].map(([country, downloads, firstLaunches]) => ({ country: String(country), downloads: Number(downloads), firstLaunches: Number(firstLaunches) })),
-    optedIn: {
-      installDays: 2_430,
+    mix: {
+      deviceDays: 2_430,
       os: [
-        { key: "macos", n: 1_640 },
-        { key: "windows", n: 690 },
-        { key: "linux", n: 100 },
+        { key: "macos/aarch64", n: 1_390 },
+        { key: "macos/x86_64", n: 250 },
+        { key: "windows/x86_64", n: 690 },
+        { key: "linux/x86_64", n: 100 },
       ],
       versions: [
         { key: "0.1.8", n: 1_120 },

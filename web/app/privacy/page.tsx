@@ -244,8 +244,9 @@ export default function PrivacyPage() {
               <p>
                 We can only make the assistant better from real use, so the app can share anonymous usage counts with us.
                 This is <strong>off until you turn it on</strong>: on the “You’re all set” screen at the end of setup, or
-                with <strong>Share anonymous usage counts</strong> in the app’s Privacy Center. While it is off, nothing is
-                collected or sent.
+                with <strong>Share anonymous usage counts</strong> in the app’s Privacy Center. While it is off, none of
+                these statistics are collected or sent. (The daily check-in described in “How many people use the app” is
+                separate and is sent either way.)
               </p>
               <p>
                 <strong>What is collected:</strong> counts and timings of what the assistant does, such as how often a
@@ -339,12 +340,23 @@ export default function PrivacyPage() {
           body: (
             <>
               <p>
-                To know how many computers use {brand.name}, on every plan, we count the requests the app already makes to our
-                server (the trial check, the Free allowance check, hosted AI, and plan checks). For each day, week and month a
-                computer (or, on a paid plan, an account) makes one of these requests, we keep a keyed one-way hash that is
-                different for every day, week and month, so one period’s record can’t be linked to another’s, with your plan.
-                Nothing else is kept: no IP address, no content, no email. These records are deleted after 180 days. The app
-                sends nothing extra for this.
+                <strong>Daily check-in.</strong> Once a day, and when the app starts if it hasn’t checked in yet that day,{" "}
+                {brand.name} sends our server a small anonymous check-in, so we can count everyone who uses it, including people
+                on Free who only dictate on their own computer. It contains exactly: the one-way device hash described under
+                “Trial and free allowance” (never your computer’s serial number or hardware identifier itself), the app version,
+                your operating system and processor type (for example macOS on Apple silicon), and your plan (Free, trial, Pro
+                or Team). Nothing else: nothing you say, type or see, nothing about how you use the app, and no email. It is
+                sent whether or not you share anonymous usage statistics, because it is the minimum we need to count users,
+                and it is listed in the Privacy Center with every other request the app makes. If it can’t reach us,
+                the app tries again an hour later.
+              </p>
+              <p>
+                We also count the other requests the app makes to our server (the trial check, the Free allowance check,
+                hosted AI, and plan checks). For each day, week and month a computer (or, on a paid plan, an account) checks
+                in or makes one of these requests, we keep a keyed one-way hash that is different for every day, week and
+                month, so one period’s record can’t be linked to another’s, with your plan and, from the check-in, the app
+                version, operating system and processor type. Nothing else is kept: no IP address, no content, no email.
+                These records are deleted after 180 days.
               </p>
               <p>
                 We also count how often the installers on our website are downloaded, and how many computers launch{" "}
@@ -414,6 +426,10 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Sign-in and plan checks:</strong> described above.
+              </li>
+              <li>
+                <strong>Daily check-in:</strong> once a day, the device hash, app version, operating system and processor
+                type, and plan (see “How many people use the app”). Our server does not store your IP address with it.
               </li>
               <li>
                 <strong>Assistant settings check:</strong> on launch and at most once a day, the app downloads the
@@ -519,7 +535,10 @@ export default function PrivacyPage() {
               <li>Weekly AI allowance: only the current week’s count; earlier weeks are deleted.</li>
               <li>Sign-in attempt counters: about an hour, keyed by a one-way hash of your email.</li>
               <li>Signed-in email, plan and sign-in dates: 12 months after your latest sign-in.</li>
-              <li>Daily, weekly and monthly activity hashes: 180 days.</li>
+              <li>
+                Daily, weekly and monthly activity hashes, with plan and, from the daily check-in, app version, operating
+                system and processor type: 180 days.
+              </li>
               <li>Download and first-launch totals (by day, file, version and country): kept as totals, with no identifiers.</li>
               <li>
                 Text sent for hosted AI processing: not stored by us after the response is returned.

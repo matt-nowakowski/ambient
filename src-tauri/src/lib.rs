@@ -6,6 +6,7 @@ mod audio_feedback;
 pub mod audio_toolkit;
 mod autostart;
 mod catalog;
+mod checkin;
 mod chinese_script;
 pub mod cli;
 mod clipboard;
@@ -502,6 +503,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     hud::create(app_handle);
     agent::start(app_handle.clone());
     telemetry::init(app_handle);
+    checkin::spawn(app_handle.clone());
     remote_config::start(app_handle);
 }
 
