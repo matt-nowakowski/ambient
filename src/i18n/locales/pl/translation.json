@@ -239,6 +239,11 @@
         "shortcut": "Skrót",
         "changeLanguages": "Zmień języki, {{languages}}",
         "changeModel": "Zmień model mowy, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Ustaw {{appName}} jako swoją aplikację do dyktowania",
+        "description": "Jeśli inna aplikacja do dyktowania używa tego samego skrótu, {{appName}} go przejmuje.",
+        "found": "Jeśli inna aplikacja do dyktowania, np. {{apps}}, używa tego samego skrótu, {{appName}} go przejmuje."
       }
     },
     "linux": {
@@ -1556,7 +1561,8 @@
         "telemetry": "Anonimowe statystyki użycia",
         "config": "Sprawdzenie ustawień (nic nie wysłano)",
         "meeting_email": "E-mail z notatkami ze spotkania",
-        "feedback": "Opinia"
+        "feedback": "Opinia",
+        "checkin": "Codzienne zgłoszenie"
       }
     },
     "engine": {

@@ -238,6 +238,11 @@
         "shortcut": "Atajo",
         "changeLanguages": "Cambiar idiomas, {{languages}}",
         "changeModel": "Cambiar modelo de voz, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Haz de {{appName}} tu app de dictado",
+        "description": "Si otra app de dictado usa el mismo atajo, {{appName}} se lo queda.",
+        "found": "Si otra app de dictado, como {{apps}}, usa el mismo atajo, {{appName}} se lo queda."
       }
     },
     "linux": {
@@ -1545,7 +1550,8 @@
         "telemetry": "Recuentos de uso anónimos",
         "config": "Comprobación de ajustes (no se envía nada)",
         "meeting_email": "Correo con notas de reunión",
-        "feedback": "Comentarios"
+        "feedback": "Comentarios",
+        "checkin": "Registro diario"
       }
     },
     "engine": {

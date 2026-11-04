@@ -237,6 +237,11 @@
         "shortcut": "Pintasan",
         "changeLanguages": "Ubah bahasa, {{languages}}",
         "changeModel": "Ubah model ucapan, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Jadikan {{appName}} aplikasi dikte Anda",
+        "description": "Jika aplikasi dikte lain memakai pintasan yang sama, {{appName}} yang mengambilnya.",
+        "found": "Jika aplikasi dikte lain, seperti {{apps}}, memakai pintasan yang sama, {{appName}} yang mengambilnya."
       }
     },
     "linux": {
@@ -1534,7 +1539,8 @@
         "telemetry": "Hitungan penggunaan anonim",
         "config": "Pemeriksaan pengaturan (tidak ada yang dikirim)",
         "meeting_email": "Email catatan rapat",
-        "feedback": "Masukan"
+        "feedback": "Masukan",
+        "checkin": "Check-in harian"
       }
     },
     "engine": {

@@ -238,6 +238,11 @@
         "shortcut": "Drecera",
         "changeLanguages": "Canvia les llengües, {{languages}}",
         "changeModel": "Canvia el model de veu, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Fes de {{appName}} la teva app de dictat",
+        "description": "Si una altra app de dictat fa servir la mateixa drecera, {{appName}} se la queda.",
+        "found": "Si una altra app de dictat, com {{apps}}, fa servir la mateixa drecera, {{appName}} se la queda."
       }
     },
     "linux": {
@@ -1544,7 +1549,8 @@
         "telemetry": "Recomptes d'ús anònims",
         "config": "Comprovació de la configuració (no s'envia res)",
         "meeting_email": "Correu amb les notes de la reunió",
-        "feedback": "Comentaris"
+        "feedback": "Comentaris",
+        "checkin": "Registre diari"
       },
       "bytes_many": "{{count}} bytes"
     },

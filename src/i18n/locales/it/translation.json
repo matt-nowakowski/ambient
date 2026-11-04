@@ -238,6 +238,11 @@
         "shortcut": "Scorciatoia",
         "changeLanguages": "Cambia lingue, {{languages}}",
         "changeModel": "Cambia modello vocale, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Fai di {{appName}} la tua app di dettatura",
+        "description": "Se un'altra app di dettatura usa la stessa scorciatoia, {{appName}} la prende.",
+        "found": "Se un'altra app di dettatura, come {{apps}}, usa la stessa scorciatoia, {{appName}} la prende."
       }
     },
     "linux": {
@@ -1544,7 +1549,8 @@
         "telemetry": "Conteggi d'uso anonimi",
         "config": "Controllo impostazioni (nulla inviato)",
         "meeting_email": "Email con le note della riunione",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Segnale giornaliero"
       },
       "bytes_many": "{{count}} byte"
     },

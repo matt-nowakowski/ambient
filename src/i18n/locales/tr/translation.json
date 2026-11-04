@@ -237,6 +237,11 @@
         "shortcut": "Kısayol",
         "changeLanguages": "Dilleri değiştir, {{languages}}",
         "changeModel": "Konuşma modelini değiştir, {{model}}"
+      },
+      "dictationApp": {
+        "title": "{{appName}} dikte uygulamanız olsun",
+        "description": "Başka bir dikte uygulaması aynı kısayolu kullanırsa {{appName}} onu alır.",
+        "found": "{{apps}} gibi başka bir dikte uygulaması aynı kısayolu kullanırsa {{appName}} onu alır."
       }
     },
     "linux": {
@@ -1534,7 +1539,8 @@
         "telemetry": "Anonim kullanım sayıları",
         "config": "Ayar kontrolü (hiçbir şey gönderilmez)",
         "meeting_email": "Toplantı notları e-postası",
-        "feedback": "Geri bildirim"
+        "feedback": "Geri bildirim",
+        "checkin": "Günlük yoklama"
       }
     },
     "engine": {

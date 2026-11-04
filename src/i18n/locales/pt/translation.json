@@ -238,6 +238,11 @@
         "shortcut": "Atalho",
         "changeLanguages": "Alterar idiomas, {{languages}}",
         "changeModel": "Alterar modelo de fala, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Faça do {{appName}} seu app de ditado",
+        "description": "Se outro app de ditado usar o mesmo atalho, o {{appName}} fica com ele.",
+        "found": "Se outro app de ditado, como {{apps}}, usar o mesmo atalho, o {{appName}} fica com ele."
       }
     },
     "linux": {
@@ -1544,7 +1549,8 @@
         "telemetry": "Contagens de uso anônimas",
         "config": "Verificação de configurações (nada enviado)",
         "meeting_email": "E-mail com notas da reunião",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Check-in diário"
       },
       "bytes_many": "{{count}} bytes"
     },

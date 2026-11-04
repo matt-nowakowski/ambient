@@ -237,6 +237,11 @@
         "shortcut": "Sneltoets",
         "changeLanguages": "Talen wijzigen, {{languages}}",
         "changeModel": "Spraakmodel wijzigen, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Maak {{appName}} je dicteerapp",
+        "description": "Gebruikt een andere dicteerapp dezelfde sneltoets, dan neemt {{appName}} hem over.",
+        "found": "Gebruikt een andere dicteerapp, zoals {{apps}}, dezelfde sneltoets, dan neemt {{appName}} hem over."
       }
     },
     "linux": {
@@ -1534,7 +1539,8 @@
         "telemetry": "Anonieme gebruikstellingen",
         "config": "Instellingencheck (niets verstuurd)",
         "meeting_email": "E-mail met vergadernotities",
-        "feedback": "Feedback"
+        "feedback": "Feedback",
+        "checkin": "Dagelijkse check-in"
       }
     },
     "engine": {

@@ -238,6 +238,11 @@
         "shortcut": "Raccourci",
         "changeLanguages": "Modifier les langues, {{languages}}",
         "changeModel": "Modifier le modèle vocal, {{model}}"
+      },
+      "dictationApp": {
+        "title": "Faites de {{appName}} votre app de dictée",
+        "description": "Si une autre app de dictée utilise le même raccourci, {{appName}} le prend.",
+        "found": "Si une autre app de dictée, comme {{apps}}, utilise le même raccourci, {{appName}} le prend."
       }
     },
     "linux": {
@@ -1544,7 +1549,8 @@
         "telemetry": "Statistiques d'usage anonymes",
         "config": "Vérification des réglages (rien n'est envoyé)",
         "meeting_email": "E-mail des notes de réunion",
-        "feedback": "Avis"
+        "feedback": "Avis",
+        "checkin": "Signal quotidien"
       },
       "bytes_many": "{{count}} octets"
     },
