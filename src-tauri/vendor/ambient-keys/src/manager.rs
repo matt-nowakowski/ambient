@@ -4,10 +4,83 @@ use std::collections::{HashMap, HashSet};
 use std::sync::mpsc::{self, Receiver, Sender, TryRecvError};
 use std::sync::{Arc, Mutex};
 use std::thread::{self, JoinHandle};
+use std::time::{Duration, Instant};
 
 use crate::error::{Error, Result};
 use crate::listener::{BlockingHotkeys, KeyboardListener};
 use crate::types::{Hotkey, HotkeyEvent, HotkeyId, HotkeyState, KeyEvent};
+
+/// Longest a tap may be held and still count as half of a double tap. Matches
+/// Ambient's hold-vs-tap threshold: anything longer is a hold, not a tap.
+pub const DOUBLE_TAP_MAX_HOLD: Duration = Duration::from_millis(300);
+
+/// Longest gap between the two taps, measured from the first tap's release to
+/// the second tap's press.
+pub const DOUBLE_TAP_WINDOW: Duration = Duration::from_millis(400);
+
+/// Tap bookkeeping for one double-tap hotkey.
+#[derive(Debug, Default)]
+struct DoubleTapState {
+    /// When the target went down, while a candidate tap is in progress.
+    pressed_at: Option<Instant>,
+    /// Another key moved during this hold: it is a chord (Option+Tab), not a
+    /// tap, so it must not count toward a double tap.
+    chord: bool,
+    /// When the last accepted tap ended — the anchor for the next one.
+    last_tap_at: Option<Instant>,
+}
+
+impl DoubleTapState {
+    fn is_held(&self) -> bool {
+        self.pressed_at.is_some()
+    }
+
+    /// The target went down.
+    fn press(&mut self, now: Instant) {
+        if self.pressed_at.is_some() {
+            // Auto-repeat while held: not a fresh tap.
+            self.chord = true;
+            return;
+        }
+        self.pressed_at = Some(now);
+        self.chord = false;
+        // A tap older than the window can no longer pair with this one.
+        if self
+            .last_tap_at
+            .is_some_and(|last| now.saturating_duration_since(last) > DOUBLE_TAP_WINDOW)
+        {
+            self.last_tap_at = None;
+        }
+    }
+
+    /// Some other key moved while the target is held.
+    fn other_event(&mut self) {
+        if self.is_held() {
+            self.chord = true;
+        }
+    }
+
+    /// The target went up. True when this release completes a double tap.
+    fn release(&mut self, now: Instant) -> bool {
+        let Some(pressed_at) = self.pressed_at.take() else {
+            return false;
+        };
+        let held = now.saturating_duration_since(pressed_at);
+        if self.chord || held > DOUBLE_TAP_MAX_HOLD {
+            self.chord = false;
+            self.last_tap_at = None;
+            return false;
+        }
+        self.chord = false;
+        match self.last_tap_at.take() {
+            Some(last) if now.saturating_duration_since(last) <= DOUBLE_TAP_WINDOW => true,
+            _ => {
+                self.last_tap_at = Some(now);
+                false
+            }
+        }
+    }
+}
 
 /// Internal state shared between the manager and the processing thread
 struct ManagerState {
@@ -15,6 +88,9 @@ struct ManagerState {
     next_id: u32,
     /// Track which hotkeys are currently pressed
     pressed_hotkeys: HashSet<HotkeyId>,
+    /// Tap tracking, one entry per registered double-tap hotkey. Created
+    /// lazily on the first event for that hotkey.
+    double_tap: HashMap<HotkeyId, DoubleTapState>,
 }
 
 impl ManagerState {
@@ -23,20 +99,50 @@ impl ManagerState {
             hotkeys: HashMap::new(),
             next_id: 0,
             pressed_hotkeys: HashSet::new(),
+            double_tap: HashMap::new(),
         }
     }
 
     /// Process a key event and return any matching hotkey events
     fn process_event(&mut self, event: &KeyEvent) -> Vec<HotkeyEvent> {
+        self.process_event_at(event, Instant::now())
+    }
+
+    /// The same, with an explicit clock, so the double-tap window can be
+    /// driven deterministically from tests.
+    fn process_event_at(&mut self, event: &KeyEvent, now: Instant) -> Vec<HotkeyEvent> {
         let mut results = Vec::new();
 
+        let mut double_tap_ids: Vec<HotkeyId> = self
+            .hotkeys
+            .iter()
+            .filter(|(_, hotkey)| hotkey.double_tap)
+            .map(|(&id, _)| id)
+            .collect();
+        double_tap_ids.sort_by_key(|id| id.0);
+
         if event.is_key_down {
+            // Track taps of double-tap targets; any other key moving during a
+            // held candidate turns that hold into a chord.
+            for id in &double_tap_ids {
+                let hotkey = self.hotkeys[id];
+                let is_target =
+                    hotkey.key == event.key && hotkey.modifiers.matches(event.modifiers);
+                let state = self.double_tap.entry(*id).or_default();
+                if is_target {
+                    state.press(now);
+                } else {
+                    state.other_event();
+                }
+            }
+
             // Check for hotkeys that should be pressed
             let to_press: Vec<HotkeyId> = self
                 .hotkeys
                 .iter()
                 .filter(|(&id, hotkey)| {
-                    hotkey.modifiers.matches(event.modifiers)
+                    !hotkey.double_tap
+                        && hotkey.modifiers.matches(event.modifiers)
                         && hotkey.key == event.key
                         && !self.pressed_hotkeys.contains(&id)
                 })
@@ -51,6 +157,43 @@ impl ManagerState {
                 });
             }
         } else {
+            // A double tap reports one press/release pair when the second tap
+            // lands: the press starts the toggle, and consumers that ignore
+            // releases (toggle activation) act on the single edge.
+            let mut fired: Vec<HotkeyId> = Vec::new();
+            for id in &double_tap_ids {
+                let hotkey = self.hotkeys[id];
+                let Some(state) = self.double_tap.get_mut(id) else {
+                    continue;
+                };
+                if !state.is_held() {
+                    continue;
+                }
+                // The target is up when its key goes up, or — for a
+                // modifier-only target — when the modifier it watches is no
+                // longer held. Extra modifiers (a chord) must not read as a
+                // release while the target itself is still down.
+                let is_target_release = match hotkey.key {
+                    Some(key) => event.key == Some(key),
+                    None => !event.modifiers.intersects(hotkey.modifiers),
+                };
+                if !is_target_release {
+                    state.other_event();
+                } else if state.release(now) {
+                    fired.push(*id);
+                }
+            }
+            for id in fired {
+                results.push(HotkeyEvent {
+                    id,
+                    state: HotkeyState::Pressed,
+                });
+                results.push(HotkeyEvent {
+                    id,
+                    state: HotkeyState::Released,
+                });
+            }
+
             // Check for hotkeys that should be released
             // A hotkey is released when its key is released, or — for modifier
             // events — when the modifiers no longer match. A modifier event
@@ -210,10 +353,14 @@ impl HotkeyManager {
         state.next_id += 1;
         state.hotkeys.insert(id, hotkey);
 
-        // Add to blocking set
+        // Add to blocking set. Double-tap hotkeys are listened to, never
+        // swallowed: a single tap of the modifier is ordinary keyboard use
+        // (Option+arrow, Option as a dead key) and other apps must see it.
         if let Some(blocking_hotkeys) = &self.blocking_hotkeys {
-            if let Ok(mut blocking) = blocking_hotkeys.lock() {
-                blocking.insert(hotkey);
+            if !hotkey.double_tap {
+                if let Ok(mut blocking) = blocking_hotkeys.lock() {
+                    blocking.insert(hotkey);
+                }
             }
         }
 
@@ -627,6 +774,253 @@ mod tests {
             let event = make_key_event(Modifiers::CMD_RIGHT, Some(Key::K), true);
             let results = state.process_event(&event);
             assert_eq!(results.len(), 1);
+        }
+    }
+
+    mod double_tap {
+        use super::*;
+
+        fn option_right() -> Hotkey {
+            "double_tap+option_right".parse().unwrap()
+        }
+
+        fn press_option(down: bool) -> KeyEvent {
+            if down {
+                make_modifier_event(Modifiers::OPT_RIGHT, true, Modifiers::OPT_RIGHT)
+            } else {
+                make_modifier_event(Modifiers::empty(), false, Modifiers::OPT_RIGHT)
+            }
+        }
+
+        fn tap(state: &mut ManagerState, at: Instant) {
+            state.process_event_at(&press_option(true), at);
+            state.process_event_at(&press_option(false), at + Duration::from_millis(50));
+        }
+
+        /// Two quick taps starting at `at`; returns the events the second
+        /// release produced.
+        fn fire_pair(state: &mut ManagerState, at: Instant) -> Vec<HotkeyEvent> {
+            tap(state, at);
+            state.process_event_at(&press_option(true), at + Duration::from_millis(200));
+            state.process_event_at(&press_option(false), at + Duration::from_millis(250))
+        }
+
+        #[test]
+        fn second_tap_fires_one_press_release_pair() {
+            let mut state = ManagerState::new();
+            let id = HotkeyId(0);
+            state.hotkeys.insert(id, option_right());
+            let t0 = Instant::now();
+
+            // First tap: arms only.
+            assert!(state.process_event_at(&press_option(true), t0).is_empty());
+            assert!(state
+                .process_event_at(&press_option(false), t0 + Duration::from_millis(50))
+                .is_empty());
+            // Second tap: its release reports one press/release pair.
+            assert!(state
+                .process_event_at(&press_option(true), t0 + Duration::from_millis(200))
+                .is_empty());
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(250));
+            assert_eq!(events.len(), 2);
+            assert_eq!(events[0].id, id);
+            assert_eq!(events[0].state, HotkeyState::Pressed);
+            assert_eq!(events[1].state, HotkeyState::Released);
+            assert!(state.pressed_hotkeys.is_empty());
+        }
+
+        #[test]
+        fn each_double_tap_toggles_again() {
+            let mut state = ManagerState::new();
+            let id = HotkeyId(0);
+            state.hotkeys.insert(id, option_right());
+            let t0 = Instant::now();
+
+            assert_eq!(fire_pair(&mut state, t0).len(), 2);
+            let events = fire_pair(&mut state, t0 + Duration::from_millis(600));
+            assert_eq!(events.len(), 2, "the next double tap must fire again");
+            assert_eq!(events[0].id, id);
+            assert_eq!(events[0].state, HotkeyState::Pressed);
+        }
+
+        #[test]
+        fn a_single_tap_never_fires() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+
+            let events = state.process_event_at(&press_option(true), Instant::now());
+            assert!(events.is_empty());
+            let events = state.process_event_at(
+                &press_option(false),
+                Instant::now() + Duration::from_millis(40),
+            );
+            assert!(events.is_empty());
+        }
+
+        #[test]
+        fn second_tap_outside_the_window_starts_a_new_pair() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+            let t0 = Instant::now();
+
+            tap(&mut state, t0);
+            // Far outside the window: this tap arms instead of firing.
+            tap(&mut state, t0 + Duration::from_millis(900));
+            // The next quick tap pairs with it.
+            let events = state.process_event_at(
+                &press_option(true),
+                t0 + Duration::from_millis(1100),
+            );
+            assert!(events.is_empty());
+            let events = state.process_event_at(
+                &press_option(false),
+                t0 + Duration::from_millis(1150),
+            );
+            assert_eq!(events.len(), 2);
+        }
+
+        #[test]
+        fn a_held_modifier_is_not_a_tap() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+            let t0 = Instant::now();
+
+            state.process_event_at(&press_option(true), t0);
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(500));
+            assert!(events.is_empty());
+
+            // A lone tap right after the hold must not pair with it.
+            assert!(state
+                .process_event_at(&press_option(true), t0 + Duration::from_millis(600))
+                .is_empty());
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(650));
+            assert!(
+                events.is_empty(),
+                "the hold must not have armed a pair"
+            );
+
+            // ...and the tap that follows it pairs normally.
+            assert!(state
+                .process_event_at(&press_option(true), t0 + Duration::from_millis(800))
+                .is_empty());
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(850));
+            assert_eq!(events.len(), 2);
+        }
+
+        #[test]
+        fn a_chord_is_not_a_tap() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+            let t0 = Instant::now();
+
+            // Option held, then Tab: that is Option+Tab, not a tap of Option.
+            state.process_event_at(&press_option(true), t0);
+            state.process_event_at(
+                &make_key_event(Modifiers::OPT_RIGHT, Some(Key::Tab), true),
+                t0 + Duration::from_millis(30),
+            );
+            state.process_event_at(
+                &make_key_event(Modifiers::OPT_RIGHT, Some(Key::Tab), false),
+                t0 + Duration::from_millis(60),
+            );
+            assert!(
+                state
+                    .process_event_at(&press_option(false), t0 + Duration::from_millis(80))
+                    .is_empty()
+            );
+
+            // Nothing armed: a following quick tap must not fire by itself.
+            let events =
+                state.process_event_at(&press_option(true), t0 + Duration::from_millis(200));
+            assert!(events.is_empty());
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(250));
+            assert!(events.is_empty());
+        }
+
+        #[test]
+        fn keys_between_taps_do_not_spoil_the_pair() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+            let t0 = Instant::now();
+
+            tap(&mut state, t0);
+            // Normal typing between the two taps: Option is not held, so this
+            // is not a chord.
+            state.process_event_at(
+                &make_key_event(Modifiers::empty(), Some(Key::A), true),
+                t0 + Duration::from_millis(120),
+            );
+            state.process_event_at(
+                &make_key_event(Modifiers::empty(), Some(Key::A), false),
+                t0 + Duration::from_millis(140),
+            );
+
+            assert!(state
+                .process_event_at(&press_option(true), t0 + Duration::from_millis(220))
+                .is_empty());
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(270));
+            assert_eq!(events.len(), 2);
+        }
+
+        #[test]
+        fn unrelated_events_do_not_fire() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+            let t0 = Instant::now();
+
+            // A release with no press before it, then a plain key release with
+            // nothing held: neither is a hotkey edge.
+            assert!(state.process_event_at(&press_option(false), t0).is_empty());
+            assert!(state
+                .process_event_at(
+                    &make_key_event(Modifiers::empty(), Some(Key::A), false),
+                    t0 + Duration::from_millis(20),
+                )
+                .is_empty());
+        }
+
+        #[test]
+        fn keyed_double_tap_fires_on_the_key() {
+            let mut state = ManagerState::new();
+            let id = HotkeyId(0);
+            state
+                .hotkeys
+                .insert(id, "double_tap+ctrl+space".parse().unwrap());
+            let t0 = Instant::now();
+
+            let space = |down: bool| make_key_event(Modifiers::CTRL_LEFT, Some(Key::Space), down);
+            let ctrl = |down: bool| make_modifier_event(
+                if down { Modifiers::CTRL_LEFT } else { Modifiers::empty() },
+                down,
+                Modifiers::CTRL_LEFT,
+            );
+
+            state.process_event_at(&ctrl(true), t0);
+            state.process_event_at(&space(true), t0 + Duration::from_millis(10));
+            state.process_event_at(&space(false), t0 + Duration::from_millis(40));
+            state.process_event_at(&space(true), t0 + Duration::from_millis(180));
+            let events =
+                state.process_event_at(&space(false), t0 + Duration::from_millis(220));
+            assert_eq!(events.len(), 2);
+            assert_eq!(events[0].id, id);
+            assert_eq!(events[0].state, HotkeyState::Pressed);
+        }
+
+        #[test]
+        fn a_lone_release_does_nothing() {
+            let mut state = ManagerState::new();
+            state.hotkeys.insert(HotkeyId(0), option_right());
+
+            // Some listeners report key-ups for keys they never saw go down.
+            assert!(state
+                .process_event_at(&press_option(false), Instant::now())
+                .is_empty());
         }
     }
 }

@@ -9,6 +9,10 @@ use crate::error::{Error, Result};
 use super::key::Key;
 use super::modifiers::Modifiers;
 
+/// Marks a binding that fires on a double tap of its key instead of on the
+/// press. Prefix form in a hotkey string: `"double_tap+option_right"`.
+pub const DOUBLE_TAP_PREFIX: &str = "double_tap+";
+
 /// A unique identifier for a registered hotkey
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
@@ -25,6 +29,12 @@ impl HotkeyId {
 pub struct Hotkey {
     pub modifiers: Modifiers,
     pub key: Option<Key>,
+    /// Toggle on a double tap of the key instead of holding it. The manager
+    /// tracks the taps and reports one press/release pair when they land;
+    /// these hotkeys are never blocked (a single tap of a modifier must
+    /// reach the rest of the system like any other key).
+    #[serde(default)]
+    pub double_tap: bool,
 }
 
 impl Hotkey {
@@ -51,7 +61,17 @@ impl Hotkey {
         if modifiers.is_empty() && key.is_none() {
             return Err(Error::EmptyHotkey);
         }
-        Ok(Self { modifiers, key })
+        Ok(Self {
+            modifiers,
+            key,
+            double_tap: false,
+        })
+    }
+
+    /// Mark this hotkey as a double-tap trigger.
+    pub fn with_double_tap(mut self) -> Self {
+        self.double_tap = true;
+        self
     }
 
     /// Format hotkey as lowercase string (e.g., "cmd+shift+k")
@@ -70,6 +90,11 @@ impl Hotkey {
     ///
     /// Side-specific modifiers use `_left`/`_right` suffixes.
     pub fn to_ambient_string(&self) -> String {
+        let prefix = if self.double_tap {
+            DOUBLE_TAP_PREFIX
+        } else {
+            ""
+        };
         #[cfg(target_os = "macos")]
         fn mod_names(
             mods: Modifiers,
@@ -175,25 +200,30 @@ impl Hotkey {
                 result.push('+');
             }
             result.push_str(&key_str);
-            result
+            format!("{prefix}{result}")
         } else {
-            parts.join("+")
+            format!("{prefix}{}", parts.join("+"))
         }
     }
 }
 
 impl fmt::Display for Hotkey {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let prefix = if self.double_tap {
+            DOUBLE_TAP_PREFIX
+        } else {
+            ""
+        };
         if self.modifiers.is_empty() {
             if let Some(key) = &self.key {
-                write!(f, "{}", key)
+                write!(f, "{prefix}{key}")
             } else {
                 write!(f, "(none)")
             }
         } else if let Some(key) = &self.key {
-            write!(f, "{}+{}", self.modifiers, key)
+            write!(f, "{prefix}{}+{}", self.modifiers, key)
         } else {
-            write!(f, "{}", self.modifiers)
+            write!(f, "{prefix}{}", self.modifiers)
         }
     }
 }
@@ -218,6 +248,12 @@ impl FromStr for Hotkey {
         if s.is_empty() {
             return Err(Error::EmptyHotkey);
         }
+
+        // A double-tap trigger is the same hotkey with a marker in front.
+        let (double_tap, s) = match s.strip_prefix(DOUBLE_TAP_PREFIX) {
+            Some(rest) => (true, rest.trim()),
+            None => (false, s),
+        };
 
         let parts: Vec<&str> = s.split('+').map(|p| p.trim()).collect();
 
@@ -244,7 +280,12 @@ impl FromStr for Hotkey {
             }
         }
 
-        Hotkey::new(modifiers, key)
+        let hotkey = Hotkey::new(modifiers, key)?;
+        Ok(if double_tap {
+            hotkey.with_double_tap()
+        } else {
+            hotkey
+        })
     }
 }
 
@@ -354,6 +395,50 @@ mod tests {
         let h3: Hotkey = "Cmd+Shift+K".parse().unwrap();
         assert_eq!(h1, h2);
         assert_eq!(h2, h3);
+    }
+
+    #[test]
+    fn parse_double_tap_prefix() {
+        let hotkey: Hotkey = "double_tap+option_right".parse().unwrap();
+        assert_eq!(hotkey.modifiers, Modifiers::OPT_RIGHT);
+        assert_eq!(hotkey.key, None);
+        assert!(hotkey.double_tap);
+
+        // Marked only when the prefix is there.
+        let plain: Hotkey = "option_right".parse().unwrap();
+        assert!(!plain.double_tap);
+        assert_ne!(plain, hotkey);
+
+        // Works with a key too, and tolerates surrounding whitespace.
+        let keyed: Hotkey = " double_tap+ctrl+Space ".parse().unwrap();
+        assert_eq!(keyed.modifiers, Modifiers::CTRL);
+        assert_eq!(keyed.key, Some(Key::Space));
+        assert!(keyed.double_tap);
+    }
+
+    #[test]
+    fn parse_double_tap_prefix_alone_fails() {
+        assert!("double_tap+".parse::<Hotkey>().is_err());
+    }
+
+    #[test]
+    fn double_tap_display_roundtrip() {
+        for raw in ["double_tap+option_right", "double_tap+ctrl+space"] {
+            let hotkey: Hotkey = raw.parse().unwrap();
+            let displayed = hotkey.to_string();
+            assert_eq!(displayed.parse::<Hotkey>().unwrap(), hotkey);
+            assert_eq!(hotkey.to_ambient_string().parse::<Hotkey>().unwrap(), hotkey);
+            assert!(hotkey.to_ambient_string().starts_with(DOUBLE_TAP_PREFIX));
+        }
+    }
+
+    #[test]
+    fn with_double_tap_marks_the_hotkey() {
+        let hotkey = Hotkey::new(Modifiers::OPT_RIGHT, None)
+            .unwrap()
+            .with_double_tap();
+        assert!(hotkey.double_tap);
+        assert_eq!(hotkey.to_ambient_string(), "double_tap+option_right");
     }
 
     #[test]
