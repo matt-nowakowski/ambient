@@ -750,6 +750,7 @@ fn open_stream(
                 channels: k,
                 out_sample_rate: out_rate,
                 pause_ack_timeout: timeouts.pause_ack,
+                pre_roll: config.pre_roll,
             },
         },
     ))

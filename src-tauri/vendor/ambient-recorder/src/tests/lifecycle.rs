@@ -264,3 +264,39 @@ fn take_headset_holds_the_headset_only_while_recording() {
     }
     assert_eq!(fake.headset_holds(), [true, false, true, false]);
 }
+
+#[test]
+fn pre_roll_prepends_the_idle_audio_just_before_start() {
+    let fake = fake(16_000, 1);
+    // 10 ms at 16 kHz: 160 frames.
+    let config = RecorderConfig {
+        pre_roll: std::time::Duration::from_millis(10),
+        ..passthrough(160)
+    };
+    let recorder: Recorder<Chunks> = open(&fake, config);
+    let idle = ramp(0, 500);
+    push_idle(&recorder, &fake, &idle);
+
+    start(&recorder, Chunks::default());
+    let first = ramp(1000, 300);
+    assert!(fake.push(&first));
+    let boundary = ramp(5000, 20);
+    let stopped = stop_with_boundary(&recorder, &fake, &boundary).unwrap();
+
+    let expected: Vec<f32> = idle[340..]
+        .iter()
+        .chain(&first)
+        .chain(&boundary)
+        .copied()
+        .collect();
+    assert_eq!(stopped.sink.real(), expected);
+
+    // The next recording's pre-roll holds only audio from after this one.
+    let between = ramp(7000, 40);
+    push_idle(&recorder, &fake, &between);
+    start(&recorder, Chunks::default());
+    let stopped = stop_with_boundary(&recorder, &fake, &[0.5f32]).unwrap();
+    let mut expected = between.clone();
+    expected.push(0.5);
+    assert_eq!(stopped.sink.real(), expected);
+}

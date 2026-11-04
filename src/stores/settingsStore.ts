@@ -173,8 +173,8 @@ const settingUpdaters: {
   theme: (value) => commands.changeThemeSetting(value as string),
   experimental_enabled: (value) =>
     commands.changeExperimentalEnabledSetting(value as boolean),
-  lazy_stream_close: (value) =>
-    commands.changeLazyStreamCloseSetting(value as boolean),
+  keep_mic_ready_secs: (value) =>
+    commands.changeKeepMicReadySetting(value as number),
   overlay_style: (value) => commands.changeOverlayStyleSetting(value as string),
   vad_enabled: (value) => commands.changeVadEnabledSetting(value as boolean),
   long_form_chunking: (value) =>

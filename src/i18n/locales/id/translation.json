@@ -497,6 +497,17 @@
         "average": "Semua kanal, digabung",
         "channel": "Kanal {{n}}"
       },
+      "keepMicReady": {
+        "title": "Biarkan mikrofon siap",
+        "description": "Setelah Anda mendikte, mikrofon tetap menyala sebentar agar dikte berikutnya langsung mulai dan menangkap kata pertama Anda. Komputer menunjukkan mikrofon sedang dipakai sampai ditutup. Audio itu hanya ada di memori: tidak pernah disimpan atau dikirim.",
+        "options": {
+          "off": "Mati",
+          "sec30": "30 detik",
+          "min1": "1 menit",
+          "min2": "2 menit",
+          "min5": "5 menit"
+        }
+      },
       "audioFeedback": {
         "label": "Umpan Balik Audio",
         "description": "Putar suara saat perekaman dimulai dan dihentikan"
@@ -523,10 +534,6 @@
       "experimentalToggle": {
         "label": "Fitur Eksperimental",
         "description": "Aktifkan fitur eksperimental yang masih dalam pengembangan."
-      },
-      "lazyStreamClose": {
-        "label": "Biarkan Mikrofon Tetap Aktif di Antara Transkripsi",
-        "description": "Membiarkan aliran mikrofon tetap terbuka selama 30 detik setelah perekaman berhenti untuk mengurangi latensi pada transkripsi beruntun. Dapat menurunkan kualitas audio Bluetooth saat aktif."
       },
       "acceleration": {
         "transcribe": {

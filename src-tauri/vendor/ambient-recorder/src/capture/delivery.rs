@@ -2,6 +2,7 @@
 //! runs the application's sink.
 
 use std::{
+    collections::VecDeque,
     panic::{AssertUnwindSafe, catch_unwind},
     sync::{Arc, atomic::Ordering, mpsc},
     time::{Duration, Instant},
@@ -16,6 +17,9 @@ use crate::{AudioChunk, EndReason, Error, ErrorKind, Sink, Stopped};
 
 const CONSUMER_POLL_INTERVAL: Duration = Duration::from_millis(10);
 const MAX_DRAIN_CHUNK: Duration = Duration::from_millis(50);
+/// Idle audio this far apart is not one stream (the device stalled, or the
+/// machine slept), so older pre-roll is dropped rather than joined to it.
+const PRE_ROLL_MAX_GAP: Duration = Duration::from_millis(500);
 
 pub(crate) enum DeliveryCmd<S> {
     /// Begin a recording into this sink. Carries the send time for logging.
@@ -45,6 +49,66 @@ pub(crate) struct DeliveryPipeline {
     pub channels: usize,
     pub out_sample_rate: u32,
     pub pause_ack_timeout: Duration,
+    /// How much idle audio to keep for the next recording. See
+    /// `RecorderConfig::pre_roll`.
+    pub pre_roll: Duration,
+}
+
+/// The most recent idle audio, at the device rate, in whole frames. Memory
+/// only.
+pub(crate) struct PreRoll {
+    samples: VecDeque<f32>,
+    /// In samples: whole frames.
+    capacity: usize,
+    channels: usize,
+    last_push: Option<Instant>,
+}
+
+impl PreRoll {
+    pub(crate) fn new(duration: Duration, sample_rate: u32, channels: usize) -> Self {
+        let frames = (sample_rate as u128 * duration.as_millis() / 1_000) as usize;
+        Self {
+            samples: VecDeque::new(),
+            capacity: frames * channels,
+            channels,
+            last_push: None,
+        }
+    }
+
+    /// Adds idle audio, dropping the oldest past capacity.
+    pub(crate) fn push(&mut self, raw: &[f32], now: Instant) {
+        if self.capacity == 0 {
+            return;
+        }
+        if self
+            .last_push
+            .is_some_and(|last| now.saturating_duration_since(last) > PRE_ROLL_MAX_GAP)
+        {
+            self.samples.clear();
+        }
+        self.last_push = Some(now);
+        let raw = &raw[raw.len().saturating_sub(self.capacity)..];
+        let excess = (self.samples.len() + raw.len()).saturating_sub(self.capacity);
+        self.samples.drain(..excess);
+        self.samples.extend(raw);
+    }
+
+    /// Hands over what is held and empties it. Audio that stopped arriving
+    /// a while ago is stale (a stalled stream) and is dropped instead.
+    pub(crate) fn take(&mut self, now: Instant) -> Vec<f32> {
+        let fresh = self
+            .last_push
+            .is_some_and(|last| now.saturating_duration_since(last) <= PRE_ROLL_MAX_GAP);
+        self.last_push = None;
+        let mut samples = std::mem::take(&mut self.samples);
+        if !fresh {
+            return Vec::new();
+        }
+        // Each drain ends on a frame, but a ring wrap can split one between
+        // two pushes; trimming from the front can then leave part of a frame.
+        samples.drain(..samples.len() % self.channels);
+        samples.into()
+    }
 }
 
 pub(crate) fn run<S: Sink>(
@@ -59,6 +123,7 @@ pub(crate) fn run<S: Sink>(
         channels,
         out_sample_rate,
         pause_ack_timeout,
+        pre_roll,
     } = pipeline;
     let max_drain_samples =
         ((in_sample_rate as u128 * MAX_DRAIN_CHUNK.as_millis()) / 1_000).max(1) as usize * channels;
@@ -73,6 +138,7 @@ pub(crate) fn run<S: Sink>(
         stream_running_at: Instant::now(),
         first_audio_logged: false,
         active: None,
+        pre_roll: PreRoll::new(pre_roll, in_sample_rate, channels),
     };
 
     loop {
@@ -208,6 +274,7 @@ struct Processor<S> {
     stream_running_at: Instant,
     first_audio_logged: bool,
     active: Option<Active<S>>,
+    pre_roll: PreRoll,
 }
 
 impl<S: Sink> Processor<S> {
@@ -251,6 +318,16 @@ impl<S: Sink> Processor<S> {
             longest_zero_run: 0,
             heard_nonzero: false,
         });
+        // The audio from just before `start` goes first, ahead of anything
+        // still queued in the ring, so the order is kept.
+        let pre_roll = self.pre_roll.take(Instant::now());
+        if !pre_roll.is_empty() && self.capturing() {
+            log::debug!(
+                "the recording begins with {} ms of audio from before start",
+                (pre_roll.len() / self.channels) as u64 * 1_000 / self.in_sample_rate as u64
+            );
+            self.process_raw_chunk(&pre_roll, ChunkDisposition::Capture);
+        }
         #[cfg(test)]
         self.shared
             .transport
@@ -287,6 +364,9 @@ impl<S: Sink> Processor<S> {
         }
 
         if disposition == ChunkDisposition::Discard {
+            if self.active.is_none() {
+                self.pre_roll.push(raw, Instant::now());
+            }
             return;
         }
         let Some(active) = self.active.as_mut() else {
@@ -535,5 +615,73 @@ pub(super) fn panic_message(payload: &(dyn std::any::Any + Send)) -> String {
         s.clone()
     } else {
         "non-string panic payload".to_owned()
+    }
+}
+
+#[cfg(test)]
+mod pre_roll_tests {
+    use super::*;
+
+    #[test]
+    fn keeps_only_the_most_recent_audio() {
+        let now = Instant::now();
+        // 4 frames of stereo at 1 kHz: 4 ms.
+        let mut pre_roll = PreRoll::new(Duration::from_millis(4), 1_000, 2);
+        pre_roll.push(&[1.0, 1.0, 2.0, 2.0, 3.0, 3.0], now);
+        pre_roll.push(&[4.0, 4.0, 5.0, 5.0, 6.0, 6.0], now);
+        assert_eq!(
+            pre_roll.take(now),
+            vec![3.0, 3.0, 4.0, 4.0, 5.0, 5.0, 6.0, 6.0]
+        );
+        // Taking empties it.
+        assert!(pre_roll.take(now).is_empty());
+    }
+
+    #[test]
+    fn a_push_larger_than_the_capacity_keeps_its_tail() {
+        let now = Instant::now();
+        let mut pre_roll = PreRoll::new(Duration::from_millis(2), 1_000, 1);
+        pre_roll.push(&[1.0, 2.0, 3.0, 4.0, 5.0], now);
+        assert_eq!(pre_roll.take(now), vec![4.0, 5.0]);
+    }
+
+    #[test]
+    fn zero_duration_keeps_nothing() {
+        let now = Instant::now();
+        let mut pre_roll = PreRoll::new(Duration::ZERO, 48_000, 1);
+        pre_roll.push(&[1.0; 64], now);
+        assert!(pre_roll.take(now).is_empty());
+    }
+
+    #[test]
+    fn audio_across_a_gap_is_not_joined() {
+        let start = Instant::now();
+        let mut pre_roll = PreRoll::new(Duration::from_millis(10), 1_000, 1);
+        pre_roll.push(&[1.0, 2.0], start);
+        let later = start + PRE_ROLL_MAX_GAP + Duration::from_millis(1);
+        pre_roll.push(&[3.0], later);
+        assert_eq!(pre_roll.take(later), vec![3.0]);
+    }
+
+    #[test]
+    fn stale_audio_is_dropped_at_take() {
+        let start = Instant::now();
+        let mut pre_roll = PreRoll::new(Duration::from_millis(10), 1_000, 1);
+        pre_roll.push(&[1.0, 2.0], start);
+        assert!(
+            pre_roll
+                .take(start + PRE_ROLL_MAX_GAP + Duration::from_millis(1))
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn a_split_frame_at_the_front_is_trimmed() {
+        let now = Instant::now();
+        // A ring wrap can leave a stray sample ahead of whole stereo frames.
+        let mut pre_roll = PreRoll::new(Duration::from_millis(3), 1_000, 2);
+        pre_roll.push(&[9.0], now);
+        pre_roll.push(&[1.0, 1.0, 2.0, 2.0], now);
+        assert_eq!(pre_roll.take(now), vec![1.0, 1.0, 2.0, 2.0]);
     }
 }
