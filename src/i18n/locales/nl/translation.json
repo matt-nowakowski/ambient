@@ -728,7 +728,17 @@
       "noResultsTitle": "Geen resultaten",
       "noResultsDescription": "Niets in je geschiedenis komt overeen met ‘{{query}}’.",
       "loadingMore": "Meer laden…",
-      "searchingOlder": "Oudere items doorzoeken…"
+      "searchingOlder": "Oudere items doorzoeken…",
+      "details": "Details",
+      "detail": {
+        "model": "Model",
+        "decided": "Beslissing",
+        "as_said": "Zoals gezegd",
+        "polished": "Gepolijst",
+        "written": "Voor je geschreven",
+        "recorded": "Opname",
+        "total": "Totaal"
+      }
     },
     "debug": {
       "title": "Debug",

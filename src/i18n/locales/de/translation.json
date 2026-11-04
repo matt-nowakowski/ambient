@@ -728,7 +728,17 @@
       "noResultsTitle": "Keine Treffer",
       "noResultsDescription": "Nichts in deinem Verlauf passt zu „{{query}}“.",
       "loadingMore": "Weitere werden geladen…",
-      "searchingOlder": "Ältere Einträge werden durchsucht…"
+      "searchingOlder": "Ältere Einträge werden durchsucht…",
+      "details": "Details",
+      "detail": {
+        "model": "Modell",
+        "decided": "Entscheidung",
+        "as_said": "Wie gesagt",
+        "polished": "Poliert",
+        "written": "Für dich geschrieben",
+        "recorded": "Aufnahme",
+        "total": "Gesamt"
+      }
     },
     "debug": {
       "title": "Debug",

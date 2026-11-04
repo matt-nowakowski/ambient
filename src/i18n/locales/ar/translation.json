@@ -740,7 +740,17 @@
       "noResultsTitle": "لا توجد نتائج",
       "noResultsDescription": "لا شيء في سجلك يطابق «{{query}}».",
       "loadingMore": "جارٍ تحميل المزيد…",
-      "searchingOlder": "جارٍ البحث في الإدخالات الأقدم…"
+      "searchingOlder": "جارٍ البحث في الإدخالات الأقدم…",
+      "details": "التفاصيل",
+      "detail": {
+        "model": "الطراز",
+        "decided": "القرار",
+        "as_said": "كما قيل",
+        "polished": "مصقول",
+        "written": "مكتوب لك",
+        "recorded": "التسجيل",
+        "total": "الإجمالي"
+      }
     },
     "debug": {
       "title": "تصحيح الأخطاء",

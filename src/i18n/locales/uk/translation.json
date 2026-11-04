@@ -734,7 +734,17 @@
       "noResultsTitle": "Нічого не знайдено",
       "noResultsDescription": "В історії немає збігів із «{{query}}».",
       "loadingMore": "Завантаження…",
-      "searchingOlder": "Пошук у старіших записах…"
+      "searchingOlder": "Пошук у старіших записах…",
+      "details": "Деталі",
+      "detail": {
+        "model": "Модель",
+        "decided": "Рішення",
+        "as_said": "Як сказано",
+        "polished": "Відшліфовано",
+        "written": "Написано для вас",
+        "recorded": "Запис",
+        "total": "Усього"
+      }
     },
     "debug": {
       "title": "Налагодження",

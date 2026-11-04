@@ -731,7 +731,17 @@
       "noResultsTitle": "Sin resultados",
       "noResultsDescription": "Nada en tu historial coincide con «{{query}}».",
       "loadingMore": "Cargando más…",
-      "searchingOlder": "Buscando entradas anteriores…"
+      "searchingOlder": "Buscando entradas anteriores…",
+      "details": "Detalles",
+      "detail": {
+        "model": "Modelo",
+        "decided": "Decisión",
+        "as_said": "Como se dijo",
+        "polished": "Pulido",
+        "written": "Escrito por ti",
+        "recorded": "Grabación",
+        "total": "Total"
+      }
     },
     "debug": {
       "title": "Depuración",

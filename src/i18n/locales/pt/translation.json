@@ -731,7 +731,17 @@
       "noResultsTitle": "Nenhum resultado",
       "noResultsDescription": "Nada no seu histórico corresponde a “{{query}}”.",
       "loadingMore": "Carregando mais…",
-      "searchingOlder": "Buscando entradas mais antigas…"
+      "searchingOlder": "Buscando entradas mais antigas…",
+      "details": "Detalhes",
+      "detail": {
+        "model": "Modelo",
+        "decided": "Decisão",
+        "as_said": "Como dito",
+        "polished": "Polido",
+        "written": "Escrito por você",
+        "recorded": "Gravação",
+        "total": "Total"
+      }
     },
     "debug": {
       "title": "Depuração",

@@ -1581,6 +1581,28 @@ impl ShortcutAction for TranscribeAction {
 
                             // Save to history if WAV was saved
                             if wav_saved {
+                                // What ran, and how long it took, for the
+                                // Details row in History: ids, a decision and
+                                // durations only — never the prompt or the
+                                // screen text.
+                                let details = crate::managers::history::EntryDetails {
+                                    speech_model: tm.current_model_id(),
+                                    write_decision: Some(
+                                        if processed.written.is_some() {
+                                            "written"
+                                        } else if processed.post_processed_text.is_some() {
+                                            "polished"
+                                        } else {
+                                            "as_said"
+                                        }
+                                        .to_string(),
+                                    ),
+                                    recording_ms: Some(
+                                        (sample_count as f64 / 16_000.0 * 1000.0) as i64,
+                                    ),
+                                    total_ms: Some(stop_time.elapsed().as_millis() as i64),
+                                    ..Default::default()
+                                };
                                 if let Err(err) = hm.save_entry(
                                     file_name,
                                     transcription,
@@ -1588,6 +1610,7 @@ impl ShortcutAction for TranscribeAction {
                                     processed.post_processed_text.clone(),
                                     processed.post_process_prompt.clone(),
                                     language,
+                                    details,
                                 ) {
                                     error!("Failed to save history entry: {}", err);
                                 }
@@ -1756,6 +1779,7 @@ impl ShortcutAction for TranscribeAction {
                                     None,
                                     None,
                                     None,
+                                    crate::managers::history::EntryDetails::default(),
                                 ) {
                                     error!("Failed to save failed history entry: {}", save_err);
                                 }

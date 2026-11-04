@@ -728,7 +728,17 @@
       "noResultsTitle": "일치하는 항목 없음",
       "noResultsDescription": "히스토리에 “{{query}}”와(과) 일치하는 항목이 없습니다.",
       "loadingMore": "더 불러오는 중…",
-      "searchingOlder": "이전 항목 검색 중…"
+      "searchingOlder": "이전 항목 검색 중…",
+      "details": "세부정보",
+      "detail": {
+        "model": "모델",
+        "decided": "결정",
+        "as_said": "말한 대로",
+        "polished": "다듬음",
+        "written": "대신 작성",
+        "recorded": "녹음",
+        "total": "합계"
+      }
     },
     "debug": {
       "title": "디버그",

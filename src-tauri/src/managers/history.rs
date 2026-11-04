@@ -36,13 +36,29 @@ static MIGRATIONS: &[M] = &[
 ];
 
 /// Nullable columns added outside [`MIGRATIONS`]; see
-/// [`HistoryManager::apply_migrations`].
-const ADDED_COLUMNS: &[&str] = &["source_name", "language", "language_source"];
+/// [`HistoryManager::apply_migrations`]. Each is (name, SQLite type).
+const ADDED_COLUMNS: &[(&str, &str)] = &[
+    ("source_name", "TEXT"),
+    ("language", "TEXT"),
+    ("language_source", "TEXT"),
+    // Dictation details (see [`EntryDetails`]): speech model, the write
+    // decision, the AI engine and its timings. Ids and durations only.
+    ("speech_model", "TEXT"),
+    ("write_decision", "TEXT"),
+    ("ai_engine", "TEXT"),
+    ("ai_model", "TEXT"),
+    ("prompt_id", "TEXT"),
+    ("recording_ms", "INTEGER"),
+    ("transcription_ms", "INTEGER"),
+    ("ai_ms", "INTEGER"),
+    ("total_ms", "INTEGER"),
+];
 
 /// Every column a [`HistoryEntry`] is read from.
 const ENTRY_COLUMNS: &str = "id, file_name, timestamp, saved, title, transcription_text, \
     post_processed_text, post_process_prompt, post_process_requested, source_name, language, \
-    language_source";
+    language_source, speech_model, write_decision, ai_engine, ai_model, prompt_id, \
+    recording_ms, transcription_ms, ai_ms, total_ms";
 
 #[derive(Clone, Debug, Serialize, Deserialize, Type)]
 pub struct PaginatedHistory {
@@ -63,6 +79,32 @@ pub enum HistoryUpdatePayload {
     Toggled { id: i64 },
 }
 
+/// How one dictation was written and what ran, shown in History's Details
+/// row. Ids, enums and durations only: never the prompt text, the screen
+/// text or any AI output beyond the transcript already stored.
+#[derive(Clone, Debug, Default, Serialize, Deserialize, Type)]
+pub struct EntryDetails {
+    /// The speech model that transcribed it (the loaded model id).
+    pub speech_model: Option<String>,
+    /// `as_said`, `polished` or `written`; `None` when nothing was typed.
+    pub write_decision: Option<String>,
+    /// The AI engine that polished or drafted: `ambient` (cloud),
+    /// `apple_intelligence` or `local_model` (the downloaded model).
+    pub ai_engine: Option<String>,
+    /// The model id behind that engine, when it has one.
+    pub ai_model: Option<String>,
+    /// The polish prompt's id (`id`), never its text.
+    pub prompt_id: Option<String>,
+    /// How long the recording was.
+    pub recording_ms: Option<i64>,
+    /// Time from stop to the transcript (the model run).
+    pub transcription_ms: Option<i64>,
+    /// Time spent in AI calls (polish, drafting) after the transcript.
+    pub ai_ms: Option<i64>,
+    /// Stop to the text being pasted. Filled in just after the paste.
+    pub total_ms: Option<i64>,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, Type)]
 pub struct HistoryEntry {
     pub id: i64,
@@ -81,6 +123,8 @@ pub struct HistoryEntry {
     pub language: Option<String>,
     /// How that language was chosen; `None` before it was recorded.
     pub language_source: Option<LanguageSource>,
+    /// What ran and how long it took; empty for files and old entries.
+    pub details: EntryDetails,
 }
 
 pub struct HistoryManager {
@@ -173,10 +217,10 @@ impl HistoryManager {
 
         // Not a migration: a higher user_version makes released builds refuse
         // the database, while an extra nullable column is invisible to them.
-        for column in ADDED_COLUMNS {
+        for (column, sql_type) in ADDED_COLUMNS {
             if !Self::has_column(conn, column)? {
                 conn.execute(
-                    &format!("ALTER TABLE transcription_history ADD COLUMN {column} TEXT"),
+                    &format!("ALTER TABLE transcription_history ADD COLUMN {column} {sql_type}"),
                     [],
                 )?;
                 info!("Added the {column} column to transcription history");
@@ -272,6 +316,17 @@ impl HistoryManager {
                 .get::<_, Option<String>>("language_source")?
                 .as_deref()
                 .and_then(LanguageSource::parse),
+            details: EntryDetails {
+                speech_model: row.get("speech_model")?,
+                write_decision: row.get("write_decision")?,
+                ai_engine: row.get("ai_engine")?,
+                ai_model: row.get("ai_model")?,
+                prompt_id: row.get("prompt_id")?,
+                recording_ms: row.get("recording_ms")?,
+                transcription_ms: row.get("transcription_ms")?,
+                ai_ms: row.get("ai_ms")?,
+                total_ms: row.get("total_ms")?,
+            },
         })
     }
 
@@ -289,6 +344,7 @@ impl HistoryManager {
         post_processed_text: Option<String>,
         post_process_prompt: Option<String>,
         language: Option<LanguageDecision>,
+        details: EntryDetails,
     ) -> Result<HistoryEntry> {
         let (language, language_source) = split_language(language);
         let entry = self.insert_entry(HistoryEntry {
@@ -304,6 +360,7 @@ impl HistoryManager {
             source_name: None,
             language,
             language_source,
+            details,
         })?;
 
         self.cleanup_old_entries()?;
@@ -328,6 +385,7 @@ impl HistoryManager {
             source_name: Some(source_name),
             language: None,
             language_source: None,
+            details: EntryDetails::default(),
         })
     }
 
@@ -348,8 +406,17 @@ impl HistoryManager {
                 post_process_requested,
                 source_name,
                 language,
-                language_source
-            ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
+                language_source,
+                speech_model,
+                write_decision,
+                ai_engine,
+                ai_model,
+                prompt_id,
+                recording_ms,
+                transcription_ms,
+                ai_ms,
+                total_ms
+            ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20)",
             params![
                 &entry.file_name,
                 entry.timestamp,
@@ -362,6 +429,15 @@ impl HistoryManager {
                 &entry.source_name,
                 &entry.language,
                 entry.language_source.map(LanguageSource::as_str),
+                &entry.details.speech_model,
+                &entry.details.write_decision,
+                &entry.details.ai_engine,
+                &entry.details.ai_model,
+                &entry.details.prompt_id,
+                entry.details.recording_ms,
+                entry.details.transcription_ms,
+                entry.details.ai_ms,
+                entry.details.total_ms,
             ],
         )?;
         entry.id = conn.last_insert_rowid();
@@ -773,13 +849,19 @@ mod tests {
                 transcription_text TEXT NOT NULL,
                 post_processed_text TEXT,
                 post_process_prompt TEXT,
-                post_process_requested BOOLEAN NOT NULL DEFAULT 0,
-                source_name TEXT,
-                language TEXT,
-                language_source TEXT
+                post_process_requested BOOLEAN NOT NULL DEFAULT 0
             );",
         )
         .expect("create transcription_history table");
+        // The columns added outside MIGRATIONS, from the same list production
+        // uses, so this fixture cannot drift from the real schema again.
+        for (column, sql_type) in ADDED_COLUMNS {
+            conn.execute(
+                &format!("ALTER TABLE transcription_history ADD COLUMN {column} {sql_type}"),
+                [],
+            )
+            .expect("add column");
+        }
         conn
     }
 
@@ -818,7 +900,7 @@ mod tests {
     fn migrating_adds_columns_without_raising_the_version() {
         let mut conn = Connection::open_in_memory().expect("open in-memory db");
         HistoryManager::apply_migrations(&mut conn).expect("migrate");
-        for column in ADDED_COLUMNS {
+        for (column, _) in ADDED_COLUMNS {
             assert!(HistoryManager::has_column(&conn, column).expect("read table info"));
         }
         assert_eq!(user_version(&conn), MIGRATIONS.len() as i32);
@@ -846,6 +928,48 @@ mod tests {
             .expect("fetch latest entry")
             .expect("entry exists");
         assert_eq!(entry.transcription_text, "still works");
+    }
+
+    #[test]
+    fn reads_the_details_back() {
+        let conn = setup_conn();
+        conn.execute(
+            "INSERT INTO transcription_history (file_name, timestamp, title, transcription_text, \
+                speech_model, write_decision, ai_engine, ai_model, prompt_id, \
+                recording_ms, transcription_ms, ai_ms, total_ms)
+             VALUES ('a.wav', 1, 'a', 'hello', 'parakeet-ultra', 'polished', 'local_model', \
+                'qwen3-1.7b', 'polish', 2200, 140, 380, 700)",
+            [],
+        )
+        .expect("insert entry");
+        let entry = HistoryManager::get_latest_entry_with_conn(&conn)
+            .expect("fetch latest entry")
+            .expect("entry exists");
+        assert_eq!(
+            entry.details.speech_model.as_deref(),
+            Some("parakeet-ultra")
+        );
+        assert_eq!(entry.details.write_decision.as_deref(), Some("polished"));
+        assert_eq!(entry.details.ai_engine.as_deref(), Some("local_model"));
+        assert_eq!(entry.details.ai_model.as_deref(), Some("qwen3-1.7b"));
+        assert_eq!(entry.details.recording_ms, Some(2200));
+        assert_eq!(entry.details.total_ms, Some(700));
+        // Never the prompt text or the screen text: the ids above are all a
+        // row may carry.
+        assert_eq!(entry.details.prompt_id.as_deref(), Some("polish"));
+    }
+
+    /// An entry written before 0.1.8 has no details and must still read.
+    #[test]
+    fn older_entries_have_no_details() {
+        let conn = setup_conn();
+        insert_entry(&conn, 5, "from before", None);
+        let entry = HistoryManager::get_latest_entry_with_conn(&conn)
+            .expect("fetch latest entry")
+            .expect("entry exists");
+        assert_eq!(entry.details.speech_model, None);
+        assert_eq!(entry.details.write_decision, None);
+        assert_eq!(entry.details.total_ms, None);
     }
 
     #[test]

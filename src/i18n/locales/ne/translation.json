@@ -728,7 +728,17 @@
       "noResultsTitle": "कुनै मेल भेटिएन",
       "noResultsDescription": "तपाईंको हिस्ट्रीमा “{{query}}” सँग मिल्ने केही छैन।",
       "loadingMore": "थप लोड गर्दै…",
-      "searchingOlder": "पुराना प्रविष्टिहरू खोज्दै…"
+      "searchingOlder": "पुराना प्रविष्टिहरू खोज्दै…",
+      "details": "विवरण",
+      "detail": {
+        "model": "मोडेल",
+        "decided": "निर्णय",
+        "as_said": "भनिए जस्तै",
+        "polished": "परिमार्जित",
+        "written": "तपाईंका लागि लेखिएको",
+        "recorded": "रेकर्डिङ",
+        "total": "जम्मा"
+      }
     },
     "debug": {
       "title": "डिबग",

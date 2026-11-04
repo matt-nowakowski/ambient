@@ -734,7 +734,17 @@
       "noResultsTitle": "Brak wyników",
       "noResultsDescription": "Nic w historii nie pasuje do „{{query}}”.",
       "loadingMore": "Wczytywanie kolejnych…",
-      "searchingOlder": "Przeszukiwanie starszych wpisów…"
+      "searchingOlder": "Przeszukiwanie starszych wpisów…",
+      "details": "Szczegóły",
+      "detail": {
+        "model": "Model",
+        "decided": "Decyzja",
+        "as_said": "Jak powiedziano",
+        "polished": "Wygładzone",
+        "written": "Napisane za ciebie",
+        "recorded": "Nagranie",
+        "total": "Razem"
+      }
     },
     "debug": {
       "title": "Debugowanie",

@@ -728,7 +728,17 @@
       "noResultsTitle": "一致なし",
       "noResultsDescription": "履歴に「{{query}}」に一致するものはありません。",
       "loadingMore": "さらに読み込み中…",
-      "searchingOlder": "古い項目を検索中…"
+      "searchingOlder": "古い項目を検索中…",
+      "details": "詳細",
+      "detail": {
+        "model": "モデル",
+        "decided": "判定",
+        "as_said": "話したとおり",
+        "polished": "整文",
+        "written": "代筆",
+        "recorded": "録音",
+        "total": "合計"
+      }
     },
     "debug": {
       "title": "デバッグ",

@@ -728,7 +728,17 @@
       "noResultsTitle": "Tidak ada kecocokan",
       "noResultsDescription": "Tidak ada riwayat yang cocok dengan “{{query}}”.",
       "loadingMore": "Memuat lebih banyak…",
-      "searchingOlder": "Mencari entri yang lebih lama…"
+      "searchingOlder": "Mencari entri yang lebih lama…",
+      "details": "Detail",
+      "detail": {
+        "model": "Model",
+        "decided": "Keputusan",
+        "as_said": "Sesuai ucapan",
+        "polished": "Dipoles",
+        "written": "Ditulis untuk Anda",
+        "recorded": "Rekaman",
+        "total": "Total"
+      }
     },
     "debug": {
       "title": "Debug",

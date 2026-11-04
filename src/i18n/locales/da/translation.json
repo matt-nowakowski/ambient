@@ -728,7 +728,17 @@
       "noResultsTitle": "Ingen resultater",
       "noResultsDescription": "Intet i din historik matcher »{{query}}«.",
       "loadingMore": "Indlæser flere…",
-      "searchingOlder": "Søger i ældre poster…"
+      "searchingOlder": "Søger i ældre poster…",
+      "details": "Detaljer",
+      "detail": {
+        "model": "Model",
+        "decided": "Beslut",
+        "as_said": "Som sagt",
+        "polished": "Poleret",
+        "written": "Skrevet for dig",
+        "recorded": "Optagelse",
+        "total": "I alt"
+      }
     },
     "debug": {
       "title": "Fejlfinding",

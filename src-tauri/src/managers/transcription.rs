@@ -514,6 +514,11 @@ impl TranscriptionManager {
         }
     }
 
+    /// The id of the model currently loaded, for History's Details row.
+    pub fn current_model_id(&self) -> Option<String> {
+        self.current_model_id.lock().ok().and_then(|id| id.clone())
+    }
+
     pub fn load_model(&self, model_id: &str) -> Result<()> {
         self.load_model_with_device(model_id, None)
     }

@@ -728,7 +728,17 @@
       "noResultsTitle": "Không có kết quả",
       "noResultsDescription": "Không có mục nào trong lịch sử khớp với “{{query}}”.",
       "loadingMore": "Đang tải thêm…",
-      "searchingOlder": "Đang tìm các mục cũ hơn…"
+      "searchingOlder": "Đang tìm các mục cũ hơn…",
+      "details": "Chi tiết",
+      "detail": {
+        "model": "Mô hình",
+        "decided": "Quyết định",
+        "as_said": "Như đã nói",
+        "polished": "Trau chuốt",
+        "written": "Viết cho bạn",
+        "recorded": "Bản ghi",
+        "total": "Tổng"
+      }
     },
     "debug": {
       "title": "Gỡ lỗi",

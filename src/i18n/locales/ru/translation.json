@@ -734,7 +734,17 @@
       "noResultsTitle": "Ничего не найдено",
       "noResultsDescription": "В истории нет совпадений с «{{query}}».",
       "loadingMore": "Загружаем ещё…",
-      "searchingOlder": "Поиск по старым записям…"
+      "searchingOlder": "Поиск по старым записям…",
+      "details": "Подробности",
+      "detail": {
+        "model": "Модель",
+        "decided": "Решение",
+        "as_said": "Как сказано",
+        "polished": "Отполировано",
+        "written": "Написано для вас",
+        "recorded": "Запись",
+        "total": "Всего"
+      }
     },
     "debug": {
       "title": "Отладка",
