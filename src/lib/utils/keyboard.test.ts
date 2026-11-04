@@ -133,10 +133,15 @@ assert.equal(formatKeyCombination("mouse5", "macos"), "Mouse 5");
 assert.equal(formatKeyCombination("mousemiddle", "windows"), "Mouse 3");
 assert.equal(formatKeyCombination("mouseleft", "windows"), "Mouse 1");
 
-assert.deepEqual(keycapLabels("double_tap+option_right", "macos"), ["⌥", "×2"]);
-assert.deepEqual(keycapLabels("option_right", "windows"), ["Alt"]);
+assert.deepEqual(keycapLabels("double_tap+option_right", "macos"), [
+  "Right ⌥",
+  "×2",
+]);
+assert.deepEqual(keycapLabels("option_right", "windows"), ["Right Alt"]);
+// A modifier in a longer combo keeps its glyph: the other keys say the rest.
+assert.deepEqual(keycapLabels("option_left+space", "macos"), ["⌥", "Space"]);
 assert.deepEqual(keycapLabels("mousex2", "windows"), ["Mouse 5"]);
-assert.equal(keycapLabel("double_tap+ctrl_left", "windows"), "Ctrl + ×2");
+assert.equal(keycapLabel("double_tap+ctrl_left", "windows"), "Left Ctrl + ×2");
 
 // The marker is not a key: binding logic sees only the key it marks.
 assert.deepEqual(bindingKeys("double_tap+option_right"), ["option_right"]);

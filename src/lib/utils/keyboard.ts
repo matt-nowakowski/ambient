@@ -358,12 +358,20 @@ const PC_KEYCAPS: Record<string, string> = {
   command: "⊞",
 };
 
+/** "Right " / "Left " for a side-specific key, "" for a key without sides. */
+const sidePrefix = (part: string): string =>
+  part.endsWith("_right") ? "Right " : part.endsWith("_left") ? "Left " : "";
+
 /** "option+space" → ["⌥", "Space"] on macOS. A double tap adds a "×2" cap. */
 export const keycapLabels = (binding: string, osType: OSType): string[] => {
-  const labels = bindingKeys(binding).map((part) => {
+  const parts = bindingKeys(binding);
+  const labels = parts.map((part) => {
     const key = part.replace(/_(left|right)$/, "");
     const glyphs = osType === "macos" ? MAC_KEYCAPS : PC_KEYCAPS;
-    return glyphs[key] ?? capitalizeKey(key);
+    // A lone modifier is the whole shortcut, so its side has to be drawn:
+    // "Right ⌥" says what "⌥" alone doesn't.
+    const side = parts.length === 1 ? sidePrefix(part) : "";
+    return side + (glyphs[key] ?? capitalizeKey(key));
   });
   return isDoubleTapBinding(binding) ? [...labels, "×2"] : labels;
 };
