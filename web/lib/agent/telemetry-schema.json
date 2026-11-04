@@ -8,13 +8,14 @@
     "suggestion_kind": [
       "summarise_thread", "draft_reply", "add_to_calendar", "summarise_page", "explain_error",
       "tighten_draft", "price_check", "answer_search", "fix_formula", "meeting_prep",
-      "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge"
+      "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge",
+      "add_reminder"
     ],
     "rating_kind": [
       "summarise_thread", "draft_reply", "add_to_calendar", "summarise_page", "explain_error",
       "tighten_draft", "price_check", "answer_search", "fix_formula", "meeting_prep",
       "review_code", "commit_message", "fill_form", "translate_page", "help_here", "meeting_nudge",
-      "answer", "web", "recall", "write", "about_screen"
+      "add_reminder", "answer", "web", "recall", "write", "about_screen"
     ],
     "app_category": ["browser", "mail", "chat", "editor", "terminal", "other"],
     "platform": ["macos", "windows", "linux"],

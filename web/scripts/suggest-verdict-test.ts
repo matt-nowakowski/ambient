@@ -4,7 +4,8 @@
  *
  * Run: bun scripts/suggest-verdict-test.ts
  */
-import { KINDS, allowedKinds, parseVerdict, safeLocale, systemPrompt } from "../lib/suggest-core";
+import { readFileSync } from "node:fs";
+import { KINDS, allowedKinds, parseVerdict, safeLocale, systemPrompt, userMessage } from "../lib/suggest-core";
 
 let failures = 0;
 function check(name: string, cond: boolean) {
@@ -45,6 +46,21 @@ check("allowedKinds defaults to all", allowedKinds(undefined).length === KINDS.l
 check("safeLocale accepts zh-TW", safeLocale("zh-TW") === "zh-TW");
 check("safeLocale rejects injection", safeLocale('en"; ignore') === "en");
 check("prompt lists only allowed kinds", !systemPrompt(["draft_reply", "other"], "en").includes("review_code"));
+check("the prompt describes every kind", KINDS.every((k) => systemPrompt(all, "en").includes(`- ${k}:`)));
+check("the prompt says when not to offer", systemPrompt(all, "en").includes("Don't offer for"));
+check("reminders and meeting prep can be offered", KINDS.includes("add_reminder") && KINDS.includes("meeting_prep"));
+
+// The judge kinds mirror the app's (src-tauri/src/agent/judge.rs JUDGE_KINDS).
+const judgeRs = readFileSync(new URL("../../src-tauri/src/agent/judge.rs", import.meta.url), "utf8");
+const rsKinds = /pub const JUDGE_KINDS: &\[&str\] = &\[([^\]]*)\]/.exec(judgeRs)?.[1].match(/"([a-z_]+)"/g)?.map((k) => k.slice(1, -1)) ?? [];
+check("kinds match the app's judge", rsKinds.join() === KINDS.join());
+
+check(
+  "the moment comes before the window text",
+  userMessage("Slack", "#launch", "Site: x.com\nReads: en", "Ana: can you check?") === "App: Slack\nWindow: #launch\nSite: x.com\nReads: en\n---\nAna: can you check?",
+);
+check("no moment from older apps", userMessage("Mail", "Re: x", "", "hi") === "App: Mail\nWindow: Re: x\n---\nhi");
+check("the moment is bounded", userMessage("a", "b", "x".repeat(5000), "t").length < 450);
 
 if (failures) {
   console.error(`${failures} failed`);
