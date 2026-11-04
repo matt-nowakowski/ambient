@@ -705,7 +705,7 @@
       "transcribing": "Transcribing...",
       "transcriptionFailed": "Transcription failed. You can re-transcribe using the retry icon.",
       "notTranscribed": "Not transcribed. You can transcribe it using the retry icon.",
-      "transcribeFile": "Transcribe File",
+      "transcribeFile": "Transcribe a file",
       "mediaFiles": "Audio and video",
       "fileUnsupported": "Couldn't read audio from {{name}}.",
       "readingFile": "Reading {{name}}...",
