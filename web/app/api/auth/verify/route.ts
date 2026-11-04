@@ -1,3 +1,4 @@
+import { noteAccount } from "@/lib/activity";
 import {
   AuthConfigError,
   MAX_CODE_ATTEMPTS,
@@ -50,6 +51,7 @@ export async function POST(req: Request) {
     }
 
     const account = await accountStatus(email);
+    noteAccount(email, account.plan);
     return Response.json({ session: mintSession(email), ...account });
   } catch (err) {
     if (err instanceof AuthConfigError || err instanceof LicenseConfigError || err instanceof ActivationConfigError) {

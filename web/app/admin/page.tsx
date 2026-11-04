@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { AdminHeader, BrandMark } from "@/components/admin/chrome";
 import { AgentHealth } from "@/components/admin/agent-health";
+import { Installs } from "@/components/admin/installs";
 import FeedbackTab from "@/components/admin/feedback-inbox";
 import { openFeedbackCount } from "@/lib/admin/feedback";
 import { CountUp, LineChart, Meter, Sparkline, StackedBars } from "@/components/admin/viz";
@@ -28,6 +29,8 @@ const PERIOD_NOUN: Record<Period, string> = { month: "this month", "30d": "in th
  */
 const NEEDS: Record<DashboardTab, Need> = {
   overview: { db: true, polar: true, providers: true },
+  // Reads its own data (lib/admin/installs.ts).
+  installs: { db: false, polar: false, providers: false },
   revenue: { db: true, polar: true, providers: false },
   usage: { db: true, polar: true, providers: false },
   costs: { db: true, polar: true, providers: true },
@@ -43,6 +46,7 @@ const PERIODIC = new Set<DashboardTab>(["overview", "revenue", "usage"]);
 
 const TITLES: Record<DashboardTab, string> = {
   overview: "Ambient Admin",
+  installs: "Installs",
   revenue: "Revenue",
   usage: "Users and usage",
   costs: "Costs and margins",
@@ -125,6 +129,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </p>
         ) : null}
 
+        {tab === "installs" ? <Installs demo={demo} /> : null}
         {tab === "agent" ? <AgentHealth demo={demo} /> : null}
         {tab === "feedback" ? <FeedbackTab demo={demo} searchParams={sp} /> : null}
 
@@ -982,7 +987,17 @@ function Footnotes({ s, tab }: { s: Summary; tab: DashboardTab }) {
     notes.push(
       <p key="users">
         Installs are trials started (one per machine). Free weekly actives are machines with a hosted AI use this week. Users are
-        machines and Polar customers; there are no accounts.
+        machines and Polar customers. Free users, devices active per day and signed-in emails are on the Installs tab.
+      </p>,
+    );
+  }
+  if (tab === "installs") {
+    notes.push(
+      <p key="installs">
+        Installs are first launches that reached our server (the trial check), one per computer. Active means a device or paid account
+        called us that day, week or month: trial check, Free usage check, hosted AI, or plan check. An install that only ever runs on
+        device and never opens Home is not counted as active. Devices are keyed hashes that change every period, so they can&apos;t be
+        followed from day to day. Activity is kept 180 days; download and country counts are totals with no identifiers.
       </p>,
     );
   }

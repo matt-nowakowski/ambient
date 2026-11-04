@@ -1,6 +1,7 @@
 import "server-only";
 import { freeAiPerWeek } from "./agent/config-store";
 import { currentWeek, db, isDatabaseConfigured } from "./db";
+import { noteActive } from "./activity";
 import { verifyLicense, type LicensePayload } from "./license";
 import { machineKey, parseMachine } from "./machine";
 import { tokensFrom, type UsageKind, type UsagePlan } from "./usage";
@@ -37,7 +38,8 @@ export const FREE_TOKEN_PREFIX = "free_";
 /**
  * `Authorization: Bearer <license key>` for Pro, Team and the trial (valid,
  * unexpired, verified offline), or `Bearer free_<machine>` for Free's weekly
- * polish allowance.
+ * polish allowance. A valid caller also counts as active today
+ * (lib/activity.ts, written after the response).
  */
 export function authorize(req: Request): Authorized {
   const header = req.headers.get("authorization") ?? "";
@@ -46,11 +48,14 @@ export function authorize(req: Request): Authorized {
   if (token.startsWith(FREE_TOKEN_PREFIX)) {
     const machine = parseMachine(token.slice(FREE_TOKEN_PREFIX.length));
     if (!machine) return { ok: false, status: 401, error: "invalid_machine" };
-    return { ok: true, kind: "free", subject: machineKey(machine) };
+    const subject = machineKey(machine);
+    noteActive(subject, "free");
+    return { ok: true, kind: "free", subject };
   }
   const result = verifyLicense(token);
   if (!result.ok) return { ok: false, status: 401, error: "invalid_license" };
   if (result.expired) return { ok: false, status: 402, error: "license_expired" };
+  noteActive(result.payload.sub, result.payload.plan);
   return { ok: true, kind: "paid", subject: result.payload.sub, license: result.payload };
 }
 

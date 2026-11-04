@@ -1,3 +1,4 @@
+import { countDaily, noteActive, requestCountry } from "@/lib/activity";
 import { brand } from "@/lib/brand";
 import { db, isDatabaseConfigured } from "@/lib/db";
 import { LicenseConfigError, isLicenseSigningConfigured, mintLicense } from "@/lib/license";
@@ -18,11 +19,19 @@ export async function POST(req: Request) {
 
   const subject = machineKey(machine);
   const sql = await db();
-  await sql`insert into trials (machine) values (${subject}) on conflict (machine) do nothing`;
+  const inserted = await sql`insert into trials (machine) values (${subject}) on conflict (machine) do nothing returning 1`;
+  // The app asks once, on first launch: a new row is a new install. Only the
+  // country is counted, never stored against the device.
+  if (inserted.length) {
+    const country = requestCountry(req);
+    countDaily([["first_launch", "all"], ...(country ? [["first_launch_country", country] as [string, string]] : [])]);
+  }
   const [row] = await sql`select extract(epoch from started_at)::bigint as started from trials where machine = ${subject}`;
   const started = Number(row.started);
   const exp = started + brand.trialDays * 24 * 3600;
-  if (exp <= Math.floor(Date.now() / 1000)) {
+  const trialOver = exp <= Math.floor(Date.now() / 1000);
+  noteActive(trialOver ? subject : `trial_${subject.slice(0, 24)}`, trialOver ? "free" : "trial");
+  if (trialOver) {
     return Response.json({ error: "trial_used", endedAt: exp }, { status: 409 });
   }
 

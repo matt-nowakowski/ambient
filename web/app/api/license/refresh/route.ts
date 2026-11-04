@@ -1,3 +1,4 @@
+import { noteActive } from "@/lib/activity";
 import { LicenseConfigError, isLicenseSigningConfigured, mintLicense, verifyLicense } from "@/lib/license";
 import { activeAmbientSubscription } from "@/lib/license-code";
 import { getPolar, licenseExpFor, notConfigured, planFor, readJson } from "@/lib/polar";
@@ -30,6 +31,7 @@ export async function POST(req: Request) {
     const plan = planFor(sub);
     const exp = licenseExpFor(sub);
     const key = mintLicense({ sub: result.payload.sub, email: result.payload.email, plan, exp });
+    noteActive(result.payload.sub, plan);
     return Response.json({ key, plan, exp });
   } catch (err) {
     if (err instanceof LicenseConfigError) return notConfigured("License signing");

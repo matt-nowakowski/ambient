@@ -1,6 +1,7 @@
 /** The /admin sections. Shared by the tab bar (client) and the pages (server). */
 export const ADMIN_TABS = [
   { id: "overview", label: "Overview" },
+  { id: "installs", label: "Installs" },
   { id: "revenue", label: "Revenue" },
   { id: "usage", label: "Usage" },
   { id: "costs", label: "Costs" },
