@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Callout, DocHeader, DocRows, DocSection, GuideNext, TrySaying } from "@/components/docs";
 import { brand } from "@/lib/brand";
-import { guideMetadata, guidePage, trySaying, writingOutcomes, writingSettings } from "@/lib/guide";
+import { guideMetadata, guidePage, trySaying, writingOutcomes, writingSettings, writingYours } from "@/lib/guide";
 
 export const metadata = guideMetadata("writing");
 
@@ -16,8 +16,15 @@ export default function WritingPage() {
       <TrySaying items={trySaying.writing} />
 
       <DocSection id="what-it-does" title="What it does">
-        <p>When it isn’t sure, it types what you said. Plain dictation never waits on a model.</p>
+        <p>
+          It judges from what’s on screen, not a list of apps: a reply under a message drafts in Messages, Slack and Mail
+          alike, and goes to the sender, not to you. When it isn’t sure, it types what you said.
+        </p>
         <DocRows items={writingOutcomes} />
+      </DocSection>
+
+      <DocSection id="make-it-yours" title="Make it yours">
+        <DocRows items={writingYours} />
       </DocSection>
 
       <DocSection id="take-it-back" title="Take it back">
@@ -35,8 +42,8 @@ export default function WritingPage() {
         <p>In {brand.name} → Account → Writing.</p>
         <DocRows items={writingSettings} />
         <Callout title="Polished needs AI polish">
-          AI polish is on for new installs, with a clear switch in setup and in Account. Only text it actually polishes or
-          writes counts as an AI use (unlimited on Pro, {brand.freePolishPerWeek} a week on Free); deciding how to write
+          AI polish is off for new installs, so your words appear the moment you stop. Turn it on in setup or in Account.
+          Writing for you works either way. Only text it actually polishes or writes counts as an AI use (unlimited on Pro, {brand.freePolishPerWeek} a week on Free); deciding how to write
           never does. When they run out, it types what you said. See{" "}
           <Link href="/pricing" className={link}>
             plans

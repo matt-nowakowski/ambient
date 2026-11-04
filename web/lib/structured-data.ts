@@ -19,7 +19,8 @@ const featureList = [
   "Recall of what you said, saw or saved",
   "Suggestions when it can help",
   "Meeting notes with no bot",
-  "Smart writing: as said, polished, or written for you",
+  "Smart writing: as said, polished, or written for you, in any app and language",
+  "Optional on-device AI on macOS, Windows and Linux",
   "Unlimited on-device dictation in 99 languages",
   `Hands-free “Hey ${brand.name}”`,
 ];

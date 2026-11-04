@@ -24,7 +24,15 @@ const never = [
   { k: "Recovery phrases and private keys", v: `The whole window is dropped. ${brand.name} shows that it paused there.` },
 ] as const;
 
+const onDevice = [
+  { k: "What it is", v: "A small AI model (Qwen3 1.7B, about 1.7 GB) run by llama.cpp on your computer. Optional, on every OS." },
+  { k: "What runs on it", v: "Polish, smart writing, deciding what you meant, suggestions and short answers." },
+  { k: "Without it", v: "“On this computer only” means basic: simple rules, no AI. Answers and writing for you need the cloud." },
+  { k: "On a Mac", v: "An alternative to Apple Intelligence." },
+] as const;
+
 const check = [
+  { k: "Right now", v: "The top of Privacy: what reads your screen and what can send text to the cloud, at a glance." },
   { k: `What ${brand.name} sees`, v: "Click Preview, switch to any window, and see exactly what it would read after redaction." },
   { k: "Requests that left this computer", v: "Every request and exactly what it sent. Kept 30 days." },
   { k: "What’s stored", v: "Screen memory by app. Delete one app’s, or everything." },
@@ -53,9 +61,16 @@ export default function PrivacyDocsPage() {
           codes are removed on your computer first.
         </p>
         <Callout title="On this computer only">
-          Set Intelligence to this and AI runs only on your device (Apple Intelligence on a Mac), with web search off.
-          Nothing is sent for AI at all.
+          Set Intelligence to this and AI runs only on your device (on-device AI, or Apple Intelligence on a Mac), with
+          web search off. Nothing is sent for AI at all.
         </Callout>
+      </DocSection>
+
+      <DocSection id="on-device-ai" title="On-device AI">
+        <p>
+          Download it in {brand.name} → Privacy → <strong>On-device AI</strong>. Remove it any time.
+        </p>
+        <DocRows items={onDevice} />
       </DocSection>
 
       <DocSection id="check-it-yourself" title="Check it yourself">

@@ -77,7 +77,12 @@ export default function GettingStartedPage() {
         </dl>
         <p>
           Change either in {brand.name} → Settings. To make the dictation key only ever type, turn off{" "}
-          <strong>Understand requests while dictating</strong>.
+          <strong>Understand requests while dictating</strong>. Another dictation app on the same keys? Only {brand.name}{" "}
+          responds, unless you{" "}
+          <Link href="/docs/troubleshooting#another-dictation-app" className={link}>
+            turn that off
+          </Link>
+          .
         </p>
       </DocSection>
 
