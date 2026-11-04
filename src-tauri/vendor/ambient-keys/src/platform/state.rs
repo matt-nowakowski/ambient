@@ -100,7 +100,10 @@ pub fn release_events(tracked: Modifiers, stale: Modifiers) -> Vec<KeyEvent> {
     events
 }
 
-#[cfg(all(test, any(target_os = "macos", target_os = "windows", target_os = "linux")))]
+#[cfg(all(
+    test,
+    any(target_os = "macos", target_os = "windows", target_os = "linux")
+))]
 mod tests {
     use super::*;
 

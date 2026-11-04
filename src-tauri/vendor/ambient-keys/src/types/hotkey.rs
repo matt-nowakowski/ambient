@@ -427,7 +427,10 @@ mod tests {
             let hotkey: Hotkey = raw.parse().unwrap();
             let displayed = hotkey.to_string();
             assert_eq!(displayed.parse::<Hotkey>().unwrap(), hotkey);
-            assert_eq!(hotkey.to_ambient_string().parse::<Hotkey>().unwrap(), hotkey);
+            assert_eq!(
+                hotkey.to_ambient_string().parse::<Hotkey>().unwrap(),
+                hotkey
+            );
             assert!(hotkey.to_ambient_string().starts_with(DOUBLE_TAP_PREFIX));
         }
     }

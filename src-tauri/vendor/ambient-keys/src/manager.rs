@@ -93,6 +93,15 @@ struct ManagerState {
     double_tap: HashMap<HotkeyId, DoubleTapState>,
 }
 
+/// Whether the listener may swallow this hotkey so other apps never see it.
+///
+/// Double-tap triggers are listened to, never swallowed: the taps that arm them
+/// are ordinary keyboard use (Option+arrow, Shift+click) and must reach the
+/// rest of the system. Swallowing the first tap would break typing.
+fn blocks_hotkey(hotkey: &Hotkey) -> bool {
+    !hotkey.double_tap
+}
+
 impl ManagerState {
     fn new() -> Self {
         Self {
@@ -357,7 +366,7 @@ impl HotkeyManager {
         // swallowed: a single tap of the modifier is ordinary keyboard use
         // (Option+arrow, Option as a dead key) and other apps must see it.
         if let Some(blocking_hotkeys) = &self.blocking_hotkeys {
-            if !hotkey.double_tap {
+            if blocks_hotkey(&hotkey) {
                 if let Ok(mut blocking) = blocking_hotkeys.lock() {
                     blocking.insert(hotkey);
                 }
@@ -868,15 +877,11 @@ mod tests {
             // Far outside the window: this tap arms instead of firing.
             tap(&mut state, t0 + Duration::from_millis(900));
             // The next quick tap pairs with it.
-            let events = state.process_event_at(
-                &press_option(true),
-                t0 + Duration::from_millis(1100),
-            );
+            let events =
+                state.process_event_at(&press_option(true), t0 + Duration::from_millis(1100));
             assert!(events.is_empty());
-            let events = state.process_event_at(
-                &press_option(false),
-                t0 + Duration::from_millis(1150),
-            );
+            let events =
+                state.process_event_at(&press_option(false), t0 + Duration::from_millis(1150));
             assert_eq!(events.len(), 2);
         }
 
@@ -897,10 +902,7 @@ mod tests {
                 .is_empty());
             let events =
                 state.process_event_at(&press_option(false), t0 + Duration::from_millis(650));
-            assert!(
-                events.is_empty(),
-                "the hold must not have armed a pair"
-            );
+            assert!(events.is_empty(), "the hold must not have armed a pair");
 
             // ...and the tap that follows it pairs normally.
             assert!(state
@@ -927,11 +929,9 @@ mod tests {
                 &make_key_event(Modifiers::OPT_RIGHT, Some(Key::Tab), false),
                 t0 + Duration::from_millis(60),
             );
-            assert!(
-                state
-                    .process_event_at(&press_option(false), t0 + Duration::from_millis(80))
-                    .is_empty()
-            );
+            assert!(state
+                .process_event_at(&press_option(false), t0 + Duration::from_millis(80))
+                .is_empty());
 
             // Nothing armed: a following quick tap must not fire by itself.
             let events =
@@ -985,6 +985,21 @@ mod tests {
                 .is_empty());
         }
 
+        /// A double-tap trigger must never be swallowed: the taps that arm it
+        /// are ordinary keyboard use for every other app (issue: exclusive
+        /// shortcuts breaking Option+arrow).
+        #[test]
+        fn double_tap_hotkeys_are_never_blocked() {
+            assert!(!blocks_hotkey(&option_right()));
+            assert!(!blocks_hotkey(
+                &"double_tap+ctrl+space".parse::<Hotkey>().unwrap()
+            ));
+            // Plain hotkeys are still blocked, or exclusive mode would do
+            // nothing for them.
+            assert!(blocks_hotkey(&"option_right".parse::<Hotkey>().unwrap()));
+            assert!(blocks_hotkey(&"ctrl+space".parse::<Hotkey>().unwrap()));
+        }
+
         #[test]
         fn keyed_double_tap_fires_on_the_key() {
             let mut state = ManagerState::new();
@@ -995,18 +1010,23 @@ mod tests {
             let t0 = Instant::now();
 
             let space = |down: bool| make_key_event(Modifiers::CTRL_LEFT, Some(Key::Space), down);
-            let ctrl = |down: bool| make_modifier_event(
-                if down { Modifiers::CTRL_LEFT } else { Modifiers::empty() },
-                down,
-                Modifiers::CTRL_LEFT,
-            );
+            let ctrl = |down: bool| {
+                make_modifier_event(
+                    if down {
+                        Modifiers::CTRL_LEFT
+                    } else {
+                        Modifiers::empty()
+                    },
+                    down,
+                    Modifiers::CTRL_LEFT,
+                )
+            };
 
             state.process_event_at(&ctrl(true), t0);
             state.process_event_at(&space(true), t0 + Duration::from_millis(10));
             state.process_event_at(&space(false), t0 + Duration::from_millis(40));
             state.process_event_at(&space(true), t0 + Duration::from_millis(180));
-            let events =
-                state.process_event_at(&space(false), t0 + Duration::from_millis(220));
+            let events = state.process_event_at(&space(false), t0 + Duration::from_millis(220));
             assert_eq!(events.len(), 2);
             assert_eq!(events[0].id, id);
             assert_eq!(events[0].state, HotkeyState::Pressed);
