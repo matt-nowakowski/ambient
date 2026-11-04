@@ -9,6 +9,7 @@ mod catalog;
 mod chinese_script;
 pub mod cli;
 mod clipboard;
+mod clipboard_snapshot;
 mod commands;
 mod context;
 mod dictation_apps;
