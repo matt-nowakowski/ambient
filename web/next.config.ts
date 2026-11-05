@@ -4,10 +4,9 @@ import type { NextConfig } from "next";
 // app and site only ever link to our own domain, so the storage host can move
 // without shipping a new app.
 //
-// TODO(Matt): once dl.tryambient.ai (an R2 custom domain) resolves, set the
-// DOWNLOADS_ORIGIN env var to it to move off the rate-limited r2.dev URL. The
-// updater already tries https://dl.tryambient.ai/releases/latest.json first
-// (src-tauri/tauri.conf.json), so once it resolves update checks skip Vercel.
+// Later, with a download domain (an R2 custom domain), set DOWNLOADS_ORIGIN to
+// it to move off the rate-limited r2.dev URL, and add it to the updater's
+// endpoints in src-tauri/tauri.conf.json.
 const DOWNLOADS =
   process.env.DOWNLOADS_ORIGIN ?? "https://pub-511499d42040440b820494091787f427.r2.dev";
 

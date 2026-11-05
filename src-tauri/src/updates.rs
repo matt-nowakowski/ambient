@@ -4,9 +4,10 @@
 //! check that only happens at launch means most users never see a new version.
 //! This module owns the whole background flow:
 //!
-//! - check at launch, every six hours after that (±30 min of jitter, so the
-//!   install base does not fetch the feed at the same minute) and on
-//!   main-window focus, throttled to at most one check an hour;
+//! - check at launch, once a day after that (±2 h of jitter, so the install
+//!   base does not fetch the feed at the same minute) and on main-window
+//!   focus, throttled to at most one check every 12 hours: about one fetch
+//!   per user per day, well inside the hosting plan's included requests;
 //! - download quietly as soon as a version is found, keeping the (signature
 //!   verified) bytes, and say so once per version with a system notification;
 //! - never interrupt: the tray and settings-window "Restart to update" paths
@@ -37,12 +38,12 @@ use crate::managers::audio::AudioRecordingManager;
 use crate::managers::transcription::TranscriptionManager;
 
 /// How often a running app re-checks, before jitter.
-pub const CHECK_INTERVAL: Duration = Duration::from_secs(6 * 60 * 60);
+pub const CHECK_INTERVAL: Duration = Duration::from_secs(24 * 60 * 60);
 /// Jitter applied around CHECK_INTERVAL.
-pub const JITTER: Duration = Duration::from_secs(30 * 60);
+pub const JITTER: Duration = Duration::from_secs(2 * 60 * 60);
 /// A non-manual check is skipped if another ran this recently: the focus
 /// trigger and the timer both go through it.
-pub const MIN_GAP: Duration = Duration::from_secs(60 * 60);
+pub const MIN_GAP: Duration = Duration::from_secs(12 * 60 * 60);
 /// Let launch settle (and the first-run plan land) before the first check.
 const FIRST_DELAY: Duration = Duration::from_secs(30);
 /// Per-endpoint limit for fetching latest.json (not the download itself).
@@ -558,7 +559,7 @@ mod tests {
         for roll in [0.0, 0.17, 0.5, 0.83, 1.0] {
             let secs = next_check_delay(roll).as_secs_f64();
             assert!(
-                (5.5 * 3600.0..=6.5 * 3600.0).contains(&secs),
+                (22.0 * 3600.0..=26.0 * 3600.0).contains(&secs),
                 "roll {roll} gave {secs}s"
             );
         }
@@ -571,15 +572,15 @@ mod tests {
     }
 
     #[test]
-    fn focus_check_is_throttled_to_an_hour() {
+    fn focus_check_is_throttled_to_twelve_hours() {
         let now = Instant::now();
         assert!(check_due_on_focus(None, now));
         assert!(!check_due_on_focus(
-            Some(now - Duration::from_secs(59 * 60)),
+            Some(now - Duration::from_secs(11 * 60 * 60)),
             now
         ));
         assert!(check_due_on_focus(
-            Some(now - Duration::from_secs(61 * 60)),
+            Some(now - Duration::from_secs(13 * 60 * 60)),
             now
         ));
     }
