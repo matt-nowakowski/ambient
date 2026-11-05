@@ -1,0 +1,456 @@
+{
+  "screens": {
+    "mail_reply_sam": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Launch plan",
+      "text": "From: Sam Lee <sam@acme.com>\nTo: Matt Nowakowski <matt@example.com>\nSubject: Re: Launch plan\n\nHi Matt,\n\nI went through the launch plan. Can we keep Thursday for the review, or should we move it to Friday? Let me know if the numbers in the deck are final.\n\nThanks,\nSam",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_read_sam": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Launch plan",
+      "text": "From: Sam Lee <sam@acme.com>\nTo: Matt Nowakowski <matt@example.com>\nSubject: Launch plan\n\nHi Matt,\n\nI went through the launch plan. Can we keep Thursday for the review, or should we move it to Friday? Let me know if the numbers in the deck are final.\n\nThanks,\nSam",
+      "focus": {
+        "role": "AXGroup",
+        "editable": false
+      }
+    },
+    "mail_reply_pl": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Faktura za październik",
+      "text": "Od: Anna Kowalska <anna@biuro.pl>\nDo: Matt Nowakowski <matt@example.com>\nTemat: Faktura za październik\n\nCześć Matt,\n\nczy faktura za październik jest już gotowa? Daj znać, czy wszystko się zgadza z umową.\n\nPozdrawiam,\nAnna",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_reply_de": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "AW: Termin nächste Woche",
+      "text": "Von: Jonas Becker <jonas@firma.de>\nAn: Matt Nowakowski <matt@example.com>\nBetreff: Termin nächste Woche\n\nHallo Matt,\n\npasst dir Dienstag um 10 Uhr für unser Gespräch? Sonst schlag gern einen anderen Termin vor.\n\nViele Grüße\nJonas",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_reply_es": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Presupuesto",
+      "text": "De: Lucía García <lucia@empresa.es>\nPara: Matt Nowakowski <matt@example.com>\nAsunto: Presupuesto\n\nHola Matt,\n\n¿Has podido revisar el presupuesto que te envié? Necesitamos una respuesta antes del viernes.\n\nUn saludo,\nLucía",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_reply_fr": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "RE: Réunion de lundi",
+      "text": "De : Claire Martin <claire@societe.fr>\nÀ : Matt Nowakowski <matt@example.com>\nObjet : Réunion de lundi\n\nBonjour Matt,\n\nEst-ce que la réunion de lundi tient toujours ? Je peux préparer la présentation si besoin.\n\nCordialement,\nClaire",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_reply_pt": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Contrato",
+      "text": "De: João Silva <joao@empresa.pt>\nPara: Matt Nowakowski <matt@example.com>\nAssunto: Contrato\n\nOlá Matt,\n\nconseguiste ler o contrato? Diz-me se podemos assinar esta semana.\n\nAbraço,\nJoão",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_reply_it": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Consegna",
+      "text": "Da: Giulia Rossi <giulia@azienda.it>\nA: Matt Nowakowski <matt@example.com>\nOggetto: Consegna\n\nCiao Matt,\n\nla consegna è confermata per mercoledì? Fammi sapere appena puoi.\n\nGrazie,\nGiulia",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_reply_ja": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: 打ち合わせの件",
+      "text": "差出人: 田中 健 <tanaka@kaisha.jp>\n宛先: Matt Nowakowski <matt@example.com>\n件名: 打ち合わせの件\n\nMattさん\n\n来週の打ち合わせですが、水曜日の午後でご都合いかがでしょうか。\n\nよろしくお願いいたします。\n田中",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "gmail_thread_sam": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Launch plan - matt@example.com - Gmail",
+      "url": "https://mail.google.com/mail/u/0/#inbox/FMfcgz123",
+      "text": "Launch plan\nInbox\nSam Lee <sam@acme.com>\nto me\nHi Matt,\n\nI went through the launch plan. Can we keep Thursday for the review, or should we move it to Friday?\n\nThanks,\nSam\nReply\nForward",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      },
+      "reply_button": true
+    },
+    "gmail_compose_reply": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Launch plan - matt@example.com - Gmail",
+      "url": "https://mail.google.com/mail/u/0/#inbox/FMfcgz123",
+      "text": "Launch plan\nInbox\nSam Lee <sam@acme.com>\nto me\nHi Matt,\n\nI went through the launch plan. Can we keep Thursday for the review, or should we move it to Friday?\n\nThanks,\nSam\nOn Tue, 3 Nov 2026 at 09:12, Sam Lee <sam@acme.com> wrote:",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "slack_dm_priya": {
+      "app": "Slack",
+      "bundle": {
+        "macos": "com.tinyspeck.slackmacgap",
+        "windows": "slack.exe",
+        "linux": "slack"
+      },
+      "title": "Priya Shah (DM) - Acme - Slack",
+      "text": "Priya Shah  10:42 AM\nHey! Are you joining the design review at 3?\nPriya Shah  10:43 AM\nAlso, can you send me the latest numbers before then?",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "slack_channel_pl": {
+      "app": "Slack",
+      "bundle": {
+        "macos": "com.tinyspeck.slackmacgap",
+        "windows": "slack.exe",
+        "linux": "slack"
+      },
+      "title": "#zespół - Acme - Slack",
+      "text": "Kasia Nowak  09:15\nCzy ktoś sprawdził wczorajszy deploy? Klient pyta, czy wszystko działa.\nKasia Nowak  09:16\nDaj znać, Matt, jak będziesz wiedział.",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "messages_mom": {
+      "app": "Messages",
+      "bundle": {
+        "macos": "com.apple.MobileSMS"
+      },
+      "title": "Mom",
+      "text": "Mom\nAre you coming for dinner on Sunday? Dad is making lasagna.\nDelivered",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "whatsapp_tomek": {
+      "app": "WhatsApp",
+      "bundle": {
+        "macos": "net.whatsapp.WhatsApp",
+        "windows": "whatsapp.exe",
+        "linux": "whatsapp-desktop"
+      },
+      "title": "WhatsApp",
+      "text": "Tomek Wiśniewski\nonline\nTomek Wiśniewski 18:02\nSiema, gramy jutro w kosza o 19?\nTomek Wiśniewski 18:03\nDaj znać czy bierzesz piłkę",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "discord_guild": {
+      "app": "Discord",
+      "bundle": {
+        "macos": "com.hnc.Discord",
+        "windows": "discord.exe",
+        "linux": "discord"
+      },
+      "title": "#general | Indie Devs - Discord",
+      "text": "Leo — 14:05\nanyone tried the new build? it crashes on launch for me\nMaya — 14:07\nworks fine here, which OS?",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "unknown_chat_app": {
+      "app": "Beeper",
+      "bundle": {
+        "macos": "com.automattic.beeper.desktop",
+        "windows": "beeper.exe",
+        "linux": "beeper"
+      },
+      "title": "Beeper — Nina Patel",
+      "text": "Nina Patel 11:20\nDid you get a chance to look at the proposal?\nNina Patel 11:21\nI need an answer by tomorrow",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "notes_empty": {
+      "app": {
+        "macos": "Notes",
+        "windows": "Notepad",
+        "linux": "Text Editor"
+      },
+      "bundle": {
+        "macos": "com.apple.Notes",
+        "windows": "notepad.exe",
+        "linux": "org.gnome.texteditor"
+      },
+      "title": "Notes",
+      "text": "",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "docs_editor": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Q4 plan - Google Docs",
+      "url": "https://docs.google.com/document/d/abc/edit",
+      "text": "Q4 plan\n\nGoals\n1. Ship 2.0\n2. Grow to 10k users",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "Q4 plan\n\nGoals\n1. Ship 2.0\n2. Grow to 10k users\n",
+        "caret": 47
+      }
+    },
+    "chatgpt_prompt": {
+      "app": {
+        "macos": "ChatGPT",
+        "windows": "ChatGPT",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.openai.chat",
+        "windows": "chatgpt.exe",
+        "linux": "google-chrome"
+      },
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "text": "ChatGPT\nWhat can I help with?",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "browser_article": {
+      "app": {
+        "macos": "Safari",
+        "windows": "Microsoft Edge",
+        "linux": "Firefox"
+      },
+      "bundle": {
+        "macos": "com.apple.Safari",
+        "windows": "msedge.exe",
+        "linux": "firefox"
+      },
+      "title": "How cities are adapting to heat waves",
+      "url": "https://www.example-news.com/cities-heat",
+      "text": "How cities are adapting to heat waves\n\nAcross Europe, cities are planting trees, painting roofs white and opening cooling centres as summers get hotter. Paris has turned school yards into green islands, while Seville names its heat waves like hurricanes so residents take them seriously.",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "browser_search_field": {
+      "app": {
+        "macos": "Safari",
+        "windows": "Microsoft Edge",
+        "linux": "Firefox"
+      },
+      "bundle": {
+        "macos": "com.apple.Safari",
+        "windows": "msedge.exe",
+        "linux": "firefox"
+      },
+      "title": "Example Store — Search",
+      "url": "https://store.example.com/",
+      "text": "Example Store\nSearch products",
+      "focus": {
+        "role": "AXTextField",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "finder_desktop": {
+      "app": {
+        "macos": "Finder",
+        "windows": "File Explorer",
+        "linux": "Files"
+      },
+      "bundle": {
+        "macos": "com.apple.finder",
+        "windows": "explorer.exe",
+        "linux": "org.gnome.nautilus"
+      },
+      "title": "Desktop",
+      "text": "",
+      "focus": {
+        "role": "AXList",
+        "editable": false
+      }
+    },
+    "terminal_error": {
+      "app": {
+        "macos": "Terminal",
+        "windows": "Windows Terminal",
+        "linux": "Terminal"
+      },
+      "bundle": {
+        "macos": "com.apple.Terminal",
+        "windows": "windowsterminal.exe",
+        "linux": "org.gnome.terminal"
+      },
+      "title": "matt@mac: ~/code/app — zsh",
+      "text": "$ npm run build\n\n> app@1.0.0 build\n> tsc && vite build\n\nsrc/api/client.ts:42:17 - error TS2339: Property 'fetchUser' does not exist on type 'ApiClient'.\n\n42     const user = api.fetchUser(id);\n                   ~~~~~~~~~\n\nFound 1 error in src/api/client.ts:42\n\nnpm ERR! code 1\nnpm ERR! path /Users/matt/code/app\nnpm ERR! command failed\n$ ",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true
+      }
+    }
+  },
+  "cases": []
+}

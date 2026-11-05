@@ -1,0 +1,52 @@
+name: "Scenario suite"
+
+# The scenario suite (testing/README.md) on demand, without releasing:
+# builds the app unsigned and runs every scenario on Linux (layer 1), and,
+# when asked, the critical scenarios on macOS and Windows too (layer 2).
+# Needs the TESTING_BASETEN_API_KEY secret in the `release` environment,
+# which only accepts runs from main (dispatch it there).
+
+on:
+  workflow_dispatch:
+    inputs:
+      layer2:
+        description: "Also build and run the critical scenarios on macOS and Windows"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  layer1:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "ubuntu-24.04"
+      target: "x86_64-unknown-linux-gnu"
+      build-args: "--bundles deb"
+      scenario-tests: "full"
+    secrets: inherit
+
+  layer2:
+    if: inputs.layer2
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: "macos-26"
+            target: "aarch64-apple-darwin"
+            args: "--target aarch64-apple-darwin"
+          - platform: "windows-latest"
+            target: "x86_64-pc-windows-msvc"
+            args: ""
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: ${{ matrix.platform }}
+      target: ${{ matrix.target }}
+      build-args: ${{ matrix.args }}
+      scenario-tests: "critical"
+    secrets: inherit

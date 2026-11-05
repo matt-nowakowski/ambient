@@ -1024,7 +1024,7 @@ pub(crate) async fn process_dictation_output(
         );
     }
     let reminder =
-        crate::agent::when::reminder_request(transcription, chrono::Local::now().naive_local());
+        crate::agent::when::reminder_request(transcription, crate::agent::when::local_now());
     let report = crate::agent::report::report_intent(transcription);
     let agent_on = mode == OutputMode::Dictation && settings.agent.routing;
     let cued = ask
@@ -1160,7 +1160,7 @@ pub(crate) async fn process_dictation_output(
             follow_up,
             did_you_mean_bias: crate::remote_config::agent_config().did_you_mean_bias,
         },
-        chrono::Local::now().naive_local(),
+        crate::agent::when::local_now(),
     );
     let decision = if mode == OutputMode::Dictation
         && !no_field

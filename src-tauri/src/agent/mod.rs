@@ -942,6 +942,13 @@ pub fn is_webmail_window(url: &str, title: &str) -> bool {
 
 /// Send ⌘R (Ctrl+R elsewhere) or a bare key to the app in front.
 fn send_key(app: &AppHandle, key: char, command: bool) -> bool {
+    if crate::testing::active() {
+        crate::testing::record(
+            "key",
+            serde_json::json!({ "key": key.to_string(), "command": command }),
+        );
+        return false;
+    }
     app.try_state::<crate::input::EnigoState>()
         .and_then(|state| {
             let mut enigo = state.0.lock().ok()?;
@@ -1058,7 +1065,7 @@ pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
     if let Some(r) = report::report_intent(text) {
         return Route::Report(r);
     }
-    if let Some(r) = when::reminder_request(text, chrono::Local::now().naive_local()) {
+    if let Some(r) = when::reminder_request(text, when::local_now()) {
         return Route::Act(router::Action::Reminder {
             due: r.due_string(),
             title: r.title,

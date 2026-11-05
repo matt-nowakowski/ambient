@@ -46,6 +46,7 @@ mod shortcut;
 mod signal_handle;
 mod system_languages;
 mod telemetry;
+mod testing;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
@@ -295,6 +296,11 @@ pub(crate) fn show_main_window(app: &AppHandle) {
 /// runs are left alone.
 #[cfg(target_os = "macos")]
 fn apply_startup_activation_policy(app: &mut tauri::App, headless_mode: bool) {
+    // A test run shows nothing, not even a Dock icon.
+    if testing::active() {
+        app.set_activation_policy(tauri::ActivationPolicy::Prohibited);
+        return;
+    }
     if headless_mode {
         return;
     }
@@ -851,6 +857,13 @@ pub fn run(cli_args: CliArgs) {
     // instead of accumulating in malloc arenas (#1792). No-op off Linux/glibc.
     memory::init_allocator();
 
+    // The test suite's hidden mode: a fresh data folder, before anything
+    // reads settings or paths (see `testing`).
+    let test_mode = testing::requested(cli_args.test_scenario.as_deref());
+    if let Some(path) = cli_args.test_scenario.as_deref().filter(|_| test_mode) {
+        portable::use_dir(testing::activate(path));
+    }
+
     // Detect portable mode before anything else
     portable::init();
 
@@ -1071,8 +1084,10 @@ pub fn run(cli_args: CliArgs) {
 
     // The headless path must run as its own instance (see the single-instance
     // note below), not forward to an already-running app.
-    let headless_mode =
-        cli_args.transcribe_file.is_some() || cli_args.list_devices || cli_args.list_models;
+    let headless_mode = cli_args.transcribe_file.is_some()
+        || cli_args.list_devices
+        || cli_args.list_models
+        || test_mode;
 
     #[allow(unused_mut)]
     let mut builder = tauri::Builder::default()
@@ -1195,6 +1210,13 @@ pub fn run(cli_args: CliArgs) {
             // thread and exit. Deliberately skips the window, tray, overlay, audio
             // recorder (so it never opens the mic, even with always_on_microphone),
             // signal handlers, and autostart that initialize_core_logic sets up.
+            // Test mode: no window, tray, shortcut, mic or agent loop; one
+            // scenario through the pipeline, then exit.
+            if test_mode {
+                testing::run::spawn(app.handle().clone());
+                return Ok(());
+            }
+
             if headless_mode {
                 let app_handle = app.handle().clone();
                 let model_manager = Arc::new(

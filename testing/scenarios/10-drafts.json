@@ -1,0 +1,560 @@
+{
+  "defaults": {
+    "tags": ["draft"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "cloud",
+      "polish": false,
+      "writing": "smart"
+    }
+  },
+  "screens": {
+    "mail_reply_quoted_mine": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Offsite dates",
+      "text": "From: Olivia Brown <olivia@acme.com>\nTo: Matt Nowakowski <matt@example.com>\nSubject: Re: Offsite dates\n\nHi Matt, the 14th doesn't work for the design team. Could we do the 21st instead?\n\nOlivia\n\nOn Mon, 2 Nov 2026 at 16:20, Matt Nowakowski <matt@example.com> wrote:\n> Hi Olivia, does the 14th work for the offsite?\n> Matt",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "mail_sent_by_me": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Re: Contract draft",
+      "text": "From: Matt Nowakowski <matt@example.com>\nTo: David Kim <david@lawfirm.com>\nSubject: Re: Contract draft\n\nHi David, I've attached my comments on section 4.\n\nMatt\n\nOn Sun, 1 Nov 2026 at 11:00, David Kim <david@lawfirm.com> wrote:\n> Matt, please review the contract draft and send comments on section 4.\n> David",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "slack_last_mine": {
+      "app": "Slack",
+      "bundle": {
+        "macos": "com.tinyspeck.slackmacgap",
+        "windows": "slack.exe",
+        "linux": "slack"
+      },
+      "title": "Ben Carter (DM) - Acme - Slack",
+      "text": "Ben Carter  9:02 AM\nCan you review my PR today?\nMatt Nowakowski  9:10 AM\nSure, after lunch\nBen Carter  1:45 PM\nAny update?",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "draft.pl.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical", "regression"],
+      "lang": "pl",
+      "screen": "mail_reply_pl",
+      "say": "odpisz że wszystko ok",
+      "expect": {
+        "route": "draft",
+        "recipient": "Anna",
+        "language": "pl",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      },
+      "regression": "0.1.8 #5: PL \"odpisz że wszystko ok\" was typed verbatim, not drafted"
+    },
+    {
+      "id": "draft.pl.mail.2",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "pl",
+      "screen": "mail_reply_pl",
+      "say": "napisz jej, że faktura będzie jutro",
+      "expect": {
+        "route": "draft",
+        "recipient": "Anna",
+        "language": "pl",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.pl.mail.3",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "pl",
+      "screen": "mail_reply_pl",
+      "say": "odpowiedz, że zgadza się z umową",
+      "expect": {
+        "route": "draft",
+        "recipient": "Anna",
+        "language": "pl",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.de.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "de",
+      "screen": "mail_reply_de",
+      "say": "antworte, dass Dienstag passt",
+      "expect": {
+        "route": "draft",
+        "recipient": "Jonas",
+        "language": "de",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.de.mail.2",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "de",
+      "screen": "mail_reply_de",
+      "say": "schreib ihm, dass ich erst Mittwoch kann",
+      "expect": {
+        "route": "draft",
+        "recipient": "Jonas",
+        "language": "de",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.es.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "es",
+      "screen": "mail_reply_es",
+      "say": "respóndele que lo reviso mañana",
+      "expect": {
+        "route": "draft",
+        "recipient": "Lucía",
+        "language": "es",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.es.mail.2",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "es",
+      "screen": "mail_reply_es",
+      "say": "dile que el presupuesto está bien",
+      "expect": {
+        "route": "draft",
+        "recipient": "Lucía",
+        "language": "es",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.fr.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "fr",
+      "screen": "mail_reply_fr",
+      "say": "réponds-lui que la réunion tient toujours",
+      "expect": {
+        "route": "draft",
+        "recipient": "Claire",
+        "language": "fr",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.fr.mail.2",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "fr",
+      "screen": "mail_reply_fr",
+      "say": "dis-lui que je prépare la présentation",
+      "expect": {
+        "route": "draft",
+        "recipient": "Claire",
+        "language": "fr",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.pt.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "pt",
+      "screen": "mail_reply_pt",
+      "say": "responde que podemos assinar na sexta",
+      "expect": {
+        "route": "draft",
+        "recipient": "João",
+        "language": "pt",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.it.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "it",
+      "screen": "mail_reply_it",
+      "say": "rispondi che mercoledì va bene",
+      "expect": {
+        "route": "draft",
+        "recipient": "Giulia",
+        "language": "it",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.ja.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "ja",
+      "screen": "mail_reply_ja",
+      "say": "水曜日で大丈夫と返信して",
+      "expect": {
+        "route": "draft",
+        "recipient": "田中",
+        "language": "ja",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.en.mail.1",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail", "critical"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "reply that Thursday works for me",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "language": "en",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.en.mail.2",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "tell him the numbers are final",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "language": "en",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.en.mail.3",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "let Sam know we'll keep Thursday",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "language": "en",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.en.mail.4",
+      "about": "An instruction to reply in a mail reply is drafted to the sender, in the thread's language.",
+      "tags": ["mail"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "reply saying thanks, all good",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "language": "en",
+        "must_not": ["typed_verbatim", "opened_browser"]
+      }
+    },
+    {
+      "id": "draft.en.slack.1",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["slack", "critical", "regression"],
+      "lang": "en",
+      "screen": "slack_dm_priya",
+      "say": "tell her I'll join at 3 and send the numbers before",
+      "expect": {
+        "route": "draft",
+        "recipient": "Priya",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      },
+      "regression": "0.1.8 #4: smart writing drafted in Mail but not in Slack"
+    },
+    {
+      "id": "draft.en.slack.2",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["slack"],
+      "lang": "en",
+      "screen": "slack_dm_priya",
+      "say": "reply that I'm in",
+      "expect": {
+        "route": "draft",
+        "recipient": "Priya",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.pl.slack.3",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["slack", "critical"],
+      "lang": "pl",
+      "screen": "slack_channel_pl",
+      "say": "odpisz Kasi, że deploy działa i wszystko ok",
+      "expect": {
+        "route": "draft",
+        "recipient": "Kasia",
+        "language": "pl",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.messages.4",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["messages", "critical", "regression"],
+      "lang": "en",
+      "screen": "messages_mom",
+      "say": "tell her I'll be there on Sunday and I'll bring dessert",
+      "expect": {
+        "route": "draft",
+        "recipient": "Mom",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      },
+      "regression": "0.1.8 #4: smart writing didn't draft in Messages",
+      "os": ["macos"]
+    },
+    {
+      "id": "draft.pl.whatsapp.5",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["whatsapp", "critical"],
+      "lang": "pl",
+      "screen": "whatsapp_tomek",
+      "say": "odpisz mu że gram i biorę piłkę",
+      "expect": {
+        "route": "draft",
+        "recipient": "Tomek",
+        "language": "pl",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.pl.whatsapp.6",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["whatsapp"],
+      "lang": "pl",
+      "screen": "whatsapp_tomek",
+      "say": "napisz mu że będę o 19",
+      "expect": {
+        "route": "draft",
+        "recipient": "Tomek",
+        "language": "pl",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.discord.7",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["discord"],
+      "lang": "en",
+      "screen": "discord_guild",
+      "say": "reply to Leo that it works on my Mac",
+      "expect": {
+        "route": "draft",
+        "recipient": "Leo",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.unknown-app.8",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["unknown-app", "critical"],
+      "lang": "en",
+      "screen": "unknown_chat_app",
+      "say": "let her know I'll send my answer tonight",
+      "expect": {
+        "route": "draft",
+        "recipient": "Nina",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.unknown-app.9",
+      "about": "Asked to write a message in a chat (any app, judged from the screen): drafted to the other person.",
+      "tags": ["unknown-app"],
+      "lang": "en",
+      "screen": "unknown_chat_app",
+      "say": "reply that I need one more day",
+      "expect": {
+        "route": "draft",
+        "recipient": "Nina",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.gmail.reply-here-saying",
+      "about": "Gmail reply box focused: a reply instruction is drafted, not typed.",
+      "tags": ["gmail", "critical", "regression"],
+      "lang": "en",
+      "screen": "gmail_compose_reply",
+      "say": "Reply here saying Thursday works",
+      "regression": "D7: in Gmail \"Reply here saying Thursday works\" was typed verbatim",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "language": "en",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.gmail.no-reply-box",
+      "about": "Gmail thread with no reply box: drafted (Reply opened, or offered as a draft card).",
+      "tags": ["gmail", "critical", "regression"],
+      "lang": "en",
+      "screen": "gmail_thread_sam",
+      "say": "reply to this email saying we're happy with it",
+      "regression": "D7/R2-5: with no reply box open nothing happened, or \"did you mean to type\"",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "must_not": ["typed_verbatim", "silent"]
+      }
+    },
+    {
+      "id": "draft.en.mail.no-reply-box",
+      "about": "Mail message open, no reply box: drafted, never pasted literally.",
+      "tags": ["mail", "critical", "regression"],
+      "lang": "en",
+      "screen": "mail_read_sam",
+      "say": "please reply to this email saying we're happy",
+      "regression": "R2-5: \"please reply to this email saying we're happy\" pasted literally",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "must_not": ["typed_verbatim", "silent"]
+      }
+    },
+    {
+      "id": "draft.en.mail.can-we-please-reply",
+      "tags": ["mail", "regression"],
+      "lang": "en",
+      "screen": "mail_read_sam",
+      "say": "Can we please reply to Sam that Friday is better",
+      "regression": "0.1.6 brain: \"Can we please reply…\" with no field got \"did you mean to type\"",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "must_not": ["typed", "silent"]
+      }
+    },
+    {
+      "id": "draft.en.mail.trailing-marker",
+      "about": "A trailing spoken marker (\"… — as a reply\") drafts too.",
+      "tags": ["mail", "markers"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "Thursday works, the numbers are final — as a reply",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.ask-key.reply",
+      "tags": ["mail", "ask-key"],
+      "lang": "en",
+      "screen": "mail_read_sam",
+      "say": "reply that Thursday works",
+      "key": "ask",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.en.sender.quoted-mine",
+      "tags": ["mail", "sender-recipient", "critical", "regression"],
+      "lang": "en",
+      "screen": "mail_reply_quoted_mine",
+      "say": "reply that the 21st works for everyone",
+      "regression": "0.1.8 #6: Mail confused sender and recipient; the draft was addressed to the wrong person",
+      "expect": {
+        "route": "draft",
+        "recipient": "Olivia",
+        "must_not": ["typed_verbatim"],
+        "judge": "It does not address Matt, and it is not signed as Olivia."
+      }
+    },
+    {
+      "id": "draft.en.sender.sent-by-me",
+      "tags": ["mail", "sender-recipient", "critical", "regression"],
+      "lang": "en",
+      "screen": "mail_sent_by_me",
+      "say": "tell him I'll send the rest of my comments tomorrow",
+      "regression": "0.1.8 #6: sender/recipient confusion",
+      "expect": {
+        "route": "draft",
+        "recipient": "David",
+        "must_not": ["typed_verbatim"],
+        "judge": "It is addressed to David, never to Matt."
+      }
+    },
+    {
+      "id": "draft.en.sender.slack-last-mine",
+      "tags": ["slack", "sender-recipient"],
+      "lang": "en",
+      "screen": "slack_last_mine",
+      "say": "reply that I'll look at it in an hour",
+      "expect": {
+        "route": "draft",
+        "recipient": "Ben",
+        "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.pl.sender.quoted-mine",
+      "tags": ["mail", "sender-recipient"],
+      "lang": "pl",
+      "screen": "mail_reply_quoted_mine",
+      "say": "odpisz, że 21 pasuje wszystkim",
+      "expect": {
+        "route": "draft",
+        "recipient": "Olivia",
+        "must_not": ["typed_verbatim"],
+        "judge": "It is addressed to Olivia, not to Matt. (Language may be English or Polish.)"
+      }
+    }
+  ]
+}

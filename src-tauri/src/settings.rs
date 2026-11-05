@@ -36,7 +36,11 @@ pub fn ai_provider(provider_id: &str) -> Option<AiProvider> {
     match provider_id {
         AMBIENT_AI_PROVIDER_ID => Some(AiProvider {
             id: AMBIENT_AI_PROVIDER_ID.to_string(),
-            base_url: concat!(env!("BRAND_API_BASE_URL"), "/api/ai/v1").to_string(),
+            // Test mode: the suite's local server stands in for ours.
+            base_url: match crate::testing::api_base() {
+                Some(base) => format!("{base}/api/ai/v1"),
+                None => concat!(env!("BRAND_API_BASE_URL"), "/api/ai/v1").to_string(),
+            },
             supports_structured_output: false,
         }),
         #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
@@ -1250,6 +1254,10 @@ pub fn load_or_create_app_settings(app: &AppHandle) -> AppSettings {
 }
 
 pub fn get_settings(app: &AppHandle) -> AppSettings {
+    // Test mode: the scenario's settings, never the user's.
+    if let Some(s) = crate::testing::settings() {
+        return s;
+    }
     let store = app
         .store(crate::portable::store_path(SETTINGS_STORE_PATH))
         .expect("Failed to initialize store");
@@ -1608,6 +1616,10 @@ pub fn update_checks_effectively_enabled(settings: &AppSettings) -> bool {
 }
 
 pub fn write_settings(app: &AppHandle, settings: AppSettings) {
+    if crate::testing::active() {
+        crate::testing::set_settings(settings);
+        return;
+    }
     let store = app
         .store(crate::portable::store_path(SETTINGS_STORE_PATH))
         .expect("Failed to initialize store");

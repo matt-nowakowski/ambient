@@ -949,6 +949,11 @@ fn paste_with(text: String, app_handle: AppHandle, trailing_space: bool) -> Resu
         log::debug!("nothing to paste (blank text); skipping the paste keystroke");
         return Ok(());
     }
+    // Test mode: what would be typed is recorded; nothing is typed.
+    if crate::testing::active() {
+        crate::testing::record("paste", serde_json::json!({ "text": text }));
+        return Ok(());
+    }
     let _paste = PASTE_LOCK.lock().unwrap_or_else(PoisonError::into_inner);
     let settings = get_settings(&app_handle);
     let paste_method = settings.paste_method;

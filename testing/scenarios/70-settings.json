@@ -1,0 +1,250 @@
+{
+  "defaults": {
+    "tags": ["settings"],
+    "plan": "pro"
+  },
+  "cases": [
+    {
+      "id": "noai.en.draft-instruction",
+      "about": "No AI: nothing is sent; the user still sees something (typed or told why).",
+      "tags": ["no-ai", "critical"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "reply that Thursday works for me",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "must_not": ["model_call", "silent"]
+      }
+    },
+    {
+      "id": "noai.en.question",
+      "about": "No AI: a question is answered by saying it needs AI, never silence.",
+      "tags": ["no-ai", "critical"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "what's the weather in Lisbon tomorrow",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "must_not": ["model_call", "silent", "typed"]
+      }
+    },
+    {
+      "id": "noai.en.dictation",
+      "tags": ["no-ai", "critical"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "see you at the review on Thursday",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "route": "write",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "noai.pl.reminder",
+      "tags": ["no-ai"],
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "przypomnij mi jutro o 9 żeby zadzwonić do banku",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "must_not": ["model_call", "silent", "typed"]
+      }
+    },
+    {
+      "id": "noai.en.reminder-rules",
+      "about": "No AI: an English reminder is read by the rules, with no model.",
+      "tags": ["no-ai"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "remind me tomorrow morning to call the bank",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "route": "remind",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "noai.en.suggestion",
+      "tags": ["no-ai"],
+      "lang": "en",
+      "screen": "terminal_error",
+      "kind": "screen",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart",
+        "proactive": true,
+        "screen_context": true
+      },
+      "expect": {
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "device.en.draft",
+      "about": "On this computer only, with no on-device model: nothing is sent, and the user is told.",
+      "tags": ["on-device", "critical"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "reply that Thursday works for me",
+      "settings": {
+        "intelligence": "device",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "must_not": ["model_call", "silent"]
+      }
+    },
+    {
+      "id": "device.en.question",
+      "tags": ["on-device", "critical"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "what's the weather in Lisbon tomorrow",
+      "settings": {
+        "intelligence": "device",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "must_not": ["model_call", "silent", "opened_browser"]
+      }
+    },
+    {
+      "id": "device.en.dictation",
+      "tags": ["on-device"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "see you at the review on Thursday",
+      "settings": {
+        "intelligence": "device",
+        "polish": true,
+        "writing": "smart"
+      },
+      "expect": {
+        "route": "write",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "device.en.suggestion-rules",
+      "about": "On this computer only: the rules still offer, nothing is sent.",
+      "tags": ["on-device"],
+      "lang": "en",
+      "screen": "terminal_error",
+      "kind": "screen",
+      "settings": {
+        "intelligence": "device",
+        "polish": true,
+        "writing": "smart",
+        "proactive": true,
+        "screen_context": true
+      },
+      "expect": {
+        "route": "suggest",
+        "suggestion": "explain_error",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "device.en.private",
+      "tags": ["on-device", "private"],
+      "lang": "en",
+      "screen": "bank_en",
+      "kind": "screen",
+      "settings": {
+        "intelligence": "device",
+        "polish": true,
+        "writing": "smart",
+        "proactive": true
+      },
+      "expect": {
+        "route": "back_off"
+      }
+    },
+    {
+      "id": "auto.en.draft-free",
+      "about": "Free on Automatic still drafts (an AI use).",
+      "tags": ["plans"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "reply that Thursday works for me",
+      "settings": {
+        "intelligence": "auto",
+        "polish": false
+      },
+      "plan": "free",
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam"
+      }
+    },
+    {
+      "id": "writing.en.as-said-mode",
+      "about": "\"Always as I said\": an instruction is typed like any words (unless Ambient is addressed).",
+      "tags": ["writing-mode"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "reply that Thursday works for me",
+      "settings": {
+        "intelligence": "cloud",
+        "writing": "as_said"
+      },
+      "expect": {
+        "route": ["write", "polish"]
+      }
+    },
+    {
+      "id": "writing.en.as-said-addressed",
+      "tags": ["writing-mode"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "Hey Ambient, reply that Thursday works for me",
+      "settings": {
+        "intelligence": "cloud",
+        "writing": "as_said"
+      },
+      "expect": {
+        "route": "draft",
+        "recipient": "Sam"
+      }
+    },
+    {
+      "id": "writing.en.polish-shortcut",
+      "tags": ["polish"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "um so the numbers are uh final",
+      "key": "polish",
+      "settings": {
+        "intelligence": "cloud",
+        "polish": false
+      },
+      "expect": {
+        "route": "polish"
+      }
+    }
+  ]
+}

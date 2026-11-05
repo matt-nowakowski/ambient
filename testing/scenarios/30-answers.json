@@ -1,0 +1,370 @@
+{
+  "defaults": {
+    "tags": ["answer"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "cloud",
+      "polish": false,
+      "writing": "smart"
+    }
+  },
+  "cases": [
+    {
+      "id": "answer.en.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather", "critical", "regression"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "what's the weather in Lisbon tomorrow",
+      "regression": "0.1.8 #1: on Windows \"what's the weather\" opened a browser instead of answering in the card",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "en"
+      }
+    },
+    {
+      "id": "answer.en.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather", "critical", "regression"],
+      "lang": "en",
+      "screen": "browser_article",
+      "say": "what's the weather in Lisbon tomorrow",
+      "regression": "0.1.8 #1: on Windows \"what's the weather\" opened a browser instead of answering in the card",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "en"
+      }
+    },
+    {
+      "id": "answer.pl.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "jaka będzie jutro pogoda w Krakowie",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "pl"
+      }
+    },
+    {
+      "id": "answer.pl.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "pl",
+      "screen": "browser_article",
+      "say": "jaka będzie jutro pogoda w Krakowie",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "pl"
+      }
+    },
+    {
+      "id": "answer.de.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "wie wird das Wetter morgen in Berlin",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "de"
+      }
+    },
+    {
+      "id": "answer.de.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "de",
+      "screen": "browser_article",
+      "say": "wie wird das Wetter morgen in Berlin",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "de"
+      }
+    },
+    {
+      "id": "answer.es.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "es",
+      "screen": "finder_desktop",
+      "say": "qué tiempo hará mañana en Madrid",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "es"
+      }
+    },
+    {
+      "id": "answer.es.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "es",
+      "screen": "browser_article",
+      "say": "qué tiempo hará mañana en Madrid",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "es"
+      }
+    },
+    {
+      "id": "answer.fr.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "fr",
+      "screen": "finder_desktop",
+      "say": "quel temps fera-t-il demain à Paris",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "fr"
+      }
+    },
+    {
+      "id": "answer.fr.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "fr",
+      "screen": "browser_article",
+      "say": "quel temps fera-t-il demain à Paris",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "fr"
+      }
+    },
+    {
+      "id": "answer.pt.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "pt",
+      "screen": "finder_desktop",
+      "say": "como vai estar o tempo amanhã em Lisboa",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "pt"
+      }
+    },
+    {
+      "id": "answer.pt.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "pt",
+      "screen": "browser_article",
+      "say": "como vai estar o tempo amanhã em Lisboa",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "pt"
+      }
+    },
+    {
+      "id": "answer.it.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "it",
+      "screen": "finder_desktop",
+      "say": "che tempo farà domani a Roma",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "it"
+      }
+    },
+    {
+      "id": "answer.it.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "it",
+      "screen": "browser_article",
+      "say": "che tempo farà domani a Roma",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "it"
+      }
+    },
+    {
+      "id": "answer.ja.weather.desktop",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "ja",
+      "screen": "finder_desktop",
+      "say": "明日の東京の天気は",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "ja"
+      }
+    },
+    {
+      "id": "answer.ja.weather.browser",
+      "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
+      "tags": ["weather"],
+      "lang": "ja",
+      "screen": "browser_article",
+      "say": "明日の東京の天気は",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "language": "ja"
+      }
+    },
+    {
+      "id": "answer.en.weather.ask-key-in-field",
+      "tags": ["weather", "ask-key", "critical"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "what's the weather in Lisbon tomorrow",
+      "key": "ask",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"]
+      }
+    },
+    {
+      "id": "answer.en.hey-ambient-in-field",
+      "tags": ["weather", "critical"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "Hey Ambient, what's the weather in Lisbon tomorrow",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"]
+      }
+    },
+    {
+      "id": "answer.en.summarise-page",
+      "tags": ["about-screen", "critical"],
+      "lang": "en",
+      "screen": "browser_article",
+      "say": "summarise this page",
+      "expect": {
+        "route": "answer",
+        "judge": "It summarises the article about cities adapting to heat waves.",
+        "must_not": ["opened_browser"]
+      }
+    },
+    {
+      "id": "answer.pl.summarise-page",
+      "tags": ["about-screen"],
+      "lang": "pl",
+      "screen": "browser_article",
+      "say": "podsumuj tę stronę",
+      "expect": {
+        "route": "answer",
+        "language": "pl",
+        "must_not": ["opened_browser"]
+      }
+    },
+    {
+      "id": "answer.de.explain-error",
+      "tags": ["about-screen"],
+      "lang": "de",
+      "screen": "terminal_error",
+      "say": "was bedeutet dieser Fehler",
+      "key": "ask",
+      "expect": {
+        "route": "answer",
+        "language": "de"
+      }
+    },
+    {
+      "id": "answer.en.translate",
+      "tags": ["about-screen"],
+      "lang": "en",
+      "screen": "browser_article",
+      "say": "translate this into Spanish",
+      "key": "ask",
+      "expect": {
+        "route": "answer",
+        "language": "es"
+      }
+    },
+    {
+      "id": "answer.en.math",
+      "tags": ["no-web"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "what's fifteen percent of two hundred and forty",
+      "expect": {
+        "route": "answer",
+        "contains": ["36"]
+      }
+    },
+    {
+      "id": "answer.en.follow-up",
+      "about": "A follow-up while an answer is up resolves \"them\" from it (an answer or a search of history).",
+      "tags": ["follow-up", "regression"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "what other emails did we get from them",
+      "card": {
+        "kind": "answer",
+        "question": "what is the last email I received",
+        "text": "Your last email is from BingX: \"Your weekly trading summary\"."
+      },
+      "regression": "D6: a follow-up with the answer card up did nothing",
+      "expect": {
+        "route": ["answer", "recall"],
+        "shows": ["BingX"],
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "act.en.google-it",
+      "about": "Asked for Google by name: the browser may open.",
+      "tags": ["browser"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "google the opening hours of the Louvre",
+      "expect": {
+        "route": "act",
+        "act": ["web_search", "open_url"]
+      }
+    },
+    {
+      "id": "act.en.open-site",
+      "tags": ["browser"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "open youtube",
+      "expect": {
+        "route": "act",
+        "act": ["open_url", "open_app"]
+      }
+    },
+    {
+      "id": "answer.en.no-browser-for-news",
+      "tags": ["no-browser"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "what's the latest news about the climate agreement",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser"]
+      }
+    },
+    {
+      "id": "answer.es.price",
+      "tags": ["no-browser"],
+      "lang": "es",
+      "screen": "finder_desktop",
+      "say": "cuánto cuesta un bitcoin ahora",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser"],
+        "language": "es"
+      }
+    }
+  ]
+}

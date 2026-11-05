@@ -1537,7 +1537,7 @@ fn judge_hints(snap: &ContextSnapshot, languages: &[String]) -> String {
     }
     out.push(format!(
         "Now: {}",
-        chrono::Local::now().format("%A %Y-%m-%d %H:%M")
+        super::when::local_now().format("%A %Y-%m-%d %H:%M")
     ));
     let mut langs: Vec<&str> = languages
         .iter()
@@ -2389,7 +2389,9 @@ fn fresh_query(app: &AppHandle, p: &Pending) -> Option<String> {
 /// call), then set the reminder: Reminders on macOS, a calendar reminder
 /// file on Windows and Linux (see `act`).
 async fn add_reminder(app: AppHandle, context: String) {
-    let now = chrono::Local::now().format("%A %Y-%m-%d %H:%M").to_string();
+    let now = super::when::local_now()
+        .format("%A %Y-%m-%d %H:%M")
+        .to_string();
     let system = format!(
         "From this message, extract what the user has been asked to do and when it's due. Reply with JSON only: \
          {{\"type\":\"reminder\",\"title\":\"...\",\"due\":\"YYYY-MM-DDTHH:MM\"}}. The title is a short to-do in the \
@@ -2431,7 +2433,9 @@ pub fn add_answer_to_calendar(app: &AppHandle, text: String) {
 
 /// Pull the event out of the thread (the one model call), then create it.
 async fn add_to_calendar(app: AppHandle, context: String) {
-    let now = chrono::Local::now().format("%A %Y-%m-%d %H:%M").to_string();
+    let now = super::when::local_now()
+        .format("%A %Y-%m-%d %H:%M")
+        .to_string();
     let system = format!(
         "From this email, extract the meeting or event being arranged. Reply with JSON only: \
          {{\"type\":\"calendar_event\",\"title\":\"...\",\"start\":\"YYYY-MM-DDTHH:MM\",\"end\":null,\"location\":null}}. \

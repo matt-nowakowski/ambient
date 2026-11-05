@@ -72,11 +72,31 @@ static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
 
 /// Base URL for our server. Debug builds can point at a local dev server.
 pub fn api_base() -> String {
+    // Test mode: the suite's local server, in every build.
+    if let Some(base) = crate::testing::api_base() {
+        return base;
+    }
     #[cfg(debug_assertions)]
     if let Ok(url) = std::env::var("AMBIENT_API_BASE_URL") {
         return url;
     }
     env!("BRAND_API_BASE_URL").to_string()
+}
+
+/// The test suite's "an answer card is up" (`testing::run`): this question
+/// and answer, as if just answered.
+pub(crate) fn seed_turn(q: &str, a: &str) {
+    if let Ok(mut g) = LAST.lock() {
+        *g = Some(Conversation {
+            at: Instant::now(),
+            turns: vec![Turn {
+                q: q.to_string(),
+                a: a.to_string(),
+            }],
+            sources: Vec::new(),
+            context: None,
+        });
+    }
 }
 
 /// The last question and answer, while a follow-up would still continue it.
@@ -879,6 +899,15 @@ async fn server_answer(
         "mode": if write { "write" } else { "answer" },
     });
     let url = format!("{}/api/agent/answer", api_base());
+    crate::testing::record(
+        "answer_request",
+        serde_json::json!({
+            "question": question,
+            "needs_web": needs_web,
+            "write": write,
+            "context": context.is_some(),
+        }),
+    );
     let host = url
         .split("://")
         .nth(1)

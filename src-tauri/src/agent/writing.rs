@@ -1024,6 +1024,10 @@ fn learn(app: &AppHandle, ins: &Inserted) {
 }
 
 fn copy_text(app: &AppHandle, text: &str) {
+    if crate::testing::active() {
+        crate::testing::record("copy", serde_json::json!({ "text": text }));
+        return;
+    }
     use tauri_plugin_clipboard_manager::ClipboardExt;
     let _ = app.clipboard().write_text(text.to_string());
 }
@@ -1215,6 +1219,13 @@ pub struct Me {
 
 impl Me {
     pub fn read(app: &AppHandle) -> Self {
+        // Test mode: the scenario's user, not this computer's.
+        if let Some(s) = crate::testing::scenario() {
+            return Self {
+                name: s.me.name.clone(),
+                email: s.me.email.clone(),
+            };
+        }
         Self {
             name: full_user_name(),
             email: crate::plan::account_email(app),

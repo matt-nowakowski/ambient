@@ -55,6 +55,12 @@ pub fn init() {
     });
 }
 
+/// Keep all data in `dir` for this run (the test suite's temporary folder),
+/// whatever marker is next to the executable. Call before `init`.
+pub fn use_dir(dir: PathBuf) {
+    let _ = PORTABLE_DATA_DIR.set(Some(dir));
+}
+
 /// Return the Hugging Face home configured before portable mode redirected it.
 ///
 /// Portable releases before v0.9.6 downloaded models to this location (or to

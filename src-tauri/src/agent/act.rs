@@ -63,6 +63,45 @@ pub async fn run(app: AppHandle, action: Action) {
 
 /// What happened, as the notice to show.
 fn perform(app: &AppHandle, action: Action) -> Notice {
+    // Test mode: nothing is opened or created; what would be is recorded.
+    if crate::testing::active() {
+        crate::testing::record(
+            "act",
+            serde_json::json!({ "action": serde_json::to_value(&action).unwrap_or_default() }),
+        );
+        match &action {
+            Action::OpenUrl { url } => {
+                crate::testing::record("open_url", serde_json::json!({ "url": url }));
+                return Notice::done("hud.status.opened");
+            }
+            Action::WebSearch { query } => {
+                let url = format!("https://www.google.com/search?q={}", urlencode(query));
+                crate::testing::record("open_url", serde_json::json!({ "url": url }));
+                return Notice::done("hud.status.searching");
+            }
+            Action::OpenApp { name } => {
+                crate::testing::record("open_app", serde_json::json!({ "name": name }));
+                return Notice::done("hud.notice.opened").var("name", name.clone());
+            }
+            Action::Reminder { title, due } => {
+                let n = match due {
+                    Some(d) => Notice::done("hud.notice.reminderSetAt").var("due", d.clone()),
+                    None => Notice::done("hud.notice.reminderSet"),
+                };
+                return n.var("title", title.clone());
+            }
+            Action::CalendarEvent { title, start, .. } => {
+                return Notice::done("hud.notice.eventAdded")
+                    .var("title", title.clone())
+                    .var("due", start.clone());
+            }
+            Action::Shortcut { name } => {
+                return Notice::done("hud.notice.shortcutRan").var("name", name.clone());
+            }
+            // Saying it can't is already only words: as in the app.
+            Action::CloseWindow { .. } | Action::Unsupported { .. } => {}
+        }
+    }
     match action {
         Action::OpenApp { name } => match open_app(&name) {
             Ok(()) => Notice::done("hud.notice.opened").var("name", name),

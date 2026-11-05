@@ -111,6 +111,9 @@ impl Target {
 /// The bearer token for our own server: the signed Pro token on Pro/trial, the
 /// hashed-device token on Free.
 pub fn server_token(app: &AppHandle) -> String {
+    if crate::testing::active() {
+        return "test".into();
+    }
     if crate::plan::is_paid(app) {
         crate::plan::license_key(app).unwrap_or_default()
     } else {
@@ -158,6 +161,10 @@ pub const ON_DEVICE_MAX_CHARS: usize = 9_000;
 
 /// Apple Intelligence is usable on this Mac right now.
 pub fn apple_ready() -> bool {
+    // Test mode: no on-device model, whatever this computer has.
+    if crate::testing::active() {
+        return false;
+    }
     #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
     {
         crate::apple_intelligence::check_apple_intelligence_availability()
@@ -421,6 +428,7 @@ async fn complete_inner(
     }
 
     crate::recall::log_request(&host_of(&t.provider.base_url), purpose, user);
+    crate::testing::record("model", serde_json::json!({ "purpose": purpose }));
     if t.is_hosted() {
         crate::plan::record_hosted_use(app, "ai");
     }
