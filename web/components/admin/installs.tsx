@@ -183,7 +183,9 @@ function Where({ d }: { d: InstallsData }) {
 }
 
 function Accounts({ d }: { d: InstallsData }) {
-  const free = d.accounts.filter((a) => a.plan === "free");
+  // Tips rows are people who confirmed an email for tips without signing in: never counted as sign-ins.
+  const isTips = (a: InstallsData["accounts"][number]) => a.source === "tips";
+  const listed = d.accounts.filter((a) => isTips(a) || a.plan === "free");
   const signedIn = Object.values(d.accountTotals).reduce((a, b) => a + b, 0);
   const freeSignedIn = d.accountTotals.free ?? 0;
   return (
@@ -191,29 +193,32 @@ function Accounts({ d }: { d: InstallsData }) {
       <Panel title="Who we can name">
         <Stat label="Signed in, any plan" value={fmtInt(signedIn)} />
         <Stat label="Signed in on Free" value={fmtInt(freeSignedIn)} />
+        <Stat label="Tips only (confirmed, not signed in)" value={fmtInt(d.tips.subscribers)} />
+        <Stat label="Still getting tips" value={fmtInt(d.tips.inSequence)} hint="any plan" />
         <Stat label="Free devices this month" value={fmtInt(d.active.month.free)} hint="anonymous" />
         <p className="admin-meta mt-3">
-          Free works without an account, so most Free users are anonymous devices. Emails are kept 12 months after the latest sign-in or tip request.
+          Free works without an account, so most Free users are anonymous devices. Signed-in emails are kept 12 months after the latest sign-in; tips emails 12 months after confirming, or until they unsubscribe.
         </p>
       </Panel>
-      <Panel title="Free users and tips emails" meta={free.length ? `Latest first · ${fmtInt(free.length)} shown` : undefined}>
-        {free.length ? (
-          <Table head={["Email", "How", "First seen", "Latest"]} text={[0, 1, 2, 3]}>
-            {free.map((a) => (
+      <Panel title="Free sign-ins and tips emails" meta={listed.length ? `Latest first · ${fmtInt(listed.length)} shown` : undefined}>
+        {listed.length ? (
+          <Table head={["Email", "How", "Plan", "First seen", "Latest"]} text={[0, 1, 2, 3, 4]}>
+            {listed.map((a) => (
               <tr key={a.email}>
                 <td>
                   <a href={`mailto:${a.email}`} className="underline-offset-2 hover:underline">
                     {a.email}
                   </a>
                 </td>
-                <td>{a.source === "tips" ? "Tips" : "Signed in"}</td>
+                <td>{isTips(a) ? "Tips (not signed in)" : "Signed in"}</td>
+                <td>{a.plan}</td>
                 <td>{dateLabel(a.firstSeen)}</td>
-                <td>{dateLabel(a.lastSeen)}</td>
+                <td>{isTips(a) ? "—" : dateLabel(a.lastSeen)}</td>
               </tr>
             ))}
           </Table>
         ) : (
-          <Empty>No Free sign-ins or tips emails recorded yet. Both are recorded from 0.1.8&apos;s website deploy.</Empty>
+          <Empty>No Free sign-ins or confirmed tips emails yet.</Empty>
         )}
       </Panel>
     </div>
