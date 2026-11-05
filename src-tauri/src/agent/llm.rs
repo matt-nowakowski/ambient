@@ -241,6 +241,8 @@ pub async fn run_on(
         }
         Engine::Local => crate::local_llm::complete(system, user, limits).await,
     };
+    // Never the model's deliberation, whichever engine produced it.
+    let out = out.and_then(|s| super::reasoning::answer_of(&s));
     if out.is_some() {
         record(engine.provider_id(), started);
     }
@@ -397,6 +399,8 @@ async fn complete_inner(
     .await
     {
         Ok(Some(text)) => {
+            // A reply that was only reasoning is no reply: the caller falls back.
+            let text = super::reasoning::answer_of(&text)?;
             record(&t.provider.id, started);
             Some(text)
         }

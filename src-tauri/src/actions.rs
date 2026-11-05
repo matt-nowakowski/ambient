@@ -143,17 +143,12 @@ fn strip_invisible_chars(s: &str) -> String {
     s.replace(['\u{200B}', '\u{200C}', '\u{200D}', '\u{FEFF}'], "")
 }
 
-/// Strip a leading `<think>...</think>` block. Some endpoints can't disable
+/// Strip leaked reasoning (`agent::reasoning`). Some endpoints can't disable
 /// reasoning, and some local servers put the reasoning text into `content`
 /// instead of a separate field — without this the user would get the model's
 /// chain of thought pasted along with the cleaned transcription.
-fn strip_think_block(s: &str) -> &str {
-    if let Some(rest) = s.trim_start().strip_prefix("<think>") {
-        if let Some(end) = rest.find("</think>") {
-            return rest[end + "</think>".len()..].trim_start();
-        }
-    }
-    s
+fn strip_think_block(s: &str) -> String {
+    crate::agent::reasoning::strip(s)
 }
 
 /// Build a system prompt from the user's prompt template.
@@ -408,7 +403,7 @@ async fn post_process_transcription(
                     "failed"
                 }
             );
-            return reply.map(|r| strip_invisible_chars(strip_think_block(&r)));
+            return reply.map(|r| strip_invisible_chars(&strip_think_block(&r)));
         }
 
         // Handle Apple Intelligence separately since it uses native Swift APIs
@@ -432,7 +427,7 @@ async fn post_process_transcription(
                             debug!("Apple Intelligence returned an empty response");
                             None
                         } else {
-                            let result = strip_invisible_chars(&result);
+                            let result = strip_invisible_chars(&strip_think_block(&result));
                             debug!(
                                 "Apple Intelligence post-processing succeeded. Output length: {} chars",
                                 result.len()
@@ -481,6 +476,7 @@ async fn post_process_transcription(
             Ok(Some(content)) => {
                 // Parse the JSON response to extract the transcription field
                 let content = strip_think_block(&content);
+                let content = content.as_str();
                 match serde_json::from_str::<serde_json::Value>(content) {
                     Ok(json) => {
                         if let Some(transcription_value) =
@@ -540,7 +536,7 @@ async fn post_process_transcription(
     .await
     {
         Ok(Some(content)) => {
-            let content = strip_invisible_chars(strip_think_block(&content));
+            let content = strip_invisible_chars(&strip_think_block(&content));
             debug!(
                 "LLM post-processing succeeded for provider '{}'. Output length: {} chars",
                 provider.id,
@@ -2056,14 +2052,11 @@ mod tests {
     #[test]
     fn content_without_think_block_is_unchanged() {
         assert_eq!(strip_think_block("Cleaned text."), "Cleaned text.");
+        // An unclosed block is reasoning cut off mid-thought: never typed.
+        assert_eq!(strip_think_block("<think>never closed"), "");
         assert_eq!(
-            strip_think_block("Mentions <think> mid-sentence."),
-            "Mentions <think> mid-sentence."
-        );
-        // Unclosed block: leave untouched rather than guess
-        assert_eq!(
-            strip_think_block("<think>never closed"),
-            "<think>never closed"
+            strip_think_block("Cleaned text. <think>and maybe"),
+            "Cleaned text."
         );
     }
 

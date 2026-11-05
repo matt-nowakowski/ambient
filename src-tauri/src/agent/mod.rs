@@ -13,6 +13,7 @@ pub mod llm;
 pub mod notice;
 pub mod personal;
 pub mod proactive;
+pub mod reasoning;
 pub mod reminders;
 pub mod report;
 pub mod router;

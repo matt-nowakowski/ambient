@@ -563,6 +563,12 @@ pub async fn run_with(
         answered
     };
 
+    // Whatever streamed in, the card, the draft and the history get the
+    // answer without any leaked reasoning; nothing left is a failure.
+    let result = result.and_then(|a| match super::reasoning::answer_of(&a.text) {
+        Some(text) => Ok(Answered { text, ..a }),
+        None => Err("hud.status.failed".to_string()),
+    });
     match result {
         Ok(Answered {
             text,
@@ -876,9 +882,9 @@ async fn server_answer(
                 }
             }
         }
-        // Repaint at most ~20 times a second.
+        // Repaint at most ~20 times a second, never showing reasoning.
         if last_paint.elapsed() > Duration::from_millis(50) {
-            show(&text, &sources, false);
+            show(&super::reasoning::strip(&text), &sources, false);
             last_paint = Instant::now();
         }
     }

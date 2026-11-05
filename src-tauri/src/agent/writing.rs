@@ -453,7 +453,8 @@ If unsure, as_said."#;
 
 /// The label in a model reply.
 pub fn parse_label(reply: &str) -> Option<Decision> {
-    let r = reply.to_lowercase();
+    // "<think>…not written…</think>as_said" is as_said.
+    let r = super::reasoning::strip(reply).to_lowercase();
     let at = |w: &str| r.find(w);
     [
         (at("as_said"), Decision::AsSaid),

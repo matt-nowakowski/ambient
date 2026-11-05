@@ -5,6 +5,8 @@
  * (src-tauri/src/agent/judge.rs), so both produce the same verdict.
  */
 
+import { stripReasoning } from "./reasoning";
+
 /** Same bound as the app's on-device judge. */
 export const MAX_TEXT = 3_500;
 export const MAX_OFFER_TITLE = 60;
@@ -88,6 +90,8 @@ export function userMessage(app: string, title: string, context: string, text: s
  * (→ "other"). Null when there's no JSON object to read.
  */
 export function parseVerdict(reply: string, allowed: readonly Kind[]): Verdict | null {
+  // Braces inside a leaked reasoning block are not the verdict.
+  reply = stripReasoning(reply);
   const start = reply.indexOf("{");
   const end = reply.lastIndexOf("}");
   if (start < 0 || end <= start) return null;

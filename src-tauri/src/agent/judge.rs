@@ -142,6 +142,8 @@ struct Raw {
 /// the braces properly — strings and escapes respected — and take the first
 /// balanced object that deserialises, trying each `{` in turn.
 pub fn parse_json_object<T: serde::de::DeserializeOwned>(reply: &str) -> Option<T> {
+    // Braces inside a leaked reasoning block are not the answer.
+    let reply = &super::reasoning::strip(reply);
     for (start, _) in reply.match_indices('{') {
         let Some(candidate) = balanced_object(reply, start) else {
             continue;
