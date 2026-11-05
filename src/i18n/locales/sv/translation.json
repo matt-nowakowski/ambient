@@ -1544,6 +1544,7 @@
       "copiedWords": "Dina exakta ord är kopierade. Klistra in för att ersätta.",
       "copiedEdit": "Den nya versionen är kopierad. Klistra in för att ersätta.",
       "couldntWrite": "Det gick inte att skriva just nu, så det står som du sa det.",
+      "couldntPolish": "Det gick inte att putsa just nu, så det står som du sa det.",
       "rewritten": "Omskrivet",
       "undoRewrite": "Ångra omskrivning",
       "copiedOriginal": "Din ursprungliga text är kopierad. Klistra in för att ersätta.",

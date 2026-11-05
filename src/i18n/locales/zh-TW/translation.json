@@ -1544,6 +1544,7 @@
       "copiedWords": "已複製你的原話。貼上即可取代。",
       "copiedEdit": "已複製新版本。貼上即可取代。",
       "couldntWrite": "暫時無法撰寫，所以照你說的原話輸入。",
+      "couldntPolish": "暫時無法潤飾，所以照你說的原話輸入。",
       "rewritten": "已改寫",
       "undoRewrite": "復原改寫",
       "copiedOriginal": "已複製你的原文。貼上即可取代。",

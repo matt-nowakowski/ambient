@@ -88,7 +88,11 @@ struct ChatCompletionRequest {
     reasoning: ReasoningParams,
 }
 
-/// Per-request bounds. The defaults leave both to the endpoint.
+/// A request's deadline when the caller sets none.
+pub const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_secs(60);
+
+/// Per-request bounds. The output cap defaults to the endpoint's; the
+/// deadline to `DEFAULT_REQUEST_TIMEOUT`.
 #[derive(Debug, Clone, Copy, Default)]
 pub struct RequestLimits {
     /// Output cap: stops a runaway reply (a model answering instead of
@@ -342,7 +346,9 @@ fn report_reqwest_error(context: &str, error: &reqwest::Error) -> String {
 /// Send a chat completion request (one user message) to an OpenAI-compatible
 /// API, within `limits`. Returns Ok(Some(content)) on success, Ok(None) if
 /// the response has no content, or Err on actual errors (HTTP, parsing,
-/// timeout, etc.)
+/// timeout, etc.). Polish now sends the shared rules as a system prompt
+/// (`send_chat_completion_bounded`); kept for the tests of the retry path.
+#[cfg_attr(not(test), allow(dead_code))]
 pub async fn send_chat_completion_limited(
     provider: &AiProvider,
     api_key: String,
@@ -403,6 +409,7 @@ pub fn http_client() -> Option<&'static reqwest::Client> {
 /// accepts them, so a 400/422 answer to such a request triggers
 /// one retry without the fields, and the rejection is remembered per
 /// (base_url, model) so later requests skip the failing attempt entirely.
+#[allow(clippy::too_many_arguments)]
 pub async fn send_chat_completion_with_schema(
     provider: &AiProvider,
     api_key: String,
@@ -411,6 +418,7 @@ pub async fn send_chat_completion_with_schema(
     system_prompt: Option<String>,
     json_schema: Option<Value>,
     disable_reasoning: bool,
+    limits: RequestLimits,
 ) -> Result<Option<String>, String> {
     send_request(
         provider,
@@ -420,7 +428,7 @@ pub async fn send_chat_completion_with_schema(
         system_prompt,
         json_schema,
         disable_reasoning,
-        RequestLimits::default(),
+        limits,
     )
     .await
 }
@@ -446,12 +454,12 @@ async fn send_request(
 
     let client = shared_client()?;
     mark_used(base_url);
+    // Every request has a deadline: the caller's, or a generous default
+    // (connecting has its own, but a stalled reply would otherwise hold the
+    // caller, and the user's words, forever).
     let post = || {
-        let request = authorized(client.post(&url), &api_key);
-        match limits.timeout {
-            Some(timeout) => request.timeout(timeout),
-            None => request,
-        }
+        authorized(client.post(&url), &api_key)
+            .timeout(limits.timeout.unwrap_or(DEFAULT_REQUEST_TIMEOUT))
     };
 
     // Build messages vector

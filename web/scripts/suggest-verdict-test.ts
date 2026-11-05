@@ -27,6 +27,13 @@ const prose = parseVerdict(
 );
 check("prose around JSON, percent string, unknown kind → other", prose?.kind === "other" && prose.confidence === 0.8);
 
+const thought = parseVerdict(
+  '<think>maybe {"help":false}</think>{"help":true,"kind":"draft_reply","title":"Reply to Sam?","confidence":0.9}',
+  all,
+);
+check("leaked reasoning is ignored", thought?.help === true && thought.kind === "draft_reply");
+check("only reasoning → no verdict", parseVerdict('<thinking>{"help":true}', all) === null);
+
 const notAllowed = parseVerdict('{"help":true,"kind":"review_code","title":"Review?","confidence":0.9}', ["draft_reply", "other"]);
 check("kind outside kinds_allowed → other", notAllowed?.kind === "other");
 
@@ -57,9 +64,9 @@ check("kinds match the app's judge", rsKinds.join() === KINDS.join());
 
 check(
   "the moment comes before the window text",
-  userMessage("Slack", "#launch", "Site: x.com\nReads: en", "Ana: can you check?") === "App: Slack\nWindow: #launch\nSite: x.com\nReads: en\n---\nAna: can you check?",
+  userMessage("Slack", "#launch", "Site: x.com\nReads: en", "Ana: can you check?") === "App: Slack\nWindow: #launch\nSite: x.com\nReads: en\n<window_text>\nAna: can you check?\n</window_text>",
 );
-check("no moment from older apps", userMessage("Mail", "Re: x", "", "hi") === "App: Mail\nWindow: Re: x\n---\nhi");
+check("no moment from older apps", userMessage("Mail", "Re: x", "", "hi") === "App: Mail\nWindow: Re: x\n<window_text>\nhi\n</window_text>");
 check("the moment is bounded", userMessage("a", "b", "x".repeat(5000), "t").length < 450);
 
 if (failures) {

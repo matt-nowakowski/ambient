@@ -1528,7 +1528,33 @@ fn apply_settings_migrations(
         updated = true;
     }
 
+    if heal_saved_ids(settings) {
+        updated = true;
+    }
+
     updated
+}
+
+/// Saved ids that point at nothing any more repair themselves, so a choice
+/// that disappeared can't quietly switch a feature off: a selected polish
+/// prompt that was deleted falls back to the built-in one (cleared, so
+/// `active_post_process_prompt` picks it), and an empty prompt list gets the
+/// built-in prompt back. Like `resolve_reasoning_model`'s fallback.
+fn heal_saved_ids(settings: &mut AppSettings) -> bool {
+    let mut healed = false;
+    if settings.post_process_prompts.is_empty() {
+        debug!("No polish prompts saved; restoring the built-in one");
+        settings.post_process_prompts = default_post_process_prompts();
+        healed = true;
+    }
+    if let Some(id) = settings.post_process_selected_prompt_id.as_deref() {
+        if !settings.post_process_prompts.iter().any(|p| p.id == id) {
+            debug!("The selected polish prompt no longer exists; using the built-in one");
+            settings.post_process_selected_prompt_id = None;
+            healed = true;
+        }
+    }
+    healed
 }
 
 /// Likely spoken languages from existing settings and the OS; always includes English.
@@ -1615,6 +1641,25 @@ pub fn get_recording_retention_period(app: &AppHandle) -> RecordingRetentionPeri
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn saved_ids_that_point_at_nothing_heal_themselves() {
+        let mut settings = get_default_settings();
+        settings.post_process_selected_prompt_id = Some("deleted".into());
+        assert!(heal_saved_ids(&mut settings));
+        assert_eq!(settings.post_process_selected_prompt_id, None);
+        assert_eq!(
+            settings.active_post_process_prompt().map(|p| p.id.as_str()),
+            Some(DEFAULT_POST_PROCESS_PROMPT_ID)
+        );
+        settings.post_process_prompts.clear();
+        assert!(heal_saved_ids(&mut settings));
+        assert!(settings.active_post_process_prompt().is_some());
+        // A healthy store is left alone.
+        assert!(!heal_saved_ids(&mut settings));
+        settings.post_process_selected_prompt_id = Some(DEFAULT_POST_PROCESS_PROMPT_ID.into());
+        assert!(!heal_saved_ids(&mut settings));
+    }
+
     use super::*;
 
     #[test]

@@ -1539,6 +1539,7 @@
       "copiedWords": "Deine genauen Worte sind kopiert. Zum Ersetzen einfügen.",
       "copiedEdit": "Die neue Fassung ist kopiert. Zum Ersetzen einfügen.",
       "couldntWrite": "Das ging gerade nicht, daher steht es so da, wie du es gesagt hast.",
+      "couldntPolish": "Das Glätten ging gerade nicht, daher steht es so da, wie du es gesagt hast.",
       "rewritten": "Umgeschrieben",
       "undoRewrite": "Umschreiben rückgängig",
       "copiedOriginal": "Dein ursprünglicher Text ist kopiert. Zum Ersetzen einfügen.",

@@ -1552,6 +1552,7 @@
       "copiedWords": "Ho copiato le tue parole esatte. Incolla per sostituire.",
       "copiedEdit": "Ho copiato la nuova versione. Incolla per sostituire.",
       "couldntWrite": "Non è stato possibile scriverlo ora, quindi è scritto come l'hai detto.",
+      "couldntPolish": "Non è stato possibile rifinirlo ora, quindi è scritto come l'hai detto.",
       "rewritten": "Riscritto",
       "undoRewrite": "Annulla riscrittura",
       "copiedOriginal": "Ho copiato il testo originale. Incolla per sostituire.",

@@ -1552,6 +1552,7 @@
       "copiedWords": "Suas palavras exatas foram copiadas. Cole para substituir.",
       "copiedEdit": "A nova versão foi copiada. Cole para substituir.",
       "couldntWrite": "Não deu para escrever agora, então foi digitado como você disse.",
+      "couldntPolish": "Não deu para refinar agora, então foi digitado como você disse.",
       "rewritten": "Reescrito",
       "undoRewrite": "Desfazer reescrita",
       "copiedOriginal": "Seu texto original foi copiado. Cole para substituir.",

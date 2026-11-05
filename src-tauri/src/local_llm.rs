@@ -600,7 +600,7 @@ pub async fn complete(system: &str, user: &str, limits: RequestLimits) -> Option
         }
     };
     let text = reply.choices.into_iter().next()?.message.content?;
-    let text = strip_thinking(&text);
+    let text = crate::agent::reasoning::strip(&text);
     debug!(
         "On-device AI answered in {}ms",
         started.elapsed().as_millis()
@@ -617,18 +617,6 @@ pub fn complete_blocking(system: &str, user: &str, limits: RequestLimits) -> Opt
     .join()
     .ok()
     .flatten()
-}
-
-/// Drop a `<think>…</think>` block if the template emitted one anyway.
-fn strip_thinking(text: &str) -> String {
-    match (text.find("<think>"), text.find("</think>")) {
-        (Some(start), Some(end)) if end > start => {
-            format!("{}{}", &text[..start], &text[end + "</think>".len()..])
-                .trim()
-                .to_string()
-        }
-        _ => text.trim().to_string(),
-    }
 }
 
 #[cfg(test)]
@@ -666,12 +654,6 @@ mod tests {
         assert!(joined.contains("--api-key k"));
         assert!(joined.contains("--reasoning off"));
         assert!(joined.contains("--no-webui"));
-    }
-
-    #[test]
-    fn strips_a_thinking_block() {
-        assert_eq!(strip_thinking("<think>\n\n</think>\n\nwrite"), "write");
-        assert_eq!(strip_thinking("  Hello.  "), "Hello.");
     }
 
     #[test]
