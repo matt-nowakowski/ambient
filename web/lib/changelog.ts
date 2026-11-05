@@ -30,6 +30,29 @@ export const changelog: Release[] = [
         items: [
           "Ambient recognises a chat, an email or a long read from what's on screen, so Discord, Telegram, Teams, any webmail and new apps get offers too.",
           "Each thread gets its own chance: one offer in Mail or Slack no longer quiets the rest of that app for hours.",
+          "Esc dismisses a suggestion and Enter accepts it, without reaching the app you're in.",
+          "When fresh facts help, like an error message or a company you're meeting, the answer includes web results.",
+        ],
+      },
+      {
+        heading: "Cards",
+        items: [
+          "Select text in an answer to copy it; click code to copy it.",
+          "Buttons follow what's happening: Stop while it writes, “Inserted” with Undo after you insert, a spinner while a suggestion runs.",
+        ],
+      },
+      {
+        heading: "Writing",
+        items: [
+          "Say “reply that…”, “write to them that…” or “remind me…” and Ambient acts at once, no waiting on AI. “Note:” types the rest as said.",
+          "What you dictate is always text to type, never an instruction to the AI, and if polish fails your words are typed anyway, with a note.",
+          "Learning from corrections only offers clear name and term fixes, and never loses one.",
+        ],
+      },
+      {
+        heading: "Privacy",
+        items: [
+          "Ambient recognises banking, payment, medical, password and ID pages from what they show, in any language, and doesn't read them. Ask about one and it tells you so.",
         ],
       },
       {
