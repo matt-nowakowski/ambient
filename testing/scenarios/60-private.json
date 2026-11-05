@@ -163,6 +163,120 @@
         "editable": false
       }
     },
+    "bank_it": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "I miei conti",
+      "url": "https://www.example-banca-locale.it/privati/home",
+      "text": "I miei conti\nConto corrente ****4821\nSaldo disponibile 2.481,10 €\nUltimi movimenti\nEsselunga -23,40 €\nBonifico",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "bank_pt": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "As minhas contas",
+      "url": "https://www.example.pt/particulares/inicio",
+      "text": "As minhas contas\nConta à ordem\nPT50 0002 0123 1234 5678 9015 4\nSaldo disponível 1.204,33 €\nÚltimos movimentos\nTransferência",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "bank_nl": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Mijn rekeningen",
+      "url": "https://www.example.nl/particulier/overzicht",
+      "text": "Mijn rekeningen\nBetaalrekening NL91 ABNA 0417 1643 00\nBeschikbaar saldo € 3.214,55\nBij- en afschrijvingen\nOverboeken",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "medical_fr": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Résultats d'analyses",
+      "url": "https://portail.example.fr/app/r/2291",
+      "text": "Résultats d'analyses\nCholestérol LDL 1,62 g/L (élevé)\nGlycémie à jeun 5,4 mmol/L\nValeurs de référence\nCommentaire de votre médecin",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "medical_de": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Laborergebnisse",
+      "url": "https://portal.example.de/app/view/18",
+      "text": "Laborergebnisse\nHämoglobin 13,2 g/dl\nCRP 12 mg/l (hoch)\nReferenzbereich\nIhr Arzt",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "news_bank_fr": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Panne chez Crédit Agricole : des clients privés de leurs comptes - Le Monde",
+      "url": "https://www.lemonde.fr/economie/article/2026/11/04/panne-credit-agricole",
+      "text": "Des milliers de clients du Crédit Agricole n'ont pas pu consulter le solde de leurs comptes ni effectuer de virement pendant plusieurs heures mardi, a indiqué la banque, qui assure qu'aucune donnée n'a été compromise.\nLes opérations récentes seront traitées d'ici mercredi, selon un porte-parole, qui n'a pas précisé l'origine de la panne ni le nombre exact de clients concernés.",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
     "metamask": {
       "app": {
         "macos": "Google Chrome",
@@ -329,6 +443,85 @@
       "expect": {
         "route": "back_off",
         "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.it.bank_it",
+      "about": "An Italian bank no list knows: its page shape is enough to step back.",
+      "tags": ["regression"],
+      "lang": "it",
+      "screen": "bank_it",
+      "kind": "screen",
+      "regression": "0.1.9 #2: banking words outside en/pl/de/es weren't signals",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.pt.bank_pt",
+      "about": "A Portuguese bank no list knows: its page shape is enough to step back.",
+      "tags": ["regression"],
+      "lang": "pt",
+      "screen": "bank_pt",
+      "kind": "screen",
+      "regression": "0.1.9 #2: banking words outside en/pl/de/es weren't signals",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.nl.bank_nl",
+      "about": "A Dutch bank no list knows: its page shape is enough to step back.",
+      "tags": ["regression"],
+      "lang": "nl",
+      "screen": "bank_nl",
+      "kind": "screen",
+      "regression": "0.1.9 #2: banking words outside en/pl/de/es weren't signals",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.fr.medical_fr",
+      "about": "Lab results on a French clinic's portal: values with units and a reference range.",
+      "tags": ["regression"],
+      "lang": "fr",
+      "screen": "medical_fr",
+      "kind": "screen",
+      "regression": "0.1.9 #2: a results page scored below the threshold",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.de.medical_de",
+      "about": "Lab results on a German clinic's portal: values with units and a reference range.",
+      "tags": ["regression"],
+      "lang": "de",
+      "screen": "medical_de",
+      "kind": "screen",
+      "regression": "0.1.9 #2: a results page scored below the threshold",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.fr.news-about-a-bank",
+      "about": "A news article about a bank's outage is not a bank page: Ambient doesn't step back.",
+      "tags": ["regression"],
+      "lang": "fr",
+      "screen": "news_bank_fr",
+      "kind": "screen",
+      "settings": {
+        "languages": ["fr", "en"]
+      },
+      "expect": {
+        "route": ["quiet", "suggest"]
       }
     },
     {
