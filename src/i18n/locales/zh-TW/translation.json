@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "在本機上",
-        "body": "私密：Mac 支援時用 Apple Intelligence，否則下載一次模型。任何內容都不會連網。"
+        "body": "私密：Mac 支援時用 Apple Intelligence，否則下載一次模型。任何內容都不會連網。",
+        "bodyApple": "私密：使用這台 Mac 上的 Apple Intelligence。不會有任何內容連網。",
+        "bodyReady": "私密：使用這台電腦上已有的 AI 模型。不會有任何內容連網。",
+        "bodyDownload": "私密：在背景一次下載 {{model}}（約 {{size}}）。之後不會有任何內容連網。",
+        "bodyUnavailable": "裝置上的 AI 無法在這台電腦上執行，因此只有簡單規則。不會有任何內容連網。"
       },
       "none": {
         "title": "不使用 AI",
         "body": "只做聽寫和簡單規則。不傳送任何內容，也不潤飾、代寫或建議。"
-      }
+      },
+      "continueDownload": "繼續並下載"
     }
   },
   "modelTable": {
@@ -1713,11 +1718,17 @@
           "title": "僅在這台電腦上",
           "description": "不會傳送任何內容來做決定或回答。需要模型的功能會退回到簡單規則，或告知無法完成。",
           "titleBasic": "僅限這台電腦（基本，無 AI）",
-          "descriptionBasic": "不會傳送任何內容。僅使用簡單規則：在下載裝置端 AI 之前，回答和寫作需要雲端。"
+          "descriptionBasic": "不會傳送任何內容。僅使用簡單規則：在下載裝置端 AI 之前，回答和寫作需要雲端。",
+          "descriptionDownload": "不傳送任何內容。選擇後會下載 {{model}}（約 {{size}}）在本機執行；就緒前使用簡單規則。",
+          "descriptionDownloading": "不傳送任何內容。正在下載 {{model}}（約 {{size}}）；就緒前使用簡單規則。"
         },
         "cloud": {
           "title": "雲端",
           "description": "效果最佳。移除機密資訊後的文字會傳送到 {{appName}} 的伺服器。"
+        },
+        "none": {
+          "title": "不使用 AI",
+          "description": "只做聽寫和簡單規則。不傳送任何內容，也不潤飾、代寫或建議。"
         }
       },
       "cloudSuggestions": {
@@ -1744,8 +1755,18 @@
       "recommended": "推薦",
       "basic": "基本",
       "onThisComputer": "在本機上",
-      "score": "準確度 {{accuracy}}%，速度 {{speed}}%",
-      "scoresNote": "評分來自模型本身公布的基準測試，而非我們自行測試。"
+      "scoresNote": "長條是這些模型之間的相互比較：品質來自其公開的基準測試，速度來自其大小。皆未在這台電腦上實測。",
+      "downloadingModel": "正在下載 {{model}}… {{percent}}%",
+      "downloadingTag": "下載中",
+      "removeModel": "移除 {{name}}",
+      "quality": "品質",
+      "speed": "速度",
+      "modelInfo": {
+        "qwen3_0_6b": "小巧快速，對記憶體和電池最友善。潤飾夠用，寫作和回答較不可靠。",
+        "qwen3_1_7b_q4": "下載量約為 8 位元版本的一半，潤飾和寫作依然不錯，損失很小。",
+        "qwen3_1_7b": "先前的裝置上模型。比 4 位元版本略好，但下載較大。",
+        "qwen3_4b": "裝置上品質最好，但也最大最慢。適合不用雲端也要好好寫作和回答。"
+      }
     },
     "telemetry": {
       "title": "協助改善 {{appName}}",

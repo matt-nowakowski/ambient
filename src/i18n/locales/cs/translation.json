@@ -263,12 +263,17 @@
       },
       "device": {
         "title": "Na tomto počítači",
-        "body": "Soukromé: Apple Intelligence, kde ho Mac má, jinak model stažený jednou. Nic nejde online."
+        "body": "Soukromé: Apple Intelligence, kde ho Mac má, jinak model stažený jednou. Nic nejde online.",
+        "bodyApple": "Soukromé: Apple Intelligence na tomto Macu. Nic nejde online.",
+        "bodyReady": "Soukromé: model AI, který už je v tomto počítači. Nic nejde online.",
+        "bodyDownload": "Soukromé: jednou na pozadí stáhne {{model}} (≈{{size}}). Pak už nic nejde online.",
+        "bodyUnavailable": "AI v zařízení na tomto počítači neběží, takže jen jednoduchá pravidla. Nic nejde online."
       },
       "none": {
         "title": "Bez AI",
         "body": "Jen diktování a jednoduchá pravidla. Nic se neposílá a nic se neupravuje, nepíše ani nenavrhuje."
-      }
+      },
+      "continueDownload": "Pokračovat a stáhnout"
     }
   },
   "modelTable": {
@@ -1737,11 +1742,17 @@
           "title": "Jen na tomto počítači",
           "description": "Nic se neodesílá kvůli rozhodování ani odpovědím. Funkce, které potřebují model, se uchýlí k jednoduchým pravidlům, nebo oznámí, že to nejde.",
           "titleBasic": "Jen na tomto počítači (základní, bez AI)",
-          "descriptionBasic": "Nic se neodesílá. Jen jednoduchá pravidla: odpovědi a psaní potřebují cloud, dokud si nestáhnete AI v zařízení."
+          "descriptionBasic": "Nic se neodesílá. Jen jednoduchá pravidla: odpovědi a psaní potřebují cloud, dokud si nestáhnete AI v zařízení.",
+          "descriptionDownload": "Nic se neodesílá. Tato volba stáhne {{model}} (≈{{size}}), aby běžel zde; do té doby jednoduchá pravidla.",
+          "descriptionDownloading": "Nic se neodesílá. Stahuje se {{model}} (≈{{size}}); do té doby jednoduchá pravidla."
         },
         "cloud": {
           "title": "Cloud",
           "description": "Nejlepší výsledky. Na servery {{appName}} se odesílá text očištěný od citlivých údajů."
+        },
+        "none": {
+          "title": "Bez AI",
+          "description": "Jen diktování a jednoduchá pravidla. Nic se neposílá a nic se neupravuje, nepíše ani nenavrhuje."
         }
       },
       "cloudSuggestions": {
@@ -1768,8 +1779,18 @@
       "recommended": "Doporučeno",
       "basic": "Základní",
       "onThisComputer": "Na tomto počítači",
-      "score": "Přesnost {{accuracy}} %, rychlost {{speed}} %",
-      "scoresNote": "Hodnocení pochází ze zveřejněných testů samotných modelů, ne z našich."
+      "scoresNote": "Pruhy porovnávají tyto modely mezi sebou: kvalitu podle zveřejněných benchmarků, rychlost podle velikosti. Nic nebylo měřeno na tomto počítači.",
+      "downloadingModel": "Stahuje se {{model}}… {{percent}} %",
+      "downloadingTag": "Stahuje se",
+      "removeModel": "Odstranit {{name}}",
+      "quality": "Kvalita",
+      "speed": "Rychlost",
+      "modelInfo": {
+        "qwen3_0_6b": "Drobný a rychlý, nejšetrnější k paměti a baterii. Dobrý na úpravy, méně spolehlivý při psaní a odpovídání.",
+        "qwen3_1_7b_q4": "Dobré úpravy a psaní za zhruba poloviční stahování oproti 8bitové verzi, s malou ztrátou.",
+        "qwen3_1_7b": "Předchozí model v zařízení. O něco lepší než 4bitová verze, za větší stahování.",
+        "qwen3_4b": "Nejlepší kvalita v zařízení, ale největší a nejpomalejší. Pro schopné psaní a odpovědi bez cloudu."
+      }
     },
     "telemetry": {
       "title": "Pomozte vylepšit {{appName}}",

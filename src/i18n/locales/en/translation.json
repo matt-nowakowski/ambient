@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "On this computer",
-        "body": "Private: Apple Intelligence where the Mac has it, otherwise a model you download once. Nothing goes online."
+        "body": "Private: Apple Intelligence where the Mac has it, otherwise a model you download once. Nothing goes online.",
+        "bodyApple": "Private: Apple Intelligence on this Mac. Nothing goes online.",
+        "bodyReady": "Private: the AI model already on this computer. Nothing goes online.",
+        "bodyDownload": "Private: downloads {{model}} (≈{{size}}) once, in the background. Nothing goes online after that.",
+        "bodyUnavailable": "On-device AI doesn't run on this computer, so this means simple rules only. Nothing goes online."
       },
       "none": {
         "title": "No AI",
         "body": "Plain dictation and simple rules. Nothing is sent, and nothing is polished, drafted or suggested."
-      }
+      },
+      "continueDownload": "Continue and download"
     }
   },
   "modelTable": {
@@ -1713,11 +1718,17 @@
           "title": "On this computer only",
           "description": "Nothing is sent to decide or answer. Features that need a model fall back to simple rules, or say they can't.",
           "titleBasic": "On this computer only (basic, no AI)",
-          "descriptionBasic": "Nothing is sent. Simple rules only: answers and writing need the cloud until you download on-device AI."
+          "descriptionBasic": "Nothing is sent. Simple rules only: answers and writing need the cloud until you download on-device AI.",
+          "descriptionDownload": "Nothing is sent. Choosing this downloads {{model}} (≈{{size}}) to run here; simple rules until it's ready.",
+          "descriptionDownloading": "Nothing is sent. Downloading {{model}} (≈{{size}}); simple rules until it's ready."
         },
         "cloud": {
           "title": "Cloud",
           "description": "The best results. Redacted text is sent to {{appName}}'s servers."
+        },
+        "none": {
+          "title": "No AI",
+          "description": "Plain dictation and simple rules. Nothing is sent, and nothing is polished, drafted or suggested."
         }
       },
       "cloudSuggestions": {
@@ -1744,8 +1755,18 @@
       "recommended": "Recommended",
       "basic": "Basic",
       "onThisComputer": "On this computer",
-      "score": "Accuracy {{accuracy}}%, speed {{speed}}%",
-      "scoresNote": "Scores come from the models' own published benchmarks, not from tests we ran ourselves."
+      "scoresNote": "The bars compare these models with each other: quality from their published benchmarks, speed from their size. Neither was measured on this computer.",
+      "downloadingModel": "Downloading {{model}}… {{percent}}%",
+      "downloadingTag": "Downloading",
+      "removeModel": "Remove {{name}}",
+      "quality": "Quality",
+      "speed": "Speed",
+      "modelInfo": {
+        "qwen3_0_6b": "Tiny and quick, the lightest on memory and battery. Fine for polish, less reliable at writing and answering.",
+        "qwen3_1_7b_q4": "Good polish and writing at about half the download of the 8-bit version, with little lost.",
+        "qwen3_1_7b": "The previous on-device model. A little better than the 4-bit version, for a larger download.",
+        "qwen3_4b": "The best on-device quality, and the largest and slowest. For capable writing and answers without the cloud."
+      }
     },
     "telemetry": {
       "title": "Help improve {{appName}}",

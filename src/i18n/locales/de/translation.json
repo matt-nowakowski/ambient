@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "Auf diesem Computer",
-        "body": "Privat: Apple Intelligence, wo der Mac es hat, sonst ein einmal geladenes Modell. Nichts geht online."
+        "body": "Privat: Apple Intelligence, wo der Mac es hat, sonst ein einmal geladenes Modell. Nichts geht online.",
+        "bodyApple": "Privat: Apple Intelligence auf diesem Mac. Nichts geht online.",
+        "bodyReady": "Privat: das KI-Modell, das schon auf diesem Computer ist. Nichts geht online.",
+        "bodyDownload": "Privat: lädt {{model}} (≈{{size}}) einmal im Hintergrund. Danach geht nichts mehr online.",
+        "bodyUnavailable": "KI auf dem Gerät läuft auf diesem Computer nicht, also nur einfache Regeln. Nichts geht online."
       },
       "none": {
         "title": "Keine KI",
         "body": "Reine Diktatfunktion und einfache Regeln. Nichts wird gesendet, nichts verfeinert, verfasst oder vorgeschlagen."
-      }
+      },
+      "continueDownload": "Weiter und laden"
     }
   },
   "modelTable": {
@@ -1713,11 +1718,17 @@
           "title": "Nur auf diesem Computer",
           "description": "Zum Entscheiden oder Antworten wird nichts gesendet. Funktionen, die ein Modell brauchen, nutzen einfache Regeln oder melden, dass sie das nicht können.",
           "titleBasic": "Nur auf diesem Computer (einfach, ohne KI)",
-          "descriptionBasic": "Nichts wird gesendet. Nur einfache Regeln: Antworten und Schreiben brauchen die Cloud, bis du KI auf dem Gerät lädst."
+          "descriptionBasic": "Nichts wird gesendet. Nur einfache Regeln: Antworten und Schreiben brauchen die Cloud, bis du KI auf dem Gerät lädst.",
+          "descriptionDownload": "Nichts wird gesendet. Diese Wahl lädt {{model}} (≈{{size}}) zum Ausführen hier; bis dahin einfache Regeln.",
+          "descriptionDownloading": "Nichts wird gesendet. {{model}} (≈{{size}}) wird geladen; bis dahin einfache Regeln."
         },
         "cloud": {
           "title": "Cloud",
           "description": "Die besten Ergebnisse. Bereinigter Text ohne vertrauliche Daten wird an die Server von {{appName}} gesendet."
+        },
+        "none": {
+          "title": "Keine KI",
+          "description": "Reine Diktatfunktion und einfache Regeln. Nichts wird gesendet, nichts verfeinert, verfasst oder vorgeschlagen."
         }
       },
       "cloudSuggestions": {
@@ -1744,8 +1755,18 @@
       "recommended": "Empfohlen",
       "basic": "Einfach",
       "onThisComputer": "Auf diesem Computer",
-      "score": "Genauigkeit {{accuracy}} %, Tempo {{speed}} %",
-      "scoresNote": "Die Werte stammen aus den veröffentlichten Benchmarks der Modelle, nicht aus eigenen Tests."
+      "scoresNote": "Die Balken vergleichen diese Modelle untereinander: Qualität aus ihren veröffentlichten Benchmarks, Tempo aus ihrer Größe. Nichts davon wurde auf diesem Computer gemessen.",
+      "downloadingModel": "{{model}} wird geladen… {{percent}} %",
+      "downloadingTag": "Wird geladen",
+      "removeModel": "{{name}} entfernen",
+      "quality": "Qualität",
+      "speed": "Tempo",
+      "modelInfo": {
+        "qwen3_0_6b": "Winzig und schnell, schont Speicher und Akku am meisten. Gut für Feinschliff, weniger verlässlich beim Schreiben und Antworten.",
+        "qwen3_1_7b_q4": "Guter Feinschliff und gutes Schreiben bei etwa halb so großem Download wie die 8-Bit-Version, mit wenig Verlust.",
+        "qwen3_1_7b": "Das bisherige Modell auf dem Gerät. Etwas besser als die 4-Bit-Version, bei größerem Download.",
+        "qwen3_4b": "Die beste Qualität auf dem Gerät, und das größte und langsamste Modell. Für gutes Schreiben und Antworten ohne Cloud."
+      }
     },
     "telemetry": {
       "title": "Hilf mit, {{appName}} zu verbessern",

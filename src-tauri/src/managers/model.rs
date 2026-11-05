@@ -922,6 +922,9 @@ pub struct ModelManager {
     detector_download: tokio::sync::Mutex<()>,
     /// One "Download on-device AI" transfer at a time.
     on_device_ai_download: tokio::sync::Mutex<()>,
+    /// The reasoning model being downloaded now, by catalog id: the picker
+    /// shows it as downloading while the saved choice stays as it was.
+    reasoning_download: Mutex<Option<String>>,
 }
 
 impl ModelManager {
@@ -960,6 +963,7 @@ impl ModelManager {
             is_rescanning: Arc::new(AtomicBool::new(false)),
             detector_download: tokio::sync::Mutex::new(()),
             on_device_ai_download: tokio::sync::Mutex::new(()),
+            reasoning_download: Mutex::new(None),
         };
 
         // Check which models are already downloaded
@@ -1841,28 +1845,51 @@ impl ModelManager {
     }
 
     /// "Download on-device AI": llama.cpp's server for this platform, then
-    /// the reasoning model, as one download under [`ON_DEVICE_AI_ID`].
-    pub async fn download_on_device_ai(&self) -> Result<()> {
+    /// a reasoning model (`model_id`, else the one this install runs), as one
+    /// download under [`ON_DEVICE_AI_ID`]. The model it fetched, or None if
+    /// cancelled. Saves nothing: the caller makes it the choice once it's
+    /// here, so a cancelled or failed download leaves the old one running.
+    pub async fn download_on_device_ai(
+        &self,
+        model_id: Option<&str>,
+    ) -> Result<Option<&'static crate::catalog::ReasoningModelFile>> {
+        let model = match model_id {
+            Some(id) => crate::catalog::reasoning_model(id)
+                .ok_or_else(|| anyhow::anyhow!("Unknown on-device model: {id}"))?,
+            None => self
+                .chosen_reasoning_model()
+                .ok_or_else(|| anyhow::anyhow!("The catalog names no on-device AI model"))?,
+        };
         let cancel_token = CancellationToken::new();
         self.cancel_flags
             .lock()
             .unwrap()
             .insert(ON_DEVICE_AI_ID.to_string(), cancel_token.clone());
-        let fetched = self.fetch_on_device_ai(&cancel_token).await;
+        *self.reasoning_download.lock().unwrap() = Some(model.id.clone());
+        let fetched = self.fetch_on_device_ai(model, &cancel_token).await;
+        *self.reasoning_download.lock().unwrap() = None;
         self.cancel_flags.lock().unwrap().remove(ON_DEVICE_AI_ID);
-        if fetched? {
-            let _ = self
-                .app_handle
-                .emit("model-download-complete", ON_DEVICE_AI_ID);
-        }
-        Ok(())
+        Ok(fetched?.then_some(model))
+    }
+
+    /// Announce a finished on-device AI download, once its choice is saved.
+    pub fn on_device_ai_downloaded(&self) {
+        let _ = self
+            .app_handle
+            .emit("model-download-complete", ON_DEVICE_AI_ID);
+    }
+
+    /// The reasoning model being downloaded now, if any.
+    pub fn reasoning_model_downloading(&self) -> Option<String> {
+        self.reasoning_download.lock().unwrap().clone()
     }
 
     /// `Ok(false)` if cancelled (partials kept for resume).
-    async fn fetch_on_device_ai(&self, cancel_token: &CancellationToken) -> Result<bool> {
-        let model = self
-            .chosen_reasoning_model()
-            .ok_or_else(|| anyhow::anyhow!("The catalog names no on-device AI model"))?;
+    async fn fetch_on_device_ai(
+        &self,
+        model: &'static crate::catalog::ReasoningModelFile,
+        cancel_token: &CancellationToken,
+    ) -> Result<bool> {
         let runtime = crate::local_llm::runtime_asset()
             .ok_or_else(|| anyhow::anyhow!("On-device AI isn't available on this computer"))?;
         let _single = tokio::select! {
@@ -1915,7 +1942,7 @@ impl ModelManager {
             .map_err(|e| anyhow::anyhow!("Installing the on-device AI runtime panicked: {e}"))??;
         }
 
-        if self.reasoning_model_path().is_none() {
+        if self.reasoning_model_file(model).is_none() {
             let transfer = FileTransfer {
                 label: "the on-device AI model",
                 repo_id: &model.repo_id,
@@ -1937,18 +1964,40 @@ impl ModelManager {
         Ok(true)
     }
 
-    /// Remove on-device AI: stop its server, delete the model and runtime.
+    /// Remove on-device AI: stop its server, delete every reasoning model
+    /// downloaded (the custom-model scan skips their files, so nothing else
+    /// would ever delete an earlier one) and the runtime.
     pub fn delete_on_device_ai(&self) -> Result<()> {
         crate::local_llm::stop();
-        if let Some(model) = self.chosen_reasoning_model() {
-            Self::delete_hf_cache_file(&model.repo_id, &model.revision, &model.filename)?;
-            let local = self.models_dir.join(&model.filename);
-            if local.is_file() {
-                fs::remove_file(local)?;
-            }
+        for model in crate::catalog::REASONING_MODELS.iter() {
+            self.delete_reasoning_files(model)?;
         }
         crate::local_llm::remove_runtime()?;
         let _ = self.app_handle.emit("model-deleted", ON_DEVICE_AI_ID);
+        Ok(())
+    }
+
+    /// Delete one reasoning model's files (HF cache and models dir). The
+    /// server stops first, as it may have it open; the next task starts it
+    /// with whichever model is left.
+    pub fn delete_reasoning_model(&self, id: &str) -> Result<()> {
+        let model = crate::catalog::reasoning_model(id)
+            .ok_or_else(|| anyhow::anyhow!("Unknown on-device model: {id}"))?;
+        if self.reasoning_model_downloading().as_deref() == Some(id) {
+            return Err(anyhow::anyhow!("{} is still downloading", model.name));
+        }
+        crate::local_llm::stop();
+        self.delete_reasoning_files(model)?;
+        let _ = self.app_handle.emit("model-deleted", ON_DEVICE_AI_ID);
+        Ok(())
+    }
+
+    fn delete_reasoning_files(&self, model: &crate::catalog::ReasoningModelFile) -> Result<()> {
+        Self::delete_hf_cache_file(&model.repo_id, &model.revision, &model.filename)?;
+        let local = self.models_dir.join(&model.filename);
+        if local.is_file() {
+            fs::remove_file(local)?;
+        }
         Ok(())
     }
 
@@ -2454,33 +2503,36 @@ impl ModelManager {
         })
     }
 
-    /// The reasoning model this install runs: the one the user chose, else the
-    /// catalog's default, so a download from before the choice existed still
-    /// counts as downloaded instead of prompting again.
+    /// The reasoning model this install runs: the saved choice when it's
+    /// here, else any downloaded one (the old Q8 first, so an install from
+    /// before the choice existed keeps it), else what "Download" would fetch
+    /// (the recommended model). See `catalog::resolve_reasoning_model`.
     pub fn chosen_reasoning_model(&self) -> Option<&'static crate::catalog::ReasoningModelFile> {
-        let selected = crate::settings::get_settings(&self.app_handle)
-            .agent
-            .on_device_model_id;
-        crate::catalog::resolve_reasoning_model(selected.as_deref())
+        let settings = crate::settings::get_settings(&self.app_handle);
+        crate::catalog::resolve_reasoning_model(settings.agent.selected_reasoning_model_id(), |m| {
+            self.reasoning_model_file(m).is_some()
+        })
     }
 
-    /// Whether one particular reasoning model's file is already on disk.
+    /// Whether one particular reasoning model's file is already on disk (HF
+    /// cache or the models dir).
     pub fn reasoning_model_downloaded(&self, id: &str) -> bool {
-        let Some(model) = crate::catalog::reasoning_model(id) else {
-            return false;
-        };
-        hf_cached_path(&model.repo_id, &model.revision, &model.filename).is_some()
-            || self.models_dir.join(&model.filename).is_file()
+        crate::catalog::reasoning_model(id)
+            .is_some_and(|model| self.reasoning_model_file(model).is_some())
     }
 
-    /// The on-device AI model file, if downloaded (HF cache or a mirror copy
-    /// in the models dir).
-    pub fn reasoning_model_path(&self) -> Option<PathBuf> {
-        let model = self.chosen_reasoning_model()?;
+    /// One reasoning model's file, if downloaded (HF cache or a copy in the
+    /// models dir).
+    fn reasoning_model_file(&self, model: &crate::catalog::ReasoningModelFile) -> Option<PathBuf> {
         hf_cached_path(&model.repo_id, &model.revision, &model.filename).or_else(|| {
             let local = self.models_dir.join(&model.filename);
             local.is_file().then_some(local)
         })
+    }
+
+    /// The on-device AI model file that runs, if downloaded.
+    pub fn reasoning_model_path(&self) -> Option<PathBuf> {
+        self.reasoning_model_file(self.chosen_reasoning_model()?)
     }
 
     pub fn cancel_download(&self, model_id: &str) -> Result<()> {

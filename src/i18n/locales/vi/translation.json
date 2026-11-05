@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "Trên máy này",
-        "body": "Riêng tư: Apple Intelligence nếu máy Mac có, nếu không thì tải mô hình một lần. Không gì lên mạng."
+        "body": "Riêng tư: Apple Intelligence nếu máy Mac có, nếu không thì tải mô hình một lần. Không gì lên mạng.",
+        "bodyApple": "Riêng tư: Apple Intelligence trên máy Mac này. Không gì được gửi lên mạng.",
+        "bodyReady": "Riêng tư: mô hình AI đã có sẵn trên máy tính này. Không gì được gửi lên mạng.",
+        "bodyDownload": "Riêng tư: tải {{model}} (≈{{size}}) một lần, ở chế độ nền. Sau đó không gì được gửi lên mạng.",
+        "bodyUnavailable": "AI trên thiết bị không chạy được trên máy tính này, nên chỉ có quy tắc đơn giản. Không gì được gửi lên mạng."
       },
       "none": {
         "title": "Không dùng AI",
         "body": "Chỉ đọc chính tả và quy tắc đơn giản. Không gửi gì, không trau chuốt, viết hay gợi ý gì."
-      }
+      },
+      "continueDownload": "Tiếp tục và tải xuống"
     }
   },
   "modelTable": {
@@ -1713,11 +1718,17 @@
           "title": "Chỉ trên máy tính này",
           "description": "Không gửi gì để quyết định hay trả lời. Các tính năng cần mô hình sẽ dùng quy tắc đơn giản, hoặc báo là không làm được.",
           "titleBasic": "Chỉ trên máy tính này (cơ bản, không có AI)",
-          "descriptionBasic": "Không gửi gì đi. Chỉ quy tắc đơn giản: câu trả lời và viết cần đám mây cho đến khi bạn tải AI trên thiết bị."
+          "descriptionBasic": "Không gửi gì đi. Chỉ quy tắc đơn giản: câu trả lời và viết cần đám mây cho đến khi bạn tải AI trên thiết bị.",
+          "descriptionDownload": "Không gửi gì cả. Chọn mục này sẽ tải {{model}} (≈{{size}}) để chạy tại đây; dùng quy tắc đơn giản cho đến khi sẵn sàng.",
+          "descriptionDownloading": "Không gửi gì cả. Đang tải {{model}} (≈{{size}}); dùng quy tắc đơn giản cho đến khi sẵn sàng."
         },
         "cloud": {
           "title": "Đám mây",
           "description": "Kết quả tốt nhất. Văn bản đã ẩn thông tin nhạy cảm được gửi đến máy chủ của {{appName}}."
+        },
+        "none": {
+          "title": "Không dùng AI",
+          "description": "Chỉ đọc chính tả và quy tắc đơn giản. Không gửi gì, không trau chuốt, viết hay gợi ý gì."
         }
       },
       "cloudSuggestions": {
@@ -1744,8 +1755,18 @@
       "recommended": "Đề xuất",
       "basic": "Cơ bản",
       "onThisComputer": "Trên máy này",
-      "score": "Độ chính xác {{accuracy}}%, tốc độ {{speed}}%",
-      "scoresNote": "Điểm số lấy từ kết quả đo do chính các mô hình công bố, không phải do chúng tôi tự đo."
+      "scoresNote": "Các thanh so sánh các mô hình này với nhau: chất lượng theo điểm chuẩn đã công bố, tốc độ theo kích thước. Không có gì được đo trên máy tính này.",
+      "downloadingModel": "Đang tải {{model}}… {{percent}}%",
+      "downloadingTag": "Đang tải",
+      "removeModel": "Gỡ {{name}}",
+      "quality": "Chất lượng",
+      "speed": "Tốc độ",
+      "modelInfo": {
+        "qwen3_0_6b": "Nhỏ gọn và nhanh, nhẹ nhất cho bộ nhớ và pin. Ổn để trau chuốt, kém tin cậy hơn khi viết và trả lời.",
+        "qwen3_1_7b_q4": "Trau chuốt và viết tốt với dung lượng tải khoảng một nửa bản 8-bit, mất rất ít.",
+        "qwen3_1_7b": "Mô hình trên thiết bị trước đây. Tốt hơn một chút so với bản 4-bit, với dung lượng tải lớn hơn.",
+        "qwen3_4b": "Chất lượng tốt nhất trên thiết bị, nhưng lớn nhất và chậm nhất. Để viết và trả lời tốt mà không cần đám mây."
+      }
     },
     "telemetry": {
       "title": "Giúp cải thiện {{appName}}",

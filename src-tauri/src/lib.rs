@@ -930,6 +930,7 @@ pub fn run(cli_args: CliArgs) {
             plan::subscribe_tips,
             commands::models::get_reasoning_models,
             commands::models::set_reasoning_model,
+            commands::models::delete_reasoning_model,
             plan::verify_sign_in_code,
             plan::refresh_account,
             plan::sign_out,

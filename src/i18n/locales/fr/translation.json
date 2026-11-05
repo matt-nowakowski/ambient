@@ -262,12 +262,17 @@
       },
       "device": {
         "title": "Sur cet ordinateur",
-        "body": "Privé : Apple Intelligence quand le Mac l'a, sinon un modèle téléchargé une fois. Rien ne sort en ligne."
+        "body": "Privé : Apple Intelligence quand le Mac l'a, sinon un modèle téléchargé une fois. Rien ne sort en ligne.",
+        "bodyApple": "Privé : Apple Intelligence sur ce Mac. Rien ne part en ligne.",
+        "bodyReady": "Privé : le modèle d'IA déjà présent sur cet ordinateur. Rien ne part en ligne.",
+        "bodyDownload": "Privé : télécharge {{model}} (≈{{size}}) une fois, en arrière-plan. Ensuite, rien ne part en ligne.",
+        "bodyUnavailable": "L'IA sur l'appareil ne fonctionne pas sur cet ordinateur : ce sera des règles simples uniquement. Rien ne part en ligne."
       },
       "none": {
         "title": "Pas d'IA",
         "body": "Dictée simple et règles basiques. Rien n'est envoyé, rien n'est poli, rédigé ni suggéré."
-      }
+      },
+      "continueDownload": "Continuer et télécharger"
     }
   },
   "modelTable": {
@@ -1724,11 +1729,17 @@
           "title": "Sur cet ordinateur uniquement",
           "description": "Rien n’est envoyé pour décider ou répondre. Les fonctions qui ont besoin d’un modèle se rabattent sur des règles simples, ou indiquent qu’elles ne peuvent pas.",
           "titleBasic": "Sur cet ordinateur uniquement (basique, sans IA)",
-          "descriptionBasic": "Rien n'est envoyé. Règles simples uniquement : les réponses et la rédaction ont besoin du cloud tant que vous n'avez pas téléchargé l'IA sur l'appareil."
+          "descriptionBasic": "Rien n'est envoyé. Règles simples uniquement : les réponses et la rédaction ont besoin du cloud tant que vous n'avez pas téléchargé l'IA sur l'appareil.",
+          "descriptionDownload": "Rien n'est envoyé. Ce choix télécharge {{model}} (≈{{size}}) pour l'exécuter ici ; règles simples en attendant.",
+          "descriptionDownloading": "Rien n'est envoyé. Téléchargement de {{model}} (≈{{size}}) ; règles simples en attendant."
         },
         "cloud": {
           "title": "Cloud",
           "description": "Les meilleurs résultats. Le texte, données sensibles masquées, est envoyé aux serveurs de {{appName}}."
+        },
+        "none": {
+          "title": "Pas d'IA",
+          "description": "Dictée simple et règles basiques. Rien n'est envoyé, rien n'est poli, rédigé ni suggéré."
         }
       },
       "cloudSuggestions": {
@@ -1755,8 +1766,18 @@
       "recommended": "Recommandé",
       "basic": "Simple",
       "onThisComputer": "Sur cet ordinateur",
-      "score": "Précision {{accuracy}} %, rapidité {{speed}} %",
-      "scoresNote": "Les scores viennent des benchmarks publiés par les modèles eux-mêmes, pas de nos propres tests."
+      "scoresNote": "Les barres comparent ces modèles entre eux : la qualité d'après leurs benchmarks publiés, la vitesse d'après leur taille. Rien n'a été mesuré sur cet ordinateur.",
+      "downloadingModel": "Téléchargement de {{model}}… {{percent}} %",
+      "downloadingTag": "Téléchargement",
+      "removeModel": "Supprimer {{name}}",
+      "quality": "Qualité",
+      "speed": "Vitesse",
+      "modelInfo": {
+        "qwen3_0_6b": "Minuscule et rapide, le plus léger en mémoire et en batterie. Bien pour le peaufinage, moins fiable pour rédiger et répondre.",
+        "qwen3_1_7b_q4": "Bon peaufinage et bonne rédaction pour environ la moitié du téléchargement de la version 8 bits, sans grande perte.",
+        "qwen3_1_7b": "L'ancien modèle sur l'appareil. Un peu meilleur que la version 4 bits, pour un téléchargement plus lourd.",
+        "qwen3_4b": "La meilleure qualité sur l'appareil, mais le plus gros et le plus lent. Pour bien rédiger et répondre sans le cloud."
+      }
     },
     "telemetry": {
       "title": "Aidez à améliorer {{appName}}",

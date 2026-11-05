@@ -278,10 +278,10 @@ export const useModelStore = create<ModelsStore>()(
         get().loadModels();
       });
 
-      listen<{ model_id: string; error: string }>(
+      listen<{ model_id: string; error: string; target?: string | null }>(
         "model-download-failed",
         (event) => {
-          const { model_id: modelId, error } = event.payload;
+          const { model_id: modelId, error, target } = event.payload;
           set(
             produce((state) => {
               delete state.downloadingModels[modelId];
@@ -296,7 +296,7 @@ export const useModelStore = create<ModelsStore>()(
             modelId === "language-detector"
               ? () => void commands.downloadLanguageDetector()
               : modelId === "on-device-ai"
-                ? () => void commands.downloadOnDeviceAi()
+                ? () => void commands.downloadOnDeviceAi(target ?? null)
                 : () => void get().downloadModel(modelId);
           showError("download", error, { id: `download-${modelId}`, retry });
         },

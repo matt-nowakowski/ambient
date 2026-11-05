@@ -262,12 +262,17 @@
       },
       "device": {
         "title": "Neste computador",
-        "body": "Privado: Apple Intelligence onde o Mac tem, senão um modelo que descarregas uma vez. Nada vai para a internet."
+        "body": "Privado: Apple Intelligence onde o Mac tem, senão um modelo que descarregas uma vez. Nada vai para a internet.",
+        "bodyApple": "Privado: Apple Intelligence neste Mac. Nada vai para a internet.",
+        "bodyReady": "Privado: o modelo de IA que já está neste computador. Nada vai para a internet.",
+        "bodyDownload": "Privado: baixa {{model}} (≈{{size}}) uma vez, em segundo plano. Depois disso, nada vai para a internet.",
+        "bodyUnavailable": "A IA no dispositivo não roda neste computador, então serão só regras simples. Nada vai para a internet."
       },
       "none": {
         "title": "Sem IA",
         "body": "Ditado simples e regras básicas. Nada é enviado, nada é polido, escrito ou sugerido."
-      }
+      },
+      "continueDownload": "Continuar e baixar"
     }
   },
   "modelTable": {
@@ -1724,11 +1729,17 @@
           "title": "Somente neste computador",
           "description": "Nada é enviado para decidir ou responder. Recursos que precisam de um modelo recorrem a regras simples ou avisam que não conseguem.",
           "titleBasic": "Só neste computador (básico, sem IA)",
-          "descriptionBasic": "Nada é enviado. Só regras simples: respostas e escrita precisam da nuvem até você baixar a IA no dispositivo."
+          "descriptionBasic": "Nada é enviado. Só regras simples: respostas e escrita precisam da nuvem até você baixar a IA no dispositivo.",
+          "descriptionDownload": "Nada é enviado. Escolher isto baixa {{model}} (≈{{size}}) para rodar aqui; regras simples até ficar pronto.",
+          "descriptionDownloading": "Nada é enviado. Baixando {{model}} (≈{{size}}); regras simples até ficar pronto."
         },
         "cloud": {
           "title": "Nuvem",
           "description": "Os melhores resultados. O texto, sem dados sensíveis, é enviado aos servidores do {{appName}}."
+        },
+        "none": {
+          "title": "Sem IA",
+          "description": "Ditado simples e regras básicas. Nada é enviado, nada é polido, escrito ou sugerido."
         }
       },
       "cloudSuggestions": {
@@ -1755,8 +1766,18 @@
       "recommended": "Recomendado",
       "basic": "Simples",
       "onThisComputer": "Neste computador",
-      "score": "Precisão {{accuracy}}%, velocidade {{speed}}%",
-      "scoresNote": "As notas vêm dos benchmarks publicados pelos próprios modelos, não de testes nossos."
+      "scoresNote": "As barras comparam estes modelos entre si: qualidade pelos benchmarks publicados, velocidade pelo tamanho. Nada foi medido neste computador.",
+      "downloadingModel": "Baixando {{model}}… {{percent}}%",
+      "downloadingTag": "Baixando",
+      "removeModel": "Remover {{name}}",
+      "quality": "Qualidade",
+      "speed": "Velocidade",
+      "modelInfo": {
+        "qwen3_0_6b": "Pequeno e rápido, o mais leve em memória e bateria. Bom para polir, menos confiável para escrever e responder.",
+        "qwen3_1_7b_q4": "Bom polimento e boa escrita com cerca de metade do download da versão de 8 bits, perdendo pouco.",
+        "qwen3_1_7b": "O modelo anterior no dispositivo. Um pouco melhor que a versão de 4 bits, com um download maior.",
+        "qwen3_4b": "A melhor qualidade no dispositivo, e o maior e mais lento. Para escrever e responder bem sem a nuvem."
+      }
     },
     "telemetry": {
       "title": "Ajude a melhorar o {{appName}}",

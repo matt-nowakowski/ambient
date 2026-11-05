@@ -789,6 +789,14 @@ mod tests {
         assert_eq!(route(Cloud, false, Unasked, true), Route::Cloud);
         assert_eq!(route(Cloud, true, Unasked, false), Route::OnDevice);
         assert_eq!(route(Cloud, false, Unasked, false), Route::Rules);
+        // No AI: the plain rules, whatever the computer, plan or offer.
+        for offer in [Unasked, Accepted, Declined] {
+            for on_device in [true, false] {
+                for paid in [true, false] {
+                    assert_eq!(route(None, on_device, offer, paid), Route::Rules);
+                }
+            }
+        }
     }
 
     #[test]

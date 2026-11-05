@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { showError } from "@/lib/errors";
+import { formatModelSize } from "@/lib/utils/format";
 import {
   ArrowUpRight,
   AudioLines,
@@ -17,6 +18,7 @@ import {
   ListChecks,
   Lock,
   Mic,
+  MinusCircle,
   ScanText,
   ShieldCheck,
   Sparkles,
@@ -37,6 +39,7 @@ import {
   type Intelligence,
   type LedgerEntry,
   type OnDeviceAiStatus,
+  type ReasoningModelInfo,
   type UsageToday,
 } from "@/bindings";
 import { Button } from "../ui/Button";
@@ -55,7 +58,7 @@ import { AtAGlance, type GlanceItem } from "./AtAGlance";
 import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
 import { UsageStats } from "./UsageStats";
-import { OnDeviceAi } from "./OnDeviceAi";
+import { OnDeviceAi, useOnDeviceAiDownloading } from "./OnDeviceAi";
 
 const RETENTION_CHOICES = [1, 3, 7, 14, 30];
 /** The guarantees, always shown at the top: four short lines. */
@@ -153,6 +156,7 @@ const INTELLIGENCE: { key: Intelligence; icon: LucideIcon }[] = [
   { key: "auto", icon: Sparkles },
   { key: "device", icon: Laptop },
   { key: "cloud", icon: Cloud },
+  { key: "none", icon: MinusCircle },
 ];
 /** Capabilities grouped by what they touch, each with its icon. Suggestions
  * ("proactive") has its own section further down. */
@@ -190,6 +194,14 @@ export const PrivacyCenter: React.FC = () => {
   const [limits, setLimits] = useState<UsageToday | null>(null);
   // "Download on-device AI", and which on-device model runs tasks.
   const [onDeviceAi, setOnDeviceAi] = useState<OnDeviceAiStatus | null>(null);
+  const [reasoningModels, setReasoningModels] = useState<ReasoningModelInfo[]>(
+    [],
+  );
+  const [startingAi, setStartingAi] = useState(false);
+  const { downloading: aiDownloading } = useOnDeviceAiDownloading(
+    startingAi,
+    reasoningModels,
+  );
   // AI polish and telemetry live in app settings, not the agent's.
   const { getSetting } = useSettings();
   const polishOn = getSetting("post_process_enabled") ?? false;
@@ -200,6 +212,7 @@ export const PrivacyCenter: React.FC = () => {
     setStatus(await commands.getAgentStatus());
     setLimits(await commands.getUsageToday());
     setOnDeviceAi(await commands.getOnDeviceAiStatus());
+    setReasoningModels(await commands.getReasoningModels());
     const l = await commands.getNetworkLedger(50);
     if (l.status === "ok") setLedger(l.data);
   }, []);
@@ -211,8 +224,31 @@ export const PrivacyCenter: React.FC = () => {
     return () => clearInterval(id);
   }, [refresh]);
 
+  // Download on-device AI (a model, or None for the one that would run).
+  // Failure toasts come from the model store's download-failed listener.
+  const downloadAi = useCallback(
+    async (modelId: string | null) => {
+      setStartingAi(true);
+      try {
+        const done = commands.downloadOnDeviceAi(modelId);
+        // The picker shows which model is downloading as soon as it starts.
+        setTimeout(refresh, 300);
+        await done;
+      } finally {
+        setStartingAi(false);
+      }
+      await refresh();
+    },
+    [refresh],
+  );
+
   if (!status) return null;
   const s = status.settings;
+  // "On this computer only" with no model here: the model it downloads.
+  const toDownload =
+    !status.on_device_ready && onDeviceAi?.supported
+      ? reasoningModels.find((m) => m.selected)
+      : undefined;
 
   const save = async (next: AgentSettings) => {
     setStatus({ ...status, settings: next });
@@ -815,7 +851,11 @@ export const PrivacyCenter: React.FC = () => {
               const picked = s.intelligence === key;
               // Without an on-device model, "On this computer only" is
               // rules only: say so plainly.
-              const basic = key === "device" && !status.on_device_ready;
+              // Where one can be downloaded, choosing it says which model and
+              // starts the download (progress below), as in setup.
+              const basic =
+                key === "device" && !status.on_device_ready && !toDownload;
+              const fetches = key === "device" && toDownload;
               return (
                 <button
                   key={key}
@@ -823,7 +863,10 @@ export const PrivacyCenter: React.FC = () => {
                   role="radio"
                   aria-checked={picked}
                   data-search-row
-                  onClick={() => save({ ...s, intelligence: key })}
+                  onClick={() => {
+                    save({ ...s, intelligence: key });
+                    if (fetches && !aiDownloading) downloadAi(null);
+                  }}
                   className="flex w-full items-start gap-3 px-row-x py-row-y text-start"
                 >
                   <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
@@ -840,7 +883,21 @@ export const PrivacyCenter: React.FC = () => {
                         ? t(
                             "privacy.intelligence.options.device.descriptionBasic",
                           )
-                        : t(`privacy.intelligence.options.${key}.description`)}
+                        : fetches
+                          ? t(
+                              aiDownloading
+                                ? "privacy.intelligence.options.device.descriptionDownloading"
+                                : "privacy.intelligence.options.device.descriptionDownload",
+                              {
+                                model: toDownload.name,
+                                size: formatModelSize(
+                                  onDeviceAi?.size_mb ?? toDownload.size_mb,
+                                ),
+                              },
+                            )
+                          : t(
+                              `privacy.intelligence.options.${key}.description`,
+                            )}
                     </span>
                   </span>
                   <Radio checked={picked} className="mt-1.5" />
@@ -852,9 +909,12 @@ export const PrivacyCenter: React.FC = () => {
           {onDeviceAi && (
             <OnDeviceAi
               status={onDeviceAi}
+              models={reasoningModels}
               settings={s}
               save={save}
               refresh={refresh}
+              starting={startingAi}
+              download={downloadAi}
             />
           )}
           {/* Automatic, with an on-device model: also use it for answers? */}

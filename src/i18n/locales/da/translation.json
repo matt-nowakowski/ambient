@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "På denne computer",
-        "body": "Privat: Apple Intelligence hvor computeren har det, ellers en model du henter én gang. Intet går online."
+        "body": "Privat: Apple Intelligence hvor computeren har det, ellers en model du henter én gang. Intet går online.",
+        "bodyApple": "Privat: Apple Intelligence på denne Mac. Intet går online.",
+        "bodyReady": "Privat: AI-modellen, der allerede er på denne computer. Intet går online.",
+        "bodyDownload": "Privat: downloader {{model}} (≈{{size}}) én gang i baggrunden. Derefter går intet online.",
+        "bodyUnavailable": "AI på enheden kører ikke på denne computer, så kun enkle regler. Intet går online."
       },
       "none": {
         "title": "Ingen AI",
         "body": "Kun diktering og enkle regler. Intet sendes, og intet poleres, skrives eller foreslås."
-      }
+      },
+      "continueDownload": "Fortsæt og download"
     }
   },
   "modelTable": {
@@ -1713,11 +1718,17 @@
           "title": "Kun på denne computer",
           "description": "Intet sendes for at afgøre eller svare. Funktioner, der kræver en model, falder tilbage til simple regler eller siger, at de ikke kan.",
           "titleBasic": "Kun på denne computer (grundlæggende, uden AI)",
-          "descriptionBasic": "Intet sendes. Kun enkle regler: svar og skrivning kræver skyen, indtil du henter AI på enheden."
+          "descriptionBasic": "Intet sendes. Kun enkle regler: svar og skrivning kræver skyen, indtil du henter AI på enheden.",
+          "descriptionDownload": "Intet sendes. Valget downloader {{model}} (≈{{size}}) til at køre her; enkle regler, til den er klar.",
+          "descriptionDownloading": "Intet sendes. Downloader {{model}} (≈{{size}}); enkle regler, til den er klar."
         },
         "cloud": {
           "title": "Skyen",
           "description": "De bedste resultater. Maskeret tekst sendes til {{appName}}s servere."
+        },
+        "none": {
+          "title": "Ingen AI",
+          "description": "Kun diktering og enkle regler. Intet sendes, og intet poleres, skrives eller foreslås."
         }
       },
       "cloudSuggestions": {
@@ -1744,8 +1755,18 @@
       "recommended": "Anbefalet",
       "basic": "Enkel",
       "onThisComputer": "På denne computer",
-      "score": "Nøjagtighed {{accuracy}} %, hastighed {{speed}} %",
-      "scoresNote": "Bedømmelserne kommer fra modellernes egne offentliggjorte benchmarks, ikke vores egne tests."
+      "scoresNote": "Søjlerne sammenligner modellerne med hinanden: kvalitet fra deres offentliggjorte benchmarks, hastighed fra deres størrelse. Intet er målt på denne computer.",
+      "downloadingModel": "Downloader {{model}}… {{percent}} %",
+      "downloadingTag": "Downloader",
+      "removeModel": "Fjern {{name}}",
+      "quality": "Kvalitet",
+      "speed": "Hastighed",
+      "modelInfo": {
+        "qwen3_0_6b": "Lille og hurtig, lettest for hukommelse og batteri. Fin til finpudsning, mindre pålidelig til at skrive og svare.",
+        "qwen3_1_7b_q4": "God finpudsning og skrivning med omkring halvt så stor download som 8-bit-versionen, med lidt tabt.",
+        "qwen3_1_7b": "Den tidligere model på enheden. Lidt bedre end 4-bit-versionen, for en større download.",
+        "qwen3_4b": "Den bedste kvalitet på enheden, og den største og langsomste. Til god skrivning og svar uden skyen."
+      }
     },
     "telemetry": {
       "title": "Hjælp med at forbedre {{appName}}",

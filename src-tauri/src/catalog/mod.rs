@@ -436,7 +436,6 @@ pub fn mirror_fallbacks(model_id: &str) -> Vec<MirrorFile> {
 pub struct ReasoningModelFile {
     pub id: String,
     pub name: String,
-    pub description: String,
     pub repo_id: String,
     pub revision: String,
     pub filename: String,
@@ -464,7 +463,6 @@ pub static REASONING_MODELS: Lazy<Vec<ReasoningModelFile>> = Lazy::new(|| {
             Some(ReasoningModelFile {
                 id: m.id.clone(),
                 name: m.name.clone(),
-                description: m.description.clone(),
                 repo_id: m.repository.clone(),
                 revision: m.revision.clone(),
                 filename: file.filename.clone(),
@@ -490,36 +488,48 @@ pub fn is_reasoning_model_filename(filename: &str) -> bool {
     REASONING_MODELS.iter().any(|m| m.filename == filename)
 }
 
-/// The catalog's own default (`reasoningModel`): what an install with no
-/// choice saved — including one that already downloaded the old 1.7B Q8
-/// model — keeps using. New installs are pointed at the recommended entry
-/// instead (see `recommended_reasoning_model_id`).
+/// The catalog's own default (`reasoningModel`): the model installs from
+/// before the choice existed downloaded (the old 1.7B Q8), so it is preferred
+/// when it is already on disk. New installs get `recommended_reasoning_model`.
 pub fn default_reasoning_model() -> Option<&'static ReasoningModelFile> {
     let root = Lazy::force(&ROOT);
     let id = root.reasoning_model.as_deref()?;
-    reasoning_model_fallback(id)
-}
-
-fn reasoning_model_fallback(id: &str) -> Option<&'static ReasoningModelFile> {
     reasoning_model(id).or_else(|| REASONING_MODELS.first())
 }
 
-/// The id a fresh install should offer first: the recommended entry, else the
-/// catalog's `reasoningModel`, else the first listed.
+/// What a fresh install downloads: the recommended entry, else the catalog's
+/// `reasoningModel`, else the first listed.
 pub fn recommended_reasoning_model() -> Option<&'static ReasoningModelFile> {
     REASONING_MODELS
         .iter()
         .find(|m| m.recommended)
-        .or_else(|| default_reasoning_model())
-        .or_else(|| REASONING_MODELS.first())
+        .or_else(default_reasoning_model)
 }
 
-/// The model a saved selection refers to, falling back to the catalog default
-/// so a missing or stale id never leaves the app without an on-device model.
-pub fn resolve_reasoning_model(selected: Option<&str>) -> Option<&'static ReasoningModelFile> {
-    selected
-        .and_then(reasoning_model)
-        .or_else(default_reasoning_model)
+/// The reasoning model this install runs, given its saved choice and which
+/// models are on disk (`downloaded`):
+/// 1. the saved choice, when it is downloaded;
+/// 2. otherwise any downloaded model, the catalog default first (an install
+///    that already has the old Q8 file keeps it), then the recommended one,
+///    then catalog order, so a stale or missing choice never disables a model
+///    that is here;
+/// 3. with nothing downloaded, the saved choice, else the recommended model:
+///    what "Download" fetches.
+pub fn resolve_reasoning_model(
+    selected: Option<&str>,
+    downloaded: impl Fn(&ReasoningModelFile) -> bool,
+) -> Option<&'static ReasoningModelFile> {
+    let selected = selected.and_then(reasoning_model);
+    if let Some(m) = selected.filter(|m| downloaded(m)) {
+        return Some(m);
+    }
+    default_reasoning_model()
+        .into_iter()
+        .chain(recommended_reasoning_model())
+        .chain(REASONING_MODELS.iter())
+        .find(|m| downloaded(m))
+        .or(selected)
+        .or_else(recommended_reasoning_model)
 }
 
 /// Ordered mirror URLs for the language detector's file.
@@ -666,18 +676,45 @@ mod tests {
             recommended_reasoning_model().map(|m| m.id.as_str()),
             Some("qwen3-1.7b-q4")
         );
-        // A saved id resolves to itself; a stale one to the default.
+    }
+
+    #[test]
+    fn resolves_the_model_that_runs() {
+        let none = |_: &ReasoningModelFile| false;
+        let only = |id: &'static str| move |m: &ReasoningModelFile| m.id == id;
+        let id = |m: Option<&ReasoningModelFile>| m.map(|m| m.id.clone());
+        // A new install that never chose gets the recommended Q4, not the Q8.
         assert_eq!(
-            resolve_reasoning_model(Some("qwen3-4b")).map(|m| m.id.as_str()),
-            Some("qwen3-4b")
+            id(resolve_reasoning_model(None, none)),
+            Some("qwen3-1.7b-q4".into())
+        );
+        // One that already has the old Q8 file keeps it.
+        assert_eq!(
+            id(resolve_reasoning_model(None, only("qwen3-1.7b"))),
+            Some("qwen3-1.7b".into())
+        );
+        // A saved choice that is here runs.
+        assert_eq!(
+            id(resolve_reasoning_model(Some("qwen3-4b"), only("qwen3-4b"))),
+            Some("qwen3-4b".into())
+        );
+        // A saved choice that isn't here never disables the one that is.
+        assert_eq!(
+            id(resolve_reasoning_model(
+                Some("qwen3-4b"),
+                only("qwen3-0.6b")
+            )),
+            Some("qwen3-0.6b".into())
+        );
+        // With nothing here: the saved choice is what downloads, and a stale
+        // id falls back to the recommended model.
+        assert_eq!(
+            id(resolve_reasoning_model(Some("qwen3-4b"), none)),
+            Some("qwen3-4b".into())
         );
         assert_eq!(
-            resolve_reasoning_model(Some("gone")).map(|m| m.id.as_str()),
-            Some("qwen3-1.7b")
-        );
-        assert_eq!(
-            resolve_reasoning_model(None).map(|m| m.id.as_str()),
-            Some("qwen3-1.7b")
+            id(resolve_reasoning_model(Some("gone"), none)),
+            Some("qwen3-1.7b-q4".into())
         );
     }
 
