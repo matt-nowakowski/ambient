@@ -950,6 +950,15 @@ pub(crate) async fn process_dictation_output(
         writing: None,
         written: None,
     };
+    // One of Ambient's cards is up (not the smart-writing chip, which fades
+    // by itself, and words said beside it are dictation): what's said may
+    // close it.
+    let card_up = mode != OutputMode::File
+        && crate::hud::is_visible()
+        && !matches!(
+            crate::hud::current(),
+            None | Some(crate::hud::HudContent::Writing { .. })
+        );
     if mode != OutputMode::File {
         // A report card is up: "send it", "cancel", or (after Edit) the new
         // message.
@@ -967,13 +976,8 @@ pub(crate) async fn process_dictation_output(
             return handled();
         }
         // "Close that", "never mind" with one of Ambient's cards up: close
-        // it (every OS). The smart-writing chip fades by itself, and words
-        // said beside it are dictation.
-        let card_up = crate::hud::is_visible()
-            && !matches!(
-                crate::hud::current(),
-                None | Some(crate::hud::HudContent::Writing { .. })
-            );
+        // it (every OS). The phrases are a fast path; the router judges the
+        // rest, in any language.
         if card_up && router::dismiss_request(transcription) {
             debug!("agent: card dismissed by voice");
             crate::hud::hide(app);
@@ -1235,9 +1239,30 @@ pub(crate) async fn process_dictation_output(
         let previous = (ask || follow_up || sounds)
             .then(crate::agent::answer::last_turn)
             .flatten();
-        let routed = router::route(app, transcription, &rules, &place, to_agent, previous).await;
+        let routed = router::route(
+            app,
+            transcription,
+            &rules,
+            &place,
+            to_agent,
+            previous,
+            card_up,
+        )
+        .await;
+        // "Schon gut", "zamknij to" over a card: closed, like the fast path.
+        if routed == Some(Route::Dismiss) && card_up {
+            debug!("agent: card dismissed by voice (router)");
+            crate::telemetry::route("dismiss", ask, place.editable);
+            crate::hud::hide(app);
+            return handled();
+        }
         // Never typed when it's for the agent: if the router still said
-        // "write" (or couldn't say), answer it instead.
+        // "write" (or couldn't say), answer it instead. "Dismiss" with no
+        // card up means nothing: the same.
+        let routed = match routed {
+            Some(Route::Dismiss) => None,
+            r => r,
+        };
         let routed = match routed {
             Some(Route::Write(_)) | None if to_agent => Some(Route::Answer {
                 query: transcription.to_string(),

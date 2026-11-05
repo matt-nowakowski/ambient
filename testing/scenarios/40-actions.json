@@ -65,7 +65,7 @@
     },
     {
       "id": "dismiss.de.never-mind",
-      "tags": ["cards"],
+      "tags": ["cards", "regression"],
       "lang": "de",
       "screen": "browser_article",
       "say": "schon gut",
@@ -74,6 +74,7 @@
         "question": "q",
         "text": "a"
       },
+      "regression": "0.1.9 #3: \"schon gut\" over a card was answered in a new card",
       "expect": {
         "route": ["dismiss", "handled"],
         "must_not": ["typed", "answered"]
@@ -81,7 +82,7 @@
     },
     {
       "id": "dismiss.pl.zamknij",
-      "tags": ["cards"],
+      "tags": ["cards", "regression"],
       "lang": "pl",
       "screen": "browser_article",
       "say": "zamknij to",
@@ -90,6 +91,7 @@
         "question": "q",
         "text": "a"
       },
+      "regression": "0.1.9 #3: \"zamknij to\" over a card became \"I can't close tabs\"",
       "expect": {
         "route": ["dismiss", "handled"],
         "must_not": ["typed"]
@@ -343,6 +345,94 @@
         "route": "act",
         "act": "unsupported",
         "must_not": ["typed", "silent"]
+      }
+    },
+    {
+      "id": "dismiss.es.olvidalo",
+      "tags": ["cards", "regression"],
+      "lang": "es",
+      "screen": "browser_article",
+      "say": "olvídalo, gracias",
+      "card": {
+        "kind": "answer",
+        "question": "q",
+        "text": "a"
+      },
+      "regression": "0.1.9 #3: closing a card by voice worked only in English",
+      "expect": {
+        "route": ["dismiss", "handled"],
+        "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "dismiss.fr.desktop",
+      "tags": ["cards", "desktop", "regression"],
+      "lang": "fr",
+      "screen": "finder_desktop",
+      "say": "laisse tomber",
+      "card": {
+        "kind": "answer",
+        "question": "q",
+        "text": "a"
+      },
+      "regression": "0.1.9 #3: closing a card by voice worked only in English",
+      "expect": {
+        "route": ["dismiss", "handled"],
+        "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "dismiss.ja.router",
+      "about": "A phrase no cue list knows: the router, told a card is up, closes it.",
+      "tags": ["cards", "regression"],
+      "lang": "ja",
+      "screen": "browser_article",
+      "say": "もういいよ、閉じて",
+      "card": {
+        "kind": "answer",
+        "question": "q",
+        "text": "a"
+      },
+      "regression": "0.1.9 #3: closing a card by voice worked only in English",
+      "expect": {
+        "route": ["dismiss", "handled"],
+        "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "dismiss.it.router",
+      "about": "A phrase no cue list knows: the router, told a card is up, closes it.",
+      "tags": ["cards", "desktop", "regression"],
+      "lang": "it",
+      "screen": "finder_desktop",
+      "say": "va bene così, puoi toglierlo",
+      "card": {
+        "kind": "answer",
+        "question": "q",
+        "text": "a"
+      },
+      "regression": "0.1.9 #3: closing a card by voice worked only in English",
+      "expect": {
+        "route": ["dismiss", "handled"],
+        "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "dismiss.de.follow-up-not-dismiss",
+      "about": "With a card up, a follow-up question is answered, not taken as closing the card.",
+      "tags": ["cards", "regression"],
+      "lang": "de",
+      "screen": "browser_article",
+      "say": "und wie wird es übermorgen",
+      "card": {
+        "kind": "answer",
+        "question": "wie wird das Wetter morgen in Berlin",
+        "text": "Morgen in Berlin: bewölkt, 12 °C."
+      },
+      "regression": "0.1.9 #3: the router now knows \"dismiss\"; follow-ups must still be answered",
+      "expect": {
+        "route": "answer",
+        "must_not": ["typed"]
       }
     }
   ]

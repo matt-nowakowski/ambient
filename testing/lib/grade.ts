@@ -34,7 +34,13 @@ export type Outcome = {
 
 export function outcomeOf(r: AppReport, c: Case, proxyCalls: number): Outcome {
   const ev = r.events;
-  const cards = ev.filter((e) => e.type === "hud").map((e) => e.card);
+  // The scenario's own card (already up when the user speaks) is not
+  // something the app did: only cards shown after it count.
+  const seeded = ev.findIndex((e) => e.type === "seeded");
+  const cards = ev
+    .slice(seeded + 1)
+    .filter((e) => e.type === "hud")
+    .map((e) => e.card);
   const lastCard = (kind: string) =>
     [...cards].reverse().find((c) => c.kind === kind);
   const pasted = ev
@@ -96,6 +102,7 @@ export function outcomeOf(r: AppReport, c: Case, proxyCalls: number): Outcome {
       output: typed.at(-1) ?? draftCard?.text ?? answerText,
     };
   }
+  if (name === "dismiss") return { ...base, route: "dismiss" };
   if (name === "handled") {
     const hid = ev.some((e) => e.type === "hud_hide");
     return { ...base, route: hid ? "dismiss" : "handled" };

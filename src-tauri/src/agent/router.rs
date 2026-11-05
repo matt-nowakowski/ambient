@@ -26,6 +26,9 @@ pub enum Route {
     Compose(String),
     /// "What can I say?": show examples.
     Help,
+    /// "Never mind", "schon gut", "zamknij to" with one of Ambient's cards
+    /// up: close it.
+    Dismiss,
     /// Already dealt with (e.g. the user answered a suggestion by voice).
     Handled,
     /// A bug report or feedback for the team: shown in a card to confirm.
@@ -223,14 +226,24 @@ pub fn is_help_request(transcript: &str) -> bool {
 /// "Close that", "dismiss it", "hide this card", "go away", "never mind":
 /// said while one of Ambient's cards is up, it closes the card. The same on
 /// every OS; "close the tab" or "quit Slack" are about other apps instead.
+/// A fast path only: the commonest short phrasings in English and the main
+/// European languages. Anything else said over a card reaches the router,
+/// which is told a card is up and judges "dismiss" in any language.
 static DISMISS: Lazy<Regex> = Lazy::new(|| {
     Regex::new(
-        r"(?ix)^\W*(?:(?:please|pls|ok(?:ay)?|thanks|thank\s+you|cool|great|now|just|can\s+you|could\s+you)[\s,.!]+)*(?:
+        r"(?ix)^\W*(?:(?:please|pls|ok(?:ay)?|thanks|thank\s+you|cool|great|now|just|can\s+you|could\s+you|danke|bitte|gracias|merci|grazie|obrigad[oa]|dzięki|dziękuję)[\s,.!]+)*(?:
             (?:close|dismiss|hide|clear)(?:\s+(?:it|this|that|the|your))?(?:\s+(?:card|answer|window|box|popup|pop-up|panel|note|notice|message|thing|one))?
           | go\s+away
           | never\s*mind
           | that'?s\s+all
-        )(?:[\s,]+(?:please|thanks|thank\s+you|now))?\W*$",
+          # de, es, fr, it, pt, pl: close it / never mind
+          | schlie(?:ß|ss)e?(?:\s+(?:das|es))? | schon\s+gut | vergiss\s+es
+          | cierra(?:lo|la)?(?:\s+eso)? | olv[ií]dalo | no\s+importa
+          | ferme(?:[\s-]+(?:le|la|ça))? | laisse\s+tomber | peu\s+importe
+          | chiudi(?:lo|la)? | lascia\s+(?:stare|perdere) | non\s+importa
+          | fecha(?:\s+isso)? | esquece | deixa\s+(?:pra|para)\s+l[áa]
+          | zamknij(?:\s+(?:to|go|je))? | nieważne | nie\s+ważne | zostaw\s+to
+        )(?:[\s,]+(?:please|thanks|thank\s+you|now|bitte|danke|por\s+favor|gracias|s'il\s+te\s+pla[iî]t|merci|per\s+favore|grazie|obrigad[oa]|proszę|dzięki))?\W*$",
     )
     .expect("dismiss cues")
 });
@@ -724,6 +737,7 @@ const TASK: &str = r#"Choose one intent:
 - "recall": they ask about something they said, dictated, read or saw earlier ("what did I say about pricing", "what was that number on the page").
 - "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply that everything's ok", "reply to Sam" (with an email or chat open), in any language ("odpisz że wszystko ok", "napisz mu że będę o 5", "dile que llego tarde", "réponds-lui que c'est bon", "antworte, dass alles passt"). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). Decide from the words, not from which app is open. If the transcript reads as the message itself, spoken to its reader, it's "write".
 - "report": they want to report a bug or send feedback or a wish to the makers of this assistant ("report a bug: …", "that didn't work", "tell the team …", "feature request: …", "I wish you could …").
+- "dismiss": only when told one of your cards is on screen: they want that card closed or no longer need it, in any language ("close that", "never mind", "schon gut", "zamknij to", "laisse tomber", "もういい"). Closing a browser tab, a window or another app is "act" with close_window.
 If unsure, choose "write". A message or email being dictated word for word is always "write".
 Resolve relative dates ("Friday", "at 5") against NOW below, in local time. Parts of the day: morning 09:00, afternoon 14:00, evening 18:00, tonight 20:00; a day with no time is 09:00 that day."#;
 
@@ -742,7 +756,7 @@ const EXAMPLES: &str = r#"<transcript>reply that Thursday works for me</transcri
 {"intent":"answer","query":"What's the weather in Lisbon tomorrow?","needs_web":true,"about_screen":false}"#;
 
 const OUTPUT: &str = r#"JSON only, no prose:
-{"intent":"write|answer|act|recall|compose|report","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
+{"intent":"write|answer|act|recall|compose|report|dismiss","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
 - write: "text" = the transcript cleaned up following RULES, then POLISH RULES below.
 - compose: "query" = the instruction, as said.
 - answer: "query" = the question, made self-contained. "needs_web" = true only if it needs current or specific facts you may not know (news, prices, rates, schedules, recent events, specific businesses). "about_screen" = true if it refers to "this"/the current window.
@@ -788,6 +802,7 @@ pub fn route_name(route: Option<&Route>) -> &'static str {
         Some(Route::Recall(_)) => "recall",
         Some(Route::Compose(_)) => "compose",
         Some(Route::Help) => "help",
+        Some(Route::Dismiss) => "dismiss",
         Some(Route::Handled) => "handled",
         Some(Route::Report(_)) => "report",
     }
@@ -832,6 +847,7 @@ fn parse(reply: &str) -> Option<Route> {
         "compose" => nonempty(raw.query)
             .or(nonempty(raw.text))
             .map(Route::Compose),
+        "dismiss" => Some(Route::Dismiss),
         _ => None,
     }
 }
@@ -898,6 +914,8 @@ const ROUTE_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(10);
 /// `ask` is set for the Ask shortcut: the user is talking to the agent.
 /// `previous` is the last question and answer while that card is still up
 /// (or just closed), so "what other emails did we get from them" resolves.
+/// `card_up`: one of Ambient's cards is on screen, so the words may close it
+/// ("dismiss"), in whatever language they're said.
 pub async fn route(
     app: &AppHandle,
     transcript: &str,
@@ -905,6 +923,7 @@ pub async fn route(
     place: &Place,
     ask: bool,
     previous: Option<(String, String)>,
+    card_up: bool,
 ) -> Option<Route> {
     let now = super::when::local_now()
         .format("%A %Y-%m-%d %H:%M")
@@ -954,6 +973,9 @@ pub async fn route(
     }
     if compose_maybe(transcript) {
         where_.push_str(". The wording may be an instruction to write a message for them: choose \"compose\" if so");
+    }
+    if card_up {
+        where_.push_str(". One of your cards is on screen: if they want it closed or don't need it any more, choose \"dismiss\"");
     }
     let follow_up = previous
         .map(|(q, a)| {
@@ -1409,6 +1431,15 @@ mod tests {
             "never mind",
             "go away",
             "Hey Ambient, close this please",
+            "schon gut",
+            "Danke, schließ das.",
+            "olvídalo",
+            "laisse tomber",
+            "ferme-le",
+            "lascia stare",
+            "esquece",
+            "zamknij to",
+            "nieważne",
         ] {
             assert!(dismiss_request(s), "{s}");
         }
@@ -1418,6 +1449,8 @@ mod tests {
             "close the deal by Friday",
             "Thanks for the update",
             "can you close the window, it's cold",
+            "zamknij kartę w przeglądarce",
+            "schon gut, aber schick mir den Bericht",
         ] {
             assert!(!dismiss_request(s), "{s}");
         }

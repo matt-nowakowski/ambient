@@ -518,7 +518,7 @@ pub fn handle(app: &AppHandle, route: Route) {
         Route::Act(_) => milestone(app, "action"),
         Route::Recall(_) => milestone(app, "recall"),
         Route::Compose(_) => milestone(app, "answer"),
-        Route::Write(_) | Route::Help | Route::Handled | Route::Report(_) => {}
+        Route::Write(_) | Route::Help | Route::Dismiss | Route::Handled | Route::Report(_) => {}
     }
     log::debug!("agent: handling {}", router::route_name(Some(&route)));
     let app = app.clone();
@@ -526,6 +526,7 @@ pub fn handle(app: &AppHandle, route: Route) {
         match route {
             Route::Write(_) | Route::Handled => {}
             Route::Help => crate::hud::show(&app, crate::hud::HudContent::Help),
+            Route::Dismiss => crate::hud::hide(&app),
             // "Send this to the team?": nothing leaves until Send. A report
             // with diagnostics on carries the last answer (feedback::submit).
             Route::Report(intent) => report::show(&app, intent),
@@ -1117,7 +1118,7 @@ pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
     let place = tauri::async_runtime::spawn_blocking(move || router::place_for(true, &agent))
         .await
         .unwrap_or_default();
-    match router::route(app, text, "", &place, true, answer::last_turn()).await {
+    match router::route(app, text, "", &place, true, answer::last_turn(), false).await {
         Some(Route::Write(_)) | None => answer(),
         Some(r) => r,
     }
