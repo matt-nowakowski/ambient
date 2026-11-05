@@ -1,0 +1,407 @@
+{
+  "defaults": {
+    "tags": ["private"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "cloud",
+      "cloud_suggestions": "accepted",
+      "proactive": true,
+      "screen_context": true,
+      "languages": ["en"]
+    }
+  },
+  "screens": {
+    "bank_en": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Chase Online - Accounts",
+      "url": "https://www.chase.com/personal/accounts",
+      "text": "Account summary\nChecking ...4821\nAvailable balance $3,214.55\nRecent transactions\nTransfer to savings $500.00\nPay bills",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "bank_pl": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "PKO Bank Polski - Moje konta",
+      "url": "https://www.pkobp.pl/bankowosc-elektroniczna",
+      "text": "Moje konta\nRachunek ...1234\nDostępne środki 12 450,22 PLN\nOstatnie operacje\nPrzelew na rachunek\nHistoria",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "bank_de": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Sparkasse - Finanzstatus",
+      "url": "https://banking.sparkasse.de/finanzstatus",
+      "text": "Finanzstatus\nGirokonto DE89 ...\nKontostand 2.481,10 EUR\nUmsätze\nÜberweisung",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "bank_es": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "BBVA - Mis cuentas",
+      "url": "https://www.bbva.es/particulares/cuentas",
+      "text": "Mis cuentas\nCuenta ...5521\nSaldo disponible 1.845,30 €\nMovimientos\nTransferencia",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "bank_fr": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Crédit Agricole - Mes comptes",
+      "url": "https://www.credit-agricole.fr/particulier/comptes",
+      "text": "Mes comptes\nCompte courant ...\nSolde 3 210,45 €\nOpérations récentes\nVirement",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "checkout": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Pay Acme Inc. — Checkout",
+      "url": "https://checkout.stripe.com/c/pay/cs_live_abc",
+      "text": "Pay Acme Inc.\n$49.00\nCard information\nCard number\nMM / YY\nCVC\nName on card\nPay",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "medical": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "MyChart - Test Results",
+      "url": "https://mychart.examplehealth.org/MyChart/TestResults",
+      "text": "Test Results\nLipid panel\nLDL Cholesterol 162 mg/dL (High)\nYour doctor's note: Let's discuss diet changes at your next visit.\nMessages from your care team",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "medical_pl": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Internetowe Konto Pacjenta - Wyniki badań",
+      "url": "https://pacjent.gov.pl/wyniki",
+      "text": "Wyniki badań\nMorfologia krwi\nHemoglobina 13,2 g/dl\nSkierowania\nRecepty",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "metamask": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Uniswap Interface",
+      "url": "https://app.uniswap.org/swap",
+      "text": "Swap\nYou pay 0.5 ETH\nYou receive 1,204 USDC",
+      "frame_urls": [
+        "chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/popup.html"
+      ],
+      "ui_labels": ["MetaMask"],
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "password_manager": {
+      "app": "1Password",
+      "bundle": {
+        "macos": "com.1password.1password",
+        "windows": "1password.exe",
+        "linux": "1password"
+      },
+      "title": "1Password — Personal",
+      "text": "Logins\nGmail\nmatt@example.com\npassword ••••••••",
+      "focus": {
+        "role": "AXGroup",
+        "editable": false
+      }
+    },
+    "seed_phrase": {
+      "app": {
+        "macos": "TextEdit",
+        "windows": "Notepad",
+        "linux": "Text Editor"
+      },
+      "bundle": {
+        "macos": "com.apple.TextEdit",
+        "windows": "notepad.exe",
+        "linux": "org.gnome.texteditor"
+      },
+      "title": "backup.txt",
+      "text": "wallet backup\nabandon ability able about above absent absorb abstract absurd abuse access accident",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true
+      }
+    },
+    "private_window": {
+      "app": {
+        "macos": "Safari",
+        "windows": "Safari",
+        "linux": "Safari"
+      },
+      "bundle": {
+        "macos": "com.apple.Safari",
+        "windows": "msedge.exe",
+        "linux": "firefox"
+      },
+      "title": "Inbox - Gmail — Private Browsing",
+      "url": "https://mail.google.com/mail/u/0/#inbox",
+      "text": "Inbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\nInbox\nSam Lee\nCan you send me the numbers by Friday?\n",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      },
+      "private_window": true
+    }
+  },
+  "cases": [
+    {
+      "id": "private.en.bank_en",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "bank_en",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.pl.bank_pl",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "tags": ["critical"],
+      "lang": "pl",
+      "screen": "bank_pl",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.de.bank_de",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "de",
+      "screen": "bank_de",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.es.bank_es",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "es",
+      "screen": "bank_es",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.fr.bank_fr",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "fr",
+      "screen": "bank_fr",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.en.checkout",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "checkout",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.en.medical",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "en",
+      "screen": "medical",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.pl.medical_pl",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "pl",
+      "screen": "medical_pl",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.en.metamask",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": "metamask",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      },
+      "regression": "E4/R2-7: MetaMask in Chrome wasn't noticed"
+    },
+    {
+      "id": "private.en.password_manager",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "en",
+      "screen": "password_manager",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.en.seed_phrase",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "seed_phrase",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.en.private_window",
+      "about": "A private page: Ambient steps back (reads and offers nothing).",
+      "lang": "en",
+      "screen": "private_window",
+      "kind": "screen",
+      "expect": {
+        "route": "back_off",
+        "must_not": ["suggested", "read_screen"]
+      }
+    },
+    {
+      "id": "private.en.bank-question",
+      "about": "Asked about a bank page: the page text is never sent.",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "bank_en",
+      "say": "summarise this page",
+      "key": "ask",
+      "expect": {
+        "route": "answer",
+        "shows": ["private"],
+        "must_not": ["opened_browser"],
+        "not_contains": ["3,214", "3214"]
+      }
+    },
+    {
+      "id": "private.pl.bank-dictate",
+      "lang": "pl",
+      "screen": "bank_pl",
+      "say": "przelew za czynsz",
+      "expect": {
+        "route": ["write", "did_you_mean", "polish"],
+        "must_not": ["answered"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "defaults": {
+    "tags": ["suggest"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "cloud",
+      "cloud_suggestions": "accepted",
+      "proactive": true,
+      "screen_context": true,
+      "languages": ["en"]
+    }
+  },
+  "screens": {
+    "mail_question_read": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Quarterly numbers",
+      "text": "From: Rachel Green <rachel@acme.com>\nTo: Matt Nowakowski <matt@example.com>\nSubject: Quarterly numbers\n\nHi Matt,\n\nCould you send me the quarterly numbers by Friday? The board meeting is on Monday and I need time to prepare the slides.\n\nThanks!\nRachel",
+      "focus": {
+        "role": "AXGroup",
+        "editable": false
+      }
+    },
+    "mail_invite": {
+      "app": {
+        "macos": "Mail",
+        "windows": "Outlook",
+        "linux": "Thunderbird"
+      },
+      "bundle": {
+        "macos": "com.apple.mail",
+        "windows": "olk.exe",
+        "linux": "thunderbird"
+      },
+      "title": "Dinner next week?",
+      "text": "From: Tom Hardy <tom@friends.com>\nTo: Matt Nowakowski <matt@example.com>\nSubject: Dinner next week?\n\nHey Matt,\n\nShall we do dinner at Nonna's on Tuesday 10 November at 7:30pm? I booked a table for four, address is 12 Via Roma.\n\nTom",
+      "focus": {
+        "role": "AXGroup",
+        "editable": false
+      }
+    },
+    "github_pr": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Add retry to upload client by benc · Pull Request #482 · acme/app",
+      "url": "https://github.com/acme/app/pull/482/files",
+      "text": "Add retry to upload client #482\nbenc wants to merge 3 commits into main\nFiles changed 2\nsrc/upload.ts\n@@ -10,7 +10,15 @@ export async function upload(file: File) {\n-  const res = await fetch(url, { method: 'POST', body: file });\n+  let res;\n+  for (let i = 0; i < 3; i++) {\n+    res = await fetch(url, { method: 'POST', body: file });\n+    if (res.ok) break;\n+  }\n   return res.json();\n }\nReview changes",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "foreign_page_de": {
+      "app": {
+        "macos": "Safari",
+        "windows": "Microsoft Edge",
+        "linux": "Firefox"
+      },
+      "bundle": {
+        "macos": "com.apple.Safari",
+        "windows": "msedge.exe",
+        "linux": "firefox"
+      },
+      "title": "Mietvertrag kündigen: Fristen und Muster",
+      "url": "https://www.mieterbund-beispiel.de/kuendigung",
+      "text": "Mietvertrag kündigen: Fristen und Muster\n\nWer als Mieter seinen Mietvertrag kündigen möchte, muss in der Regel eine Frist von drei Monaten einhalten. Die Kündigung muss schriftlich erfolgen und vom Mieter unterschrieben sein. Eine Kündigung per E-Mail oder WhatsApp ist nicht wirksam. Die Frist beginnt mit dem Zugang des Kündigungsschreibens beim Vermieter. Wichtig ist, dass das Schreiben spätestens am dritten Werktag eines Monats eingeht, damit dieser Monat noch mitzählt. Viele Mieter unterschätzen außerdem die Pflicht zur Rückgabe der Wohnung in vertragsgemäßem Zustand. Schönheitsreparaturen können je nach Vertrag fällig werden. Unser Muster hilft Ihnen, keine Formfehler zu machen.",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "long_thread": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Vendor contract renewal (24) - matt@example.com - Gmail",
+      "url": "https://mail.google.com/mail/u/0/#inbox/FMfcgzLong",
+      "text": "Sam Lee <x0@acme.com>\nNov 1, 2026, 9:10 AM\nto me\nOn the vendor renewal: point 1, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nRachel Green <x1@acme.com>\nNov 2, 2026, 10:11 AM\nto me\nOn the vendor renewal: point 2, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nDavid Kim <x2@acme.com>\nNov 3, 2026, 11:12 AM\nto me\nOn the vendor renewal: point 3, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nOlivia Brown <x3@acme.com>\nNov 4, 2026, 12:13 AM\nto me\nOn the vendor renewal: point 4, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nSam Lee <x4@acme.com>\nNov 1, 2026, 13:14 AM\nto me\nOn the vendor renewal: point 5, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nRachel Green <x5@acme.com>\nNov 2, 2026, 14:15 AM\nto me\nOn the vendor renewal: point 6, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nDavid Kim <x6@acme.com>\nNov 3, 2026, 15:16 AM\nto me\nOn the vendor renewal: point 7, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nOlivia Brown <x7@acme.com>\nNov 4, 2026, 16:17 AM\nto me\nOn the vendor renewal: point 8, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nSam Lee <x8@acme.com>\nNov 1, 2026, 9:18 AM\nto me\nOn the vendor renewal: point 9, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nRachel Green <x9@acme.com>\nNov 2, 2026, 10:19 AM\nto me\nOn the vendor renewal: point 10, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nDavid Kim <x10@acme.com>\nNov 3, 2026, 11:20 AM\nto me\nOn the vendor renewal: point 11, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nOlivia Brown <x11@acme.com>\nNov 4, 2026, 12:21 AM\nto me\nOn the vendor renewal: point 12, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nSam Lee <x12@acme.com>\nNov 1, 2026, 13:22 AM\nto me\nOn the vendor renewal: point 13, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nRachel Green <x13@acme.com>\nNov 2, 2026, 14:23 AM\nto me\nOn the vendor renewal: point 14, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nDavid Kim <x14@acme.com>\nNov 3, 2026, 15:24 AM\nto me\nOn the vendor renewal: point 15, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nOlivia Brown <x15@acme.com>\nNov 4, 2026, 16:25 AM\nto me\nOn the vendor renewal: point 16, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nSam Lee <x16@acme.com>\nNov 1, 2026, 9:26 AM\nto me\nOn the vendor renewal: point 17, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nRachel Green <x17@acme.com>\nNov 2, 2026, 10:27 AM\nto me\nOn the vendor renewal: point 18, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nDavid Kim <x18@acme.com>\nNov 3, 2026, 11:28 AM\nto me\nOn the vendor renewal: point 19, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nOlivia Brown <x19@acme.com>\nNov 4, 2026, 12:29 AM\nto me\nOn the vendor renewal: point 20, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nSam Lee <x20@acme.com>\nNov 1, 2026, 13:30 AM\nto me\nOn the vendor renewal: point 21, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nRachel Green <x21@acme.com>\nNov 2, 2026, 14:31 AM\nto me\nOn the vendor renewal: point 22, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nDavid Kim <x22@acme.com>\nNov 3, 2026, 15:32 AM\nto me\nOn the vendor renewal: point 23, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n\nOlivia Brown <x23@acme.com>\nNov 4, 2026, 16:33 AM\nto me\nOn the vendor renewal: point 24, we still disagree about the price cap and the SLA penalty; legal wants another review before we sign anything.\n",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "settings_page": {
+      "app": {
+        "macos": "System Settings",
+        "windows": "Settings",
+        "linux": "Settings"
+      },
+      "bundle": {
+        "macos": "com.apple.systempreferences",
+        "windows": "systemsettings.exe",
+        "linux": "org.gnome.settings"
+      },
+      "title": "Settings — Display",
+      "text": "Display\nBrightness\nAutomatically adjust brightness\nTrue Tone\nNight Shift…\nResolution\nDefault for display\nMore space\nLarger text\nRefresh rate\nProMotion",
+      "focus": {
+        "role": "AXGroup",
+        "editable": false
+      }
+    },
+    "youtube": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Lo-fi beats to study to - YouTube",
+      "url": "https://www.youtube.com/watch?v=abc123",
+      "text": "Lo-fi beats to study to\n1.2M views\nSubscribe\nComments 4,512\nGreat music for focus, thanks!\nThis got me through finals.",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      }
+    },
+    "code_editor_clean": {
+      "app": {
+        "macos": "Visual Studio Code",
+        "windows": "Visual Studio Code",
+        "linux": "Visual Studio Code"
+      },
+      "bundle": {
+        "macos": "com.microsoft.VSCode",
+        "windows": "code.exe",
+        "linux": "code"
+      },
+      "title": "upload.ts — app",
+      "text": "export async function upload(file: File) {\n  const res = await fetch(url, { method: 'POST', body: file });\n  return res.json();\n}\n\nexport function size(file: File) {\n  return file.size;\n}\nexport async function upload(file: File) {\n  const res = await fetch(url, { method: 'POST', body: file });\n  return res.json();\n}\n\nexport function size(file: File) {\n  return file.size;\n}\nexport async function upload(file: File) {\n  const res = await fetch(url, { method: 'POST', body: file });\n  return res.json();\n}\n\nexport function size(file: File) {\n  return file.size;\n}\n",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true
+      }
+    },
+    "slack_question_pl": {
+      "app": "Slack",
+      "bundle": {
+        "macos": "com.tinyspeck.slackmacgap",
+        "windows": "slack.exe",
+        "linux": "slack"
+      },
+      "title": "Kasia Nowak (DM) - Acme - Slack",
+      "text": "Kasia Nowak  09:15\nCześć Matt! Czy możesz mi wysłać raport do piątku? Potrzebuję go na spotkanie z zarządem w poniedziałek.\nKasia Nowak  09:16\nDzięki z góry!",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "suggest.en.mail-question",
+      "about": "An email asking the user for something: offer a reply (or a reminder for its deadline).",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "mail_question_read",
+      "kind": "screen",
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["draft_reply", "add_reminder"]
+      }
+    },
+    {
+      "id": "suggest.en.mail-invite",
+      "tags": ["calendar"],
+      "lang": "en",
+      "screen": "mail_invite",
+      "kind": "screen",
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["add_to_calendar", "draft_reply"]
+      }
+    },
+    {
+      "id": "suggest.en.terminal-error",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "terminal_error",
+      "kind": "screen",
+      "expect": {
+        "route": "suggest",
+        "suggestion": "explain_error"
+      }
+    },
+    {
+      "id": "suggest.en.pull-request",
+      "lang": "en",
+      "screen": "github_pr",
+      "kind": "screen",
+      "expect": {
+        "route": "suggest",
+        "suggestion": "review_code"
+      }
+    },
+    {
+      "id": "suggest.de.foreign-page",
+      "about": "A page in a language the user doesn't speak: offer a translation.",
+      "tags": ["translate"],
+      "lang": "de",
+      "screen": "foreign_page_de",
+      "kind": "screen",
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["translate_page", "summarise_page"]
+      }
+    },
+    {
+      "id": "suggest.en.long-thread",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": "long_thread",
+      "kind": "screen",
+      "regression": "D14/R2-6: a long Gmail thread produced no suggestion",
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["summarise_thread", "draft_reply"]
+      }
+    },
+    {
+      "id": "suggest.pl.slack-deadline",
+      "lang": "pl",
+      "screen": "slack_question_pl",
+      "kind": "screen",
+      "settings": {
+        "languages": ["pl", "en"]
+      },
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["draft_reply", "add_reminder"]
+      }
+    },
+    {
+      "id": "quiet.en.settings",
+      "tags": ["quiet", "critical"],
+      "lang": "en",
+      "screen": "settings_page",
+      "kind": "screen",
+      "expect": {
+        "route": ["quiet", "back_off"],
+        "must_not": ["suggested"]
+      }
+    },
+    {
+      "id": "quiet.en.youtube",
+      "tags": ["quiet"],
+      "lang": "en",
+      "screen": "youtube",
+      "kind": "screen",
+      "expect": {
+        "route": "quiet",
+        "must_not": ["suggested"]
+      }
+    },
+    {
+      "id": "quiet.en.clean-code",
+      "tags": ["quiet"],
+      "lang": "en",
+      "screen": "code_editor_clean",
+      "kind": "screen",
+      "expect": {
+        "route": "quiet",
+        "must_not": ["suggested"]
+      }
+    },
+    {
+      "id": "quiet.en.desktop",
+      "tags": ["quiet"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "kind": "screen",
+      "expect": {
+        "route": "quiet",
+        "must_not": ["suggested"]
+      }
+    },
+    {
+      "id": "quiet.en.empty-note",
+      "tags": ["quiet"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "kind": "screen",
+      "expect": {
+        "route": "quiet",
+        "must_not": ["suggested"]
+      }
+    },
+    {
+      "id": "quiet.en.article",
+      "about": "A short article: quiet, or at most a summary.",
+      "tags": ["quiet"],
+      "lang": "en",
+      "screen": "browser_article",
+      "kind": "screen",
+      "expect": {
+        "route": ["quiet", "suggest"],
+        "suggestion": ["summarise_page"]
+      }
+    },
+    {
+      "id": "quiet.en.suggestions-off",
+      "tags": ["quiet", "settings"],
+      "lang": "en",
+      "screen": "mail_question_read",
+      "kind": "screen",
+      "settings": {
+        "proactive": false
+      },
+      "expect": {
+        "route": "quiet",
+        "must_not": ["suggested"]
+      }
+    },
+    {
+      "id": "suggest.en.free-plan-rules",
+      "about": "Free: the on-device rules still offer (the cloud judge is Pro).",
+      "tags": ["plans"],
+      "lang": "en",
+      "screen": "terminal_error",
+      "kind": "screen",
+      "plan": "free",
+      "expect": {
+        "route": "suggest",
+        "suggestion": "explain_error"
+      }
+    }
+  ]
+}

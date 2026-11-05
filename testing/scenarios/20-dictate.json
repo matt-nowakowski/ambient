@@ -1,0 +1,322 @@
+{
+  "defaults": {
+    "tags": ["write"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "cloud",
+      "polish": false,
+      "writing": "smart"
+    }
+  },
+  "cases": [
+    {
+      "id": "write.en.slack.1",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["slack", "dictate", "critical"],
+      "lang": "en",
+      "screen": "slack_dm_priya",
+      "say": "can we move the review to four instead",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.slack.2",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["slack", "dictate"],
+      "lang": "en",
+      "screen": "slack_dm_priya",
+      "say": "what do you think about the new layout",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.slack.3",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["slack", "dictate"],
+      "lang": "en",
+      "screen": "slack_dm_priya",
+      "say": "are you free tomorrow morning for a quick call",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.messages.4",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["messages", "dictate"],
+      "lang": "en",
+      "screen": "messages_mom",
+      "say": "yes I'll be there around six",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      },
+      "os": ["macos"]
+    },
+    {
+      "id": "write.en.messages.5",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["messages", "dictate"],
+      "lang": "en",
+      "screen": "messages_mom",
+      "say": "do you need me to bring anything",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      },
+      "os": ["macos"]
+    },
+    {
+      "id": "write.pl.whatsapp.6",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["whatsapp", "dictate", "critical"],
+      "lang": "pl",
+      "screen": "whatsapp_tomek",
+      "say": "jasne, gramy o 19, biorę piłkę",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.pl.whatsapp.7",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["whatsapp", "dictate"],
+      "lang": "pl",
+      "screen": "whatsapp_tomek",
+      "say": "co myślisz o tym, żeby zacząć o 20",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.pl.slack.8",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["slack", "dictate"],
+      "lang": "pl",
+      "screen": "slack_channel_pl",
+      "say": "sprawdziłem deploy, wszystko działa",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.de.mail.9",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate", "critical"],
+      "lang": "de",
+      "screen": "mail_reply_de",
+      "say": "Dienstag um zehn passt mir gut, bis dann",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.es.mail.10",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate"],
+      "lang": "es",
+      "screen": "mail_reply_es",
+      "say": "qué te parece si lo hablamos el lunes",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.fr.mail.11",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate"],
+      "lang": "fr",
+      "screen": "mail_reply_fr",
+      "say": "oui la réunion tient toujours, à lundi",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.pt.mail.12",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate"],
+      "lang": "pt",
+      "screen": "mail_reply_pt",
+      "say": "podemos assinar na sexta, combinado",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.it.mail.13",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate"],
+      "lang": "it",
+      "screen": "mail_reply_it",
+      "say": "va benissimo mercoledì, grazie",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.ja.mail.14",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate"],
+      "lang": "ja",
+      "screen": "mail_reply_ja",
+      "say": "水曜日の午後で大丈夫です",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.discord.15",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["discord", "dictate"],
+      "lang": "en",
+      "screen": "discord_guild",
+      "say": "which build are you on",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.unknown-app.16",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["unknown-app", "dictate"],
+      "lang": "en",
+      "screen": "unknown_chat_app",
+      "say": "sorry, I'll get back to you tonight",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.notes.17",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["notes", "dictate"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "buy milk eggs and coffee on the way home",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.docs.18",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["docs", "dictate"],
+      "lang": "en",
+      "screen": "docs_editor",
+      "say": "three, hire two engineers by March",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.mail.19",
+      "about": "Words for the people being written to are typed, even when they sound like a question or request.",
+      "tags": ["mail", "dictate"],
+      "lang": "en",
+      "screen": "mail_reply_sam",
+      "say": "can you send me the final deck by Friday",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered", "opened_browser"]
+      }
+    },
+    {
+      "id": "write.en.chatgpt.question",
+      "about": "A prompt typed into ChatGPT is writing, not a question for Ambient.",
+      "tags": ["ai-chat", "dictate", "critical"],
+      "lang": "en",
+      "screen": "chatgpt_prompt",
+      "say": "what's the capital of Australia and why isn't it Sydney",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["answered"]
+      }
+    },
+    {
+      "id": "write.en.note-marker",
+      "about": "\"Note: …\" types what follows as said, without the marker.",
+      "tags": ["markers", "dictate", "critical"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "note: what's the weather like in Lisbon in May",
+      "expect": {
+        "route": ["write", "polish"],
+        "not_contains": ["note:"],
+        "must_not": ["answered"]
+      }
+    },
+    {
+      "id": "write.en.search-field",
+      "tags": ["dictate"],
+      "lang": "en",
+      "screen": "browser_search_field",
+      "say": "noise cancelling headphones",
+      "expect": {
+        "route": ["write", "polish"]
+      }
+    },
+    {
+      "id": "write.en.polish-on.messy",
+      "about": "With AI polish on, a messy dictation is cleaned up.",
+      "tags": ["polish", "dictate"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "so um I think we should uh ship the beta next week no wait the week after",
+      "settings": {
+        "polish": true
+      },
+      "expect": {
+        "route": "polish",
+        "contains": ["week after"],
+        "not_contains": ["um ", " uh "]
+      }
+    },
+    {
+      "id": "write.en.polish-off.messy",
+      "about": "With polish off, dictation is typed as said (no model).",
+      "tags": ["polish", "dictate"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "so um I think we should ship the beta next week",
+      "settings": {
+        "polish": false
+      },
+      "expect": {
+        "route": "write"
+      }
+    },
+    {
+      "id": "write.pl.polish-on.messy",
+      "tags": ["polish", "dictate"],
+      "lang": "pl",
+      "screen": "notes_empty",
+      "say": "no więc yyy myślę że wypuścimy betę w przyszłym tygodniu",
+      "settings": {
+        "polish": true
+      },
+      "expect": {
+        "route": ["polish", "write"],
+        "language": "pl"
+      }
+    }
+  ]
+}

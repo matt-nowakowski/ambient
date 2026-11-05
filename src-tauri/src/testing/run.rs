@@ -166,8 +166,17 @@ async fn settle(max_ms: u64) {
     loop {
         tokio::time::sleep(Duration::from_millis(100)).await;
         let quiet = super::quiet_for_ms();
-        let finished = super::events().last().is_some_and(is_final);
-        if (finished && quiet > 600) || quiet > 4_000 {
+        let events = super::events();
+        let finished = events.last().is_some_and(is_final);
+        // A model or answer request on its way: give it the server's time.
+        let waiting = events.last().is_some_and(|e| {
+            matches!(e["type"].as_str(), Some("model" | "answer_request"))
+                || (e["type"] == "hud"
+                    && (e["card"]["kind"] == "listening"
+                        || (e["card"]["kind"] == "answer" && e["card"]["done"] != true)))
+        });
+        let enough = if waiting { 30_000 } else { 4_000 };
+        if (finished && quiet > 600) || quiet > enough {
             return;
         }
         if started.elapsed() > Duration::from_millis(max_ms) {

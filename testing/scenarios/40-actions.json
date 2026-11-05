@@ -1,0 +1,273 @@
+{
+  "defaults": {
+    "tags": ["act"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "cloud",
+      "polish": false,
+      "writing": "smart"
+    }
+  },
+  "cases": [
+    {
+      "id": "act.en.open-app",
+      "tags": ["critical"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "open Slack",
+      "expect": {
+        "route": "act",
+        "act": "open_app"
+      }
+    },
+    {
+      "id": "act.pl.open-app",
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "otwórz Slacka",
+      "expect": {
+        "route": "act",
+        "act": "open_app"
+      }
+    },
+    {
+      "id": "act.en.close-window",
+      "about": "Closing another app's window: the notice says how (the keys for this OS).",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": "browser_article",
+      "say": "close that window",
+      "regression": "0.1.8 #1: \"close that window\" on Windows said it couldn't",
+      "expect": {
+        "route": "act",
+        "act": "close_window",
+        "shows": ["hud.notice.cantClose"],
+        "must_not": ["typed", "silent"]
+      }
+    },
+    {
+      "id": "dismiss.en.close-that-card",
+      "tags": ["critical", "cards"],
+      "lang": "en",
+      "screen": "browser_article",
+      "say": "close that",
+      "card": {
+        "kind": "answer",
+        "question": "what's the weather",
+        "text": "Sunny, 19°C."
+      },
+      "expect": {
+        "route": "dismiss",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "dismiss.de.never-mind",
+      "tags": ["cards"],
+      "lang": "de",
+      "screen": "browser_article",
+      "say": "schon gut",
+      "card": {
+        "kind": "answer",
+        "question": "q",
+        "text": "a"
+      },
+      "expect": {
+        "route": ["dismiss", "handled"],
+        "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "dismiss.pl.zamknij",
+      "tags": ["cards"],
+      "lang": "pl",
+      "screen": "browser_article",
+      "say": "zamknij to",
+      "card": {
+        "kind": "answer",
+        "question": "q",
+        "text": "a"
+      },
+      "expect": {
+        "route": ["dismiss", "handled"],
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "remind.en.tomorrow-morning",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "remind me tomorrow morning to call the bank",
+      "regression": "0.1.6 brain: \"remind me tomorrow morning…\" got \"did you mean to type\"",
+      "expect": {
+        "route": "remind",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "remind.en.in-field",
+      "tags": ["reminder"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "remind me at 5 to send the invoice",
+      "expect": {
+        "route": "remind",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "remind.pl.jutro",
+      "tags": ["reminder", "critical"],
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "przypomnij mi jutro o 9 żeby zadzwonić do banku",
+      "expect": {
+        "route": "remind",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "remind.de.morgen",
+      "tags": ["reminder"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "erinnere mich morgen um 9, die Bank anzurufen",
+      "expect": {
+        "route": "remind",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "remind.es.manana",
+      "tags": ["reminder"],
+      "lang": "es",
+      "screen": "finder_desktop",
+      "say": "recuérdame mañana a las 9 llamar al banco",
+      "expect": {
+        "route": "remind",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "remind.fr.demain",
+      "tags": ["reminder"],
+      "lang": "fr",
+      "screen": "finder_desktop",
+      "say": "rappelle-moi demain à 9 heures d'appeler la banque",
+      "expect": {
+        "route": "remind",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "write.en.remind-in-chat",
+      "about": "\"Remind me…\" typed to a person in a chat may be for them (either is fine, never an answer).",
+      "tags": ["reminder"],
+      "lang": "en",
+      "screen": "messages_mom",
+      "say": "remind me to bring the charger tomorrow",
+      "expect": {
+        "route": ["write", "polish", "remind"],
+        "must_not": ["answered"]
+      },
+      "os": ["macos"]
+    },
+    {
+      "id": "act.en.calendar",
+      "tags": ["calendar"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "add lunch with Sam on Friday at 1pm to my calendar",
+      "expect": {
+        "route": "act",
+        "act": "calendar_event"
+      }
+    },
+    {
+      "id": "act.en.unsupported",
+      "tags": ["unsupported"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "rename all the files on my desktop to lowercase",
+      "expect": {
+        "route": "act",
+        "act": "unsupported",
+        "must_not": ["typed", "silent"]
+      }
+    },
+    {
+      "id": "help.en.what-can-i-say",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "Hey Ambient, what can I say?",
+      "regression": "D12: \"Hey Ambient, what can I say?\" was typed as dictation",
+      "expect": {
+        "route": "help",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "help.pl",
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "co mogę powiedzieć",
+      "expect": {
+        "route": ["help", "answer"],
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "report.en.bug",
+      "tags": ["feedback"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "report a bug: the answer card doesn't close on click",
+      "expect": {
+        "route": "report",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "handled.en.yes-to-suggestion",
+      "tags": ["cards", "regression"],
+      "lang": "en",
+      "screen": "mail_read_sam",
+      "say": "yes",
+      "card": {
+        "kind": "suggestion",
+        "text": "hud.suggest.draftReply"
+      },
+      "regression": "D15: answering a suggestion by voice",
+      "expect": {
+        "route": "handled",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "dyme.en.no-field-prose",
+      "about": "Prose with no text field: offered with Copy, never typed into the page.",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": "browser_article",
+      "say": "Thanks for the update, I'll send the numbers tomorrow.",
+      "regression": "D9: dictation with no field → \"Did you mean to type this?\"",
+      "expect": {
+        "route": "did_you_mean",
+        "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "dyme.pl.no-field-prose",
+      "tags": ["regression"],
+      "lang": "pl",
+      "screen": "browser_article",
+      "say": "Dzięki, wyślę liczby jutro rano.",
+      "expect": {
+        "route": "did_you_mean",
+        "must_not": ["typed"]
+      }
+    }
+  ]
+}

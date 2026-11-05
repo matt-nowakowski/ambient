@@ -24,3 +24,7 @@ packages/models/dist
 # Misc
 .DS_Store
 *.log
+
+# Scenario suite outputs
+testing/out
+testing/.cache
