@@ -838,6 +838,7 @@ async fn server_answer(
                 context.map(|c| format!("\n\n{c}")).unwrap_or_default()
             ),
         );
+        llm::pace().await;
         match send_once(app, &url, &body).await {
             Ok(res) => break res,
             Err(SendError::Retry(key)) if attempt < 2 => {

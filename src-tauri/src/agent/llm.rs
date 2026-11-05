@@ -7,7 +7,8 @@
 
 use std::cell::RefCell;
 use std::future::Future;
-use std::time::Instant;
+use std::sync::Mutex;
+use std::time::{Duration, Instant};
 
 use tauri::AppHandle;
 
@@ -227,6 +228,7 @@ pub async fn run_on(
     if system.len() + user.len() > engine.max_chars() {
         return None;
     }
+    pace().await;
     let started = Instant::now();
     let out = match engine {
         Engine::Apple => {
@@ -234,9 +236,11 @@ pub async fn run_on(
                 return None;
             }
             let (s, u) = (system.to_string(), user.to_string());
-            tauri::async_runtime::spawn_blocking(move || apple(&s, &u))
+            let call = tauri::async_runtime::spawn_blocking(move || apple(&s, &u));
+            tokio::time::timeout(limits.timeout.unwrap_or(APPLE_TIMEOUT), call)
                 .await
                 .ok()
+                .and_then(Result::ok)
                 .flatten()
         }
         Engine::Local => crate::local_llm::complete(system, user, limits).await,
@@ -270,6 +274,41 @@ pub async fn complete_hosted_limited(
     }
     complete_inner(app, purpose, system, user, false, limits).await
 }
+
+// ── Pacing ──────────────────────────────────────────────────────────────────
+
+/// The least time between the starts of two AI requests. One dictation can
+/// make several in a row (routing, how to type it, polish, a draft) and a
+/// burst of dictations several more; spacing their starts keeps a burst
+/// from tripping the server's per-minute limit. Requests in sequence rarely
+/// wait: each takes longer than this.
+pub const MIN_GAP: Duration = Duration::from_millis(250);
+
+static NEXT_SLOT: Mutex<Option<Instant>> = Mutex::new(None);
+
+/// When a request asked for at `now` may start, given the last one's start.
+fn slot(last: Option<Instant>, now: Instant) -> Instant {
+    last.map_or(now, |t| (t + MIN_GAP).max(now))
+}
+
+/// Wait for this request's turn (at most `MIN_GAP` after the last one's
+/// start). Concurrent callers each take the next slot.
+pub async fn pace() {
+    let wait = {
+        let mut last = NEXT_SLOT.lock().unwrap_or_else(|e| e.into_inner());
+        let now = Instant::now();
+        let at = slot(*last, now);
+        *last = Some(at);
+        at.saturating_duration_since(now)
+    };
+    if !wait.is_zero() {
+        tokio::time::sleep(wait).await;
+    }
+}
+
+/// Apple's model has no deadline of its own here; a hung call must not hold
+/// the caller forever (the thread is left to finish on its own).
+const APPLE_TIMEOUT: Duration = Duration::from_secs(30);
 
 // ── What ran, for History's Details ─────────────────────────────────────────
 
@@ -386,6 +425,7 @@ async fn complete_inner(
         crate::plan::record_hosted_use(app, "ai");
     }
     let disable_reasoning = t.is_hosted();
+    pace().await;
     let started = Instant::now();
     match crate::llm_client::send_chat_completion_bounded(
         &t.provider,
@@ -438,6 +478,20 @@ fn limit_show(purpose: &str) -> crate::limits::Show {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn requests_in_a_burst_are_spaced() {
+        let now = Instant::now();
+        assert_eq!(slot(None, now), now);
+        // Right after one: waits out the gap.
+        assert_eq!(slot(Some(now), now), now + MIN_GAP);
+        // Long after one: at once.
+        let later = now + Duration::from_secs(2);
+        assert_eq!(slot(Some(now), later), later);
+        // A third in the same burst queues behind the second.
+        let second = slot(Some(now), now);
+        assert_eq!(slot(Some(second), now), now + MIN_GAP * 2);
+    }
 
     #[test]
     fn answers_follow_the_intelligence_setting() {

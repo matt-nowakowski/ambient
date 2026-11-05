@@ -173,6 +173,11 @@ fn polish_limits(transcription: &str) -> crate::llm_client::RequestLimits {
 /// The hosted endpoint gives its model ~9 s (one retry included).
 const POLISH_TIMEOUT: Duration = Duration::from_secs(10);
 
+/// Apple Intelligence polish: on device, a long dictation can take a while,
+/// but never forever.
+#[cfg(all(target_os = "macos", target_arch = "aarch64"))]
+const APPLE_POLISH_TIMEOUT: Duration = Duration::from_secs(20);
+
 /// Warm the connection to the hosted AI while the user is still speaking, if
 /// this dictation may need it (polish, an Ask, or Smart writing, which can
 /// draft): DNS, TCP and TLS are then done before the request is (measured
@@ -379,6 +384,10 @@ async fn post_process_transcription(
         }
     }
 
+    // The downloaded model paces itself (`llm::run_on`).
+    if provider.id != crate::agent::llm::LOCAL_MODEL_PROVIDER_ID {
+        crate::agent::llm::pace().await;
+    }
     let started = Instant::now();
     let polished: Option<String> = async {
     if provider.supports_structured_output {
@@ -418,11 +427,18 @@ async fn post_process_transcription(
                     return None;
                 }
 
-                return match apple_intelligence::process_text_with_system_prompt(
-                    &system_prompt,
-                    &user_content,
-                    0,
-                ) {
+                // Off the async thread, and bounded: past the deadline the
+                // words are typed as said.
+                let (system, user) = (system_prompt.clone(), user_content.clone());
+                let call = tauri::async_runtime::spawn_blocking(move || {
+                    apple_intelligence::process_text_with_system_prompt(&system, &user, 0)
+                });
+                let reply = match tokio::time::timeout(APPLE_POLISH_TIMEOUT, call).await {
+                    Ok(Ok(reply)) => reply,
+                    Ok(Err(e)) => Err(e.to_string()),
+                    Err(_) => Err("timed out".to_string()),
+                };
+                return match reply {
                     Ok(result) => {
                         if result.trim().is_empty() {
                             debug!("Apple Intelligence returned an empty response");
@@ -2157,7 +2173,10 @@ mod tests {
         let en = include_str!("../../src/i18n/locales/en/translation.json");
         assert!(en.contains(&format!("\"{}\"", key.rsplit('.').next().unwrap())));
         assert_eq!(super::Polish::Failed.text(), None);
-        assert_eq!(super::Polish::Text("Hi.".into()).text().as_deref(), Some("Hi."));
+        assert_eq!(
+            super::Polish::Text("Hi.".into()).text().as_deref(),
+            Some("Hi.")
+        );
     }
 
     #[test]

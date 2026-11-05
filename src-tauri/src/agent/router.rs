@@ -890,6 +890,10 @@ pub async fn on_device_says_write(app: &AppHandle, transcript: &str) -> bool {
     label.as_deref() == Some("write")
 }
 
+/// The router's deadline: like polish's, a little over the server's own
+/// budget for a short reply.
+const ROUTE_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(10);
+
 /// `ask` is set for the Ask shortcut: the user is talking to the agent.
 /// `previous` is the last question and answer while that card is still up
 /// (or just closed), so "what other emails did we get from them" resolves.
@@ -971,7 +975,8 @@ pub async fn route(
     let chars = u32::try_from(transcript.chars().count()).unwrap_or(u32::MAX);
     let limits = crate::llm_client::RequestLimits {
         max_tokens: Some(chars.saturating_mul(2).saturating_add(320).min(2_048)),
-        timeout: None,
+        // Past this, plain dictation goes on without it.
+        timeout: Some(ROUTE_TIMEOUT),
     };
     let reply = llm::complete_hosted_limited(app, "route", &system, &user, limits).await?;
     let route = parse(&reply).map(|r| answer_in_card(r, transcript));
