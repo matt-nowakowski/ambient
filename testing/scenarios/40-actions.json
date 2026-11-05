@@ -25,6 +25,8 @@
       "lang": "pl",
       "screen": "finder_desktop",
       "say": "otwórz Slacka",
+      "tags": ["regression"],
+      "regression": "0.1.9 #1: on the Windows/Linux desktop \"otwórz Slacka\" was typed into File Explorer / Files",
       "expect": {
         "route": "act",
         "act": "open_app"
@@ -273,6 +275,45 @@
       "expect": {
         "route": "did_you_mean",
         "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "act.de.open-app",
+      "lang": "de",
+      "tags": ["desktop", "regression"],
+      "screen": "finder_desktop",
+      "say": "öffne Slack",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English command was typed into File Explorer / Files",
+      "expect": {
+        "route": "act",
+        "act": "open_app",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "act.es.open-app",
+      "lang": "es",
+      "tags": ["desktop", "regression"],
+      "screen": "finder_desktop",
+      "say": "abre Spotify",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English command was typed into File Explorer / Files",
+      "expect": {
+        "route": "act",
+        "act": "open_app",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "dyme.de.desktop-prose",
+      "about": "Prose on the desktop (nothing to type into): offered with Copy, never typed into File Explorer / Files.",
+      "tags": ["desktop", "regression"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "Danke für das Update, ich schicke dir die Zahlen morgen früh.",
+      "regression": "0.1.9 #1: the desktop now trusts \"no text field\"; prose there is offered, not typed",
+      "expect": {
+        "route": "did_you_mean",
+        "must_not": ["typed", "answered"]
       }
     }
   ]
