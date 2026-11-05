@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// Installers, the updater feed, mirrored models and media (the launch video) live in Cloudflare R2. The
+// Installers, the updater feed, mirrored models, media (the launch video) and marketing/ (creator videos) live in Cloudflare R2. The
 // app and site only ever link to our own domain, so the storage host can move
 // without shipping a new app.
 //
@@ -41,6 +41,8 @@ const nextConfig: NextConfig = {
       { source: "/releases/:path*", destination: `${DOWNLOADS}/releases/:path*`, permanent: false },
       { source: "/models/:path*", destination: `${DOWNLOADS}/models/:path*`, permanent: false },
       { source: "/media/:path*", destination: `${DOWNLOADS}/media/:path*`, permanent: false },
+      // Creator videos for the marketing suite (scripts/marketing-upload.ts).
+      { source: "/marketing/:path*", destination: `${DOWNLOADS}/marketing/:path*`, permanent: false },
     ];
   },
 };

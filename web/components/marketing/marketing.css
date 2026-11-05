@@ -21,29 +21,6 @@
   background: #0b0b0d;
 }
 
-.mk-label {
-  display: block;
-  font-size: 12px;
-  line-height: 15px;
-  color: var(--muted);
-}
-
-.mk-field {
-  height: 34px;
-  width: 100%;
-  border-radius: 9px;
-  border: 0.5px solid color-mix(in srgb, #8f8f8f 45%, transparent);
-  background: var(--glass-strong);
-  padding: 0 10px;
-  font-size: 13px;
-  color: var(--foreground);
-  outline: none;
-}
-.mk-field:focus-visible {
-  outline: 2px solid var(--foreground);
-  outline-offset: 1px;
-}
-
 .mk-seg {
   display: inline-flex;
   max-width: 100%;
@@ -73,23 +50,6 @@
   background: var(--glass-strong);
   color: var(--foreground);
   box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-.mk-meter {
-  height: 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, #8f8f8f 18%, transparent);
-  overflow: hidden;
-}
-.mk-meter > span {
-  display: block;
-  height: 100%;
-  border-radius: 999px;
-  background: var(--foreground);
-  transition: width 200ms ease;
-}
-.mk-meter[data-level="high"] > span {
-  background: #d97706;
 }
 
 .mk-nav {

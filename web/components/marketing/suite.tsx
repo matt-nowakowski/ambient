@@ -13,25 +13,9 @@ import {
   logoSvg,
   logosZip,
 } from "@/lib/marketing/catalog";
-import { KINDS, ORIENTATIONS, type UploadWithUrls } from "@/lib/marketing/uploads";
+import { KINDS, ORIENTATIONS, type CreatorVideo } from "@/lib/marketing/creator";
 import { BannerGallery, CopyText } from "./client";
 import "./marketing.css";
-
-/** What the media kit may see of an upload: no uploader, nothing internal. */
-export type PublicUpload = Omit<UploadWithUrls, "createdBy">;
-export const toPublicUpload = (u: UploadWithUrls): PublicUpload => ({
-  id: u.id,
-  filename: u.filename,
-  contentType: u.contentType,
-  size: u.size,
-  title: u.title,
-  notes: u.notes,
-  kind: u.kind,
-  orientation: u.orientation,
-  createdAt: u.createdAt,
-  viewUrl: u.viewUrl,
-  downloadUrl: u.downloadUrl,
-});
 
 export const SECTIONS = [
   { id: "video", label: "Launch video" },
@@ -43,21 +27,10 @@ export const SECTIONS = [
 
 /**
  * The marketing suite, shared by the admin Marketing tab and the influencer
- * media kit. The kit renders it read-only; the admin passes its upload
- * controls in `adminUgc` and a delete button per item in `renderDelete`.
+ * media kit. Read-only in both: everything links to public files. The admin
+ * passes a note on adding creator videos in `creatorNote`.
  */
-export function MarketingSuite({
-  uploads,
-  uploadsNote,
-  adminUgc,
-  renderDelete,
-}: {
-  uploads: PublicUpload[];
-  /** Shown instead of the empty state when uploads can't be listed. */
-  uploadsNote?: ReactNode;
-  adminUgc?: ReactNode;
-  renderDelete?: (u: PublicUpload) => ReactNode;
-}) {
+export function MarketingSuite({ videos, creatorNote }: { videos: CreatorVideo[]; creatorNote?: ReactNode }) {
   return (
     <div className="space-y-14">
       <Section id="video" title="Launch video" sub="The current cut, horizontal and vertical, as MP4, with posters for light and dark.">
@@ -77,12 +50,12 @@ export function MarketingSuite({
                 <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-3">
                   <div className="text-[13px]">{v.label}</div>
                   <div className="flex flex-wrap gap-1.5">
-                    <a href={`/api/brand/video/${v.filename}`} className={buttonClass("primary", "sm")}>
+                    <a href={v.src} download={v.filename} className={buttonClass("primary", "sm")}>
                       Download MP4
                     </a>
                     {(["light", "dark"] as const).map((t) =>
                       v.poster?.[t] ? (
-                        <a key={t} href={`/api/brand/video/${v.poster[t]!.split("/").pop()}`} className={buttonClass("glass", "sm")}>
+                        <a key={t} href={v.poster[t]} download={v.poster[t]!.split("/").pop()} className={buttonClass("glass", "sm")}>
                           Poster, {t}
                         </a>
                       ) : null,
@@ -204,38 +177,51 @@ export function MarketingSuite({
         </div>
       </Section>
 
-      <Section id="creator" title="Creator videos" sub="Clips, b-roll and screen recordings to cut with. Links on this page work for six hours; reload for fresh ones.">
-        {adminUgc}
-        {uploads.length ? (
-          <div className={`grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ${adminUgc ? "mt-5" : ""}`}>
-            {uploads.map((u) => (
-              <div key={u.id} className="mk-card flex flex-col">
+      <Section id="creator" title="Creator videos" sub="Clips, b-roll and screen recordings to cut with.">
+        {creatorNote}
+        {videos.length ? (
+          <div className={`grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3 ${creatorNote ? "mt-5" : ""}`}>
+            {videos.map((v) => (
+              <div key={v.id} className="mk-card flex flex-col">
                 <div className="mk-preview relative overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
-                  {u.contentType.startsWith("video/") ? (
-                    <video controls playsInline preload="metadata" src={u.viewUrl} className="absolute inset-0 h-full w-full object-contain" />
+                  {v.isVideo ? (
+                    <video
+                      controls
+                      playsInline
+                      preload={v.poster ? "none" : "metadata"}
+                      poster={v.poster ?? undefined}
+                      src={v.src}
+                      className="absolute inset-0 h-full w-full object-contain"
+                    />
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element -- a presigned R2 URL
-                    <img src={u.viewUrl} alt={u.title} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
+                    // eslint-disable-next-line @next/next/no-img-element -- the downloadable file itself
+                    <img src={v.src} alt={v.title} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
                   )}
                 </div>
                 <div className="flex flex-1 flex-col px-3.5 py-3">
-                  <div className="text-[13px] text-foreground">{u.title}</div>
+                  <div className="text-[13px] text-foreground">{v.title}</div>
                   <div className="text-[12px] text-muted">
-                    {[KINDS.find((k) => k.id === u.kind)?.label, ORIENTATIONS.find((o) => o.id === u.orientation)?.label, bytes(u.size)].filter(Boolean).join(" · ")}
+                    {[
+                      KINDS.find((k) => k.id === v.kind)?.label,
+                      ORIENTATIONS.find((o) => o.id === v.orientation)?.label,
+                      v.durationS ? duration(v.durationS) : null,
+                      bytes(v.bytes),
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
                   </div>
-                  {u.notes ? <p className="mt-1.5 whitespace-pre-line text-[12.5px] leading-[1.5] text-muted">{u.notes}</p> : null}
+                  {v.notes ? <p className="mt-1.5 whitespace-pre-line text-[12.5px] leading-[1.5] text-muted">{v.notes}</p> : null}
                   <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-3">
-                    <a href={u.downloadUrl} className={buttonClass("glass", "sm")}>
+                    <a href={v.src} download={v.src.split("/").pop()} className={buttonClass("glass", "sm")}>
                       Download
                     </a>
-                    {renderDelete?.(u)}
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          (uploadsNote ?? <Empty>Nothing here yet.</Empty>)
+          <Empty>No creator videos yet.</Empty>
         )}
       </Section>
     </div>
@@ -265,4 +251,9 @@ export function bytes(n: number) {
   if (n >= 1e9) return `${(n / 1e9).toFixed(2)} GB`;
   if (n >= 1e6) return `${(n / 1e6).toFixed(n >= 1e8 ? 0 : 1)} MB`;
   return `${Math.max(1, Math.round(n / 1e3))} KB`;
+}
+
+function duration(s: number) {
+  const t = Math.round(s);
+  return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
 }
