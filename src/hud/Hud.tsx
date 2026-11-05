@@ -19,6 +19,7 @@ import {
 } from "@/bindings";
 import { Orb } from "@/components/orb/Orb";
 import "./hud.css";
+import { AnswerText } from "./AnswerText";
 import { MeetingNotesCard } from "./MeetingNotesCard";
 import { Thumbs } from "./Thumbs";
 import { WritingChip } from "./WritingChip";
@@ -47,6 +48,16 @@ const HELP_GROUPS = [
   { key: "recall", count: 2 },
   { key: "suggestions", count: 2 },
 ] as const;
+
+/** Seconds an answer stays after Insert, saying so with Undo. */
+const INSERTED_TTL = 5;
+
+/** How long the small "Copied" confirmation shows, in ms. */
+const FLASH_MS = 1200;
+
+/** Answer actions Rust carries out while the card waits (it shows a
+ * spinner until the result replaces the card). */
+const SLOW_ACTIONS = new Set(["add_to_calendar", "reply"]);
 
 /** Seconds a notice stays: plain, with Undo, with alternatives to pick. */
 const NOTICE_TTL = { plain: 4, undo: 8, offers: 14 } as const;
@@ -78,7 +89,20 @@ export default function Hud() {
   const [content, setContent] = useState<HudContent | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [tip, setTip] = useState<"first" | "tip" | null>(null);
+  /** The action running on this card ("accept", "stop", "add_to_calendar"):
+   * its button shows progress until Rust replaces the card. */
+  const [busy, setBusy] = useState<string | null>(null);
+  /** The answer went in with Insert or Replace: "Inserted ✓" and Undo. */
+  const [inserted, setInserted] = useState(false);
+  /** The small "Copied" confirmation (a selection, a code block, a link). */
+  const [flash, setFlash] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
+  const answerRef = useRef<HTMLDivElement>(null);
+  /** The card on screen, for event listeners set up once. */
+  const shownRef = useRef<HudContent | null>(null);
+  shownRef.current = content;
+  /** Follow a streaming answer down, unless the user scrolled up to read. */
+  const stickRef = useRef(true);
 
   useEffect(() => {
     const unlisten = listen<HudContent>("hud", (e) => {
@@ -90,7 +114,15 @@ export default function Hud() {
           "id" in prev &&
           "id" in e.payload &&
           prev.id === e.payload.id;
-        if (!sameCard) setCopied(null);
+        if (!sameCard) {
+          setCopied(null);
+          setBusy(null);
+          setInserted(false);
+          stickRef.current = true;
+        } else if (e.payload.kind === "answer" && e.payload.done) {
+          // Stopped (or finished anyway): its actions are live again.
+          setBusy((b) => (b === "stop" ? null : b));
+        }
         return e.payload;
       });
       // The first few suggestions teach that you can answer by voice; the
@@ -118,9 +150,24 @@ export default function Hud() {
     });
     // Rust is closing the panel: dissolve the card first.
     const unlistenClose = listen("hud-close", () => setContent(null));
+    // Accepted without a click (⏎, or "yes" said aloud): the same progress.
+    const unlistenAction = listen<{ id: string; action: string }>(
+      "hud-action",
+      (e) => {
+        const shown = shownRef.current;
+        if (
+          e.payload.action === "accept" &&
+          shown?.kind === "suggestion" &&
+          shown.id === e.payload.id
+        ) {
+          setBusy("accept");
+        }
+      },
+    );
     return () => {
       unlisten.then((f) => f());
       unlistenClose.then((f) => f());
+      unlistenAction.then((f) => f());
     };
   }, []);
 
@@ -137,38 +184,75 @@ export default function Hud() {
     return () => ro.disconnect();
   }, [open]);
 
-  // Suggestions, status lines and notices fade on their own.
+  // Suggestions, status lines and notices fade on their own; an accepted
+  // suggestion waits for its result; an inserted answer goes after a moment.
   useEffect(() => {
     if (!content) return;
     const ttl =
       content.kind === "suggestion"
-        ? SUGGESTION_TTL
-        : content.kind === "status"
-          ? content.undo
-            ? 6
-            : 3
-          : content.kind === "notice"
-            ? (content.offers?.length ?? 0) > 0
-              ? NOTICE_TTL.offers
-              : content.undo
-                ? NOTICE_TTL.undo
-                : NOTICE_TTL.plain
-            : content.kind === "listening"
-              ? LISTENING_TTL
-              : null;
+        ? busy
+          ? LISTENING_TTL
+          : SUGGESTION_TTL
+        : content.kind === "answer" && inserted
+          ? INSERTED_TTL
+          : content.kind === "status"
+            ? content.undo
+              ? 6
+              : 3
+            : content.kind === "notice"
+              ? (content.offers?.length ?? 0) > 0
+                ? NOTICE_TTL.offers
+                : content.undo
+                  ? NOTICE_TTL.undo
+                  : NOTICE_TTL.plain
+              : content.kind === "listening"
+                ? LISTENING_TTL
+                : null;
     if (ttl === null) return;
     const id = setTimeout(() => {
-      if (content.kind === "suggestion") {
+      if (content.kind === "suggestion" && !busy) {
         commands.hudAction(content.id, "expire", null);
       }
       commands.hudHide();
     }, ttl * 1000);
     return () => clearTimeout(id);
-  }, [content]);
+  }, [content, busy, inserted]);
 
+  // The "Copied" confirmation fades by itself.
+  useEffect(() => {
+    if (!flash) return;
+    const id = setTimeout(() => setFlash(0), FLASH_MS);
+    return () => clearTimeout(id);
+  }, [flash]);
+
+  // A streaming answer scrolls with its text, smoothly, until the user
+  // scrolls up to read; reaching the bottom again picks it back up.
+  const answerText = content?.kind === "answer" ? content.text : "";
+  useEffect(() => {
+    const el = answerRef.current;
+    if (!el || !stickRef.current) return;
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [answerText, reduceMotion]);
+
+  // Keys reach this window only where it can take focus (it usually can't:
+  // Rust catches Esc and ⏎ globally while a card shows them, see hud_keys.rs).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") dismiss();
+      // Cmd/Ctrl+C with nothing selected copies the whole answer.
+      if (
+        (e.metaKey || e.ctrlKey) &&
+        e.key.toLowerCase() === "c" &&
+        content?.kind === "answer" &&
+        content.text &&
+        !window.getSelection()?.toString()
+      ) {
+        e.preventDefault();
+        copy("copy", content.text);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -263,6 +347,28 @@ export default function Hud() {
     setCopied(key);
   };
 
+  /** Copy a piece of the answer (a selection, code, a link) and say so. */
+  const copyPiece = async (text: string) => {
+    if (!text) return;
+    await writeText(text);
+    setFlash(Date.now());
+  };
+
+  /** Selecting text in the answer copies it, like a terminal. */
+  const onAnswerMouseUp = () => {
+    const sel = window.getSelection();
+    const text = sel?.toString() ?? "";
+    if (text.trim() && answerRef.current?.contains(sel?.anchorNode ?? null)) {
+      copyPiece(text);
+    }
+  };
+
+  const onAnswerScroll = () => {
+    const el = answerRef.current;
+    if (!el) return;
+    stickRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
+  };
+
   const runAction = (id: string, text: string, a: HudAnswerAction) => {
     switch (a.kind) {
       case "copy":
@@ -271,8 +377,14 @@ export default function Hud() {
         return copy("copy_code", a.value ?? text);
       case "open_link":
         return commands.hudAction("", "open", a.value ?? null);
+      case "insert":
+      case "replace":
+        // The card stays to say it went in, with Undo.
+        setInserted(true);
+        return commands.hudAction(id, a.kind, text);
       default:
-        // insert, replace, reply, add_to_calendar: Rust acts on the text.
+        // reply, add_to_calendar: Rust acts on the text; the card waits.
+        if (SLOW_ACTIONS.has(a.kind)) setBusy(a.kind);
         return commands.hudAction(id, a.kind, text);
     }
   };
@@ -280,6 +392,12 @@ export default function Hud() {
   const actionLabel = (a: HudAnswerAction) => {
     if (copied === a.kind) return t("hud.copied");
     return t(ACTION_LABEL[a.kind] ?? "hud.copy");
+  };
+
+  const acceptSuggestion = (id: string) => {
+    if (busy) return;
+    setBusy("accept");
+    commands.hudAction(id, "accept", null);
   };
 
   /** Rust sends i18n keys for its own source titles (e.g. "Search Gmail"). */
@@ -344,11 +462,39 @@ export default function Hud() {
                     <X width={13} height={13} />
                   </button>
                 </header>
-                <div className="hud-answer">
-                  {content.text || (
+                <div
+                  ref={answerRef}
+                  className="hud-answer"
+                  onMouseUp={onAnswerMouseUp}
+                  onScroll={onAnswerScroll}
+                >
+                  {content.text ? (
+                    <AnswerText
+                      text={content.text}
+                      onCopy={copyPiece}
+                      onOpen={(url) => commands.hudAction("", "open", url)}
+                    />
+                  ) : (
                     <span className="hud-faint">{t("hud.thinking")}</span>
                   )}
                 </div>
+                <AnimatePresence>
+                  {flash > 0 && (
+                    <motion.span
+                      key={flash}
+                      className="hud-flash"
+                      role="status"
+                      initial={
+                        reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }
+                      }
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduceMotion ? 0.08 : 0.14 }}
+                    >
+                      {t("hud.copied")}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
                 {content.note && <p className="hud-note">{t(content.note)}</p>}
                 {content.sources.length > 0 && (
                   <ol className="hud-sources" aria-label={t("hud.sources")}>
@@ -380,7 +526,39 @@ export default function Hud() {
                     ))}
                   </ol>
                 )}
-                {content.done && content.actions.length > 0 && (
+                {/* Streaming: Stop keeps what has arrived. */}
+                {!content.done && content.text && (
+                  <footer className="hud-actions">
+                    <button
+                      type="button"
+                      disabled={busy === "stop"}
+                      aria-busy={busy === "stop"}
+                      onClick={() => {
+                        setBusy("stop");
+                        commands.hudAction(content.id, "stop", null);
+                      }}
+                    >
+                      {busy === "stop" && <Spinner />}
+                      {t("hud.stop")}
+                    </button>
+                  </footer>
+                )}
+                {content.done && inserted && (
+                  <footer className="hud-actions">
+                    <button type="button" className="hud-done" disabled>
+                      {t("hud.inserted")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        commands.hudAction(content.id, "undo_insert", null)
+                      }
+                    >
+                      {t("hud.undo")}
+                    </button>
+                  </footer>
+                )}
+                {content.done && !inserted && content.actions.length > 0 && (
                   <footer className="hud-actions">
                     {content.actions.map((a, i) => (
                       <button
@@ -391,8 +569,11 @@ export default function Hud() {
                             ? "hud-primary"
                             : undefined
                         }
+                        disabled={busy !== null}
+                        aria-busy={busy === a.kind}
                         onClick={() => runAction(content.id, content.text, a)}
                       >
+                        {busy === a.kind && <Spinner />}
                         {actionLabel(a)}
                       </button>
                     ))}
@@ -511,19 +692,28 @@ export default function Hud() {
                     ...fill(content.vars),
                   })}
                 </span>
+                {/* The label says what will happen ("Draft reply"); once
+                    accepted it shows progress until the result arrives. */}
                 <button
                   type="button"
                   className="hud-primary"
-                  onClick={() => commands.hudAction(content.id, "accept", null)}
+                  aria-busy={busy === "accept"}
+                  disabled={busy !== null}
+                  onClick={() => acceptSuggestion(content.id)}
                 >
+                  {busy === "accept" && <Spinner />}
                   {content.accept_label
                     ? t(content.accept_label, {
                         defaultValue: content.accept_label,
                       })
                     : t("hud.yes")}
-                  <kbd>{KEY_ENTER}</kbd>
+                  {!busy && <kbd>{KEY_ENTER}</kbd>}
                 </button>
-                <button type="button" onClick={dismiss}>
+                <button
+                  type="button"
+                  disabled={busy !== null}
+                  onClick={dismiss}
+                >
                   {t("hud.notNow")}
                   <kbd>{KEY_ESC}</kbd>
                 </button>
@@ -545,13 +735,17 @@ export default function Hud() {
                     )}
                   </span>
                 )}
-                <motion.span
-                  key={content.id}
-                  className="hud-timer"
-                  initial={{ scaleX: 1 }}
-                  animate={{ scaleX: 0 }}
-                  transition={{ duration: SUGGESTION_TTL, ease: "linear" }}
-                />
+                {busy ? (
+                  <span className="hud-timer hud-timer-busy" />
+                ) : (
+                  <motion.span
+                    key={content.id}
+                    className="hud-timer"
+                    initial={{ scaleX: 1 }}
+                    animate={{ scaleX: 0 }}
+                    transition={{ duration: SUGGESTION_TTL, ease: "linear" }}
+                  />
+                )}
               </div>
             )}
 
@@ -607,8 +801,18 @@ export default function Hud() {
                         key={`${o.action}-${o.label}`}
                         type="button"
                         className={i === 0 ? "hud-primary" : undefined}
-                        onClick={() => runOffer(content.id, o)}
+                        disabled={busy !== null}
+                        aria-busy={busy === o.action}
+                        onClick={() => {
+                          // Rust carries these out and replaces the card
+                          // when done; Copy and Open are instant.
+                          if (o.action !== "copy" && o.action !== "open") {
+                            setBusy(o.action);
+                          }
+                          runOffer(content.id, o);
+                        }}
                       >
+                        {busy === o.action && <Spinner />}
                         {copied === `offer-${o.label}`
                           ? t("hud.copied")
                           : t(o.label)}
@@ -767,4 +971,9 @@ export default function Hud() {
       </AnimatePresence>
     </div>
   );
+}
+
+/** Progress inside a HUD button; a still ring under reduced motion (CSS). */
+function Spinner() {
+  return <span className="hud-spin" aria-hidden="true" />;
 }

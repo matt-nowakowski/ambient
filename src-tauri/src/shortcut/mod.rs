@@ -63,10 +63,13 @@ static CANCEL_REQUESTED: AtomicBool = AtomicBool::new(false);
 #[cfg(not(target_os = "linux"))]
 static CANCEL_REGISTERED: std::sync::Mutex<bool> = std::sync::Mutex::new(false);
 
+/// A recording wants its cancel shortcut (the HUD gives Escape up meanwhile).
+pub fn cancel_requested() -> bool {
+    CANCEL_REQUESTED.load(Ordering::SeqCst)
+}
+
 /// Register the cancel shortcut (called when recording starts)
 pub fn register_cancel_shortcut(app: &AppHandle) {
-    // The agent HUD may be holding Escape; recording's cancel takes priority.
-    crate::hud::release_escape(app);
     // Track recording lifecycle independently of the current implementation so
     // switching implementations mid-recording cannot leave stale fallback state.
     crate::secure_input::register_cancel_fallback(app);
@@ -96,10 +99,14 @@ fn schedule_cancel_reconcile(app: &AppHandle) {
 }
 
 fn reconcile_cancel_shortcut(app: &AppHandle) {
+    // The agent HUD may be holding Escape: it gives it up before a cancel
+    // registers, and takes it back once one is gone (recording's cancel
+    // takes priority). Synchronous, so the two never hold one key at once.
+    crate::hud_keys::sync_now(app);
+
     // Cancel shortcut is disabled on Linux due to instability with dynamic shortcut registration
     #[cfg(target_os = "linux")]
     {
-        let _ = app;
         return;
     }
 

@@ -391,3 +391,235 @@ button.hud-chip:hover {
   opacity: 0.45;
   cursor: default;
 }
+
+/* ── Button states: hover, pressed, focus, disabled, busy ─────────────── */
+
+.hud-card button {
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    opacity 120ms ease,
+    transform 90ms ease;
+}
+
+.hud-actions button:active:not(:disabled),
+.hud-suggestion button:active:not(:disabled),
+button.hud-chip:active,
+.hud-close:active,
+.hud-undo:active {
+  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hud-card .hud-primary:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.hud-card button:focus-visible,
+.hud-card [role="button"]:focus-visible,
+.hud-link:focus-visible {
+  outline: 1.5px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 1px;
+}
+
+.hud-card button:disabled,
+.hud-suggestion button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Busy: the button that's running stays at full strength. */
+.hud-card button[aria-busy="true"]:disabled {
+  opacity: 1;
+  cursor: progress;
+}
+
+/* "Inserted ✓": a result, not a control. */
+.hud-card button.hud-done:disabled {
+  opacity: 1;
+  background: rgba(74, 222, 128, 0.14);
+  color: var(--h-success);
+}
+
+.hud-spin {
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  opacity: 0.8;
+  animation: hud-spin 700ms linear infinite;
+}
+
+@keyframes hud-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* An accepted suggestion: the countdown becomes a slow shimmer. */
+.hud-timer-busy {
+  transform: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
+  animation: hud-sweep 1.1s ease-in-out infinite;
+}
+
+@keyframes hud-sweep {
+  from {
+    background-position: -40% 0;
+  }
+  to {
+    background-position: 140% 0;
+  }
+}
+
+/* ── Answer text: smooth scrolling, code, links, "Copied" ───────────── */
+
+.hud-answer {
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.hud-code-block {
+  position: relative;
+  display: block;
+  margin: 6px 0;
+  padding: 8px 28px 8px 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 0 0 0.5px var(--h-hair);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+  cursor: copy;
+  transition: background 120ms ease;
+}
+
+.hud-code-block:hover {
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.hud-code-block:active {
+  background: rgba(0, 0, 0, 0.46);
+}
+
+.hud-code-hint {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  color: var(--h-faint);
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.hud-code-block:hover .hud-code-hint,
+.hud-code-block:focus-visible .hud-code-hint {
+  opacity: 1;
+}
+
+.hud-inline-code {
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  cursor: copy;
+  transition: background 120ms ease;
+}
+
+.hud-inline-code:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hud-link-wrap {
+  white-space: nowrap;
+}
+
+.hud-link {
+  color: #a5cdff;
+  text-decoration: underline;
+  text-decoration-color: rgba(165, 205, 255, 0.4);
+  text-underline-offset: 2px;
+  white-space: normal;
+  word-break: break-all;
+  cursor: pointer;
+}
+
+.hud-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.hud-card .hud-link-copy {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--h-faint);
+  vertical-align: middle;
+  cursor: copy;
+  opacity: 0;
+}
+
+.hud-link-wrap:hover .hud-link-copy,
+.hud-link-copy:focus-visible {
+  opacity: 1;
+}
+
+.hud-card .hud-link-copy:hover {
+  background: var(--h-raise);
+  color: var(--h-ink);
+}
+
+.hud-flash {
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(74, 222, 128, 0.16);
+  color: var(--h-success);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-card button,
+  .hud-code-block,
+  .hud-inline-code {
+    transition: none;
+  }
+  .hud-actions button:active:not(:disabled),
+  .hud-suggestion button:active:not(:disabled),
+  button.hud-chip:active,
+  .hud-close:active,
+  .hud-undo:active {
+    transform: none;
+  }
+  .hud-spin {
+    animation: none;
+    border-right-color: currentColor;
+    opacity: 0.5;
+  }
+  .hud-timer-busy {
+    animation: none;
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .hud-answer {
+    scroll-behavior: auto;
+  }
+}

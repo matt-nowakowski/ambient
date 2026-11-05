@@ -2178,6 +2178,8 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
         super::handle(&app, super::router::Route::Compose(instruction));
         return;
     }
+    let web = fresh_query(&app, &p);
+    let needs_web = web.is_some();
     tauri::async_runtime::spawn(async move {
         let context = format!("{}\n{}", p.header, p.text);
         match p.kind {
@@ -2199,10 +2201,10 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                 answer::run_with(
                     app,
                     "Summarise this page in a few sentences.".into(),
-                    false,
+                    needs_web,
                     false,
                     Some(context),
-                    answer::Opts { premise: Some("a page".into()), ..Default::default() },
+                    answer::Opts { premise: Some("a page".into()), web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2210,10 +2212,10 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                 answer::run_with(
                     app,
                     "Explain this error and the most likely fix.".into(),
-                    false,
+                    needs_web,
                     false,
                     Some(context),
-                    answer::Opts { premise: Some("an error".into()), ..Default::default() },
+                    answer::Opts { premise: Some("an error".into()), web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2306,10 +2308,10 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                 answer::run_with(
                     app,
                     format!("You offered the user: \"{}\" and they said yes. Do it now, using the window below.", p.focus),
-                    false,
+                    needs_web,
                     false,
                     Some(context),
-                    answer::Opts { links, ..Default::default() },
+                    answer::Opts { links, web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2319,11 +2321,11 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                 let recalled = super::recall_context(&app, &p.focus);
                 answer::run_with(
                     app,
-                    "Brief me for this meeting in a few bullets: what it's about, what happened last time, and what I should have ready.".into(),
-                    false,
+                    "Brief me for this meeting in a few bullets: what it's about, what happened last time, what I should have ready, and (when sources are given) what's new with the people or company I'm meeting.".into(),
+                    needs_web,
                     false,
                     Some(format!("{}\n\nRelated:\n{recalled}", p.text)),
-                    answer::Opts { links, ..Default::default() },
+                    answer::Opts { links, web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2345,6 +2347,42 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
             }
         }
     });
+}
+
+/// A web search for an accepted offer that needs fresh facts (see
+/// `fresh`). Never on "On this computer only" or with AI off: nothing leaves
+/// then. The server holds searches to the plan's fair use.
+fn fresh_query(app: &AppHandle, p: &Pending) -> Option<String> {
+    let settings = crate::settings::get_settings(app);
+    if settings.agent.device_only() || llm::ai_off(app) {
+        return None;
+    }
+    let email = crate::plan::account_email(app);
+    let own_domain = email
+        .as_deref()
+        .and_then(|e| e.rsplit_once('@'))
+        .map(|(_, d)| d);
+    // The header is "App — window title"; a meeting's is its title.
+    let title = p
+        .header
+        .split_once(" — ")
+        .map_or(p.header.as_str(), |(_, t)| t);
+    let query = super::fresh::web_query(&super::fresh::Offer {
+        kind: p.kind,
+        vars: &p.vars,
+        text: &p.text,
+        title,
+        focus: &p.focus,
+        own_domain,
+    });
+    if let Some(q) = &query {
+        log::debug!(
+            "proactive: {} will search the web ({} chars)",
+            p.kind.name(),
+            q.len()
+        );
+    }
+    query
 }
 
 /// Pull the task and its due date out of the message (the one model

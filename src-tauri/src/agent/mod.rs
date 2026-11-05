@@ -6,6 +6,7 @@ pub mod act;
 pub mod answer;
 pub mod budget;
 pub mod compose;
+mod fresh;
 pub mod judge;
 #[cfg(any(target_os = "linux", test))]
 pub(crate) mod linux;

@@ -19,6 +19,7 @@ pub mod engine_supervisor;
 mod feedback;
 mod helpers;
 mod hud;
+mod hud_keys;
 #[cfg(target_os = "linux")]
 mod hud_linux;
 mod input;

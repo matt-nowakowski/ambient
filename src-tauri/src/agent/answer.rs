@@ -21,6 +21,8 @@ const CONTEXT_CHARS: usize = 6000;
 // Waiting for the server to start answering (a web search runs first) and
 // the longest silence mid-answer: remote_config's `answer.*` tunables
 // (defaults 25 s and 20 s).
+/// How often a streaming answer looks for Stop while waiting on the server.
+const STOP_POLL: Duration = Duration::from_millis(200);
 /// A screen capture taken while the router decided is good for this long.
 const PREFETCH_FRESH: Duration = Duration::from_secs(5);
 
@@ -46,6 +48,16 @@ struct Conversation {
 }
 
 static LAST: Mutex<Option<Conversation>> = Mutex::new(None);
+
+/// The answer the user pressed Stop on: its stream ends where it is.
+static STOPPED: Mutex<Option<String>> = Mutex::new(None);
+
+/// Stop streaming answer `id`; what arrived so far stays, with Insert/Copy.
+pub fn stop(id: &str) {
+    if let Ok(mut g) = STOPPED.lock() {
+        *g = Some(id.to_string());
+    }
+}
 
 /// Only if `llm_client`'s pooled client (which answers share, so follow-ups
 /// and drafts reuse its open connection) couldn't be built.
@@ -171,6 +183,11 @@ pub struct Opts {
     /// `contradicts_premise`). A question the user asked carries no
     /// premise: they get their answer whatever it says.
     pub premise: Option<String>,
+    /// What to search the web for when the answer also reads window text
+    /// (an accepted suggestion that needs fresh facts: the error message,
+    /// the company you're meeting). The server searches only the query, so
+    /// only the query leaves for the search provider. Needs `needs_web`.
+    pub web_query: Option<String>,
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -468,6 +485,11 @@ pub async fn run_with(
     let show = |text: &str, sources: &[Source], done: bool| {
         show_full(text, sources, done, Vec::new(), None)
     };
+    let stopped = || {
+        STOPPED
+            .lock()
+            .is_ok_and(|g| g.as_deref() == Some(id.as_str()))
+    };
     // The card first, so the user sees it was heard while context is read.
     show("", &[], false);
 
@@ -549,11 +571,13 @@ pub async fn run_with(
             &app,
             &prompt,
             needs_web,
+            opts.web_query.as_deref().filter(|_| needs_web),
             opts.write,
             &history,
             &sources_in,
             context.as_deref(),
             &show,
+            &stopped,
         )
         .await;
         // For History's details when this drafts a dictation.
@@ -750,15 +774,18 @@ async fn server_answer(
     app: &AppHandle,
     question: &str,
     needs_web: bool,
+    web_query: Option<&str>,
     write: bool,
     history: &[Turn],
     sources_in: &[Source],
     context: Option<&str>,
     show: &impl Fn(&str, &[Source], bool),
+    stopped: &(dyn Fn() -> bool + Sync),
 ) -> Result<Answered, String> {
     let body = serde_json::json!({
         "question": question,
         "needs_web": needs_web,
+        "search_query": web_query,
         "history": history,
         "sources": sources_in,
         "context": context,
@@ -773,7 +800,10 @@ async fn server_answer(
         .next()
         .unwrap_or("")
         .to_string();
-    let searching = needs_web && sources_in.is_empty() && context.is_none();
+    // The server searches when there's no window text, or when a query
+    // was given to search alongside it.
+    let searching =
+        needs_web && sources_in.is_empty() && (context.is_none() || web_query.is_some());
 
     crate::plan::record_hosted_use(app, "ai");
     if searching {
@@ -789,7 +819,11 @@ async fn server_answer(
             &host,
             if needs_web { "search" } else { "answer" },
             &format!(
-                "{question}{}",
+                "{}{question}{}",
+                web_query
+                    .filter(|_| searching)
+                    .map(|q| format!("Web search: {q}\n\n"))
+                    .unwrap_or_default(),
                 context.map(|c| format!("\n\n{c}")).unwrap_or_default()
             ),
         );
@@ -827,13 +861,35 @@ async fn server_answer(
             })
         }
     };
+    // Stop pressed: keep what arrived, say it was stopped there.
+    let stop_here = |text: String, sources: Vec<Source>| Answered {
+        text,
+        sources,
+        note: Some("hud.status.stopped".into()),
+    };
     loop {
         let idle = crate::remote_config::agent_config().answer_idle_timeout;
-        let chunk = match tokio::time::timeout(idle, stream.next()).await {
-            Err(_) => return interrupted(text, sources),
-            Ok(None) => break,
-            Ok(Some(Err(_))) => return interrupted(text, sources),
-            Ok(Some(Ok(chunk))) => chunk,
+        // Wait in short steps so Stop is seen between chunks, not only
+        // when the next one arrives.
+        let mut waited = Duration::ZERO;
+        let next = loop {
+            if stopped() {
+                return Ok(stop_here(text, sources));
+            }
+            match tokio::time::timeout(STOP_POLL, stream.next()).await {
+                Ok(next) => break next,
+                Err(_) => {
+                    waited += STOP_POLL;
+                    if waited >= idle {
+                        return interrupted(text, sources);
+                    }
+                }
+            }
+        };
+        let chunk = match next {
+            None => break,
+            Some(Err(_)) => return interrupted(text, sources),
+            Some(Ok(chunk)) => chunk,
         };
         buf.push_str(&String::from_utf8_lossy(&chunk));
         while let Some(end) = buf.find("\n\n") {
