@@ -23,7 +23,7 @@
     {
       "id": "noai.en.question",
       "about": "No AI: a question is answered by saying it needs AI, never silence.",
-      "tags": ["no-ai", "critical"],
+      "tags": ["no-ai", "critical", "regression"],
       "lang": "en",
       "screen": "finder_desktop",
       "say": "what's the weather in Lisbon tomorrow",
@@ -32,7 +32,10 @@
         "polish": true,
         "writing": "smart"
       },
+      "regression": "0.1.9 #7: with No AI, a question on the Windows/Linux desktop was typed into File Explorer / Files",
       "expect": {
+        "route": "answer",
+        "shows": ["hud.status.aiOff"],
         "must_not": ["model_call", "silent", "typed"]
       }
     },
@@ -244,6 +247,41 @@
       },
       "expect": {
         "route": "polish"
+      }
+    },
+    {
+      "id": "noai.de.question",
+      "about": "No AI, a German question on the desktop: nothing sent, nothing typed into the window. With no model to judge the words, it is offered with Copy (and \"Ask instead\", which says AI is off).",
+      "tags": ["no-ai", "desktop", "regression"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "wie wird das Wetter morgen in Berlin",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "regression": "0.1.9 #7: with No AI, a question on the Windows/Linux desktop was typed into File Explorer / Files",
+      "expect": {
+        "route": ["did_you_mean", "answer"],
+        "must_not": ["model_call", "silent", "typed"]
+      }
+    },
+    {
+      "id": "noai.en.command-desktop",
+      "about": "No AI, an English command with no cue word on the desktop: nothing sent, nothing typed into the window.",
+      "tags": ["no-ai", "desktop", "regression"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "rename all the files on my desktop to lowercase",
+      "settings": {
+        "intelligence": "none",
+        "polish": true,
+        "writing": "smart"
+      },
+      "regression": "0.1.9 #7: with No AI, requests on the Windows/Linux desktop were typed into File Explorer / Files",
+      "expect": {
+        "must_not": ["model_call", "silent", "typed"]
       }
     }
   ]

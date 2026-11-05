@@ -40,10 +40,11 @@
     {
       "id": "answer.pl.weather.desktop",
       "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
-      "tags": ["weather"],
+      "tags": ["weather", "regression"],
       "lang": "pl",
       "screen": "finder_desktop",
       "say": "jaka będzie jutro pogoda w Krakowie",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
       "expect": {
         "route": "answer",
         "must_not": ["opened_browser", "typed"],
@@ -66,10 +67,11 @@
     {
       "id": "answer.de.weather.desktop",
       "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
-      "tags": ["weather"],
+      "tags": ["weather", "regression"],
       "lang": "de",
       "screen": "finder_desktop",
       "say": "wie wird das Wetter morgen in Berlin",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
       "expect": {
         "route": "answer",
         "must_not": ["opened_browser", "typed"],
@@ -196,10 +198,11 @@
     {
       "id": "answer.ja.weather.desktop",
       "about": "A question with nothing to type into is answered in the card, on every OS, even when it needs the web.",
-      "tags": ["weather"],
+      "tags": ["weather", "regression"],
       "lang": "ja",
       "screen": "finder_desktop",
       "say": "明日の東京の天気は",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
       "expect": {
         "route": "answer",
         "must_not": ["opened_browser", "typed"],
@@ -256,10 +259,11 @@
     },
     {
       "id": "answer.pl.summarise-page",
-      "tags": ["about-screen"],
+      "tags": ["about-screen", "regression"],
       "lang": "pl",
       "screen": "browser_article",
       "say": "podsumuj tę stronę",
+      "regression": "0.1.9 Linux: Firefox's Linux id wasn't known as a browser outside Linux builds, so the suite's Linux fixtures typed into the page",
       "expect": {
         "route": "answer",
         "language": "pl",
@@ -356,14 +360,70 @@
     },
     {
       "id": "answer.es.price",
-      "tags": ["no-browser"],
+      "tags": ["no-browser", "regression"],
       "lang": "es",
       "screen": "finder_desktop",
       "say": "cuánto cuesta un bitcoin ahora",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
       "expect": {
         "route": "answer",
         "must_not": ["opened_browser"],
         "language": "es"
+      }
+    },
+    {
+      "id": "answer.de.desktop.percent",
+      "about": "A question in German on the desktop (Explorer, Files, Finder) is answered in the card, never typed into the window.",
+      "tags": ["desktop", "regression"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "wie viel sind fünfzehn Prozent von zweihundertvierzig",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
+      "expect": {
+        "route": "answer",
+        "must_not": ["typed", "opened_browser"],
+        "judge": "It says the result is 36 (in digits or in words).",
+        "language": "de"
+      }
+    },
+    {
+      "id": "answer.fr.desktop.translate",
+      "about": "A request in French with no cue word on the desktop is answered in the card, never typed into the window.",
+      "tags": ["desktop", "regression"],
+      "lang": "fr",
+      "screen": "finder_desktop",
+      "say": "traduis bonne nuit en japonais",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
+      "expect": {
+        "route": "answer",
+        "must_not": ["typed", "opened_browser"]
+      }
+    },
+    {
+      "id": "answer.zh.desktop.capital",
+      "about": "A question in Chinese on the desktop is answered in the card, never typed into the window.",
+      "tags": ["desktop", "regression"],
+      "lang": "zh",
+      "screen": "finder_desktop",
+      "say": "澳大利亚的首都是哪里",
+      "regression": "0.1.9 #1: on the Windows/Linux desktop a non-English question was typed into File Explorer / Files",
+      "expect": {
+        "route": "answer",
+        "must_not": ["typed", "opened_browser"],
+        "contains": ["堪培拉"]
+      }
+    },
+    {
+      "id": "answer.de.summarise-page",
+      "tags": ["about-screen", "regression"],
+      "lang": "de",
+      "screen": "browser_article",
+      "say": "fass diese Seite kurz zusammen",
+      "regression": "0.1.9 Linux: Firefox's Linux id wasn't known as a browser outside Linux builds, so the suite's Linux fixtures typed into the page",
+      "expect": {
+        "route": "answer",
+        "language": "de",
+        "must_not": ["opened_browser", "typed"]
       }
     }
   ]

@@ -226,7 +226,7 @@ fn route_json(route: &Route) -> Value {
         Route::Recall(q) => json!({ "name": name, "query": q }),
         Route::Compose(i) => json!({ "name": name, "instruction": i }),
         Route::Report(r) => json!({ "name": name, "message": r.message, "explicit": r.explicit }),
-        Route::Help | Route::Handled => json!({ "name": name }),
+        Route::Help | Route::Dismiss | Route::Handled => json!({ "name": name }),
     }
 }
 

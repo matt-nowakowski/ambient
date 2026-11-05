@@ -11,7 +11,7 @@ pub mod judge;
 pub mod redact;
 pub mod sensitive;
 
-#[cfg(any(target_os = "linux", test))]
+// Everywhere: its app-id lists are pure data (see `is_platform_browser`).
 pub(crate) mod linux;
 #[cfg(target_os = "macos")]
 mod macos;
@@ -312,17 +312,13 @@ pub fn is_platform_call_app(bundle_id: &str) -> bool {
     }
 }
 
-/// A browser, for platforms whose app ids aren't macOS bundle ids.
+/// A browser, by the Linux app ids (lowercased executable, Snap or Flatpak
+/// names) beside the shared list's bundle ids and Windows executables.
+/// Checked on every OS, like the agent's other app lists: ids can't collide
+/// across OSes, and the same answer everywhere means the scenario suite's
+/// Linux fixtures (`--as-os linux`) see what a Linux build sees.
 pub fn is_platform_browser(bundle_id: &str) -> bool {
-    #[cfg(target_os = "linux")]
-    {
-        linux::is_browser(bundle_id)
-    }
-    #[cfg(not(target_os = "linux"))]
-    {
-        let _ = bundle_id;
-        false
-    }
+    linux::appid::is_browser(bundle_id)
 }
 
 /// Why a window was dropped as sensitive.

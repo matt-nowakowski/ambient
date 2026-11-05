@@ -518,7 +518,7 @@ pub fn handle(app: &AppHandle, route: Route) {
         Route::Act(_) => milestone(app, "action"),
         Route::Recall(_) => milestone(app, "recall"),
         Route::Compose(_) => milestone(app, "answer"),
-        Route::Write(_) | Route::Help | Route::Handled | Route::Report(_) => {}
+        Route::Write(_) | Route::Help | Route::Dismiss | Route::Handled | Route::Report(_) => {}
     }
     log::debug!("agent: handling {}", router::route_name(Some(&route)));
     let app = app.clone();
@@ -526,6 +526,7 @@ pub fn handle(app: &AppHandle, route: Route) {
         match route {
             Route::Write(_) | Route::Handled => {}
             Route::Help => crate::hud::show(&app, crate::hud::HudContent::Help),
+            Route::Dismiss => crate::hud::hide(&app),
             // "Send this to the team?": nothing leaves until Send. A report
             // with diagnostics on carries the last answer (feedback::submit).
             Route::Report(intent) => report::show(&app, intent),
@@ -791,12 +792,40 @@ const RICH_EDITORS: &[&str] = &[
     "codesandbox.io",
 ];
 
+/// The desktop and file managers on Windows and Linux: native lists and
+/// icons whose accessibility is as trustworthy as Finder's, and where words
+/// typed into the window rename or jump between files. (Finder is one of
+/// Apple's apps below.)
+const FILE_MANAGERS: &[&str] = &[
+    // Windows: File Explorer is also the desktop and the taskbar.
+    "explorer.exe",
+    // Linux (lowercased app ids, native and Flatpak), and desktop surfaces.
+    "nautilus",
+    "org.gnome.nautilus",
+    "dolphin",
+    "org.kde.dolphin",
+    "nemo",
+    "nemo-desktop",
+    "thunar",
+    "org.xfce.thunar",
+    "caja",
+    "org.mate.caja",
+    "pcmanfm",
+    "pcmanfm-qt",
+    "xfdesktop",
+    "plasmashell",
+];
+
 /// Apps whose accessibility tree reliably says where focus is: browsers
-/// (web pages) and Apple's own apps. Elsewhere (canvas apps, GPU terminals,
-/// games) a "not a text field" reading can be wrong, so dictation is typed
-/// as before.
+/// (web pages), Apple's own apps, and the desktop and file managers on every
+/// OS. Elsewhere (canvas apps, GPU terminals, games) a "not a text field"
+/// reading can be wrong, so dictation is typed as before. Where it is
+/// trusted, whatever is said with nothing to type into goes to the router,
+/// which judges it in any language (the English cues are only a fast path).
 pub(crate) fn focus_is_reliable(bundle: &str) -> bool {
-    is_browser(bundle) || (bundle.starts_with("com.apple.") && bundle != "com.apple.Terminal")
+    is_browser(bundle)
+        || (bundle.starts_with("com.apple.") && bundle != "com.apple.Terminal")
+        || FILE_MANAGERS.contains(&bundle.to_lowercase().as_str())
 }
 
 /// Focus in the app in front (metadata only, never its text).
@@ -1089,7 +1118,7 @@ pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
     let place = tauri::async_runtime::spawn_blocking(move || router::place_for(true, &agent))
         .await
         .unwrap_or_default();
-    match router::route(app, text, "", &place, true, answer::last_turn()).await {
+    match router::route(app, text, "", &place, true, answer::last_turn(), false).await {
         Some(Route::Write(_)) | None => answer(),
         Some(r) => r,
     }
@@ -1181,5 +1210,12 @@ mod tests {
         assert!(!focus_is_reliable("com.figma.Desktop"));
         assert!(!focus_is_reliable("dev.warp.Warp-Stable"));
         assert!(!focus_is_reliable("com.apple.Terminal"));
+        // File Explorer (the Windows desktop) and Linux file managers.
+        assert!(focus_is_reliable("explorer.exe"));
+        assert!(focus_is_reliable("Explorer.EXE"));
+        assert!(focus_is_reliable("org.gnome.nautilus"));
+        assert!(focus_is_reliable("dolphin"));
+        assert!(!focus_is_reliable("windowsterminal.exe"));
+        assert!(!focus_is_reliable("gnome-terminal-server"));
     }
 }
