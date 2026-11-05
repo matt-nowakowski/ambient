@@ -259,10 +259,11 @@
     },
     {
       "id": "answer.pl.summarise-page",
-      "tags": ["about-screen"],
+      "tags": ["about-screen", "regression"],
       "lang": "pl",
       "screen": "browser_article",
       "say": "podsumuj tę stronę",
+      "regression": "0.1.9 Linux: Firefox's Linux id wasn't known as a browser outside Linux builds, so the suite's Linux fixtures typed into the page",
       "expect": {
         "route": "answer",
         "language": "pl",
@@ -410,6 +411,19 @@
         "route": "answer",
         "must_not": ["typed", "opened_browser"],
         "contains": ["堪培拉"]
+      }
+    },
+    {
+      "id": "answer.de.summarise-page",
+      "tags": ["about-screen", "regression"],
+      "lang": "de",
+      "screen": "browser_article",
+      "say": "fass diese Seite kurz zusammen",
+      "regression": "0.1.9 Linux: Firefox's Linux id wasn't known as a browser outside Linux builds, so the suite's Linux fixtures typed into the page",
+      "expect": {
+        "route": "answer",
+        "language": "de",
+        "must_not": ["opened_browser", "typed"]
       }
     }
   ]
