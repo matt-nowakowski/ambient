@@ -1478,6 +1478,7 @@
       "shortcutNotFound": "Jag hittade ingen genväg som heter ”{{name}}”. Vill du veta hur du skapar en?",
       "cantDoYet": "Det här kan jag inte än: {{what}}. Vill du att jag visar hur du gör det själv?",
       "cantDoYetPlain": "Det kan jag inte göra på den här datorn än. Vill du att jag visar hur du gör det själv?",
+      "privateNoAct": "Sidan ser privat ut, så jag gör inget på den.",
       "cantCloseWindow": "Jag kan inte stänga andra appars fönster än. Tryck på {{keys}} för att stänga det.",
       "cantCloseTab": "Jag kan inte stänga flikar i webbläsaren än. Tryck på {{keys}} för att stänga den.",
       "cantQuitApp": "Jag kan inte avsluta appar än. Tryck på {{keys}} när appen ligger överst.",

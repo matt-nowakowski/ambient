@@ -1486,6 +1486,7 @@
       "shortcutNotFound": "No he trobat cap drecera anomenada «{{name}}». Voleu saber com crear-ne una?",
       "cantDoYet": "Encara no sé fer això: {{what}}. Voleu que us mostri com fer-ho pel vostre compte?",
       "cantDoYetPlain": "Encara no puc fer això en aquest ordinador. Voleu que us mostri com fer-ho pel vostre compte?",
+      "privateNoAct": "Aquesta pàgina sembla privada, així que no hi actuo.",
       "cantCloseWindow": "Encara no puc tancar finestres d'altres apps. Prem {{keys}} per tancar-la.",
       "cantCloseTab": "Encara no puc tancar pestanyes del navegador. Prem {{keys}} per tancar-la.",
       "cantQuitApp": "Encara no puc sortir d'apps. Prem {{keys}} amb l'app al davant.",

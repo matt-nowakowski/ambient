@@ -42,6 +42,24 @@ pub fn os_name() -> &'static str {
     }
 }
 
+/// Text read to judge the window in front: enough for its words to speak.
+const PRIVATE_CHECK_CHARS: usize = 4000;
+
+/// The window in front is a private place, judged as the agent judges any
+/// window (`context::snapshot`; its text, if read, stays in memory and is
+/// dropped). With nothing allowed to watch the screen, only its metadata
+/// (app, title, URL) is judged.
+fn front_is_private(app: &AppHandle) -> bool {
+    let agent = crate::settings::get_settings(app).agent;
+    let watching =
+        (agent.screen_context || agent.screen_memory || agent.proactive) && !agent.is_paused();
+    let chars = if watching { PRIVATE_CHECK_CHARS } else { 0 };
+    matches!(
+        crate::context::snapshot(chars, &agent.never_watch),
+        Err(crate::context::Skipped::Sensitive)
+    )
+}
+
 pub async fn run(app: AppHandle, action: Action) {
     let kind = match &action {
         Action::Reminder { .. } => Some("reminder"),
@@ -177,6 +195,13 @@ fn perform(app: &AppHandle, action: Action) -> Notice {
         Action::CloseWindow { what } => {
             let (key, keys) = close_notice(&what, os_name());
             Notice::cant(key).var("keys", keys).var("name", what)
+        }
+        // On a private page (a bank, a checkout, a medical portal…) the
+        // request was about the page: Ambient doesn't act there, as it
+        // doesn't read there, and "I can't do that yet" would promise it
+        // one day will.
+        Action::Unsupported { .. } if front_is_private(app) => {
+            Notice::cant("hud.notice.privateNoAct")
         }
         Action::Unsupported { description } => {
             let what = description.trim().to_string();

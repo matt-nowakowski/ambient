@@ -17,7 +17,8 @@
 //!   *about* a bank isn't one;
 //! - *structure*: things that carry their own proof (an IBAN whose checksum
 //!   holds, a masked account number, a Luhn-valid card number, a PESEL or an
-//!   SSN next to its label, a balance printed beside an amount).
+//!   SSN next to its label, a balance printed beside an amount, lab values
+//!   with their units in rows of a results table).
 //!
 //! Login paths, one-time codes and a focused password field say "something
 //! private", not what: they add to a kind only once that kind has evidence
@@ -190,6 +191,15 @@ const PATH_WORDS: &[(Kind, &[&str])] = &[
             "cuentas",
             "posicion",
             "movimientos",
+            "comptes",
+            "virements",
+            "conti",
+            "movimenti",
+            "bonifici",
+            "contas",
+            "movimentos",
+            "rekeningen",
+            "bankieren",
         ],
     ),
     (
@@ -215,6 +225,13 @@ const PATH_WORDS: &[(Kind, &[&str])] = &[
             "patientenakte",
             "historia",
             "clinica",
+            "testresults",
+            "labresults",
+            "sante",
+            "referti",
+            "salute",
+            "saude",
+            "gezondheid",
         ],
     ),
     (
@@ -251,7 +268,7 @@ static HOST_WORDS: Lazy<Vec<(Kind, Regex)>> = Lazy::new(|| {
     vec![
         (
             Kind::Finance,
-            re(r"(?:^|[.\-])(?:[a-z]*bank(?:ing)?|banco|banca|ebank)(?:[.\-]|$)"),
+            re(r"(?:^|[.\-])(?:[a-z]*bank(?:ing)?|banco|banca|banque|ebank)(?:[.\-]|$)"),
         ),
         (
             Kind::Health,
@@ -329,14 +346,14 @@ static TITLE_WORDS: Lazy<Vec<(Kind, u32, &'static str, Regex)>> = Lazy::new(|| {
             5,
             "finance_title",
             re(
-                r"(?i)\b(?:online[ -]?banking|internet banking|mobile banking|bankowość(?: internetowa| elektroniczna)?|onlinebanking|banca (?:online|en línea|electrónica|digital)|account(?:s)? (?:overview|summary)|my accounts|kontoübersicht|finanzübersicht|finanzstatus|mein konto|posición global|mis cuentas|moje (?:konta|finanse|rachunki))\b",
+                r"(?i)\b(?:online[ -]?banking|internet banking|mobile banking|bankowość(?: internetowa| elektroniczna)?|onlinebanking|banca (?:online|en línea|electrónica|digital)|account(?:s)? (?:overview|summary)|my accounts|kontoübersicht|finanzübersicht|finanzstatus|mein konto|posición global|mis cuentas|moje (?:konta|finanse|rachunki)|mes comptes|synthèse (?:de mes|des) comptes|banque en ligne|i miei conti|conti e carte|home banking|as minhas contas|minhas contas|mijn rekeningen|rekeningoverzicht|internetbankieren)\b",
             ),
         ),
         (
             Kind::Finance,
             3,
             "accounts_title",
-            re(r"(?i)^\s*(?:accounts|konten|rachunki|cuentas)\s*$"),
+            re(r"(?i)^\s*(?:accounts|konten|rachunki|cuentas|comptes|conti|contas|rekeningen)\s*$"),
         ),
         (
             Kind::Payment,
@@ -351,7 +368,7 @@ static TITLE_WORDS: Lazy<Vec<(Kind, u32, &'static str, Regex)>> = Lazy::new(|| {
             5,
             "health_title",
             re(
-                r"(?i)\b(?:mychart|patient portal|medical records?|health records?|test results|lab results|internetowe konto pacjenta|patientenportal|patientenakte|carpeta de salud|historia clínica|mi salud)\b",
+                r"(?i)\b(?:mychart|patient portal|medical records?|health records?|test results|lab results|internetowe konto pacjenta|patientenportal|patientenakte|carpeta de salud|historia clínica|mi salud|résultats d'analyses?|dossier médical|mon espace santé|fascicolo sanitario|referti|cartella clinica|resultados de (?:laboratorio|análisis|exames)|wyniki badań|meu sns|área do utente|labuitslagen|mijn gezondheid|patiëntenportaal|laborergebnisse|befunde)\b",
             ),
         ),
         (
@@ -406,67 +423,89 @@ static VOCAB: Lazy<Vec<(Kind, &'static str, Regex)>> = Lazy::new(|| {
             Kind::Finance,
             "balance",
             re(
-                r"(?i)\b(?:available balance|current balance|account balance|balance|saldo|kontostand|dostępne środki|verfügbarer betrag)\b",
+                r"(?i)\b(?:available balance|current balance|account balance|balance|saldo|kontostand|dostępne środki|verfügbarer betrag|solde|saldo disponibile|saldo contabile|saldo disponível|beschikbaar saldo)\b",
             ),
         ),
         (
             Kind::Finance,
             "transactions",
             re(
-                r"(?i)\b(?:transactions|recent activity|transaktionen|umsätze|historia (?:transakcji|operacji|rachunku)|movimientos|operaciones)\b",
+                r"(?i)\b(?:transactions|recent activity|transaktionen|umsätze|historia (?:transakcji|operacji|rachunku)|ostatnie operacje|movimientos|operaciones|opérations (?:récentes|à venir)|dernières opérations|historique des opérations|movimenti|ultimi movimenti|movimentos|últimos movimentos|transações|transacties|bij- en afschrijvingen|af- en bijschrijvingen)\b",
             ),
         ),
         (
             Kind::Finance,
             "transfer",
-            re(r"(?i)\b(?:transfer|send money|überweisung|przelew|przelewy|transferencia|bizum)\b"),
+            re(
+                r"(?i)\b(?:transfer|send money|überweisung|przelew|przelewy|transferencia|bizum|virements?|bonific[oi]|transferências?|overboeken|overboeking|overschrijving)\b",
+            ),
         ),
         (
             Kind::Finance,
             "statement",
-            re(r"(?i)\b(?:statements?|kontoauszug|kontoauszüge|wyciąg|wyciągi|extractos?)\b"),
+            re(
+                r"(?i)\b(?:statements?|kontoauszug|kontoauszüge|wyciąg|wyciągi|extractos?|relevés? de compte|relevés|estratt[oi] conto|extratos?|rekeningafschrift(?:en)?|afschriften)\b",
+            ),
         ),
         (
             Kind::Health,
             "patient",
-            re(r"(?i)\b(?:patient|pacjent|pacjenta|paciente)\b"),
+            re(r"(?i)\b(?:patient|patiente|pacjent|pacjenta|paciente|paziente|patiënt)\b"),
         ),
         (
             Kind::Health,
             "diagnosis",
-            re(r"(?i)\b(?:diagnos[ie]s|diagnose|diagnoza|diagnóstico|befund)\b"),
+            re(
+                r"(?i)\b(?:diagnos[ie]s|diagnose|diagnoza|diagnóstico|befund|diagnostic|diagnosi)\b",
+            ),
         ),
         (
             Kind::Health,
             "medications",
-            re(r"(?i)\b(?:medications?|leki|medikamente|medicación|medicamentos)\b"),
+            re(
+                r"(?i)\b(?:medications?|leki|medikamente|medicación|medicamentos|médicaments|farmaci|medicijnen)\b",
+            ),
         ),
         (
             Kind::Health,
             "allergies",
-            re(r"(?i)\b(?:allerg(?:ies|ien|ie|ias|ia)|alergie)\b"),
+            re(r"(?i)\b(?:allerg(?:ies|ien|ie|ias|ia|ieën)|alergie|alergias)\b"),
         ),
         (
             Kind::Health,
             "immunizations",
-            re(r"(?i)\b(?:immuni[sz]ations?|vaccinations?|szczepienia|impfungen|vacunas)\b"),
+            re(
+                r"(?i)\b(?:immuni[sz]ations?|vaccinations?|szczepienia|impfungen|vacunas|vaccinazioni|vacinas|vaccinaties)\b",
+            ),
         ),
         (
             Kind::Health,
             "results",
             re(
-                r"(?i)\b(?:lab results|test results|wyniki badań|laborbefunde|laborwerte|resultados de (?:laboratorio|análisis))\b",
+                r"(?i)\b(?:lab results|test results|wyniki badań|laborbefunde|laborwerte|laborergebnisse|resultados de (?:laboratorio|análisis|exames)|résultats d'analyses?|bilan sanguin|esami del sangue|referti|risultati (?:degli )?esami|exames laboratoriais|labuitslagen|uitslagen van (?:het )?(?:bloed)?onderzoek)\b",
             ),
         ),
         (
             Kind::Health,
             "prescriptions",
-            re(r"(?i)\b(?:prescriptions?|e-?recepta|recepty|rezept|e-rezept|receta)\b"),
+            re(
+                r"(?i)\b(?:prescriptions?|e-?recepta|recepty|rezept|e-rezept|receta|ordonnances?|ricett[ae]|receitas?|recepten)\b",
+            ),
         ),
         (
             Kind::Health,
             "record_number",
             re(r"(?i)\b(?:mrn|medical record number|health number|nhs number)\b"),
+        ),
+        (
+            // The people a patient portal names: the user's doctor and team,
+            // as the portal labels them ("Your doctor's note", "Ordering
+            // provider", "Médecin traitant").
+            Kind::Health,
+            "care_team",
+            re(
+                r"(?i)\b(?:your doctor|care team|ordering provider|your provider|primary care provider|médecin traitant|votre médecin|ihr arzt|ihre ärztin|behandelnde[rn]? arzt|lekarz prowadzący|twój lekarz|su médico|médico de cabecera|il tuo medico|medico curante|o seu médico|médico de família|uw (?:huis)?arts|behandelend arts)\b",
+            ),
         ),
         (
             Kind::Passwords,
@@ -492,7 +531,7 @@ static LABELS: Lazy<Vec<(Kind, u32, &'static str, Regex)>> = Lazy::new(|| {
             2,
             "account_label",
             re(
-                r"(?i)\b(?:account number|account no\.?|routing number|sort code|iban|bic|swift|kontonummer|bankleitzahl|numer (?:rachunku|konta)|nr rachunku|número de cuenta)\b",
+                r"(?i)\b(?:account number|account no\.?|routing number|sort code|iban|bic|swift|kontonummer|bankleitzahl|numer (?:rachunku|konta)|nr rachunku|número de cuenta|(?-i:RIB)|relevé d'identité bancaire|numéro de compte|n° de compte|numero (?:di )?conto|codice iban|número (?:da )?conta|(?-i:NIB)|rekeningnummer)\b",
             ),
         ),
         (
@@ -568,13 +607,33 @@ static PASSWORD_LABEL: Lazy<Regex> =
 /// Money: an amount with its currency, either side.
 static AMOUNT: Lazy<Regex> = Lazy::new(|| {
     re(
-        r"(?:[$€£]\s?-?\d{1,3}(?:[.,\u{a0} ]\d{3})*(?:[.,]\d{2})?\b|\b\d{1,3}(?:[.,\u{a0} ]\d{3})*(?:[.,]\d{2})?\s?(?:€|zł|PLN|EUR|USD|GBP|CHF|\$|£))",
+        r"(?:(?:R\$|[$€£])\s?-?\d{1,3}(?:[.,\u{a0} ]\d{3})*(?:[.,]\d{2})?\b|\b\d{1,3}(?:[.,\u{a0} ]\d{3})*(?:[.,]\d{2})?\s?(?:€|zł|PLN|EUR|USD|GBP|CHF|SEK|NOK|DKK|CZK|Kč|HUF|Ft|RON|lei|BRL|kr\b|\$|£))",
     )
 });
 
 /// A balance shown with its amount, a line or two apart.
 static BALANCE_WORD: Lazy<Regex> =
-    Lazy::new(|| re(r"(?i)\b(?:balance|saldo|kontostand|dostępne środki|verfügbar)\b"));
+    Lazy::new(|| re(r"(?i)\b(?:balance|saldo|solde|kontostand|dostępne środki|verfügbar)\b"));
+
+/// A lab value as a results page lays it out: a number with its unit
+/// ("162 mg/dL", "13,2 g/dl", "5.4 mmol/L", "7.2 x10^9/L"). Units are the
+/// same in every language, so this reads a results table anywhere.
+static LAB_VALUE: Lazy<Regex> = Lazy::new(|| {
+    re(
+        r"(?i)\d(?:[.,]\d+)?\s?(?:mg|g|µg|ug|mcg|ng|pg|mmol|µmol|umol|nmol|pmol|meq|u|iu|mu|miu|ui|mui|x\s?10\^?\d+|10\^?\d+)\s?/\s?(?:dl|l|ml|µl|ul|mm3|mm³|24\s?h)\b",
+    )
+});
+
+/// How a results table marks a value against its normal range: a flag in
+/// brackets ("(High)", "(H)") or the range's own label.
+static LAB_FLAG: Lazy<Regex> = Lazy::new(|| {
+    re(
+        r"(?i)\((?:high|low|h|l|abnormal|critical|élevée?|basse?|hoch|niedrig|alto|bajo|alta|baja|elevato|basso|hoog|laag|podwyższony|obniżony|wysoki|niski)\)|\b(?:reference range|normal range|standard range|ref\.? range|valeurs? de référence|valeurs? normales?|referenzbereich|normbereich|rango de referencia|valores? de referencia|intervallo di riferimento|valori di riferimento|valores? de referência|intervalo de referência|referentiewaarden?|normaalwaarden?|zakres referencyjny|wartości referencyjne)\b",
+    )
+});
+
+/// A results line is a row of a table, not prose.
+const LAB_LINE_MAX_CHARS: usize = 80;
 
 /// A masked account or card number ("•••• 4821", "ending in 4821").
 static MASKED: Lazy<Regex> = Lazy::new(|| {
@@ -729,6 +788,20 @@ fn judge_text(text: &str, t: &mut Tally) {
     });
     if balance_beside_amount {
         t.content(Kind::Finance, 2, "balance_amount");
+    }
+    // Lab results: values with their units in rows of their own, read
+    // against a normal range. What a patient portal shows, and not what an
+    // article about medicine does (its numbers sit in long lines).
+    let lab_rows = text
+        .lines()
+        .map(str::trim)
+        .filter(|l| l.chars().count() <= LAB_LINE_MAX_CHARS && LAB_VALUE.is_match(l))
+        .count();
+    if lab_rows >= 1 {
+        t.content(Kind::Health, 3, "lab_value");
+        if lab_rows >= 3 || LAB_FLAG.is_match(text) {
+            t.content(Kind::Health, 2, "lab_range");
+        }
     }
     if MASKED.is_match(text) {
         t.content(Kind::Finance, 3, "masked_number");
@@ -1036,6 +1109,128 @@ mod tests {
             "Invoice 2026-118 from Northwind Ltd - matt@example.com - Gmail",
             "https://mail.google.com/mail/u/0/#inbox/FMfcgzQ",
             "Hi Matt,\nPlease find attached invoice 2026-118 for October's work. The amount due is €1,250.00, payable within 14 days by bank transfer to IBAN DE89 3704 0044 0532 0130 00 (BIC COBADEFFXXX). Let me know if you need anything else for your records.\nThanks,\nAnna",
+        ));
+    }
+
+    #[test]
+    fn a_results_page_with_little_else() {
+        // 0.1.9 #2: MyChart's results page scored 8. Its lab values with
+        // their units and a "(High)" flag, and "your doctor", are what a
+        // results page shows in any language.
+        sensitive(
+            &page(
+                "MyChart - Test Results",
+                "https://mychart.examplehealth.org/MyChart/TestResults",
+                "Test Results\nLipid panel\nLDL Cholesterol 162 mg/dL (High)\nYour doctor's note: Let's discuss diet changes at your next visit.\nMessages from your care team",
+            ),
+            Health,
+        );
+        // A clinic's portal on an unremarkable host, in French, German and
+        // Spanish: no place words in the URL, the page says what it is.
+        sensitive(
+            &page(
+                "Résultats d'analyses",
+                "https://portail.example.fr/app/r/2291",
+                "Résultats d'analyses\nBilan lipidique\nCholestérol LDL 1,62 g/L (élevé)\nGlycémie à jeun 5,4 mmol/L\nValeurs de référence\nCommentaire de votre médecin",
+            ),
+            Health,
+        );
+        sensitive(
+            &page(
+                "Laborergebnisse",
+                "https://portal.example.de/app/view/18",
+                "Laborergebnisse\nHämoglobin 13,2 g/dl\nLeukozyten 7,1 x10^9/l\nCRP 12 mg/l (hoch)\nReferenzbereich\nIhr Arzt",
+            ),
+            Health,
+        );
+        sensitive(
+            &page(
+                "Resultados de laboratorio",
+                "https://portal.example.es/app/r/7",
+                "Resultados de laboratorio\nGlucosa 104 mg/dL (alto)\nColesterol total 212 mg/dL\nValores de referencia\nSu médico",
+            ),
+            Health,
+        );
+    }
+
+    #[test]
+    fn online_banking_in_french_italian_portuguese_and_dutch() {
+        // 0.1.9 #2: Crédit Agricole scored 6 (its host only); "Solde",
+        // "Opérations récentes" and "Virement" said nothing.
+        sensitive(
+            &page(
+                "Crédit Agricole - Mes comptes",
+                "https://www.credit-agricole.fr/particulier/comptes",
+                "Mes comptes\nCompte courant ...\nSolde 3 210,45 €\nOpérations récentes\nVirement",
+            ),
+            Banking,
+        );
+        // Banks nobody has listed: the page's shape is enough.
+        sensitive(
+            &page(
+                "Synthèse des comptes",
+                "https://www.example.fr/espace/accueil",
+                "Synthèse des comptes\nCompte de dépôt\nFR76 3000 6000 0112 3456 7890 189\nSolde disponible\n1 845,30 €\nDernières opérations\nCarrefour -54,20 €\nSalaire 2 310,00 €\nVirement\nRelevés",
+            ),
+            Banking,
+        );
+        sensitive(
+            &page(
+                "I miei conti",
+                "https://www.example.it/privati/home",
+                "I miei conti\nConto corrente\nIT60 X054 2811 1010 0000 0123 456\nSaldo disponibile\n2.481,10 €\nUltimi movimenti\nEsselunga -23,40 €\nStipendio 1.950,00 €\nBonifico\nEstratto conto",
+            ),
+            Banking,
+        );
+        sensitive(
+            &page(
+                "As minhas contas",
+                "https://www.example.pt/particulares/inicio",
+                "As minhas contas\nConta à ordem ****4821\nSaldo disponível\n1.204,33 €\nÚltimos movimentos\nContinente -32,10 €\nTransferência\nExtratos",
+            ),
+            Banking,
+        );
+        sensitive(
+            &page(
+                "Mijn rekeningen",
+                "https://www.example.nl/particulier/overzicht",
+                "Mijn rekeningen\nBetaalrekening\nNL91 ABNA 0417 1643 00\nBeschikbaar saldo\n€ 3.214,55\nBij- en afschrijvingen\nAlbert Heijn -€ 23,40\nOverboeken\nRekeningafschriften",
+            ),
+            Banking,
+        );
+    }
+
+    #[test]
+    fn not_private_in_other_languages_either() {
+        // A French news article about a bank's outage.
+        ordinary(&page(
+            "Panne chez Crédit Agricole : des clients privés de leurs comptes - Le Monde",
+            "https://www.lemonde.fr/economie/article/2026/11/04/panne-credit-agricole",
+            "Des milliers de clients du Crédit Agricole n'ont pas pu consulter le solde de leurs comptes ni effectuer de virement pendant plusieurs heures mardi, a indiqué la banque, qui assure qu'aucune donnée n'a été compromise.\nLes opérations récentes seront traitées d'ici mercredi, selon un porte-parole, qui n'a pas précisé l'origine de la panne ni le nombre exact de clients concernés.",
+        ));
+        // A bank's own marketing homepage.
+        ordinary(&page(
+            "Banque, assurance, crédit immobilier | Crédit Agricole",
+            "https://www.credit-agricole.fr/",
+            "Ouvrez un compte en ligne et profitez de nos offres. Découvrez nos cartes, nos crédits immobiliers et nos assurances, avec un conseiller près de chez vous.",
+        ));
+        // An invoice by email with the payee's RIB.
+        ordinary(&page(
+            "Facture 2026-118 - matt@example.com - Gmail",
+            "https://mail.google.com/mail/u/0/#inbox/FMfcgzQ",
+            "Bonjour Matt,\nVous trouverez ci-joint la facture 2026-118 pour le travail d'octobre. Le montant de 1 250,00 € est à régler sous 14 jours par virement sur le compte FR76 3000 6000 0112 3456 7890 189 (RIB en pièce jointe). N'hésitez pas si vous avez besoin d'autre chose.\nCordialement,\nAnna",
+        ));
+        // A health article quoting a lab value in its prose.
+        ordinary(&page(
+            "Cholestérol : faut-il s'inquiéter au-delà de 1,6 g/L ? - Le Figaro Santé",
+            "https://sante.lefigaro.fr/article/cholesterol-seuil",
+            "Au-delà d'un taux de LDL de 1,6 g/L, les cardiologues recommandent d'abord de revoir son alimentation avant d'envisager un traitement, rappelle une étude publiée mercredi auprès de 12 000 patients.",
+        ));
+        // Dutch election results.
+        ordinary(&page(
+            "Uitslagen Tweede Kamerverkiezingen - NOS",
+            "https://nos.nl/verkiezingen/uitslagen",
+            "Uitslagen\nPartij\nZetels\nStemmen\nOpkomst 78,2%",
         ));
     }
 

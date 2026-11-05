@@ -1478,6 +1478,7 @@
       "shortcutNotFound": "“{{name}}” adlı bir kestirme bulamadım. Nasıl oluşturulacağını öğrenmek ister misiniz?",
       "cantDoYet": "Bunu henüz yapamıyorum: {{what}}. Kendiniz nasıl yapacağınızı göstereyim mi?",
       "cantDoYetPlain": "Bunu bu bilgisayarda henüz yapamıyorum. Kendiniz nasıl yapacağınızı göstereyim mi?",
+      "privateNoAct": "Bu sayfa özel görünüyor, bu yüzden üzerinde işlem yapmıyorum.",
       "cantCloseWindow": "Diğer uygulamaların pencerelerini henüz kapatamıyorum. Kapatmak için {{keys}} tuşlarına basın.",
       "cantCloseTab": "Tarayıcı sekmelerini henüz kapatamıyorum. Kapatmak için {{keys}} tuşlarına basın.",
       "cantQuitApp": "Uygulamalardan henüz çıkamıyorum. Uygulama öndeyken {{keys}} tuşlarına basın.",

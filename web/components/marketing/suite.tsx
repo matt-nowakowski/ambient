@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
-import { buttonClass } from "@/components/ui";
 import {
+  BANNER_FORMATS,
+  HEADLINES,
   LOGOS,
   LOGO_SIZES,
-  LOGO_THEMES,
+  bannerName,
+  bannerUrl,
   copyDonts,
   copyDos,
   copySnippets,
@@ -13,238 +15,144 @@ import {
   logoSvg,
   logosZip,
 } from "@/lib/marketing/catalog";
-import { KINDS, ORIENTATIONS, type CreatorVideo } from "@/lib/marketing/creator";
-import { BannerGallery, CopyText } from "./client";
+import { KINDS, ORIENTATIONS, groupCampaign, type CampaignAsset, type CreatorVideo } from "@/lib/marketing/creator";
+import { MarketingBrowser, type Asset, type FileVariant, type Folder, type FolderId, type Preview, type Theme } from "./browser";
 import "./marketing.css";
 
-export const SECTIONS = [
-  { id: "video", label: "Launch video" },
-  { id: "logos", label: "Logos" },
-  { id: "banners", label: "Banners" },
-  { id: "copy", label: "Copy" },
-  { id: "creator", label: "Creator videos" },
-] as const;
+const THEMES: Theme[] = ["light", "dark"];
+const fileName = (src: string) => src.split("?")[0].split("/").pop() ?? "download";
 
 /**
  * The marketing suite, shared by the admin Marketing tab and the influencer
- * media kit. Read-only in both: everything links to public files. The admin
- * passes a note on adding creator videos in `creatorNote`.
+ * media kit: folders of assets, one card per asset. Read-only in both;
+ * everything links to public files. The admin adds notes (how to upload)
+ * under a folder with `notes`.
  */
-export function MarketingSuite({ videos, creatorNote }: { videos: CreatorVideo[]; creatorNote?: ReactNode }) {
-  return (
-    <div className="space-y-14">
-      <Section id="video" title="Launch video" sub="The current cut, horizontal and vertical, as MP4, with posters for light and dark.">
-        {launchVideos.length ? (
-          <div className="grid items-start gap-4 md:grid-cols-[2.6fr_1fr]">
-            {launchVideos.map((v) => (
-              <div key={v.id} className="mk-card">
-                <video
-                  controls
-                  playsInline
-                  preload="none"
-                  poster={v.poster?.light}
-                  src={v.src}
-                  className="block w-full bg-black"
-                  style={{ aspectRatio: v.ratio }}
-                />
-                <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-3">
-                  <div className="text-[13px]">{v.label}</div>
-                  <div className="flex flex-wrap gap-1.5">
-                    <a href={v.src} download={v.filename} className={buttonClass("primary", "sm")}>
-                      Download MP4
-                    </a>
-                    {(["light", "dark"] as const).map((t) =>
-                      v.poster?.[t] ? (
-                        <a key={t} href={v.poster[t]} download={v.poster[t]!.split("/").pop()} className={buttonClass("glass", "sm")}>
-                          Poster, {t}
-                        </a>
-                      ) : null,
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <Empty>No launch video is published right now.</Empty>
-        )}
-      </Section>
-
-      <Section
-        id="logos"
-        title="Logos"
-        sub="Transparent backgrounds. “Light” is dark ink for light backgrounds; “Dark” is light ink for dark ones. Use SVG where you can."
-        action={
-          <a href={logosZip} download className={buttonClass("primary", "sm")}>
-            Download all (.zip)
-          </a>
-        }
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          {LOGOS.map((logo) => (
-            <div key={logo.id} className="mk-card">
-              <div className="grid grid-cols-2">
-                {LOGO_THEMES.map((t) => (
-                  <div key={t.id} className={`flex h-36 items-center justify-center p-6 ${t.id === "light" ? "mk-swatch-light" : "mk-swatch-dark"}`}>
-                    {/* eslint-disable-next-line @next/next/no-img-element -- the downloadable file itself */}
-                    <img
-                      src={logoSvg(logo.id, t.id) ?? logoPng(logo.id, t.id, 512)}
-                      alt={`${logo.label}, ${t.label.toLowerCase()}`}
-                      className={logo.aspect > 1 ? "h-auto w-[78%] max-w-[220px]" : "h-[88px] w-[88px]"}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="px-3.5 py-3">
-                <div className="text-[13px] text-foreground">{logo.label}</div>
-                <div className="text-[12px] text-muted">{logo.note}</div>
-                <div className="mt-2.5 grid gap-1.5">
-                  {LOGO_THEMES.map((t) => {
-                    const svg = logoSvg(logo.id, t.id);
-                    return (
-                      <div key={t.id} className="flex flex-wrap items-center gap-1.5">
-                        <span className="w-12 text-[12px] text-muted">{t.id === "light" ? "Light" : "Dark"}</span>
-                        {svg ? (
-                          <a href={svg} download={svg.split("/").pop()} className={buttonClass("glass", "sm", "!h-7 !px-2.5")}>
-                            SVG
-                          </a>
-                        ) : null}
-                        {LOGO_SIZES.map((s) => (
-                          <a key={s} href={logoPng(logo.id, t.id, s)} download={logoPngName(logo.id, t.id, s)} className={buttonClass("glass", "sm", "!h-7 !px-2.5")}>
-                            PNG {s}
-                          </a>
-                        ))}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section id="banners" title="Banners" sub="Ready-made for each platform's size and safe area. Pick a headline and a theme.">
-        <BannerGallery />
-      </Section>
-
-      <Section id="copy" title="Copy" sub="Approved words to use as they are, or to put in your own voice.">
-        <div className="grid gap-4 lg:grid-cols-2">
-          {copySnippets.map((group) => (
-            <div key={group.title} className="mk-card p-4">
-              <div className="text-[13px] font-medium text-foreground">{group.title}</div>
-              <ul className="mt-2 divide-y divide-[color-mix(in_srgb,#8f8f8f_18%,transparent)]">
-                {group.items.map((s) => (
-                  <li key={s.label} className="flex items-start justify-between gap-3 py-2.5">
-                    <div className="min-w-0">
-                      <div className="text-[12px] text-muted">{s.label}</div>
-                      <div className="mt-0.5 break-words text-[13.5px] leading-[1.5] text-foreground">{s.text}</div>
-                    </div>
-                    <CopyText value={s.text} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <div className="mk-card p-4">
-            <div className="text-[13px] font-medium text-foreground">Do</div>
-            <ul className="mt-2 space-y-1.5 text-[13.5px] leading-[1.5]">
-              {copyDos.map((d) => (
-                <li key={d} className="flex gap-2">
-                  <span aria-hidden className="text-muted">
-                    +
-                  </span>
-                  {d}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="mk-card p-4">
-            <div className="text-[13px] font-medium text-foreground">Don&apos;t</div>
-            <ul className="mt-2 space-y-1.5 text-[13.5px] leading-[1.5]">
-              {copyDonts.map((d) => (
-                <li key={d} className="flex gap-2">
-                  <span aria-hidden className="text-muted">
-                    –
-                  </span>
-                  {d}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Section>
-
-      <Section id="creator" title="Creator videos" sub="Clips, b-roll and screen recordings to cut with.">
-        {creatorNote}
-        {videos.length ? (
-          <div className={`grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3 ${creatorNote ? "mt-5" : ""}`}>
-            {videos.map((v) => (
-              <div key={v.id} className="mk-card flex flex-col">
-                <div className="mk-preview relative overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
-                  {v.isVideo ? (
-                    <video
-                      controls
-                      playsInline
-                      preload={v.poster ? "none" : "metadata"}
-                      poster={v.poster ?? undefined}
-                      src={v.src}
-                      className="absolute inset-0 h-full w-full object-contain"
-                    />
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element -- the downloadable file itself
-                    <img src={v.src} alt={v.title} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col px-3.5 py-3">
-                  <div className="text-[13px] text-foreground">{v.title}</div>
-                  <div className="text-[12px] text-muted">
-                    {[
-                      KINDS.find((k) => k.id === v.kind)?.label,
-                      ORIENTATIONS.find((o) => o.id === v.orientation)?.label,
-                      v.durationS ? duration(v.durationS) : null,
-                      bytes(v.bytes),
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </div>
-                  {v.notes ? <p className="mt-1.5 whitespace-pre-line text-[12.5px] leading-[1.5] text-muted">{v.notes}</p> : null}
-                  <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-3">
-                    <a href={v.src} download={v.src.split("/").pop()} className={buttonClass("glass", "sm")}>
-                      Download
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <Empty>No creator videos yet.</Empty>
-        )}
-      </Section>
-    </div>
-  );
+export function MarketingSuite({ videos, campaign = [], notes }: { videos: CreatorVideo[]; campaign?: CampaignAsset[]; notes?: Partial<Record<FolderId, ReactNode>> }) {
+  const folders: Folder[] = [
+    {
+      id: "videos",
+      label: "Videos",
+      sub: "The launch cut, horizontal and vertical, and clips, b-roll and screen recordings to cut with.",
+      assets: [...launchAssets(), ...videos.map(creatorAsset)],
+      empty: "No videos are published right now.",
+    },
+    {
+      id: "campaign",
+      label: "Campaign",
+      sub: "Real screen moments in the app's own UI, one concept per card, laid out for each platform: the story as MP4 and PNG, posts and banners as PNG.",
+      assets: groupCampaign(campaign).map(campaignAsset),
+      empty: "No campaign creative yet.",
+    },
+    {
+      id: "logos",
+      label: "Logos",
+      sub: "Transparent backgrounds: the Light theme is dark ink for light backgrounds, Dark is light ink for dark ones. Use SVG where you can.",
+      assets: LOGOS.map(logoAsset),
+      empty: "",
+      action: { label: "All logos (.zip)", href: logosZip },
+    },
+    {
+      id: "banners",
+      label: "Simple banners",
+      sub: "A headline on the brand backdrop, in every platform's size and safe area.",
+      assets: HEADLINES.map(bannerAsset),
+      empty: "",
+    },
+  ];
+  return <MarketingBrowser folders={folders} copy={copySnippets} dos={copyDos} donts={copyDonts} notes={notes} />;
 }
 
-function Section({ id, title, sub, action, children }: { id: string; title: string; sub?: string; action?: ReactNode; children: ReactNode }) {
-  return (
-    <section id={id} className="mk-section">
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-        <div className="max-w-[720px]">
-          <h2 className="text-[22px] font-light tracking-[-0.025em] text-foreground">{title}</h2>
-          {sub ? <p className="mt-1 text-[13.5px] leading-[1.55] text-muted">{sub}</p> : null}
-        </div>
-        {action}
-      </div>
-      {children}
-    </section>
-  );
+function launchAssets(): Asset[] {
+  if (!launchVideos.length) return [];
+  const main = launchVideos[0];
+  const files: FileVariant[] = launchVideos.map((v) => ({ key: `mp4-${v.id}`, label: v.label, href: v.src, filename: v.filename, section: "Video" }));
+  for (const v of launchVideos)
+    for (const t of THEMES) {
+      const p = v.poster?.[t];
+      if (p) files.push({ key: `poster-${v.id}`, theme: t, label: `Poster, ${v.id}`, meta: t, href: p, filename: fileName(p), section: "Poster" });
+    }
+  return [
+    {
+      id: "launch",
+      name: "Launch video",
+      note: launchVideos.map((v) => v.label).join(" and "),
+      previews: THEMES.map((t) => ({ kind: "video", src: main.src, poster: main.poster?.[t] ?? main.poster?.light, theme: t })),
+      files,
+    },
+  ];
 }
 
-function Empty({ children }: { children: ReactNode }) {
-  return <div className="mk-card px-4 py-6 text-center text-[13px] text-muted">{children}</div>;
+function creatorAsset(v: CreatorVideo): Asset {
+  const files: FileVariant[] = [{ key: "file", label: v.isVideo ? "Video" : "Image", meta: bytes(v.bytes), href: v.src, filename: fileName(v.src) }];
+  if (v.poster) files.push({ key: "poster", label: "Poster", href: v.poster, filename: fileName(v.poster) });
+  return {
+    id: `creator-${v.id}`,
+    name: v.title,
+    note:
+      [KINDS.find((k) => k.id === v.kind)?.label, ORIENTATIONS.find((o) => o.id === v.orientation)?.label, v.durationS ? duration(v.durationS) : null]
+        .filter(Boolean)
+        .join(" · ") + (v.notes ? `. ${v.notes}` : ""),
+    previews: [v.isVideo ? { kind: "video", src: v.src, poster: v.poster ?? undefined } : { kind: "image", src: v.src }],
+    files,
+  };
+}
+
+function campaignAsset(group: ReturnType<typeof groupCampaign>[number]): Asset {
+  const stills = group.assets.filter((a) => !a.isVideo);
+  // The feed post shows a concept best (big UI, room for the line); then the story.
+  const shown = ["feed", "story", ...new Set(stills.map((a) => a.format))].find((f) => stills.some((a) => a.format === f));
+  const previews: Preview[] = stills
+    .filter((a) => a.format === shown)
+    .map((a) => ({ kind: "image", src: a.src, theme: a.theme, lang: a.lang }));
+  if (!previews.length) previews.push(...group.assets.map((a): Preview => ({ kind: "video", src: a.src, poster: a.poster ?? undefined, theme: a.theme, lang: a.lang })));
+  const formats = new Set(group.assets.map((a) => a.format)).size;
+  const hasVideo = group.assets.some((a) => a.isVideo);
+  return {
+    id: `campaign-${group.id}`,
+    name: group.label,
+    note: [hasVideo ? "Story video" : null, `${formats} format${formats === 1 ? "" : "s"}`].filter(Boolean).join(" · "),
+    previews,
+    files: group.assets.map((a) => ({
+      key: `${a.format}-${a.isVideo ? "mp4" : "png"}`,
+      theme: a.theme,
+      lang: a.lang,
+      label: `${a.formatLabel}${a.isVideo ? ", MP4" : ""}`,
+      meta: [a.width && a.height ? `${a.width}×${a.height}` : null, bytes(a.bytes)].filter(Boolean).join(" · "),
+      href: a.src,
+      filename: fileName(a.src),
+      section: a.isVideo ? "Video" : "PNG",
+    })),
+  };
+}
+
+function logoAsset(logo: (typeof LOGOS)[number]): Asset {
+  const files: FileVariant[] = [];
+  for (const t of THEMES) {
+    const svg = logoSvg(logo.id, t);
+    if (svg) files.push({ key: "svg", theme: t, label: "SVG", meta: "vector", href: svg, filename: fileName(svg), section: "Vector" });
+  }
+  for (const s of LOGO_SIZES)
+    for (const t of THEMES) files.push({ key: `png-${s}`, theme: t, label: `PNG ${s}`, meta: `${s} px wide`, href: logoPng(logo.id, t, s), filename: logoPngName(logo.id, t, s), section: "PNG" });
+  return {
+    id: `logo-${logo.id}`,
+    name: logo.label,
+    note: logo.note,
+    previews: THEMES.map((t) => ({ kind: "image", src: logoSvg(logo.id, t) ?? logoPng(logo.id, t, 512), theme: t, swatch: true })),
+    files,
+  };
+}
+
+function bannerAsset(h: (typeof HEADLINES)[number]): Asset {
+  return {
+    id: `banner-${h.id}`,
+    name: h.text,
+    note: `${BANNER_FORMATS.length} sizes for Instagram, X, LinkedIn, YouTube, the web and email`,
+    previews: THEMES.map((t) => ({ kind: "image", src: bannerUrl("linkedin-post", h.id, t), theme: t })),
+    files: BANNER_FORMATS.flatMap((f) =>
+      THEMES.map((t) => ({ key: f.id, theme: t, label: `${f.group} · ${f.label}`, meta: `${f.w}×${f.h}`, href: bannerUrl(f.id, h.id, t), filename: bannerName(f.id, h.id, t), section: f.group })),
+    ),
+  };
 }
 
 export function bytes(n: number) {

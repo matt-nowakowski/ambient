@@ -3,6 +3,7 @@ import { Composition } from "remotion";
 import { Ad, Poster, type PosterProps } from "./Ad";
 import { FPS, H, TOTAL, W } from "./beats";
 import { Sheet, type SheetProps } from "./Sheet";
+import { Campaign, DUR, FORMATS, type CampaignProps } from "./campaign/Campaign";
 
 export const Root: React.FC = () => (
   <>
@@ -21,5 +22,18 @@ export const Root: React.FC = () => (
       height={1100}
       defaultProps={{ from: 0, step: 15, cols: 6, rows: 6, tall: false } satisfies SheetProps}
     />
+    {/* Campaign creative (src/campaign): one composition per format; pick the concept and theme with --props. */}
+    {Object.entries(FORMATS).map(([id, { w, h }]) => (
+      <Composition
+        key={id}
+        id={`Campaign-${id}`}
+        component={Campaign}
+        durationInFrames={DUR}
+        fps={FPS}
+        width={w}
+        height={h}
+        defaultProps={{ concept: "nudge", theme: "light" } satisfies CampaignProps}
+      />
+    ))}
   </>
 );

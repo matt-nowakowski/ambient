@@ -1473,6 +1473,7 @@
       "shortcutNotFound": "Ich habe keinen Kurzbefehl namens „{{name}}“ gefunden. Willst du wissen, wie du einen erstellst?",
       "cantDoYet": "Das kann ich noch nicht: {{what}}. Soll ich dir zeigen, wie du es selbst machst?",
       "cantDoYetPlain": "Das kann ich auf diesem Computer noch nicht. Soll ich dir zeigen, wie du es selbst machst?",
+      "privateNoAct": "Diese Seite wirkt privat, deshalb handle ich hier nicht.",
       "cantCloseWindow": "Fenster anderer Apps kann ich noch nicht schließen. Drücke {{keys}}, um es zu schließen.",
       "cantCloseTab": "Browser-Tabs kann ich noch nicht schließen. Drücke {{keys}}, um ihn zu schließen.",
       "cantQuitApp": "Apps kann ich noch nicht beenden. Drücke {{keys}}, während sie im Vordergrund ist.",

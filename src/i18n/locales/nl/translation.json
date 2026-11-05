@@ -1478,6 +1478,7 @@
       "shortcutNotFound": "Ik kon geen opdracht met de naam ‘{{name}}’ vinden. Wil je weten hoe je er een maakt?",
       "cantDoYet": "Dit kan ik nog niet: {{what}}. Zal ik je laten zien hoe je het zelf doet?",
       "cantDoYetPlain": "Dat kan ik nog niet op deze computer. Zal ik je laten zien hoe je het zelf doet?",
+      "privateNoAct": "Deze pagina lijkt privé, dus ik doe er niets op.",
       "cantCloseWindow": "Ik kan vensters van andere apps nog niet sluiten. Druk op {{keys}} om het te sluiten.",
       "cantCloseTab": "Ik kan browsertabbladen nog niet sluiten. Druk op {{keys}} om het te sluiten.",
       "cantQuitApp": "Ik kan apps nog niet stoppen. Druk op {{keys}} terwijl de app vooraan staat.",

@@ -1489,6 +1489,7 @@
       "shortcutNotFound": "Nie znaleziono skrótu o nazwie „{{name}}”. Chcesz wiedzieć, jak go utworzyć?",
       "cantDoYet": "Tego jeszcze nie potrafię: {{what}}. Pokazać ci, jak zrobić to samodzielnie?",
       "cantDoYetPlain": "Nie mogę jeszcze tego zrobić na tym komputerze. Pokazać ci, jak zrobić to samodzielnie?",
+      "privateNoAct": "Ta strona wygląda na prywatną, więc nic na niej nie robię.",
       "cantCloseWindow": "Nie potrafię jeszcze zamykać okien innych aplikacji. Naciśnij {{keys}}, aby je zamknąć.",
       "cantCloseTab": "Nie potrafię jeszcze zamykać kart przeglądarki. Naciśnij {{keys}}, aby ją zamknąć.",
       "cantQuitApp": "Nie potrafię jeszcze zamykać aplikacji. Naciśnij {{keys}}, gdy jest na pierwszym planie.",

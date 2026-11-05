@@ -159,6 +159,54 @@
         "editable": true
       }
     },
+    "slack_question_de": {
+      "app": "Slack",
+      "bundle": {
+        "macos": "com.tinyspeck.slackmacgap",
+        "windows": "slack.exe",
+        "linux": "slack"
+      },
+      "title": "Jonas Weber (DM) - Acme - Slack",
+      "text": "Jonas Weber  14:02\nHallo Matt, kannst du mir die Folien bis Donnerstag schicken? Danke!",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "teams_question_es": {
+      "app": "Microsoft Teams",
+      "bundle": {
+        "macos": "com.microsoft.teams2",
+        "windows": "ms-teams.exe",
+        "linux": "teams-for-linux"
+      },
+      "title": "Chat | Lucía Martín | Microsoft Teams",
+      "text": "Lucía Martín 10:21\n¿Me mandas el presupuesto revisado antes del viernes? Lo necesito para la reunión con el cliente.",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
+    "slack_thanks_pl": {
+      "app": "Slack",
+      "bundle": {
+        "macos": "com.tinyspeck.slackmacgap",
+        "windows": "slack.exe",
+        "linux": "slack"
+      },
+      "title": "Kasia Nowak (DM) - Acme - Slack",
+      "text": "Matt Nowakowski  09:20\nRaport wysłany.\nKasia Nowak  09:21\nSuper, dzięki! Miłego dnia.",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
     "slack_question_pl": {
       "app": "Slack",
       "bundle": {
@@ -256,6 +304,53 @@
       "expect": {
         "route": "suggest",
         "suggestion": ["draft_reply", "add_reminder"]
+      }
+    },
+    {
+      "id": "suggest.de.slack-deadline",
+      "about": "A short German request with a deadline in a DM: the judge reads it, whatever the language.",
+      "tags": ["regression"],
+      "lang": "de",
+      "screen": "slack_question_de",
+      "kind": "screen",
+      "settings": {
+        "languages": ["de", "en"]
+      },
+      "regression": "0.1.9 #6: short chats skipped the judge; the rules read English only",
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["draft_reply", "add_reminder"]
+      }
+    },
+    {
+      "id": "suggest.es.teams-deadline",
+      "about": "A short Spanish request with a deadline in Teams: the judge reads it, whatever the language.",
+      "tags": ["regression"],
+      "lang": "es",
+      "screen": "teams_question_es",
+      "kind": "screen",
+      "settings": {
+        "languages": ["es", "en"]
+      },
+      "regression": "0.1.9 #6: short chats skipped the judge; the rules read English only",
+      "expect": {
+        "route": "suggest",
+        "suggestion": ["draft_reply", "add_reminder"]
+      }
+    },
+    {
+      "id": "quiet.pl.slack-thanks",
+      "about": "A short chat that asks nothing: still quiet now that short chats reach the judge.",
+      "tags": ["quiet", "regression"],
+      "lang": "pl",
+      "screen": "slack_thanks_pl",
+      "kind": "screen",
+      "settings": {
+        "languages": ["pl", "en"]
+      },
+      "expect": {
+        "route": "quiet",
+        "must_not": ["suggested"]
       }
     },
     {
