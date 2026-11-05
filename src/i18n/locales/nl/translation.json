@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Werkt het niet? <guide>Linux-installatiegids</guide>",
       "done": "Werkt het niet in andere apps? <guide>Linux-installatiegids</guide>"
+    },
+    "ai": {
+      "title": "Waar de AI draait",
+      "sub": "Je kunt dit altijd wijzigen in Instellingen.",
+      "continue": "Doorgaan",
+      "cloud": {
+        "title": "In de cloud",
+        "body": "De beste resultaten. Je tekst gaat naar onze server om te polijsten en te antwoorden; je audio nooit."
+      },
+      "device": {
+        "title": "Op deze computer",
+        "body": "Privé: Apple Intelligence waar de Mac het heeft, anders een model dat je één keer downloadt. Niets gaat online."
+      },
+      "none": {
+        "title": "Geen AI",
+        "body": "Alleen dicteren en eenvoudige regels. Niets wordt verstuurd en niets wordt gepolijst, geschreven of voorgesteld."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Gedownload model"
-      }
+      },
+      "models": "Model op deze computer",
+      "recommended": "Aanbevolen",
+      "basic": "Eenvoudig",
+      "onThisComputer": "Op deze computer",
+      "score": "Nauwkeurigheid {{accuracy}}%, snelheid {{speed}}%",
+      "scoresNote": "De scores komen uit de gepubliceerde benchmarks van de modellen zelf, niet uit eigen tests."
     },
     "telemetry": {
       "title": "Help {{appName}} verbeteren",

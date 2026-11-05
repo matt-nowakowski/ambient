@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Tidak berfungsi? <guide>Panduan penyiapan Linux</guide>",
       "done": "Tidak berfungsi di aplikasi lain? <guide>Panduan penyiapan Linux</guide>"
+    },
+    "ai": {
+      "title": "Di mana AI berjalan",
+      "sub": "Kamu bisa mengubahnya kapan saja di Pengaturan.",
+      "continue": "Lanjut",
+      "cloud": {
+        "title": "Di cloud",
+        "body": "Hasil terbaik. Teksmu dikirim ke server kami untuk dipoles dan dijawab; audionya tidak pernah."
+      },
+      "device": {
+        "title": "Di komputer ini",
+        "body": "Pribadi: Apple Intelligence bila Mac mendukungnya, jika tidak model yang diunduh sekali. Tidak ada yang online."
+      },
+      "none": {
+        "title": "Tanpa AI",
+        "body": "Hanya dikte dan aturan sederhana. Tidak ada yang dikirim, dipoles, ditulis, atau disarankan."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Model yang diunduh"
-      }
+      },
+      "models": "Model di komputer ini",
+      "recommended": "Disarankan",
+      "basic": "Dasar",
+      "onThisComputer": "Di komputer ini",
+      "score": "Akurasi {{accuracy}}%, kecepatan {{speed}}%",
+      "scoresNote": "Skornya berasal dari tolok ukur terbitan model itu sendiri, bukan uji coba kami."
     },
     "telemetry": {
       "title": "Bantu tingkatkan {{appName}}",

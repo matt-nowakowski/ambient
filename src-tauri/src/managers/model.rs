@@ -1860,7 +1860,8 @@ impl ModelManager {
 
     /// `Ok(false)` if cancelled (partials kept for resume).
     async fn fetch_on_device_ai(&self, cancel_token: &CancellationToken) -> Result<bool> {
-        let model = crate::catalog::default_reasoning_model()
+        let model = self
+            .chosen_reasoning_model()
             .ok_or_else(|| anyhow::anyhow!("The catalog names no on-device AI model"))?;
         let runtime = crate::local_llm::runtime_asset()
             .ok_or_else(|| anyhow::anyhow!("On-device AI isn't available on this computer"))?;
@@ -1939,7 +1940,7 @@ impl ModelManager {
     /// Remove on-device AI: stop its server, delete the model and runtime.
     pub fn delete_on_device_ai(&self) -> Result<()> {
         crate::local_llm::stop();
-        if let Some(model) = crate::catalog::default_reasoning_model() {
+        if let Some(model) = self.chosen_reasoning_model() {
             Self::delete_hf_cache_file(&model.repo_id, &model.revision, &model.filename)?;
             let local = self.models_dir.join(&model.filename);
             if local.is_file() {
@@ -2453,10 +2454,29 @@ impl ModelManager {
         })
     }
 
+    /// The reasoning model this install runs: the one the user chose, else the
+    /// catalog's default, so a download from before the choice existed still
+    /// counts as downloaded instead of prompting again.
+    pub fn chosen_reasoning_model(&self) -> Option<&'static crate::catalog::ReasoningModelFile> {
+        let selected = crate::settings::get_settings(&self.app_handle)
+            .agent
+            .on_device_model_id;
+        crate::catalog::resolve_reasoning_model(selected.as_deref())
+    }
+
+    /// Whether one particular reasoning model's file is already on disk.
+    pub fn reasoning_model_downloaded(&self, id: &str) -> bool {
+        let Some(model) = crate::catalog::reasoning_model(id) else {
+            return false;
+        };
+        hf_cached_path(&model.repo_id, &model.revision, &model.filename).is_some()
+            || self.models_dir.join(&model.filename).is_file()
+    }
+
     /// The on-device AI model file, if downloaded (HF cache or a mirror copy
     /// in the models dir).
     pub fn reasoning_model_path(&self) -> Option<PathBuf> {
-        let model = crate::catalog::default_reasoning_model()?;
+        let model = self.chosen_reasoning_model()?;
         hf_cached_path(&model.repo_id, &model.revision, &model.filename).or_else(|| {
             let local = self.models_dir.join(&model.filename);
             local.is_file().then_some(local)

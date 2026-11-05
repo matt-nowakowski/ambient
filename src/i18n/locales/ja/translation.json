@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "うまくいかない場合は <guide>Linux セットアップガイド</guide>",
       "done": "ほかのアプリで動かない場合は <guide>Linux セットアップガイド</guide>"
+    },
+    "ai": {
+      "title": "AI が動く場所",
+      "sub": "設定でいつでも変更できます。",
+      "continue": "続ける",
+      "cloud": {
+        "title": "クラウド",
+        "body": "最も良い結果。文章は整文と回答のために私たちのサーバーへ送られますが、音声は決して送られません。"
+      },
+      "device": {
+        "title": "このコンピューター上",
+        "body": "プライベート。Mac が対応していれば Apple Intelligence、なければ一度ダウンロードするモデル。何もオンラインに出ません。"
+      },
+      "none": {
+        "title": "AI なし",
+        "body": "音声入力と簡単なルールだけ。何も送信されず、整文・代筆・提案も行いません。"
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "ダウンロードしたモデル"
-      }
+      },
+      "models": "このコンピューター上のモデル",
+      "recommended": "おすすめ",
+      "basic": "基本",
+      "onThisComputer": "このコンピューター上",
+      "score": "精度 {{accuracy}}%、速度 {{speed}}%",
+      "scoresNote": "スコアは各モデルが公開しているベンチマークによるもので、独自の測定ではありません。"
     },
     "telemetry": {
       "title": "{{appName}}の改善に協力する",

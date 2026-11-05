@@ -252,6 +252,23 @@
     "linux": {
       "tryIt": "Nefunguje to? <guide>Průvodce nastavením pro Linux</guide>",
       "done": "Nefunguje to v jiných aplikacích? <guide>Průvodce nastavením pro Linux</guide>"
+    },
+    "ai": {
+      "title": "Kde AI běží",
+      "sub": "Změníte to kdykoli v Nastavení.",
+      "continue": "Pokračovat",
+      "cloud": {
+        "title": "V cloudu",
+        "body": "Nejlepší výsledky. Váš text jde na náš server kvůli úpravě a odpovědi; zvuk nikdy."
+      },
+      "device": {
+        "title": "Na tomto počítači",
+        "body": "Soukromé: Apple Intelligence, kde ho Mac má, jinak model stažený jednou. Nic nejde online."
+      },
+      "none": {
+        "title": "Bez AI",
+        "body": "Jen diktování a jednoduchá pravidla. Nic se neposílá a nic se neupravuje, nepíše ani nenavrhuje."
+      }
     }
   },
   "modelTable": {
@@ -1742,7 +1759,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Stažený model"
-      }
+      },
+      "models": "Model na tomto počítači",
+      "recommended": "Doporučeno",
+      "basic": "Základní",
+      "onThisComputer": "Na tomto počítači",
+      "score": "Přesnost {{accuracy}} %, rychlost {{speed}} %",
+      "scoresNote": "Hodnocení pochází ze zveřejněných testů samotných modelů, ne z našich."
     },
     "telemetry": {
       "title": "Pomozte vylepšit {{appName}}",

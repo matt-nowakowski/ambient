@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Çalışmıyor mu? <guide>Linux kurulum rehberi</guide>",
       "done": "Diğer uygulamalarda çalışmıyor mu? <guide>Linux kurulum rehberi</guide>"
+    },
+    "ai": {
+      "title": "Yapay zekâ nerede çalışır",
+      "sub": "Bunu İşlemler'den istediğin zaman değiştirebilirsin.",
+      "continue": "Devam",
+      "cloud": {
+        "title": "Bulutta",
+        "body": "En iyi sonuçlar. Metnin düzeltilmek ve yanıtlanmak için sunucumuza gider; sesin asla."
+      },
+      "device": {
+        "title": "Bu bilgisayarda",
+        "body": "Gizli: Mac'te varsa Apple Intelligence, yoksa bir kez indirdiğin bir model. Hiçbir şey çevrimiçi olmaz."
+      },
+      "none": {
+        "title": "Yapay zekâ yok",
+        "body": "Yalnızca dikte ve basit kurallar. Hiçbir şey gönderilmez, düzeltilmez, yazılmaz veya önerilmez."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "İndirilen model"
-      }
+      },
+      "models": "Bu bilgisayardaki model",
+      "recommended": "Önerilen",
+      "basic": "Basit",
+      "onThisComputer": "Bu bilgisayarda",
+      "score": "Doğruluk %{{accuracy}}, hız %{{speed}}",
+      "scoresNote": "Puanlar modellerin kendi yayımladığı ölçümlere dayanır, bizim testlerimize değil."
     },
     "telemetry": {
       "title": "{{appName}} uygulamasını geliştirmeye yardım et",

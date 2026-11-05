@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Không hoạt động? <guide>Hướng dẫn thiết lập Linux</guide>",
       "done": "Không hoạt động trong các ứng dụng khác? <guide>Hướng dẫn thiết lập Linux</guide>"
+    },
+    "ai": {
+      "title": "AI chạy ở đâu",
+      "sub": "Bạn có thể đổi bất cứ lúc nào trong Cài đặt.",
+      "continue": "Tiếp tục",
+      "cloud": {
+        "title": "Trên đám mây",
+        "body": "Kết quả tốt nhất. Văn bản của bạn được gửi tới máy chủ của chúng tôi để trau chuốt và trả lời; âm thanh thì không."
+      },
+      "device": {
+        "title": "Trên máy này",
+        "body": "Riêng tư: Apple Intelligence nếu máy Mac có, nếu không thì tải mô hình một lần. Không gì lên mạng."
+      },
+      "none": {
+        "title": "Không dùng AI",
+        "body": "Chỉ đọc chính tả và quy tắc đơn giản. Không gửi gì, không trau chuốt, viết hay gợi ý gì."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Mô hình đã tải"
-      }
+      },
+      "models": "Mô hình trên máy này",
+      "recommended": "Đề xuất",
+      "basic": "Cơ bản",
+      "onThisComputer": "Trên máy này",
+      "score": "Độ chính xác {{accuracy}}%, tốc độ {{speed}}%",
+      "scoresNote": "Điểm số lấy từ kết quả đo do chính các mô hình công bố, không phải do chúng tôi tự đo."
     },
     "telemetry": {
       "title": "Giúp cải thiện {{appName}}",

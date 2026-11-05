@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "沒有作用嗎？<guide>Linux 設定指南</guide>",
       "done": "在其他應用程式中沒有作用嗎？<guide>Linux 設定指南</guide>"
+    },
+    "ai": {
+      "title": "AI 在哪裡執行",
+      "sub": "你隨時可以在設定中更改。",
+      "continue": "繼續",
+      "cloud": {
+        "title": "在雲端",
+        "body": "效果最好。你的文字會傳送到我們的伺服器進行潤飾和回答；音訊絕不傳送。"
+      },
+      "device": {
+        "title": "在本機上",
+        "body": "私密：Mac 支援時用 Apple Intelligence，否則下載一次模型。任何內容都不會連網。"
+      },
+      "none": {
+        "title": "不使用 AI",
+        "body": "只做聽寫和簡單規則。不傳送任何內容，也不潤飾、代寫或建議。"
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "已下載的模型"
-      }
+      },
+      "models": "本機模型",
+      "recommended": "推薦",
+      "basic": "基本",
+      "onThisComputer": "在本機上",
+      "score": "準確度 {{accuracy}}%，速度 {{speed}}%",
+      "scoresNote": "評分來自模型本身公布的基準測試，而非我們自行測試。"
     },
     "telemetry": {
       "title": "協助改善 {{appName}}",

@@ -122,6 +122,8 @@ pub fn target(app: &AppHandle) -> Option<Target> {
         Intelligence::Device => device_provider(engine()?),
         Intelligence::Cloud => ai_provider(AMBIENT_AI_PROVIDER_ID)?,
         Intelligence::Auto => settings.active_post_process_provider()?,
+        // No AI at all: callers see "nothing to run" and leave the words alone.
+        Intelligence::None => return None,
     };
     // On-device models are on every plan; on Free each call is an AI use
     // from the weekly pool (`complete_inner` takes it).
@@ -175,6 +177,7 @@ pub fn prefers_on_device(intelligence: Intelligence, on_device_when_possible: bo
         Intelligence::Device => true,
         Intelligence::Cloud => false,
         Intelligence::Auto => on_device_when_possible,
+        Intelligence::None => false,
     }
 }
 

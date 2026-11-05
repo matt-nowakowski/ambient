@@ -11,6 +11,7 @@ export type OnboardingStep =
   | "permissions"
   | "model"
   | "demo"
+  | "ai"
   | "try"
   | "done";
 
@@ -18,6 +19,7 @@ export const STEP_ORDER: OnboardingStep[] = [
   "welcome",
   "permissions",
   "model",
+  "ai",
   "demo",
   "try",
   "done",

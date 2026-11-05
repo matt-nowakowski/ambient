@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Not working? <guide>Linux setup guide</guide>",
       "done": "Not working in other apps? <guide>Linux setup guide</guide>"
+    },
+    "ai": {
+      "title": "Where the AI runs",
+      "sub": "You can change this any time in Settings.",
+      "continue": "Continue",
+      "cloud": {
+        "title": "In the cloud",
+        "body": "The best results. Your text goes to our server to polish and answer; your audio never does."
+      },
+      "device": {
+        "title": "On this computer",
+        "body": "Private: Apple Intelligence where the Mac has it, otherwise a model you download once. Nothing goes online."
+      },
+      "none": {
+        "title": "No AI",
+        "body": "Plain dictation and simple rules. Nothing is sent, and nothing is polished, drafted or suggested."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Downloaded model"
-      }
+      },
+      "models": "On-device model",
+      "recommended": "Recommended",
+      "basic": "Basic",
+      "onThisComputer": "On this computer",
+      "score": "Accuracy {{accuracy}}%, speed {{speed}}%",
+      "scoresNote": "Scores come from the models' own published benchmarks, not from tests we ran ourselves."
     },
     "telemetry": {
       "title": "Help improve {{appName}}",

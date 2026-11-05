@@ -36,6 +36,9 @@ export const suggestionRoute = (
     case "cloud":
       if (paid) return "cloud";
       return onDevice ? "on_device" : "rules";
+    // No AI at all: the plain rules, and nothing judged.
+    case "none":
+      return "rules";
   }
 };
 
@@ -52,6 +55,8 @@ export const polishRoute = (
   onDevice: boolean,
 ): PolishRoute => {
   if (!enabled) return "off";
+  // No AI at all: the words are typed as said.
+  if (intelligence === "none") return "off";
   if (provider === ON_DEVICE_PROVIDER) return onDevice ? "on_device" : "off";
   if (provider !== HOSTED_PROVIDER) return "off";
   if (intelligence === "device") return onDevice ? "on_device" : "blocked";

@@ -1178,6 +1178,28 @@ async deleteOnDeviceAi() : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Every on-device reasoning model the catalog lists, with its scores and
+ * whether it is already here. Drives the picker in setup and in the Privacy
+ * Center; the scores come from the models' own published benchmarks, which is
+ * what the picker says.
+ */
+async getReasoningModels() : Promise<ReasoningModelInfo[]> {
+    return await TAURI_INVOKE("get_reasoning_models");
+},
+/**
+ * Remember which reasoning model runs on-device tasks. Passing nothing clears
+ * the choice and falls back to the catalog's default. Downloads nothing: the
+ * picker downloads the chosen model next, under the usual on-device events.
+ */
+async setReasoningModel(modelId: string | null) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_reasoning_model", { modelId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async deleteModel(modelId: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("delete_model", { modelId }) };
@@ -2100,7 +2122,13 @@ export type Intelligence =
 /**
  * Our hosted model: the best results; redacted text is sent.
  */
-"cloud"
+"cloud" | 
+/**
+ * No AI at all: plain dictation and the simple rules. Nothing is sent
+ * anywhere, nothing is polished, drafted or judged, and asking for
+ * something that needs AI says so instead of going quiet.
+ */
+"none"
 /**
  * Where the main window will open, in the intro window's own coordinates
  * (logical px), so the intro can shrink into exactly that spot.
@@ -2266,6 +2294,33 @@ email: string | null }
 /**
  * "Download on-device AI": what this computer can run and what's there.
  */
+export type ReasoningModelInfo = { 
+id: string; 
+name: string; 
+description: string; 
+/**
+ * Download size, in MB.
+ */
+size_mb: number; 
+accuracy: number | null; 
+speed: number | null; 
+recommended: boolean; 
+/**
+ * Small enough that answers and writing are noticeably weaker.
+ */
+basic: boolean; 
+/**
+ * What an install that never chose keeps using.
+ */
+is_default: boolean; 
+/**
+ * Already on this computer.
+ */
+downloaded: boolean; 
+/**
+ * The one this install runs now.
+ */
+selected: boolean }
 export type OnDeviceAiStatus = { 
 /**
  * llama.cpp is built for this computer (every platform we ship).

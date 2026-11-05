@@ -4,6 +4,8 @@ use crate::managers::model::{
 use crate::managers::transcription::{ModelStateEvent, TranscriptionManager};
 use crate::settings::{get_settings, write_settings, ModelUnloadTimeout};
 use log::error;
+use serde::Serialize;
+use specta::Type;
 use std::sync::Arc;
 use tauri::{AppHandle, Emitter, Manager, State};
 
@@ -106,6 +108,76 @@ pub struct OnDeviceAiStatus {
     pub apple_available: bool,
     /// What runs on-device tasks now: "apple", "downloaded", or None.
     pub engine: Option<String>,
+}
+
+/// One on-device reasoning model, for the picker in setup and in Settings.
+#[derive(Serialize, Type)]
+pub struct ReasoningModelInfo {
+    pub id: String,
+    pub name: String,
+    pub description: String,
+    /// Download size, in MB.
+    pub size_mb: u64,
+    pub accuracy: Option<f32>,
+    pub speed: Option<f32>,
+    pub recommended: bool,
+    /// Small enough that answers and writing are noticeably weaker.
+    pub basic: bool,
+    /// What an install that never chose keeps using.
+    pub is_default: bool,
+    /// Already on this computer.
+    pub downloaded: bool,
+    /// The one this install runs now.
+    pub selected: bool,
+}
+
+/// Every on-device reasoning model the catalog lists, with its scores and
+/// whether it is already here. Drives the picker in setup and in the Privacy
+/// Center; the scores come from the models' own published benchmarks, which is
+/// what the picker says.
+#[tauri::command]
+#[specta::specta]
+pub fn get_reasoning_models(
+    app: AppHandle,
+    model_manager: State<'_, Arc<ModelManager>>,
+) -> Vec<ReasoningModelInfo> {
+    let selected = crate::settings::get_settings(&app).agent.on_device_model_id;
+    let default_id = crate::catalog::default_reasoning_model().map(|m| m.id.clone());
+    let chosen = crate::catalog::resolve_reasoning_model(selected.as_deref()).map(|m| m.id.clone());
+    crate::catalog::REASONING_MODELS
+        .iter()
+        .map(|m| ReasoningModelInfo {
+            id: m.id.clone(),
+            name: m.name.clone(),
+            description: m.description.clone(),
+            size_mb: m.size_bytes / (1024 * 1024),
+            accuracy: m.accuracy_score,
+            speed: m.speed_score,
+            recommended: m.recommended,
+            basic: m.basic,
+            is_default: default_id.as_deref() == Some(m.id.as_str()),
+            downloaded: model_manager.reasoning_model_downloaded(&m.id)
+                || chosen.as_deref() == Some(m.id.as_str()),
+            selected: chosen.as_deref() == Some(m.id.as_str()),
+        })
+        .collect()
+}
+
+/// Remember which reasoning model runs on-device tasks. Passing nothing clears
+/// the choice and falls back to the catalog's default. Downloads nothing: the
+/// picker downloads the chosen model next, under the usual on-device events.
+#[tauri::command]
+#[specta::specta]
+pub fn set_reasoning_model(app: AppHandle, model_id: Option<String>) -> Result<(), String> {
+    if let Some(id) = model_id.as_deref() {
+        if crate::catalog::reasoning_model(id).is_none() {
+            return Err(format!("Unknown on-device model: {id}"));
+        }
+    }
+    let mut settings = crate::settings::get_settings(&app);
+    settings.agent.on_device_model_id = model_id;
+    crate::settings::write_settings(&app, settings);
+    Ok(())
 }
 
 #[tauri::command]

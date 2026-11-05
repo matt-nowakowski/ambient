@@ -252,6 +252,23 @@
     "linux": {
       "tryIt": "Nie działa? <guide>Poradnik konfiguracji dla Linuksa</guide>",
       "done": "Nie działa w innych aplikacjach? <guide>Poradnik konfiguracji dla Linuksa</guide>"
+    },
+    "ai": {
+      "title": "Gdzie działa AI",
+      "sub": "Możesz to zmienić w każdej chwili w Ustawieniach.",
+      "continue": "Dalej",
+      "cloud": {
+        "title": "W chmurze",
+        "body": "Najlepsze wyniki. Twój tekst trafia na nasz serwer, by go wygładzić i odpowiedzieć; dźwięk nigdy."
+      },
+      "device": {
+        "title": "Na tym komputerze",
+        "body": "Prywatnie: Apple Intelligence, jeśli Mac go ma, inaczej model pobrany raz. Nic nie wychodzi do sieci."
+      },
+      "none": {
+        "title": "Bez AI",
+        "body": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani wygładzane, pisane czy podpowiadane."
+      }
     }
   },
   "modelTable": {
@@ -1742,7 +1759,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Pobrany model"
-      }
+      },
+      "models": "Model na tym komputerze",
+      "recommended": "Zalecany",
+      "basic": "Podstawowy",
+      "onThisComputer": "Na tym komputerze",
+      "score": "Dokładność {{accuracy}}%, szybkość {{speed}}%",
+      "scoresNote": "Oceny pochodzą z opublikowanych testów samych modeli, nie z naszych własnych."
     },
     "telemetry": {
       "title": "Pomóż ulepszyć {{appName}}",

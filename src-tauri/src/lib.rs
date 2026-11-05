@@ -928,6 +928,8 @@ pub fn run(cli_args: CliArgs) {
             plan::billing_portal_url,
             plan::request_sign_in_code,
             plan::subscribe_tips,
+            commands::models::get_reasoning_models,
+            commands::models::set_reasoning_model,
             plan::verify_sign_in_code,
             plan::refresh_account,
             plan::sign_out,

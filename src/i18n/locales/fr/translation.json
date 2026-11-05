@@ -251,6 +251,23 @@
     "linux": {
       "tryIt": "Ça ne marche pas ? <guide>Guide de configuration Linux</guide>",
       "done": "Ça ne marche pas dans les autres apps ? <guide>Guide de configuration Linux</guide>"
+    },
+    "ai": {
+      "title": "Où tourne l'IA",
+      "sub": "Vous pouvez changer cela à tout moment dans les Réglages.",
+      "continue": "Continuer",
+      "cloud": {
+        "title": "Dans le cloud",
+        "body": "Les meilleurs résultats. Votre texte part sur notre serveur pour être poli et pour répondre ; votre audio jamais."
+      },
+      "device": {
+        "title": "Sur cet ordinateur",
+        "body": "Privé : Apple Intelligence quand le Mac l'a, sinon un modèle téléchargé une fois. Rien ne sort en ligne."
+      },
+      "none": {
+        "title": "Pas d'IA",
+        "body": "Dictée simple et règles basiques. Rien n'est envoyé, rien n'est poli, rédigé ni suggéré."
+      }
     }
   },
   "modelTable": {
@@ -1729,7 +1746,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Modèle téléchargé"
-      }
+      },
+      "models": "Modèle sur cet ordinateur",
+      "recommended": "Recommandé",
+      "basic": "Simple",
+      "onThisComputer": "Sur cet ordinateur",
+      "score": "Précision {{accuracy}} %, rapidité {{speed}} %",
+      "scoresNote": "Les scores viennent des benchmarks publiés par les modèles eux-mêmes, pas de nos propres tests."
     },
     "telemetry": {
       "title": "Aidez à améliorer {{appName}}",

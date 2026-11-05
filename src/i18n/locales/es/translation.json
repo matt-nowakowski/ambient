@@ -251,6 +251,23 @@
     "linux": {
       "tryIt": "¿No funciona? <guide>Guía de configuración para Linux</guide>",
       "done": "¿No funciona en otras apps? <guide>Guía de configuración para Linux</guide>"
+    },
+    "ai": {
+      "title": "Dónde funciona la IA",
+      "sub": "Puedes cambiarlo cuando quieras en Ajustes.",
+      "continue": "Continuar",
+      "cloud": {
+        "title": "En la nube",
+        "body": "Los mejores resultados. Tu texto va a nuestro servidor para pulir y responder; tu audio nunca."
+      },
+      "device": {
+        "title": "En este equipo",
+        "body": "Privado: Apple Intelligence donde el Mac lo tiene, si no un modelo que descargas una vez. Nada sale a internet."
+      },
+      "none": {
+        "title": "Sin IA",
+        "body": "Dictado simple y reglas sencillas. No se envía nada y no se pule, redacta ni sugiere nada."
+      }
     }
   },
   "modelTable": {
@@ -1730,7 +1747,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Modelo descargado"
-      }
+      },
+      "models": "Modelo en este equipo",
+      "recommended": "Recomendado",
+      "basic": "Básico",
+      "onThisComputer": "En este equipo",
+      "score": "Precisión {{accuracy}} %, velocidad {{speed}} %",
+      "scoresNote": "Las puntuaciones proceden de los benchmarks publicados de los propios modelos, no de pruebas nuestras."
     },
     "telemetry": {
       "title": "Ayuda a mejorar {{appName}}",

@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Funktioniert nicht? <guide>Linux-Einrichtungsanleitung</guide>",
       "done": "Funktioniert in anderen Apps nicht? <guide>Linux-Einrichtungsanleitung</guide>"
+    },
+    "ai": {
+      "title": "Wo die KI läuft",
+      "sub": "Du kannst das jederzeit in den Einstellungen ändern.",
+      "continue": "Weiter",
+      "cloud": {
+        "title": "In der Cloud",
+        "body": "Die besten Ergebnisse. Dein Text geht zum Verfeinern und Antworten an unseren Server; dein Ton nie."
+      },
+      "device": {
+        "title": "Auf diesem Computer",
+        "body": "Privat: Apple Intelligence, wo der Mac es hat, sonst ein einmal geladenes Modell. Nichts geht online."
+      },
+      "none": {
+        "title": "Keine KI",
+        "body": "Reine Diktatfunktion und einfache Regeln. Nichts wird gesendet, nichts verfeinert, verfasst oder vorgeschlagen."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Geladenes Modell"
-      }
+      },
+      "models": "Modell auf diesem Computer",
+      "recommended": "Empfohlen",
+      "basic": "Einfach",
+      "onThisComputer": "Auf diesem Computer",
+      "score": "Genauigkeit {{accuracy}} %, Tempo {{speed}} %",
+      "scoresNote": "Die Werte stammen aus den veröffentlichten Benchmarks der Modelle, nicht aus eigenen Tests."
     },
     "telemetry": {
       "title": "Hilf mit, {{appName}} zu verbessern",

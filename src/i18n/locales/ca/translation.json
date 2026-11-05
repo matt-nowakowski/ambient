@@ -251,6 +251,23 @@
     "linux": {
       "tryIt": "No funciona? <guide>Guia de configuració per a Linux</guide>",
       "done": "No funciona a altres aplicacions? <guide>Guia de configuració per a Linux</guide>"
+    },
+    "ai": {
+      "title": "On s'executa la IA",
+      "sub": "Ho pots canviar quan vulguis a Configuració.",
+      "continue": "Continua",
+      "cloud": {
+        "title": "Al núvol",
+        "body": "Els millors resultats. El teu text va al nostre servidor per polir-lo i respondre; l'àudio mai."
+      },
+      "device": {
+        "title": "En aquest ordinador",
+        "body": "Privat: Apple Intelligence on el Mac el té, si no un model que descarregues un cop. Res no surt a internet."
+      },
+      "none": {
+        "title": "Sense IA",
+        "body": "Només dictat i regles senzilles. No s'envia res ni es poleix, escriu o suggereix res."
+      }
     }
   },
   "modelTable": {
@@ -1729,7 +1746,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Model baixat"
-      }
+      },
+      "models": "Model en aquest ordinador",
+      "recommended": "Recomanat",
+      "basic": "Bàsic",
+      "onThisComputer": "En aquest ordinador",
+      "score": "Precisió {{accuracy}} %, velocitat {{speed}} %",
+      "scoresNote": "Les puntuacions venen dels benchmarks publicats dels propis models, no de proves nostres."
     },
     "telemetry": {
       "title": "Ajuda a millorar {{appName}}",

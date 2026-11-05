@@ -7,6 +7,7 @@ import {
   type AgentSettings,
   type OnDeviceAiStatus,
   type OnDeviceModel,
+  type ReasoningModelInfo,
 } from "@/bindings";
 import { showError } from "@/lib/errors";
 import { formatModelSize } from "@/lib/utils/format";
@@ -67,6 +68,31 @@ export const OnDeviceAi: React.FC<{
     const r = await commands.deleteOnDeviceAi();
     if (r.status === "error") showError("settings", r.error);
     await refresh();
+  };
+
+  // The models the catalog offers, shown where the download already lives as
+  // well as in setup. Choosing one downloads it if it isn't here yet.
+  const [models, setModels] = useState<ReasoningModelInfo[]>([]);
+  useEffect(() => {
+    let live = true;
+    commands.getReasoningModels().then((list) => {
+      if (live) setModels(list);
+    });
+    return () => {
+      live = false;
+    };
+  }, [status.downloaded, status.size_mb]);
+
+  const choose = async (model: ReasoningModelInfo) => {
+    if (model.selected) return;
+    const r = await commands.setReasoningModel(model.id);
+    if (r.status === "error") {
+      showError("settings", r.error);
+      return;
+    }
+    await refresh();
+    setModels(await commands.getReasoningModels());
+    if (!model.downloaded) await download();
   };
 
   return (
@@ -135,6 +161,71 @@ export const OnDeviceAi: React.FC<{
             {t("privacy.onDeviceAi.downloading", {
               percent: Math.round(progress?.percentage ?? 0),
             })}
+          </p>
+        </div>
+      )}
+      {models.length > 1 && (
+        <div className="mt-3">
+          <p className="text-small text-ink-2">
+            {t("privacy.onDeviceAi.models")}
+          </p>
+          <div
+            role="radiogroup"
+            aria-label={t("privacy.onDeviceAi.models")}
+            className="mt-1 flex flex-col"
+          >
+            {models.map((m) => (
+              <label
+                key={m.id}
+                className="flex cursor-pointer items-start gap-2.5 rounded-control px-2 py-1.5 hover:bg-glass-hover"
+              >
+                <input
+                  type="radio"
+                  name="on-device-model"
+                  className="mt-1"
+                  checked={m.selected}
+                  onChange={() => choose(m)}
+                />
+                <span className="min-w-0">
+                  <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
+                    {m.name}
+                    <span className="text-meta tabular-nums text-ink-3">
+                      {formatModelSize(m.size_mb)}
+                    </span>
+                    {m.recommended && (
+                      <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
+                        {t("privacy.onDeviceAi.recommended")}
+                      </span>
+                    )}
+                    {m.basic && (
+                      <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
+                        {t("privacy.onDeviceAi.basic")}
+                      </span>
+                    )}
+                    {m.downloaded && (
+                      <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
+                        {t("privacy.onDeviceAi.onThisComputer")}
+                      </span>
+                    )}
+                  </span>
+                  <span className="mt-0.5 block text-small text-ink-2">
+                    {m.description}
+                    {m.accuracy !== null && m.speed !== null && (
+                      <>
+                        {" "}
+                        {t("privacy.onDeviceAi.score", {
+                          accuracy: Math.round(m.accuracy * 100),
+                          speed: Math.round(m.speed * 100),
+                        })}
+                      </>
+                    )}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </div>
+          <p className="mt-1 text-meta text-ink-3">
+            {t("privacy.onDeviceAi.scoresNote")}
           </p>
         </div>
       )}

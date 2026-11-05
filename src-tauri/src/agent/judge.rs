@@ -297,6 +297,8 @@ pub fn route(
         Intelligence::Cloud if paid => Route::Cloud,
         Intelligence::Cloud if on_device => Route::OnDevice,
         Intelligence::Cloud => Route::Rules,
+        // With AI off there is nothing to judge with: the plain rules only.
+        Intelligence::None => Route::Rules,
     }
 }
 

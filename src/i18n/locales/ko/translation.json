@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "작동하지 않나요? <guide>Linux 설정 가이드</guide>",
       "done": "다른 앱에서 작동하지 않나요? <guide>Linux 설정 가이드</guide>"
+    },
+    "ai": {
+      "title": "AI가 실행되는 곳",
+      "sub": "설정에서 언제든지 바꿀 수 있습니다.",
+      "continue": "계속",
+      "cloud": {
+        "title": "클라우드",
+        "body": "가장 좋은 결과. 글은 다듬고 답하기 위해 저희 서버로 가지만, 음성은 절대 가지 않습니다."
+      },
+      "device": {
+        "title": "이 컴퓨터에서",
+        "body": "비공개: Mac에 있다면 Apple Intelligence, 없으면 한 번 받는 모델. 아무것도 온라인으로 나가지 않습니다."
+      },
+      "none": {
+        "title": "AI 없음",
+        "body": "받아쓰기와 간단한 규칙만. 아무것도 전송되지 않고 다듬거나 작성하거나 제안하지 않습니다."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "다운로드한 모델"
-      }
+      },
+      "models": "이 컴퓨터의 모델",
+      "recommended": "권장",
+      "basic": "기본",
+      "onThisComputer": "이 컴퓨터에서",
+      "score": "정확도 {{accuracy}}%, 속도 {{speed}}%",
+      "scoresNote": "점수는 각 모델이 공개한 벤치마크에서 온 것이며, 저희가 직접 측정한 것이 아닙니다."
     },
     "telemetry": {
       "title": "{{appName}} 개선에 도움 주기",

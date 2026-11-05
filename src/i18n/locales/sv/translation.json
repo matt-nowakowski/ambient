@@ -250,6 +250,23 @@
     "linux": {
       "tryIt": "Fungerar det inte? <guide>Installationsguide för Linux</guide>",
       "done": "Fungerar det inte i andra appar? <guide>Installationsguide för Linux</guide>"
+    },
+    "ai": {
+      "title": "Var AI:n körs",
+      "sub": "Du kan ändra detta när som helst i Inställningar.",
+      "continue": "Fortsätt",
+      "cloud": {
+        "title": "I molnet",
+        "body": "Bäst resultat. Din text går till vår server för att slipas och svara; ditt ljud aldrig."
+      },
+      "device": {
+        "title": "På den här datorn",
+        "body": "Privat: Apple Intelligence där datorn har det, annars en modell du laddar ner en gång. Inget går online."
+      },
+      "none": {
+        "title": "Ingen AI",
+        "body": "Bara diktering och enkla regler. Inget skickas och inget slipas, skrivs eller föreslås."
+      }
     }
   },
   "modelTable": {
@@ -1718,7 +1735,13 @@
       "engines": {
         "apple": "Apple Intelligence",
         "downloaded": "Hämtad modell"
-      }
+      },
+      "models": "Modell på den här datorn",
+      "recommended": "Rekommenderad",
+      "basic": "Enkel",
+      "onThisComputer": "På den här datorn",
+      "score": "Träffsäkerhet {{accuracy}} %, hastighet {{speed}} %",
+      "scoresNote": "Betygen kommer från modellernas egna publicerade mätningar, inte från våra tester."
     },
     "telemetry": {
       "title": "Hjälp till att förbättra {{appName}}",

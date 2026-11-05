@@ -744,6 +744,10 @@ pub enum Intelligence {
     Device,
     /// Our hosted model: the best results; redacted text is sent.
     Cloud,
+    /// No AI at all: plain dictation and the simple rules. Nothing is sent
+    /// anywhere, nothing is polished, drafted or judged, and asking for
+    /// something that needs AI says so instead of going quiet.
+    None,
 }
 
 /// The on-device model to prefer (see `AgentSettings::on_device_model`).
