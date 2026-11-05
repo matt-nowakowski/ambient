@@ -88,6 +88,8 @@ jobs:
           - platform: "macos-26" # Apple silicon. macOS 26 for the Apple Intelligence SDK.
             args: "--target aarch64-apple-darwin"
             target: "aarch64-apple-darwin"
+            # The release gate: every scenario (testing/README.md).
+            scenarios: "full"
           - platform: "macos-latest" # Intel, cross-compiled.
             args: "--target x86_64-apple-darwin"
             target: "x86_64-apple-darwin"
@@ -97,12 +99,14 @@ jobs:
           - platform: "ubuntu-24.04" # AppImage and RPM
             args: "--bundles appimage,rpm"
             target: "x86_64-unknown-linux-gnu"
+            scenarios: "critical"
           - platform: "ubuntu-24.04-arm"
             args: "--bundles appimage,deb,rpm"
             target: "aarch64-unknown-linux-gnu"
           - platform: "windows-latest" # x64. Unsigned unless AZURE_* secrets exist.
             args: ""
             target: "x86_64-pc-windows-msvc"
+            scenarios: "critical"
           - platform: "windows-11-arm"
             args: "--target aarch64-pc-windows-msvc"
             target: "aarch64-pc-windows-msvc"
@@ -116,6 +120,9 @@ jobs:
       asset-prefix: "ambient"
       upload-artifacts: false
       release-id: ${{ needs.create-release.outputs.release-id }}
+      # The scenario suite on the built app; a failure stops the release
+      # before publish-r2 (testing/README.md has the thresholds).
+      scenario-tests: ${{ matrix.scenarios || '' }}
     secrets: inherit
 
   # Installers and the updater feed are served from R2. Layout:
