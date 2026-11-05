@@ -116,7 +116,8 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
       return;
     }
     try {
-      const update = await check();
+      // Same per-endpoint limit as the Rust checker (updates.rs CHECK_TIMEOUT).
+      const update = await check({ timeout: 20_000 });
       if (update) {
         setPortableInstallerUrl(
           resolvePortableInstallerUrl(update.rawJson, platform(), arch()),

@@ -45,6 +45,8 @@ pub const JITTER: Duration = Duration::from_secs(30 * 60);
 pub const MIN_GAP: Duration = Duration::from_secs(60 * 60);
 /// Let launch settle (and the first-run plan land) before the first check.
 const FIRST_DELAY: Duration = Duration::from_secs(30);
+/// Per-endpoint limit for fetching latest.json (not the download itself).
+const CHECK_TIMEOUT: Duration = Duration::from_secs(20);
 
 /// Where the update flow is right now. Serialized camelCase for the webview.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Type)]
@@ -219,7 +221,10 @@ async fn run_check(app: AppHandle, manual: bool) {
 
     set_status(&app, UpdatePhase::Checking, None, false, manual, None);
 
-    let checked = match app.updater() {
+    // Without a timeout a stalled endpoint would hang the check forever (the
+    // plugin sets none), leave `checking` stuck and stop every later check this
+    // session. It also lets a dead first endpoint fall through to the next.
+    let checked = match app.updater_builder().timeout(CHECK_TIMEOUT).build() {
         Ok(updater) => updater.check().await,
         Err(e) => {
             warn!("updater unavailable: {e}");
