@@ -20,7 +20,8 @@ import { demoInstallsData } from "./installs-demo";
  *   (check-in); per plan we count the larger of the two so nobody counts twice.
  * - daily_counts: downloads from the site's /dl links, first launches by
  *   country.
- * - accounts: emails that signed in to the app.
+ * - accounts: emails that signed in to the app, and, from 0.1.8, emails that
+ *   asked for tips from setup or Account (source 'tips').
  * - Polar: paying and complimentary subscriptions.
  */
 export const INSTALL_DAYS = 30;
@@ -43,7 +44,7 @@ export type InstallsData = {
   countries: { country: string; downloads: number; firstLaunches: number }[];
   /** OS, version and plan of devices that checked in over the last 7 days, as device-days. */
   mix: { deviceDays: number; os: { key: string; n: number }[]; versions: { key: string; n: number }[]; plans: { key: string; n: number }[] };
-  accounts: { email: string; plan: string; firstSeen: string; lastSeen: string }[];
+  accounts: { email: string; plan: string; source: string | null; language: string | null; deviceHash: string | null; firstSeen: string; lastSeen: string }[];
   accountTotals: Record<string, number>;
 };
 
@@ -97,7 +98,7 @@ const read = unstable_cache(
           where period = 'day' and start >= ${from}::date group by 1, 2, 3`,
       sql`select min(start) as first from device_activity`,
       sql`select day, metric, dim, sum(count) as n from daily_counts where day >= ${from}::date group by 1, 2, 3`,
-      sql`select email, plan, first_seen, last_seen from accounts
+      sql`select email, plan, source, language, device_hash, first_seen, last_seen from accounts
           order by (plan = 'free') desc, last_seen desc limit 300`,
       sql`select plan, count(*) as n from accounts group by 1`,
       sql`select os || '/' || coalesce(arch, 'other') as os, count(*) as n from device_activity
@@ -181,7 +182,15 @@ const read = unstable_cache(
         versions: ranked(versions, "version"),
         plans: ranked(plans, "plan"),
       },
-      accounts: accounts.map((r) => ({ email: String(r.email), plan: String(r.plan), firstSeen: iso(r.first_seen), lastSeen: iso(r.last_seen) })),
+      accounts: accounts.map((r) => ({
+        email: String(r.email),
+        plan: String(r.plan),
+        source: r.source == null ? null : String(r.source),
+        language: r.language == null ? null : String(r.language),
+        deviceHash: r.device_hash == null ? null : String(r.device_hash),
+        firstSeen: iso(r.first_seen),
+        lastSeen: iso(r.last_seen),
+      })),
       accountTotals: Object.fromEntries(accountTotals.map((r) => [String(r.plan), num(r.n)])),
     };
   },

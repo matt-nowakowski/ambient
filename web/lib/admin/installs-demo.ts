@@ -84,12 +84,12 @@ export function demoInstallsData(days: string[]): InstallsData {
       ],
     },
     accounts: [
-      { email: "marta.kowalska@example.com", plan: "free", firstSeen: ago(30), lastSeen: ago(2) },
-      { email: "j.okafor@example.com", plan: "free", firstSeen: ago(200), lastSeen: ago(5) },
-      { email: "lena.berg@example.com", plan: "free", firstSeen: ago(90), lastSeen: ago(26) },
-      { email: "tom@example.org", plan: "free", firstSeen: ago(500), lastSeen: ago(170) },
-      { email: "priya.n@example.com", plan: "pro", firstSeen: ago(700), lastSeen: ago(1) },
-      { email: "sam@studio.example", plan: "team", firstSeen: ago(400), lastSeen: ago(8) },
+      { email: "marta.kowalska@example.com", plan: "free", source: "sign-in", language: "pl", deviceHash: null, firstSeen: ago(30), lastSeen: ago(2) },
+      { email: "j.okafor@example.com", plan: "free", source: "tips", language: "en", deviceHash: null, firstSeen: ago(200), lastSeen: ago(5) },
+      { email: "lena.berg@example.com", plan: "free", source: "tips", language: "sv", deviceHash: null, firstSeen: ago(90), lastSeen: ago(26) },
+      { email: "tom@example.org", plan: "free", source: "sign-in", language: "en", deviceHash: null, firstSeen: ago(500), lastSeen: ago(170) },
+      { email: "priya.n@example.com", plan: "pro", source: "sign-in", language: "en", deviceHash: null, firstSeen: ago(700), lastSeen: ago(1) },
+      { email: "sam@studio.example", plan: "team", source: "sign-in", language: "en", deviceHash: null, firstSeen: ago(400), lastSeen: ago(8) },
     ],
     accountTotals: { free: 214, pro: 41, team: 11 },
   };

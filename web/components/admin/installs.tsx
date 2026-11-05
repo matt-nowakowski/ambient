@@ -56,7 +56,7 @@ export async function Installs({ demo }: { demo: boolean }) {
           <Section id="installs-where" title="Downloads and countries" sub="Last 30 days · counts only, no IP addresses kept">
             <Where d={v.data} />
           </Section>
-          <Section id="installs-accounts" title="Signed-in people" sub="Emails that signed in to the app; everyone else is an anonymous device">
+          <Section id="installs-accounts" title="Signed-in people" sub="Emails that signed in, and emails that asked for tips; everyone else is an anonymous device">
             <Accounts d={v.data} />
           </Section>
         </>
@@ -193,12 +193,12 @@ function Accounts({ d }: { d: InstallsData }) {
         <Stat label="Signed in on Free" value={fmtInt(freeSignedIn)} />
         <Stat label="Free devices this month" value={fmtInt(d.active.month.free)} hint="anonymous" />
         <p className="admin-meta mt-3">
-          Free works without an account, so most Free users are anonymous devices. Emails are kept 12 months after the latest sign-in.
+          Free works without an account, so most Free users are anonymous devices. Emails are kept 12 months after the latest sign-in or tip request.
         </p>
       </Panel>
-      <Panel title="Free users who signed in" meta={free.length ? `Latest first · ${fmtInt(free.length)} shown` : undefined}>
+      <Panel title="Free users and tips emails" meta={free.length ? `Latest first · ${fmtInt(free.length)} shown` : undefined}>
         {free.length ? (
-          <Table head={["Email", "First sign-in", "Latest"]} text={[0, 1, 2]}>
+          <Table head={["Email", "How", "First seen", "Latest"]} text={[0, 1, 2, 3]}>
             {free.map((a) => (
               <tr key={a.email}>
                 <td>
@@ -206,13 +206,14 @@ function Accounts({ d }: { d: InstallsData }) {
                     {a.email}
                   </a>
                 </td>
+                <td>{a.source === "tips" ? "Tips" : "Signed in"}</td>
                 <td>{dateLabel(a.firstSeen)}</td>
                 <td>{dateLabel(a.lastSeen)}</td>
               </tr>
             ))}
           </Table>
         ) : (
-          <Empty>No Free sign-ins recorded yet. Sign-ins are recorded from 0.1.8&apos;s website deploy.</Empty>
+          <Empty>No Free sign-ins or tips emails recorded yet. Both are recorded from 0.1.8&apos;s website deploy.</Empty>
         )}
       </Panel>
     </div>

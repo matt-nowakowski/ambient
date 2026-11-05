@@ -405,6 +405,15 @@ export default function PrivacyPage() {
                 with Polar so that renewals, cancellations and refunds reach the app. Signing out deletes the session
                 and token from your device.
               </p>
+              <p>
+                <strong>Email me tips (optional).</strong> In setup, or later in Account while you are signed out, you
+                can ask us to email you tips on using {brand.name}; the box stays empty until you fill it in. If you do,
+                we keep your email address, your app language and the anonymous device hash described under “Trial and
+                free allowance”, so we can write to you in your language and link the email to the device it came from.
+                We email you once to confirm your address, then at most one short email a month, sent through our email
+                provider, Resend, with a one-click unsubscribe in every one. We do not store your IP address, and we keep
+                your email for tips until you unsubscribe or ask us to delete it.
+              </p>
             </>
           ),
         },
@@ -490,6 +499,7 @@ export default function PrivacyPage() {
                 legitimate interests in understanding how {brand.name} is used.
               </li>
               <li>To email you your meeting notes when you ask — performance of a contract.</li>
+              <li>To email you tips when you ask us to — your consent, which you can withdraw by unsubscribing at any time.</li>
               <li>To read, answer and act on feedback you send us — our legitimate interests, and your consent for diagnostics and examples.</li>
               <li>To keep records required for tax and accounting — legal obligation.</li>
               <li>To answer your messages and keep our services secure — our legitimate interests.</li>
@@ -514,7 +524,7 @@ export default function PrivacyPage() {
                   email and plan of people who signed in, download and usage totals, and feedback you send),
                 </li>
                 <li>Cloudflare (stores and delivers installers, updates and backup model files),</li>
-                <li>Resend (sends sign-in codes, account emails and the meeting notes you ask us to email you),</li>
+                <li>Resend (sends sign-in codes, account emails, the tips you ask for and the meeting notes you ask us to email you),</li>
                 <li>our email provider, for messages you send us.</li>
               </ul>
               <p>
@@ -541,6 +551,9 @@ export default function PrivacyPage() {
               <li>Weekly AI allowance: only the current week’s count; earlier weeks are deleted.</li>
               <li>Sign-in attempt counters: about an hour, keyed by a one-way hash of your email.</li>
               <li>Signed-in email, plan and sign-in dates: 12 months after your latest sign-in.</li>
+              <li>
+                Tips email, app language and device hash: until you unsubscribe or ask us to delete them.
+              </li>
               <li>
                 Daily, weekly and monthly activity hashes, with plan and, from the daily check-in, app version, operating
                 system and processor type: 180 days.
