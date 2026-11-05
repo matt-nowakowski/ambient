@@ -21,7 +21,8 @@
 // counted from the manifest.
 //
 // --campaign uploads a whole campaign render (video/out/campaign):
-// <dir>/<concept>/<format>[-dark].(png|mp4), plus an optional
+// <dir>/<concept>/<format>[-<lang>][-dark].(png|mp4) (no language suffix
+// is English, e.g. story-pl-dark.png is Polish), plus an optional
 // <dir>/contact-sheet.png. Each file goes to a stable key,
 // marketing/campaign-<concept>-<format>[-dark].<ext>, as kind "campaign"
 // with concept, format, theme and its pixel size; story.mp4 uses story.png
@@ -103,6 +104,7 @@ type Item = {
   concept?: string;
   format?: string;
   theme?: "light" | "dark";
+  lang?: string;
   width?: number;
   height?: number;
 };
@@ -411,8 +413,9 @@ function planCampaign(dir: string): Planned[] {
     theme: "light" | "dark",
     ext: string,
     title: string,
+    lang = "en",
   ) => {
-    const name = `campaign-${concept}-${format}${theme === "dark" ? "-dark" : ""}.${ext}`;
+    const name = `campaign-${concept}-${format}${lang === "en" ? "" : `-${lang}`}${theme === "dark" ? "-dark" : ""}.${ext}`;
     const size = statSync(path).size;
     if (!size) fail(`${path} is empty.`);
     const info = ext === "mp4" ? probe(path) : null;
@@ -433,6 +436,7 @@ function planCampaign(dir: string): Planned[] {
         concept,
         format,
         theme,
+        ...(lang === "en" ? {} : { lang }),
         ...(dims?.width && dims.height
           ? { width: dims.width, height: dims.height }
           : {}),
@@ -455,14 +459,16 @@ function planCampaign(dir: string): Planned[] {
         `note: ${concept} isn't a known concept; it shows under its slug`,
       );
     for (const file of readdirSync(sub).sort()) {
-      const m = /^([a-z0-9]+)(-dark)?\.(png|mp4)$/.exec(file);
+      // <format>[-<lang>][-dark].<ext>; no language suffix means English.
+      const m = /^([a-z0-9]+)(?:-([a-z]{2,3}))?(-dark)?\.(png|mp4)$/.exec(file);
       if (!m || !FORMATS[m[1]]) {
         if (!file.startsWith(".")) console.warn(`skipped ${join(sub, file)}`);
         continue;
       }
-      const theme = m[2] ? "dark" : "light";
-      const title = `${CONCEPTS[concept] ?? concept} · ${FORMATS[m[1]]}${m[3] === "mp4" ? " video" : ""}${theme === "dark" ? " (dark)" : ""}`;
-      add(join(sub, file), concept, m[1], theme, m[3], title);
+      const lang = m[2] ?? "en";
+      const theme = m[3] ? "dark" : "light";
+      const title = `${CONCEPTS[concept] ?? concept} · ${FORMATS[m[1]]}${m[4] === "mp4" ? " video" : ""}${lang === "en" ? "" : ` · ${lang.toUpperCase()}`}${theme === "dark" ? " (dark)" : ""}`;
+      add(join(sub, file), concept, m[1], theme, m[4], title, lang);
     }
   }
   // Each video takes the still of the same concept, format and theme as its poster.

@@ -61,6 +61,8 @@ export type CampaignAsset = {
   format: string;
   formatLabel: string;
   theme: "light" | "dark";
+  /** The language of any text in it (BCP 47, e.g. "en", "pl", "pt-BR"); "en" when unset. */
+  lang: string;
   /** Pixel size, from the manifest or the format; null when neither knows. */
   width: number | null;
   height: number | null;
@@ -125,6 +127,7 @@ function parse(raw: unknown): CreatorVideos {
         format,
         formatLabel: known?.label ?? format,
         theme: r.theme === "dark" ? "dark" : "light",
+        lang: typeof r.lang === "string" && /^[a-z]{2,3}(-[A-Za-z]{2,4})?$/.test(r.lang) ? r.lang : "en",
         width: num(r.width) || known?.w || null,
         height: num(r.height) || known?.h || null,
         bytes,

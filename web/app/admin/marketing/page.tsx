@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AdminHeader } from "@/components/admin/chrome";
 import { CopyText } from "@/components/marketing/client";
-import { MarketingSuite, SECTIONS, bytes } from "@/components/marketing/suite";
+import { MarketingSuite, bytes } from "@/components/marketing/suite";
 import { requireAdmin } from "@/lib/admin/guard";
 import { BUDGET_BYTES, PREFIX, creatorVideos } from "@/lib/marketing/creator";
 import { KIT_MIN_TOKEN_LENGTH, kitUrl } from "@/lib/marketing/kit";
@@ -30,14 +30,6 @@ export default async function MarketingPage() {
             </a>
           ) : null}
         </AdminHeader>
-
-        <nav className="mk-nav mt-4 flex gap-1 overflow-x-auto" aria-label="Sections">
-          {SECTIONS.map((s) => (
-            <a key={s.id} href={`#${s.id}`} className="admin-btn flex-none">
-              {s.label}
-            </a>
-          ))}
-        </nav>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           <div className="admin-panel p-4">
@@ -90,12 +82,14 @@ export default async function MarketingPage() {
           <MarketingSuite
             videos={creator.videos}
             campaign={creator.campaign}
-            campaignNote={
-              <div className="mt-4 flex items-center gap-2">
-                <code className="min-w-0 flex-1 truncate rounded-[9px] bg-[var(--a-wash)] px-3 py-1.5 text-[12px]">{CAMPAIGN_COMMAND}</code>
-                <CopyText value={CAMPAIGN_COMMAND} />
-              </div>
-            }
+            notes={{
+              campaign: (
+                <div key="campaign-note" className="mt-4 flex items-center gap-2">
+                  <code className="min-w-0 flex-1 truncate rounded-[9px] bg-[var(--a-wash)] px-3 py-1.5 text-[12px]">{CAMPAIGN_COMMAND}</code>
+                  <CopyText value={CAMPAIGN_COMMAND} />
+                </div>
+              ),
+            }}
           />
         </div>
       </div>
