@@ -21,6 +21,9 @@ export function getPolar(): Polar | null {
     client = new Polar({
       accessToken: token,
       server: process.env.POLAR_ENV === "production" ? "production" : "sandbox",
+      // The SDK sets no timeout by default: a stalled Polar call would hold a
+      // function open for its full max duration. Per-call timeouts still win.
+      timeoutMs: 15_000,
     });
   }
   return client;
