@@ -23,6 +23,32 @@ const COMPOUND_KEY_DISPLAY: Record<string, string> = {
   scrolllock: "Scroll Lock",
 };
 
+// Mouse buttons as people name them. The parser also accepts the "mouse1"
+// style aliases, so they all display the same way.
+const MOUSE_DISPLAY: Record<string, string> = {
+  mouseleft: "Mouse 1",
+  mouse1: "Mouse 1",
+  mouseright: "Mouse 2",
+  mouse2: "Mouse 2",
+  mousemiddle: "Mouse 3",
+  mouse3: "Mouse 3",
+  mousex1: "Mouse 4",
+  mouse4: "Mouse 4",
+  mousex2: "Mouse 5",
+  mouse5: "Mouse 5",
+};
+
+/**
+ * Marks a binding that toggles on a double tap of its key instead of holding
+ * it: "double_tap+option_right". Mirrors DOUBLE_TAP_PREFIX in ambient-keys.
+ */
+export const DOUBLE_TAP_PREFIX = "double_tap+";
+
+/** Whether this binding toggles on a double tap of its key. */
+export const isDoubleTapBinding = (
+  binding: string | null | undefined,
+): boolean => !!binding?.trim().startsWith(DOUBLE_TAP_PREFIX);
+
 /**
  * Extract a consistent key name from a KeyboardEvent
  * This function provides cross-platform keyboard event handling
@@ -184,6 +210,7 @@ const capitalizeKey = (key: string): string => {
   // Single char: a -> A
   if (key.length === 1) return key.toUpperCase();
   if (COMPOUND_KEY_DISPLAY[key]) return COMPOUND_KEY_DISPLAY[key];
+  if (MOUSE_DISPLAY[key]) return MOUSE_DISPLAY[key];
   // Multi-word: capitalize first letter of each word
   return key.replace(/\b\w/g, (c) => c.toUpperCase());
 };
@@ -219,7 +246,8 @@ export const formatKeyCombination = (
   _osType: OSType,
 ): string => {
   if (!combination) return "";
-  return combination.split("+").map(formatKeyPart).join(" + ");
+  const keys = bindingKeys(combination).map(formatKeyPart).join(" + ");
+  return isDoubleTapBinding(combination) ? keys + " ×2" : keys;
 };
 
 /**
@@ -253,13 +281,59 @@ export const MODIFIERS = [
   "fn",
 ];
 
-/** The keys in a binding, or in one still being captured ("option+space"). */
+/**
+ * The keys in a binding, or in one still being captured ("option+space").
+ * A double-tap marker is not a key, so it is not one of them.
+ */
 export const bindingKeys = (binding: string | null | undefined): string[] =>
-  binding ? binding.split("+").filter(Boolean) : [];
+  binding
+    ? binding.trim().replace(DOUBLE_TAP_PREFIX, "").split("+").filter(Boolean)
+    : [];
 
 /** Only modifiers are held so far: the binding still needs a key. */
 export const isOnlyModifiers = (keys: string[]): boolean =>
   keys.length > 0 && keys.every((k) => MODIFIERS.includes(k.toLowerCase()));
+
+/** A single modifier on either side: "option_right", "ctrl", "fn". */
+export const isModifierKey = (key: string): boolean =>
+  MODIFIERS.includes(
+    key
+      .trim()
+      .toLowerCase()
+      .replace(/_(left|right)$/, ""),
+  );
+
+/**
+ * Only modifiers, no main key: the binding a double tap can ride on. Double
+ * tapping a full chord (ctrl+space) would mean repeating both keys, so the
+ * backend refuses it.
+ */
+export const isModifierOnlyBinding = (
+  binding: string | null | undefined,
+): boolean => {
+  const keys = bindingKeys(binding);
+  return keys.length > 0 && keys.every(isModifierKey);
+};
+
+/** Left and right click are how people use the computer: never bindings. */
+const PRIMARY_MOUSE_BUTTONS = [
+  "mouseleft",
+  "leftclick",
+  "lmb",
+  "mouse1",
+  "mouseright",
+  "rightclick",
+  "rmb",
+  "mouse2",
+];
+
+/** Whether any key of the binding is the left or right mouse button. */
+export const bindsPrimaryMouseButton = (
+  binding: string | null | undefined,
+): boolean =>
+  bindingKeys(binding).some((key) =>
+    PRIMARY_MOUSE_BUTTONS.includes(key.trim().toLowerCase()),
+  );
 
 // Labels as printed on the keys; a key's side (option_left) isn't printed.
 const MAC_KEYCAPS: Record<string, string> = {
@@ -284,17 +358,23 @@ const PC_KEYCAPS: Record<string, string> = {
   command: "⊞",
 };
 
-/** "option+space" → ["⌥", "Space"] on macOS. */
-export const keycapLabels = (binding: string, osType: OSType): string[] =>
-  binding
-    .split("+")
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .map((part) => {
-      const key = part.replace(/_(left|right)$/, "");
-      const glyphs = osType === "macos" ? MAC_KEYCAPS : PC_KEYCAPS;
-      return glyphs[key] ?? capitalizeKey(key);
-    });
+/** "Right " / "Left " for a side-specific key, "" for a key without sides. */
+const sidePrefix = (part: string): string =>
+  part.endsWith("_right") ? "Right " : part.endsWith("_left") ? "Left " : "";
+
+/** "option+space" → ["⌥", "Space"] on macOS. A double tap adds a "×2" cap. */
+export const keycapLabels = (binding: string, osType: OSType): string[] => {
+  const parts = bindingKeys(binding);
+  const labels = parts.map((part) => {
+    const key = part.replace(/_(left|right)$/, "");
+    const glyphs = osType === "macos" ? MAC_KEYCAPS : PC_KEYCAPS;
+    // A lone modifier is the whole shortcut, so its side has to be drawn:
+    // "Right ⌥" says what "⌥" alone doesn't.
+    const side = parts.length === 1 ? sidePrefix(part) : "";
+    return side + (glyphs[key] ?? capitalizeKey(key));
+  });
+  return isDoubleTapBinding(binding) ? [...labels, "×2"] : labels;
+};
 
 /** "⌥ Space" on macOS, "Alt + Space" elsewhere. */
 export const keycapLabel = (binding: string, osType: OSType): string =>

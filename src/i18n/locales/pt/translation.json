@@ -370,6 +370,11 @@
         "none": "Nenhum atalho configurado",
         "notFound": "Atalho não encontrado",
         "pressKeys": "Pressione as teclas…",
+        "keepClicks": "O clique esquerdo e o direito continuam seus; escolha outra tecla.",
+        "doubleTap": {
+          "label": "Toque duplo",
+          "description": "Toque duas vezes para começar e mais duas para parar. Um toque simples ou manter premido continuam a funcionar como sempre."
+        },
         "bindings": {
           "transcribe": {
             "name": "Atalho de transcrição",

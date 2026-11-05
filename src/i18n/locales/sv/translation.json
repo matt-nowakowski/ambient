@@ -368,6 +368,11 @@
         "none": "Inga kortkommandon konfigurerade",
         "notFound": "Kortkommando hittades inte",
         "pressKeys": "Tryck på tangenter…",
+        "keepClicks": "Vänster- och högerklick är dina; välj en annan tangent.",
+        "doubleTap": {
+          "label": "Dubbeltryck",
+          "description": "Tryck två gånger för att starta och två gånger igen för att stoppa. Ett enkelt tryck eller att hålla fungerar som vanligt."
+        },
         "bindings": {
           "transcribe": {
             "name": "Kortkommando för transkribering",

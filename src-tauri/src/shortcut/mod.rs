@@ -224,6 +224,7 @@ pub fn change_binding(
     // Validate the new shortcut for the current keyboard implementation
     if let Err(e) = validate_shortcut_for_implementation(&binding, settings.keyboard_implementation)
         .and_then(|()| reject_typing_key(&binding))
+        .and_then(|()| reject_primary_mouse_buttons(&binding))
     {
         warn!("change_binding validation error: {}", e);
         restore_registration(&app, &binding_to_modify);
@@ -447,6 +448,54 @@ fn validate_shortcut_for_implementation(
     }
 }
 
+/// Split the double-tap marker off a binding: "double_tap+option_right"
+/// becomes (true, "option_right"). Only ambient-keys understands the marker;
+/// the Tauri backend fails to parse it, so double-tap bindings are refused
+/// there like any other unsupported key.
+pub(crate) fn split_double_tap(raw: &str) -> (bool, &str) {
+    // The leading :: matters: this module also has a child named
+    // `ambient_keys`, which would otherwise shadow the crate.
+    match raw.trim().strip_prefix(::ambient_keys::DOUBLE_TAP_PREFIX) {
+        Some(rest) => (true, rest.trim()),
+        None => (false, raw.trim()),
+    }
+}
+
+/// Whether this binding toggles on a double tap of its key.
+pub(crate) fn is_double_tap_binding(raw: &str) -> bool {
+    raw.trim().starts_with(::ambient_keys::DOUBLE_TAP_PREFIX)
+}
+
+/// The keys we never bind, whatever the modifiers: left and right click are
+/// how people use the computer, and eating them would be hostile. The
+/// listeners only report these clicks while a modifier is held, so without
+/// this check they are recordable.
+const PRIMARY_MOUSE_BUTTONS: &[&str] = &[
+    "mouseleft",
+    "leftclick",
+    "lmb",
+    "mouse1",
+    "mouseright",
+    "rightclick",
+    "rmb",
+    "mouse2",
+];
+
+/// Refuse a binding on the left or right mouse button.
+fn reject_primary_mouse_buttons(raw: &str) -> Result<(), String> {
+    let (_, plain) = split_double_tap(raw);
+    if plain
+        .split('+')
+        .map(|part| part.trim().to_lowercase())
+        .any(|part| PRIMARY_MOUSE_BUTTONS.contains(&part.as_str()))
+    {
+        return Err(format!(
+            "'{raw}' can't be a shortcut: left and right click stay yours"
+        ));
+    }
+    Ok(())
+}
+
 /// Keys that type or move the caret. Mirrors `typesText` in src/lib/utils/keyboard.ts.
 const TYPING_KEYS: &[&str] = &[
     "space",
@@ -576,6 +625,7 @@ fn register_all_shortcuts_for_implementation(
         // Validate the shortcut for the target implementation
         if let Err(e) =
             validate_shortcut_for_implementation(&binding.current_binding, implementation)
+                .and_then(|()| reject_primary_mouse_buttons(&binding.current_binding))
         {
             info!(
                 "Shortcut '{}' ({}) is invalid for {:?}: {}. Resetting to default.",
@@ -1541,6 +1591,84 @@ mod tests {
         ] {
             assert!(key.parse::<Shortcut>().is_ok(), "Tauri rejected {key}");
             assert!(key.parse::<Hotkey>().is_ok(), "AmbientKeys rejected {key}");
+        }
+    }
+
+    #[test]
+    fn double_tap_marker_splits_off_a_binding() {
+        assert_eq!(
+            super::split_double_tap("double_tap+option_right"),
+            (true, "option_right")
+        );
+        assert_eq!(super::split_double_tap("  double_tap+fn  "), (true, "fn"));
+        assert_eq!(
+            super::split_double_tap("option_right"),
+            (false, "option_right")
+        );
+        assert!(super::is_double_tap_binding("double_tap+option_right"));
+        assert!(!super::is_double_tap_binding("option_right"));
+    }
+
+    #[test]
+    fn ambient_keys_accepts_double_tap_on_a_modifier_alone() {
+        for raw in [
+            "double_tap+option_right",
+            "double_tap+fn",
+            "double_tap+ctrl_left",
+        ] {
+            assert_eq!(super::ambient_keys::validate_shortcut(raw), Ok(()), "{raw}");
+        }
+        // A chord would have to repeat both keys, and a lone typing key is
+        // refused for its own reasons: neither is a double tap.
+        for raw in ["double_tap+ctrl+space", "double_tap+space", "double_tap+d"] {
+            assert!(
+                super::ambient_keys::validate_shortcut(raw).is_err(),
+                "{raw} should be refused"
+            );
+        }
+    }
+
+    #[test]
+    fn tauri_refuses_double_tap_bindings() {
+        // The Tauri plugin has no double-tap concept, so the marker must not
+        // reach it and the binding must not register there.
+        for raw in ["double_tap+option_right", "double_tap+ctrl+space"] {
+            assert!(
+                super::tauri_impl::validate_shortcut(raw).is_err(),
+                "{raw} should be refused"
+            );
+        }
+    }
+
+    #[test]
+    fn left_and_right_click_are_never_bindings() {
+        for raw in [
+            "mouseleft",
+            "mouseright",
+            "ctrl+mouseleft",
+            "alt+mouseright",
+            "lmb",
+            "rmb",
+            "mouse1",
+            "mouse2",
+        ] {
+            assert!(
+                super::reject_primary_mouse_buttons(raw).is_err(),
+                "{raw} should be refused"
+            );
+        }
+        for raw in [
+            "mouse4",
+            "mouse5",
+            "mousemiddle",
+            "mouse3",
+            "double_tap+mouse5",
+            "option_right",
+        ] {
+            assert!(
+                super::reject_primary_mouse_buttons(raw).is_ok(),
+                "{raw} should be allowed"
+            );
         }
     }
 }

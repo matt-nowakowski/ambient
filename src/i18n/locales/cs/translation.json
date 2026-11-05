@@ -372,6 +372,11 @@
         "none": "Žádné zkratky nejsou nastavené",
         "notFound": "Zkratka nenalezena",
         "pressKeys": "Stiskněte klávesy…",
+        "keepClicks": "Levé a pravé kliknutí zůstává vaše; vyberte jinou klávesu.",
+        "doubleTap": {
+          "label": "Dvojité klepnutí",
+          "description": "Klepněte dvakrát pro spuštění a dvakrát pro zastavení. Jedno klepnutí nebo podržení funguje dál jako obvykle."
+        },
         "bindings": {
           "transcribe": {
             "name": "Zkratka přepisu",

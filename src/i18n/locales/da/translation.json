@@ -368,6 +368,11 @@
         "none": "Ingen genveje konfigureret",
         "notFound": "Genvej ikke fundet",
         "pressKeys": "Tryk på taster…",
+        "keepClicks": "Venstre- og højreklik er dine; vælg en anden tast.",
+        "doubleTap": {
+          "label": "Dobbelttryk",
+          "description": "Tryk to gange for at starte, og to gange igen for at stoppe. Et enkelt tryk eller et hold virker som normalt."
+        },
         "bindings": {
           "transcribe": {
             "name": "Transskriptionsgenvej",

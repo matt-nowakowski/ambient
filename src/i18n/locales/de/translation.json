@@ -368,6 +368,11 @@
         "none": "Keine Tastenkürzel konfiguriert",
         "notFound": "Tastenkürzel nicht gefunden",
         "pressKeys": "Tasten drücken…",
+        "keepClicks": "Links- und Rechtsklick bleiben deine; wähle eine andere Taste.",
+        "doubleTap": {
+          "label": "Doppeltippen",
+          "description": "Zweimal tippen zum Starten, zweimal erneut zum Stoppen. Ein einzelner Tipp oder Halten funktioniert weiter wie gewohnt."
+        },
         "bindings": {
           "transcribe": {
             "name": "Transkriptions-Tastenkürzel",

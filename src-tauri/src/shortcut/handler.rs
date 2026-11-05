@@ -9,7 +9,7 @@ use tauri::{AppHandle, Manager};
 
 use crate::actions::ACTION_MAP;
 use crate::managers::audio::AudioRecordingManager;
-use crate::settings::get_settings;
+use crate::settings::{get_settings, ShortcutActivation};
 use crate::transcription_coordinator::is_transcribe_binding;
 use crate::TranscriptionCoordinator;
 
@@ -37,11 +37,19 @@ pub fn handle_shortcut_event(
     // Transcribe bindings are handled by the coordinator.
     if is_transcribe_binding(binding_id) {
         if let Some(coordinator) = app.try_state::<TranscriptionCoordinator>() {
+            // A double-tap trigger is always a toggle: the manager reports one
+            // press (and a matching release) each time the double tap lands, so
+            // the next double tap stops what this one started.
+            let activation = if super::is_double_tap_binding(hotkey_string) {
+                ShortcutActivation::Toggle
+            } else {
+                settings.shortcut_activation
+            };
             coordinator.send_input(
                 binding_id,
                 hotkey_string,
                 is_pressed,
-                settings.shortcut_activation,
+                activation,
                 std::time::Duration::from_millis(settings.hold_threshold_ms),
             );
         } else {

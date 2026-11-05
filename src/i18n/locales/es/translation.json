@@ -370,6 +370,11 @@
         "none": "No hay atajos configurados",
         "notFound": "Atajo no encontrado",
         "pressKeys": "Pulsa las teclas…",
+        "keepClicks": "El clic izquierdo y el derecho son tuyos; elige otra tecla.",
+        "doubleTap": {
+          "label": "Doble pulsación",
+          "description": "Pulsa dos veces para empezar y dos más para parar. Una sola pulsación o mantener la tecla siguen funcionando como siempre."
+        },
         "bindings": {
           "transcribe": {
             "name": "Atajo de transcripción",

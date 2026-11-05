@@ -279,9 +279,15 @@ impl AmbientKeysState {
         binding_id: &str,
         hotkey_string: &str,
     ) -> Result<(), String> {
-        let hotkey: Hotkey = hotkey_string
+        let (double_tap, plain) = super::split_double_tap(hotkey_string);
+        let hotkey: Hotkey = plain
             .parse()
             .map_err(|e| format!("Failed to parse hotkey '{}': {}", hotkey_string, e))?;
+        let hotkey = if double_tap {
+            hotkey.with_double_tap()
+        } else {
+            hotkey
+        };
 
         let id = manager
             .register(hotkey)
@@ -502,11 +508,20 @@ pub fn validate_shortcut(raw: &str) -> Result<(), String> {
     if raw.trim().is_empty() {
         return Err("Shortcut cannot be empty".into());
     }
+    let (double_tap, plain) = super::split_double_tap(raw);
     // AmbientKeys accepts modifier-only, key-only, and modifier+key combos
     // Just verify the string is parseable
-    raw.parse::<Hotkey>()
-        .map(|_| ())
-        .map_err(|e| format!("Invalid shortcut for AmbientKeys: {}", e))
+    let hotkey = plain
+        .parse::<Hotkey>()
+        .map_err(|e| format!("Invalid shortcut for AmbientKeys: {}", e))?;
+    // Double-tap needs a key the user holds for its own sake. With a main key
+    // (ctrl+space) the two taps would have to repeat the whole chord.
+    if double_tap && hotkey.key.is_some() {
+        return Err(
+            "Double-tap needs a modifier on its own, such as Right Option or Fn".to_string(),
+        );
+    }
+    Ok(())
 }
 
 /// Initialize ambient-keys shortcuts

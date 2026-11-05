@@ -368,6 +368,11 @@
         "none": "Kısayol yapılandırılmadı",
         "notFound": "Kısayol bulunamadı",
         "pressKeys": "Tuşlara basın…",
+        "keepClicks": "Sol ve sağ tık sende kalsın; başka bir tuş seç.",
+        "doubleTap": {
+          "label": "Çift dokunuş",
+          "description": "Başlatmak için iki kez, durdurmak için yeniden iki kez dokunun. Tek dokunuş veya basılı tutma eskisi gibi çalışır."
+        },
         "bindings": {
           "transcribe": {
             "name": "Dikte Kısayolu",

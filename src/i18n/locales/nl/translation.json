@@ -368,6 +368,11 @@
         "none": "Geen sneltoetsen geconfigureerd",
         "notFound": "Sneltoets niet gevonden",
         "pressKeys": "Druk op toetsen…",
+        "keepClicks": "Links- en rechtsklik blijven van jou; kies een andere toets.",
+        "doubleTap": {
+          "label": "Dubbeltikken",
+          "description": "Tik twee keer om te starten en nog twee keer om te stoppen. Eén tik of ingedrukt houden werkt gewoon zoals altijd."
+        },
         "bindings": {
           "transcribe": {
             "name": "Sneltoets voor dicteren",

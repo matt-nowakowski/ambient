@@ -16,7 +16,7 @@ use objc2_core_graphics::{
 };
 
 use crate::error::{Error, Result};
-use crate::platform::state::{BlockingHotkeys, ListenerState};
+use crate::platform::state::{release_events, stale_modifiers, BlockingHotkeys, ListenerState};
 use crate::types::{Key, KeyEvent, Modifiers};
 
 use super::keycode::{flags_have_alpha_shift, flags_have_fn, keycode_to_key, keycode_to_modifier};
@@ -110,41 +110,64 @@ pub(crate) fn spawn(blocking_hotkeys: Option<BlockingHotkeys>) -> Result<MacOSLi
     })
 }
 
+/// The four modifier groups as (OS flag, left bit, compound bits).
+const MODIFIER_GROUPS: [(CGEventFlags, Modifiers, Modifiers); 4] = [
+    (
+        CGEventFlags::MaskControl,
+        Modifiers::CTRL_LEFT,
+        Modifiers::CTRL,
+    ),
+    (
+        CGEventFlags::MaskShift,
+        Modifiers::SHIFT_LEFT,
+        Modifiers::SHIFT,
+    ),
+    (
+        CGEventFlags::MaskCommand,
+        Modifiers::CMD_LEFT,
+        Modifiers::CMD,
+    ),
+    (
+        CGEventFlags::MaskAlternate,
+        Modifiers::OPT_LEFT,
+        Modifiers::OPT,
+    ),
+];
+
 /// Reconcile internally tracked modifiers against the actual CGEventFlags from the OS.
 ///
 /// This corrects drift caused by missed events (e.g., tap disabled by timeout, system
 /// interruptions like Mission Control or screen lock). Should only be called for
 /// non-FlagsChanged events, where flags reflect the current state with no change pending.
-fn reconcile_modifiers(current: &mut Modifiers, flags: CGEventFlags) {
-    // If OS says a modifier group is NOT held, clear our tracked bits.
-    // This fixes "stuck modifier" from missed release events.
-    if !flags.contains(CGEventFlags::MaskControl) {
-        current.remove(Modifiers::CTRL_LEFT | Modifiers::CTRL_RIGHT);
-    }
-    if !flags.contains(CGEventFlags::MaskShift) {
-        current.remove(Modifiers::SHIFT_LEFT | Modifiers::SHIFT_RIGHT);
-    }
-    if !flags.contains(CGEventFlags::MaskCommand) {
-        current.remove(Modifiers::CMD_LEFT | Modifiers::CMD_RIGHT);
-    }
-    if !flags.contains(CGEventFlags::MaskAlternate) {
-        current.remove(Modifiers::OPT_LEFT | Modifiers::OPT_RIGHT);
-    }
-
+///
+/// Returns the synthetic releases for modifiers we tracked as held but the OS
+/// says are up; callers must forward them. Without those events the manager
+/// keeps believing the key is down, so a push-to-talk shortcut whose release
+/// was missed while the tap was disabled never ends its recording.
+fn reconcile_modifiers(current: &mut Modifiers, flags: CGEventFlags) -> Vec<KeyEvent> {
     // If OS says a modifier group IS held but we have no bits for it,
     // we missed a press event. Default to left side as fallback.
-    if flags.contains(CGEventFlags::MaskControl) && !current.intersects(Modifiers::CTRL) {
-        current.insert(Modifiers::CTRL_LEFT);
+    for (flag, left, compound) in MODIFIER_GROUPS {
+        if flags.contains(flag) && !current.intersects(compound) {
+            *current |= left;
+        }
     }
-    if flags.contains(CGEventFlags::MaskShift) && !current.intersects(Modifiers::SHIFT) {
-        current.insert(Modifiers::SHIFT_LEFT);
+
+    // What the OS reports as physically held, limited to groups we track.
+    let mut physical = Modifiers::empty();
+    for (flag, _left, compound) in MODIFIER_GROUPS {
+        if flags.contains(flag) {
+            physical |= *current & compound;
+        }
     }
-    if flags.contains(CGEventFlags::MaskCommand) && !current.intersects(Modifiers::CMD) {
-        current.insert(Modifiers::CMD_LEFT);
-    }
-    if flags.contains(CGEventFlags::MaskAlternate) && !current.intersects(Modifiers::OPT) {
-        current.insert(Modifiers::OPT_LEFT);
-    }
+
+    // If OS says a modifier group is NOT held, clear our tracked bits, and
+    // say so on the event channel: this fixes "stuck modifier" from missed
+    // release events as well as our own bookkeeping.
+    let stale = stale_modifiers(*current, physical);
+    let events = release_events(*current, stale);
+    *current &= !stale;
+    events
 }
 
 /// Context handed to the event tap callback through the refcon pointer.
@@ -183,12 +206,16 @@ unsafe extern "C-unwind" fn event_tap_callback(
         if let Some(tap) = ctx.tap.get() {
             CGEvent::tap_enable(tap.as_ref(), true);
         }
-        // Reconcile modifiers: we may have missed events while disabled.
+        // Reconcile modifiers: we may have missed events while disabled, and
+        // the releases we report end any shortcut left waiting on them.
         if let Ok(mut state) = ctx.state.lock() {
-            reconcile_modifiers(
+            let releases = reconcile_modifiers(
                 &mut state.current_modifiers,
                 CGEventSource::flags_state(CGEventSourceStateID::CombinedSessionState),
             );
+            for release in releases {
+                let _ = state.event_sender.send(release);
+            }
         }
         return event.as_ptr();
     }
@@ -203,7 +230,10 @@ unsafe extern "C-unwind" fn event_tap_callback(
         // On FlagsChanged, flags reflect the state *after* the current change, so
         // reconciling would fight with the toggle logic.
         if event_type != CGEventType::FlagsChanged {
-            reconcile_modifiers(&mut state.current_modifiers, flags);
+            let releases = reconcile_modifiers(&mut state.current_modifiers, flags);
+            for release in releases {
+                let _ = state.event_sender.send(release);
+            }
         }
 
         // Build side-specific modifiers from internally tracked state + FN from flags
@@ -664,6 +694,19 @@ mod tests {
         }
     }
 
+    /// Like `make_ctx`, keeping the event receiver so tests can read what the
+    /// callback reports on the event channel.
+    fn make_ctx_with_receiver(tap: &CFRetained<CFMachPort>) -> (CallbackCtx, Receiver<KeyEvent>) {
+        let (tx, rx) = mpsc::channel();
+        (
+            CallbackCtx {
+                state: Arc::new(Mutex::new(ListenerState::new(tx, None))),
+                tap: Cell::new(Some(NonNull::from(&**tap))),
+            },
+            rx,
+        )
+    }
+
     fn deliver_tap_disabled(ctx: &CallbackCtx, event_type: CGEventType) {
         let event = CGEvent::new(None).expect("failed to create CGEvent");
         let returned = unsafe {
@@ -749,6 +792,75 @@ mod tests {
             ctx.state.lock().unwrap().current_modifiers,
             Modifiers::empty(),
             "stale modifiers must be reconciled away on tap-disable"
+        );
+    }
+
+    /// Reconciling a missed release must report it on the event channel: a
+    /// push-to-talk hotkey whose key-up the disabled tap never delivered has
+    /// nothing else to end its recording.
+    #[test]
+    fn reconcile_reports_stale_modifiers_as_releases() {
+        let mut tracked = Modifiers::CMD_LEFT | Modifiers::SHIFT_RIGHT | Modifiers::OPT_RIGHT;
+
+        // Only Shift is still physically held.
+        let events = reconcile_modifiers(&mut tracked, CGEventFlags::MaskShift);
+
+        assert_eq!(tracked, Modifiers::SHIFT_RIGHT);
+        assert_eq!(events.len(), 2);
+        // MODIFIER_RELEASE_ORDER: CMD_LEFT before OPT_RIGHT.
+        assert_eq!(events[0].changed_modifier, Some(Modifiers::CMD_LEFT));
+        assert_eq!(
+            events[0].modifiers,
+            Modifiers::SHIFT_RIGHT | Modifiers::OPT_RIGHT
+        );
+        assert_eq!(events[0].key, None);
+        assert!(!events[0].is_key_down);
+        assert_eq!(events[1].changed_modifier, Some(Modifiers::OPT_RIGHT));
+        assert_eq!(events[1].modifiers, Modifiers::SHIFT_RIGHT);
+    }
+
+    /// Reconciling nothing stale reports nothing, and a modifier the OS
+    /// reports as held but we missed adopts the left side, as before.
+    #[test]
+    fn reconcile_adopts_missed_presses_without_reporting_them() {
+        let mut tracked = Modifiers::empty();
+
+        let events = reconcile_modifiers(&mut tracked, CGEventFlags::MaskControl);
+
+        assert!(events.is_empty());
+        assert_eq!(tracked, Modifiers::CTRL_LEFT);
+    }
+
+    /// FN comes from the flags, not from keycode state: reconciliation must
+    /// never drop it.
+    #[test]
+    fn reconcile_keeps_fn() {
+        let mut tracked = Modifiers::FN | Modifiers::CMD_LEFT;
+
+        let events = reconcile_modifiers(&mut tracked, CGEventFlags::empty());
+
+        assert_eq!(tracked, Modifiers::FN);
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0].changed_modifier, Some(Modifiers::CMD_LEFT));
+    }
+
+    /// The tap-disable path forwards those releases too.
+    #[test]
+    fn tap_disabled_forwards_releases_for_stale_modifiers() {
+        let Some(tap) = create_test_tap() else { return };
+
+        let (ctx, rx) = make_ctx_with_receiver(&tap);
+        ctx.state.lock().unwrap().current_modifiers = Modifiers::CTRL_LEFT | Modifiers::OPT_RIGHT;
+
+        deliver_tap_disabled(&ctx, CGEventType::TapDisabledByUserInput);
+
+        let events: Vec<KeyEvent> = rx.try_iter().collect();
+        assert_eq!(events.len(), 2, "one release per stale modifier");
+        assert_eq!(events[0].changed_modifier, Some(Modifiers::CTRL_LEFT));
+        assert_eq!(events[1].changed_modifier, Some(Modifiers::OPT_RIGHT));
+        assert_eq!(
+            ctx.state.lock().unwrap().current_modifiers,
+            Modifiers::empty()
         );
     }
 }

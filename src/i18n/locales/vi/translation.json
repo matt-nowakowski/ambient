@@ -368,6 +368,11 @@
         "none": "Chưa cấu hình phím tắt",
         "notFound": "Không tìm thấy phím tắt",
         "pressKeys": "Nhấn phím…",
+        "keepClicks": "Chuột trái và chuột phải vẫn thuộc về bạn; hãy chọn phím khác.",
+        "doubleTap": {
+          "label": "Nhấn hai lần",
+          "description": "Nhấn hai lần để bắt đầu và hai lần nữa để dừng. Nhấn một lần hoặc giữ vẫn hoạt động như thường."
+        },
         "bindings": {
           "transcribe": {
             "name": "Phím tắt chép lời",

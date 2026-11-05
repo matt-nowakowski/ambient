@@ -50,9 +50,9 @@ impl ListenerState {
 }
 
 /// Canonical order in which synthetic modifier release events are emitted
-/// by reconciliation, shared by the Windows and Linux listeners so both
-/// backends recover from a stuck modifier with the same event sequence.
-#[cfg(any(target_os = "windows", target_os = "linux"))]
+/// by reconciliation, shared by all three listeners so every backend
+/// recovers from a stuck modifier with the same event sequence.
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 pub const MODIFIER_RELEASE_ORDER: [Modifiers; 8] = [
     Modifiers::CMD_LEFT,
     Modifiers::CMD_RIGHT,
@@ -67,14 +67,14 @@ pub const MODIFIER_RELEASE_ORDER: [Modifiers; 8] = [
 /// Every modifier bit reconciliation may touch. FN is excluded: neither
 /// Windows nor Linux evdev ever reports the laptop Fn key (it is handled
 /// in firmware), so reconciliation must not clear it.
-#[cfg(any(target_os = "windows", target_os = "linux"))]
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 pub const RECONCILABLE: Modifiers = Modifiers::CMD
     .union(Modifiers::SHIFT)
     .union(Modifiers::CTRL)
     .union(Modifiers::OPT);
 
 /// Modifiers we track as held that are no longer physically held.
-#[cfg(any(target_os = "windows", target_os = "linux"))]
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 pub fn stale_modifiers(tracked: Modifiers, physical: Modifiers) -> Modifiers {
     (tracked & RECONCILABLE) & !physical
 }
@@ -82,7 +82,7 @@ pub fn stale_modifiers(tracked: Modifiers, physical: Modifiers) -> Modifiers {
 /// Build the synthetic release events that clear `stale` from `tracked`, in
 /// MODIFIER_RELEASE_ORDER. Each event carries the modifier set as it
 /// shrinks, exactly as if the keys had been released one by one.
-#[cfg(any(target_os = "windows", target_os = "linux"))]
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 pub fn release_events(tracked: Modifiers, stale: Modifiers) -> Vec<KeyEvent> {
     let mut modifiers = tracked;
     let mut events = Vec::new();
@@ -100,7 +100,10 @@ pub fn release_events(tracked: Modifiers, stale: Modifiers) -> Vec<KeyEvent> {
     events
 }
 
-#[cfg(all(test, any(target_os = "windows", target_os = "linux")))]
+#[cfg(all(
+    test,
+    any(target_os = "macos", target_os = "windows", target_os = "linux")
+))]
 mod tests {
     use super::*;
 

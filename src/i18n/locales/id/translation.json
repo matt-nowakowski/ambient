@@ -368,6 +368,11 @@
         "none": "Belum ada pintasan yang diatur",
         "notFound": "Pintasan tidak ditemukan",
         "pressKeys": "Tekan tombol…",
+        "keepClicks": "Klik kiri dan kanan tetap milikmu; pilih tombol lain.",
+        "doubleTap": {
+          "label": "Ketuk dua kali",
+          "description": "Ketuk dua kali untuk mulai, dan dua kali lagi untuk berhenti. Sekali ketuk atau tahan tetap berfungsi seperti biasa."
+        },
         "bindings": {
           "transcribe": {
             "name": "Pintasan Transkripsi",
