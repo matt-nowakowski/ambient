@@ -19,15 +19,28 @@ async function confirm(formData: FormData) {
   redirect(ok ? "/email/confirm?done=1" : "/email/confirm?error=1");
 }
 
+async function confirmTipsAction(formData: FormData) {
+  "use server";
+  const ok = await confirmFromToken(formData.get("t"));
+  redirect(ok ? "/email/confirm?done=tips" : "/email/confirm?error=1");
+}
+
 export default async function ConfirmPage({ searchParams }: { searchParams: Promise<{ t?: string; done?: string; error?: string }> }) {
   const { t, done, error } = await searchParams;
-  const valid = Boolean(t && verifyToken(t, "confirm"));
+  const payload = t ? verifyToken(t, "confirm") : null;
+  const valid = Boolean(payload);
+  // From the app's "Email me tips" (the link carries what the app sent).
+  const tips = done ? done === "tips" : Boolean(payload?.a);
 
   const [title, body] = done
-    ? ["You’re in.", `At most one email a month: one thing worth trying in ${brand.name}, and what’s new. Every one has a one-click unsubscribe.`]
+    ? tips
+      ? ["You’re in.", `Your first ${brand.name} tip arrives tomorrow, then one about every two weeks. Every one has a one-click unsubscribe.`]
+      : ["You’re in.", `At most one email a month: one thing worth trying in ${brand.name}, and what’s new. Every one has a one-click unsubscribe.`]
     : error || !valid
       ? ["That link didn’t work.", "It may have expired (links last 7 days). Sign up again and we’ll send a fresh one."]
-      : ["One click to confirm.", `Confirm and you’ll get ${brand.name} updates, at most once a month.`];
+      : tips
+        ? ["One click to confirm.", `Confirm and you’ll get a few short tips on getting more from ${brand.name}, about two weeks apart.`]
+        : ["One click to confirm.", `Confirm and you’ll get ${brand.name} updates, at most once a month.`];
 
   return (
     <Container className="page-balanced py-10">
@@ -36,7 +49,7 @@ export default async function ConfirmPage({ searchParams }: { searchParams: Prom
         <p className="mt-4 text-[14px] text-muted">{body}</p>
         <div className="mt-8 flex justify-center">
           {!done && valid && !error ? (
-            <form action={confirm}>
+            <form action={tips ? confirmTipsAction : confirm}>
               <input type="hidden" name="t" value={t} />
               <button type="submit" className={buttonClass("primary", "md")}>Confirm my email</button>
             </form>

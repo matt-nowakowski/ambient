@@ -9,11 +9,14 @@
 // (/api/meetings/email, only ever to the account's own address):
 //   meetingNotes
 // Double opt-in (sent from /api/subscribe):
-//   confirmNewsletter
+//   confirmNewsletter (the website's form), confirmTips (the app's "Email me tips")
 // Marketing (customers via soft opt-in, free users via double opt-in; always
-// with an unsubscribe link + List-Unsubscribe; sent by hand as Resend
-// Broadcasts, never automatically):
+// with an unsubscribe link + List-Unsubscribe). Sent by hand as Resend
+// Broadcasts:
 //   winBack, highlightAsk, highlightMeetings
+// and, to confirmed tips subscribers only, automatically and in this order by
+// the tips cron (lib/email/tips.ts, TIP_SEQUENCES below):
+//   tipWriting, highlightAsk, highlightMeetings, tipSuggestions, tipRecall
 //
 // Polar already sends receipts, invoices, renewal and payment-failure emails,
 // and its own cancellation confirmation. Nothing here repeats a receipt.
@@ -21,6 +24,7 @@
 import { brand, freeMeetingsPerMonth, siteUrl } from "../brand";
 import { askShortcut, defaultShortcut } from "../releases";
 import { renderEmail, signoff, type Block, type Rendered } from "./layout";
+import type { TipLanguage } from "./tip-schedule";
 
 export type Plan = "pro" | "team";
 export type Interval = "month" | "year";
@@ -326,16 +330,42 @@ export function confirmNewsletter(d: ConfirmData): Rendered {
   });
 }
 
+/** 8b. Tips double opt-in, from "Email me tips" in the app (setup or Account). */
+export function confirmTips(d: ConfirmData): Rendered {
+  return renderEmail({
+    subject: `Confirm your ${brand.name} tips`,
+    preheader: "One click to confirm, and the first tip arrives tomorrow.",
+    hero: "confirm",
+    eyebrow: "One more step",
+    kind: "transactional",
+    category: "confirm_tips",
+    reason: `You’re getting this because someone asked for ${brand.name} tips with this address in the app. If that wasn’t you, ignore it and you won’t hear from us again.`,
+    assetBase: d.assetBase,
+    blocks: [
+      { t: "h", text: "One click to confirm." },
+      {
+        t: "p",
+        size: "lead",
+        text: `Confirm and we’ll send you a few short tips on getting more from ${brand.name}: the first tomorrow, then one about every two weeks.`,
+      },
+      { t: "button", href: d.confirmUrl, label: "Confirm my email" },
+      { t: "note", text: "The link works for 7 days. Every tip has a one-click unsubscribe." },
+    ],
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Marketing. `unsubscribeUrl` is our signed link for one-off sends, or
 // "{{{RESEND_UNSUBSCRIBE_URL}}}" when the HTML is used in a Resend Broadcast.
 // ---------------------------------------------------------------------------
-export type MarketingData = { unsubscribeUrl: string; audience: "customers" | "newsletter"; assetBase?: string };
+export type MarketingData = { unsubscribeUrl: string; audience: "customers" | "newsletter" | "tips"; assetBase?: string };
 
 const marketingReason = (a: MarketingData["audience"]) =>
   a === "customers"
     ? `You’re getting this because you’re an ${brand.name} customer. At most one of these a month.`
-    : `You’re getting this because you asked for ${brand.name} updates. At most one a month.`;
+    : a === "tips"
+      ? `You’re getting this because you asked for tips in the ${brand.name} app. A few short emails, about two weeks apart.`
+      : `You’re getting this because you asked for ${brand.name} updates. At most one a month.`;
 
 /** 6. Win-back, ~30 days after a subscription ended. Sent by hand. */
 export function winBack(d: MarketingData): Rendered {
@@ -444,6 +474,130 @@ export function highlightMeetings(d: MarketingData): Rendered {
         ],
       },
       { t: "button", href: url("/docs/meetings"), label: "How meeting notes work" },
+      { t: "sign" },
+    ],
+  });
+}
+
+/** Tip: writing in any app (first in the tips sequence). */
+export function tipWriting(d: MarketingData): Rendered {
+  return renderEmail({
+    subject: "One thing worth trying: say it rough, it writes it right",
+    preheader: `Hold ${defaultShortcut.mac} in any app and talk.`,
+    hero: "note",
+    eyebrow: "One thing worth trying",
+    kind: "marketing",
+    category: "highlight",
+    reason: marketingReason(d.audience),
+    unsubscribeUrl: d.unsubscribeUrl,
+    assetBase: d.assetBase,
+    blocks: [
+      { t: "h", text: "Say it rough. It writes it right." },
+      {
+        t: "p",
+        size: "lead",
+        text: ["Hold ", { b: defaultShortcut.mac }, ` (${defaultShortcut.windows} on Windows and Linux) in any app and talk. Your words land where your cursor is, transcribed on your computer.`],
+      },
+      {
+        t: "features",
+        title: "Try saying",
+        items: [
+          { icon: "mail", k: "“Tell him I can’t make it, be polite.”", v: "Smart writing turns the gist into a proper message for whoever is on screen." },
+          { icon: "refresh", k: "“Shorter.” or “Warmer.”", v: "Change what it just wrote. Or select text and say “make this more formal”." },
+          { icon: "sparkle", k: "A style per app", v: "Casual for Slack, polished for Gmail, word for word in your code editor." },
+        ],
+      },
+      { t: "note", text: `Dictation is unlimited on every plan. On Free, polishing and writing for you count toward ${brand.freePolishPerWeek} AI uses a week.` },
+      { t: "button", href: url("/docs/writing"), label: "More on writing" },
+      { t: "sign" },
+    ],
+  });
+}
+
+/** Tip: switch on suggestions. */
+export function tipSuggestions(d: MarketingData): Rendered {
+  return renderEmail({
+    subject: "One thing worth trying: let it offer to help",
+    preheader: "Switch on suggestions and it nudges you, once, when it can help.",
+    hero: "welcome",
+    eyebrow: "One thing worth trying",
+    kind: "marketing",
+    category: "highlight",
+    reason: marketingReason(d.audience),
+    unsubscribeUrl: d.unsubscribeUrl,
+    assetBase: d.assetBase,
+    blocks: [
+      { t: "h", text: "It nudges you, like a colleague." },
+      {
+        t: "p",
+        size: "lead",
+        text: "You don’t have to ask. When it notices a moment it can help, it offers once, on screen. Say “yes”, “not now”, or ignore it, and it learns what you want.",
+      },
+      {
+        t: "steps",
+        title: "Turn it on",
+        items: [
+          ["Open ", { b: brand.name }, " and go to ", { b: "Settings › Privacy" }, "."],
+          ["Switch on ", { b: "Offer suggestions" }, "."],
+          ["Carry on working. The first one shows up when it’s useful."],
+        ],
+      },
+      {
+        t: "features",
+        title: "The kind of thing it offers",
+        items: [
+          { icon: "mail", k: "A long thread", v: "“Want me to summarise these 40 messages?”" },
+          { icon: "calendar", k: "A date or a deadline", v: "Add it to your calendar, or “Remind me?”" },
+          { icon: "sparkle", k: "A failing test or a stack trace", v: "The likely fix, explained." },
+        ],
+      },
+      {
+        t: "callout",
+        icon: "shield",
+        k: "Quiet by design",
+        v: `Decided on your computer unless you choose Cloud (Pro), and nothing is sent unless you accept. Up to ${brand.freeSuggestionsPerWeek} a week on Free.`,
+      },
+      { t: "button", href: url("/docs/suggestions"), label: "More about suggestions" },
+      { t: "sign" },
+    ],
+  });
+}
+
+/** Tip: ask about your own things (recall). */
+export function tipRecall(d: MarketingData): Rendered {
+  return renderEmail({
+    subject: "One thing worth trying: ask about your own day",
+    preheader: "“What did I say about pricing yesterday?” Nothing to connect.",
+    hero: "plan",
+    eyebrow: "One thing worth trying",
+    kind: "marketing",
+    category: "highlight",
+    reason: marketingReason(d.audience),
+    unsubscribeUrl: d.unsubscribeUrl,
+    assetBase: d.assetBase,
+    blocks: [
+      { t: "h", text: "It remembers, so you don’t have to." },
+      {
+        t: "p",
+        size: "lead",
+        text: ["Hold ", { b: askShortcut.mac }, " and ask about something you said, saw or saved. It looks where your things already are, with nothing to connect."],
+      },
+      {
+        t: "features",
+        title: "Try asking",
+        items: [
+          { icon: "ask", k: "“What did I say about pricing yesterday?”", v: "From your dictations and meeting notes." },
+          { icon: "book", k: "“Find the deck about the Q4 launch.”", v: "Your files, through Spotlight on a Mac, Windows Search, or Tracker on Linux." },
+          { icon: "calendar", k: "“What’s on my calendar tomorrow?”", v: "Calendar on a Mac, Outlook on Windows, GNOME Calendar on Linux." },
+        ],
+      },
+      {
+        t: "callout",
+        icon: "shield",
+        k: "Screen memory, if you want it",
+        v: "Switch on “Remember what you’ve seen” in Settings › Privacy and it can recall what was on screen too, saved as text and encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro, up to 90.",
+      },
+      { t: "button", href: url("/docs/recall"), label: "Where it looks" },
       { t: "sign" },
     ],
   });
@@ -564,6 +718,10 @@ export const samples = {
   "cancel-scheduled": (o: { assetBase?: string; unsubscribeUrl?: string }) => cancelScheduled({ plan: "pro", endsAt: inAMonth(), ...o }),
   ended: (o: { assetBase?: string; unsubscribeUrl?: string }) => ended({ plan: "pro", ...o }),
   "confirm-newsletter": (o: { assetBase?: string; unsubscribeUrl?: string }) => confirmNewsletter({ confirmUrl: url("/email/confirm?t=sample"), ...o }),
+  "confirm-tips": (o: { assetBase?: string; unsubscribeUrl?: string }) => confirmTips({ confirmUrl: url("/email/confirm?t=sample"), ...o }),
+  "tip-writing": (o: { assetBase?: string; unsubscribeUrl?: string }) => tipWriting({ audience: "tips", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
+  "tip-suggestions": (o: { assetBase?: string; unsubscribeUrl?: string }) => tipSuggestions({ audience: "tips", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
+  "tip-recall": (o: { assetBase?: string; unsubscribeUrl?: string }) => tipRecall({ audience: "tips", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
   "win-back": (o: { assetBase?: string; unsubscribeUrl?: string }) => winBack({ audience: "customers", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
   "highlight-ask": (o: { assetBase?: string; unsubscribeUrl?: string }) => highlightAsk({ audience: "customers", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
   "highlight-meetings": (o: { assetBase?: string; unsubscribeUrl?: string }) => highlightMeetings({ audience: "customers", unsubscribeUrl: o.unsubscribeUrl ?? url("/email/unsubscribe?t=sample"), assetBase: o.assetBase }),
@@ -600,6 +758,16 @@ export const broadcasts = {
   "highlight-meetings": highlightMeetings,
 } as const;
 export type BroadcastName = keyof typeof broadcasts;
+
+/**
+ * The tips sequence, in order, per language (English only so far; a new one
+ * goes in TIP_LANGUAGES too, with the same number of tips). Only append: a
+ * subscriber's progress is an index into this list, so reordering would skip
+ * or repeat a tip.
+ */
+export const TIP_SEQUENCES: Record<TipLanguage, readonly ((d: MarketingData) => Rendered)[]> = {
+  en: [tipWriting, highlightAsk, highlightMeetings, tipSuggestions, tipRecall],
+};
 
 /** Shortcut labels used in copy, exported so tests can check they match the app. */
 export const shortcutsInCopy = { ask: askShortcut.mac, dictate: defaultShortcut.mac };

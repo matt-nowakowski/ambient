@@ -25,10 +25,10 @@ export default async function UnsubscribePage({ searchParams }: { searchParams: 
   const valid = Boolean(t && verifyToken(t, "unsub"));
 
   const [title, body] = done
-    ? ["You’re unsubscribed.", `No more updates from ${brand.name}. Emails about your license or billing still arrive, because you need them.`]
+    ? ["You’re unsubscribed.", `No more updates or tips from ${brand.name}, and an address you gave us only for tips is deleted. Emails about your license or billing still arrive, because you need them.`]
     : error || !valid
       ? ["That link didn’t work.", `Reply to any of our emails or write to ${brand.supportEmail} and we’ll take you off by hand.`]
-      : ["Unsubscribe from updates?", `You’ll stop getting ${brand.name} updates. Emails about your license or billing still arrive.`];
+      : ["Unsubscribe?", `You’ll stop getting ${brand.name} updates and tips. Emails about your license or billing still arrive.`];
 
   return (
     <Container className="page-balanced py-10">

@@ -133,6 +133,7 @@ function writeActive(identity: string, plan: ActivePlan, details: CheckinDetails
     if (lastPrune !== day) {
       queries.push(sql`delete from device_activity where start < current_date - ${PRODUCT_RETENTION_DAYS}::int`);
       queries.push(sql`delete from accounts where last_seen < now() - make_interval(days => ${ACCOUNT_RETENTION_DAYS}::int)`);
+      queries.push(sql`delete from tip_sequence where started_at < now() - make_interval(days => ${ACCOUNT_RETENTION_DAYS}::int)`);
     }
     await sql.transaction(queries);
     lastPrune = day;
@@ -161,21 +162,20 @@ const SIGN_IN_SOURCE = "sign-in";
 export const TIPS_SOURCE = "tips";
 
 /**
- * One row per email. A row that came from tips never downgrades a signed-in
- * row's plan or source: signing in is the stronger signal, whichever came
- * first, and the device hash and language are kept once known.
+ * One row per email. Signing in is the stronger signal: it takes over a row
+ * that came from tips (its device hash and language are kept). Tips rows are
+ * written only when the address is confirmed (lib/email/tips.ts), never
+ * touch a signed-in row, and never move last_seen.
  */
-async function recordAccount(email: string, plan: string, source: string, deviceHash: string | null, language: string | null) {
+async function recordSignIn(email: string, plan: string) {
   const sql = await activityDb();
   await sql`
-    insert into accounts (email, plan, source, language, device_hash)
-    values (${email}, ${plan}, ${source}, ${language}, ${deviceHash})
+    insert into accounts (email, plan, source)
+    values (${email}, ${plan}, ${SIGN_IN_SOURCE})
     on conflict (email) do update set
       last_seen = now(),
-      source = case when ${source} = ${SIGN_IN_SOURCE} then ${SIGN_IN_SOURCE} else accounts.source end,
-      plan = case when ${source} = ${SIGN_IN_SOURCE} or accounts.source = ${TIPS_SOURCE} then excluded.plan else accounts.plan end,
-      language = coalesce(excluded.language, accounts.language),
-      device_hash = coalesce(excluded.device_hash, accounts.device_hash)`;
+      source = ${SIGN_IN_SOURCE},
+      plan = excluded.plan`;
 }
 
 /** Records an email that signed in to the app (verify or refresh), with its plan. */
@@ -183,24 +183,9 @@ export function noteAccount(email: string, plan: string) {
   try {
     if (!isDatabaseConfigured() || !email) return;
     if (alreadySeen(`account|${email}|${plan}`)) return;
-    run(() => recordAccount(email, plan, SIGN_IN_SOURCE, null, null), "account");
+    run(() => recordSignIn(email, plan), "account");
   } catch {
     // Recording never affects sign-in.
-  }
-}
-
-/**
- * Records an email that asked for tips from setup or Account without signing
- * in (optional, Free and trial). Stores the language tips should be written in
- * and the keyed device hash, so the row can be matched to the device's
- * activity rows. No IP address is stored.
- */
-export function noteTipSubscriber(email: string, plan: "free" | "trial", deviceHash: string | null, language: string | null) {
-  try {
-    if (!isDatabaseConfigured() || !email) return;
-    run(() => recordAccount(email, plan, TIPS_SOURCE, deviceHash, language), "account");
-  } catch {
-    // Recording never affects the subscription.
   }
 }
 
