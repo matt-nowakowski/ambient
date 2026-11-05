@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/logo";
-import { MarketingSuite, SECTIONS } from "@/components/marketing/suite";
+import { MarketingSuite } from "@/components/marketing/suite";
 import { buttonClass } from "@/components/ui";
 import { brand, emails, mailto, siteUrl } from "@/lib/brand";
 import { kitTokenValid } from "@/lib/marketing/kit";
@@ -50,16 +50,8 @@ export default async function MediaKitPage({ params }: { params: Promise<{ token
         </p>
       </div>
 
-      <nav className="mk-nav sticky top-0 z-10 -mx-4 mt-8 flex gap-1 overflow-x-auto px-4 py-2 backdrop-blur-xl sm:mx-0 sm:px-0" aria-label="Sections">
-        {SECTIONS.map((s) => (
-          <a key={s.id} href={`#${s.id}`} className={buttonClass("glass", "sm", "flex-none")}>
-            {s.label}
-          </a>
-        ))}
-      </nav>
-
-      <div className="mt-8">
-        <MarketingSuite videos={creator.videos} />
+      <div className="mt-10">
+        <MarketingSuite videos={creator.videos} campaign={creator.campaign} />
       </div>
 
       <footer className="mt-16 border-t border-[color-mix(in_srgb,#8f8f8f_20%,transparent)] pt-6 text-[13px] text-muted">
