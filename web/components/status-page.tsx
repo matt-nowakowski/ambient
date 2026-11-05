@@ -20,15 +20,15 @@ export function StatusPage({
 }) {
   return (
     <Container className="page-balanced py-10">
-      <Reveal className="glass mx-auto flex max-w-xl flex-col items-center rounded-[28px] px-6 py-16 text-center sm:py-20">
+      <Reveal className="glass mx-auto flex max-w-2xl flex-col items-center rounded-[32px] px-8 py-16 text-center sm:px-16 sm:py-24">
         <Orb variant={orb} size={112} label={label} style={{ ["--orb-fg" as string]: "currentColor" }} />
-        <p className="eyebrow mt-8">{label}</p>
+        <p className="eyebrow mt-10">{label}</p>
         <h1 className="mt-3 text-balance text-[40px] font-extralight leading-[1.05] tracking-[-0.05em] sm:text-[52px]">
           {title}
         </h1>
-        <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-muted">{body}</p>
+        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted">{body}</p>
         <div className="mt-9 flex flex-col items-center gap-2.5 sm:flex-row">{actions}</div>
-        <p className="mt-6 text-[13px] text-subtle">
+        <p className="mt-8 text-[13px] text-subtle">
           Still lost?{" "}
           <Link href="/contact" className="text-foreground underline decoration-border-strong underline-offset-4">
             Contact us
