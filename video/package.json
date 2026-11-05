@@ -13,7 +13,8 @@
     "music": "node scripts/music.mjs",
     "render:vertical": "remotion render LaunchVertical out/ambient-launch-v6-vertical.mp4 --codec h264 --crf 18 --audio-bitrate 192k",
     "sheet:vertical": "COMP=LaunchVertical sh scripts/sheet.sh",
-    "sfx": "node scripts/sfx.mjs"
+    "sfx": "node scripts/sfx.mjs",
+    "campaign": "node scripts/campaign.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.539",

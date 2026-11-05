@@ -133,7 +133,7 @@ const SideWord: React.FC<{ text: string; at: number; light?: boolean }> = ({ tex
 };
 
 /** The dark request pill: what you said, with the listening ring. */
-const Request: React.FC<{ text: string; at: number; style?: CSSProperties }> = ({ text, at, style }) => {
+export const Request: React.FC<{ text: string; at: number; style?: CSSProperties }> = ({ text, at, style }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const s = springAt(f, fps, at, { damping: 20, stiffness: 300 });
@@ -368,7 +368,7 @@ const LivePill: React.FC<{ at: number; y: number; scale?: number }> = ({ at, y, 
   );
 };
 
-const Levels: React.FC<{ live?: number }> = ({ live = 1 }) => {
+export const Levels: React.FC<{ live?: number }> = ({ live = 1 }) => {
   const f = useCurrentFrame();
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 3, height: 18 }}>
