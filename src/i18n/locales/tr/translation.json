@@ -1534,6 +1534,7 @@
       "copiedWords": "Tam sözleriniz kopyalandı. Değiştirmek için yapıştırın.",
       "copiedEdit": "Yeni sürüm kopyalandı. Değiştirmek için yapıştırın.",
       "couldntWrite": "Şu anda yazılamadı, bu yüzden söylediğiniz gibi yazıldı.",
+      "couldntPolish": "Şu anda düzeltilemedi, bu yüzden söylediğiniz gibi yazıldı.",
       "rewritten": "Yeniden yazıldı",
       "undoRewrite": "Yeniden yazmayı geri al",
       "copiedOriginal": "Özgün metniniz kopyalandı. Değiştirmek için yapıştırın.",

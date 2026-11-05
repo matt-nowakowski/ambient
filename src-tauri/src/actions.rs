@@ -261,23 +261,23 @@ async fn post_process_transcription(
     settings: &AppSettings,
     transcription: &str,
     style_note: Option<&str>,
-) -> Option<String> {
+) -> Polish {
     if is_blank_transcription(transcription) {
         debug!("Post-processing skipped because the transcription is empty");
-        return None;
+        return Polish::Skipped;
     }
 
     // "No AI": the words are typed as said, and nothing is sent.
     if settings.agent.intelligence == crate::settings::Intelligence::None {
         debug!("Post-processing skipped: AI is off");
-        return None;
+        return Polish::Skipped;
     }
 
     let mut provider = match settings.active_post_process_provider() {
         Some(provider) => provider,
         None => {
             debug!("Post-processing enabled but no provider is selected");
-            return None;
+            return Polish::Skipped;
         }
     };
     // Free: each polish is an AI use from the weekly pool. Once it's spent the
@@ -285,7 +285,7 @@ async fn post_process_transcription(
     if !crate::limits::ai_available(app) {
         debug!("Post-processing skipped: Free's AI uses this week are spent");
         crate::limits::ai_spent(app, crate::limits::Show::Once);
-        return None;
+        return Polish::Skipped;
     }
     // Hosted Ambient AI polish runs on this computer instead whenever an
     // on-device model can do it: no cost, and the text never leaves.
@@ -305,7 +305,7 @@ async fn post_process_transcription(
     // the plain transcript is typed instead of sending it anywhere.
     if settings.agent.device_only() && !crate::agent::llm::is_device_provider(&provider.id) {
         debug!("Post-processing skipped: Intelligence is set to on this computer only");
-        return None;
+        return Polish::Skipped;
     }
 
     // An on-device model chosen directly works on every plan; on Free it
@@ -317,7 +317,7 @@ async fn post_process_transcription(
     {
         debug!("Post-processing skipped: Free's AI uses this week are spent");
         crate::limits::ai_spent(app, crate::limits::Show::Once);
-        return None;
+        return Polish::Skipped;
     }
 
     // The hosted endpoint picks the real model; Apple Intelligence has one.
@@ -327,13 +327,13 @@ async fn post_process_transcription(
         Some(prompt) => prompt.prompt.clone(),
         None => {
             debug!("Post-processing skipped because there is no prompt");
-            return None;
+            return Polish::Skipped;
         }
     };
 
     if prompt.trim().is_empty() {
         debug!("Post-processing skipped because the selected prompt is empty");
-        return None;
+        return Polish::Skipped;
     }
     // The user's style for this app or site (`agent::styles`).
     let prompt = match style_note {
@@ -569,7 +569,46 @@ async fn post_process_transcription(
     if polished.is_some() && provider.id != crate::agent::llm::LOCAL_MODEL_PROVIDER_ID {
         crate::agent::llm::record(&provider.id, started);
     }
-    polished
+    match polished {
+        Some(text) if !text.trim().is_empty() => Polish::Text(text),
+        // A spent pool is said by `limits`; anything else gets a quiet note.
+        _ if !crate::limits::ai_available(app) => Polish::Skipped,
+        _ => Polish::Failed,
+    }
+}
+
+/// What AI polish made of a dictation.
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum Polish {
+    Text(String),
+    /// Not run: off, no provider or prompt, on-device only without a model,
+    /// or Free's pool is spent (which `limits` says).
+    Skipped,
+    /// It ran and failed (timeout, error, crash, an empty or reasoning-only
+    /// reply): the words are typed as said, with a quiet note.
+    Failed,
+}
+
+impl Polish {
+    fn text(self) -> Option<String> {
+        match self {
+            Polish::Text(t) => Some(t),
+            _ => None,
+        }
+    }
+}
+
+/// The quiet note after the words were typed as said because polish failed.
+const POLISH_FAILED_NOTE: &str = "hud.writing.couldntPolish";
+
+/// After a failed polish: the chip with only a note, once the words are in.
+fn polish_failed_note(transcription: &str) -> crate::agent::writing::Typed {
+    crate::agent::writing::Typed {
+        decision: crate::agent::writing::Decision::AsSaid,
+        raw: transcription.to_string(),
+        note: Some(POLISH_FAILED_NOTE),
+        rewrite: false,
+    }
 }
 
 pub(crate) struct ProcessedTranscription {
@@ -788,19 +827,24 @@ async fn smart_write(
         }
         Decision::Polished => {
             let polished = match i.router_text {
-                Some(t) => Some(t),
+                Some(t) => Polish::Text(t),
                 None => {
                     working();
-                    post_process_transcription(
+                    match post_process_transcription(
                         app,
                         settings,
                         transcription,
                         crate::agent::styles::note(i.style),
                     )
                     .await
-                    .map(|t| keep_custom_spellings(settings, t))
+                    {
+                        Polish::Text(t) => Polish::Text(keep_custom_spellings(settings, t)),
+                        other => other,
+                    }
                 }
             };
+            let failed = polished == Polish::Failed;
+            let polished = polished.text();
             debug!(
                 "writing: polish ready {:?} after the transcript",
                 i.started.elapsed()
@@ -829,8 +873,12 @@ async fn smart_write(
                 Some(_) => as_said(),
                 None => {
                     crate::telemetry::error("polish", "failed");
-                    // A spent pool was said by `limits` (post_process_transcription).
-                    as_said()
+                    // A spent pool was said by `limits` (post_process_transcription);
+                    // a failure says so quietly once the words are typed.
+                    ProcessedTranscription {
+                        writing: failed.then(|| polish_failed_note(transcription)),
+                        ..as_said()
+                    }
                 }
             }
         }
@@ -1272,18 +1320,24 @@ pub(crate) async fn process_dictation_output(
         .await;
     }
 
+    // The words always survive a failed polish: typed as said, then a
+    // quiet note (dictation only; a file transcription keeps its text too).
+    let mut polish_failed = false;
     if post_process {
         working();
-        if let Some(processed_text) =
-            post_process_transcription(app, &settings, &final_text, style_note).await
-        {
-            let processed_text = keep_custom_spellings(&settings, processed_text);
-            post_processed_text = Some(processed_text.clone());
-            final_text = processed_text;
+        match post_process_transcription(app, &settings, &final_text, style_note).await {
+            Polish::Text(processed_text) => {
+                let processed_text = keep_custom_spellings(&settings, processed_text);
+                post_processed_text = Some(processed_text.clone());
+                final_text = processed_text;
 
-            post_process_prompt = selected_polish_prompt(&settings);
-        } else {
-            crate::telemetry::error("polish", "failed");
+                post_process_prompt = selected_polish_prompt(&settings);
+            }
+            Polish::Failed => {
+                crate::telemetry::error("polish", "failed");
+                polish_failed = mode == OutputMode::Dictation;
+            }
+            Polish::Skipped => crate::telemetry::error("polish", "failed"),
         }
     }
     if mode == OutputMode::Dictation {
@@ -1292,12 +1346,12 @@ pub(crate) async fn process_dictation_output(
     }
 
     ProcessedTranscription {
+        writing: polish_failed.then(|| polish_failed_note(transcription)),
         final_text,
         post_processed_text,
         post_process_prompt,
         agent_route: None,
         offer_search: None,
-        writing: None,
         written: None,
     }
 }
@@ -2091,6 +2145,19 @@ mod tests {
             strip_think_block("Cleaned text. <think>and maybe"),
             "Cleaned text."
         );
+    }
+
+    /// A failed polish types the words as said and says so quietly.
+    #[test]
+    fn a_failed_polish_keeps_the_words_with_a_note() {
+        let typed = super::polish_failed_note("see you at nine");
+        assert_eq!(typed.decision, crate::agent::writing::Decision::AsSaid);
+        assert_eq!(typed.raw, "see you at nine");
+        let key = typed.note.unwrap();
+        let en = include_str!("../../src/i18n/locales/en/translation.json");
+        assert!(en.contains(&format!("\"{}\"", key.rsplit('.').next().unwrap())));
+        assert_eq!(super::Polish::Failed.text(), None);
+        assert_eq!(super::Polish::Text("Hi.".into()).text().as_deref(), Some("Hi."));
     }
 
     #[test]

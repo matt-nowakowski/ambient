@@ -1537,6 +1537,7 @@
       "copiedWords": "Copiamos tus palabras exactas. Pega para reemplazar.",
       "copiedEdit": "Copiamos la nueva versión. Pega para reemplazar.",
       "couldntWrite": "No se pudo redactar ahora, así que va tal como lo dijiste.",
+      "couldntPolish": "No se pudo pulir ahora, así que va tal como lo dijiste.",
       "rewritten": "Reescrito",
       "undoRewrite": "Deshacer reescritura",
       "copiedOriginal": "Copiamos tu texto original. Pega para reemplazar.",

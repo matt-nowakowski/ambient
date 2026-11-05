@@ -1537,6 +1537,7 @@
       "copiedWords": "Vos mots exacts sont copiés. Collez pour remplacer.",
       "copiedEdit": "La nouvelle version est copiée. Collez pour remplacer.",
       "couldntWrite": "Impossible de rédiger pour l'instant, c'est donc tapé tel que vous l'avez dit.",
+      "couldntPolish": "Impossible de peaufiner pour l'instant, c'est donc tapé tel que vous l'avez dit.",
       "rewritten": "Réécrit",
       "undoRewrite": "Annuler la réécriture",
       "copiedOriginal": "Votre texte d'origine est copié. Collez pour remplacer.",

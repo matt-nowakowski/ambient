@@ -1534,6 +1534,7 @@
       "copiedWords": "已复制你的原话。粘贴即可替换。",
       "copiedEdit": "已复制新版本。粘贴即可替换。",
       "couldntWrite": "暂时无法撰写，所以按你说的原话输入。",
+      "couldntPolish": "暂时无法润色，所以按你说的原话输入。",
       "rewritten": "已改写",
       "undoRewrite": "撤销改写",
       "copiedOriginal": "已复制你的原文。粘贴即可替换。",
