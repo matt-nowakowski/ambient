@@ -2084,11 +2084,40 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
         let context = format!("{}\n{}", p.header, p.text);
         match p.kind {
             Kind::SummariseThread => {
-                answer::run(app, "Summarise this conversation: who wants what, what was decided, and anything I need to do.".into(), false, false, Some(context)).await
+                answer::run_with(
+                    app,
+                    "Summarise this conversation: who wants what, what was decided, and anything I need to do.".into(),
+                    false,
+                    false,
+                    Some(context),
+                    // The offer says what it thinks this is. The answer reads
+                    // the screen for itself, and if the two disagree the card
+                    // is dropped rather than shown contradicting itself.
+                    answer::Opts { premise: Some("an email thread".into()), ..Default::default() },
+                )
+                .await
             }
-            Kind::SummarisePage => answer::run(app, "Summarise this page in a few sentences.".into(), false, false, Some(context)).await,
+            Kind::SummarisePage => {
+                answer::run_with(
+                    app,
+                    "Summarise this page in a few sentences.".into(),
+                    false,
+                    false,
+                    Some(context),
+                    answer::Opts { premise: Some("a page".into()), ..Default::default() },
+                )
+                .await
+            }
             Kind::ExplainError => {
-                answer::run(app, "Explain this error and the most likely fix.".into(), false, false, Some(context)).await
+                answer::run_with(
+                    app,
+                    "Explain this error and the most likely fix.".into(),
+                    false,
+                    false,
+                    Some(context),
+                    answer::Opts { premise: Some("an error".into()), ..Default::default() },
+                )
+                .await
             }
             Kind::DraftReply => {
                 answer::run_with(
@@ -2097,7 +2126,11 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     false,
                     false,
                     Some(context),
-                    answer::Opts { write: true, ..Default::default() },
+                    answer::Opts {
+                        write: true,
+                        premise: Some("a message".into()),
+                        ..Default::default()
+                    },
                 )
                 .await
             }

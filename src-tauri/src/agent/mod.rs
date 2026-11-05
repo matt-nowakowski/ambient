@@ -1070,7 +1070,7 @@ pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
     if llm::target(app).is_none() {
         return answer();
     }
-    let place = tauri::async_runtime::spawn_blocking(router::place)
+    let place = tauri::async_runtime::spawn_blocking(|| router::place_for(true))
         .await
         .unwrap_or_default();
     match router::route(app, text, "", &place, true, answer::last_turn()).await {
