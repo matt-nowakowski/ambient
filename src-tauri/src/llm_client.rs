@@ -411,6 +411,7 @@ pub async fn send_chat_completion_with_schema(
     system_prompt: Option<String>,
     json_schema: Option<Value>,
     disable_reasoning: bool,
+    limits: RequestLimits,
 ) -> Result<Option<String>, String> {
     send_request(
         provider,
@@ -420,7 +421,7 @@ pub async fn send_chat_completion_with_schema(
         system_prompt,
         json_schema,
         disable_reasoning,
-        RequestLimits::default(),
+        limits,
     )
     .await
 }

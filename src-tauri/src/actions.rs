@@ -151,10 +151,11 @@ fn strip_think_block(s: &str) -> String {
     crate::agent::reasoning::strip(s)
 }
 
-/// Build a system prompt from the user's prompt template.
-/// Removes `${output}` placeholder since the transcription is sent as the user message.
+/// Build a system prompt from the user's prompt template, inside the shared
+/// skeleton and rules (`agent::prompt`). Removes `${output}` placeholder
+/// since the transcription is sent as the user message.
 fn build_system_prompt(prompt_template: &str) -> String {
-    prompt_template.replace("${output}", "").trim().to_string()
+    crate::agent::prompt::polish_system(prompt_template.replace("${output}", "").trim())
 }
 
 /// Bounds for one polish request. Cleaned-up text is about as long as the
@@ -470,6 +471,7 @@ async fn post_process_transcription(
             Some(system_prompt),
             Some(json_schema),
             disable_reasoning,
+            polish_limits(transcription),
         )
         .await
         {
@@ -521,15 +523,18 @@ async fn post_process_transcription(
         }
     }
 
-    // Legacy mode: Replace ${output} variable in the prompt with the actual text
+    // Legacy mode: Replace ${output} variable in the prompt with the actual
+    // text. The user's prompt (with the transcript in it) is the message; the
+    // shared skeleton and rules go with it as the system prompt.
     let processed_prompt = prompt.replace("${output}", transcription);
     debug!("Processed prompt length: {} chars", processed_prompt.len());
 
-    match crate::llm_client::send_chat_completion_limited(
+    match crate::llm_client::send_chat_completion_bounded(
         &provider,
         api_key,
         model,
         processed_prompt,
+        crate::agent::prompt::polish_frame(),
         disable_reasoning,
         polish_limits(transcription),
     )

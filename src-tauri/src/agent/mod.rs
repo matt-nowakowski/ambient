@@ -14,6 +14,7 @@ pub mod markers;
 pub mod notice;
 pub mod personal;
 pub mod proactive;
+pub mod prompt;
 pub mod reasoning;
 pub mod reminders;
 pub mod report;

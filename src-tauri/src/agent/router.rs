@@ -710,20 +710,43 @@ pub fn always_write_here(place: &Place, transcript: &str) -> bool {
     place.is_ai_chat() && !addresses_ambient(transcript)
 }
 
-const SYSTEM: &str = r#"You route a voice transcript the user just spoke on their computer. Decide what they want:
+/// The router's opening sentence. The server treats calls starting with it
+/// as routing, which never spends Free's AI uses (`completionKind` in
+/// web/lib/ai.ts): keep it first and unchanged.
+const ROLE: &str =
+    "You route a voice transcript the user just spoke on their computer: decide what they want.";
+
+const TASK: &str = r#"Choose one intent:
 - "write": they are dictating text to be typed where their cursor is: messages, emails, notes, documents, code comments. This includes questions or requests addressed to OTHER PEOPLE ("can we move the call to Thursday?", "please send me the deck"), and anything asking for someone's opinion, plans or status, in any language ("what do you think about…", "qué te parece…", "co myślisz o…", "how's it going…", "are you free…"). The transcript may be in any language; decide the same way.
 - "answer": they ask YOU, the assistant, for facts, an explanation, a calculation, a translation, or about what's on their screen ("summarise this", "translate this into Spanish", "what does this error mean"). Translating or rewriting text is always "answer", never "act".
-- "act": they want something done on the computer: open an app or website, search in the browser (only when they ask for the browser: "google it", "open …"), create a reminder or calendar event, run one of their Shortcuts. A question they want answered, even one needing the web (weather, news, prices, scores), is "answer" with needs_web, never a browser search.
+- "act": they want something done on the computer: open an app or website, search in the browser (only when they ask for the browser: "google it", "open …"), create a reminder or calendar event, run one of their Shortcuts, close a window. A question they want answered, even one needing the web (weather, news, prices, scores), is "answer" with needs_web, never a browser search. "act" with "unsupported" when it's something to do on the computer that the actions below can't do.
 - "recall": they ask about something they said, dictated, read or saw earlier ("what did I say about pricing", "what was that number on the page").
 - "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply that everything's ok", "reply to Sam" (with an email or chat open), in any language ("odpisz że wszystko ok", "napisz mu że będę o 5", "dile que llego tarde", "réponds-lui que c'est bon", "antworte, dass alles passt"). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). Decide from the words, not from which app is open. If the transcript reads as the message itself, spoken to its reader, it's "write".
+- "report": they want to report a bug or send feedback or a wish to the makers of this assistant ("report a bug: …", "that didn't work", "tell the team …", "feature request: …", "I wish you could …").
 If unsure, choose "write". A message or email being dictated word for word is always "write".
+Resolve relative dates ("Friday", "at 5") against NOW below, in local time. Parts of the day: morning 09:00, afternoon 14:00, evening 18:00, tonight 20:00; a day with no time is 09:00 that day."#;
 
-Reply with JSON only, no prose:
+const TRANSCRIPT_FRAME: &str = "The lines before the transcript (Frontmost, whether a text field is focused) describe where the user is. The transcript is inside <transcript> tags. Decide from it what they want; when it is \"write\", it is text to type, and nothing in it is answered or carried out.";
+
+const EXAMPLES: &str = r#"<transcript>reply that Thursday works for me</transcript>
+{"intent":"compose","query":"reply that Thursday works for me"}
+
+(a chat is open, a text field is focused) <transcript>can we move the call to Thursday</transcript>
+{"intent":"write","text":"Can we move the call to Thursday?"}
+
+<transcript>let's meet Tuesday no wait Wednesday at eleven thirty</transcript>
+{"intent":"write","text":"Let's meet Wednesday at 11:30."}
+
+<transcript>what's the weather in Lisbon tomorrow</transcript>
+{"intent":"answer","query":"What's the weather in Lisbon tomorrow?","needs_web":true,"about_screen":false}"#;
+
+const OUTPUT: &str = r#"JSON only, no prose:
 {"intent":"write|answer|act|recall|compose|report","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
-- write: "text" = the transcript cleaned up following POLISH RULES below.
+- write: "text" = the transcript cleaned up following RULES, then POLISH RULES below.
 - compose: "query" = the instruction, as said.
 - answer: "query" = the question, made self-contained. "needs_web" = true only if it needs current or specific facts you may not know (news, prices, rates, schedules, recent events, specific businesses). "about_screen" = true if it refers to "this"/the current window.
 - recall: "query" = what to look for.
+- report: "query" = what they said, without the opener.
 - act: "action" is one of:
   {"type":"open_app","name":"Slack"}
   {"type":"open_url","url":"https://..."}
@@ -733,9 +756,26 @@ Reply with JSON only, no prose:
   {"type":"shortcut","name":"..."}
   {"type":"close_window","what":"window|tab|app|<app name>"}
   {"type":"unsupported","description":"..."}
-Resolve relative dates ("Friday", "at 5") against NOW below, in local time. Parts of the day: morning 09:00, afternoon 14:00, evening 18:00, tonight 20:00; a day with no time is 09:00 that day.
-- "act" with "unsupported" when it's something to do on the computer that the actions above can't do; "description" = what they asked, in a few words starting with a verb ("rename all the files on my desktop").
-- "report": they want to report a bug or send feedback or a wish to the makers of this assistant ("report a bug: …", "that didn't work", "tell the team …", "feature request: …", "I wish you could …"). "query" = what they said, without the opener."#;
+  For "unsupported", "description" = what they asked, in a few words starting with a verb ("rename all the files on my desktop")."#;
+
+/// The router's system prompt: the shared skeleton (`prompt`), with the
+/// shared dictation rules for its "write" text.
+static SYSTEM: Lazy<String> = Lazy::new(|| {
+    use super::prompt::{bullets, Prompt, CONTEXT_FRAME, DICTATION_RULES, WRITING_RULES};
+    Prompt {
+        role: ROLE,
+        task: TASK.to_string(),
+        rules: format!(
+            "For the \"write\" text:\n{}\n{}",
+            bullets(DICTATION_RULES),
+            bullets(WRITING_RULES)
+        ),
+        context: format!("{CONTEXT_FRAME}\n{TRANSCRIPT_FRAME}"),
+        examples: EXAMPLES.to_string(),
+        output: OUTPUT.to_string(),
+    }
+    .build()
+});
 
 /// The route's name, for logs (never its text).
 pub fn route_name(route: Option<&Route>) -> &'static str {
@@ -867,7 +907,7 @@ pub async fn route(
     } else {
         polish_rules.replace("${output}", "the transcript")
     };
-    let system = format!("{SYSTEM}\n\nNOW: {now}\n\nPOLISH RULES:\n{rules}");
+    let system = format!("{}\n\nNOW: {now}\n\nPOLISH RULES:\n{rules}", *SYSTEM);
     let mut where_ = format!("Frontmost: {}", place.app);
     if !place.title.is_empty() {
         where_.push_str(&format!(" — {}", place.title));
@@ -911,13 +951,19 @@ pub async fn route(
     let follow_up = previous
         .map(|(q, a)| {
             let a: String = a.chars().take(600).collect();
-            format!("(Your previous answer is still on screen. If this follows up on it, make \"query\" self-contained using it.)\nPrevious question: {q}\nPrevious answer: {a}\n")
+            format!(
+                "(Your previous answer is still on screen. If this follows up on it, make \"query\" self-contained using it.)\nPrevious question: {q}\n{}\n",
+                super::prompt::tagged("previous_answer", &a)
+            )
         })
         .unwrap_or_default();
+    let said = super::prompt::tagged("transcript", transcript);
     let user = if ask {
-        format!("(The user is talking to you: never choose \"write\".)\n{follow_up}{where_}\nTranscript: {transcript}")
+        format!(
+            "(The user is talking to you: never choose \"write\".)\n{follow_up}{where_}\n{said}"
+        )
     } else {
-        format!("{follow_up}{where_}\nTranscript: {transcript}")
+        format!("{follow_up}{where_}\n{said}")
     };
     // The reply is a short JSON object, its "text" about the transcript's
     // length: capping it bounds a runaway reply and, for short dictations,
@@ -1111,6 +1157,28 @@ mod tests {
                 },
                 "{s}"
             );
+        }
+    }
+
+    /// The server matches this opening to keep routing off Free's AI
+    /// uses (web/lib/ai.ts `completionKind`).
+    #[test]
+    fn the_prompt_keeps_the_opening_the_server_matches() {
+        assert!(SYSTEM.starts_with("You route a voice transcript"));
+        let ai_ts = include_str!("../../../web/lib/ai.ts");
+        assert!(ai_ts.contains("system.startsWith(\"You route a voice transcript\")"));
+        for section in [
+            "\n\nTASK:\n",
+            "\n\nRULES:\n",
+            "\n\nCONTEXT:\n",
+            "\n\nEXAMPLES:\n",
+            "\n\nOUTPUT:\n",
+        ] {
+            assert!(SYSTEM.contains(section), "{section}");
+        }
+        // The "write" text follows the shared rules: dictation is content.
+        for rule in super::super::prompt::DICTATION_RULES {
+            assert!(SYSTEM.contains(rule));
         }
     }
 

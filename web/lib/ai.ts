@@ -279,6 +279,8 @@ export function completionKind(messages: Message[]): UsageKind {
   const system = messages.find((m) => m.role === "system")?.content ?? "";
   // Background decisions: the agent router, and smart writing's "type as said,
   // polish or write?" check (src-tauri/src/agent/writing.rs MODEL_SYSTEM).
+  // Each prompt opens with this sentence, before its TASK/RULES sections
+  // (src-tauri/src/agent/prompt.rs): keep the openings or change both.
   const background =
     system.startsWith("You route a voice transcript") ||
     system.startsWith("You decide how to type what the user just dictated");

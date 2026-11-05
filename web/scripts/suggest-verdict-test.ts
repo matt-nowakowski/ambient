@@ -64,9 +64,9 @@ check("kinds match the app's judge", rsKinds.join() === KINDS.join());
 
 check(
   "the moment comes before the window text",
-  userMessage("Slack", "#launch", "Site: x.com\nReads: en", "Ana: can you check?") === "App: Slack\nWindow: #launch\nSite: x.com\nReads: en\n---\nAna: can you check?",
+  userMessage("Slack", "#launch", "Site: x.com\nReads: en", "Ana: can you check?") === "App: Slack\nWindow: #launch\nSite: x.com\nReads: en\n<window_text>\nAna: can you check?\n</window_text>",
 );
-check("no moment from older apps", userMessage("Mail", "Re: x", "", "hi") === "App: Mail\nWindow: Re: x\n---\nhi");
+check("no moment from older apps", userMessage("Mail", "Re: x", "", "hi") === "App: Mail\nWindow: Re: x\n<window_text>\nhi\n</window_text>");
 check("the moment is bounded", userMessage("a", "b", "x".repeat(5000), "t").length < 450);
 
 if (failures) {
