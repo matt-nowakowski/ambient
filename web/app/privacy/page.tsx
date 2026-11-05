@@ -94,7 +94,10 @@ export default function PrivacyPage() {
                 your computer. When you ask {brand.name} to write a message for you, it does so whether or not polish is
                 on; for a reply, the request also includes your name and signed-in email and the name of the person
                 you’re answering, so the message is addressed to the right person. When it is on, the text you dictate (never audio) is processed as
-                described above, and each request sent to our server is listed on the app’s Privacy page.
+                described above, and each request sent to our server is listed on the app’s Privacy page. If you also
+                let {brand.name} read the window you ask about, polish includes up to 20 names it sees there (people,
+                @handles, product names) so they are spelled right; the rest of the window text stays on your
+                computer.
                 </p>
                 <p>
                 <strong>Smart writing.</strong> With the Writing setting on Smart (the default), plain speech is typed as you
@@ -406,13 +409,14 @@ export default function PrivacyPage() {
                 and token from your device.
               </p>
               <p>
-                <strong>Email me tips (optional).</strong> In setup, or later in Account while you are signed out, you
+                <strong>Email me tips (optional).</strong> In Account, while you are not signed in, you
                 can ask us to email you tips on using {brand.name}; the box stays empty until you fill it in. If you do,
                 we keep your email address, your app language and the anonymous device hash described under “Trial and
                 free allowance”, so we can write to you in your language and link the email to the device it came from.
-                We email you once to confirm your address, then at most one short email a month, sent through our email
-                provider, Resend, with a one-click unsubscribe in every one. We do not store your IP address, and we keep
-                your email for tips until you unsubscribe or ask us to delete it.
+                We email you once to confirm your address, then send occasional tips ourselves, through our email
+                provider, Resend, with a one-click unsubscribe in every one. We do not store your IP address. We keep
+                your email for tips for up to 12 months after you last asked for them, and sooner if you ask us to
+                delete it; unsubscribing stops the emails straight away.
               </p>
             </>
           ),
@@ -552,7 +556,7 @@ export default function PrivacyPage() {
               <li>Sign-in attempt counters: about an hour, keyed by a one-way hash of your email.</li>
               <li>Signed-in email, plan and sign-in dates: 12 months after your latest sign-in.</li>
               <li>
-                Tips email, app language and device hash: until you unsubscribe or ask us to delete them.
+                Tips email, app language and device hash: up to 12 months after you last asked for tips, or sooner on request.
               </li>
               <li>
                 Daily, weekly and monthly activity hashes, with plan and, from the daily check-in, app version, operating
