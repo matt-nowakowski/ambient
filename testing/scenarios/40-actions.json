@@ -188,10 +188,11 @@
     },
     {
       "id": "act.en.unsupported",
-      "tags": ["unsupported"],
+      "tags": ["unsupported", "regression"],
       "lang": "en",
       "screen": "finder_desktop",
       "say": "rename all the files on my desktop to lowercase",
+      "regression": "0.1.9 #5: on the Windows/Linux desktop an English command with no cue word was typed into File Explorer / Files",
       "expect": {
         "route": "act",
         "act": "unsupported",
@@ -314,6 +315,34 @@
       "expect": {
         "route": "did_you_mean",
         "must_not": ["typed", "answered"]
+      }
+    },
+    {
+      "id": "act.en.unsupported.zip",
+      "about": "A command with no cue word on the desktop: told it can't be done yet, never typed into the window.",
+      "tags": ["unsupported", "desktop", "regression"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "zip up everything in my downloads folder",
+      "regression": "0.1.9 #5: on the Windows/Linux desktop an English command with no cue word was typed into File Explorer / Files",
+      "expect": {
+        "route": "act",
+        "act": "unsupported",
+        "must_not": ["typed", "silent"]
+      }
+    },
+    {
+      "id": "act.pl.unsupported",
+      "about": "The same in Polish: told it can't be done yet, never typed into the window.",
+      "tags": ["unsupported", "desktop", "regression"],
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "zmień nazwy wszystkich plików na pulpicie na małe litery",
+      "regression": "0.1.9 #5: on the Windows/Linux desktop a command with no cue word was typed into File Explorer / Files",
+      "expect": {
+        "route": "act",
+        "act": "unsupported",
+        "must_not": ["typed", "silent"]
       }
     }
   ]
