@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 
 use super::llm;
+use super::shape::{ai_chat_named, messaging_named, messaging_text};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Route {
@@ -456,106 +457,8 @@ impl Place {
     }
 }
 
-// ── What the screen says it is ────────────────────────────────────────────
-//
-// The lists above are hints. A bundle id never says what a window shows, and
-// a new client, a web app or another OS's build is simply absent from them,
-// so the screen is read for evidence instead: the shape of the URL, what the
-// window calls itself, and the shape of the text. An app nobody has listed
-// yet is judged the same way as a known one whose screen says the same thing.
+// What the screen says it is: see `super::shape`.
 
-/// A chat or mail host or path: "web.whatsapp.com", ".../messages/123",
-/// "mail.acme.com", ".../inbox". Applied to the URL only.
-static MESSAGING_URL: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?i)(?:^|[/.:_-])(?:webmail|mail|gmail|hotmail|outlook|protonmail|fastmail|inbox|messages|messenger|chat|chats|conversation|conversations|threads|slack|teams|discord|whatsapp|telegram|signal|element|zulip|mattermost|rocket\.chat|dms?)(?:[/.:_-]|$)",
-    )
-    .expect("messaging url")
-});
-
-/// A window that calls itself an inbox or a chat: "Inbox (3) - Gmail",
-/// "Ana Lopez | Slack", "Messages", "Team chat". Titles and app names only.
-static MESSAGING_TITLE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?ix)
-          ^\s*(?:inbox|starred|sent|drafts|spam|trash)\s*[(\[]\d
-        | \b(?:gmail|outlook|protonmail|fastmail|slack|teams|discord|whatsapp|telegram|signal|messenger|element|zulip|mattermost|rocket\.chat|mail)\b\s*(?:[-–—:|·]|$)
-        | [-–—:|·]\s*(?:chat|chats|messages?|mail|inbox|slack|teams|discord|whatsapp|telegram|signal)\s*$
-        | \b\d+\s+new\s+messages?\b
-        | \bchat\s+(?:with|about)\b
-        ",
-    )
-    .expect("messaging title")
-});
-
-/// Mail headers, one per message ("From:", "To:", "Subject:").
-static MAIL_HEADER: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"(?im)^\s*(?:from|to|cc|bcc|subject|sent|reply-to):\s*\S").expect("mail header")
-});
-/// A sender's address alone on its line, as a thread shows it.
-static ADDRESS_LINE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"(?m)^\s*<?[\w.+-]+@[\w-]+(?:\.[\w-]+)+>?\s*$").expect("address line")
-});
-/// "On Mon, Oct 3, Ana Lopez wrote:" -- one per quoted reply.
-static WROTE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(?im)^\s*on\b.{5,80}\bwrote:\s*$").expect("wrote line"));
-/// Gmail's "(2 days ago)" (or "(now)") stamp.
-static AGO: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?i)\(\s*(?:\d+\s+(?:minutes?|hours?|days?|weeks?|months?)\s+ago|now|just now)\s*\)",
-    )
-    .expect("ago")
-});
-/// A line that is only a message's time ("10:14 AM", "Today at 9:02"), how a
-/// chat lays each message out; a terminal prints its stamps inside its lines.
-static STAMP_LINE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?im)^\s*(?:\d{1,2}:\d{2}\s?(?:[ap]m)?|(?:today|yesterday)\s+at\s+\d{1,2}:\d{2}\s?(?:[ap]m)?|\d{1,2}\s+\p{L}{3,9}\s+\d{4})\s*$",
-    )
-    .expect("stamp line")
-});
-
-/// Whether the URL, the window's title or its app name say "a conversation".
-fn messaging_named(url: &str, title: &str, app: &str) -> bool {
-    MESSAGING_URL.is_match(url) || MESSAGING_TITLE.is_match(title) || MESSAGING_TITLE.is_match(app)
-}
-
-/// The text is laid out as messages rather than a page: mail headers, a
-/// "wrote:" line, "2 days ago", a sender's address on its own line, or
-/// several lines that are only a time stamp. A terminal transcript shows
-/// shell prompts and output instead, so it gives none of these (Matt
-/// reported an offer to summarise an "email thread" over exactly one).
-fn messaging_text(text: &str) -> bool {
-    let t = tail(text, 3_000);
-    if MAIL_HEADER.is_match(t) || WROTE.is_match(t) {
-        return true;
-    }
-    if AGO.is_match(t) && (STAMP_LINE.is_match(t) || ADDRESS_LINE.is_match(t)) {
-        return true;
-    }
-    if STAMP_LINE.find_iter(t).count() >= 2 {
-        return true;
-    }
-    ADDRESS_LINE.find_iter(t).count() >= 2
-}
-
-/// The last `n` characters of `text`.
-fn tail(text: &str, n: usize) -> &str {
-    let count = text.chars().count();
-    if count <= n {
-        return text;
-    }
-    let skip = text.char_indices().nth(count - n).map_or(0, |(i, _)| i);
-    &text[skip..]
-}
-
-/// An assistant's name on the window (its host, title or app).
-static AI_NAME: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(
-        r"(?i)\b(?:chatgpt|openai|claude|anthropic|gemini|bard|perplexity|copilot|deepseek|grok|mistral|llama|chatbot|ai assistant)\b",
-    )
-    .expect("ai name")
-});
 /// How an assistant's chat shows its turns ("You said:", "Assistant:").
 static AI_TURNS: Lazy<Regex> = Lazy::new(|| {
     Regex::new(
@@ -563,10 +466,6 @@ static AI_TURNS: Lazy<Regex> = Lazy::new(|| {
     )
     .expect("ai turns")
 });
-
-fn ai_chat_named(url: &str, title: &str, app: &str) -> bool {
-    AI_NAME.is_match(url) || AI_NAME.is_match(title) || AI_NAME.is_match(app)
-}
 
 /// Typing into an assistant's prompt is writing, not asking Ambient, so an
 /// unfamiliar one has to be recognised: its name on the window, or the shape
@@ -590,7 +489,7 @@ const PLACE_TEXT_CHARS: usize = 1_200;
 
 /// Read where the user is (metadata only: app, title, URL, focus).
 pub fn place() -> Place {
-    place_for(false)
+    read_place(&[], false)
 }
 
 /// Like `place`, and, when `routing` is set, a little of the window's text
@@ -598,8 +497,15 @@ pub fn place() -> Place {
 /// client or web app is then judged by what it shows (its URL's shape, what
 /// its window calls itself, the shape of its text) instead of by its bundle
 /// id. Asked for only when the dictation is going to the router anyway, so
-/// plain dictation into a new app keeps its speed.
-pub fn place_for(routing: bool) -> Place {
+/// plain dictation into a new app keeps its speed. The user's never-watch
+/// list applies, and text is read only while reading the screen is allowed
+/// (the screen-context setting on, the agent not paused).
+pub fn place_for(routing: bool, agent: &crate::settings::AgentSettings) -> Place {
+    let read_text = routing && agent.screen_context && !agent.is_paused();
+    read_place(&agent.never_watch, read_text)
+}
+
+fn read_place(never_watch: &[String], read_text: bool) -> Place {
     let Some(front) = crate::context::frontmost_app() else {
         return Place::default();
     };
@@ -612,7 +518,7 @@ pub fn place_for(routing: bool) -> Place {
         return p;
     }
     // Metadata only; the never-watch list still applies.
-    if let Ok(s) = crate::context::snapshot(0, &[]) {
+    if let Ok(s) = crate::context::snapshot(0, never_watch) {
         let url = s.url.clone().unwrap_or_default();
         p.no_field = front.bundle_id != env!("BRAND_IDENTIFIER")
             && super::focus_is_reliable(&front.bundle_id)
@@ -627,8 +533,8 @@ pub fn place_for(routing: bool) -> Place {
         p.editable = s.editable;
     }
     // An app or site nothing recognises: let the screen itself say.
-    if routing && !p.named() {
-        if let Ok(s) = crate::context::snapshot(PLACE_TEXT_CHARS, &[]) {
+    if read_text && !p.named() {
+        if let Ok(s) = crate::context::snapshot(PLACE_TEXT_CHARS, never_watch) {
             p.text = s.text.unwrap_or_default();
             if p.is_messaging() || p.is_ai_chat() {
                 log::debug!(

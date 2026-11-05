@@ -910,7 +910,8 @@ pub(crate) async fn process_dictation_output(
     let place = if cued || agent_on || smart_wanted || styled {
         // This dictation is going to the router: let an app or site the lists
         // do not know be judged by its screen (see router::place_for).
-        tauri::async_runtime::spawn_blocking(move || router::place_for(cued))
+        let agent = settings.agent.clone();
+        tauri::async_runtime::spawn_blocking(move || router::place_for(cued, &agent))
             .await
             .unwrap_or_default()
     } else {
