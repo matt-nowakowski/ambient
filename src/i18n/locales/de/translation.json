@@ -257,7 +257,7 @@
       "continue": "Weiter",
       "cloud": {
         "title": "In der Cloud",
-        "body": "Die besten Ergebnisse. Dein Text geht zum Verfeinern und Antworten an unseren Server; dein Ton nie."
+        "body": "Die besten Ergebnisse. Dein Text geht zum Glätten und Antworten an unseren Server; deine Aufnahme nie."
       },
       "device": {
         "title": "Auf diesem Computer",
@@ -265,7 +265,7 @@
       },
       "none": {
         "title": "Keine KI",
-        "body": "Reine Diktatfunktion und einfache Regeln. Nichts wird gesendet, nichts verfeinert, verfasst oder vorgeschlagen."
+        "body": "Reine Diktatfunktion und einfache Regeln. Nichts wird gesendet, nichts geglättet, verfasst oder vorgeschlagen."
       }
     }
   },
@@ -758,8 +758,8 @@
       "detail": {
         "model": "Sprachmodell",
         "decided": "Entscheidung",
-        "as_said": "Wie gesagt",
-        "polished": "Poliert",
+        "as_said": "Wörtlich",
+        "polished": "Geglättet",
         "written": "Für dich geschrieben",
         "ai": "KI",
         "prompt": "Prompt",
@@ -1204,9 +1204,9 @@
       "freeUsesLeft": "Noch {{left}} von {{limit}} kostenlosen KI-Nutzungen diese Woche",
       "scope": "Ändert nur, wie dein Diktat aufgeräumt wird. Antworten, Vorschläge und das Lesen des Bildschirms sind getrennt.",
       "where": {
-        "on_device": "Wird auf diesem Computer verfeinert.",
-        "cloud": "Wird in der Cloud verfeinert.",
-        "blocked": "Übersprungen: „Nur auf diesem Computer“ ist an und dieser Computer hat kein lokales Modell, daher wird das Diktat wie gesagt getippt."
+        "on_device": "Wird auf diesem Computer geglättet.",
+        "cloud": "Wird in der Cloud geglättet.",
+        "blocked": "Übersprungen: „Nur auf diesem Computer“ ist an und dieser Computer hat kein lokales Modell, daher wird das Diktat wörtlich getippt."
       },
       "onDeviceAnswers": "Mit der KI auf „Automatisch“ nutzen auch Antworten es."
     },
@@ -1216,10 +1216,10 @@
       "options": {
         "smart": {
           "title": "Smart",
-          "description": "{{appName}} entscheidet jedes Mal: deine Worte wie gesagt, geglättet, wenn du ins Stocken gerätst, oder für dich geschrieben, wenn du darum bittest („sag ihm, dass ich nicht kann, höflich“). Es zeigt, was es getan hat, und „Meine Worte“ macht es rückgängig."
+          "description": "{{appName}} entscheidet jedes Mal: deine Worte wörtlich, geglättet, wenn du ins Stocken gerätst, oder für dich geschrieben, wenn du darum bittest („sag ihm, dass ich nicht kann, höflich“). Es zeigt, was es getan hat, und „Meine Worte“ macht es rückgängig."
         },
         "as_said": {
-          "title": "Immer wie gesagt",
+          "title": "Immer wörtlich",
           "description": "Genau deine Worte. Es schreibt nur für dich, wenn du {{appName}} beim Namen nennst."
         },
         "polish": {
@@ -1227,7 +1227,7 @@
           "description": "KI-Feinschliff bei jedem Diktat."
         }
       },
-      "needsPolish": "KI-Feinschliff ist aus, deshalb wird Diktat sofort getippt und unsaubere Sprache bleibt wie gesagt. {{appName}} schreibt weiterhin für dich, wenn du darum bittest (zählt als KI-Anfrage).",
+      "needsPolish": "KI-Feinschliff ist aus, deshalb wird Diktat sofort getippt und unsaubere Sprache bleibt wörtlich. {{appName}} schreibt weiterhin für dich, wenn du darum bittest (zählt als KI-Anfrage).",
       "scope": "Ändert nur, was in Textfelder getippt wird. Fragen an {{appName}} und Vorschläge sind getrennt."
     },
     "trial": {
@@ -1237,7 +1237,7 @@
     "styles": {
       "title": "Stile für Apps und Websites",
       "description": "Ein Standardstil dafür, wo du schreibst. Smartes Schreiben hält sich dort daran.",
-      "empty": "Noch keine. Zum Beispiel: Slack locker, Gmail ausgefeilt, Terminal wie gesagt.",
+      "empty": "Noch keine. Zum Beispiel: Slack locker, Gmail ausgefeilt, Terminal wörtlich.",
       "add": "App oder Website hinzufügen",
       "addButton": "Hinzufügen",
       "placeholder": "App-Name oder Website",
@@ -1246,7 +1246,7 @@
       "remove": "{{name}} entfernen",
       "duplicate": "{{name}} hat schon einen Stil",
       "options": {
-        "as_said": "Wie gesagt",
+        "as_said": "Wörtlich",
         "casual": "Locker",
         "polished": "Ausgefeilt"
       },
@@ -1651,7 +1651,7 @@
         "config": "Einstellungsabgleich (nichts gesendet)",
         "meeting_email": "Meeting-Notizen per E-Mail",
         "feedback": "Feedback",
-        "checkin": "Tägliche Anmeldung"
+        "checkin": "Tägliche Rückmeldung"
       }
     },
     "engine": {

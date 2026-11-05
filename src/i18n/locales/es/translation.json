@@ -761,9 +761,9 @@
       "detail": {
         "model": "Modelo de voz",
         "decided": "Decisión",
-        "as_said": "Como se dijo",
+        "as_said": "Tal cual",
         "polished": "Pulido",
-        "written": "Escrito por ti",
+        "written": "Escrito para ti",
         "ai": "IA",
         "prompt": "Instrucción",
         "recorded": "Grabación",
@@ -1263,7 +1263,7 @@
       }
     },
     "tips": {
-      "label": "Envíenme consejos",
+      "label": "Envíame consejos",
       "button": "Enviar",
       "done": "¡Gracias!",
       "error": "No se pudo enviar. ¿Otra vez?"
@@ -1525,7 +1525,7 @@
     },
     "writing": {
       "polished": "Pulido",
-      "written": "Redactado por ti",
+      "written": "Redactado para ti",
       "useMyWords": "Mis palabras",
       "edit": "Editar",
       "cancel": "Cancelar",

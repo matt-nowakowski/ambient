@@ -258,7 +258,7 @@
       "continue": "Continuer",
       "cloud": {
         "title": "Dans le cloud",
-        "body": "Les meilleurs résultats. Votre texte part sur notre serveur pour être poli et pour répondre ; votre audio jamais."
+        "body": "Les meilleurs résultats. Votre texte est envoyé à notre serveur pour être peaufiné et obtenir des réponses ; votre audio, jamais."
       },
       "device": {
         "title": "Sur cet ordinateur",
@@ -266,7 +266,7 @@
       },
       "none": {
         "title": "Pas d'IA",
-        "body": "Dictée simple et règles basiques. Rien n'est envoyé, rien n'est poli, rédigé ni suggéré."
+        "body": "Dictée simple et règles basiques. Rien n'est envoyé, rien n'est peaufiné, rédigé ni suggéré."
       }
     }
   },
@@ -762,7 +762,7 @@
         "model": "Modèle vocal",
         "decided": "Décision",
         "as_said": "Tel quel",
-        "polished": "Poli",
+        "polished": "Peaufiné",
         "written": "Écrit pour vous",
         "ai": "IA",
         "prompt": "Consigne",
@@ -1232,7 +1232,7 @@
           "description": "Finition IA sur chaque dictée."
         }
       },
-      "needsPolish": "Le polissage IA est désactivé : la dictée est tapée instantanément et la parole hésitante reste telle quelle. {{appName}} écrit toujours pour vous quand vous le demandez (cela compte comme une requête IA).",
+      "needsPolish": "Le peaufinage par IA est désactivé : la dictée est tapée instantanément et la parole hésitante reste telle quelle. {{appName}} écrit toujours pour vous quand vous le demandez (cela compte comme une requête IA).",
       "scope": "Change seulement ce qui est saisi dans les champs de texte. Les questions à {{appName}} et les suggestions sont à part."
     },
     "trial": {
@@ -1377,8 +1377,8 @@
       "summariseThread": "Fil très long. Le résumer ?",
       "draftReply": "Rédiger une réponse ?",
       "addToCalendar": "Il y a une date ici. L’ajouter à votre calendrier ?",
-      "addReminder": "Il y a une échéance. Je te le rappelle ?",
-      "addReminderWhen": "Échéance : {{when}}. Je te le rappelle ?",
+      "addReminder": "Il y a une échéance. Je vous le rappelle ?",
+      "addReminderWhen": "Échéance : {{when}}. Je vous le rappelle ?",
       "summarisePage": "Résumer cette page ?",
       "explainError": "Expliquer cette erreur ?",
       "summarise": "Résumer",
@@ -1677,7 +1677,7 @@
         "summarise_thread": "Résumer les longs fils d’e-mails",
         "draft_reply": "Rédiger des réponses",
         "add_to_calendar": "Ajouter des dates à votre calendrier",
-        "add_reminder": "Te rappeler les échéances des messages",
+        "add_reminder": "Vous rappeler les échéances des messages",
         "summarise_page": "Résumer les longues pages",
         "explain_error": "Expliquer les erreurs et les tests en échec",
         "tighten_draft": "Condenser les longs brouillons",
