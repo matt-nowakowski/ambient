@@ -10,6 +10,22 @@
 //! stored: only the word pairs (and how often each was seen) are kept, in
 //! `corrections.json` next to the settings. Only word-level swaps count; a
 //! rewrite teaches nothing.
+//!
+//! Three steps decide what's offered, all on this computer:
+//!
+//! 1. A size policy ([`SizePolicy`]) decides what is even considered: a
+//!    paste, a field and an edit of a sensible size. A long field or a
+//!    heavily rewritten paste teaches nothing reliable and isn't looked at.
+//! 2. Each fix gets a verdict ([`Verdict`]): *reusable* (a name or term
+//!    that will come back: "Anna" → "Ana", "kubernetes" → "Kubernetes"),
+//!    *specific* (right for this message only: a plural, a tense, a
+//!    different everyday word, a number) or *uncertain* (could be either).
+//!    Only reusable fixes are offered; uncertainty means wait. The same
+//!    uncertain fix made again and again stops being uncertain.
+//! 3. A fix that's due but can't be offered yet (another card is up) stays
+//!    queued in the ledger and is offered later; a ledger that can't be read
+//!    is set aside, not overwritten, and one that can't be saved is kept in
+//!    memory. A user's correction is never silently dropped.
 
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Mutex;
@@ -29,25 +45,77 @@ const POLL_EVERY: Duration = Duration::from_millis(1_500);
 const ASK_AFTER: u32 = 2;
 /// An offer that faded unanswered comes back after this many more.
 const ASK_AGAIN_AFTER: u32 = 3;
-/// Pairs kept (the least recently seen go first).
+/// Sightings of the same uncertain fix that make it reusable: the user
+/// making exactly this change again and again is the evidence it lacked.
+const CONFIRM_AFTER: u32 = 4;
+/// Pairs kept (the least recently seen go first; queued offers never go).
 const KEEP: usize = 200;
-/// Longest paste worth diffing, in words.
-const MAX_WORDS: usize = 200;
 
 /// A newer paste ends the current watch.
 static GENERATION: AtomicU64 = AtomicU64::new(0);
 static LEDGER_LOCK: Mutex<()> = Mutex::new(());
+
+// ── What is considered ───────────────────────────────────────────────────
+
+/// What's even looked at, by size. Decided locally, before any diff.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SizePolicy {
+    /// Longest paste worth watching, in words.
+    pub max_words: usize,
+    /// Longest field worth reading while watching, in characters (a long
+    /// document's field is read every poll; past this, it isn't watched).
+    pub max_field_chars: usize,
+    /// Most separate edits in one paste; more is a rewrite.
+    pub max_edits: usize,
+    /// Most of the paste that may change, in tenths (4: 40%).
+    pub max_changed_tenths: usize,
+    /// Most words replaced in one edit ("chat GPT" → "ChatGPT" is two).
+    pub max_from_words: usize,
+}
+
+pub const SIZE_POLICY: SizePolicy = SizePolicy {
+    max_words: 200,
+    max_field_chars: 20_000,
+    max_edits: 3,
+    max_changed_tenths: 4,
+    max_from_words: 3,
+};
+
+impl SizePolicy {
+    /// Whether a paste of `words` words is worth watching.
+    pub fn watch_paste(&self, words: usize) -> bool {
+        words > 0 && words <= self.max_words
+    }
+
+    /// Whether a field of `chars` characters is worth reading.
+    pub fn read_field(&self, chars: usize) -> bool {
+        chars <= self.max_field_chars
+    }
+
+    /// Whether `edits` edits changing `changed` of `pasted` words are fixes
+    /// rather than a rewrite.
+    fn fixes(&self, pasted: usize, edits: usize, changed: usize) -> bool {
+        edits <= self.max_edits && changed * 10 <= pasted.max(3) * self.max_changed_tenths
+    }
+}
 
 // ── What changed ─────────────────────────────────────────────────────────
 
 /// The word swaps between what was pasted and what the field holds now:
 /// one word for one ("Anna" → "Ana") or a few for one ("Chat GPT" →
 /// "ChatGPT"), punctuation around them aside. Empty when it looks like a
-/// rewrite rather than a fix, or nothing learnable changed.
+/// rewrite rather than a fix, or nothing changed that could be learned.
+/// Uncertain fixes are kept (they're counted, not offered); specific ones
+/// aren't.
 pub fn substitutions(pasted: &str, edited: &str) -> Vec<(String, String)> {
+    let policy = SIZE_POLICY;
     let a: Vec<&str> = pasted.split_whitespace().collect();
     let b: Vec<&str> = edited.split_whitespace().collect();
-    if a.is_empty() || b.is_empty() || a.len() > MAX_WORDS || b.len() > MAX_WORDS * 2 {
+    if a.is_empty()
+        || b.is_empty()
+        || !policy.watch_paste(a.len())
+        || b.len() > policy.max_words * 2
+    {
         return Vec::new();
     }
     let hunks = diff_hunks(&a, &b);
@@ -55,12 +123,12 @@ pub fn substitutions(pasted: &str, edited: &str) -> Vec<(String, String)> {
     let edits: Vec<&(Vec<&str>, Vec<&str>)> =
         hunks.iter().filter(|(del, _)| !del.is_empty()).collect();
     let changed: usize = edits.iter().map(|(del, _)| del.len()).sum();
-    if edits.len() > 3 || changed * 10 > a.len().max(3) * 4 {
+    if !policy.fixes(a.len(), edits.len(), changed) {
         return Vec::new();
     }
     edits
         .into_iter()
-        .filter(|(del, ins)| ins.len() == 1 && (1..=3).contains(&del.len()))
+        .filter(|(del, ins)| ins.len() == 1 && (1..=policy.max_from_words).contains(&del.len()))
         .filter_map(|(del, ins)| {
             let from = del.iter().map(|w| core(w)).collect::<Vec<_>>().join(" ");
             let to = core(ins[0]).to_string();
@@ -118,38 +186,111 @@ fn core(word: &str) -> &str {
     word.trim_matches(|c: char| !c.is_alphanumeric())
 }
 
-/// Whether `from` → `to` is a spelling fix worth remembering: a name or a
-/// term, not a different word, a grammar fix, or something that looks like
-/// a key, an address or a path.
-pub fn learnable(from: &str, to: &str) -> bool {
+/// What a fix says about the future.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Verdict {
+    /// A name or term that will come back: worth offering to remember.
+    Reusable,
+    /// Right for this message only (grammar, a plural, a different word, a
+    /// number): never offered.
+    Specific,
+    /// Could be either: counted, not offered, until it keeps happening.
+    Uncertain,
+}
+
+/// Endings that make another form of the same word ("meeting" →
+/// "meetings", "Anna" → "Anna's"): grammar for this sentence.
+const INFLECTIONS: &[&str] = &["s", "es", "'s", "’s", "ed", "d", "ing", "er", "ly", "n't"];
+
+fn is_inflection(a: &str, b: &str) -> bool {
+    let (short, long) = if a.len() <= b.len() { (a, b) } else { (b, a) };
+    long.strip_prefix(short)
+        .is_some_and(|ending| INFLECTIONS.contains(&ending))
+}
+
+/// The verdict on `from` → `to`, and why (a fixed name for logs and tests).
+pub fn verdict(from: &str, to: &str) -> (Verdict, &'static str) {
+    use Verdict::*;
     if from.is_empty() || to.is_empty() || from == to {
-        return false;
+        return (Specific, "no change");
     }
     if to.chars().count() > 40 || from.chars().count() > 60 || to.contains(char::is_whitespace) {
-        return false;
+        return (Specific, "too long or several words");
     }
     if !to.chars().any(char::is_alphabetic) || looks_secret(from) || looks_secret(to) {
-        return false;
+        return (Specific, "a number, key, address or path");
     }
     let (fl, tl) = (from.to_lowercase(), to.to_lowercase());
     let common = crate::audio_toolkit::text::is_common_word;
     if fl == tl {
-        // Casing: "kubernetes" → "Kubernetes", never a sentence's first
-        // word ("the" → "The") or lowercasing ("Hello" → "hello").
-        return !common(&tl) && to.chars().any(char::is_uppercase) && !from.contains(' ');
+        // Casing: "kubernetes" → "Kubernetes" or "iphone" → "iPhone" is a
+        // term's spelling. A common word capitalised ("meeting" →
+        // "Meeting") is emphasis or a heading; lowercasing is style.
+        if from.contains(' ') || !to.chars().any(char::is_uppercase) {
+            return (Specific, "lowercased");
+        }
+        if common(&tl) {
+            return (Specific, "a common word recased");
+        }
+        return (Reusable, "a term's casing");
     }
     let squashed: String = fl.split_whitespace().collect();
     // Words run together into a name ("chat GPT" → "ChatGPT").
     if from.contains(' ') && squashed == tl {
-        return to.chars().any(char::is_uppercase);
+        return if to.chars().any(char::is_uppercase) {
+            (Reusable, "words joined into a name")
+        } else {
+            (Uncertain, "words joined")
+        };
+    }
+    // Another form of the same word is grammar for this sentence.
+    if is_inflection(&fl, &tl) {
+        return (Specific, "another form of the word");
     }
     // A different everyday word is a rewrite or grammar ("their" → "there").
     if from.split_whitespace().any(|w| common(&w.to_lowercase())) {
-        return false;
+        return (Specific, "a different everyday word");
     }
     let dist = strsim::levenshtein(&squashed, &tl) as f64;
     let len = squashed.chars().count().max(tl.chars().count()) as f64;
-    dist / len <= 0.5
+    let ratio = dist / len;
+    if ratio > 0.5 {
+        return (Specific, "a different word");
+    }
+    // A misheard word put right as an everyday word ("recieve" →
+    // "receive") may be this sentence only; a name or term is the user's.
+    let named = to.chars().next().is_some_and(char::is_uppercase)
+        || to.chars().skip(1).any(char::is_uppercase);
+    if common(&tl) && !named {
+        return (Uncertain, "an everyday word");
+    }
+    // Very short words are too easy to change for another reason.
+    if squashed.chars().count() <= 3 && tl.chars().count() <= 3 {
+        return (Uncertain, "too short to tell");
+    }
+    if ratio > 0.34 {
+        return (Uncertain, "spelt quite differently");
+    }
+    if named || tl.chars().count() >= 5 {
+        (Reusable, "a name or term's spelling")
+    } else {
+        (Uncertain, "a short lowercase word")
+    }
+}
+
+/// The verdict once it's been seen `count` times: an uncertain fix the user
+/// keeps making is reusable after all. Specific stays specific.
+pub fn verdict_after(from: &str, to: &str, count: u32) -> Verdict {
+    match verdict(from, to).0 {
+        Verdict::Uncertain if count >= CONFIRM_AFTER => Verdict::Reusable,
+        v => v,
+    }
+}
+
+/// Whether `from` → `to` could be worth remembering (reusable now, or
+/// uncertain and so worth counting).
+pub fn learnable(from: &str, to: &str) -> bool {
+    verdict(from, to).0 != Verdict::Specific
 }
 
 /// A key, token, address or path rather than a word.
@@ -181,17 +322,22 @@ pub struct Seen {
     pub last: i64,
 }
 
-/// Word pairs seen, and the ones the user said no to. No field text.
+/// Word pairs seen, the ones the user said no to, and the offers waiting to
+/// be shown. No field text.
 #[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq)]
 pub struct Ledger {
     #[serde(default)]
     pub seen: Vec<Seen>,
     #[serde(default)]
     pub declined: Vec<(String, String)>,
+    /// Due offers not shown yet (another card was up): offered next time.
+    #[serde(default)]
+    pub queued: Vec<(String, String)>,
 }
 
 impl Ledger {
-    /// Count one sighting; true when it's time to offer it.
+    /// Count one sighting; true when it's time to offer it (and it's then
+    /// queued until it is). Only a reusable fix is ever due.
     pub fn record(&mut self, from: &str, to: &str, now: i64) -> bool {
         if self.declined.iter().any(|(f, t)| f == from && t == to) {
             return false;
@@ -210,24 +356,44 @@ impl Ledger {
         let s = &mut self.seen[i];
         s.count = s.count.saturating_add(1);
         s.last = now;
-        let due =
-            s.count >= ASK_AFTER && (s.asked_at == 0 || s.count >= s.asked_at + ASK_AGAIN_AFTER);
+        let due = s.count >= ASK_AFTER
+            && (s.asked_at == 0 || s.count >= s.asked_at + ASK_AGAIN_AFTER)
+            && verdict_after(from, to, s.count) == Verdict::Reusable;
+        if due && !self.is_queued(from, to) {
+            self.queued.push((from.into(), to.into()));
+        }
         if self.seen.len() > KEEP {
-            self.seen.sort_by_key(|s| std::cmp::Reverse(s.last));
+            // The least recently seen go, never one waiting to be offered.
+            self.seen.sort_by_key(|s| {
+                let queued = self.queued.iter().any(|(f, t)| *f == s.from && *t == s.to);
+                (std::cmp::Reverse(queued), std::cmp::Reverse(s.last))
+            });
             self.seen.truncate(KEEP);
         }
         due
     }
 
+    fn is_queued(&self, from: &str, to: &str) -> bool {
+        self.queued.iter().any(|(f, t)| f == from && t == to)
+    }
+
+    /// The next offer waiting to be shown.
+    pub fn next_queued(&self) -> Option<(String, String)> {
+        self.queued.first().cloned()
+    }
+
+    /// Shown: no longer queued, and asked at this count.
     pub fn asked(&mut self, from: &str, to: &str) {
+        self.queued.retain(|(f, t)| !(f == from && t == to));
         if let Some(s) = self.seen.iter_mut().find(|s| s.from == from && s.to == to) {
             s.asked_at = s.count;
         }
     }
 
-    /// Learned or declined: no longer counted.
+    /// Learned or declined: no longer counted or queued.
     pub fn forget(&mut self, from: &str, to: &str) {
         self.seen.retain(|s| !(s.from == from && s.to == to));
+        self.queued.retain(|(f, t)| !(f == from && t == to));
     }
 
     pub fn decline(&mut self, from: &str, to: &str) {
@@ -256,18 +422,62 @@ fn ledger_path(app: &AppHandle) -> Option<std::path::PathBuf> {
         .map(|d| d.join("corrections.json"))
 }
 
+/// A ledger that couldn't be saved, kept here so the next change builds on
+/// it instead of on the older file (and the save is tried again then).
+static UNSAVED: Mutex<Option<Ledger>> = Mutex::new(None);
+
+/// Read the ledger at `path`. A file that's there but can't be read as a
+/// ledger is moved aside (kept for a person to look at), never overwritten.
+fn load_ledger(path: &std::path::Path) -> Ledger {
+    let Ok(raw) = std::fs::read_to_string(path) else {
+        return Ledger::default();
+    };
+    match serde_json::from_str(&raw) {
+        Ok(ledger) => ledger,
+        Err(e) => {
+            let aside = path.with_extension(format!(
+                "unreadable-{}.json",
+                chrono::Utc::now().timestamp()
+            ));
+            match std::fs::rename(path, &aside) {
+                Ok(()) => log::warn!(
+                    "corrections: the ledger couldn't be read ({e}); kept it as {}",
+                    aside.display()
+                ),
+                Err(err) => log::warn!(
+                    "corrections: the ledger couldn't be read ({e}) or set aside ({err})"
+                ),
+            }
+            Ledger::default()
+        }
+    }
+}
+
+/// Save the ledger; on failure keep it in memory for the next change.
+fn save_ledger(path: &std::path::Path, ledger: &Ledger) {
+    let saved = serde_json::to_string(ledger)
+        .map_err(|e| e.to_string())
+        .and_then(|json| std::fs::write(path, json).map_err(|e| e.to_string()));
+    let mut unsaved = UNSAVED.lock().unwrap_or_else(|p| p.into_inner());
+    match saved {
+        Ok(()) => *unsaved = None,
+        Err(e) => {
+            log::warn!("corrections: couldn't save; keeping them in memory: {e}");
+            *unsaved = Some(ledger.clone());
+        }
+    }
+}
+
 fn with_ledger<T>(app: &AppHandle, f: impl FnOnce(&mut Ledger) -> T) -> Option<T> {
     let _g = LEDGER_LOCK.lock().ok()?;
     let path = ledger_path(app)?;
-    let mut ledger: Ledger = std::fs::read_to_string(&path)
-        .ok()
-        .and_then(|s| serde_json::from_str(&s).ok())
-        .unwrap_or_default();
+    let pending = UNSAVED.lock().unwrap_or_else(|p| p.into_inner()).take();
+    let retry = pending.is_some();
+    let mut ledger = pending.unwrap_or_else(|| load_ledger(&path));
+    let before = ledger.clone();
     let out = f(&mut ledger);
-    if let Ok(json) = serde_json::to_string(&ledger) {
-        if let Err(e) = std::fs::write(&path, json) {
-            log::warn!("corrections: couldn't save: {e}");
-        }
+    if retry || ledger != before {
+        save_ledger(&path, &ledger);
     }
     Some(out)
 }
@@ -282,8 +492,7 @@ pub fn watch(app: &AppHandle, text: &str) {
     if !s.learn_corrections
         || s.auto_submit
         || s.paste_method == settings::PasteMethod::None
-        || text.trim().is_empty()
-        || text.split_whitespace().count() > MAX_WORDS
+        || !SIZE_POLICY.watch_paste(text.split_whitespace().count())
     {
         return;
     }
@@ -337,6 +546,10 @@ fn run_watch(app: &AppHandle, pasted: &str, generation: u64, never_watch: &[Stri
     let Some(value) = f.value else {
         return;
     };
+    if !SIZE_POLICY.read_field(value.chars().count()) {
+        log::debug!("corrections: the field is too long to watch");
+        return;
+    }
     let Some((prefix, suffix)) = anchor(&value, f.caret, pasted) else {
         log::debug!("corrections: the pasted text isn't in the field");
         return;
@@ -360,31 +573,41 @@ fn run_watch(app: &AppHandle, pasted: &str, generation: u64, never_watch: &[Stri
             None => break,
         }
     }
-    let Some(edited) = latest else {
-        return;
-    };
-    let fixes = substitutions(pasted, &edited);
-    if fixes.is_empty() {
-        return;
-    }
-    log::debug!("corrections: {} word fix(es) seen", fixes.len());
+    // Nothing edited still gives a queued offer its chance.
+    let fixes = latest
+        .map(|edited| substitutions(pasted, &edited))
+        .unwrap_or_default();
     let s = settings::get_settings(app);
     let now = chrono::Utc::now().timestamp();
-    let due: Vec<(String, String)> = with_ledger(app, |l| {
-        fixes
-            .into_iter()
-            .filter(|(from, to)| !known(&s, from, to))
-            .filter(|(from, to)| l.record(from, to, now))
-            .collect()
+    // The next offer: one due now, or one queued from before (another card
+    // was up then). Both stay queued until the offer is actually shown.
+    let next = with_ledger(app, |l| {
+        for (from, to) in &fixes {
+            if known(&s, from, to) {
+                continue;
+            }
+            let due = l.record(from, to, now);
+            // Verdicts only: the words are the user's.
+            log::debug!(
+                "corrections: a fix seen ({:?}: {}){}",
+                verdict(from, to).0,
+                verdict(from, to).1,
+                if due { "; due" } else { "" }
+            );
+        }
+        // Remembered meanwhile (typed into Settings by hand): not offered.
+        l.queued.retain(|(from, to)| !known(&s, from, to));
+        l.next_queued()
     })
-    .unwrap_or_default();
-    if let Some((from, to)) = due.into_iter().next() {
+    .flatten();
+    if let Some((from, to)) = next {
         offer(app, &from, &to);
     }
 }
 
 /// Offer to remember it: a quiet notice with Remember / Don't ask. Waits a
-/// little for another card to go; if one stays, it's offered another time.
+/// little for another card to go; if one stays, it stays queued and is
+/// offered after a later paste.
 fn offer(app: &AppHandle, from: &str, to: &str) {
     for _ in 0..10 {
         if !crate::hud::is_visible() {
@@ -615,5 +838,139 @@ mod tests {
         assert!(known(&s, "kubernetes", "Kubernetes"));
         assert!(known(&s, "anna", "Ana"));
         assert!(!known(&s, "Jon", "John"));
+    }
+
+    #[test]
+    fn judges_fixes_three_ways() {
+        use Verdict::*;
+        // Names and terms: they'll come back.
+        for (from, to) in [
+            ("Anna", "Ana"),
+            ("Jon", "John"),
+            ("kubernetes", "Kubernetes"),
+            ("iphone", "iPhone"),
+            ("chat GPT", "ChatGPT"),
+            ("Nowakowsky", "Nowakowski"),
+            ("grafanna", "grafana"),
+        ] {
+            assert_eq!(verdict(from, to).0, Reusable, "{from} → {to}");
+        }
+        // Right for this sentence only.
+        for (from, to) in [
+            ("meeting", "meetings"),
+            ("Anna", "Anna's"),
+            ("deploy", "deployed"),
+            ("their", "there"),
+            ("great", "awesome"),
+            ("Hello", "hello"),
+            ("meeting", "Meeting"),
+            ("12345", "12346"),
+            ("anna", "anna@example.com"),
+            ("Kowalski", "Smith"),
+        ] {
+            assert_eq!(verdict(from, to).0, Specific, "{from} → {to}");
+        }
+        // Could be either: wait.
+        for (from, to) in [
+            ("graet", "great"), // a misheard everyday word
+            ("zorp", "zarp"),   // a short lowercase word
+            ("abc", "abd"),     // too short to tell
+            ("chat gpt", "chatgpt"),
+            ("Kasia", "Kacha"), // spelt quite differently
+        ] {
+            assert_eq!(verdict(from, to).0, Uncertain, "{from} → {to}");
+        }
+    }
+
+    #[test]
+    fn uncertain_is_never_offered_until_it_keeps_happening() {
+        let mut l = Ledger::default();
+        // Uncertain: counted, not offered at the usual second sighting…
+        for t in 1..CONFIRM_AFTER {
+            assert!(!l.record("zorp", "zarp", i64::from(t)), "sighting {t}");
+        }
+        assert!(l.queued.is_empty());
+        // …until the same fix has been made often enough to be the user's.
+        assert!(l.record("zorp", "zarp", 99));
+        assert_eq!(l.next_queued(), Some(p("zorp", "zarp")));
+        // Specific fixes never get as far as the ledger.
+        assert!(pairs("We had a meeting today", "We had a meetings today").is_empty());
+        // Uncertain ones do (to be counted).
+        assert_eq!(
+            pairs("say zorp now", "say zarp now"),
+            vec![p("zorp", "zarp")]
+        );
+    }
+
+    #[test]
+    fn a_due_offer_stays_queued_until_shown() {
+        let mut l = Ledger::default();
+        l.record("Anna", "Ana", 1);
+        assert!(l.record("Anna", "Ana", 2));
+        // Another card was up: nothing shown, still queued, not doubled.
+        assert_eq!(l.next_queued(), Some(p("Anna", "Ana")));
+        l.record("Anna", "Ana", 3);
+        assert_eq!(l.queued.len(), 1);
+        // A full ledger drops the oldest sightings, never a queued offer.
+        for i in 0..(KEEP + 20) {
+            l.record(&format!("w{i}"), &format!("W{i}"), 100 + i as i64);
+        }
+        assert_eq!(l.seen.len(), KEEP);
+        assert!(l.seen.iter().any(|s| s.from == "Anna"));
+        assert_eq!(l.next_queued(), Some(p("Anna", "Ana")));
+        // Shown: off the queue.
+        l.asked("Anna", "Ana");
+        assert!(!l.is_queued("Anna", "Ana"));
+        // The queue survives a save and a load (older files have none).
+        let json = serde_json::to_string(&l).unwrap();
+        assert_eq!(serde_json::from_str::<Ledger>(&json).unwrap(), l);
+        let old: Ledger = serde_json::from_str(r#"{"seen":[],"declined":[]}"#).unwrap();
+        assert!(old.queued.is_empty());
+    }
+
+    #[test]
+    fn an_unreadable_ledger_is_set_aside_not_overwritten() {
+        let dir =
+            std::env::temp_dir().join(format!("ambient-corrections-test-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("corrections.json");
+        std::fs::write(&path, "{ not json").unwrap();
+        assert_eq!(load_ledger(&path), Ledger::default());
+        assert!(!path.exists());
+        let kept: Vec<_> = std::fs::read_dir(&dir)
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|e| e.file_name().to_string_lossy().contains("unreadable"))
+            .collect();
+        assert_eq!(kept.len(), 1);
+        assert_eq!(
+            std::fs::read_to_string(kept[0].path()).unwrap(),
+            "{ not json"
+        );
+        // A save that fails keeps the ledger in memory for the next change.
+        let mut l = Ledger::default();
+        l.record("Anna", "Ana", 1);
+        save_ledger(&dir.join("missing-dir").join("corrections.json"), &l);
+        assert_eq!(UNSAVED.lock().unwrap().take(), Some(l.clone()));
+        save_ledger(&path, &l);
+        assert_eq!(load_ledger(&path), l);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn size_policy_decides_what_is_considered() {
+        let policy = SIZE_POLICY;
+        assert!(!policy.watch_paste(0));
+        assert!(policy.watch_paste(12));
+        assert!(!policy.watch_paste(policy.max_words + 1));
+        assert!(policy.read_field(5_000));
+        assert!(!policy.read_field(policy.max_field_chars + 1));
+        // Four separate edits is a rewrite, and so is changing half of it.
+        assert!(!policy.fixes(40, 4, 4));
+        assert!(!policy.fixes(10, 1, 5));
+        assert!(policy.fixes(10, 2, 2));
+        // A long paste is never diffed.
+        let long = "word ".repeat(policy.max_words + 1);
+        assert!(substitutions(&long, &long.replacen("word", "Word", 1)).is_empty());
     }
 }
