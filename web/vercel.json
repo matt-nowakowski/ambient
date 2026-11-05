@@ -1,8 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "if [ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && git cat-file -e \"$VERCEL_GIT_PREVIOUS_SHA^{commit}\" 2>/dev/null && git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- . ../brand.config.json; then exit 0; else exit 1; fi",
+  "ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" != \"main\" ]; then exit 0; fi; if [ -n \"$VERCEL_GIT_PREVIOUS_SHA\" ] && git cat-file -e \"$VERCEL_GIT_PREVIOUS_SHA^{commit}\" 2>/dev/null && git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- . ../brand.config.json; then exit 0; else exit 1; fi",
   "crons": [
-    { "path": "/api/cron/tune", "schedule": "17 4 * * *" },
-    { "path": "/api/cron/tips", "schedule": "41 15 * * *" }
+    {
+      "path": "/api/cron/tune",
+      "schedule": "17 4 * * *"
+    },
+    {
+      "path": "/api/cron/tips",
+      "schedule": "41 15 * * *"
+    }
   ]
 }

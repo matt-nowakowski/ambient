@@ -16,8 +16,6 @@
     "format:backend": "cd src-tauri && cargo fmt",
     "test:keyboard": "bun src/lib/utils/keyboard.test.ts",
     "test:hud": "bun src/hud/parseAnswer.test.ts",
-    "test:playwright": "playwright test",
-    "test:playwright:ui": "playwright test --ui",
     "check:translations": "bun scripts/check-translations.ts",
     "check:model-languages": "bun scripts/check-model-language-coverage.ts",
     "sync:catalog": "bun scripts/sync-catalog.ts",
@@ -60,7 +58,6 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.0",
     "@tauri-apps/cli": "^2.11.0",
     "@types/node": "^24.9.1",
     "@types/react": "^18.3.26",
