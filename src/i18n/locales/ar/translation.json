@@ -768,13 +768,23 @@
       "searchingOlder": "جارٍ البحث في الإدخالات الأقدم…",
       "details": "التفاصيل",
       "detail": {
-        "model": "الطراز",
+        "model": "نموذج الكلام",
         "decided": "القرار",
         "as_said": "كما قيل",
         "polished": "مصقول",
         "written": "مكتوب لك",
+        "ai": "الذكاء الاصطناعي",
+        "prompt": "الموجّه",
         "recorded": "التسجيل",
-        "total": "الإجمالي"
+        "transcription": "النسخ",
+        "aiTime": "وقت الذكاء الاصطناعي",
+        "total": "الإجمالي",
+        "engine": {
+          "cloud": "السحابة",
+          "apple": "Apple Intelligence",
+          "local": "النموذج المنزّل",
+          "localNamed": "{{name}}، على هذا الكمبيوتر"
+        }
       }
     },
     "debug": {

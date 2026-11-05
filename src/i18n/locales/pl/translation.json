@@ -762,13 +762,23 @@
       "searchingOlder": "Przeszukiwanie starszych wpisów…",
       "details": "Szczegóły",
       "detail": {
-        "model": "Model",
+        "model": "Model mowy",
         "decided": "Decyzja",
         "as_said": "Jak powiedziano",
         "polished": "Wygładzone",
         "written": "Napisane za ciebie",
+        "ai": "AI",
+        "prompt": "Polecenie",
         "recorded": "Nagranie",
-        "total": "Razem"
+        "transcription": "Transkrypcja",
+        "aiTime": "Czas AI",
+        "total": "Razem",
+        "engine": {
+          "cloud": "Chmura",
+          "apple": "Apple Intelligence",
+          "local": "Pobrany model",
+          "localNamed": "{{name}}, na tym komputerze"
+        }
       }
     },
     "debug": {

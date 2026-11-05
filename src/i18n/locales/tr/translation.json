@@ -756,13 +756,23 @@
       "searchingOlder": "Eski kayıtlar aranıyor…",
       "details": "Ayrıntılar",
       "detail": {
-        "model": "Model",
+        "model": "Konuşma modeli",
         "decided": "Karar",
         "as_said": "Söylendiği gibi",
         "polished": "Düzeltildi",
         "written": "Senin için yazıldı",
+        "ai": "Yapay zekâ",
+        "prompt": "İstem",
         "recorded": "Kayıt",
-        "total": "Toplam"
+        "transcription": "Yazıya dökme",
+        "aiTime": "Yapay zekâ süresi",
+        "total": "Toplam",
+        "engine": {
+          "cloud": "Bulut",
+          "apple": "Apple Intelligence",
+          "local": "İndirilen model",
+          "localNamed": "{{name}}, bu bilgisayarda"
+        }
       }
     },
     "debug": {

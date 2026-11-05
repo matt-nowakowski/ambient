@@ -383,6 +383,8 @@ async fn post_process_transcription(
         }
     }
 
+    let started = Instant::now();
+    let polished: Option<String> = async {
     if provider.supports_structured_output {
         debug!("Using structured outputs for provider '{}'", provider.id);
 
@@ -560,6 +562,13 @@ async fn post_process_transcription(
             None
         }
     }
+    }
+    .await;
+    // For History's details; the downloaded model notes itself (`llm::run_on`).
+    if polished.is_some() && provider.id != crate::agent::llm::LOCAL_MODEL_PROVIDER_ID {
+        crate::agent::llm::record(&provider.id, started);
+    }
+    polished
 }
 
 pub(crate) struct ProcessedTranscription {
@@ -578,6 +587,48 @@ pub(crate) struct ProcessedTranscription {
     /// Smart writing: write for the user from this instruction instead of
     /// typing the words (nothing is pasted here).
     pub written: Option<crate::agent::writing::WriteRequest>,
+}
+
+impl ProcessedTranscription {
+    /// How it was written, for History's details: `written`, `polished` or
+    /// `as_said`; `None` when nothing is typed (the agent took it).
+    fn write_decision(&self) -> Option<&'static str> {
+        if self.written.is_some() {
+            Some("written")
+        } else if self.agent_route.is_some() || !crate::clipboard::is_pasteable(&self.final_text) {
+            None
+        } else if self.post_processed_text.is_some() {
+            Some("polished")
+        } else {
+            Some("as_said")
+        }
+    }
+}
+
+/// Add the model calls a dictation made to its details: the engine (and
+/// model) of the last one, which wrote the text, and their time together.
+pub(crate) fn note_ai(
+    details: &mut crate::managers::history::EntryDetails,
+    uses: &[crate::agent::llm::AiUse],
+) {
+    let Some(last) = uses.last() else {
+        return;
+    };
+    details.ai_engine = Some(last.engine.clone());
+    details.ai_model = last.model.clone();
+    let ms: u64 = uses.iter().map(|u| u.ms).sum();
+    details.ai_ms = Some(details.ai_ms.unwrap_or(0) + ms as i64);
+}
+
+/// The polish prompt's id (never its text), when the text was polished.
+pub(crate) fn polish_prompt_id(app: &AppHandle, polished: bool) -> Option<String> {
+    polished
+        .then(|| {
+            get_settings(app)
+                .active_post_process_prompt()
+                .map(|p| p.id.clone())
+        })
+        .flatten()
 }
 
 /// The polish prompt in use: the selected one, else the built-in default.
@@ -1524,6 +1575,14 @@ impl ShortcutAction for TranscribeAction {
                     // as an error, so it never starts a batch run.
                     let transcription_time = Instant::now();
                     let transcription_result = tm.transcribe_recording(samples);
+                    // What ran and how long, for History's details: ids and
+                    // durations only, never the prompt or the screen text.
+                    let mut details = crate::managers::history::EntryDetails {
+                        speech_model: tm.current_model_id(),
+                        recording_ms: Some((sample_count as f64 / 16_000.0 * 1000.0) as i64),
+                        transcription_ms: Some(transcription_time.elapsed().as_millis() as i64),
+                        ..Default::default()
+                    };
 
                     // Await WAV save and verify
                     let wav_saved = match wav_handle.await {
@@ -1580,14 +1639,14 @@ impl ShortcutAction for TranscribeAction {
                             if plan.force_polish {
                                 show_working();
                             }
-                            let Some(processed) = complete_unless_cancelled(
-                                process_dictation_output(
+                            let Some((processed, ai_uses)) = complete_unless_cancelled(
+                                crate::agent::llm::traced(process_dictation_output(
                                     &ah,
                                     &transcription,
                                     plan,
                                     output_mode,
                                     Some(Box::new(show_working)),
-                                ),
+                                )),
                                 || rm.was_cancelled_since(cancel_generation),
                             )
                             .await
@@ -1605,49 +1664,64 @@ impl ShortcutAction for TranscribeAction {
                                 return;
                             }
 
+                            details.write_decision = processed.write_decision().map(str::to_string);
+                            details.prompt_id =
+                                polish_prompt_id(&ah, processed.post_processed_text.is_some());
+                            note_ai(&mut details, &ai_uses);
+
                             // Save to history if WAV was saved
-                            if wav_saved {
-                                // What ran, and how long it took, for the
-                                // Details row in History: ids, a decision and
-                                // durations only — never the prompt or the
-                                // screen text.
-                                let details = crate::managers::history::EntryDetails {
-                                    speech_model: tm.current_model_id(),
-                                    write_decision: Some(
-                                        if processed.written.is_some() {
-                                            "written"
-                                        } else if processed.post_processed_text.is_some() {
-                                            "polished"
-                                        } else {
-                                            "as_said"
-                                        }
-                                        .to_string(),
-                                    ),
-                                    recording_ms: Some(
-                                        (sample_count as f64 / 16_000.0 * 1000.0) as i64,
-                                    ),
-                                    total_ms: Some(stop_time.elapsed().as_millis() as i64),
-                                    ..Default::default()
-                                };
-                                if let Err(err) = hm.save_entry(
+                            let entry_id = if wav_saved {
+                                match hm.save_entry(
                                     file_name,
                                     transcription,
                                     post_process,
                                     processed.post_processed_text.clone(),
                                     processed.post_process_prompt.clone(),
                                     language,
-                                    details,
+                                    details.clone(),
                                 ) {
-                                    error!("Failed to save history entry: {}", err);
+                                    Ok(entry) => Some(entry.id),
+                                    Err(err) => {
+                                        error!("Failed to save history entry: {}", err);
+                                        None
+                                    }
                                 }
-                            }
+                            } else {
+                                None
+                            };
+                            // The total (key-up to the text being in) once
+                            // it is: after the paste, or the draft.
+                            let finish_details = {
+                                let hm = Arc::clone(&hm);
+                                move |mut details: crate::managers::history::EntryDetails,
+                                      uses: &[crate::agent::llm::AiUse]| {
+                                    let Some(id) = entry_id else {
+                                        return;
+                                    };
+                                    note_ai(&mut details, uses);
+                                    details.total_ms =
+                                        Some(stop_time.elapsed().as_millis() as i64);
+                                    if let Err(err) = hm.update_details(id, &details) {
+                                        error!("Failed to update history details: {}", err);
+                                    }
+                                }
+                            };
 
                             if let Some(request) = processed.written {
                                 // Written for them: drafted, then typed with
                                 // "Use my words" (agent::writing).
                                 utils::hide_recording_overlay(&ah);
                                 set_tray_state(&ah, TrayIconState::Idle);
-                                crate::agent::writing::write_for_you(&ah, request);
+                                let app = ah.clone();
+                                tauri::async_runtime::spawn(async move {
+                                    let ((), uses) = crate::agent::llm::traced(
+                                        crate::agent::writing::write_now(app, request),
+                                    )
+                                    .await;
+                                    if !uses.is_empty() {
+                                        finish_details(details, &uses);
+                                    }
+                                });
                                 emit_transcription_complete(
                                     &ah,
                                     TranscriptionOutcome::Agent,
@@ -1724,6 +1798,7 @@ impl ShortcutAction for TranscribeAction {
                                                         "Text pasted successfully in {:?}",
                                                         paste_time.elapsed()
                                                     );
+                                                    finish_details(details, &[]);
                                                     crate::plan::record_words(
                                                         &ah_clone,
                                                         dictated_words,
@@ -1805,7 +1880,7 @@ impl ShortcutAction for TranscribeAction {
                                     None,
                                     None,
                                     None,
-                                    crate::managers::history::EntryDetails::default(),
+                                    details,
                                 ) {
                                     error!("Failed to save failed history entry: {}", save_err);
                                 }

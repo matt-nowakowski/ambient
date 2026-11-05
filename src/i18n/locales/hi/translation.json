@@ -756,13 +756,23 @@
       "searchingOlder": "पुरानी प्रविष्टियाँ खोजी जा रही हैं…",
       "details": "विवरण",
       "detail": {
-        "model": "मॉडल",
+        "model": "वाक् मॉडल",
         "decided": "निर्णय",
         "as_said": "जैसा कहा",
         "polished": "परिष्कृत",
         "written": "आपके लिए लिखा",
+        "ai": "AI",
+        "prompt": "प्रॉम्प्ट",
         "recorded": "रिकॉर्डिंग",
-        "total": "कुल"
+        "transcription": "ट्रांसक्रिप्शन",
+        "aiTime": "AI समय",
+        "total": "कुल",
+        "engine": {
+          "cloud": "क्लाउड",
+          "apple": "Apple Intelligence",
+          "local": "डाउनलोड किया गया मॉडल",
+          "localNamed": "{{name}}, इस कंप्यूटर पर"
+        }
       }
     },
     "debug": {

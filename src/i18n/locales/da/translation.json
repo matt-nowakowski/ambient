@@ -756,13 +756,23 @@
       "searchingOlder": "Søger i ældre poster…",
       "details": "Detaljer",
       "detail": {
-        "model": "Model",
+        "model": "Talemodel",
         "decided": "Beslut",
         "as_said": "Som sagt",
         "polished": "Poleret",
         "written": "Skrevet for dig",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Optagelse",
-        "total": "I alt"
+        "transcription": "Transskription",
+        "aiTime": "AI-tid",
+        "total": "I alt",
+        "engine": {
+          "cloud": "Skyen",
+          "apple": "Apple Intelligence",
+          "local": "Hentet model",
+          "localNamed": "{{name}}, på denne computer"
+        }
       }
     },
     "debug": {

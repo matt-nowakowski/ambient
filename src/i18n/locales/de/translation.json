@@ -756,13 +756,23 @@
       "searchingOlder": "Ältere Einträge werden durchsucht…",
       "details": "Details",
       "detail": {
-        "model": "Modell",
+        "model": "Sprachmodell",
         "decided": "Entscheidung",
         "as_said": "Wie gesagt",
         "polished": "Poliert",
         "written": "Für dich geschrieben",
+        "ai": "KI",
+        "prompt": "Prompt",
         "recorded": "Aufnahme",
-        "total": "Gesamt"
+        "transcription": "Transkription",
+        "aiTime": "KI-Zeit",
+        "total": "Gesamt",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Geladenes Modell",
+          "localNamed": "{{name}}, auf diesem Computer"
+        }
       }
     },
     "debug": {

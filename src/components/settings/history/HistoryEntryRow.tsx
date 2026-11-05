@@ -11,8 +11,11 @@ import {
   X,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { toast } from "sonner";
-import type { HistoryEntry } from "@/bindings";
+import { commands, type HistoryEntry } from "@/bindings";
+import { useModelStore } from "@/stores/modelStore";
+import { useSettingsStore } from "@/stores/settingsStore";
 import type { ActiveJobStatus } from "@/stores/transcriptionJobsStore";
 import { formatDateTime } from "@/utils/dateFormat";
 import { AudioPlayer } from "../../ui/AudioPlayer";
@@ -53,28 +56,104 @@ const ActionButton: React.FC<{
   </button>
 );
 
-/** The Details rows for one entry: only what was actually recorded. */
-function detailLines(
+// The on-device models' names, fetched once for every row that needs one.
+let reasoningNames: Promise<Map<string, string>> | null = null;
+const loadReasoningNames = () =>
+  (reasoningNames ??= commands
+    .getReasoningModels()
+    .then((list) => new Map(list.map((m) => [m.id, m.name])))
+    .catch(() => {
+      reasoningNames = null;
+      return new Map<string, string>();
+    }));
+
+/** The display name of the downloaded model behind an entry, once known. */
+function useReasoningName(id: string | null | undefined) {
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    if (!id) return;
+    let live = true;
+    loadReasoningNames().then((names) => {
+      if (live) setName(names.get(id) ?? null);
+    });
+    return () => {
+      live = false;
+    };
+  }, [id]);
+  return id ? name : null;
+}
+
+/** A duration in the reader's language: "850 ms", "1.4 s". */
+function formatDuration(ms: number, language: string) {
+  const seconds = ms >= 1000;
+  return new Intl.NumberFormat(language, {
+    style: "unit",
+    unit: seconds ? "second" : "millisecond",
+    unitDisplay: "short",
+    maximumFractionDigits: seconds ? 1 : 0,
+  }).format(seconds ? ms / 1000 : ms);
+}
+
+/** The Details rows for one entry: only what was actually recorded, with
+ * display names rather than ids. */
+function useDetailRows(
   entry: HistoryEntry,
-  t: (key: string) => string,
+  t: TFunction,
+  language: string,
 ): [string, string][] {
   const d = entry.details;
-  const ms = (v?: number | null) =>
-    v == null ? null : v >= 1000 ? (v / 1000).toFixed(1) + " s" : v + " ms";
+  const speechName = useModelStore((s) =>
+    d.speech_model ? s.getModelInfo(d.speech_model)?.name : undefined,
+  );
+  const promptName = useSettingsStore((s) =>
+    d.prompt_id
+      ? s.settings?.post_process_prompts?.find((p) => p.id === d.prompt_id)
+          ?.name
+      : undefined,
+  );
+  const localName = useReasoningName(
+    d.ai_engine === "local_model" ? d.ai_model : null,
+  );
+
   const rows: [string, string][] = [];
-  if (d.speech_model) {
-    rows.push([t("settings.history.detail.model"), d.speech_model]);
+  const add = (key: string, value: string | null | undefined) => {
+    if (value) rows.push([t(`settings.history.detail.${key}`), value]);
+  };
+  const duration = (v: number | null | undefined) =>
+    v == null ? null : formatDuration(v, language);
+
+  let engine: string | null = null;
+  switch (d.ai_engine) {
+    case null:
+    case undefined:
+      break;
+    case "ambient":
+      engine = t("settings.history.detail.engine.cloud");
+      break;
+    case "apple_intelligence":
+      engine = t("settings.history.detail.engine.apple");
+      break;
+    case "local_model":
+      engine = localName
+        ? t("settings.history.detail.engine.localNamed", { name: localName })
+        : t("settings.history.detail.engine.local");
+      break;
+    // Another provider (a custom endpoint): its id is its name.
+    default:
+      engine = d.ai_engine;
   }
-  if (d.write_decision) {
-    rows.push([
-      t("settings.history.detail.decided"),
-      t("settings.history.detail." + d.write_decision),
-    ]);
-  }
-  const recorded = ms(d.recording_ms);
-  if (recorded) rows.push([t("settings.history.detail.recorded"), recorded]);
-  const total = ms(d.total_ms);
-  if (total) rows.push([t("settings.history.detail.total"), total]);
+
+  add("model", d.speech_model ? (speechName ?? d.speech_model) : null);
+  add(
+    "decided",
+    d.write_decision ? t(`settings.history.detail.${d.write_decision}`) : null,
+  );
+  add("ai", engine);
+  add("prompt", promptName);
+  add("recorded", duration(d.recording_ms));
+  add("transcription", duration(d.transcription_ms));
+  add("aiTime", duration(d.ai_ms));
+  add("total", duration(d.total_ms));
   return rows;
 }
 
@@ -174,7 +253,7 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
   const playerOpen = audioSrc !== null;
   const pinActions = retrying || playerOpen;
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const detailRows = detailLines(entry, t);
+  const detailRows = useDetailRows(entry, t, i18n.language);
 
   return (
     <div className="group relative rounded-control px-item-x py-item-y transition-colors duration-150 hover:bg-glass-hover focus-within:bg-glass-hover">
@@ -205,7 +284,12 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
             className="flex min-w-0 items-center gap-1 rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2"
             title={entry.source_name}
           >
-            <FileAudio width={11} height={11} strokeWidth={1.75} className="shrink-0" />
+            <FileAudio
+              width={11}
+              height={11}
+              strokeWidth={1.75}
+              className="shrink-0"
+            />
             <span className="truncate">{entry.source_name}</span>
           </span>
         )}

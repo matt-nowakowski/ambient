@@ -759,13 +759,23 @@
       "searchingOlder": "Buscando entradas anteriores…",
       "details": "Detalles",
       "detail": {
-        "model": "Modelo",
+        "model": "Modelo de voz",
         "decided": "Decisión",
         "as_said": "Como se dijo",
         "polished": "Pulido",
         "written": "Escrito por ti",
+        "ai": "IA",
+        "prompt": "Instrucción",
         "recorded": "Grabación",
-        "total": "Total"
+        "transcription": "Transcripción",
+        "aiTime": "Tiempo de IA",
+        "total": "Total",
+        "engine": {
+          "cloud": "Nube",
+          "apple": "Apple Intelligence",
+          "local": "Modelo descargado",
+          "localNamed": "{{name}}, en este equipo"
+        }
       }
     },
     "debug": {

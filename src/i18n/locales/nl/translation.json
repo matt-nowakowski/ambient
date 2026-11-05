@@ -756,13 +756,23 @@
       "searchingOlder": "Oudere items doorzoeken…",
       "details": "Details",
       "detail": {
-        "model": "Model",
+        "model": "Spraakmodel",
         "decided": "Beslissing",
         "as_said": "Zoals gezegd",
         "polished": "Gepolijst",
         "written": "Voor je geschreven",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Opname",
-        "total": "Totaal"
+        "transcription": "Transcriptie",
+        "aiTime": "AI-tijd",
+        "total": "Totaal",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Gedownload model",
+          "localNamed": "{{name}}, op deze computer"
+        }
       }
     },
     "debug": {

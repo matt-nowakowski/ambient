@@ -759,13 +759,23 @@
       "searchingOlder": "Ricerca tra le voci meno recenti…",
       "details": "Dettagli",
       "detail": {
-        "model": "Modello",
+        "model": "Modello vocale",
         "decided": "Decisione",
         "as_said": "Come detto",
         "polished": "Levigato",
         "written": "Scritto per te",
+        "ai": "IA",
+        "prompt": "Prompt",
         "recorded": "Registrazione",
-        "total": "Totale"
+        "transcription": "Trascrizione",
+        "aiTime": "Tempo IA",
+        "total": "Totale",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Modello scaricato",
+          "localNamed": "{{name}}, su questo computer"
+        }
       }
     },
     "debug": {

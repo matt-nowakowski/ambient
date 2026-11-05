@@ -456,7 +456,8 @@ impl HistoryManager {
         Ok(entry)
     }
 
-    /// Update an existing history entry with new transcription results (used by retry).
+    /// Update an existing history entry with new transcription results (used
+    /// by retry and file transcription), and what ran this time.
     pub fn update_transcription(
         &self,
         id: i64,
@@ -464,6 +465,7 @@ impl HistoryManager {
         post_processed_text: Option<String>,
         post_process_prompt: Option<String>,
         language: Option<LanguageDecision>,
+        details: EntryDetails,
     ) -> Result<HistoryEntry> {
         let (language, language_source) = split_language(language);
         let conn = self.get_connection()?;
@@ -488,14 +490,57 @@ impl HistoryManager {
         if updated == 0 {
             return Err(anyhow!("History entry {} not found", id));
         }
+        Self::write_details(&conn, id, &details)?;
 
+        debug!("Updated transcription for history entry {}", id);
+        self.announce_update(&conn, id)
+    }
+
+    /// Replace an entry's details: after the paste (the total time), or
+    /// once a draft is written (its engine and time).
+    pub fn update_details(&self, id: i64, details: &EntryDetails) -> Result<HistoryEntry> {
+        let conn = self.get_connection()?;
+        if Self::write_details(&conn, id, details)? == 0 {
+            return Err(anyhow!("History entry {} not found", id));
+        }
+        self.announce_update(&conn, id)
+    }
+
+    fn write_details(conn: &Connection, id: i64, details: &EntryDetails) -> Result<usize> {
+        Ok(conn.execute(
+            "UPDATE transcription_history
+             SET speech_model = ?1,
+                 write_decision = ?2,
+                 ai_engine = ?3,
+                 ai_model = ?4,
+                 prompt_id = ?5,
+                 recording_ms = ?6,
+                 transcription_ms = ?7,
+                 ai_ms = ?8,
+                 total_ms = ?9
+             WHERE id = ?10",
+            params![
+                &details.speech_model,
+                &details.write_decision,
+                &details.ai_engine,
+                &details.ai_model,
+                &details.prompt_id,
+                details.recording_ms,
+                details.transcription_ms,
+                details.ai_ms,
+                details.total_ms,
+                id
+            ],
+        )?)
+    }
+
+    /// Read entry `id` back and tell the frontend it changed.
+    fn announce_update(&self, conn: &Connection, id: i64) -> Result<HistoryEntry> {
         let entry = conn.query_row(
             &format!("SELECT {ENTRY_COLUMNS} FROM transcription_history WHERE id = ?1"),
             params![id],
             Self::map_history_entry,
         )?;
-
-        debug!("Updated transcription for history entry {}", id);
 
         if let Err(e) = (HistoryUpdatePayload::Updated {
             entry: entry.clone(),
@@ -957,6 +1002,42 @@ mod tests {
         // Never the prompt text or the screen text: the ids above are all a
         // row may carry.
         assert_eq!(entry.details.prompt_id.as_deref(), Some("polish"));
+    }
+
+    /// The paste (or a finished draft) fills in details after the insert.
+    #[test]
+    fn details_can_be_filled_in_later() {
+        let conn = setup_conn();
+        insert_entry(&conn, 7, "typed", None);
+        let id = conn.last_insert_rowid();
+        let details = EntryDetails {
+            speech_model: Some("parakeet-ultra".into()),
+            write_decision: Some("written".into()),
+            ai_engine: Some("apple_intelligence".into()),
+            ai_ms: Some(910),
+            transcription_ms: Some(150),
+            total_ms: Some(1400),
+            ..Default::default()
+        };
+        assert_eq!(
+            HistoryManager::write_details(&conn, id, &details).expect("update"),
+            1
+        );
+        assert_eq!(
+            HistoryManager::write_details(&conn, id + 1, &details).expect("update"),
+            0
+        );
+        let entry = HistoryManager::get_latest_entry_with_conn(&conn)
+            .expect("fetch latest entry")
+            .expect("entry exists");
+        assert_eq!(
+            entry.details.ai_engine.as_deref(),
+            Some("apple_intelligence")
+        );
+        assert_eq!(entry.details.ai_ms, Some(910));
+        assert_eq!(entry.details.transcription_ms, Some(150));
+        assert_eq!(entry.details.total_ms, Some(1400));
+        assert_eq!(entry.details.ai_model, None);
     }
 
     /// An entry written before 0.1.8 has no details and must still read.

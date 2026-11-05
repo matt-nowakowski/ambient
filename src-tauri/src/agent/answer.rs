@@ -544,7 +544,8 @@ pub async fn run_with(
                 note: None,
             })
     } else {
-        server_answer(
+        let started = Instant::now();
+        let answered = server_answer(
             &app,
             &prompt,
             needs_web,
@@ -554,7 +555,12 @@ pub async fn run_with(
             context.as_deref(),
             &show,
         )
-        .await
+        .await;
+        // For History's details when this drafts a dictation.
+        if answered.is_ok() {
+            llm::record(crate::settings::AMBIENT_AI_PROVIDER_ID, started);
+        }
+        answered
     };
 
     match result {

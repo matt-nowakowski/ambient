@@ -762,13 +762,23 @@
       "searchingOlder": "Пошук у старіших записах…",
       "details": "Деталі",
       "detail": {
-        "model": "Модель",
+        "model": "Модель мовлення",
         "decided": "Рішення",
         "as_said": "Як сказано",
         "polished": "Відшліфовано",
         "written": "Написано для вас",
+        "ai": "ШІ",
+        "prompt": "Промпт",
         "recorded": "Запис",
-        "total": "Усього"
+        "transcription": "Розпізнавання",
+        "aiTime": "Час ШІ",
+        "total": "Усього",
+        "engine": {
+          "cloud": "Хмара",
+          "apple": "Apple Intelligence",
+          "local": "Завантажена модель",
+          "localNamed": "{{name}}, на цьому комп’ютері"
+        }
       }
     },
     "debug": {

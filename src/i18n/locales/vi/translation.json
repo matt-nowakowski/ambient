@@ -756,13 +756,23 @@
       "searchingOlder": "Đang tìm các mục cũ hơn…",
       "details": "Chi tiết",
       "detail": {
-        "model": "Mô hình",
+        "model": "Mô hình giọng nói",
         "decided": "Quyết định",
         "as_said": "Như đã nói",
         "polished": "Trau chuốt",
         "written": "Viết cho bạn",
+        "ai": "AI",
+        "prompt": "Lời nhắc",
         "recorded": "Bản ghi",
-        "total": "Tổng"
+        "transcription": "Chép lời",
+        "aiTime": "Thời gian AI",
+        "total": "Tổng",
+        "engine": {
+          "cloud": "Đám mây",
+          "apple": "Apple Intelligence",
+          "local": "Mô hình đã tải",
+          "localNamed": "{{name}}, trên máy tính này"
+        }
       }
     },
     "debug": {

@@ -756,13 +756,23 @@
       "searchingOlder": "Searching older entries…",
       "details": "Details",
       "detail": {
-        "model": "Model",
+        "model": "Speech model",
         "decided": "Decided",
         "as_said": "As said",
         "polished": "Polished",
         "written": "Written for you",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Recorded",
-        "total": "Total"
+        "transcription": "Transcription",
+        "aiTime": "AI time",
+        "total": "Total",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Downloaded model",
+          "localNamed": "{{name}}, on this computer"
+        }
       }
     },
     "debug": {

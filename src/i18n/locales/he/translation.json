@@ -759,13 +759,23 @@
       "searchingOlder": "מחפש ברשומות ישנות יותר…",
       "details": "פרטים",
       "detail": {
-        "model": "מודל",
+        "model": "מודל דיבור",
         "decided": "החלטה",
         "as_said": "כפי שנאמר",
         "polished": "מלוטש",
         "written": "נכתב עבורך",
+        "ai": "בינה מלאכותית",
+        "prompt": "הנחיה",
         "recorded": "הקלטה",
-        "total": "סהכ"
+        "transcription": "תמלול",
+        "aiTime": "זמן בינה מלאכותית",
+        "total": "סהכ",
+        "engine": {
+          "cloud": "ענן",
+          "apple": "Apple Intelligence",
+          "local": "המודל שהורד",
+          "localNamed": "{{name}}, במחשב הזה"
+        }
       }
     },
     "debug": {

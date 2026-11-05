@@ -756,13 +756,23 @@
       "searchingOlder": "古い項目を検索中…",
       "details": "詳細",
       "detail": {
-        "model": "モデル",
+        "model": "音声モデル",
         "decided": "判定",
         "as_said": "話したとおり",
         "polished": "整文",
         "written": "代筆",
+        "ai": "AI",
+        "prompt": "プロンプト",
         "recorded": "録音",
-        "total": "合計"
+        "transcription": "文字起こし",
+        "aiTime": "AI の時間",
+        "total": "合計",
+        "engine": {
+          "cloud": "クラウド",
+          "apple": "Apple Intelligence",
+          "local": "ダウンロードしたモデル",
+          "localNamed": "{{name}}（このコンピュータ上）"
+        }
       }
     },
     "debug": {

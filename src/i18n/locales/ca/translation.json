@@ -759,13 +759,23 @@
       "searchingOlder": "S'estan cercant entrades anteriors…",
       "details": "Detalls",
       "detail": {
-        "model": "Model",
+        "model": "Model de veu",
         "decided": "Decisió",
         "as_said": "Tal com es va dir",
         "polished": "Polit",
         "written": "Escrit per a tu",
+        "ai": "IA",
+        "prompt": "Indicació",
         "recorded": "Enregistrament",
-        "total": "Total"
+        "transcription": "Transcripció",
+        "aiTime": "Temps d'IA",
+        "total": "Total",
+        "engine": {
+          "cloud": "Núvol",
+          "apple": "Apple Intelligence",
+          "local": "Model baixat",
+          "localNamed": "{{name}}, en aquest ordinador"
+        }
       }
     },
     "debug": {

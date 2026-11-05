@@ -759,13 +759,23 @@
       "searchingOlder": "Recherche dans les anciennes entrées…",
       "details": "Détails",
       "detail": {
-        "model": "Modèle",
+        "model": "Modèle vocal",
         "decided": "Décision",
         "as_said": "Tel quel",
         "polished": "Poli",
         "written": "Écrit pour vous",
+        "ai": "IA",
+        "prompt": "Consigne",
         "recorded": "Enregistrement",
-        "total": "Total"
+        "transcription": "Transcription",
+        "aiTime": "Temps IA",
+        "total": "Total",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Modèle téléchargé",
+          "localNamed": "{{name}}, sur cet ordinateur"
+        }
       }
     },
     "debug": {

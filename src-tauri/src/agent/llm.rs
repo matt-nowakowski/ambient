@@ -5,6 +5,10 @@
 //! Every call is written to the network ledger, except on-device ones, which
 //! never leave the computer.
 
+use std::cell::RefCell;
+use std::future::Future;
+use std::time::Instant;
+
 use tauri::AppHandle;
 
 use crate::settings::{
@@ -223,7 +227,8 @@ pub async fn run_on(
     if system.len() + user.len() > engine.max_chars() {
         return None;
     }
-    match engine {
+    let started = Instant::now();
+    let out = match engine {
         Engine::Apple => {
             if !apple_ready() {
                 return None;
@@ -235,7 +240,11 @@ pub async fn run_on(
                 .flatten()
         }
         Engine::Local => crate::local_llm::complete(system, user, limits).await,
+    };
+    if out.is_some() {
+        record(engine.provider_id(), started);
     }
+    out
 }
 
 /// The on-device model, whatever the provider setting (callers check the
@@ -258,6 +267,53 @@ pub async fn complete_hosted_limited(
         return complete_inner(app, purpose, system, user, true, limits).await;
     }
     complete_inner(app, purpose, system, user, false, limits).await
+}
+
+// ── What ran, for History's Details ─────────────────────────────────────────
+
+/// One model call that returned text: where it ran, which model (on-device
+/// ones have an id; the hosted endpoint picks its own), and how long it took.
+/// Never the prompt or the reply.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct AiUse {
+    /// A provider id: `ambient` (cloud), `apple_intelligence` or `local_model`.
+    pub engine: String,
+    pub model: Option<String>,
+    pub ms: u64,
+}
+
+tokio::task_local! {
+    static USES: RefCell<Vec<AiUse>>;
+}
+
+/// Run `f`, collecting the model calls it makes on this task (a dictation's
+/// routing, polish or draft), in order.
+pub async fn traced<F: Future>(f: F) -> (F::Output, Vec<AiUse>) {
+    USES.scope(RefCell::new(Vec::new()), async move {
+        let out = f.await;
+        let uses = USES.with(|u| u.take());
+        (out, uses)
+    })
+    .await
+}
+
+/// Note a model call that returned text, when something is tracing (a no-op
+/// otherwise: suggestions, meetings).
+pub fn record(engine: &str, started: Instant) {
+    let model = if engine == LOCAL_MODEL_PROVIDER_ID {
+        crate::local_llm::app().and_then(|app| {
+            let selected = get_settings(app).agent.on_device_model_id;
+            crate::catalog::resolve_reasoning_model(selected.as_deref()).map(|m| m.id.clone())
+        })
+    } else {
+        None
+    };
+    let used = AiUse {
+        engine: engine.to_string(),
+        model,
+        ms: started.elapsed().as_millis() as u64,
+    };
+    let _ = USES.try_with(|u| u.borrow_mut().push(used));
 }
 
 /// System + user prompt → the model's text, or None on any failure.
@@ -326,6 +382,7 @@ async fn complete_inner(
         crate::plan::record_hosted_use(app, "ai");
     }
     let disable_reasoning = t.is_hosted();
+    let started = Instant::now();
     match crate::llm_client::send_chat_completion_bounded(
         &t.provider,
         t.api_key,
@@ -337,7 +394,10 @@ async fn complete_inner(
     )
     .await
     {
-        Ok(Some(text)) => Some(text),
+        Ok(Some(text)) => {
+            record(&t.provider.id, started);
+            Some(text)
+        }
         Ok(None) => None,
         Err(e) => {
             log::warn!("agent {purpose} call failed: {e}");
@@ -410,6 +470,24 @@ mod tests {
         assert!(is_device_provider(Engine::Local.provider_id()));
         assert!(!is_device_provider(AMBIENT_AI_PROVIDER_ID));
         assert!(device_provider(Engine::Local).supports_structured_output);
+    }
+
+    #[test]
+    fn traces_only_the_calls_made_inside() {
+        let started = Instant::now();
+        // Outside a trace: nothing to note it in, and no harm.
+        record(AMBIENT_AI_PROVIDER_ID, started);
+        let ((), uses) = tauri::async_runtime::block_on(traced(async {
+            record(AMBIENT_AI_PROVIDER_ID, started);
+            tokio::task::yield_now().await;
+            record(APPLE_INTELLIGENCE_PROVIDER_ID, started);
+        }));
+        let engines: Vec<_> = uses.iter().map(|u| u.engine.as_str()).collect();
+        assert_eq!(
+            engines,
+            [AMBIENT_AI_PROVIDER_ID, APPLE_INTELLIGENCE_PROVIDER_ID]
+        );
+        assert!(uses.iter().all(|u| u.model.is_none()));
     }
 
     #[test]

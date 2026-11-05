@@ -1328,62 +1328,64 @@ pub fn reply_brief(instruction: &str, me: &Me, screen: Option<&str>) -> String {
 /// edited), then insert it where the caret is, or replace the earlier text
 /// after Edit. Counts as an AI request.
 pub fn write_for_you(app: &AppHandle, req: WriteRequest) {
-    super::milestone(app, "answer");
-    let app = app.clone();
-    tauri::async_runtime::spawn(async move {
-        // A rewrite keeps the original selection, which "Undo rewrite"
-        // restores; an Edit keeps what the first write would restore.
-        let mut smart = SmartWrite::new(req.raw.clone(), None);
-        if let Some(prev) = &req.replaces {
-            smart.raw = prev.raw.clone();
-            smart.rewrite = prev.rewrite;
+    tauri::async_runtime::spawn(write_now(app.clone(), req));
+}
+
+/// [`write_for_you`], awaited: done once the text is in (or couldn't be).
+pub async fn write_now(app: AppHandle, req: WriteRequest) {
+    super::milestone(&app, "answer");
+    // A rewrite keeps the original selection, which "Undo rewrite"
+    // restores; an Edit keeps what the first write would restore.
+    let mut smart = SmartWrite::new(req.raw.clone(), None);
+    if let Some(prev) = &req.replaces {
+        smart.raw = prev.raw.clone();
+        smart.rewrite = prev.rewrite;
+    }
+    smart.replaces = req.replaces.clone();
+    let context = match (&req.context, req.has_selection) {
+        (Some(text), _) => Some(format!(
+            "Text to rewrite (reply with the rewritten text only):\n\"\"\"\n{text}\n\"\"\""
+        )),
+        (None, true) => {
+            let a = app.clone();
+            let selection = tauri::async_runtime::spawn_blocking(move || {
+                let nw = settings::get_settings(&a).agent.never_watch;
+                field::focused_field(true, &nw).and_then(|f| f.selection)
+            })
+            .await
+            .ok()
+            .flatten();
+            // Without the selection's text there's nothing to rewrite:
+            // leave it as it is rather than type over it.
+            let Some(original) = selection.filter(|s| !s.trim().is_empty()) else {
+                show_note(&app, "hud.writing.couldntRewrite");
+                return;
+            };
+            smart = SmartWrite::new(req.raw.clone(), Some(original.clone()));
+            Some(original).map(|s| {
+                format!(
+                    "Selected text to rewrite (reply with the rewritten text only; it replaces the selection):\n\"\"\"\n{s}\n\"\"\""
+                )
+            })
         }
-        smart.replaces = req.replaces.clone();
-        let context = match (&req.context, req.has_selection) {
-            (Some(text), _) => Some(format!(
-                "Text to rewrite (reply with the rewritten text only):\n\"\"\"\n{text}\n\"\"\""
-            )),
-            (None, true) => {
-                let a = app.clone();
-                let selection = tauri::async_runtime::spawn_blocking(move || {
-                    let nw = settings::get_settings(&a).agent.never_watch;
-                    field::focused_field(true, &nw).and_then(|f| f.selection)
-                })
-                .await
-                .ok()
-                .flatten();
-                // Without the selection's text there's nothing to rewrite:
-                // leave it as it is rather than type over it.
-                let Some(original) = selection.filter(|s| !s.trim().is_empty()) else {
-                    show_note(&app, "hud.writing.couldntRewrite");
-                    return;
-                };
-                smart = SmartWrite::new(req.raw.clone(), Some(original.clone()));
-                Some(original).map(|s| {
-                    format!(
-                        "Selected text to rewrite (reply with the rewritten text only; it replaces the selection):\n\"\"\"\n{s}\n\"\"\""
-                    )
-                })
-            }
-            (None, false) => None,
-        };
-        let about_screen = context.is_none();
-        super::answer::run_with(
-            app,
-            req.instruction,
-            false,
-            about_screen,
-            context,
-            super::answer::Opts {
-                write: true,
-                compose: true,
-                smart: Some(smart),
-                style_note: super::styles::note(req.style),
-                ..Default::default()
-            },
-        )
-        .await;
-    });
+        (None, false) => None,
+    };
+    let about_screen = context.is_none();
+    super::answer::run_with(
+        app,
+        req.instruction,
+        false,
+        about_screen,
+        context,
+        super::answer::Opts {
+            write: true,
+            compose: true,
+            smart: Some(smart),
+            style_note: super::styles::note(req.style),
+            ..Default::default()
+        },
+    )
+    .await;
 }
 
 /// The written text is ready: insert it (or replace the text being

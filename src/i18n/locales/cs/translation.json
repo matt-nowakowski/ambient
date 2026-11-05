@@ -762,13 +762,23 @@
       "searchingOlder": "Prohledávání starších záznamů…",
       "details": "Podrobnosti",
       "detail": {
-        "model": "Model",
+        "model": "Model řeči",
         "decided": "Rozhodnutí",
         "as_said": "Jak řečeno",
         "polished": "Vyhlazeno",
         "written": "Napsáno za vás",
+        "ai": "AI",
+        "prompt": "Pokyn",
         "recorded": "Nahrávka",
-        "total": "Celkem"
+        "transcription": "Přepis",
+        "aiTime": "Čas AI",
+        "total": "Celkem",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Stažený model",
+          "localNamed": "{{name}}, v tomto počítači"
+        }
       }
     },
     "debug": {

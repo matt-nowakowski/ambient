@@ -756,13 +756,23 @@
       "searchingOlder": "正在搜索较早的记录…",
       "details": "详细信息",
       "detail": {
-        "model": "模型",
+        "model": "语音模型",
         "decided": "判定",
         "as_said": "原话",
         "polished": "润色",
         "written": "代写",
+        "ai": "AI",
+        "prompt": "提示词",
         "recorded": "录音",
-        "total": "总计"
+        "transcription": "转写",
+        "aiTime": "AI 用时",
+        "total": "总计",
+        "engine": {
+          "cloud": "云端",
+          "apple": "Apple Intelligence",
+          "local": "已下载的模型",
+          "localNamed": "{{name}}（本机）"
+        }
       }
     },
     "debug": {
