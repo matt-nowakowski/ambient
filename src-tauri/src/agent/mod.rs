@@ -16,6 +16,7 @@ pub mod proactive;
 pub mod reminders;
 pub mod report;
 pub mod router;
+pub mod shape;
 pub mod styles;
 pub mod wake;
 pub mod when;
@@ -1070,7 +1071,8 @@ pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
     if llm::target(app).is_none() {
         return answer();
     }
-    let place = tauri::async_runtime::spawn_blocking(|| router::place_for(true))
+    let agent = crate::settings::get_settings(app).agent;
+    let place = tauri::async_runtime::spawn_blocking(move || router::place_for(true, &agent))
         .await
         .unwrap_or_default();
     match router::route(app, text, "", &place, true, answer::last_turn()).await {
