@@ -1486,6 +1486,7 @@
       "shortcutNotFound": "Non ho trovato un comando rapido chiamato «{{name}}». Vuoi sapere come crearne uno?",
       "cantDoYet": "Non so ancora fare questo: {{what}}. Vuoi che ti mostri come farlo da solo?",
       "cantDoYetPlain": "Non posso ancora farlo su questo computer. Vuoi che ti mostri come farlo da solo?",
+      "privateNoAct": "Questa pagina sembra privata, quindi non agisco qui.",
       "cantCloseWindow": "Non posso ancora chiudere le finestre di altre app. Premi {{keys}} per chiuderla.",
       "cantCloseTab": "Non posso ancora chiudere le schede del browser. Premi {{keys}} per chiuderla.",
       "cantQuitApp": "Non posso ancora chiudere le app. Premi {{keys}} con l'app in primo piano.",

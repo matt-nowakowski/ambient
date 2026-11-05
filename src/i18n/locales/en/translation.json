@@ -1478,6 +1478,7 @@
       "shortcutNotFound": "I couldn't find a Shortcut called “{{name}}”. Want to know how to make one?",
       "cantDoYet": "I can't {{what}} yet. Want me to show you how to do it yourself?",
       "cantDoYetPlain": "I can't do that on this computer yet. Want me to show you how to do it yourself?",
+      "privateNoAct": "This page looks private, so I don't act on it.",
       "cantCloseWindow": "I can't close other apps' windows yet. Press {{keys}} to close it.",
       "cantCloseTab": "I can't close browser tabs yet. Press {{keys}} to close it.",
       "cantQuitApp": "I can't quit apps yet. Press {{keys}} while it's in front.",

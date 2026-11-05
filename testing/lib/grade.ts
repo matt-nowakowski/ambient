@@ -214,6 +214,11 @@ export function exactChecks(o: Outcome, c: Case): string[] {
       bad.push(`no card shows "${s}"`);
     }
   }
+  for (const s of e.not_shows ?? []) {
+    if (o.cardTexts.some((t) => t.toLowerCase().includes(s.toLowerCase()))) {
+      bad.push(`a card shows "${s}"`);
+    }
+  }
   for (const m of e.must_not ?? []) {
     const why = mustNot(o, c, m);
     if (why) bad.push(`must not: ${why}`);

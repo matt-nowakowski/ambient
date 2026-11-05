@@ -591,9 +591,43 @@
       "lang": "pl",
       "screen": "bank_pl",
       "say": "przelew za czynsz",
+      "regression": "0.1.9 #8: a request on a bank page became \"I can't do that yet\"",
+      "about": "Nothing to type into on a bank page: offered to copy, or told Ambient doesn't act on private pages; never promised it will one day.",
       "expect": {
-        "route": ["write", "did_you_mean", "polish"],
-        "must_not": ["answered"]
+        "route": ["write", "did_you_mean", "polish", "act"],
+        "must_not": ["answered", "typed"],
+        "not_shows": ["cantDoYet"]
+      }
+    },
+    {
+      "id": "private.de.bank-transfer",
+      "lang": "de",
+      "screen": "bank_de",
+      "say": "überweise fünfzig Euro an Anna",
+      "regression": "0.1.9 #8: a request on a bank page became \"I can't do that yet\"",
+      "about": "Asked to make a transfer on a bank page: Ambient says it doesn't act on private pages.",
+      "settings": {
+        "languages": ["de", "en"]
+      },
+      "expect": {
+        "route": ["act", "did_you_mean"],
+        "must_not": ["answered", "typed"],
+        "not_shows": ["cantDoYet"]
+      }
+    },
+    {
+      "id": "private.en.bank-transfer",
+      "lang": "en",
+      "screen": "bank_en",
+      "key": "ask",
+      "say": "transfer five hundred dollars to savings",
+      "regression": "0.1.9 #8: a request on a bank page became \"I can't do that yet\"",
+      "about": "Asked to make a transfer on a bank page: Ambient says it doesn't act on private pages.",
+      "expect": {
+        "route": "act",
+        "shows": ["privateNoAct"],
+        "not_shows": ["cantDoYet"],
+        "must_not": ["answered", "typed"]
       }
     }
   ]

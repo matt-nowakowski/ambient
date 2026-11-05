@@ -1478,6 +1478,7 @@
       "shortcutNotFound": "Saya tidak menemukan pintasan bernama “{{name}}”. Mau tahu cara membuatnya?",
       "cantDoYet": "Saya belum bisa melakukan ini: {{what}}. Mau saya tunjukkan cara melakukannya sendiri?",
       "cantDoYetPlain": "Saya belum bisa melakukan itu di komputer ini. Mau saya tunjukkan cara melakukannya sendiri?",
+      "privateNoAct": "Halaman ini tampak pribadi, jadi saya tidak bertindak di sini.",
       "cantCloseWindow": "Saya belum bisa menutup jendela aplikasi lain. Tekan {{keys}} untuk menutupnya.",
       "cantCloseTab": "Saya belum bisa menutup tab browser. Tekan {{keys}} untuk menutupnya.",
       "cantQuitApp": "Saya belum bisa keluar dari aplikasi. Tekan {{keys}} saat aplikasi di depan.",
