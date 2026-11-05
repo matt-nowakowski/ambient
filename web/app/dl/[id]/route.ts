@@ -14,7 +14,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const release = releases[id as keyof typeof releases];
   if (!release) return new Response("Unknown download", { status: 404 });
 
-  const res = await fetch(`${ORIGIN}/releases/manifest.json`, { next: { revalidate: 60 } }).catch(() => null);
+  const res = await fetch(`${ORIGIN}/releases/manifest.json`, {
+    next: { revalidate: 60 },
+    // A stalled R2 read falls back to the "unavailable" page instead of
+    // holding the function open.
+    signal: AbortSignal.timeout(5_000),
+  }).catch(() => null);
   const manifest = res?.ok ? ((await res.json()) as Manifest) : null;
   const file = manifest?.files.find((f) => f.endsWith(release.suffix));
   if (!manifest || !file) {
