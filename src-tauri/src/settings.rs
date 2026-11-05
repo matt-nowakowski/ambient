@@ -701,6 +701,11 @@ pub struct AgentSettings {
     /// Intelligence or the downloaded one ("Download on-device AI"). The
     /// other is used when the chosen one isn't available.
     pub on_device_model: OnDeviceModel,
+    /// Which downloaded reasoning model runs on-device tasks, by catalog id
+    /// ("Download on-device AI"). None keeps the catalog's default, so an
+    /// install that already downloaded the old 1.7B Q8 model keeps using it
+    /// instead of being asked to download again.
+    pub on_device_model_id: Option<String>,
     /// Unix seconds until which all watching is paused.
     pub paused_until: Option<i64>,
     /// Max unprompted suggestions per hour.
@@ -786,6 +791,7 @@ impl Default for AgentSettings {
             on_device_only: false,
             on_device_when_possible: false,
             on_device_model: OnDeviceModel::Apple,
+            on_device_model_id: None,
             paused_until: None,
             suggestions_per_hour: crate::agent::budget::HOURLY_CAP,
             suggestion_prefs: Default::default(),
@@ -803,6 +809,12 @@ impl AgentSettings {
     /// "On this computer only": nothing is sent to decide or answer.
     pub fn device_only(&self) -> bool {
         self.intelligence == Intelligence::Device
+    }
+
+    /// The downloaded reasoning model the user chose, if any. None means the
+    /// catalog's default (see `catalog::resolve_reasoning_model`).
+    pub fn selected_reasoning_model_id(&self) -> Option<&str> {
+        self.on_device_model_id.as_deref()
     }
 
     /// Keep the legacy flag mirroring the setting (older builds read it).

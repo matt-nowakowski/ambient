@@ -112,7 +112,7 @@ pub struct OnDeviceAiStatus {
 #[specta::specta]
 pub fn get_on_device_ai_status() -> OnDeviceAiStatus {
     let runtime = crate::local_llm::runtime_asset();
-    let model = crate::catalog::REASONING_MODEL.as_ref();
+    let model = crate::catalog::default_reasoning_model();
     let size = runtime.map_or(0, |r| r.size) + model.map_or(0, |m| m.size_bytes);
     OnDeviceAiStatus {
         supported: runtime.is_some() && model.is_some(),

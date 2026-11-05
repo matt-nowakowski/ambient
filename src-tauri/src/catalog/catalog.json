@@ -1812,9 +1812,51 @@
       }
     },
     {
+      "id": "qwen3-0.6b",
+      "name": "Qwen3 0.6B",
+      "description": "Tiny and quick, the lightest on memory and battery. Basic: fine for polish, less reliable at writing and answering.",
+      "repository": "Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "previousRevisions": [],
+      "license": "apache-2.0",
+      "family": "qwen3",
+      "parameters": "0.6B",
+      "languages": [],
+      "capabilities": {"streaming": false, "translate": false, "languageDetection": false, "timestamps": false},
+      "quant": "Q8_0",
+      "role": "llm",
+      "curated": false,
+      "basic": true,
+      "scores": {"accuracy": 0.3, "speed": 0.95, "note": "Derived, not measured locally: accuracy from published Qwen3 benchmarks (MMLU-Pro, multilingual and instruction-following), mapped onto the speech catalog's 0-1 bar; speed from parameter count and quant against the Qwen3 1.7B Q8 baseline."},
+      "files": {
+        "Q8_0": {"filename": "Qwen3-0.6B-Q8_0.gguf", "size": 639446688, "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"}
+      }
+    },
+    {
+      "id": "qwen3-1.7b-q4",
+      "name": "Qwen3 1.7B Q4",
+      "description": "Recommended. Good polish and writing at about half the download of the 8-bit version, with little lost.",
+      "repository": "unsloth/Qwen3-1.7B-GGUF",
+      "revision": "d7f544eead698dbd1f15126ef60b45a1e1933222",
+      "previousRevisions": [],
+      "license": "apache-2.0",
+      "family": "qwen3",
+      "parameters": "1.7B",
+      "languages": [],
+      "capabilities": {"streaming": false, "translate": false, "languageDetection": false, "timestamps": false},
+      "quant": "Q4_K_M",
+      "role": "llm",
+      "curated": false,
+      "recommended": true,
+      "scores": {"accuracy": 0.52, "speed": 0.66, "note": "Derived, not measured locally: accuracy from published Qwen3 benchmarks (MMLU-Pro, multilingual and instruction-following), mapped onto the speech catalog's 0-1 bar; speed from parameter count and quant against the Qwen3 1.7B Q8 baseline."},
+      "files": {
+        "Q4_K_M": {"filename": "Qwen3-1.7B-Q4_K_M.gguf", "size": 1107409472, "sha256": "b139949c5bd74937ad8ed8c8cf3d9ffb1e99c866c823204dc42c0d91fa181897"}
+      }
+    },
+    {
       "id": "qwen3-1.7b",
       "name": "Qwen3 1.7B",
-      "description": "On-device AI: polish, smart writing, routing, suggestions and short answers without the cloud",
+      "description": "The previous on-device model. A little better than the 4-bit version, for a larger download.",
       "repository": "Qwen/Qwen3-1.7B-GGUF",
       "revision": "90862c4b9d2787eaed51d12237eafdfe7c5f6077",
       "previousRevisions": [],
@@ -1826,8 +1868,29 @@
       "quant": "Q8_0",
       "role": "llm",
       "curated": false,
+      "scores": {"accuracy": 0.55, "speed": 0.55, "note": "Derived, not measured locally: accuracy from published Qwen3 benchmarks (MMLU-Pro, multilingual and instruction-following), mapped onto the speech catalog's 0-1 bar; speed from parameter count and quant against the Qwen3 1.7B Q8 baseline."},
       "files": {
         "Q8_0": {"filename": "Qwen3-1.7B-Q8_0.gguf", "size": 1834426016, "sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a"}
+      }
+    },
+    {
+      "id": "qwen3-4b",
+      "name": "Qwen3 4B",
+      "description": "The best on-device quality, and the largest and slowest. For capable writing and answers without the cloud.",
+      "repository": "Qwen/Qwen3-4B-GGUF",
+      "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+      "previousRevisions": [],
+      "license": "apache-2.0",
+      "family": "qwen3",
+      "parameters": "4B",
+      "languages": [],
+      "capabilities": {"streaming": false, "translate": false, "languageDetection": false, "timestamps": false},
+      "quant": "Q4_K_M",
+      "role": "llm",
+      "curated": false,
+      "scores": {"accuracy": 0.72, "speed": 0.34, "note": "Derived, not measured locally: accuracy from published Qwen3 benchmarks (MMLU-Pro, multilingual and instruction-following), mapped onto the speech catalog's 0-1 bar; speed from parameter count and quant against the Qwen3 1.7B Q8 baseline."},
+      "files": {
+        "Q4_K_M": {"filename": "Qwen3-4B-Q4_K_M.gguf", "size": 2497280256, "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"}
       }
     },
     {
