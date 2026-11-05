@@ -1310,7 +1310,12 @@ fn run_setup(info: &LoadedInfo, settings: &AppSettings, language: LanguageDecisi
         task: run_plan.task,
         language: run_plan.language,
         target_language: run_plan.target_language,
-        vocabulary: vocabulary_for_model(info.supports_vocabulary, &settings.custom_words),
+        // The user's custom words, plus any names read from the window for
+        // this dictation.
+        vocabulary: vocabulary_for_model(
+            info.supports_vocabulary,
+            &crate::screen_names::merged_words(&settings.custom_words),
+        ),
         ..Default::default()
     };
 
@@ -1634,14 +1639,13 @@ fn post_process_transcription_text(
 
         // Always, even when the model got the words as vocabulary: that only
         // biases decoding, and a near miss ("pairo" for "payro") still lands.
-        let corrected = if !settings.custom_words.is_empty() {
-            apply_custom_words(
-                &raw,
-                &settings.custom_words,
-                settings.word_correction_threshold,
-            )
-        } else {
+        // The user's custom words, plus any names read from the window for
+        // this dictation.
+        let words = crate::screen_names::merged_words(&settings.custom_words);
+        let corrected = if words.is_empty() {
             raw
+        } else {
+            apply_custom_words(&raw, &words, settings.word_correction_threshold)
         };
         // Then the exact swaps the user confirmed ("Anna" → "Ana").
         let corrected = if settings.word_replacements.is_empty() {
