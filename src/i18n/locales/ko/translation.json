@@ -2,6 +2,9 @@
   "tray": {
     "settings": "설정…",
     "checkUpdates": "업데이트 확인…",
+    "restartToUpdate": "다시 시작하여 업데이트",
+    "updateNotificationTitle": "{{appName}} {{version}} 준비 완료",
+    "updateNotificationBody": "다시 시작하여 업데이트하세요.",
     "copyLastTranscript": "마지막 받아쓰기 복사",
     "unloadModel": "모델 언로드",
     "model": "모델",
@@ -955,14 +958,23 @@
     "upToDate": "최신 상태",
     "updateCheckingDisabled": "업데이트 확인 비활성화됨",
     "downloading": "다운로드 중… {{progress}}%",
+    "downloadingUpdate": "업데이트 다운로드 중…",
     "installing": "설치 중…",
     "preparing": "준비 중…",
     "checkForUpdates": "업데이트 확인",
+    "restartToUpdate": "다시 시작하여 업데이트",
     "portableUpdateTitle": "수동 업데이트 필요",
     "portableUpdateMessage": "포터블 설치는 자동으로 업데이트할 수 없습니다. 아래에서 사용 중인 시스템에 맞는 설치 프로그램을 다운로드해 실행하고 같은 폴더에 설치하세요. Data/ 폴더(설정, 모델, 녹음)는 그대로 유지됩니다.",
     "portableUpdateButton": "설치 프로그램 다운로드",
     "portableUpdateBrowseMessage": "포터블 설치는 자동으로 업데이트할 수 없습니다. GitHub Releases에서 사용 중인 시스템에 맞는 최신 버전을 다운로드해 같은 폴더에 설치하세요. Data/ 폴더(설정, 모델, 녹음)는 그대로 유지됩니다.",
     "portableUpdateBrowseButton": "GitHub Releases 열기"
+  },
+  "updates": {
+    "busy": "{{appName}}이(가) 지금 작업 중입니다. 재시작은 작업이 끝난 뒤에 해도 됩니다.",
+    "notReady": "업데이트가 아직 준비되지 않았습니다. 잠시 후 다시 시도하세요.",
+    "installFailed": "업데이트를 설치할 수 없습니다. 나중에 다시 시도하세요.",
+    "checkFailed": "업데이트를 확인할 수 없습니다. 연결을 확인하고 다시 시도하세요.",
+    "downloadFailed": "업데이트를 다운로드할 수 없습니다. 연결을 확인하고 다시 시도하세요."
   },
   "whatsNew": {
     "title": "{{appName}} v{{version}}의 새 소식"

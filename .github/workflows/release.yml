@@ -141,6 +141,12 @@ jobs:
       AWS_REQUEST_CHECKSUM_CALCULATION: when_required
       AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
       # Public base for asset URLs; the website redirects /releases/* to R2.
+      # TODO(Matt): once dl.tryambient.ai resolves to the bucket, set the
+      # DOWNLOADS_BASE_URL repo variable to https://dl.tryambient.ai (no code
+      # change here) and point plugins.updater.endpoints at
+      # https://dl.tryambient.ai/releases/latest.json in src-tauri/tauri.conf.json,
+      # keeping tryambient.ai as the second endpoint. That takes Vercel out of
+      # every update check; until then the app fetches through tryambient.ai.
       PUBLIC_BASE: ${{ vars.DOWNLOADS_BASE_URL || 'https://tryambient.ai' }}/releases
       # Ambient's share of the account's 10 GB free tier (other projects use the
       # rest). Same cap as mirror-models.yml; releases and models share the bucket.
@@ -199,9 +205,15 @@ jobs:
           jq -e . latest.json > /dev/null
           ls dist | grep -v '^latest.json$' \
             | jq -R . | jq -s --arg v "$VERSION" '{version: $v, files: .}' > manifest.json
-          for f in latest.json manifest.json; do
-            aws s3 cp "$f" "$R2/releases/$f" --content-type application/json --cache-control "no-cache"
-          done
+          # The updater feed is cached briefly at the edge so repeat checks
+          # land on Cloudflare instead of the bucket. Five minutes is well
+          # inside GRACE_MINUTES (15), so a new release still reaches everyone
+          # before the previous version's files are retired.
+          aws s3 cp latest.json "$R2/releases/latest.json" --content-type application/json \
+            --cache-control "public, max-age=300"
+          # The manifest is what the website's /dl links resolve; always fresh.
+          aws s3 cp manifest.json "$R2/releases/manifest.json" --content-type application/json \
+            --cache-control "no-cache"
           cat manifest.json
 
       - name: Publish GitHub release
@@ -220,4 +232,3 @@ jobs:
           done
           echo "R2 releases after:"
           aws s3 ls "$R2/releases/" --recursive
-

@@ -47,6 +47,7 @@ mod telemetry;
 mod transcription_coordinator;
 mod tray;
 mod tray_i18n;
+mod updates;
 mod utils;
 #[cfg(any(target_os = "windows", test))]
 mod win;
@@ -123,30 +124,43 @@ fn build_console_filter() -> env_filter::Filter {
 
 /// How long a quit may take before the process is ended outright.
 const EXIT_WATCHDOG: std::time::Duration = std::time::Duration::from_secs(4);
+/// The same, while an update is installing on the way out: the bundle swap
+/// must not be killed halfway through, which would leave no app behind.
+const EXIT_WATCHDOG_INSTALLING: std::time::Duration = std::time::Duration::from_secs(30);
 
 /// Quitting must end the process. If teardown hangs (a plugin's exit hook, an
 /// audio device or thread that won't let go), the old process lingers with no
 /// windows, and macOS keeps its Dock tile with a running dot that does
 /// nothing: the ghost left behind after Quit and reopen. Arm once per quit; a
 /// normal exit finishes long before it fires.
-fn arm_exit_watchdog() {
+fn arm_exit_watchdog(timeout: std::time::Duration) {
     static ARMED: AtomicBool = AtomicBool::new(false);
     if ARMED.swap(true, Ordering::SeqCst) {
         return;
     }
     let spawned = std::thread::Builder::new()
         .name("exit-watchdog".into())
-        .spawn(|| {
-            std::thread::sleep(EXIT_WATCHDOG);
+        .spawn(move || {
+            std::thread::sleep(timeout);
             log::warn!(
                 "Quit did not finish within {:?}; ending the process",
-                EXIT_WATCHDOG
+                timeout
             );
             log::logger().flush();
             std::process::exit(0);
         });
     if let Err(e) = spawned {
         log::error!("Failed to start the exit watchdog: {}", e);
+    }
+}
+
+/// How long to give a quit: the usual few seconds, or longer when an update
+/// is going in on the way out.
+fn exit_watchdog_timeout(app: &AppHandle) -> std::time::Duration {
+    if updates::install_pending(app) {
+        EXIT_WATCHDOG_INSTALLING
+    } else {
+        EXIT_WATCHDOG
     }
 }
 
@@ -369,6 +383,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(transcription_manager.clone());
     app_handle.manage(history_manager.clone());
     app_handle.manage(tray::TrayState::new());
+    app_handle.manage(updates::UpdateManager::new());
     app_handle.manage(TranscriptionJobManager::new(app_handle));
 
     // Note: Shortcuts are NOT initialized here.
@@ -448,7 +463,14 @@ fn initialize_core_logic(app_handle: &AppHandle) {
                 let settings = settings::get_settings(app);
                 if settings::update_checks_effectively_enabled(&settings) {
                     show_main_window(app);
-                    let _ = app.emit("check-for-updates", ());
+                    updates::trigger(app, true);
+                }
+            }
+            "restart_to_update" => {
+                if let Err(e) = updates::install_from_ui(app) {
+                    // Refused (mid-recording, or nothing downloaded): leave the
+                    // item in place and say why in the log.
+                    log::warn!("restart-to-update ignored: {e}");
                 }
             }
             "copy_last_transcript" => {
@@ -478,7 +500,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
                 cancel_current_operation(app);
             }
             "quit" => {
-                arm_exit_watchdog();
+                arm_exit_watchdog(exit_watchdog_timeout(app));
                 app.exit(0);
             }
             id if id.starts_with("model_select:") => {
@@ -532,6 +554,7 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     telemetry::init(app_handle);
     checkin::spawn(app_handle.clone());
     remote_config::start(app_handle);
+    updates::spawn(app_handle.clone());
 }
 
 #[tauri::command]
@@ -541,9 +564,25 @@ fn trigger_update_check(app: AppHandle) -> Result<(), String> {
     if !settings::update_checks_effectively_enabled(&settings) {
         return Ok(());
     }
-    app.emit("check-for-updates", ())
-        .map_err(|e| e.to_string())?;
+    // The Rust side owns the check; the footer reflects the result through the
+    // update-status event. manual = true so a failure says why.
+    updates::trigger(&app, true);
     Ok(())
+}
+
+/// The footer's first paint: what the update flow is doing right now.
+#[tauri::command]
+#[specta::specta]
+fn update_status(app: AppHandle) -> updates::UpdateStatus {
+    updates::status(&app)
+}
+
+/// Install the version that is already downloaded and restart. Refused while
+/// recording, transcribing, in a meeting or running an agent task.
+#[tauri::command]
+#[specta::specta]
+fn install_ready_update(app: AppHandle) -> Result<(), String> {
+    updates::install_from_ui(&app)
 }
 
 #[tauri::command]
@@ -933,6 +972,8 @@ pub fn run(cli_args: CliArgs) {
             dictation_apps::get_dictation_conflicts,
             secure_input::run_keyboard_diagnostic,
             trigger_update_check,
+            update_status,
+            install_ready_update,
             show_main_window_command,
             commands::cancel_operation,
             commands::frontend_error,
@@ -1006,6 +1047,7 @@ pub fn run(cli_args: CliArgs) {
             managers::transcription::StreamPhaseEvent,
             transcription_coordinator::RecordingStateEvent,
             actions::TranscriptionCompleteEvent,
+            updates::UpdateStatus,
         ])
         // Sent to the HUD window as plain events, so not reachable from any command.
         .typ::<hud::HudContent>()
@@ -1118,6 +1160,8 @@ pub fn run(cli_args: CliArgs) {
         .plugin(tauri_plugin_os::init())
         .plugin(system_languages::init())
         .plugin(tauri_plugin_clipboard_manager::init())
+        // The "new version is ready, restart to update" system notification.
+        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_macos_permissions::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_store::Builder::default().build())
@@ -1356,6 +1400,9 @@ pub fn run(cli_args: CliArgs) {
             }
             tauri::WindowEvent::Focused(true) if window.label() == "main" => {
                 plan::on_main_window_focus(window.app_handle());
+                // A returning user is a good moment to check for a new version
+                // (throttled to once an hour inside).
+                updates::on_main_window_focus(window.app_handle());
             }
             tauri::WindowEvent::Focused(false) if window.label() == "main" => {
                 intro::on_main_focus_lost(window.app_handle());
@@ -1398,9 +1445,13 @@ pub fn run(cli_args: CliArgs) {
         // However the app is quitting (tray, Cmd+Q, the menu bar, a
         // signal), make sure the process actually ends.
         tauri::RunEvent::Exit => {
-            arm_exit_watchdog();
+            arm_exit_watchdog(exit_watchdog_timeout(app));
             telemetry::flush_on_quit(app);
             local_llm::stop();
+            // A version the user ignored installs here, so the next launch is
+            // already on it. On Windows this ends the process itself, after the
+            // flush above; the watchdog's longer timeout covers the swap.
+            updates::install_on_quit(app);
         }
         // No transcription teardown on exit: transcribe.cpp runs only in the
         // worker process, which exits by itself as soon as this process's end

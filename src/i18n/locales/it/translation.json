@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Impostazioni…",
     "checkUpdates": "Verifica aggiornamenti…",
+    "restartToUpdate": "Riavvia per aggiornare",
+    "updateNotificationTitle": "{{appName}} {{version}} è pronto",
+    "updateNotificationBody": "Riavvia per aggiornare.",
     "copyLastTranscript": "Copia l'ultima trascrizione",
     "unloadModel": "Rilascia modello",
     "model": "Modello",
@@ -958,14 +961,23 @@
     "upToDate": "Aggiornato",
     "updateCheckingDisabled": "Controllo aggiornamenti disattivato",
     "downloading": "Download… {{progress}}%",
+    "downloadingUpdate": "Download dell'aggiornamento…",
     "installing": "Installazione…",
     "preparing": "Preparazione…",
     "checkForUpdates": "Controlla aggiornamenti",
+    "restartToUpdate": "Riavvia per aggiornare",
     "portableUpdateTitle": "Aggiornamento manuale necessario",
     "portableUpdateMessage": "Le installazioni portatili non possono essere aggiornate automaticamente. Scarica qui sotto il programma di installazione per il tuo sistema, eseguilo e installalo nella stessa cartella: la cartella Data/ (impostazioni, modelli, registrazioni) viene mantenuta.",
     "portableUpdateButton": "Scarica il programma di installazione",
     "portableUpdateBrowseMessage": "Le installazioni portatili non possono essere aggiornate automaticamente. Scarica da GitHub Releases la versione più recente per il tuo sistema e installala nella stessa cartella: la cartella Data/ (impostazioni, modelli, registrazioni) viene mantenuta.",
     "portableUpdateBrowseButton": "Apri i rilasci su GitHub"
+  },
+  "updates": {
+    "busy": "{{appName}} è occupato in questo momento. Il riavvio può aspettare che tu abbia finito.",
+    "notReady": "L'aggiornamento non è ancora pronto. Riprova tra un momento.",
+    "installFailed": "Impossibile installare l'aggiornamento. Riprova più tardi.",
+    "checkFailed": "Impossibile cercare aggiornamenti. Controlla la connessione e riprova.",
+    "downloadFailed": "Impossibile scaricare l'aggiornamento. Controlla la connessione e riprova."
   },
   "whatsNew": {
     "title": "Novità in {{appName}} v{{version}}"

@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Paramètres…",
     "checkUpdates": "Rechercher des mises à jour…",
+    "restartToUpdate": "Redémarrer pour mettre à jour",
+    "updateNotificationTitle": "{{appName}} {{version}} est prêt",
+    "updateNotificationBody": "Redémarrez pour mettre à jour.",
     "copyLastTranscript": "Copier la dernière transcription",
     "unloadModel": "Décharger le modèle",
     "model": "Modèle",
@@ -958,14 +961,23 @@
     "upToDate": "À jour",
     "updateCheckingDisabled": "Vérification des mises à jour désactivée",
     "downloading": "Téléchargement… {{progress}} %",
+    "downloadingUpdate": "Téléchargement de la mise à jour…",
     "installing": "Installation…",
     "preparing": "Préparation…",
     "checkForUpdates": "Rechercher des mises à jour",
+    "restartToUpdate": "Redémarrer pour mettre à jour",
     "portableUpdateTitle": "Mise à jour manuelle requise",
     "portableUpdateMessage": "Les installations portables ne peuvent pas être mises à jour automatiquement. Téléchargez ci-dessous l’installateur correspondant à votre système, exécutez-le et installez-le dans le même dossier : votre dossier Data/ (paramètres, modèles, enregistrements) est conservé.",
     "portableUpdateButton": "Télécharger l’installateur",
     "portableUpdateBrowseMessage": "Les installations portables ne peuvent pas être mises à jour automatiquement. Téléchargez la dernière version correspondant à votre système depuis GitHub Releases et installez-la dans le même dossier : votre dossier Data/ (paramètres, modèles, enregistrements) est conservé.",
     "portableUpdateBrowseButton": "Ouvrir GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} est occupé pour le moment. Le redémarrage peut attendre que vous ayez terminé.",
+    "notReady": "La mise à jour n'est pas encore prête. Réessayez dans un instant.",
+    "installFailed": "Impossible d'installer la mise à jour. Réessayez plus tard.",
+    "checkFailed": "Impossible de rechercher des mises à jour. Vérifiez votre connexion et réessayez.",
+    "downloadFailed": "Impossible de télécharger la mise à jour. Vérifiez votre connexion et réessayez."
   },
   "whatsNew": {
     "title": "Nouveautés de {{appName}} v{{version}}"

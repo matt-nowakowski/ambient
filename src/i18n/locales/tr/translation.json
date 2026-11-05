@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Ayarlar…",
     "checkUpdates": "Güncellemeleri Kontrol Et…",
+    "restartToUpdate": "Güncellemek için yeniden başlat",
+    "updateNotificationTitle": "{{appName}} {{version}} hazır",
+    "updateNotificationBody": "Güncellemek için yeniden başlatın.",
     "copyLastTranscript": "Son Transkripti Kopyala",
     "unloadModel": "Modeli Boşalt",
     "model": "Model",
@@ -955,14 +958,23 @@
     "upToDate": "Güncel",
     "updateCheckingDisabled": "Güncelleme Kontrolü Devre Dışı",
     "downloading": "İndiriliyor… %{{progress}}",
+    "downloadingUpdate": "Güncelleme indiriliyor…",
     "installing": "Kuruluyor…",
     "preparing": "Hazırlanıyor…",
     "checkForUpdates": "Güncellemeleri kontrol et",
+    "restartToUpdate": "Güncellemek için yeniden başlat",
     "portableUpdateTitle": "Manuel güncelleme gerekli",
     "portableUpdateMessage": "Taşınabilir kurulumlar otomatik olarak güncellenemez. Aşağıdan sisteminize uygun yükleyiciyi indirin, çalıştırın ve aynı klasöre kurun — Data/ klasörünüz (ayarlar, modeller, kayıtlar) yerinde kalır.",
     "portableUpdateButton": "Yükleyiciyi indir",
     "portableUpdateBrowseMessage": "Taşınabilir kurulumlar otomatik olarak güncellenemez. Sisteminize uygun en son sürümü GitHub Releases’ten indirin ve aynı klasöre kurun — Data/ klasörünüz (ayarlar, modeller, kayıtlar) yerinde kalır.",
     "portableUpdateBrowseButton": "GitHub Releases’i aç"
+  },
+  "updates": {
+    "busy": "{{appName}} şu anda meşgul. Yeniden başlatma, işiniz bitene kadar bekleyebilir.",
+    "notReady": "Güncelleme henüz hazır değil. Birazdan tekrar deneyin.",
+    "installFailed": "Güncelleme yüklenemedi. Daha sonra tekrar deneyin.",
+    "checkFailed": "Güncellemeler denetlenemedi. Bağlantınızı kontrol edip tekrar deneyin.",
+    "downloadFailed": "Güncelleme indirilemedi. Bağlantınızı kontrol edip tekrar deneyin."
   },
   "whatsNew": {
     "title": "{{appName}} v{{version}} yenilikleri"

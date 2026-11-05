@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Pengaturan…",
     "checkUpdates": "Periksa Pembaruan…",
+    "restartToUpdate": "Mulai ulang untuk memperbarui",
+    "updateNotificationTitle": "{{appName}} {{version}} siap",
+    "updateNotificationBody": "Mulai ulang untuk memperbarui.",
     "copyLastTranscript": "Salin Transkripsi Terakhir",
     "unloadModel": "Lepas Model dari Memori",
     "model": "Model",
@@ -955,14 +958,23 @@
     "upToDate": "Sudah versi terbaru",
     "updateCheckingDisabled": "Pemeriksaan Pembaruan Dinonaktifkan",
     "downloading": "Mengunduh… {{progress}}%",
+    "downloadingUpdate": "Mengunduh pembaruan…",
     "installing": "Menginstal…",
     "preparing": "Menyiapkan…",
     "checkForUpdates": "Periksa pembaruan",
+    "restartToUpdate": "Mulai ulang untuk memperbarui",
     "portableUpdateTitle": "Pembaruan manual diperlukan",
     "portableUpdateMessage": "Instalasi portabel tidak dapat diperbarui secara otomatis. Unduh penginstal untuk sistem Anda di bawah ini, jalankan, lalu instal ke folder yang sama — folder Data/ Anda (pengaturan, model, rekaman) tetap dipertahankan.",
     "portableUpdateButton": "Unduh penginstal",
     "portableUpdateBrowseMessage": "Instalasi portabel tidak dapat diperbarui secara otomatis. Unduh versi terbaru untuk sistem Anda dari GitHub Releases dan instal ke folder yang sama — folder Data/ Anda (pengaturan, model, rekaman) tetap dipertahankan.",
     "portableUpdateBrowseButton": "Buka GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} sedang sibuk saat ini. Mulai ulang bisa menunggu sampai Anda selesai.",
+    "notReady": "Pembaruan belum siap. Coba lagi sebentar lagi.",
+    "installFailed": "Pembaruan tidak dapat dipasang. Coba lagi nanti.",
+    "checkFailed": "Tidak dapat memeriksa pembaruan. Periksa koneksi Anda dan coba lagi.",
+    "downloadFailed": "Pembaruan tidak dapat diunduh. Periksa koneksi Anda dan coba lagi."
   },
   "whatsNew": {
     "title": "Baru di {{appName}} v{{version}}"

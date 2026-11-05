@@ -2,6 +2,9 @@
   "tray": {
     "settings": "सेटिंग…",
     "checkUpdates": "अपडेट जांचें…",
+    "restartToUpdate": "अपडेट के लिए पुनः आरंभ करें",
+    "updateNotificationTitle": "{{appName}} {{version}} तैयार है",
+    "updateNotificationBody": "अपडेट के लिए पुनः आरंभ करें।",
     "copyLastTranscript": "पिछला ट्रांसक्रिप्ट कॉपी करें",
     "unloadModel": "मॉडल अनलोड करें",
     "model": "मॉडल",
@@ -955,14 +958,23 @@
     "upToDate": "अप-टू-डेट",
     "updateCheckingDisabled": "अपडेट जांच बंद है",
     "downloading": "डाउनलोड हो रहा है… {{progress}}%",
+    "downloadingUpdate": "अपडेट डाउनलोड हो रहा है…",
     "installing": "इंस्टॉल हो रहा है…",
     "preparing": "तैयारी हो रही है…",
     "checkForUpdates": "अपडेट जांचें",
+    "restartToUpdate": "अपडेट के लिए पुनः आरंभ करें",
     "portableUpdateTitle": "मैन्युअल अपडेट ज़रूरी है",
     "portableUpdateMessage": "पोर्टेबल इंस्टॉल अपने आप अपडेट नहीं हो सकते। नीचे से अपने सिस्टम के लिए इंस्टॉलर डाउनलोड करें, उसे चलाएँ और उसी फ़ोल्डर में इंस्टॉल करें — आपका Data/ फ़ोल्डर (सेटिंग, मॉडल, रिकॉर्डिंग) जहाँ है वहीं बना रहता है।",
     "portableUpdateButton": "इंस्टॉलर डाउनलोड करें",
     "portableUpdateBrowseMessage": "पोर्टेबल इंस्टॉल अपने आप अपडेट नहीं हो सकते। GitHub Releases से अपने सिस्टम के लिए नया वर्शन डाउनलोड करें और उसे उसी फ़ोल्डर में इंस्टॉल करें — आपका Data/ फ़ोल्डर (सेटिंग, मॉडल, रिकॉर्डिंग) जहाँ है वहीं बना रहता है।",
     "portableUpdateBrowseButton": "GitHub Releases खोलें"
+  },
+  "updates": {
+    "busy": "{{appName}} अभी व्यस्त है। काम पूरा होने तक पुनः आरंभ करने का इंतज़ार किया जा सकता है।",
+    "notReady": "अपडेट अभी तैयार नहीं है। थोड़ी देर बाद फिर से कोशिश करें।",
+    "installFailed": "अपडेट इंस्टॉल नहीं हो सका। बाद में फिर से कोशिश करें।",
+    "checkFailed": "अपडेट जाँचे नहीं जा सके। अपना कनेक्शन जाँचें और फिर से कोशिश करें।",
+    "downloadFailed": "अपडेट डाउनलोड नहीं हो सका। अपना कनेक्शन जाँचें और फिर से कोशिश करें।"
   },
   "whatsNew": {
     "title": "{{appName}} v{{version}} में नया क्या है"

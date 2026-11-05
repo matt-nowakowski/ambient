@@ -98,6 +98,7 @@ tauri-plugin-dialog = "2.6"
 hf-hub = { git = "https://github.com/matt-nowakowski/hf-hub", rev = "9918f11ab3473135eb7865aa4a5d79d597e6e810", features = [
   "tokio",
 ] }
+tauri-plugin-notification = "~2.4.0"
 
 [target.'cfg(unix)'.dependencies]
 signal-hook = "0.3"

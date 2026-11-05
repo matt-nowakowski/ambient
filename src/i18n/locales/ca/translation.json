@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Configuració…",
     "checkUpdates": "Comprova si hi ha actualitzacions…",
+    "restartToUpdate": "Reinicia per actualitzar",
+    "updateNotificationTitle": "{{appName}} {{version}} ja està a punt",
+    "updateNotificationBody": "Reinicia per actualitzar.",
     "copyLastTranscript": "Copia l'última transcripció",
     "unloadModel": "Allibera el model",
     "model": "Model",
@@ -958,14 +961,23 @@
     "upToDate": "Actualitzat",
     "updateCheckingDisabled": "Comprovació d'actualitzacions desactivada",
     "downloading": "S'està baixant… {{progress}} %",
+    "downloadingUpdate": "S'està baixant l'actualització…",
     "installing": "S'està instal·lant…",
     "preparing": "S'està preparant…",
     "checkForUpdates": "Comprova si hi ha actualitzacions",
+    "restartToUpdate": "Reinicia per actualitzar",
     "portableUpdateTitle": "Cal actualitzar manualment",
     "portableUpdateMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixeu l'instal·lador per al vostre sistema a continuació, executeu-lo i instal·leu-lo a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
     "portableUpdateButton": "Baixa l'instal·lador",
     "portableUpdateBrowseMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixeu l'última versió per al vostre sistema des de GitHub Releases i instal·leu-la a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
     "portableUpdateBrowseButton": "Obre GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} està ocupat ara mateix. Reiniciar pot esperar que hàgiu acabat.",
+    "notReady": "L'actualització encara no està a punt. Torneu-ho a provar d'aquí a un moment.",
+    "installFailed": "No s'ha pogut instal·lar l'actualització. Torneu-ho a provar més tard.",
+    "checkFailed": "No s'han pogut buscar actualitzacions. Comproveu la connexió i torneu-ho a provar.",
+    "downloadFailed": "No s'ha pogut baixar l'actualització. Comproveu la connexió i torneu-ho a provar."
   },
   "whatsNew": {
     "title": "Novetats del {{appName}} v{{version}}"

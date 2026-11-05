@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Cài đặt…",
     "checkUpdates": "Kiểm tra cập nhật…",
+    "restartToUpdate": "Khởi động lại để cập nhật",
+    "updateNotificationTitle": "{{appName}} {{version}} đã sẵn sàng",
+    "updateNotificationBody": "Khởi động lại để cập nhật.",
     "copyLastTranscript": "Sao chép bản chép lời mới nhất",
     "unloadModel": "Giải phóng mô hình",
     "model": "Mô hình",
@@ -955,14 +958,23 @@
     "upToDate": "Đã cập nhật",
     "updateCheckingDisabled": "Đã tắt kiểm tra cập nhật",
     "downloading": "Đang tải… {{progress}}%",
+    "downloadingUpdate": "Đang tải bản cập nhật…",
     "installing": "Đang cài đặt…",
     "preparing": "Đang chuẩn bị…",
     "checkForUpdates": "Kiểm tra cập nhật",
+    "restartToUpdate": "Khởi động lại để cập nhật",
     "portableUpdateTitle": "Cần cập nhật thủ công",
     "portableUpdateMessage": "Bản cài đặt di động không thể cập nhật tự động. Hãy tải trình cài đặt phù hợp với hệ thống của bạn bên dưới, chạy nó và cài vào cùng thư mục — thư mục Data/ (cài đặt, mô hình, bản ghi) của bạn được giữ nguyên.",
     "portableUpdateButton": "Tải trình cài đặt",
     "portableUpdateBrowseMessage": "Bản cài đặt di động không thể cập nhật tự động. Hãy tải phiên bản mới nhất phù hợp với hệ thống của bạn từ GitHub Releases và cài vào cùng thư mục — thư mục Data/ (cài đặt, mô hình, bản ghi) của bạn được giữ nguyên.",
     "portableUpdateBrowseButton": "Mở GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} đang bận. Việc khởi động lại có thể đợi đến khi bạn xong.",
+    "notReady": "Bản cập nhật chưa sẵn sàng. Hãy thử lại sau giây lát.",
+    "installFailed": "Không thể cài đặt bản cập nhật. Hãy thử lại sau.",
+    "checkFailed": "Không thể kiểm tra cập nhật. Hãy kiểm tra kết nối rồi thử lại.",
+    "downloadFailed": "Không thể tải bản cập nhật. Hãy kiểm tra kết nối rồi thử lại."
   },
   "whatsNew": {
     "title": "Điểm mới trong {{appName}} v{{version}}"

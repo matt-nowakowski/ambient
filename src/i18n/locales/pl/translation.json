@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Ustawienia…",
     "checkUpdates": "Sprawdź aktualizacje…",
+    "restartToUpdate": "Uruchom ponownie, aby zaktualizować",
+    "updateNotificationTitle": "{{appName}} {{version}} jest gotowe",
+    "updateNotificationBody": "Uruchom ponownie, aby zaktualizować.",
     "copyLastTranscript": "Kopiuj ostatnią transkrypcję",
     "unloadModel": "Zwolnij model",
     "model": "Model",
@@ -961,14 +964,23 @@
     "upToDate": "Aktualne",
     "updateCheckingDisabled": "Sprawdzanie aktualizacji wyłączone",
     "downloading": "Pobieranie… {{progress}}%",
+    "downloadingUpdate": "Pobieranie aktualizacji…",
     "installing": "Instalowanie…",
     "preparing": "Przygotowywanie…",
     "checkForUpdates": "Sprawdź aktualizacje",
+    "restartToUpdate": "Uruchom ponownie, aby zaktualizować",
     "portableUpdateTitle": "Wymagana ręczna aktualizacja",
     "portableUpdateMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Pobierz poniżej instalator dla swojego systemu, uruchom go i zainstaluj w tym samym folderze — Twój folder Data/ (ustawienia, modele, nagrania) pozostaje na miejscu.",
     "portableUpdateButton": "Pobierz instalator",
     "portableUpdateBrowseMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Pobierz najnowszą wersję dla swojego systemu z GitHub Releases i zainstaluj ją w tym samym folderze — Twój folder Data/ (ustawienia, modele, nagrania) pozostaje na miejscu.",
     "portableUpdateBrowseButton": "Otwórz GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} jest teraz zajęty. Ponowne uruchomienie może poczekać, aż skończysz.",
+    "notReady": "Aktualizacja nie jest jeszcze gotowa. Spróbuj ponownie za chwilę.",
+    "installFailed": "Nie udało się zainstalować aktualizacji. Spróbuj ponownie później.",
+    "checkFailed": "Nie udało się sprawdzić aktualizacji. Sprawdź połączenie i spróbuj ponownie.",
+    "downloadFailed": "Nie udało się pobrać aktualizacji. Sprawdź połączenie i spróbuj ponownie."
   },
   "whatsNew": {
     "title": "Nowości w {{appName}} v{{version}}"

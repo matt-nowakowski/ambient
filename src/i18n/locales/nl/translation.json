@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Instellingen…",
     "checkUpdates": "Controleren op updates…",
+    "restartToUpdate": "Opnieuw starten om bij te werken",
+    "updateNotificationTitle": "{{appName}} {{version}} is klaar",
+    "updateNotificationBody": "Start opnieuw om bij te werken.",
     "copyLastTranscript": "Laatste transcriptie kopiëren",
     "unloadModel": "Model ontladen",
     "model": "Model",
@@ -955,14 +958,23 @@
     "upToDate": "Up-to-date",
     "updateCheckingDisabled": "Updatecontrole uitgeschakeld",
     "downloading": "Downloaden… {{progress}}%",
+    "downloadingUpdate": "Update wordt gedownload…",
     "installing": "Installeren…",
     "preparing": "Voorbereiden…",
     "checkForUpdates": "Controleren op updates",
+    "restartToUpdate": "Opnieuw starten om bij te werken",
     "portableUpdateTitle": "Handmatige update vereist",
     "portableUpdateMessage": "Draagbare (portable) installaties kunnen niet automatisch worden bijgewerkt. Download hieronder het installatiebestand voor je systeem, voer het uit en installeer in dezelfde map — je Data/-map (instellingen, modellen, opnames) blijft behouden.",
     "portableUpdateButton": "Installatiebestand downloaden",
     "portableUpdateBrowseMessage": "Draagbare (portable) installaties kunnen niet automatisch worden bijgewerkt. Download de nieuwste versie voor je systeem van GitHub Releases en installeer die in dezelfde map — je Data/-map (instellingen, modellen, opnames) blijft behouden.",
     "portableUpdateBrowseButton": "GitHub Releases openen"
+  },
+  "updates": {
+    "busy": "{{appName}} is nu bezig. Opnieuw starten kan wachten tot je klaar bent.",
+    "notReady": "De update is nog niet klaar. Probeer het zo opnieuw.",
+    "installFailed": "De update kon niet worden geïnstalleerd. Probeer het later opnieuw.",
+    "checkFailed": "Kan niet controleren op updates. Controleer je verbinding en probeer het opnieuw.",
+    "downloadFailed": "De update kon niet worden gedownload. Controleer je verbinding en probeer het opnieuw."
   },
   "whatsNew": {
     "title": "Nieuw in {{appName}} v{{version}}"

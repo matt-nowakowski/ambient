@@ -941,6 +941,24 @@ async triggerUpdateCheck() : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * The footer's first paint: what the update flow is doing right now.
+ */
+async updateStatus() : Promise<UpdateStatus> {
+    return await TAURI_INVOKE("update_status");
+},
+/**
+ * Install the version that is already downloaded and restart. Refused while
+ * recording, transcribing, in a meeting or running an agent task.
+ */
+async installReadyUpdate() : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("install_ready_update") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async showMainWindowCommand() : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("show_main_window_command") };
@@ -1457,14 +1475,16 @@ recordingStateEvent: RecordingStateEvent,
 streamPhaseEvent: StreamPhaseEvent,
 streamTextEvent: StreamTextEvent,
 transcriptionCompleteEvent: TranscriptionCompleteEvent,
-transcriptionJob: TranscriptionJob
+transcriptionJob: TranscriptionJob,
+updateStatus: UpdateStatus
 }>({
 historyUpdatePayload: "history-update-payload",
 recordingStateEvent: "recording-state-event",
 streamPhaseEvent: "stream-phase-event",
 streamTextEvent: "stream-text-event",
 transcriptionCompleteEvent: "transcription-complete-event",
-transcriptionJob: "transcription-job"
+transcriptionJob: "transcription-job",
+updateStatus: "update-status"
 })
 
 /** user-defined constants **/
@@ -1628,7 +1648,13 @@ auto_stop_pause_ms?: number; audio_feedback?: boolean; audio_feedback_volume?: n
  * upgrading from before this key existed are blanked by the migration so they
  * see the current release's notes — see `apply_settings_migrations`.
  */
-whats_new_last_seen_version?: string; selected_model?: string; onboarding_completed?: boolean; always_on_microphone?: boolean; selected_microphone?: string | null; 
+whats_new_last_seen_version?: string; 
+/**
+ * The version the updater has already told the user about, so the
+ * "restart to update" notification never repeats. Empty on a fresh store
+ * (nothing has been announced yet).
+ */
+notified_update_version?: string; selected_model?: string; onboarding_completed?: boolean; always_on_microphone?: boolean; selected_microphone?: string | null; 
 /**
  * Which input channel to use on the selected microphone device.
  * None means "average all channels" (original behavior).
@@ -2523,6 +2549,31 @@ export type TranscriptionOutcome =
  */
 "agent"
 export type TypingTool = "auto" | "wtype" | "kwtype" | "dotool" | "ydotool" | "xdotool"
+/**
+ * Where the update flow is right now. Serialized camelCase for the webview.
+ */
+export type UpdatePhase = "idle" | "checking" | "downloading" | "ready" | "available" | "upToDate" | "error"
+/**
+ * What the webview shows in the footer, emitted on every change.
+ */
+export type UpdateStatus = { phase: UpdatePhase; 
+/**
+ * The version found, when there is one.
+ */
+version: string | null; 
+/**
+ * True when the app can install this update itself.
+ */
+installable: boolean; 
+/**
+ * True when a person asked for this check, so the footer can report the
+ * outcome (up to date, or why it failed) instead of staying quiet.
+ */
+manual: boolean; 
+/**
+ * A translatable message key; set only with UpdatePhase::Error.
+ */
+error: string | null }
 /**
  * What the user has used, for the usage shown in the app.
  */

@@ -422,6 +422,11 @@ pub struct AppSettings {
     /// see the current release's notes — see `apply_settings_migrations`.
     #[serde(default = "default_whats_new_last_seen_version")]
     pub whats_new_last_seen_version: String,
+    /// The version the updater has already told the user about, so the
+    /// "restart to update" notification never repeats. Empty on a fresh store
+    /// (nothing has been announced yet).
+    #[serde(default)]
+    pub notified_update_version: String,
     #[serde(default = "default_model")]
     pub selected_model: String,
     #[serde(default)]
@@ -1112,6 +1117,7 @@ pub fn get_default_settings() -> AppSettings {
         update_checks_enabled: default_update_checks_enabled(),
         show_whats_new_on_update: default_show_whats_new_on_update(),
         whats_new_last_seen_version: default_whats_new_last_seen_version(),
+        notified_update_version: String::new(),
         selected_model: "".to_string(),
         onboarding_completed: false,
         always_on_microphone: false,

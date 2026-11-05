@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Inställningar…",
     "checkUpdates": "Sök efter uppdateringar…",
+    "restartToUpdate": "Starta om för att uppdatera",
+    "updateNotificationTitle": "{{appName}} {{version}} är klart",
+    "updateNotificationBody": "Starta om för att uppdatera.",
     "copyLastTranscript": "Kopiera senaste transkriptionen",
     "unloadModel": "Ladda ur modell",
     "model": "Modell",
@@ -955,14 +958,23 @@
     "upToDate": "Senaste versionen",
     "updateCheckingDisabled": "Uppdateringskontroll inaktiverad",
     "downloading": "Laddar ner… {{progress}} %",
+    "downloadingUpdate": "Hämtar uppdateringen…",
     "installing": "Installerar…",
     "preparing": "Förbereder…",
     "checkForUpdates": "Sök efter uppdateringar",
+    "restartToUpdate": "Starta om för att uppdatera",
     "portableUpdateTitle": "Manuell uppdatering krävs",
     "portableUpdateMessage": "Portabla installationer kan inte uppdateras automatiskt. Ladda ner installeraren för ditt system nedan, kör den och installera i samma mapp — din Data/-mapp (inställningar, modeller, inspelningar) behålls.",
     "portableUpdateButton": "Ladda ner installeraren",
     "portableUpdateBrowseMessage": "Portabla installationer kan inte uppdateras automatiskt. Ladda ner den senaste versionen för ditt system från GitHub Releases och installera den i samma mapp — din Data/-mapp (inställningar, modeller, inspelningar) behålls.",
     "portableUpdateBrowseButton": "Öppna GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} är upptagen just nu. Omstarten kan vänta tills du är klar.",
+    "notReady": "Uppdateringen är inte klar än. Försök igen om en stund.",
+    "installFailed": "Uppdateringen kunde inte installeras. Försök igen senare.",
+    "checkFailed": "Kunde inte söka efter uppdateringar. Kontrollera anslutningen och försök igen.",
+    "downloadFailed": "Uppdateringen kunde inte hämtas. Kontrollera anslutningen och försök igen."
   },
   "whatsNew": {
     "title": "Nytt i {{appName}} v{{version}}"

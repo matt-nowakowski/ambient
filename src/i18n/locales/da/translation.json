@@ -2,6 +2,9 @@
   "tray": {
     "settings": "Indstillinger…",
     "checkUpdates": "Tjek for opdateringer…",
+    "restartToUpdate": "Genstart for at opdatere",
+    "updateNotificationTitle": "{{appName}} {{version}} er klar",
+    "updateNotificationBody": "Genstart for at opdatere.",
     "copyLastTranscript": "Kopiér seneste transskription",
     "unloadModel": "Frigør model",
     "model": "Model",
@@ -955,14 +958,23 @@
     "upToDate": "Opdateret",
     "updateCheckingDisabled": "Tjek for opdateringer deaktiveret",
     "downloading": "Downloader… {{progress}} %",
+    "downloadingUpdate": "Henter opdateringen…",
     "installing": "Installerer…",
     "preparing": "Forbereder…",
     "checkForUpdates": "Tjek for opdateringer",
+    "restartToUpdate": "Genstart for at opdatere",
     "portableUpdateTitle": "Manuel opdatering påkrævet",
     "portableUpdateMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent installationsprogrammet til dit system nedenfor, kør det, og installer i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
     "portableUpdateButton": "Hent installationsprogram",
     "portableUpdateBrowseMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent den nyeste version til dit system fra GitHub Releases, og installer den i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
     "portableUpdateBrowseButton": "Åbn GitHub Releases"
+  },
+  "updates": {
+    "busy": "{{appName}} er i gang lige nu. Genstart kan vente, til du er færdig.",
+    "notReady": "Opdateringen er ikke klar endnu. Prøv igen om lidt.",
+    "installFailed": "Opdateringen kunne ikke installeres. Prøv igen senere.",
+    "checkFailed": "Kunne ikke søge efter opdateringer. Tjek din forbindelse, og prøv igen.",
+    "downloadFailed": "Opdateringen kunne ikke hentes. Tjek din forbindelse, og prøv igen."
   },
   "whatsNew": {
     "title": "Nyt i {{appName}} v{{version}}"
