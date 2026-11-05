@@ -217,8 +217,10 @@ const PASSWORD_URL_MARKERS: &[&str] = &[
     "pass.proton.me",
 ];
 
-/// Banks and brokers whose whole site is treated as private (host, or any
-/// subdomain of it). Best effort: the big ones, in the markets we ship to.
+/// Banks and brokers, by host (or any subdomain of it). Only a hint for the
+/// judgement in `judge`: a bank is recognised by what its pages show, and a
+/// bank nobody listed is recognised the same way; a listed host just adds
+/// weight (and its marketing pages aren't private).
 const BANKING_DOMAINS: &[&str] = &[
     "chase.com",
     "bankofamerica.com",
@@ -264,15 +266,23 @@ const BANKING_DOMAINS: &[&str] = &[
     "santander.pl",
 ];
 
-/// Titles banks put on their signed-in pages.
-const BANKING_TITLE_MARKERS: &[&str] = &["Online Banking", "Internet Banking", "Online-Banking"];
+/// A known bank's host (a hint for `judge`, never a verdict on its own).
+pub(crate) fn known_bank_host(host: &str) -> bool {
+    BANKING_DOMAINS.iter().any(|domain| on_domain(host, domain))
+}
 
-/// A kind of place that's private as a whole, whatever is on screen now.
+/// A kind of private place: Ambient doesn't read it.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SensitivePlace {
     Wallet,
     PasswordManager,
     Banking,
+    /// A checkout or a card form.
+    Payment,
+    /// A patient portal or medical records.
+    Health,
+    /// Passport, tax and other government-ID pages.
+    Identity,
 }
 
 /// The app itself is private (decided from its name and bundle id alone,
@@ -290,7 +300,7 @@ pub fn sensitive_app(app_name: &str, bundle_id: &str) -> Option<SensitivePlace> 
 
 /// The host of a URL, lowercased ("https://user@www.chase.com:443/x" →
 /// "www.chase.com").
-fn host_of(url: &str) -> Option<String> {
+pub(crate) fn host_of(url: &str) -> Option<String> {
     let rest = url.split_once("://")?.1;
     let authority = rest.split(['/', '?', '#']).next()?;
     let host = authority.rsplit('@').next()?.split(':').next()?;
@@ -304,19 +314,30 @@ fn on_domain(host: &str, domain: &str) -> bool {
             .is_some_and(|sub| sub.ends_with('.'))
 }
 
-/// Which kind of private place a window is, from what identifies it: the
-/// app, the window title, and the titles and URLs of its frames (a browser's
-/// page, side panel or extension popup). Never needs the page's text.
+/// Which kind of private place a window is, from what identifies it (the
+/// app, the window title, the titles and URLs of its frames) and, when it
+/// has been read, its text: the scored judgement in `judge`.
 pub fn sensitive_place(
     app_name: &str,
     bundle_id: &str,
     titles: &[&str],
     urls: &[&str],
+    text: &str,
 ) -> Option<SensitivePlace> {
-    sensitive_place_why(app_name, bundle_id, titles, urls).map(|(place, _)| place)
+    super::judge::judge(&super::judge::Page {
+        app_name,
+        bundle_id,
+        titles,
+        urls,
+        text,
+        secure_focus: false,
+    })
+    .place
 }
 
-/// Which rule matched (for logs: a fixed name, never the matched text).
+/// The decisive identities only: a wallet or a password manager known by its
+/// app, extension or vault URL. Which rule matched is for logs (a fixed name,
+/// never the matched text). Everything else is judged in `judge`.
 pub fn sensitive_place_why(
     app_name: &str,
     bundle_id: &str,
@@ -356,20 +377,6 @@ pub fn sensitive_place_why(
         PASSWORD_URL_MARKERS.iter().any(|m| u.contains(m))
     }) {
         return Some((SensitivePlace::PasswordManager, "password_url"));
-    }
-    let bank_host = urls.iter().filter_map(|u| host_of(u)).any(|host| {
-        BANKING_DOMAINS
-            .iter()
-            .any(|domain| on_domain(&host, domain))
-    });
-    if bank_host {
-        return Some((SensitivePlace::Banking, "bank_host"));
-    }
-    if BANKING_TITLE_MARKERS
-        .iter()
-        .any(|m| titles.iter().any(|t| t.contains(m)))
-    {
-        return Some((SensitivePlace::Banking, "bank_title"));
     }
     None
 }
@@ -512,13 +519,17 @@ mod tests {
 
     use SensitivePlace::*;
 
+    fn place(app: &str, bundle: &str, titles: &[&str], urls: &[&str]) -> Option<SensitivePlace> {
+        sensitive_place(app, bundle, titles, urls, "")
+    }
+
     #[test]
     fn spots_wallet_extensions_in_a_browser() {
         // The tester's case: MetaMask's side panel in Chrome. The window keeps
         // the page's title; only the side panel's frame gives it away.
         let side_panel = "chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/sidepanel.html#/home";
         assert_eq!(
-            sensitive_place(
+            place(
                 "Google Chrome",
                 "com.google.Chrome",
                 &["Hacker News"],
@@ -528,11 +539,11 @@ mod tests {
         );
         // Popup windows and frames titled after the wallet.
         assert_eq!(
-            sensitive_place("Google Chrome", "com.google.Chrome", &["MetaMask"], &[]),
+            place("Google Chrome", "com.google.Chrome", &["MetaMask"], &[]),
             Some(Wallet)
         );
         assert_eq!(
-            sensitive_place(
+            place(
                 "Brave Browser",
                 "com.brave.Browser",
                 &["New Tab", "Phantom Wallet"],
@@ -541,7 +552,7 @@ mod tests {
             Some(Wallet)
         );
         assert_eq!(
-            sensitive_place(
+            place(
                 "Arc",
                 "company.thebrowser.Browser",
                 &[""],
@@ -549,13 +560,13 @@ mod tests {
             ),
             Some(Wallet)
         );
-        assert_eq!(sensitive_place("MetaMask", "", &[], &[]), Some(Wallet));
+        assert_eq!(place("MetaMask", "", &[], &[]), Some(Wallet));
     }
 
     #[test]
     fn spots_password_managers_and_banks() {
         assert_eq!(
-            sensitive_place("1Password", "com.1password.1password", &[], &[]),
+            place("1Password", "com.1password.1password", &[], &[]),
             Some(PasswordManager)
         );
         assert_eq!(
@@ -569,7 +580,7 @@ mod tests {
         );
         assert_eq!(sensitive_app("Ledger", "ledger live.exe"), Some(Wallet));
         assert_eq!(
-            sensitive_place(
+            place(
                 "Microsoft Edge",
                 "msedge.exe",
                 &[""],
@@ -578,7 +589,7 @@ mod tests {
             Some(PasswordManager)
         );
         assert_eq!(
-            sensitive_place(
+            place(
                 "Google Chrome",
                 "com.google.Chrome",
                 &["Google Password Manager"],
@@ -587,7 +598,7 @@ mod tests {
             Some(PasswordManager)
         );
         assert_eq!(
-            sensitive_place(
+            place(
                 "Google Chrome",
                 "com.google.Chrome",
                 &[""],
@@ -595,21 +606,25 @@ mod tests {
             ),
             Some(PasswordManager)
         );
+        // A bank is judged from what its page shows (see `judge`); its
+        // host and title alone are hints, not a verdict.
         assert_eq!(
             sensitive_place(
                 "Safari",
                 "com.apple.Safari",
                 &["Accounts"],
                 &["https://secure.chase.com/web/auth/dashboard"],
+                "",
             ),
-            Some(Banking)
+            None
         );
         assert_eq!(
             sensitive_place(
                 "Safari",
                 "com.apple.Safari",
-                &["Welcome to Online Banking"],
-                &[]
+                &["Accounts"],
+                &["https://secure.chase.com/web/auth/dashboard"],
+                "Accounts\nTOTAL CHECKING (...5521)\nAvailable balance\n$1,204.33\nTransfer money",
             ),
             Some(Banking)
         );
@@ -651,11 +666,7 @@ mod tests {
                 "chrome-extension://cjpalhdlnbpafiamejdnhcphjbkeiagm/dashboard.html",
             ),
         ] {
-            assert_eq!(
-                sensitive_place(app, bundle, &[title], &[url]),
-                None,
-                "{title} {url}"
-            );
+            assert_eq!(place(app, bundle, &[title], &[url]), None, "{title} {url}");
         }
     }
 

@@ -7,6 +7,7 @@
 //! to send (after `redact`).
 
 pub mod field;
+pub mod judge;
 pub mod redact;
 pub mod sensitive;
 
@@ -77,18 +78,14 @@ pub struct ContextSnapshot {
 }
 
 impl ContextSnapshot {
-    /// What kind of private place this window is, if any, and which rule
-    /// said so, from its app, titles, URLs and the browser UI's labels
-    /// (`ui_labels`: tab, side panel and popup titles), never its text.
+    /// Whether this window is a private place, judged from its app, titles,
+    /// URLs, the browser UI's labels (`ui_labels`: tab, side panel and popup
+    /// titles) and, once it has been read, its text (see `judge`).
     #[cfg_attr(
         not(any(target_os = "macos", target_os = "windows", target_os = "linux")),
         allow(dead_code)
     )]
-    fn sensitive_place(
-        &self,
-        app: &FrontmostApp,
-        ui_labels: &[String],
-    ) -> Option<(sensitive::SensitivePlace, &'static str)> {
+    fn judge(&self, app: &FrontmostApp, ui_labels: &[String]) -> judge::Judgement {
         let mut titles: Vec<&str> = vec![self.window_title.as_str()];
         titles.extend(self.frame_titles.iter().map(String::as_str));
         titles.extend(ui_labels.iter().map(String::as_str));
@@ -96,7 +93,19 @@ impl ContextSnapshot {
         if let Some(url) = &self.url {
             urls.push(url);
         }
-        sensitive::sensitive_place_why(&app.name, &app.bundle_id, &titles, &urls)
+        let text = self
+            .text
+            .as_deref()
+            .or(self.focused_text.as_deref())
+            .unwrap_or("");
+        judge::judge(&judge::Page {
+            app_name: &app.name,
+            bundle_id: &app.bundle_id,
+            titles: &titles,
+            urls: &urls,
+            text,
+            secure_focus: self.secure,
+        })
     }
 }
 
@@ -205,6 +214,7 @@ pub fn open_windows(never_watch: &[String], max_chars: usize) -> Vec<OpenWindow>
                 &w.bundle_id,
                 &[&w.title],
                 &[w.url.as_deref().unwrap_or("")],
+                &w.text,
             )
             .is_none()
         })
@@ -227,8 +237,9 @@ pub enum Skipped {
     /// No frontmost app, or this platform isn't supported yet.
     Unavailable,
     /// The window shows a recovery phrase or a private key, or is a private
-    /// place (a wallet, a password manager, a bank): dropped entirely, and the
-    /// agent shows that it stepped back.
+    /// place (a wallet, a password manager, a bank, a checkout, a medical
+    /// portal, a government-ID page): dropped entirely, and the agent shows
+    /// that it stepped back.
     Sensitive,
 }
 
@@ -315,7 +326,8 @@ pub fn is_platform_browser(bundle_id: &str) -> bool {
 pub enum SensitiveReason {
     /// It showed a recovery phrase or a private key.
     Secret,
-    /// It is a private place as a whole (wallet, password manager, bank).
+    /// It is a private place as a whole (wallet, password manager, bank,
+    /// checkout, medical portal, government-ID page).
     Place(sensitive::SensitivePlace),
 }
 
@@ -325,6 +337,21 @@ impl SensitiveReason {
         match self {
             SensitiveReason::Secret => "hud.status.sensitivePaused",
             SensitiveReason::Place(_) => "hud.status.steppingBack",
+        }
+    }
+
+    /// What to say, quietly, when the user asks about a window Ambient won't
+    /// read ("I don't read banking pages."): an i18n key.
+    pub fn declined_key(self) -> &'static str {
+        use sensitive::SensitivePlace::*;
+        match self {
+            SensitiveReason::Secret => "hud.status.privateSecret",
+            SensitiveReason::Place(Wallet) => "hud.status.privateWallet",
+            SensitiveReason::Place(PasswordManager) => "hud.status.privatePasswords",
+            SensitiveReason::Place(Banking) => "hud.status.privateBanking",
+            SensitiveReason::Place(Payment) => "hud.status.privatePayment",
+            SensitiveReason::Place(Health) => "hud.status.privateHealth",
+            SensitiveReason::Place(Identity) => "hud.status.privateIdentity",
         }
     }
 }
@@ -438,9 +465,25 @@ fn raw_snapshot(pid: i32, max_chars: usize) -> Option<RawSnapshot> {
     }
 }
 
-/// A private browsing window, or a private place.
+/// The same window was judged private from its text a moment ago (by a full
+/// read): a metadata-only look at it (routing, the agent's tick) keeps that
+/// verdict instead of seeing only a harmless title.
 #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
-fn check_place(app: &FrontmostApp, raw: &RawSnapshot) -> Result<(), Skipped> {
+fn judged_private_recently(app: &FrontmostApp, title: &str) -> Option<sensitive::SensitivePlace> {
+    match recent_sensitive()? {
+        SensitiveWindow {
+            bundle_id,
+            title: t,
+            reason: SensitiveReason::Place(place),
+        } if bundle_id == app.bundle_id && t == title => Some(place),
+        _ => None,
+    }
+}
+
+/// A private browsing window, or a private place. `read` says whether the
+/// snapshot carries the window's text (a full read) or only its metadata.
+#[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+fn check_place(app: &FrontmostApp, raw: &RawSnapshot, read: bool) -> Result<(), Skipped> {
     let snap = &raw.snap;
     if snap.private_window
         || PRIVATE_TITLE_MARKERS
@@ -449,11 +492,21 @@ fn check_place(app: &FrontmostApp, raw: &RawSnapshot) -> Result<(), Skipped> {
     {
         return Err(Skipped::NeverWatch);
     }
-    let found = snap.sensitive_place(app, &raw.ui_labels);
-    // Privacy-safe: bundle, a title tag, counts, hosts and extension ids only.
-    let outcome = match found {
-        Some((place, rule)) => format!("match {place:?} (rule {rule})"),
-        None => "no match".into(),
+    let judgement = snap.judge(app, &raw.ui_labels);
+    let found = judgement.place.or_else(|| {
+        (!read)
+            .then(|| judged_private_recently(app, &snap.window_title))
+            .flatten()
+    });
+    // Privacy-safe: bundle, a title tag, the score and the names of the
+    // signals that fired, counts, hosts and extension ids only.
+    let signals = judgement.signals.join(",");
+    let outcome = match (found, judgement.place) {
+        (Some(place), Some(_)) => {
+            format!("match {place:?} (score {} via {signals})", judgement.score)
+        }
+        (Some(place), None) => format!("match {place:?} (judged from its text a moment ago)"),
+        _ => format!("no match (score {} via {signals})", judgement.score),
     };
     let urls = snap
         .frame_urls
@@ -462,9 +515,10 @@ fn check_place(app: &FrontmostApp, raw: &RawSnapshot) -> Result<(), Skipped> {
         .chain(snap.url.as_deref());
     let ext = sensitive::extension_ids(urls.clone());
     let line = format!(
-        "sensitive check {} title[{}]: {outcome}; frames={} hosts={:?} extensions={:?} ui_labels={} popups={} web_areas={} web_area_children={}",
+        "sensitive check {} title[{}] {}: {outcome}; frames={} hosts={:?} extensions={:?} ui_labels={} popups={} web_areas={} web_area_children={}",
         app.bundle_id,
         title_tag(&snap.window_title),
+        if read { "page" } else { "meta" },
         snap.frame_urls.len(),
         sensitive::hosts(urls),
         ext,
@@ -487,7 +541,7 @@ fn check_place(app: &FrontmostApp, raw: &RawSnapshot) -> Result<(), Skipped> {
     } else {
         log::trace!("{line}");
     }
-    if let Some((place, _)) = found {
+    if let Some(place) = found {
         mark_sensitive(app, &snap.window_title, SensitiveReason::Place(place));
         return Err(Skipped::Sensitive);
     }
@@ -515,9 +569,10 @@ pub fn press_labeled(labels: &[&str]) -> i32 {
 /// Read the frontmost window. `max_chars == 0` reads metadata only (app,
 /// title, focus), which is cheap enough to call on every trigger.
 ///
-/// Private places (wallets, password managers, banks) are recognised from
-/// the app, titles and frame URLs alone, before any text is read; they and
-/// windows showing a recovery phrase or key come back as
+/// Private places (wallets, password managers, banks, checkouts, medical and
+/// government-ID pages) are judged from the app, titles and frame URLs
+/// before any text is read, and again with the text once it is (see
+/// `judge`); they and windows showing a recovery phrase or key come back as
 /// [`Skipped::Sensitive`].
 pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnapshot, Skipped> {
     let Some(app) = frontmost_app() else {
@@ -544,13 +599,14 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
         // Metadata first (titles, URLs; no text), so a private place is
         // dropped before any of its text is read.
         let meta = raw_snapshot(app.pid, 0).ok_or(Skipped::Unavailable)?;
-        check_place(&app, &meta)?;
+        check_place(&app, &meta, false)?;
         let mut snap = if max_chars == 0 {
             meta.snap
         } else {
             let full = raw_snapshot(app.pid, max_chars).ok_or(Skipped::Unavailable)?;
-            // The window may have changed in between.
-            check_place(&app, &full)?;
+            // Judged again with its text (in memory only: a private page's
+            // text is dropped right here). The window may also have changed.
+            check_place(&app, &full, true)?;
             let d = &full.diag;
             log::debug!(
                 "snapshot {} title[{}] host={} text_chars={} text_nodes={} web_area={} main={} web_area_children={} chrome_nodes={} enhanced_ui={:?} enhanced_age_s={:?}",

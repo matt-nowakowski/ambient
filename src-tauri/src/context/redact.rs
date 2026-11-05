@@ -38,7 +38,7 @@ static PATTERNS: Lazy<Vec<Regex>> = Lazy::new(|| {
 static CARD: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"\b(?:\d[ -]?){12,18}\d\b").expect("card pattern"));
 
-fn luhn(digits: &str) -> bool {
+pub(crate) fn luhn(digits: &str) -> bool {
     let nums: Vec<u32> = digits.chars().filter_map(|c| c.to_digit(10)).collect();
     if !(13..=19).contains(&nums.len()) {
         return false;

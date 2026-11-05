@@ -85,13 +85,41 @@ struct Screen {
 
 static PREFETCH: Mutex<Option<(Instant, Screen)>> = Mutex::new(None);
 
+/// The window in front was private (a bank, a checkout, a medical portal…)
+/// when it was last read for a question, and why: the answer then says so
+/// quietly instead of answering without it.
+static DECLINED: Mutex<Option<(Instant, i32, context::SensitiveReason)>> = Mutex::new(None);
+
+/// Why the window in front wasn't read for this question, if it was private
+/// and still is the window in front.
+fn declined_for(pid: Option<i32>) -> Option<context::SensitiveReason> {
+    let (at, was, reason) = DECLINED.lock().ok()?.take()?;
+    (at.elapsed() < PREFETCH_FRESH && pid == Some(was)).then_some(reason)
+}
+
 /// Read the window in front, if the user has allowed it. Blocking (AX).
 fn capture_screen(app: &AppHandle) -> Option<Screen> {
     let agent = get_settings(app).agent;
     if !agent.screen_context || agent.is_paused() {
         return None;
     }
-    let snap = context::snapshot(CONTEXT_CHARS, &agent.never_watch).ok()?;
+    let snap = match context::snapshot(CONTEXT_CHARS, &agent.never_watch) {
+        Ok(snap) => snap,
+        Err(context::Skipped::Sensitive) => {
+            // Note why, so the answer can say it doesn't read this kind of page.
+            let front = context::frontmost_app();
+            let found = context::recent_sensitive();
+            if let (Some(front), Some(found)) = (front, found) {
+                if found.bundle_id == front.bundle_id {
+                    if let Ok(mut g) = DECLINED.lock() {
+                        *g = Some((Instant::now(), front.pid, found.reason));
+                    }
+                }
+            }
+            return None;
+        }
+        Err(_) => return None,
+    };
     let text = snap
         .selection
         .clone()
@@ -492,18 +520,32 @@ pub async fn run_with(
                 }
                 context = Some(s.text);
             }
-            None if !opts.compose && !get_settings(&app).agent.screen_context => {
-                hud::show(
-                    &app,
-                    HudContent::Status {
-                        text: "hud.status.needScreenContext".into(),
-                        tone: HudTone::Error,
-                        undo: false,
-                    },
-                );
-                return;
+            None => {
+                // A private page (a bank, a checkout, a medical portal…): say
+                // so quietly rather than answer as if the screen were empty.
+                if let Some(reason) = declined_for(context::frontmost_app().map(|f| f.pid)) {
+                    hud::show(
+                        &app,
+                        HudContent::Status {
+                            text: reason.declined_key().into(),
+                            tone: HudTone::Neutral,
+                            undo: false,
+                        },
+                    );
+                    return;
+                }
+                if !opts.compose && !get_settings(&app).agent.screen_context {
+                    hud::show(
+                        &app,
+                        HudContent::Status {
+                            text: "hud.status.needScreenContext".into(),
+                            tone: HudTone::Error,
+                            undo: false,
+                        },
+                    );
+                    return;
+                }
             }
-            None => {}
         }
     }
     // A drafted reply (not a rewrite of given text): say who the user is and
