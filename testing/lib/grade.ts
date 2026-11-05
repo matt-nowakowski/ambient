@@ -78,7 +78,9 @@ export function outcomeOf(r: AppReport, c: Case, proxyCalls: number): Outcome {
     return { ...base, route: "quiet" };
   }
   const name = p.route?.name as string | undefined;
-  if (p.written || name === "compose") {
+  // Written for them: an instruction, or a suggestion accepted by voice.
+  const wrote = ev.some((e) => e.type === "answer_request" && e.write);
+  if (p.written || name === "compose" || (name === "handled" && wrote)) {
     // Written for them: typed with the chip, or offered as a draft card.
     const writeAt = ev.findIndex((e) => e.type === "answer_request" && e.write);
     const typed =

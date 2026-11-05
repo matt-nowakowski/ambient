@@ -14,6 +14,7 @@ import { type CallLog, type Registry, startServer } from "./lib/server";
 import {
   applies,
   hostOs,
+  type Os,
   loadAll,
   resolve,
   type Loaded,
@@ -45,8 +46,15 @@ const idFilter = arg("id");
 const jobs = Number(arg("jobs") ?? 6);
 const budget = Number(arg("budget") ?? process.env.TESTING_BUDGET_USD ?? 0.5);
 const minPass = Number(arg("min-pass") ?? process.env.TESTING_MIN_PASS ?? 0.95);
-const os = hostOs();
-const exe = os === "windows" ? ".exe" : "";
+const host = hostOs();
+/**
+ * Whose app ids the screens use. `--as-os windows` on a Mac runs the Windows
+ * fixtures through the Mac build: a cheap early signal only, since the app's
+ * per-OS code (screen readers, focus rules) is still the Mac's. CI runs each
+ * OS for real.
+ */
+const os = (arg("as-os") as Os | undefined) ?? host;
+const exe = host === "windows" ? ".exe" : "";
 const targetDir =
   process.env.CARGO_TARGET_DIR ?? join(ROOT, "src-tauri", "target");
 const bin = arg("bin") ?? join(targetDir, "debug", `ambient${exe}`);
@@ -96,7 +104,7 @@ async function main() {
     cacheDir: join(HERE, ".cache"),
     budgetUsd: budget,
     dry,
-    model: process.env.TESTING_MODEL ?? DEFAULT_MODEL,
+    model: process.env.TESTING_MODEL || DEFAULT_MODEL,
     priceIn: Number(process.env.TESTING_PRICE_IN ?? 0.3),
     priceOut: Number(process.env.TESTING_PRICE_OUT ?? 1.2),
     apiKey: dry ? undefined : apiKey(),
@@ -104,7 +112,9 @@ async function main() {
   const registry: Registry = new Map();
   const server = startServer(model, registry);
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const out = arg("out") ?? join(HERE, "out", `${stamp}-${os}-layer${layer}`);
+  const label = os === host ? os : `${os}-on-${host}`;
+  const out =
+    arg("out") ?? join(HERE, "out", `${stamp}-${label}-layer${layer}`);
   mkdirSync(join(out, "scenarios"), { recursive: true });
   mkdirSync(join(out, "logs"), { recursive: true });
   console.log(

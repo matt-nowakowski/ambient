@@ -59,14 +59,18 @@ fn seed_card(app: &AppHandle) {
         return;
     };
     use crate::hud::HudContent;
+    // A suggestion is offered for real: the window is considered first, as
+    // the agent loop would, so answering it by voice finds it pending.
+    if card.kind == "suggestion" {
+        screen(app);
+        record("seeded", json!({}));
+        return;
+    }
+    if card.kind == "answer" {
+        crate::agent::answer::seed_turn(&card.question, &card.text);
+    }
     let content = match card.kind.as_str() {
         "help" => HudContent::Help,
-        "suggestion" => HudContent::Suggestion {
-            id: "suggest-seeded".into(),
-            title: card.text.clone(),
-            accept_label: "hud.accept".into(),
-            vars: Default::default(),
-        },
         "draft" => HudContent::Draft {
             id: "draft-seeded".into(),
             title: "hud.draft.title".into(),

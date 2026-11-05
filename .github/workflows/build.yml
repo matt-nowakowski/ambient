@@ -554,6 +554,8 @@ jobs:
         env:
           TESTING_BASETEN_API_KEY: ${{ secrets.TESTING_BASETEN_API_KEY }}
           TESTING_BUDGET_USD: "0.50"
+          # Production's model, when its AI_MODEL differs from web/lib/ai.ts's default.
+          TESTING_MODEL: ${{ vars.TESTING_MODEL }}
         run: |
           exe=""
           if [[ "$RUNNER_OS" == "Windows" ]]; then exe=".exe"; fi

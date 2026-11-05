@@ -83,6 +83,22 @@ pub fn api_base() -> String {
     env!("BRAND_API_BASE_URL").to_string()
 }
 
+/// The test suite's "an answer card is up" (`testing::run`): this question
+/// and answer, as if just answered.
+pub(crate) fn seed_turn(q: &str, a: &str) {
+    if let Ok(mut g) = LAST.lock() {
+        *g = Some(Conversation {
+            at: Instant::now(),
+            turns: vec![Turn {
+                q: q.to_string(),
+                a: a.to_string(),
+            }],
+            sources: Vec::new(),
+            context: None,
+        });
+    }
+}
+
 /// The last question and answer, while a follow-up would still continue it.
 pub fn last_turn() -> Option<(String, String)> {
     let g = LAST.lock().ok()?;

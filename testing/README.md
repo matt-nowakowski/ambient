@@ -9,6 +9,7 @@ bun run test:scenarios                 # everything, real model, $0.50 cap
 bun run test:scenarios --dry           # no model calls: cached replies only
 bun run test:scenarios --only critical # by tag (comma-separated: draft,pl)
 bun run test:scenarios --id draft.pl   # by id substring
+bun run test:scenarios --as-os windows # Windows app ids on this build (an early signal only)
 ```
 
 ## How it works

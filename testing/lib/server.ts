@@ -33,7 +33,8 @@ import { cannedSearch } from "./search";
 export type CallLog = {
   calls: { path: string; status: number; why?: string }[];
   /** A model call was refused (dry mode, budget) or failed. */
-  refused?: "dry" | "budget" | "no_key" | "error";
+  /** Why a model reply wasn't had in time; "slow": past the app's deadline. */
+  refused?: "dry" | "budget" | "no_key" | "error" | "slow";
   unexpected: string[];
   error?: string;
 };
@@ -74,11 +75,14 @@ export function startServer(model: Model, registry: Registry) {
         if (path === "/api/ai/v1/chat/completions" && req.method === "POST") {
           const body = await req.json();
           const messages = (body.messages ?? []) as Message[];
-          const content = await model
-            .complete(messages, Number(body.max_tokens ?? 2048))
-            .catch((e) => {
-              throw e;
-            });
+          const started = Date.now();
+          const content = await model.complete(
+            messages,
+            Number(body.max_tokens ?? 2048),
+          );
+          // Past the router's and polish's 10 s deadline the app has
+          // already fallen back: that run says nothing about its reasoning.
+          if (Date.now() - started > 9_500) log.refused = "slow";
           return done(
             Response.json({
               id: "test",
@@ -94,8 +98,13 @@ export function startServer(model: Model, registry: Registry) {
             }),
           );
         }
-        if (path === "/api/agent/answer" && req.method === "POST")
-          return done(await answer(model, await req.json()));
+        if (path === "/api/agent/answer" && req.method === "POST") {
+          const started = Date.now();
+          const res = await answer(model, await req.json());
+          // The app gives an answer about 20 s before it gives up.
+          if (Date.now() - started > 20_000) log.refused = "slow";
+          return done(res);
+        }
         if (path === "/api/agent/suggest" && req.method === "POST") {
           if (entry.plan !== "pro")
             return done(Response.json({ error: "pro_only" }, { status: 403 }));

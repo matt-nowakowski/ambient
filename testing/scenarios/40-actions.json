@@ -233,15 +233,21 @@
       "id": "handled.en.yes-to-suggestion",
       "tags": ["cards", "regression"],
       "lang": "en",
-      "screen": "mail_read_sam",
+      "screen": "mail_question_read",
       "say": "yes",
       "card": {
-        "kind": "suggestion",
-        "text": "hud.suggest.draftReply"
+        "kind": "suggestion"
+      },
+      "settings": {
+        "intelligence": "cloud",
+        "polish": false,
+        "writing": "smart",
+        "cloud_suggestions": "accepted"
       },
       "regression": "D15: answering a suggestion by voice",
       "expect": {
-        "route": "handled",
+        "route": "draft",
+        "recipient": "Rachel",
         "must_not": ["typed"]
       }
     },

@@ -303,6 +303,7 @@
     },
     {
       "id": "answer.en.follow-up",
+      "about": "A follow-up while an answer is up resolves \"them\" from it (an answer or a search of history).",
       "tags": ["follow-up", "regression"],
       "lang": "en",
       "screen": "finder_desktop",
@@ -314,7 +315,8 @@
       },
       "regression": "D6: a follow-up with the answer card up did nothing",
       "expect": {
-        "route": "answer",
+        "route": ["answer", "recall"],
+        "shows": ["BingX"],
         "must_not": ["typed"]
       }
     },

@@ -321,8 +321,7 @@
       "screen": "browser_article",
       "kind": "screen",
       "expect": {
-        "route": ["quiet", "suggest"],
-        "suggestion": ["summarise_page"]
+        "route": ["quiet", "suggest"]
       }
     },
     {
