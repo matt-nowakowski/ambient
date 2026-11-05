@@ -901,7 +901,9 @@ pub(crate) async fn process_dictation_output(
     // A style set for some app or site needs to know where this goes.
     let styled = mode == OutputMode::Dictation && !settings.app_styles.is_empty();
     let place = if cued || agent_on || smart_wanted || styled {
-        tauri::async_runtime::spawn_blocking(router::place)
+        // This dictation is going to the router: let an app or site the lists
+        // do not know be judged by its screen (see router::place_for).
+        tauri::async_runtime::spawn_blocking(move || router::place_for(cued))
             .await
             .unwrap_or_default()
     } else {

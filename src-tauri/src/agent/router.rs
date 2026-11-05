@@ -333,9 +333,14 @@ pub struct Place {
     /// be trusted to say so: nothing said here can be typed, so speech goes
     /// to the agent unless it's clearly prose.
     pub no_field: bool,
+    /// A little of the window's text, read only when asked (`place_for`), so
+    /// an app or site no list knows is judged by the shape of what it shows.
+    pub text: String,
 }
 
 /// AI assistants: anything said here is a prompt for them, not for Ambient.
+/// The lists are hints, kept for the apps whose screens do not say what they
+/// are; the screen itself decides (see `ai_chat_shape`).
 const AI_CHAT_APPS: &[&str] = &[
     "com.openai.chat",
     "com.anthropic.claudefordesktop",
@@ -367,7 +372,9 @@ const AI_CHAT_SITES: &[&str] = &[
     "grok.com",
     "poe.com",
 ];
-/// Messaging and email: requests here are usually addressed to people.
+/// Messaging and email: requests here are usually addressed to people. The
+/// lists are hints, kept for the apps whose screens do not say what they are;
+/// the screen itself decides (see `messaging_shape`).
 const MESSAGING_APPS: &[&str] = &[
     "com.tinyspeck.slackmacgap",
     "com.microsoft.teams2",
@@ -431,15 +438,168 @@ impl Place {
     pub fn is_ai_chat(&self) -> bool {
         AI_CHAT_APPS.contains(&self.bundle_id.as_str())
             || AI_CHAT_SITES.iter().any(|s| self.url.contains(s))
+            || ai_chat_shape(self)
     }
     pub fn is_messaging(&self) -> bool {
         MESSAGING_APPS.contains(&self.bundle_id.as_str())
             || MESSAGING_SITES.iter().any(|s| self.url.contains(s))
+            || messaging_shape(self)
+    }
+    /// Recognised by its identity or its own labels, before any text is read.
+    fn named(&self) -> bool {
+        AI_CHAT_APPS.contains(&self.bundle_id.as_str())
+            || MESSAGING_APPS.contains(&self.bundle_id.as_str())
+            || AI_CHAT_SITES.iter().any(|s| self.url.contains(s))
+            || MESSAGING_SITES.iter().any(|s| self.url.contains(s))
+            || ai_chat_named(&self.url, &self.title, &self.app)
+            || messaging_named(&self.url, &self.title, &self.app)
     }
 }
 
+// ── What the screen says it is ────────────────────────────────────────────
+//
+// The lists above are hints. A bundle id never says what a window shows, and
+// a new client, a web app or another OS's build is simply absent from them,
+// so the screen is read for evidence instead: the shape of the URL, what the
+// window calls itself, and the shape of the text. An app nobody has listed
+// yet is judged the same way as a known one whose screen says the same thing.
+
+/// A chat or mail host or path: "web.whatsapp.com", ".../messages/123",
+/// "mail.acme.com", ".../inbox". Applied to the URL only.
+static MESSAGING_URL: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?i)(?:^|[/.:_-])(?:webmail|mail|gmail|hotmail|outlook|protonmail|fastmail|inbox|messages|messenger|chat|chats|conversation|conversations|threads|slack|teams|discord|whatsapp|telegram|signal|element|zulip|mattermost|rocket\.chat|dms?)(?:[/.:_-]|$)",
+    )
+    .expect("messaging url")
+});
+
+/// A window that calls itself an inbox or a chat: "Inbox (3) - Gmail",
+/// "Ana Lopez | Slack", "Messages", "Team chat". Titles and app names only.
+static MESSAGING_TITLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?ix)
+          ^\s*(?:inbox|starred|sent|drafts|spam|trash)\s*[(\[]\d
+        | \b(?:gmail|outlook|protonmail|fastmail|slack|teams|discord|whatsapp|telegram|signal|messenger|element|zulip|mattermost|rocket\.chat|mail)\b\s*(?:[-–—:|·]|$)
+        | [-–—:|·]\s*(?:chat|chats|messages?|mail|inbox|slack|teams|discord|whatsapp|telegram|signal)\s*$
+        | \b\d+\s+new\s+messages?\b
+        | \bchat\s+(?:with|about)\b
+        ",
+    )
+    .expect("messaging title")
+});
+
+/// Mail headers, one per message ("From:", "To:", "Subject:").
+static MAIL_HEADER: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?im)^\s*(?:from|to|cc|bcc|subject|sent|reply-to):\s*\S").expect("mail header")
+});
+/// A sender's address alone on its line, as a thread shows it.
+static ADDRESS_LINE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(?m)^\s*<?[\w.+-]+@[\w-]+(?:\.[\w-]+)+>?\s*$").expect("address line")
+});
+/// "On Mon, Oct 3, Ana Lopez wrote:" -- one per quoted reply.
+static WROTE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?im)^\s*on\b.{5,80}\bwrote:\s*$").expect("wrote line"));
+/// Gmail's "(2 days ago)" (or "(now)") stamp.
+static AGO: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?i)\(\s*(?:\d+\s+(?:minutes?|hours?|days?|weeks?|months?)\s+ago|now|just now)\s*\)",
+    )
+    .expect("ago")
+});
+/// A line that is only a message's time ("10:14 AM", "Today at 9:02"), how a
+/// chat lays each message out; a terminal prints its stamps inside its lines.
+static STAMP_LINE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?im)^\s*(?:\d{1,2}:\d{2}\s?(?:[ap]m)?|(?:today|yesterday)\s+at\s+\d{1,2}:\d{2}\s?(?:[ap]m)?|\d{1,2}\s+\p{L}{3,9}\s+\d{4})\s*$",
+    )
+    .expect("stamp line")
+});
+
+/// Whether the URL, the window's title or its app name say "a conversation".
+fn messaging_named(url: &str, title: &str, app: &str) -> bool {
+    MESSAGING_URL.is_match(url) || MESSAGING_TITLE.is_match(title) || MESSAGING_TITLE.is_match(app)
+}
+
+/// The text is laid out as messages rather than a page: mail headers, a
+/// "wrote:" line, "2 days ago", a sender's address on its own line, or
+/// several lines that are only a time stamp. A terminal transcript shows
+/// shell prompts and output instead, so it gives none of these (Matt
+/// reported an offer to summarise an "email thread" over exactly one).
+fn messaging_text(text: &str) -> bool {
+    let t = tail(text, 3_000);
+    if MAIL_HEADER.is_match(t) || WROTE.is_match(t) {
+        return true;
+    }
+    if AGO.is_match(t) && (STAMP_LINE.is_match(t) || ADDRESS_LINE.is_match(t)) {
+        return true;
+    }
+    if STAMP_LINE.find_iter(t).count() >= 2 {
+        return true;
+    }
+    ADDRESS_LINE.find_iter(t).count() >= 2
+}
+
+/// The last `n` characters of `text`.
+fn tail(text: &str, n: usize) -> &str {
+    let count = text.chars().count();
+    if count <= n {
+        return text;
+    }
+    let skip = text.char_indices().nth(count - n).map_or(0, |(i, _)| i);
+    &text[skip..]
+}
+
+/// An assistant's name on the window (its host, title or app).
+static AI_NAME: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?i)\b(?:chatgpt|openai|claude|anthropic|gemini|bard|perplexity|copilot|deepseek|grok|mistral|llama|chatbot|ai assistant)\b",
+    )
+    .expect("ai name")
+});
+/// How an assistant's chat shows its turns ("You said:", "Assistant:").
+static AI_TURNS: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(
+        r"(?im)^\s*(?:you said|chatgpt said|claude said|gemini said|copilot said|assistant|human)\s*:\s*\S",
+    )
+    .expect("ai turns")
+});
+
+fn ai_chat_named(url: &str, title: &str, app: &str) -> bool {
+    AI_NAME.is_match(url) || AI_NAME.is_match(title) || AI_NAME.is_match(app)
+}
+
+/// Typing into an assistant's prompt is writing, not asking Ambient, so an
+/// unfamiliar one has to be recognised: its name on the window, or the shape
+/// of its transcript (two turns, so a document mentioning "User:" is not one).
+fn ai_chat_shape(p: &Place) -> bool {
+    ai_chat_named(&p.url, &p.title, &p.app) || AI_TURNS.find_iter(&p.text).count() >= 2
+}
+
+/// The URL, the window's title, its app name or the shape of its text say a
+/// conversation. An assistant's chat is not one.
+fn messaging_shape(p: &Place) -> bool {
+    if ai_chat_named(&p.url, &p.title, &p.app) {
+        return false;
+    }
+    messaging_named(&p.url, &p.title, &p.app) || messaging_text(&p.text)
+}
+
+/// How much of the window's text is read when the app or site is not
+/// recognised: enough to tell a conversation from a page or a terminal.
+const PLACE_TEXT_CHARS: usize = 1_200;
+
 /// Read where the user is (metadata only: app, title, URL, focus).
 pub fn place() -> Place {
+    place_for(false)
+}
+
+/// Like `place`, and, when `routing` is set, a little of the window's text
+/// when the app or site is not one the lists recognise: an unfamiliar chat
+/// client or web app is then judged by what it shows (its URL's shape, what
+/// its window calls itself, the shape of its text) instead of by its bundle
+/// id. Asked for only when the dictation is going to the router anyway, so
+/// plain dictation into a new app keeps its speed.
+pub fn place_for(routing: bool) -> Place {
     let Some(front) = crate::context::frontmost_app() else {
         return Place::default();
     };
@@ -448,21 +608,36 @@ pub fn place() -> Place {
         app: front.name.clone(),
         ..Default::default()
     };
-    if crate::context::accessibility_trusted() {
-        // Metadata only; the never-watch list still applies.
-        if let Ok(s) = crate::context::snapshot(0, &[]) {
-            let url = s.url.clone().unwrap_or_default();
-            p.no_field = front.bundle_id != env!("BRAND_IDENTIFIER")
-                && super::focus_is_reliable(&front.bundle_id)
-                && super::classify_focus(
-                    s.focused_role.as_deref(),
-                    s.editable && !s.secure,
-                    &s.window_title,
-                    &url,
-                ) == Some(false);
-            p.title = s.window_title;
-            p.url = url;
-            p.editable = s.editable;
+    if !crate::context::accessibility_trusted() {
+        return p;
+    }
+    // Metadata only; the never-watch list still applies.
+    if let Ok(s) = crate::context::snapshot(0, &[]) {
+        let url = s.url.clone().unwrap_or_default();
+        p.no_field = front.bundle_id != env!("BRAND_IDENTIFIER")
+            && super::focus_is_reliable(&front.bundle_id)
+            && super::classify_focus(
+                s.focused_role.as_deref(),
+                s.editable && !s.secure,
+                &s.window_title,
+                &url,
+            ) == Some(false);
+        p.title = s.window_title;
+        p.url = url;
+        p.editable = s.editable;
+    }
+    // An app or site nothing recognises: let the screen itself say.
+    if routing && !p.named() {
+        if let Ok(s) = crate::context::snapshot(PLACE_TEXT_CHARS, &[]) {
+            p.text = s.text.unwrap_or_default();
+            if p.is_messaging() || p.is_ai_chat() {
+                log::debug!(
+                    "router: {} is judged from its screen (messaging={}, ai_chat={})",
+                    p.bundle_id,
+                    p.is_messaging(),
+                    p.is_ai_chat()
+                );
+            }
         }
     }
     p
@@ -1240,5 +1415,100 @@ mod tests {
             parse(r#"{"intent":"compose","query":"tell them we're happy"}"#),
             Some(Route::Compose("tell them we're happy".into()))
         );
+    }
+
+    /// Matt: recognition by identity lists is not the way. A chat client
+    /// nobody has listed is judged on what its screen shows.
+    #[test]
+    fn an_unfamiliar_chat_screen_is_recognised_by_its_content() {
+        // A company's own client: no URL, a bundle id from nowhere, and a
+        // window that names only the person. The text is laid out as messages.
+        let chatter = Place {
+            bundle_id: "com.acme.Chatter".into(),
+            app: "Chatter".into(),
+            title: "Ana Lopez".into(),
+            text:
+                "Ana Lopez\n10:14 AM\nCan you send the deck by Friday?\nSam Lee\n10:15 AM\nOn it.\n"
+                    .into(),
+            ..Default::default()
+        };
+        assert!(chatter.is_messaging(), "{chatter:?}");
+        assert!(!chatter.is_ai_chat());
+
+        // The same shape over the web, told by the URL alone.
+        let web = Place {
+            bundle_id: "com.google.Chrome".into(),
+            app: "Google Chrome".into(),
+            title: "Acme".into(),
+            url: "https://chat.acme.com/inbox/42".into(),
+            ..Default::default()
+        };
+        assert!(web.is_messaging(), "{web:?}");
+
+        // A window that calls itself an inbox.
+        let inbox = Place {
+            bundle_id: "com.acme.Whatever".into(),
+            app: "Whatever".into(),
+            title: "Inbox (3) - Acme Mail".into(),
+            ..Default::default()
+        };
+        assert!(inbox.is_messaging(), "{inbox:?}");
+
+        // A terminal transcript is not a conversation, however long it is
+        // (this is the screen the offer Matt reported got wrong).
+        let terminal = Place {
+            bundle_id: "com.apple.Terminal".into(),
+            app: "Terminal".into(),
+            title: "codex".into(),
+            text: "Ana Lopez\n$ cargo test\nrunning 3 tests\ntest result: ok. 3 passed\n".into(),
+            ..Default::default()
+        };
+        assert!(!terminal.is_messaging(), "{terminal:?}");
+
+        // An assistant nobody has listed: typing there is writing, not
+        // asking Ambient.
+        let assistant = Place {
+            bundle_id: "com.acme.CopilotDesk".into(),
+            app: "Acme Assistant".into(),
+            title: "New chat".into(),
+            text: "You said: summarise the notes\nAssistant: Here is the summary.\n".into(),
+            ..Default::default()
+        };
+        assert!(assistant.is_ai_chat(), "{assistant:?}");
+    }
+
+    /// The apps and sites the lists already know keep working: the lists are
+    /// still the fast yes, the screen only adds to them.
+    #[test]
+    fn the_places_the_lists_know_are_unchanged() {
+        let slack = Place {
+            bundle_id: "com.tinyspeck.slackmacgap".into(),
+            ..Default::default()
+        };
+        assert!(slack.is_messaging());
+        let gmail = Place {
+            bundle_id: "com.google.Chrome".into(),
+            url: "https://mail.google.com/mail/u/0/#inbox".into(),
+            ..Default::default()
+        };
+        assert!(gmail.is_messaging());
+        let chatgpt = Place {
+            bundle_id: "com.google.Chrome".into(),
+            url: "https://chatgpt.com/c/1".into(),
+            ..Default::default()
+        };
+        assert!(chatgpt.is_ai_chat());
+        assert!(!chatgpt.is_messaging());
+        // A plain field in an app nobody special is still just a field:
+        // writing there is typing, not a chat.
+        let notes = Place {
+            bundle_id: "com.apple.Notes".into(),
+            app: "Notes".into(),
+            title: "Ideas".into(),
+            text: "Buy milk\nCall Ana about the deck\n".into(),
+            ..Default::default()
+        };
+        assert!(!notes.is_messaging(), "{notes:?}");
+        assert!(!notes.is_ai_chat());
     }
 }

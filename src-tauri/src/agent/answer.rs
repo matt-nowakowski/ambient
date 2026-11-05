@@ -165,6 +165,12 @@ pub struct Opts {
     pub smart: Option<super::writing::SmartWrite>,
     /// The user's style where the draft goes (`agent::styles::note`).
     pub style_note: Option<&'static str>,
+    /// What the offer promised about the screen ("Summarise this email
+    /// thread"), when the user accepted a suggestion. The answer must not
+    /// deny it, or the card would state both as true (see
+    /// `contradicts_premise`). A question the user asked carries no
+    /// premise: they get their answer whatever it says.
+    pub premise: Option<String>,
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -249,6 +255,128 @@ fn to_chips(sources: &[Source]) -> Vec<HudSource> {
         .collect()
 }
 
+// ── The card's two halves have to agree ───────────────────────────────────
+//
+// The offer and the answer are separate model calls over the same screen that
+// never compared conclusions: a card was shown titled "Summarise this email
+// thread" whose own body said the window was a terminal transcript (Matt's
+// report). The offer's wording is held to the window when it is made (see
+// `proactive::title_fits`); the other half is here, where the answer arrives.
+
+/// The media a card can promise, and the words that name each. A card and its
+/// answer have to be about the same kind of screen. Longest word first, since
+/// the regex built from these is an alternation.
+const MEDIA: &[&[&str]] = &[
+    // A conversation: mail, chat, messages.
+    &[
+        "conversation",
+        "messages",
+        "message",
+        "replies",
+        "reply",
+        "sender",
+        "thread",
+        "email",
+        "mail",
+        "inbox",
+        "chats",
+        "chat",
+        "dm",
+    ],
+    // Something to read: a page or a document.
+    &[
+        "transcript",
+        "document",
+        "article",
+        "report",
+        "paper",
+        "essay",
+        "page",
+        "pdf",
+        "doc",
+    ],
+    // A spreadsheet.
+    &["spreadsheet", "formula", "sheet", "cell"],
+    // A failure to explain.
+    &[
+        "exception",
+        "traceback",
+        "failure",
+        "crash",
+        "panic",
+        "error",
+        "bug",
+    ],
+];
+
+/// The answer saying the screen is not what the card promised: "this isn't an
+/// email thread", "there is no thread here", "a terminal transcript rather
+/// than an email". The negation has to reach the medium to count, so "no date
+/// was confirmed in this email thread" restates rather than denies.
+static DENIED_MEDIUM: Lazy<Regex> = Lazy::new(|| {
+    let media = MEDIA
+        .iter()
+        .flat_map(|group| group.iter())
+        .copied()
+        .collect::<Vec<_>>()
+        .join("|");
+    Regex::new(&format!(
+        r"(?ix)
+          \b(?:not|isn'?t|aren'?t|wasn'?t|weren'?t|no|never|without|none|nothing|didn'?t|don'?t|doesn'?t|can'?t|cannot|lacks?|missing)\b
+          (?:\s+\w{{1,12}}){{0,2}}\s+(?:an?|any|the)\s+(?P<m>{media})\b
+        | \b(?:rather\s+than|instead\s+of)\s+(?:an?|any|the)\s+(?P<m2>{media})\b
+        | \b(?:no|without)\s+(?P<m3>{media})\b
+        "
+    ))
+    .expect("denied medium")
+});
+
+/// Which media a text names, as a bit per group of `MEDIA`.
+fn media_named(text: &str) -> u8 {
+    let words: Vec<String> = text
+        .to_lowercase()
+        .split(|c: char| !c.is_alphanumeric())
+        .filter(|w| !w.is_empty())
+        .map(String::from)
+        .collect();
+    let mut mask = 0;
+    for (i, group) in MEDIA.iter().enumerate() {
+        if group.iter().any(|m| words.iter().any(|w| w == m)) {
+            mask |= 1 << i;
+        }
+    }
+    mask
+}
+
+/// Which media the answer says the screen is *not*, as a bit per group of
+/// `MEDIA`.
+fn media_denied(answer: &str) -> u8 {
+    let mut mask = 0;
+    for caps in DENIED_MEDIUM.captures_iter(answer) {
+        let word = caps
+            .name("m")
+            .or_else(|| caps.name("m2"))
+            .or_else(|| caps.name("m3"))
+            .map(|m| m.as_str().to_lowercase());
+        let Some(word) = word else { continue };
+        for (i, group) in MEDIA.iter().enumerate() {
+            if group.contains(&word.as_str()) {
+                mask |= 1 << i;
+            }
+        }
+    }
+    mask
+}
+
+/// Whether the answer denies the screen the card promised. An answer that
+/// simply restates the promise ("this email thread is about Q4 pricing")
+/// stands; only a card whose body says the window is something else is
+/// dropped, so the two halves never contradict each other on screen.
+fn contradicts_premise(premise: &str, answer: &str) -> bool {
+    let promised = media_named(premise);
+    promised != 0 && promised & media_denied(answer) != 0
+}
+
 pub async fn run_with(
     app: AppHandle,
     question: String,
@@ -283,6 +411,18 @@ pub async fn run_with(
                      note: Option<String>| {
         if !text.is_empty() {
             first_words.get_or_init(|| started.elapsed());
+        }
+        // The offer promised a kind of screen ("an email thread") and the
+        // answer read the screen for itself. When the two disagree, one card
+        // would state a question and an answer that contradict each other, so
+        // it is not shown: a quiet dismissal beats a card arguing with its own
+        // title. A question the user asked carries no premise and always shows.
+        if let (Some(premise), false) = (opts.premise.as_deref(), text.is_empty()) {
+            if contradicts_premise(premise, text) {
+                log::info!("answer contradicted the offer it was made for; dismissed instead");
+                hud::hide(&app);
+                return;
+            }
         }
         let all: Vec<Source> = sources.iter().chain(extra.iter()).cloned().collect();
         let mut chips: Vec<HudSource> = window_chip
@@ -728,6 +868,35 @@ mod tests {
 
     fn kinds(a: &[HudAnswerAction]) -> Vec<&str> {
         a.iter().map(|a| a.kind.as_str()).collect()
+    }
+
+    #[test]
+    fn an_answer_that_denies_the_offers_premise_is_caught() {
+        // The card Matt saw: offered as an email thread, answered as a terminal.
+        assert!(contradicts_premise(
+            "an email thread",
+            "This isn't an email thread — it's a terminal transcript from a coding session."
+        ));
+        assert!(contradicts_premise(
+            "a page",
+            "There is no page here, that's a chat window."
+        ));
+        assert!(contradicts_premise(
+            "an error",
+            "No error is shown; the tests passed."
+        ));
+        // Restating the premise is not denying it.
+        assert!(!contradicts_premise(
+            "an email thread",
+            "No date was confirmed in this email thread. Sam asked about the deck."
+        ));
+        // Naming some other medium is not a contradiction.
+        assert!(!contradicts_premise(
+            "a page",
+            "The article compares three plans and the cheapest is the middle one."
+        ));
+        // A question the user asked has no premise, so nothing can contradict it.
+        assert!(!contradicts_premise("", "This isn't an email thread."));
     }
 
     #[test]
