@@ -594,7 +594,7 @@
       "regression": "0.1.9 #8: a request on a bank page became \"I can't do that yet\"",
       "about": "Nothing to type into on a bank page: offered to copy, or told Ambient doesn't act on private pages; never promised it will one day.",
       "expect": {
-        "route": ["write", "did_you_mean", "polish", "act"],
+        "route": ["did_you_mean", "act"],
         "must_not": ["answered", "typed"],
         "not_shows": ["cantDoYet"]
       }
