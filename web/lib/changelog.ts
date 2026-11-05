@@ -52,6 +52,47 @@ export const changelog: Release[] = [
           "Windows and Linux fixes across the agent, menus that open in front, and clearer Polish.",
         ],
       },
+      {
+        heading: "Where the AI runs",
+        items: [
+          "Setup now asks where Ambient's intelligence should live: in the cloud, on this computer, or nowhere at all.",
+          "On a Mac that supports it, Apple Intelligence runs it. Otherwise pick a model to download, from a tiny 0.6B up to a 4B that writes best, each shown with its size and scores.",
+          "The scores come from the models' own published benchmarks rather than tests we ran ourselves, and the picker says so.",
+          "Choose “None” and Ambient stays a plain dictation tool: nothing is sent anywhere, and asking for something that needs AI gets a friendly explanation instead of silence.",
+        ],
+      },
+      {
+        heading: "History",
+        items: [
+          "A dictation can now say what ran: which speech model, whether your words were typed as said, polished or written for you, and how long each step took.",
+          "Open Details on an entry to see it. Entries from before this version show no Details rather than an empty one.",
+        ],
+      },
+      {
+        heading: "Shortcuts",
+        items: [
+          "Double-tap a modifier, such as Right Option, to start and stop dictating. A tap that is really part of another shortcut is left alone.",
+          "Bind an extra mouse button (Mouse 4, Mouse 5 or the middle button) to dictating or asking. Left and right click stay yours.",
+        ],
+      },
+      {
+        heading: "Updates",
+        items: [
+          "Ambient checks for new versions while it runs and downloads one quietly, then tells you once that it is ready.",
+          "“Restart to update” sits at the top of the menu bar menu. Ignore it and the update installs when you next quit, so the following launch is already current.",
+          "It never interrupts a recording, a meeting or something you asked it to do.",
+        ],
+      },
+      {
+        heading: "Fixes",
+        items: [
+          "Suggestions stay honest about what is on screen: a terminal transcript is no longer offered as an email thread, and a card can no longer argue with its own title.",
+          "The same suggestion no longer comes back while you sit on the same window.",
+          "A screen full of hashes is no longer mistaken for a private key, so Ambient stops backing away from ordinary terminals.",
+          "Rating a suggestion no longer leaves the old thumb pressed on the next one.",
+          "A dismissed card comes apart instead of simply fading.",
+        ],
+      },
     ],
   },
   {
