@@ -11,7 +11,7 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
-    version: "0.1.9",
+    version: "0.1.10",
     date: "2026-11-05",
     title: "Sharper suggestions, your AI your way",
     summary:

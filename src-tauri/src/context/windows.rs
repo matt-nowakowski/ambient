@@ -809,7 +809,8 @@ pub fn open_windows(skip: &[String], max_chars: usize) -> Vec<OpenWindow> {
         let titles: Vec<&str> = chrome.frame_titles.iter().map(String::as_str).collect();
         let urls: Vec<&str> = chrome.frame_urls.iter().map(String::as_str).collect();
         if chrome.private
-            || super::sensitive::sensitive_place(&app.name, &app.bundle_id, &titles, &urls)
+            // Metadata only here; the window's text is judged again once read.
+            || super::sensitive::sensitive_place(&app.name, &app.bundle_id, &titles, &urls, "")
                 .is_some()
         {
             continue;
