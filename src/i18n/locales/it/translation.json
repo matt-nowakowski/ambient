@@ -764,13 +764,23 @@
       "searchingOlder": "Ricerca tra le voci meno recenti…",
       "details": "Dettagli",
       "detail": {
-        "model": "Modello",
+        "model": "Modello vocale",
         "decided": "Decisione",
-        "as_said": "Come detto",
+        "as_said": "Come l'ho detto",
         "polished": "Levigato",
         "written": "Scritto per te",
+        "ai": "IA",
+        "prompt": "Prompt",
         "recorded": "Registrazione",
-        "total": "Totale"
+        "transcription": "Trascrizione",
+        "aiTime": "Tempo IA",
+        "total": "Totale",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Modello scaricato",
+          "localNamed": "{{name}}, su questo computer"
+        }
       }
     },
     "debug": {
@@ -1017,6 +1027,11 @@
     "copy": "Copia",
     "clear": "Svuota",
     "noOptionsFound": "Nessuna opzione trovata"
+  },
+  "keyboard": {
+    "left": "{{key}} sinistro",
+    "right": "{{key}} destro",
+    "mouse": "Mouse {{number}}"
   },
   "errors": {
     "loadDirectory": "Errore di caricamento cartella: {{error}}",

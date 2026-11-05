@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import i18next from "i18next";
+import en from "../../i18n/locales/en/translation.json";
 import {
   bindingKeys,
   bindsPrimaryMouseButton,
@@ -12,6 +14,13 @@ import {
   type RecordedKeyEvent,
   typesText,
 } from "./keyboard";
+
+// Key names come from the locale files, as in the app.
+await i18next.init({
+  lng: "en",
+  resources: { en: { translation: en } },
+  interpolation: { escapeValue: false },
+});
 
 const keyboardEvent = (value: { code?: string; key?: string }): KeyboardEvent =>
   value as KeyboardEvent;

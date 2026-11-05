@@ -230,8 +230,8 @@
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
       "polish": {
-        "title": "Wygładzaj moje dyktowanie z AI",
-        "description": "Wyłączone: dyktowanie wpisuje się od razu. Włączone: chaotyczna mowa jest najpierw wygładzana (wysyłany jest tekst, nigdy dźwięk). Tak czy inaczej {{appName}} napisze za Ciebie, gdy poprosisz."
+        "title": "Szlifuj moje dyktowanie z AI",
+        "description": "Wyłączone: dyktowanie wpisuje się od razu. Włączone: chaotyczna mowa jest najpierw szlifowana (wysyłany jest tekst, nigdy dźwięk). Tak czy inaczej {{appName}} napisze za Ciebie, gdy poprosisz."
       },
       "finish": "Gotowe",
       "panel": {
@@ -259,7 +259,7 @@
       "continue": "Dalej",
       "cloud": {
         "title": "W chmurze",
-        "body": "Najlepsze wyniki. Twój tekst trafia na nasz serwer, by go wygładzić i odpowiedzieć; dźwięk nigdy."
+        "body": "Najlepsze wyniki. Twój tekst trafia na nasz serwer, który go szlifuje i odpowiada; dźwięk nigdy."
       },
       "device": {
         "title": "Na tym komputerze",
@@ -271,7 +271,7 @@
       },
       "none": {
         "title": "Bez AI",
-        "body": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani wygładzane, pisane czy podpowiadane."
+        "body": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani szlifowane, pisane czy podpowiadane."
       },
       "continueDownload": "Dalej i pobierz"
     }
@@ -394,7 +394,7 @@
         "none": "Brak skonfigurowanych skrótów",
         "notFound": "Nie znaleziono skrótu",
         "pressKeys": "Naciśnij klawisze…",
-        "keepClicks": "Kliknięcie lewym i prawym przyciskiem zostaje twoje; wybierz inny klawisz.",
+        "keepClicks": "Kliknięcia lewym i prawym przyciskiem zostają Twoje; wybierz inny klawisz.",
         "doubleTap": {
           "label": "Podwójne naciśnięcie",
           "description": "Naciśnij dwa razy, aby zacząć, i dwa razy, aby zatrzymać. Pojedyncze naciśnięcie lub przytrzymanie działa jak dotąd."
@@ -767,13 +767,23 @@
       "searchingOlder": "Przeszukiwanie starszych wpisów…",
       "details": "Szczegóły",
       "detail": {
-        "model": "Model",
+        "model": "Model mowy",
         "decided": "Decyzja",
-        "as_said": "Jak powiedziano",
-        "polished": "Wygładzone",
-        "written": "Napisane za ciebie",
+        "as_said": "Dosłownie",
+        "polished": "Wyszlifowane",
+        "written": "Napisane za Ciebie",
         "recorded": "Nagranie",
-        "total": "Razem"
+        "total": "Razem",
+        "ai": "AI",
+        "prompt": "Polecenie",
+        "transcription": "Transkrypcja",
+        "aiTime": "Czas AI",
+        "engine": {
+          "cloud": "Chmura",
+          "apple": "Apple Intelligence",
+          "local": "Pobrany model",
+          "localNamed": "{{name}}, na tym komputerze"
+        }
       }
     },
     "debug": {
@@ -867,7 +877,7 @@
       },
       "postProcessingToggle": {
         "label": "Przetwarzanie końcowe",
-        "description": "Włącz dopracowywanie tekstu przez AI po transkrypcji"
+        "description": "Włącz szlifowanie tekstu przez AI po transkrypcji"
       },
       "muteWhileRecording": {
         "label": "Wycisz podczas nagrywania",
@@ -1525,8 +1535,8 @@
       "down": "Niepomocne"
     },
     "writing": {
-      "polished": "Wygładzone",
-      "written": "Napisane za ciebie",
+      "polished": "Wyszlifowane",
+      "written": "Napisane za Ciebie",
       "useMyWords": "Moje słowa",
       "edit": "Edytuj",
       "cancel": "Anuluj",
@@ -1673,7 +1683,7 @@
       "title": "Używaj Apple Intelligence także do odpowiedzi",
       "description": "Odpowiedzi i szlifowanie działają na tym Macu, gdy się zmieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone.",
       "titleDownloaded": "Używaj AI na urządzeniu także do odpowiedzi",
-      "descriptionDownloaded": "Odpowiedzi i dopracowanie działają na tym komputerze, gdy się mieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone."
+      "descriptionDownloaded": "Odpowiedzi i szlifowanie działają na tym komputerze, gdy się mieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone."
     },
     "suggestions": {
       "title": "Otrzymywane sugestie",
@@ -1763,8 +1773,8 @@
     "onDeviceAi": {
       "title": "AI na urządzeniu",
       "download": "Pobierz AI na urządzenie (≈{{size}})",
-      "description": "Mały model AI działający na tym komputerze, dzięki któremu dopracowanie, inteligentne pisanie, sugestie i krótkie odpowiedzi działają bez chmury.",
-      "descriptionMac": "Alternatywa dla Apple Intelligence: mały model AI działający na tym komputerze do dopracowania, inteligentnego pisania, sugestii i krótkich odpowiedzi.",
+      "description": "Mały model AI działający na tym komputerze, dzięki któremu szlifowanie, inteligentne pisanie, sugestie i krótkie odpowiedzi działają bez chmury.",
+      "descriptionMac": "Alternatywa dla Apple Intelligence: mały model AI działający na tym komputerze do szlifowania, inteligentnego pisania, sugestii i krótkich odpowiedzi.",
       "downloadButton": "Pobierz",
       "downloading": "Pobieranie… {{percent}}%",
       "cancel": "Anuluj",
@@ -2124,5 +2134,10 @@
       "rateLimited": "Na razie za dużo zgłoszeń. Spróbuj za godzinę.",
       "failed": "Nie udało się wysłać opinii. Spróbuj ponownie."
     }
+  },
+  "keyboard": {
+    "left": "Lewy {{key}}",
+    "right": "Prawy {{key}}",
+    "mouse": "Mysz {{number}}"
   }
 }

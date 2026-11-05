@@ -761,13 +761,23 @@
       "searchingOlder": "이전 항목 검색 중…",
       "details": "세부정보",
       "detail": {
-        "model": "모델",
+        "model": "음성 모델",
         "decided": "결정",
         "as_said": "말한 대로",
         "polished": "다듬음",
         "written": "대신 작성",
+        "ai": "AI",
+        "prompt": "프롬프트",
         "recorded": "녹음",
-        "total": "합계"
+        "transcription": "받아쓰기",
+        "aiTime": "AI 시간",
+        "total": "합계",
+        "engine": {
+          "cloud": "클라우드",
+          "apple": "Apple Intelligence",
+          "local": "다운로드한 모델",
+          "localNamed": "{{name}}(이 컴퓨터)"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "복사",
     "clear": "지우기",
     "noOptionsFound": "옵션을 찾을 수 없습니다"
+  },
+  "keyboard": {
+    "left": "왼쪽 {{key}}",
+    "right": "오른쪽 {{key}}",
+    "mouse": "마우스 {{number}}"
   },
   "errors": {
     "loadDirectory": "디렉터리를 불러오는 중 오류 발생: {{error}}",

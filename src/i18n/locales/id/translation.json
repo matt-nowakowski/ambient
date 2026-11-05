@@ -761,13 +761,23 @@
       "searchingOlder": "Mencari entri yang lebih lama…",
       "details": "Detail",
       "detail": {
-        "model": "Model",
+        "model": "Model ucapan",
         "decided": "Keputusan",
         "as_said": "Sesuai ucapan",
         "polished": "Dipoles",
         "written": "Ditulis untuk Anda",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Rekaman",
-        "total": "Total"
+        "transcription": "Transkripsi",
+        "aiTime": "Waktu AI",
+        "total": "Total",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Model yang diunduh",
+          "localNamed": "{{name}}, di komputer ini"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "Salin",
     "clear": "Bersihkan",
     "noOptionsFound": "Tidak ada opsi yang ditemukan"
+  },
+  "keyboard": {
+    "left": "{{key}} Kiri",
+    "right": "{{key}} Kanan",
+    "mouse": "Mouse {{number}}"
   },
   "errors": {
     "loadDirectory": "Kesalahan saat memuat direktori: {{error}}",

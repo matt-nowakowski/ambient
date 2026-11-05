@@ -761,13 +761,23 @@
       "searchingOlder": "Търсене в по-стари записи…",
       "details": "Подробности",
       "detail": {
-        "model": "Модел",
+        "model": "Модел за реч",
         "decided": "Решение",
         "as_said": "Както е казано",
         "polished": "Изгладено",
         "written": "Написано за вас",
+        "ai": "ИИ",
+        "prompt": "Подкана",
         "recorded": "Запис",
-        "total": "Общо"
+        "transcription": "Транскрипция",
+        "aiTime": "Време на ИИ",
+        "total": "Общо",
+        "engine": {
+          "cloud": "Облак",
+          "apple": "Apple Intelligence",
+          "local": "Изтегленият модел",
+          "localNamed": "{{name}}, на този компютър"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "Копиране",
     "clear": "Изчистване",
     "noOptionsFound": "Няма намерени опции"
+  },
+  "keyboard": {
+    "left": "Ляв {{key}}",
+    "right": "Десен {{key}}",
+    "mouse": "Мишка {{number}}"
   },
   "errors": {
     "loadDirectory": "Грешка при зареждане на папката: {{error}}",

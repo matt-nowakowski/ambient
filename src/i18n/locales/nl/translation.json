@@ -761,13 +761,23 @@
       "searchingOlder": "Oudere items doorzoeken…",
       "details": "Details",
       "detail": {
-        "model": "Model",
+        "model": "Spraakmodel",
         "decided": "Beslissing",
-        "as_said": "Zoals gezegd",
+        "as_said": "Zoals ik het zei",
         "polished": "Gepolijst",
         "written": "Voor je geschreven",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Opname",
-        "total": "Totaal"
+        "transcription": "Transcriptie",
+        "aiTime": "AI-tijd",
+        "total": "Totaal",
+        "engine": {
+          "cloud": "Cloud",
+          "apple": "Apple Intelligence",
+          "local": "Gedownload model",
+          "localNamed": "{{name}}, op deze computer"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "Kopiëren",
     "clear": "Wissen",
     "noOptionsFound": "Geen opties gevonden"
+  },
+  "keyboard": {
+    "left": "Linker {{key}}",
+    "right": "Rechter {{key}}",
+    "mouse": "Muis {{number}}"
   },
   "errors": {
     "loadDirectory": "Fout bij laden van map: {{error}}",

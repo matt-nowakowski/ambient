@@ -761,13 +761,23 @@
       "searchingOlder": "पुराना प्रविष्टिहरू खोज्दै…",
       "details": "विवरण",
       "detail": {
-        "model": "मोडेल",
+        "model": "वाणी मोडेल",
         "decided": "निर्णय",
         "as_said": "भनिए जस्तै",
         "polished": "परिमार्जित",
         "written": "तपाईंका लागि लेखिएको",
+        "ai": "AI",
+        "prompt": "प्रम्प्ट",
         "recorded": "रेकर्डिङ",
-        "total": "जम्मा"
+        "transcription": "ट्रान्सक्रिप्सन",
+        "aiTime": "AI समय",
+        "total": "जम्मा",
+        "engine": {
+          "cloud": "क्लाउड",
+          "apple": "Apple Intelligence",
+          "local": "डाउनलोड गरिएको मोडेल",
+          "localNamed": "{{name}}, यो कम्प्युटरमा"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "कपी गर्नुहोस्",
     "clear": "खाली गर्नुहोस्",
     "noOptionsFound": "कुनै विकल्प भेटिएन"
+  },
+  "keyboard": {
+    "left": "बायाँ {{key}}",
+    "right": "दायाँ {{key}}",
+    "mouse": "माउस {{number}}"
   },
   "errors": {
     "loadDirectory": "डाइरेक्टरी लोड गर्दा त्रुटि: {{error}}",

@@ -12,13 +12,13 @@ use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Condvar, Mutex, MutexGuard};
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 use tauri::{AppHandle, Manager};
 use tauri_specta::Event;
 
 use crate::actions::process_transcription_output;
 use crate::audio_toolkit::{decode_audio_file, read_wav_samples, save_wav_file};
-use crate::managers::history::{HistoryEntry, HistoryManager};
+use crate::managers::history::{EntryDetails, HistoryEntry, HistoryManager};
 use crate::managers::transcription::{
     panic_payload_message, ChunkControl, Transcription, TranscriptionManager,
 };
@@ -296,8 +296,17 @@ impl TranscriptionJobManager {
             cancelled,
             percent: Cell::new(0),
         };
-        let Some(Transcription { text, language }) = tm.transcribe_in_chunks(samples, &control)?
-        else {
+        // What ran this time, for History's details. Nothing is typed from
+        // a retry, so no write decision or total.
+        let mut details = EntryDetails {
+            recording_ms: Some((samples.len() as f64 / 16_000.0 * 1000.0) as i64),
+            ..Default::default()
+        };
+        let started = Instant::now();
+        let transcribed = tm.transcribe_in_chunks(samples, &control)?;
+        details.speech_model = tm.current_model_id();
+        details.transcription_ms = Some(started.elapsed().as_millis() as i64);
+        let Some(Transcription { text, language }) = transcribed else {
             return Ok(());
         };
         if text.is_empty() {
@@ -307,22 +316,28 @@ impl TranscriptionJobManager {
             return Ok(());
         }
 
-        let processed = tauri::async_runtime::block_on(process_transcription_output(
-            &self.app,
-            &text,
-            entry.post_process_requested,
-            crate::actions::OutputMode::File,
+        let (processed, ai_uses) = tauri::async_runtime::block_on(crate::agent::llm::traced(
+            process_transcription_output(
+                &self.app,
+                &text,
+                entry.post_process_requested,
+                crate::actions::OutputMode::File,
+            ),
         ));
         // Post-processing can take a while; a cancel during it still wins.
         if cancelled.load(Ordering::Acquire) {
             return Ok(());
         }
+        crate::actions::note_ai(&mut details, &ai_uses);
+        details.prompt_id =
+            crate::actions::polish_prompt_id(&self.app, processed.post_processed_text.is_some());
         hm.update_transcription(
             entry.id,
             text,
             processed.post_processed_text,
             processed.post_process_prompt,
             language,
+            details,
         )?;
         Ok(())
     }

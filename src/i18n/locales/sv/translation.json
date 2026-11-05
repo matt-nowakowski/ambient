@@ -761,13 +761,23 @@
       "searchingOlder": "Söker bland äldre poster…",
       "details": "Detaljer",
       "detail": {
-        "model": "Modell",
+        "model": "Talmodell",
         "decided": "Beslut",
-        "as_said": "Som sagt",
+        "as_said": "Som jag sa",
         "polished": "Polerad",
         "written": "Skrivet åt dig",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Inspelning",
-        "total": "Totalt"
+        "transcription": "Transkribering",
+        "aiTime": "AI-tid",
+        "total": "Totalt",
+        "engine": {
+          "cloud": "Molnet",
+          "apple": "Apple Intelligence",
+          "local": "Hämtad modell",
+          "localNamed": "{{name}}, på den här datorn"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "Kopiera",
     "clear": "Rensa",
     "noOptionsFound": "Inga alternativ hittades"
+  },
+  "keyboard": {
+    "left": "Vänster {{key}}",
+    "right": "Höger {{key}}",
+    "mouse": "Mus {{number}}"
   },
   "errors": {
     "loadDirectory": "Det gick inte att läsa in mappen: {{error}}",

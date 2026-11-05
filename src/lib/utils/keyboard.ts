@@ -2,6 +2,7 @@
  * Keyboard utility functions for handling keyboard events
  */
 
+import i18next from "i18next";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 
 export type OSType = "macos" | "windows" | "linux" | "unknown";
@@ -23,20 +24,24 @@ const COMPOUND_KEY_DISPLAY: Record<string, string> = {
   scrolllock: "Scroll Lock",
 };
 
-// Mouse buttons as people name them. The parser also accepts the "mouse1"
-// style aliases, so they all display the same way.
-const MOUSE_DISPLAY: Record<string, string> = {
-  mouseleft: "Mouse 1",
-  mouse1: "Mouse 1",
-  mouseright: "Mouse 2",
-  mouse2: "Mouse 2",
-  mousemiddle: "Mouse 3",
-  mouse3: "Mouse 3",
-  mousex1: "Mouse 4",
-  mouse4: "Mouse 4",
-  mousex2: "Mouse 5",
-  mouse5: "Mouse 5",
+// Mouse buttons by number, as people name them ("Mouse 4"). The parser also
+// accepts the "mouse1" style aliases, so they all display the same way.
+const MOUSE_BUTTONS: Record<string, number> = {
+  mouseleft: 1,
+  mouse1: 1,
+  mouseright: 2,
+  mouse2: 2,
+  mousemiddle: 3,
+  mouse3: 3,
+  mousex1: 4,
+  mouse4: 4,
+  mousex2: 5,
+  mouse5: 5,
 };
+
+/** "Left Shift", "Right ⌥": a key's side in the app's language. */
+const sided = (side: "left" | "right", key: string): string =>
+  i18next.t(`keyboard.${side}`, { key });
 
 /**
  * Marks a binding that toggles on a double tap of its key instead of holding
@@ -210,7 +215,8 @@ const capitalizeKey = (key: string): string => {
   // Single char: a -> A
   if (key.length === 1) return key.toUpperCase();
   if (COMPOUND_KEY_DISPLAY[key]) return COMPOUND_KEY_DISPLAY[key];
-  if (MOUSE_DISPLAY[key]) return MOUSE_DISPLAY[key];
+  if (MOUSE_BUTTONS[key])
+    return i18next.t("keyboard.mouse", { number: MOUSE_BUTTONS[key] });
   // Multi-word: capitalize first letter of each word
   return key.replace(/\b\w/g, (c) => c.toUpperCase());
 };
@@ -225,12 +231,10 @@ const formatKeyPart = (part: string): string => {
   if (!trimmed) return "";
 
   if (trimmed.endsWith("_left")) {
-    const name = trimmed.slice(0, -5);
-    return `Left ${capitalizeKey(name)}`;
+    return sided("left", capitalizeKey(trimmed.slice(0, -5)));
   }
   if (trimmed.endsWith("_right")) {
-    const name = trimmed.slice(0, -6);
-    return `Right ${capitalizeKey(name)}`;
+    return sided("right", capitalizeKey(trimmed.slice(0, -6)));
   }
 
   return capitalizeKey(trimmed);
@@ -358,20 +362,20 @@ const PC_KEYCAPS: Record<string, string> = {
   command: "⊞",
 };
 
-/** "Right " / "Left " for a side-specific key, "" for a key without sides. */
-const sidePrefix = (part: string): string =>
-  part.endsWith("_right") ? "Right " : part.endsWith("_left") ? "Left " : "";
-
 /** "option+space" → ["⌥", "Space"] on macOS. A double tap adds a "×2" cap. */
 export const keycapLabels = (binding: string, osType: OSType): string[] => {
   const parts = bindingKeys(binding);
   const labels = parts.map((part) => {
     const key = part.replace(/_(left|right)$/, "");
     const glyphs = osType === "macos" ? MAC_KEYCAPS : PC_KEYCAPS;
+    const label = glyphs[key] ?? capitalizeKey(key);
     // A lone modifier is the whole shortcut, so its side has to be drawn:
     // "Right ⌥" says what "⌥" alone doesn't.
-    const side = parts.length === 1 ? sidePrefix(part) : "";
-    return side + (glyphs[key] ?? capitalizeKey(key));
+    if (parts.length === 1 && part.endsWith("_right"))
+      return sided("right", label);
+    if (parts.length === 1 && part.endsWith("_left"))
+      return sided("left", label);
+    return label;
   });
   return isDoubleTapBinding(binding) ? [...labels, "×2"] : labels;
 };

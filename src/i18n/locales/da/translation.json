@@ -761,13 +761,23 @@
       "searchingOlder": "Søger i ældre poster…",
       "details": "Detaljer",
       "detail": {
-        "model": "Model",
+        "model": "Talemodel",
         "decided": "Beslut",
-        "as_said": "Som sagt",
+        "as_said": "Som jeg sagde",
         "polished": "Poleret",
         "written": "Skrevet for dig",
+        "ai": "AI",
+        "prompt": "Prompt",
         "recorded": "Optagelse",
-        "total": "I alt"
+        "transcription": "Transskription",
+        "aiTime": "AI-tid",
+        "total": "I alt",
+        "engine": {
+          "cloud": "Skyen",
+          "apple": "Apple Intelligence",
+          "local": "Hentet model",
+          "localNamed": "{{name}}, på denne computer"
+        }
       }
     },
     "debug": {
@@ -1014,6 +1024,11 @@
     "copy": "Kopiér",
     "clear": "Ryd",
     "noOptionsFound": "Ingen muligheder fundet"
+  },
+  "keyboard": {
+    "left": "Venstre {{key}}",
+    "right": "Højre {{key}}",
+    "mouse": "Mus {{number}}"
   },
   "errors": {
     "loadDirectory": "Fejl ved indlæsning af mappe: {{error}}",

@@ -767,13 +767,23 @@
       "searchingOlder": "Поиск по старым записям…",
       "details": "Подробности",
       "detail": {
-        "model": "Модель",
+        "model": "Модель речи",
         "decided": "Решение",
         "as_said": "Как сказано",
         "polished": "Отполировано",
         "written": "Написано для вас",
+        "ai": "ИИ",
+        "prompt": "Промпт",
         "recorded": "Запись",
-        "total": "Всего"
+        "transcription": "Распознавание",
+        "aiTime": "Время ИИ",
+        "total": "Всего",
+        "engine": {
+          "cloud": "Облако",
+          "apple": "Apple Intelligence",
+          "local": "Загруженная модель",
+          "localNamed": "{{name}}, на этом компьютере"
+        }
       }
     },
     "debug": {
@@ -1020,6 +1030,11 @@
     "copy": "Копировать",
     "clear": "Очистить",
     "noOptionsFound": "Вариантов не найдено"
+  },
+  "keyboard": {
+    "left": "Левый {{key}}",
+    "right": "Правый {{key}}",
+    "mouse": "Мышь {{number}}"
   },
   "errors": {
     "loadDirectory": "Ошибка загрузки каталога: {{error}}",
