@@ -248,6 +248,7 @@ function Empty({ children }: { children: ReactNode }) {
 }
 
 export function bytes(n: number) {
+  if (n <= 0) return "0 MB";
   if (n >= 1e9) return `${(n / 1e9).toFixed(2)} GB`;
   if (n >= 1e6) return `${(n / 1e6).toFixed(n >= 1e8 ? 0 : 1)} MB`;
   return `${Math.max(1, Math.round(n / 1e3))} KB`;
