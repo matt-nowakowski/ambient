@@ -43,14 +43,6 @@ export const launchVideos: VideoFile[] = launchVideo
     ]
   : [];
 
-/** Every R2 media key the video download route may sign: the videos and their posters. */
-export function launchMediaFiles(): string[] {
-  return launchVideos
-    .flatMap((v) => [v.src, v.poster?.light, v.poster?.dark])
-    .filter((p): p is string => Boolean(p))
-    .map((p) => p.replace(/^\/media\//, ""));
-}
-
 // ---------------------------------------------------------------------------
 // Logos
 // ---------------------------------------------------------------------------

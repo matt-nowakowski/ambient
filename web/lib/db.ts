@@ -265,43 +265,6 @@ export async function activityDb() {
 
 export const ACCOUNT_RETENTION_DAYS = 365;
 
-let marketingSchemaReady: Promise<unknown> | null = null;
-
-/**
- * Creator clips for the admin Marketing tab and the media kit
- * (lib/marketing/uploads.ts). The files live in R2 under marketing/; this is
- * their metadata. Created lazily by those pages only; additive.
- *
- * - marketing_uploads: one row per file. status 'pending' from the moment an
- *   upload URL is handed out (its size counts against the budget), 'ready'
- *   once R2 confirms the object.
- */
-export async function marketingDb() {
-  const sql = await db();
-  marketingSchemaReady ??= sql`
-    create table if not exists marketing_uploads (
-      id text primary key,
-      key text not null unique,
-      filename text not null,
-      content_type text not null,
-      size bigint not null,
-      title text not null,
-      notes text not null default '',
-      kind text not null,
-      orientation text not null,
-      status text not null default 'pending',
-      created_by text not null,
-      created_at timestamptz not null default now()
-    )`;
-  try {
-    await marketingSchemaReady;
-  } catch (err) {
-    marketingSchemaReady = null; // retry on the next call
-    throw err;
-  }
-  return sql;
-}
-
 /** Monday (UTC) of the current week, and when the next week starts. */
 export function currentWeek(now = new Date()) {
   const day = (now.getUTCDay() + 6) % 7; // Monday = 0

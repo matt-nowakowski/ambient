@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/logo";
-import { MarketingSuite, SECTIONS, toPublicUpload } from "@/components/marketing/suite";
+import { MarketingSuite, SECTIONS } from "@/components/marketing/suite";
 import { buttonClass } from "@/components/ui";
 import { brand, emails, mailto, siteUrl } from "@/lib/brand";
 import { kitTokenValid } from "@/lib/marketing/kit";
-import { listUploads } from "@/lib/marketing/uploads";
+import { creatorVideos } from "@/lib/marketing/creator";
 
 /**
  * The influencer media kit: /kit/<MEDIA_KIT_TOKEN>. Read-only, unlisted (no
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default async function MediaKitPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   if (!kitTokenValid(token)) notFound();
-  const state = await listUploads();
+  const creator = await creatorVideos();
 
   return (
     <div data-kit-root className="mx-auto max-w-[1200px] px-4 pb-20 pt-6 sm:px-8 sm:pt-10">
@@ -59,7 +59,7 @@ export default async function MediaKitPage({ params }: { params: Promise<{ token
       </nav>
 
       <div className="mt-8">
-        <MarketingSuite uploads={state.ok ? state.uploads.map(toPublicUpload) : []} />
+        <MarketingSuite videos={creator.videos} />
       </div>
 
       <footer className="mt-16 border-t border-[color-mix(in_srgb,#8f8f8f_20%,transparent)] pt-6 text-[13px] text-muted">
