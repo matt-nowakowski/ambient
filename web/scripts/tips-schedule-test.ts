@@ -6,7 +6,7 @@
  * Run: bun scripts/tips-schedule-test.ts
  */
 import { TIP_SEQUENCES } from "../lib/email/templates";
-import { TIP_GAP_DAYS, TIP_LANGUAGES, afterTip, dueTips, firstTipAt, tipLanguage, type TipRow } from "../lib/email/tip-schedule";
+import { TIP_GAP_DAYS, TIP_FIRST_DELAY_DAYS, TIP_LANGUAGES, afterTip, dueTips, firstTipAt, tipLanguage, type TipRow } from "../lib/email/tip-schedule";
 
 let failures = 0;
 function check(name: string, cond: boolean) {
@@ -54,8 +54,9 @@ check("every language has the same number of tips", TIP_LANGUAGES.every((l) => T
 
 // Missed runs delay the rest instead of bunching them up.
 {
-  const { sentOn } = simulate(cronAt(0), 120, (d) => d >= 14 && d <= 17);
-  check("a missed run sends the tip on the next run", sentOn[1] === 18);
+  const due = TIP_FIRST_DELAY_DAYS + TIP_GAP_DAYS;
+  const { sentOn } = simulate(cronAt(0), 120, (d) => d >= due - 1 && d <= due + 2);
+  check("a missed run sends the tip on the next run", sentOn[1] === due + 3);
   check("no two tips closer than the gap after a missed run", sentOn.slice(1).every((d, i) => d - sentOn[i] >= TIP_GAP_DAYS));
 }
 

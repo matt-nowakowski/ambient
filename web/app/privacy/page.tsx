@@ -418,7 +418,7 @@ export default function PrivacyPage() {
                 described under “Trial and free allowance”, so we can write to you in your language (the tips are in
                 English for now) and link the email to the device it came from, plus how far through the tips you are.
                 We then send a short series of tips ourselves: the first a day after you confirm, then one about every
-                two weeks, five in all. Every one has a one-click unsubscribe. We do not store your IP address. If you
+                three weeks, five in all over about three months. Every one has a one-click unsubscribe. We do not store your IP address. If you
                 already signed in with that address, your sign-in record is left as it is. We keep your tips email for
                 up to 12 months after you confirm, and sooner if you ask us to delete it. Unsubscribing stops the emails
                 straight away and deletes it from our database; Resend keeps your address marked as unsubscribed, so we

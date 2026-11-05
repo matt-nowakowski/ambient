@@ -346,7 +346,7 @@ export function confirmTips(d: ConfirmData): Rendered {
       {
         t: "p",
         size: "lead",
-        text: `Confirm and we’ll send you a few short tips on getting more from ${brand.name}: the first tomorrow, then one about every two weeks.`,
+        text: `Confirm and we’ll send you a few short tips on getting more from ${brand.name}: the first tomorrow, then one about every three weeks.`,
       },
       { t: "button", href: d.confirmUrl, label: "Confirm my email" },
       { t: "note", text: "The link works for 7 days. Every tip has a one-click unsubscribe." },
@@ -364,7 +364,7 @@ const marketingReason = (a: MarketingData["audience"]) =>
   a === "customers"
     ? `You’re getting this because you’re an ${brand.name} customer. At most one of these a month.`
     : a === "tips"
-      ? `You’re getting this because you asked for tips in the ${brand.name} app. A few short emails, about two weeks apart.`
+      ? `You’re getting this because you asked for tips in the ${brand.name} app. A few short emails, about three weeks apart.`
       : `You’re getting this because you asked for ${brand.name} updates. At most one a month.`;
 
 /** 6. Win-back, ~30 days after a subscription ended. Sent by hand. */

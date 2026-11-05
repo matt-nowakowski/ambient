@@ -7,10 +7,10 @@
  * run delays the rest instead of bunching them up). The tips cron runs once
  * a day at a fixed time, so each delay is shortened by SLACK_HOURS: a tip
  * confirmed or sent a little after the run is still picked up by the run a
- * day (or two weeks) later, not the one after.
+ * day (or three weeks) later, not the one after.
  */
 export const TIP_FIRST_DELAY_DAYS = 1;
-export const TIP_GAP_DAYS = 14;
+export const TIP_GAP_DAYS = 21;
 export const SLACK_HOURS = 6;
 /** At most this many tips per cron run (Resend's default rate limit is a few requests a second). */
 export const TIPS_PER_RUN = 30;
