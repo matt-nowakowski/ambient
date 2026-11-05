@@ -13,15 +13,39 @@ export const changelog: Release[] = [
   {
     version: "0.1.9",
     date: "2026-11-05",
-    title: "Fixes for 0.1.8",
-    summary: "Setup no longer stops on a blank screen, “No AI” now means nothing is sent, and answers to suggestions always show.",
+    title: "Sharper suggestions, your AI your way",
+    summary:
+      "Setup works again, “No AI” really means nothing is sent, suggestions show up in any chat or mail app, and on-device AI is easier to choose and manage.",
     sections: [
       {
         heading: "Fixed",
         items: [
-          "New installs of 0.1.8 could stop on a blank screen after the speech model step, and reopening the app came back to it. Setup now goes on to choose where AI runs, then the demo.",
-          "With “No AI” chosen, nothing is sent and no model runs: dictation is typed as you said it, and asking for something that needs AI tells you how to turn it on.",
-          "Answers to a suggestion could disappear mid-sentence when they mentioned something missing, like “Sam didn't reply to the email”. They now always show.",
+          "New installs of 0.1.8 could stop on a blank screen after the speech model step. Setup now goes on to choose where AI runs, then the demo.",
+          "With “No AI” chosen, nothing is sent and no model runs. Asking for something that needs AI tells you how to turn it on, and you can pick “No AI” in Settings too.",
+          "Answers to a suggestion no longer disappear when they mention something missing, like “Sam didn't reply”.",
+        ],
+      },
+      {
+        heading: "Suggestions",
+        items: [
+          "Ambient recognises a chat, an email or a long read from what's on screen, so Discord, Telegram, Teams, any webmail and new apps get offers too.",
+          "Each thread gets its own chance: one offer in Mail or Slack no longer quiets the rest of that app for hours.",
+        ],
+      },
+      {
+        heading: "On-device AI",
+        items: [
+          "New downloads start with the recommended model (about 1.1 GB). Choosing “On this computer” without Apple Intelligence offers it right away.",
+          "Switching models takes effect at once, a cancelled download keeps the model you had, and Remove frees every model you downloaded.",
+          "Models show relative quality and speed, described in your language.",
+        ],
+      },
+      {
+        heading: "And",
+        items: [
+          "Email me tips: a short, optional series of tips, from setup or Account. Confirm once, unsubscribe any time.",
+          "History details show which speech model and AI ran, and how long each step took.",
+          "Translation fixes in German, Spanish, French and Polish.",
         ],
       },
     ],
