@@ -22,7 +22,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 use tauri::AppHandle;
 
-use super::{act, answer, llm, router::Action};
+use super::{act, answer, llm, router::Action, shape};
 use crate::context::{redact::redact, ContextSnapshot};
 use crate::hud::{self, HudContent};
 
@@ -608,16 +608,32 @@ fn classify(snap: &ContextSnapshot) -> Option<Kind> {
 }
 
 /// The mail list rather than a message: "Inbox (3) - … - Gmail".
+/// Any webmail: a title part that is a folder ("Posteo Webmail :: Inbox"),
+/// or a folder URL with no message open (Roundcube's "_mbox=INBOX").
 fn is_mail_list(title: &str, url: &str) -> bool {
-    let t = title.trim_start();
-    [
+    const FOLDERS: [&str; 7] = [
         "Inbox", "Starred", "Sent", "Drafts", "All Mail", "Spam", "Trash",
-    ]
-    .iter()
-    .any(|p| t.starts_with(p) && t[p.len()..].trim_start().starts_with(['(', '-']))
+    ];
+    let t = title.trim_start();
+    let lower_url = url.to_lowercase();
+    FOLDERS
+        .iter()
+        .any(|p| t.starts_with(p) && t[p.len()..].trim_start().starts_with(['(', '-']))
+        || shape::title_parts(title).iter().any(|part| {
+            FOLDERS.iter().any(|f| {
+                part.strip_prefix(f).is_some_and(|rest| {
+                    let rest = rest.trim();
+                    rest.is_empty() || rest.starts_with(['(', '['])
+                })
+            })
+        })
         || url.ends_with("#inbox")
         || url.ends_with("#starred")
         || url.ends_with("#sent")
+        || (lower_url.contains("_mbox=")
+            && !lower_url.contains("_uid=")
+            && !lower_url.contains("_action=show"))
+        || lower_url.trim_end_matches('/').ends_with("/inbox")
 }
 
 /// Gmail's "(2 days ago)" stamp, Mail's "From:" header.
@@ -697,12 +713,62 @@ fn candidates(snap: &ContextSnapshot, languages: &[String]) -> Vec<Kind> {
     out
 }
 
-/// The window is mail: a mail app, or webmail in a browser.
+/// The window is mail. Read from what it shows: a mail URL or title, or text
+/// laid out as mail (headers, "wrote:", a sender beside "2 days ago"). A
+/// known mail app is a hint that settles it; an unknown client or webmail on
+/// any domain is recognised the same way. Never a terminal or an assistant's
+/// chat, whatever their text quotes.
 fn is_mail(snap: &ContextSnapshot) -> bool {
     let bundle = snap.app.bundle_id.as_str();
     let url = snap.url.as_deref().unwrap_or("");
-    is_in(MAIL_APPS, bundle)
-        || (is_in(BROWSERS, bundle) && (is_webmail(url) || is_webmail_title(&snap.window_title)))
+    if is_in(MAIL_APPS, bundle) || is_webmail(url) || is_webmail_title(&snap.window_title) {
+        return true;
+    }
+    if dev_screen(snap) || ai_screen(snap) {
+        return false;
+    }
+    let text = snap.text.as_deref().unwrap_or("");
+    shape::mail_text(text)
+        || (shape::mail_named(url, &snap.window_title) && thread_messages(text) >= 1)
+}
+
+/// The window is a chat: its URL, title or app name say so, or its text is
+/// laid out as messages with bylines. A known chat app is a hint that
+/// settles it; Discord in a browser, Teams on the web, a Telegram build no
+/// list has heard of are recognised by what they show.
+fn is_chat(snap: &ContextSnapshot) -> bool {
+    if is_in(CHAT_APPS, snap.app.bundle_id.as_str()) {
+        return true;
+    }
+    if dev_screen(snap) || ai_screen(snap) || is_mail(snap) {
+        return false;
+    }
+    let url = snap.url.as_deref().unwrap_or("");
+    let text = snap.text.as_deref().unwrap_or("");
+    shape::messaging_named(url, &snap.window_title, &snap.app.name) || shape::chat_text(text)
+}
+
+/// A conversation of any kind on screen: mail, a chat, or text that reads as
+/// messages. Where a reply, a thread summary or "this conversation" makes sense.
+fn conversation(snap: &ContextSnapshot) -> bool {
+    is_mail(snap)
+        || is_chat(snap)
+        || (!dev_screen(snap)
+            && !ai_screen(snap)
+            && shape::messaging_text(snap.text.as_deref().unwrap_or("")))
+}
+
+/// A terminal or code editor: a known one, or text with shell prompts.
+fn dev_screen(snap: &ContextSnapshot) -> bool {
+    is_in(DEV_APPS, snap.app.bundle_id.as_str())
+        || shape::terminal_text(snap.text.as_deref().unwrap_or(""))
+}
+
+/// An AI assistant's chat (its name in the URL or the app's name): the
+/// user's own conversation with a model, not a message waiting on them. The
+/// title is left out: a thread titled "Claude pricing" is still mail.
+fn ai_screen(snap: &ContextSnapshot) -> bool {
+    shape::ai_chat_named(snap.url.as_deref().unwrap_or(""), "", &snap.app.name)
 }
 
 /// The last few lines of a chat that carry words (Slack and Teams put
@@ -740,13 +806,18 @@ fn rules_fired(snap: &ContextSnapshot, languages: &[String]) -> Vec<Kind> {
     let text = snap.text.as_deref().unwrap_or("");
     let bundle = snap.app.bundle_id.as_str();
     let url = snap.url.as_deref().unwrap_or("");
-    let browser = is_in(BROWSERS, bundle);
-    let chat = is_in(CHAT_APPS, bundle);
-    let dev = is_in(DEV_APPS, bundle);
+    // A web page: a known browser, or any window that reports a URL.
+    let browser = is_in(BROWSERS, bundle) || !url.is_empty();
+    let chat = is_chat(snap);
+    let dev = dev_screen(snap);
     let draft = snap.focused_text.as_deref().unwrap_or("");
     let composing_empty = snap.editable && draft.trim().is_empty();
-    // A long draft in the focused field.
-    if snap.editable && writing_app(bundle) && draft.split_whitespace().count() >= 80 {
+    // A long draft in the focused field, anywhere but a terminal or editor.
+    if snap.editable
+        && !snap.secure
+        && (writing_app(bundle) || !dev)
+        && draft.split_whitespace().count() >= 80
+    {
         out.push(Kind::TightenDraft);
     }
     if chat {
@@ -839,20 +910,18 @@ fn rules_fired(snap: &ContextSnapshot, languages: &[String]) -> Vec<Kind> {
     if (browser && ERROR.is_match(text)) || (dev && ERROR.is_match(tail(text, 1500))) {
         out.push(Kind::ExplainError);
     }
-    // Long prose, not a feed or a search page: mostly long lines.
-    if browser && long_prose(text, 4000) && search_query(url).is_none() {
-        out.push(Kind::SummarisePage);
-    }
-    // Long documents in document apps and Google Docs, while reading them
-    // (not while writing one).
-    if (is_in(DOC_APPS, bundle) || url.contains("docs.google.com/document"))
-        && long_prose(text, 4000)
-        && draft.trim().is_empty()
+    // Long prose, not a feed or a search page: mostly long lines. On a web
+    // page, or a document in any app (a document app is only a hint) while
+    // it's being read, not written. A terminal's output is a stream, not a
+    // document.
+    if long_prose(text, 4000)
+        && search_query(url).is_none()
+        && (browser || (!dev && draft.trim().is_empty()))
     {
         out.push(Kind::SummarisePage);
     }
-    // A page or document in a language the user doesn't speak.
-    if (browser || is_in(DOC_APPS, bundle)) && text.len() > 1500 && foreign() {
+    // A page, document or conversation in a language the user doesn't speak.
+    if (browser || !dev) && text.len() > 1500 && foreign() {
         out.push(Kind::TranslatePage);
     }
     out
@@ -875,8 +944,7 @@ fn error_line(text: &str) -> Option<String> {
 /// terminal, the whole window otherwise.
 fn moment_text(kind: Kind, snap: &ContextSnapshot) -> &str {
     let text = snap.text.as_deref().unwrap_or("");
-    let bundle = snap.app.bundle_id.as_str();
-    if is_in(CHAT_APPS, bundle) || (kind == Kind::ExplainError && is_in(DEV_APPS, bundle)) {
+    if is_chat(snap) || (kind == Kind::ExplainError && dev_screen(snap)) {
         tail(text, 1500)
     } else {
         text
@@ -1001,20 +1069,23 @@ fn sheet_screen(snap: &ContextSnapshot) -> bool {
         || snap.window_title.ends_with("- Google Sheets")
 }
 
-/// A surface a page summary makes sense on: a browser, a document app, a
-/// Google Doc, or anything showing long prose. A terminal transcript is none
+/// A surface a page summary makes sense on: a web page, a document app, or
+/// anything showing long prose (the app lists are hints). A terminal transcript is none
 /// of them, which is the point: the judge offered "summarise this email
 /// thread" over one (Matt's report), and a summary offer there is a promise
 /// the answer has to walk back.
 fn page_surface(snap: &ContextSnapshot) -> bool {
     let bundle = snap.app.bundle_id.as_str();
     let url = snap.url.as_deref().unwrap_or("");
+    // A terminal or editor is a stream of output, not a page, however long
+    // its lines come back from accessibility.
+    if dev_screen(snap) && url.is_empty() {
+        return false;
+    }
     is_in(BROWSERS, bundle)
+        || !url.is_empty()
         || is_in(DOC_APPS, bundle)
-        || url.contains("docs.google.com/document")
-        // A terminal or editor is a stream of output, not a page, however
-        // long its lines come back from accessibility.
-        || (!is_in(DEV_APPS, bundle) && long_prose(snap.text.as_deref().unwrap_or(""), 4000))
+        || long_prose(snap.text.as_deref().unwrap_or(""), MIN_SUMMARY_CHARS)
 }
 
 /// Somewhere a summary of what's on screen is worth offering at all: mail, a
@@ -1022,7 +1093,7 @@ fn page_surface(snap: &ContextSnapshot) -> bool {
 /// has its own offers, and a "summary" there is the model misreading the
 /// screen.
 fn reading_surface(snap: &ContextSnapshot) -> bool {
-    is_mail(snap) || is_in(CHAT_APPS, snap.app.bundle_id.as_str()) || page_surface(snap)
+    conversation(snap) || page_surface(snap)
 }
 
 /// The language a page is written in, when it's clearly one (ISO 639-1).
@@ -1075,6 +1146,22 @@ pub(crate) fn window_identity(bundle: &str, pid: i32, url: Option<&str>) -> Stri
 
 fn window_key(snap: &ContextSnapshot) -> String {
     window_identity(&snap.app.bundle_id, snap.app.pid, snap.url.as_deref())
+}
+
+/// What the user is looking at in that window, for offers and judgements:
+/// the window, plus a digest of its title when no URL tells its threads
+/// apart. Mail, Slack's app and Messages show every thread in one process
+/// with no URL, so without the title one offer there spoke for every
+/// thread in the app. A terminal's title churns with its output, so a
+/// terminal or editor stays one window.
+fn thread_key(snap: &ContextSnapshot) -> String {
+    let key = window_key(snap);
+    let has_url = snap.url.as_deref().is_some_and(|u| !u.is_empty());
+    if has_url || snap.window_title.trim().is_empty() || dev_screen(snap) {
+        key
+    } else {
+        format!("{key}|{}", fingerprint(&snap.window_title))
+    }
 }
 
 /// Remember what this window showed when it was considered.
@@ -1253,7 +1340,7 @@ fn quiet_screen(snap: &ContextSnapshot) -> Option<&'static str> {
     {
         return Some("a video or music player");
     }
-    if is_in(DEV_APPS, bundle) && !ERROR.is_match(tail(text, 1500)) && !DIFF.is_match(text) {
+    if dev_screen(snap) && !ERROR.is_match(tail(text, 1500)) && !DIFF.is_match(text) {
         return Some("code without an error");
     }
     None
@@ -1269,8 +1356,7 @@ fn verdict_fits(
 ) -> Result<Kind, &'static str> {
     let text = snap.text.as_deref().unwrap_or("");
     let url = snap.url.as_deref().unwrap_or("");
-    let chat = is_in(CHAT_APPS, snap.app.bundle_id.as_str());
-    let bundle = snap.app.bundle_id.as_str();
+    let chat = is_chat(snap);
     let foreign = || {
         !languages.is_empty()
             && page_language(text).is_some_and(|lang| {
@@ -1289,7 +1375,7 @@ fn verdict_fits(
         // A long page in another language: a translation first.
         Kind::SummarisePage | Kind::SummariseThread if foreign() => Ok(Kind::TranslatePage),
         // Not a thread (a document, an article): a page summary still helps.
-        Kind::SummariseThread if !(is_mail(snap) || chat) => Ok(Kind::SummarisePage),
+        Kind::SummariseThread if !(chat || conversation(snap)) => Ok(Kind::SummarisePage),
         Kind::ExplainError if !ERROR.is_match(text) => Err("no error on screen"),
         Kind::FixFormula if !SHEET_ERROR.is_match(text) => Err("no formula error"),
         Kind::ReviewCode
@@ -1310,10 +1396,13 @@ fn verdict_fits(
         Kind::AddReminder if mentions_deadline(text).is_none() && !DUE.is_match(text) => {
             Err("nothing due")
         }
-        // A reply needs a message to answer: mail, a chat, or a field the
-        // user is writing in. A question mark in a terminal's output isn't a
-        // message waiting on them.
-        Kind::DraftReply if !(is_mail(snap) || chat || (snap.editable && writing_app(bundle))) => {
+        // A reply needs a message to answer: a conversation (read from the
+        // screen, whatever app shows it), a field the user is writing in, or
+        // someone asking them something near the bottom. A question mark in a
+        // terminal's output isn't a message waiting on them.
+        Kind::DraftReply
+            if dev_screen(snap) || !(conversation(snap) || snap.editable || chat_asks(text)) =>
+        {
             Err("nothing to answer")
         }
         k => Ok(k),
@@ -1337,7 +1426,6 @@ fn title_fits(title: &str, snap: &ContextSnapshot) -> bool {
         .collect();
     let says = |roots: &[&str]| words.iter().any(|w| roots.iter().any(|r| w.starts_with(r)));
     let text = snap.text.as_deref().unwrap_or("");
-    let bundle = snap.app.bundle_id.as_str();
     // An email, a thread or a chat to catch up on.
     if says(&[
         "email",
@@ -1350,7 +1438,7 @@ fn title_fits(title: &str, snap: &ContextSnapshot) -> bool {
         "reply",
         "respond",
         "sender",
-    ]) && !(is_mail(snap) || is_in(CHAT_APPS, bundle))
+    ]) && !conversation(snap)
     {
         return false;
     }
@@ -1509,6 +1597,7 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         return;
     }
     let key = window_key(&snap);
+    let thread = thread_key(&snap);
     let text_raw = snap.text.as_deref().unwrap_or("");
     let messages = thread_messages(text_raw);
     let settings = crate::settings::get_settings(app);
@@ -1525,7 +1614,7 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         );
         let mut all_repeats = true;
         for kind in fired {
-            let moment = moment_key(kind, &snap, &key);
+            let moment = moment_key(kind, &snap, &thread);
             match blocked(app, kind, &bundle, &moment, per_hour) {
                 None => {
                     offer_for(app, &snap, kind, None, moment, per_hour);
@@ -1580,17 +1669,26 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         log::debug!("proactive: {bundle} title[{tag}] nothing to offer on {why}");
         return;
     }
-    // Each window is judged once: its text churning (a terminal printing, a
-    // live page) is not a new moment, and treating it as one brought the same
-    // offer back every few minutes (Matt's report). A window that really
-    // changed — another page, another chat — has its own identity, and the
-    // rules still catch a new message or a new error with their own keys.
-    let judged_key = window_key(&snap);
+    // A window or thread the judge made an offer for rests a while: its text
+    // churning (a terminal printing, a live page) is not a new moment, and
+    // treating it as one brought the same offer back every few minutes
+    // (Matt's report). Another page, another thread in the same mail or chat
+    // app has its own key (see `thread_key`), so each can get its offer.
+    let judged_key = thread_key(&snap);
     if route == super::judge::Route::Rules {
         log::debug!(
             "proactive: {bundle} title[{tag}] no judge here ({:?}, on-device model: {on_device}); rules only, nothing to offer",
             settings.agent.intelligence
         );
+        return;
+    }
+    if STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .budget
+        .judged_recently(&judged_key, Instant::now())
+    {
+        log::debug!("proactive: {bundle} title[{tag}] judge skipped: judged here recently");
         return;
     }
     if let Some((why, _)) = blocked(app, Kind::Help, &bundle, &judged_key, per_hour) {
@@ -1721,12 +1819,12 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
     // is what it offers. "Anything else" without its own words (they named
     // something not on screen) isn't an offer.
     let offer_key = match (kind, &title) {
-        (Kind::Help, Some(t)) => format!("{key}|{}", fingerprint(t)),
+        (Kind::Help, Some(t)) => format!("{thread}|{}", fingerprint(t)),
         (Kind::Help, None) => {
             log::debug!("proactive: the judge's offer wasn't grounded in the window; no offer");
             return;
         }
-        _ => moment_key(kind, &snap, &key),
+        _ => moment_key(kind, &snap, &thread),
     };
     log::debug!(
         "proactive: {bundle} title[{tag}] judge offer {} key[{}]",
@@ -1734,16 +1832,16 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
         crate::context::title_tag(&offer_key)
     );
     crate::telemetry::next_offer_judge(engine);
-    // This window has had its judgement only once the offer actually shows:
-    // its text churning doesn't earn another, and a new offer there would be
-    // a repeat with new words. A cooldown that held the offer back must not
-    // count as judged, or the offer it waited for would never come.
+    // This window or thread has had its judgement only once the offer
+    // actually shows: its text churning doesn't earn another for a while. A
+    // cooldown that held the offer back must not count as judged, or the
+    // offer it waited for would never come.
     if offer_for(app, &snap, kind, title, offer_key, per_hour) {
         STATE
             .lock()
             .unwrap_or_else(std::sync::PoisonError::into_inner)
             .budget
-            .mark_offered(Kind::Help, &judged_key, Instant::now());
+            .mark_judged(&judged_key, Instant::now());
     }
 }
 
@@ -3211,6 +3309,246 @@ mod tests {
             confidence: 0.9,
         };
         assert!(!super::super::judge::worth_offering(&v));
+    }
+
+    // ── Apps no list knows: the screen says what it is ───────────────────
+
+    /// The judge offered these; each must survive being held to the window.
+    fn judged(
+        kind: Kind,
+        title: &str,
+        s: &ContextSnapshot,
+    ) -> Result<(Kind, Option<String>), &'static str> {
+        judge_offer(kind, Some(title.into()), s, &["en".to_string()])
+    }
+
+    #[test]
+    fn chats_no_list_knows_get_their_offers() {
+        let ask = "Ana — Today at 10:38 AM\nmorning all, the deck is nearly done\nBen — Today at 10:40 AM\nnice, looks good so far\nAna — Today at 10:42 AM\ncan you send me the signed lease by Friday?\n";
+        let screens = [
+            // Discord in a browser.
+            on("com.google.Chrome", "#launch | Acme - Discord", "https://discord.com/channels/1/2", ask),
+            // A Discord build with a bundle id no list has.
+            on("com.hnc.Discord.PTB", "#launch | Acme", "", ask),
+            // Slack on the web.
+            on("com.google.Chrome", "launch (Channel) - Acme - Slack", "https://app.slack.com/client/T01/C02", ask),
+            // Telegram Desktop's real macOS id, which no list had.
+            on("com.tdesktop.Telegram", "Telegram", "", "Ana Lopez\nmorning, the deck is nearly done\n10:38\nAna Lopez\ncan you send me the signed lease by Friday?\n10:42\n"),
+            // A chat client nobody has heard of, read from its text alone.
+            on("io.example.Chatter", "Acme", "", ask),
+        ];
+        for mut s in screens {
+            s.editable = true;
+            let k = kinds(&s);
+            assert!(is_chat(&s), "{}: not a chat", s.app.bundle_id);
+            assert!(k.contains(&Kind::DraftReply), "{}: {k:?}", s.app.bundle_id);
+            assert!(k.contains(&Kind::AddReminder), "{}: {k:?}", s.app.bundle_id);
+            // What the judge says about a conversation stands here.
+            assert_eq!(
+                judged(
+                    Kind::DraftReply,
+                    "Reply to Ana's message about the lease?",
+                    &s
+                ),
+                Ok((
+                    Kind::DraftReply,
+                    Some("Reply to Ana's message about the lease?".into())
+                )),
+                "{}",
+                s.app.bundle_id
+            );
+            assert_eq!(
+                judged(Kind::SummariseThread, "Summarise this conversation?", &s),
+                Ok((
+                    Kind::SummariseThread,
+                    Some("Summarise this conversation?".into())
+                )),
+                "{}",
+                s.app.bundle_id
+            );
+            assert_eq!(
+                judged(Kind::Help, "Reply to Ana with the lease status?", &s).map(|(k, _)| k),
+                Ok(Kind::Help),
+                "{}",
+                s.app.bundle_id
+            );
+        }
+        // Teams on the web: a time arranged in 24-hour style.
+        let teams = on(
+            "org.mozilla.firefox",
+            "Chat | Ana Lopez | Microsoft Teams",
+            "https://teams.microsoft.com/v2/",
+            "Ana Lopez 14:02\nare we still on for Thursday at 15:00 with the Acme folks\nBen Ito 14:05\nI think so, checking now",
+        );
+        assert!(is_chat(&teams));
+        assert!(kinds(&teams).contains(&Kind::AddToCalendar));
+        // A busy channel in an unlisted app: catch up.
+        let mut busy = String::from("# general\n");
+        for i in 0..20 {
+            busy.push_str(&format!(
+                "Person {i}  9:{:02} AM\nsome update on the rollout\n",
+                10 + i
+            ));
+        }
+        assert!(
+            kinds(&on("io.example.Chatter", "general", "", &busy)).contains(&Kind::SummariseThread)
+        );
+    }
+
+    #[test]
+    fn webmail_on_any_domain_gets_its_offers_and_its_inbox_stays_quiet() {
+        let thread = on(
+            "org.mozilla.firefox",
+            "Posteo Webmail :: Re: Lease renewal",
+            "https://webmail.posteo.de/?_task=mail&_uid=12&_mbox=INBOX&_action=show",
+            "From: Ana Lopez <ana@x.com>\nTo: Sam <sam@posteo.de>\nSubject: Re: Lease renewal\nHi Sam,\nCould you sign the renewal and send it back by Friday?\nThanks, Ana\n",
+        );
+        assert!(is_mail(&thread));
+        let k = kinds(&thread);
+        assert_eq!(k.first(), Some(&Kind::DraftReply), "{k:?}");
+        assert!(k.contains(&Kind::AddReminder), "{k:?}");
+        assert_eq!(
+            judged(
+                Kind::SummariseThread,
+                "Summarise this email thread?",
+                &thread
+            ),
+            Ok((
+                Kind::SummariseThread,
+                Some("Summarise this email thread?".into())
+            ))
+        );
+        // A desktop client no list has, read from its headers.
+        let client = on(
+            "com.example.MailMate",
+            "Re: Lease renewal",
+            "",
+            "From: Ana Lopez <ana@x.com>\nTo: Sam <sam@posteo.de>\nHi Sam,\nCould you sign the renewal by Friday?\n",
+        );
+        assert!(is_mail(&client));
+        assert!(kinds(&client).contains(&Kind::DraftReply));
+        // The same webmail's inbox: many threads, none of them "this".
+        let inbox = on(
+            "org.mozilla.firefox",
+            "Posteo Webmail :: Inbox",
+            "https://webmail.posteo.de/?_task=mail&_mbox=INBOX",
+            "Ana Lopez <ana@x.com>  Re: Lease renewal - could you sign by Friday?  10:14\nBen <ben@y.com>  Lunch Thursday at 1pm?  9:02\n",
+        );
+        assert!(is_mail(&inbox));
+        assert_eq!(kinds(&inbox), vec![]);
+        assert_eq!(quiet_screen(&inbox), Some("a mail list"));
+    }
+
+    #[test]
+    fn unlisted_terminals_and_plain_screens_still_get_nothing() {
+        // A terminal no list has: prompts, a question in its output.
+        let term = on(
+            "com.example.NewTerm",
+            "zsh — 80x24",
+            "",
+            "sam@box:~/vault$ ./setup.sh\nOverwrite existing config? [y/N] n\nsam@box:~/vault$ ls\nsrc  Cargo.toml\n",
+        );
+        assert!(!is_chat(&term) && !is_mail(&term));
+        assert_eq!(kinds(&term), vec![]);
+        assert_eq!(quiet_screen(&term), Some("code without an error"));
+        assert_eq!(
+            verdict_fits(Kind::DraftReply, &term, &["en".to_string()]),
+            Err("nothing to answer")
+        );
+        assert!(!title_fits("Summarise this email thread?", &term));
+        // A note with a few words: nothing to offer, and no conversation.
+        let note = on(
+            "com.example.Notes",
+            "Groceries",
+            "",
+            "Groceries\nmilk\neggs\nbread",
+        );
+        assert_eq!(kinds(&note), vec![]);
+        assert!(!title_fits("Reply to this message?", &note));
+        assert_eq!(
+            judged(Kind::Help, "Reply to this message?", &note),
+            Err("its offer isn't about this window")
+        );
+        // An article that mentions mail is not mail.
+        let article = on(
+            "org.mozilla.firefox",
+            "How to set up mail on a new phone",
+            "https://example.com/guides/phone",
+            "Open Settings, then Accounts. Add your account and choose IMAP.",
+        );
+        assert!(!is_mail(&article) && !is_chat(&article));
+    }
+
+    #[test]
+    fn each_mail_thread_gets_its_offer_and_none_repeats() {
+        use super::super::budget::{Block, Budget, APP_COOLDOWN, JUDGED};
+        let q4 = on(
+            "com.apple.mail",
+            "Re: Q4 pricing",
+            "",
+            "From: Ana\nTo: me\nCan we do 10% off?",
+        );
+        let launch = on(
+            "com.apple.mail",
+            "Re: Launch plan",
+            "",
+            "From: Ben\nTo: me\nShip Monday?",
+        );
+        // One process, no URL: the title tells the threads apart.
+        assert_eq!(window_key(&q4), window_key(&launch));
+        assert_ne!(thread_key(&q4), thread_key(&launch));
+        // A terminal's churning title doesn't make it a new window.
+        assert_eq!(
+            thread_key(&on(
+                "com.apple.Terminal",
+                "codex — 12:01",
+                "",
+                "$ npm test\n"
+            )),
+            thread_key(&on(
+                "com.apple.Terminal",
+                "codex — build",
+                "",
+                "$ npm test\n"
+            ))
+        );
+
+        let mut b = Budget::default();
+        let t0 = Instant::now();
+        let later = t0 + APP_COOLDOWN;
+        // The judge's offer on the first thread is shown.
+        let first = moment_key(Kind::SummarisePage, &q4, &thread_key(&q4));
+        b.record_shown(
+            Kind::SummarisePage,
+            "com.apple.mail",
+            &first,
+            APP_COOLDOWN,
+            t0,
+        );
+        b.mark_judged(&thread_key(&q4), t0);
+        // The other thread is still judged and offered.
+        assert!(!b.judged_recently(&thread_key(&launch), later));
+        let second = moment_key(Kind::SummarisePage, &launch, &thread_key(&launch));
+        assert!(b
+            .check(Kind::SummarisePage, "com.apple.mail", &second, 10, later)
+            .is_ok());
+        // The same thread isn't judged again soon, and its offer never repeats.
+        assert!(b.judged_recently(&thread_key(&q4), later));
+        assert_eq!(
+            b.check(Kind::SummarisePage, "com.apple.mail", &first, 10, later),
+            Err(Block::Repeat)
+        );
+        assert!(!b.judged_recently(&thread_key(&q4), t0 + JUDGED));
+        assert_eq!(
+            b.check(
+                Kind::SummarisePage,
+                "com.apple.mail",
+                &first,
+                10,
+                t0 + JUDGED
+            ),
+            Err(Block::Repeat)
+        );
     }
 
     #[test]

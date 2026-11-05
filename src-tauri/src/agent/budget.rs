@@ -34,6 +34,11 @@ pub const APP_COOLDOWN: Duration = Duration::from_secs(2 * 60);
 const APP_COOLDOWN_AFTER_DISMISS: Duration = Duration::from_secs(15 * 60);
 /// A window or thread offered a kind isn't offered it again for this long.
 const SAME_WINDOW: Duration = Duration::from_secs(12 * 60 * 60);
+/// A window or thread the judge made an offer for isn't judged again for
+/// this long. Short on purpose: the offer itself never repeats (its own key
+/// is held for `SAME_WINDOW`); this only stops a window whose text churns
+/// from earning a new judgement every few minutes.
+pub const JUDGED: Duration = Duration::from_secs(45 * 60);
 /// Two dismissals of a kind back it off for this long.
 const KIND_BACKOFF: Duration = Duration::from_secs(24 * 60 * 60);
 const HOUR: Duration = Duration::from_secs(60 * 60);
@@ -76,6 +81,8 @@ pub struct Budget {
     shown: VecDeque<Instant>,
     /// (kind, window key) → when offered.
     offered: HashMap<(Kind, String), Instant>,
+    /// Window or thread key → when the judge's offer there was shown.
+    judged: HashMap<String, Instant>,
     /// Bundle → when something was last offered there, and how long that
     /// kind keeps the app quiet.
     app_last: HashMap<String, (Instant, Duration)>,
@@ -93,6 +100,7 @@ impl Budget {
         self.shown.retain(|t| fresh(t, HOUR));
         self.dismissals.retain(|t| fresh(t, HOUR));
         self.offered.retain(|_, t| fresh(t, SAME_WINDOW));
+        self.judged.retain(|_, t| fresh(t, JUDGED));
         self.app_last
             .retain(|_, (t, _)| fresh(t, HOUR.max(SAME_WINDOW)));
         self.app_dismissed.retain(|_, t| fresh(t, HOUR));
@@ -185,6 +193,17 @@ impl Budget {
     /// (the one-time cloud offer took its place).
     pub fn mark_offered(&mut self, kind: Kind, key: &str, now: Instant) {
         self.offered.insert((kind, key.to_string()), now);
+    }
+
+    /// The judge's offer for window or thread `key` was shown.
+    pub fn mark_judged(&mut self, key: &str, now: Instant) {
+        self.judged.insert(key.to_string(), now);
+    }
+
+    /// The judge already made an offer for `key` within `JUDGED`.
+    pub fn judged_recently(&mut self, key: &str, now: Instant) -> bool {
+        self.prune(now);
+        self.judged.contains_key(key)
     }
 
     /// The user said "not now" (or ✕).
