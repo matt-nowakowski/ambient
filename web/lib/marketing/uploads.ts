@@ -16,7 +16,7 @@ import { attachment, deleteObject, headObject, presign, r2MissingEnv } from "./r
 export const PREFIX = "marketing/";
 /** Decimal units, like R2's billing and the release workflow's BUDGET_BYTES. */
 export const MAX_FILE_BYTES = 500_000_000;
-export const BUDGET_BYTES = 1_500_000_000;
+export const BUDGET_BYTES = 1_000_000_000;
 /** An upload URL lives an hour; a reservation that never completes is dropped after two. */
 const PUT_EXPIRES = 3600;
 const PENDING_TTL_MINUTES = 120;
