@@ -778,6 +778,22 @@ fn paste_later(app: &AppHandle, text: String, select_all: bool) {
     });
 }
 
+/// Press the app's Undo (Cmd+Z / Ctrl+Z) in the app the user is in, after
+/// the HUD has gone.
+fn undo_later(app: &AppHandle) {
+    let handle = app.clone();
+    std::thread::spawn(move || {
+        std::thread::sleep(Duration::from_millis(150));
+        if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
+            if let Ok(mut enigo) = state.0.lock() {
+                if let Err(e) = crate::input::send_undo(&mut enigo) {
+                    log::warn!("HUD undo failed: {e}");
+                }
+            }
+        }
+    });
+}
+
 /// What the user did in the HUD. `insert` pastes `text` into the app they were
 /// in; the rest are forwarded to whichever agent flow owns `id`.
 #[tauri::command]
@@ -810,20 +826,29 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
                 crate::agent::ask_instead(&app, text);
             }
         }
-        "insert" => {
-            hide(&app);
+        // An answer stays up to say it went in, with Undo: the HUD never
+        // has focus, so the paste lands in the user's app either way.
+        "insert" | "replace" => {
+            if !id.starts_with("answer-") {
+                hide(&app);
+            }
             if let Some(text) = text {
-                paste_later(&app, text, false);
+                paste_later(&app, text, action == "replace");
             }
         }
-        "replace" => {
+        // Undo an answer's Insert: the app's own Undo, in that app.
+        "undo_insert" => {
             hide(&app);
-            if let Some(text) = text {
-                paste_later(&app, text, true);
-            }
+            undo_later(&app);
         }
         // A suggestion (or offer) accepted: it waits for its result.
         "accept" => crate::hud_keys::accepted(&app, &id),
+        // Stop a streaming answer where it is.
+        "stop" => {
+            if id.starts_with("answer-") {
+                crate::agent::answer::stop(&id);
+            }
+        }
         // Mail: open a reply to the message in front, then paste the draft.
         "reply" => {
             hide(&app);
