@@ -30,6 +30,12 @@ pub const ID_PREFIX: &str = "suggest-";
 const TEXT_CHARS: usize = 8000;
 /// The judge's summary offers need at least this much text on screen.
 const MIN_SUMMARY_CHARS: usize = 2500;
+/// Less text than this and the judge has nothing to go on.
+const MIN_JUDGE_CHARS: usize = 200;
+/// A conversation needs less: one message asking for something by Friday is
+/// short, and it's where a reply or a reminder helps most. The rules only
+/// read English requests; the judge reads them in any language.
+const MIN_CONVERSATION_JUDGE_CHARS: usize = 60;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Kind {
@@ -1393,7 +1399,12 @@ fn verdict_fits(
         Kind::AddToCalendar if !(mentions_date(text) || INVITE.is_match(text)) => {
             Err("no day and time")
         }
-        Kind::AddReminder if mentions_deadline(text).is_none() && !DUE.is_match(text) => {
+        // The rules read deadlines in English only; in a conversation the
+        // judge read the request in whatever language it was written
+        // ("do piątku", "bis Freitag"), so its reading stands there.
+        Kind::AddReminder
+            if mentions_deadline(text).is_none() && !DUE.is_match(text) && !conversation(snap) =>
+        {
             Err("nothing due")
         }
         // A reply needs a message to answer: a conversation (read from the
@@ -1640,9 +1651,14 @@ pub fn consider(app: &AppHandle, snap: ContextSnapshot, per_hour: u32) {
 
     // 2. The judge: on this computer, or in the cloud when the Intelligence
     //    setting allows it (see `judge::route`).
-    if text_len < 200 {
+    let min_chars = if conversation(&snap) {
+        MIN_CONVERSATION_JUDGE_CHARS
+    } else {
+        MIN_JUDGE_CHARS
+    };
+    if text_len < min_chars {
         log::debug!(
-            "proactive: {bundle} title[{tag}] nothing else to offer; too little text for the judge (text_chars={text_len}, thread_messages={messages})"
+            "proactive: {bundle} title[{tag}] nothing else to offer; too little text for the judge (text_chars={text_len}, min={min_chars}, thread_messages={messages})"
         );
         return;
     }
@@ -2901,6 +2917,40 @@ mod tests {
         }
         assert!(kinds(&on("slack", "general - Acme - Slack", "", &busy))
             .contains(&Kind::SummariseThread));
+    }
+
+    #[test]
+    fn a_short_request_in_any_language_goes_to_the_judge() {
+        // 0.1.9 #6: Kasia's Polish request in a DM is under 200 characters
+        // and the rules read English only, so nothing was offered.
+        let text = "Kasia Nowak  09:15\nCześć Matt! Czy możesz mi wysłać raport do piątku? Potrzebuję go na spotkanie z zarządem w poniedziałek.\nKasia Nowak  09:16\nDzięki z góry!";
+        let mut s = on(
+            "com.tinyspeck.slackmacgap",
+            "Kasia Nowak (DM) - Acme - Slack",
+            "",
+            text,
+        );
+        s.editable = true;
+        assert!(text.chars().count() < MIN_JUDGE_CHARS);
+        assert!(text.chars().count() >= MIN_CONVERSATION_JUDGE_CHARS);
+        assert!(conversation(&s));
+        // The judge's reading of the deadline stands in a conversation...
+        assert_eq!(
+            verdict_fits(Kind::AddReminder, &s, &["pl".to_string()]),
+            Ok(Kind::AddReminder)
+        );
+        assert_eq!(
+            verdict_fits(Kind::DraftReply, &s, &["pl".to_string()]),
+            Ok(Kind::DraftReply)
+        );
+        // ...but not on a page with nothing due.
+        let page = on(
+            "com.google.Chrome",
+            "Przepis na sernik",
+            "https://example.pl/przepisy/sernik",
+            "Sernik krakowski\nSkładniki: twaróg, jajka, cukier, masło.\nPiecz w 170 stopniach przez godzinę.",
+        );
+        assert!(verdict_fits(Kind::AddReminder, &page, &["pl".to_string()]).is_err());
     }
 
     #[test]
