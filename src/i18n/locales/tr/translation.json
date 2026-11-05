@@ -1341,6 +1341,7 @@
       "noWebResults": "Şu an web’de arama yapılamadı, bu yüzden bildiklerimle yanıtlıyorum.",
       "timeout": "Çok uzun sürdü. Tekrar deneyin.",
       "needsCloud": "Bu işlem için bulut gerekiyor, ancak yapay zekâ “Yalnızca bu bilgisayarda” olarak ayarlı. Bunu Gizlilik’ten değiştirin.",
+      "aiOff": "Yapay zekâ kapalı, bu yüzden {{appName}} bunu yapamaz. Gizlilik bölümünden açın.",
       "cloudOfferOn": "Buluttan öneriler açık. Bunu Gizlilik’ten değiştirin.",
       "cloudUnavailable": "Bulut önerileri şu anda kullanılamıyor.",
       "cloudLimited": "Bulut önerileri şimdilik duraklatıldı: bugünkü sınıra ulaşıldı ya da Pro gerekiyor."

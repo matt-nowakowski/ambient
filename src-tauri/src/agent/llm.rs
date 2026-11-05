@@ -189,6 +189,11 @@ pub fn use_on_device(app: &AppHandle, chars: usize) -> bool {
         && engine().is_some_and(|e| chars <= e.max_chars())
 }
 
+/// "No AI" is chosen: no model runs and nothing is sent, on any path.
+pub fn ai_off(app: &AppHandle) -> bool {
+    get_settings(app).agent.intelligence == Intelligence::None
+}
+
 /// "On this computer only" on a machine without an on-device model: model
 /// tasks can't run at all, and callers say so instead of failing quietly.
 pub fn needs_cloud(app: &AppHandle) -> bool {
@@ -273,6 +278,10 @@ async fn complete_inner(
     local_first: bool,
     limits: crate::llm_client::RequestLimits,
 ) -> Option<String> {
+    // "No AI": every model call ends here, hosted or on device.
+    if ai_off(app) {
+        return None;
+    }
     // Free's weekly AI pool is used: say so (for what the user asked for)
     // instead of sending a request the server would refuse.
     if !crate::limits::ai_available(app) {

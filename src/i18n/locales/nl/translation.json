@@ -1341,6 +1341,7 @@
       "noWebResults": "Zoeken op het web lukte nu niet, dus dit is wat ik weet.",
       "timeout": "Dat duurde te lang. Probeer het opnieuw.",
       "needsCloud": "Hiervoor is de cloud nodig, maar de intelligentie staat op ‘Alleen op deze computer’. Wijzig dit in Privacy.",
+      "aiOff": "AI staat uit, dus {{appName}} kan dat niet. Zet het aan bij Privacy.",
       "cloudOfferOn": "Suggesties uit de cloud staan aan. Wijzig dit in Privacy.",
       "cloudUnavailable": "Cloudsuggesties zijn nu niet beschikbaar.",
       "cloudLimited": "Cloudsuggesties zijn voorlopig gepauzeerd: de daglimiet is bereikt, of ze vereisen Pro."

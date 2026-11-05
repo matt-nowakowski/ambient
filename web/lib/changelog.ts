@@ -13,13 +13,15 @@ export const changelog: Release[] = [
   {
     version: "0.1.9",
     date: "2026-11-05",
-    title: "Setup fix",
-    summary: "Fixes setup stopping on a blank screen after choosing a speech model in 0.1.8.",
+    title: "Fixes for 0.1.8",
+    summary: "Setup no longer stops on a blank screen, “No AI” now means nothing is sent, and answers to suggestions always show.",
     sections: [
       {
         heading: "Fixed",
         items: [
           "New installs of 0.1.8 could stop on a blank screen after the speech model step, and reopening the app came back to it. Setup now goes on to choose where AI runs, then the demo.",
+          "With “No AI” chosen, nothing is sent and no model runs: dictation is typed as you said it, and asking for something that needs AI tells you how to turn it on.",
+          "Answers to a suggestion could disappear mid-sentence when they mentioned something missing, like “Sam didn't reply to the email”. They now always show.",
         ],
       },
     ],

@@ -1341,6 +1341,7 @@
       "noWebResults": "Tidak bisa mencari di web saat ini, jadi ini dari yang saya tahu.",
       "timeout": "Terlalu lama. Coba lagi.",
       "needsCloud": "Ini memerlukan cloud, dan Kecerdasan diatur ke “Hanya di komputer ini”. Ubah di Privasi.",
+      "aiOff": "AI dimatikan, jadi {{appName}} tidak bisa melakukannya. Aktifkan di Privasi.",
       "cloudOfferOn": "Saran dari cloud aktif. Ubah di Privasi.",
       "cloudUnavailable": "Saran cloud sedang tidak tersedia.",
       "cloudLimited": "Saran cloud dijeda untuk sementara: batas hari ini sudah tercapai, atau memerlukan Pro."

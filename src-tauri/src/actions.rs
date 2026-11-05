@@ -184,7 +184,8 @@ const POLISH_TIMEOUT: Duration = Duration::from_secs(10);
 /// text.
 fn warm_up_hosted_ai(app: &AppHandle, needs_ai: bool) {
     let settings = get_settings(app);
-    if !needs_ai {
+    // "No AI": nothing to warm, and no connection is opened.
+    if !needs_ai || settings.agent.intelligence == crate::settings::Intelligence::None {
         return;
     }
     // Polish that runs on this computer needs no connection; the downloaded
@@ -267,6 +268,12 @@ async fn post_process_transcription(
 ) -> Option<String> {
     if is_blank_transcription(transcription) {
         debug!("Post-processing skipped because the transcription is empty");
+        return None;
+    }
+
+    // "No AI": the words are typed as said, and nothing is sent.
+    if settings.agent.intelligence == crate::settings::Intelligence::None {
+        debug!("Post-processing skipped: AI is off");
         return None;
     }
 

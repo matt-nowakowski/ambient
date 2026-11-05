@@ -1341,6 +1341,7 @@
       "noWebResults": "Hiện không tìm được trên web, nên đây là từ những gì tôi biết.",
       "timeout": "Mất quá lâu. Hãy thử lại.",
       "needsCloud": "Việc này cần đám mây, và Trí tuệ đang được đặt ở “Chỉ trên máy tính này”. Hãy đổi trong Quyền riêng tư.",
+      "aiOff": "AI đang tắt nên {{appName}} không thể làm việc đó. Bật AI trong Quyền riêng tư.",
       "cloudOfferOn": "Gợi ý từ đám mây đang bật. Hãy đổi trong Quyền riêng tư.",
       "cloudUnavailable": "Gợi ý trên đám mây hiện không khả dụng.",
       "cloudLimited": "Gợi ý trên đám mây đang tạm dừng: đã đạt giới hạn hôm nay hoặc cần gói Pro."
@@ -1972,7 +1973,10 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
+        "examples": [
+          "Hôm qua tôi đã nói gì về giá?",
+          "Tìm bản trình bày Q3."
+        ],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

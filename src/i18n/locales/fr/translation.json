@@ -1349,6 +1349,7 @@
       "noWebResults": "Impossible de chercher sur le web pour l’instant : voici ce que je sais.",
       "timeout": "C’était trop long. Réessayez.",
       "needsCloud": "Cela nécessite le cloud, or l’intelligence est réglée sur « Sur cet ordinateur uniquement ». Modifiez ce réglage dans Confidentialité.",
+      "aiOff": "L'IA est désactivée, donc {{appName}} ne peut pas le faire. Activez-la dans Confidentialité.",
       "cloudOfferOn": "Les suggestions via le cloud sont activées. Modifiable dans Confidentialité.",
       "cloudUnavailable": "Les suggestions cloud sont indisponibles pour le moment.",
       "cloudLimited": "Les suggestions cloud sont en pause pour l'instant : la limite du jour est atteinte, ou elles nécessitent Pro."

@@ -1341,6 +1341,7 @@
       "noWebResults": "Couldn't search the web just now, so this is from what I know.",
       "timeout": "That took too long. Try again.",
       "needsCloud": "This needs the cloud, and Intelligence is set to “On this computer only”. Change it in Privacy.",
+      "aiOff": "AI is off, so {{appName}} can't do that. Turn it on in Privacy.",
       "cloudOfferOn": "Suggestions from the cloud are on. Change it in Privacy.",
       "cloudUnavailable": "Cloud suggestions are unavailable right now.",
       "cloudLimited": "Cloud suggestions are paused for now: today's limit is reached, or they need Pro."

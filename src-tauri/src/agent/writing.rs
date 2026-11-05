@@ -511,6 +511,10 @@ pub async fn model_decide(app: &AppHandle, transcript: &str, ctx: &Ctx) -> Optio
     if !crate::limits::ai_available(app) {
         return None;
     }
+    // "No AI" runs no model at all, on device or hosted.
+    if s.agent.intelligence == Intelligence::None {
+        return None;
+    }
     let local_ok = super::llm::on_device_ready()
         && s.agent.intelligence != Intelligence::Cloud
         && (crate::plan::is_paid(app) || s.agent.device_only() || s.agent.on_device_when_possible);

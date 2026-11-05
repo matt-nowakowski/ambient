@@ -44,6 +44,19 @@ export const OnDeviceAi: React.FC<{
     };
   }, [refresh]);
 
+  // The models the catalog offers, shown where the download already lives as
+  // well as in setup. Choosing one downloads it if it isn't here yet.
+  const [models, setModels] = useState<ReasoningModelInfo[]>([]);
+  useEffect(() => {
+    let live = true;
+    commands.getReasoningModels().then((list) => {
+      if (live) setModels(list);
+    });
+    return () => {
+      live = false;
+    };
+  }, [status.downloaded, status.size_mb]);
+
   if (!status.supported) return null;
   const size = formatModelSize(status.size_mb);
   const downloading = starting || progress !== undefined;
@@ -70,18 +83,6 @@ export const OnDeviceAi: React.FC<{
     await refresh();
   };
 
-  // The models the catalog offers, shown where the download already lives as
-  // well as in setup. Choosing one downloads it if it isn't here yet.
-  const [models, setModels] = useState<ReasoningModelInfo[]>([]);
-  useEffect(() => {
-    let live = true;
-    commands.getReasoningModels().then((list) => {
-      if (live) setModels(list);
-    });
-    return () => {
-      live = false;
-    };
-  }, [status.downloaded, status.size_mb]);
 
   const choose = async (model: ReasoningModelInfo) => {
     if (model.selected) return;

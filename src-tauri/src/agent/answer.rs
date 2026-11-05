@@ -311,8 +311,10 @@ const MEDIA: &[&[&str]] = &[
 
 /// The answer saying the screen is not what the card promised: "this isn't an
 /// email thread", "there is no thread here", "a terminal transcript rather
-/// than an email". The negation has to reach the medium to count, so "no date
-/// was confirmed in this email thread" restates rather than denies.
+/// than an email". Only a statement about the window itself counts: a subject
+/// (this/it/the window) denied as the medium, "there is no X here", or
+/// "rather than X". Ordinary content ("Sam didn't reply to the email", "no
+/// date in this thread") never matches, so a real answer is never dropped.
 static DENIED_MEDIUM: Lazy<Regex> = Lazy::new(|| {
     let media = MEDIA
         .iter()
@@ -322,14 +324,30 @@ static DENIED_MEDIUM: Lazy<Regex> = Lazy::new(|| {
         .join("|");
     Regex::new(&format!(
         r"(?ix)
-          \b(?:not|isn'?t|aren'?t|wasn'?t|weren'?t|no|never|without|none|nothing|didn'?t|don'?t|doesn'?t|can'?t|cannot|lacks?|missing)\b
-          (?:\s+\w{{1,12}}){{0,2}}\s+(?:an?|any|the)\s+(?P<m>{media})\b
+          \b(?:this|it|that|here|the\s+(?:window|screen))\s*(?:is|'s|’s)?\s*(?:not|isn'?t|isn’t)\s+(?:really\s+)?(?:an?|any|the)\s+(?P<m>{media})\b
+        | \bthere\s+(?:is|are|'s|’s)\s+no\s+(?P<m3>{media})\s+(?:here|on\s+(?:the\s+)?screen|in\s+(?:this|the)\s+window|open)\b
+        | ^\s*no\s+(?P<m4>{media})\s+(?:is|are)\s+(?:shown|visible|open|on\s+screen|here)\b
         | \b(?:rather\s+than|instead\s+of)\s+(?:an?|any|the)\s+(?P<m2>{media})\b
-        | \b(?:no|without)\s+(?P<m3>{media})\b
         "
     ))
     .expect("denied medium")
 });
+
+/// The answer's first sentence: a denial of the screen comes first ("This
+/// isn't an email thread — …"); later sentences are the answer's content.
+fn first_sentence(text: &str) -> &str {
+    let end = text
+        .char_indices()
+        .find(|&(i, c)| {
+            matches!(c, '.' | '!' | '?' | '\n')
+                && text[i + c.len_utf8()..]
+                    .chars()
+                    .next()
+                    .is_none_or(char::is_whitespace)
+        })
+        .map_or(text.len(), |(i, _)| i);
+    &text[..end]
+}
 
 /// Which media a text names, as a bit per group of `MEDIA`.
 fn media_named(text: &str) -> u8 {
@@ -352,11 +370,12 @@ fn media_named(text: &str) -> u8 {
 /// `MEDIA`.
 fn media_denied(answer: &str) -> u8 {
     let mut mask = 0;
-    for caps in DENIED_MEDIUM.captures_iter(answer) {
+    for caps in DENIED_MEDIUM.captures_iter(first_sentence(answer)) {
         let word = caps
             .name("m")
             .or_else(|| caps.name("m2"))
             .or_else(|| caps.name("m3"))
+            .or_else(|| caps.name("m4"))
             .map(|m| m.as_str().to_lowercase());
         let Some(word) = word else { continue };
         for (i, group) in MEDIA.iter().enumerate() {
@@ -510,8 +529,11 @@ pub async fn run_with(
         || (!needs_web
             && (llm::use_on_device(&app, size + 400)
                 || llm::target(&app).is_some_and(|t| t.is_on_device())));
+    // "No AI" chosen: nothing is sent or run; say so instead of answering.
+    let result = if llm::ai_off(&app) {
+        Err("hud.status.aiOff".to_string())
     // Free's weekly AI uses are spent: say so rather than ask the server.
-    let result = if !crate::limits::ai_available(&app) {
+    } else if !crate::limits::ai_available(&app) {
         Err(WEEKLY_LIMIT.to_string())
     } else if on_device {
         on_device_answer(&app, &prompt, &history, context.as_deref(), opts.write)
@@ -897,6 +919,18 @@ mod tests {
         ));
         // A question the user asked has no premise, so nothing can contradict it.
         assert!(!contradicts_premise("", "This isn't an email thread."));
+        // Ordinary answers that mention the medium are never dropped.
+        for answer in [
+            "Sam didn't reply to the email about pricing.",
+            "Nothing in the thread mentions a date.",
+            "There's no reply yet from Dana in this email thread.",
+            "Dana didn't attach the document.",
+            "Sorry I didn't reply to the message sooner. Thursday works.",
+            "The deck is fine. This isn't an email thread issue, just a typo.",
+        ] {
+            assert!(!contradicts_premise("an email thread", answer), "{answer}");
+            assert!(!contradicts_premise("a message", answer), "{answer}");
+        }
     }
 
     #[test]

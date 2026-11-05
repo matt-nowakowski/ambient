@@ -1349,6 +1349,7 @@
       "noWebResults": "Ara no he pogut cercar al web, així que això és el que sé.",
       "timeout": "Ha trigat massa. Torneu-ho a provar.",
       "needsCloud": "Això necessita el núvol, i la intel·ligència està configurada a «Només en aquest ordinador». Canvieu-ho a Privadesa.",
+      "aiOff": "La IA està desactivada, així que {{appName}} no pot fer-ho. Activa-la a Privadesa.",
       "cloudOfferOn": "Els suggeriments des del núvol estan activats. Canvieu-ho a Privadesa.",
       "cloudUnavailable": "Els suggeriments al núvol no estan disponibles ara mateix.",
       "cloudLimited": "Els suggeriments al núvol estan en pausa de moment: s'ha arribat al límit d'avui o requereixen Pro."

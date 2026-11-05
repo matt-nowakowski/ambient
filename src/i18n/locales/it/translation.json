@@ -1349,6 +1349,7 @@
       "noWebResults": "Ora non sono riuscito a cercare sul web, quindi questo è ciò che so.",
       "timeout": "Ci è voluto troppo. Riprova.",
       "needsCloud": "Serve il cloud, ma l'intelligenza è impostata su «Solo su questo computer». Cambiala in Privacy.",
+      "aiOff": "L'IA è disattivata, quindi {{appName}} non può farlo. Attivala in Privacy.",
       "cloudOfferOn": "I suggerimenti dal cloud sono attivi. Cambia l'impostazione in Privacy.",
       "cloudUnavailable": "I suggerimenti cloud non sono disponibili al momento.",
       "cloudLimited": "I suggerimenti cloud sono in pausa per ora: il limite di oggi è stato raggiunto, oppure richiedono Pro."

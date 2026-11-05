@@ -1341,6 +1341,7 @@
       "noWebResults": "Kunde inte söka på webben just nu, så det här är vad jag vet.",
       "timeout": "Det tog för lång tid. Försök igen.",
       "needsCloud": "Det här kräver molnet, men intelligensen är inställd på ”Bara på den här datorn”. Ändra det under Integritet.",
+      "aiOff": "AI är avstängt, så {{appName}} kan inte göra det. Slå på det under Integritet.",
       "cloudOfferOn": "Förslag från molnet är på. Ändra det under Integritet.",
       "cloudUnavailable": "Molnförslag är inte tillgängliga just nu.",
       "cloudLimited": "Molnförslag är pausade tills vidare: dagens gräns är nådd, eller så kräver de Pro."

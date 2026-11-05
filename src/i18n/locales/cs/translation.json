@@ -1357,6 +1357,7 @@
       "noWebResults": "Teď se nepodařilo hledat na webu, takže odpovídám z toho, co vím.",
       "timeout": "Trvalo to příliš dlouho. Zkuste to znovu.",
       "needsCloud": "Tohle potřebuje cloud a Inteligence je nastavená na „Jen na tomto počítači“. Změňte to v Soukromí.",
+      "aiOff": "AI je vypnutá, takže to {{appName}} nedokáže. Zapněte ji v Soukromí.",
       "cloudOfferOn": "Návrhy z cloudu jsou zapnuté. Změňte to v Soukromí.",
       "cloudUnavailable": "Cloudové návrhy teď nejsou dostupné.",
       "cloudLimited": "Cloudové návrhy jsou zatím pozastavené: dnešní limit je vyčerpán, nebo vyžadují Pro."
