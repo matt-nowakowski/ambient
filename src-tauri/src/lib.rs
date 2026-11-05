@@ -38,6 +38,7 @@ mod plan;
 pub mod portable;
 mod recall;
 mod remote_config;
+mod screen_names;
 mod secure_input;
 mod settings;
 mod shortcut;

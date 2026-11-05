@@ -102,6 +102,8 @@ impl Drop for FinishGuard {
         if let Some(c) = self.0.try_state::<TranscriptionCoordinator>() {
             c.notify_processing_finished();
         }
+        // The names read for this dictation are no longer needed.
+        crate::screen_names::clear();
         // The pipeline just freed its large transient buffers (captured PCM,
         // WAV copy, engine scratch); hand the cached pages back to the OS so
         // they don't sit in malloc arenas until they get swapped out (#1792).
@@ -333,6 +335,13 @@ async fn post_process_transcription(
     // The user's style for this app or site (`agent::styles`).
     let prompt = match style_note {
         Some(note) => format!("{prompt}\n\n{note}"),
+        None => prompt,
+    };
+    // Names read from the window for this dictation: a hint so the model
+    // spells them the way the user's screen does. The transcript itself is
+    // still the only thing that decides what is written.
+    let prompt = match crate::screen_names::hint() {
+        Some(hint) => format!("{prompt}\n\n{hint}"),
         None => prompt,
     };
 
@@ -575,7 +584,10 @@ fn selected_polish_prompt(settings: &AppSettings) -> Option<String> {
 /// the same conservative custom-word pass runs over its output too.
 fn keep_custom_spellings(settings: &AppSettings, polished: String) -> String {
     let polished = crate::corrections::apply(&polished, &settings.word_replacements);
-    if settings.custom_words.is_empty() {
+    // The user's custom words, plus any names read from the window for this
+    // dictation.
+    let words = crate::screen_names::merged_words(&settings.custom_words);
+    if words.is_empty() {
         return polished;
     }
     // Line by line: the matcher re-joins words with single spaces, and the
@@ -588,7 +600,7 @@ fn keep_custom_spellings(settings: &AppSettings, polished: String) -> String {
             } else {
                 crate::audio_toolkit::apply_custom_words(
                     line,
-                    &settings.custom_words,
+                    &words,
                     settings.word_correction_threshold,
                 )
             }
@@ -1238,6 +1250,11 @@ impl ShortcutAction for TranscribeAction {
             crate::plan::notify_limit_reached(app);
             return;
         }
+
+        // Read the names in the window beside the recording, so a dictation
+        // spells them the way the screen does. Never blocks the paste (see
+        // `screen_names`).
+        crate::screen_names::begin(app);
 
         let binding_id = binding_id.to_string();
         RECORDING_SESSION.fetch_add(1, Ordering::SeqCst);
