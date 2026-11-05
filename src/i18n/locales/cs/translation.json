@@ -1255,9 +1255,12 @@
     },
     "tips": {
       "label": "Posílat tipy",
+      "labelOptional": "Posílat tipy (nepovinné)",
+      "description": "Občasné tipy, jak z {{appName}} vytěžit víc. Odhlásit se můžete kdykoli.",
       "button": "Odeslat",
-      "done": "Díky!",
-      "error": "Odeslání se nepovedlo. Zkusit znovu?"
+      "done": "Odesláno",
+      "error": "Odeslání se nepovedlo. Zkusit znovu?",
+      "checkInbox": "Potvrďte to v e-mailu, který vám přišel."
     }
   },
   "home": {

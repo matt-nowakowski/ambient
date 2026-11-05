@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Email me tips",
+      "labelOptional": "Email me tips (optional)",
+      "description": "Occasional tips on getting more from {{appName}}. Unsubscribe anytime.",
       "button": "Send",
-      "done": "Thanks!",
-      "error": "Couldn’t send that. Try again?"
+      "done": "Sent",
+      "error": "Couldn’t send that. Try again?",
+      "checkInbox": "Check your inbox to confirm."
     }
   },
   "home": {

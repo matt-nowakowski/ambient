@@ -1255,9 +1255,12 @@
     },
     "tips": {
       "label": "Wysyłaj mi wskazówki",
+      "labelOptional": "Wysyłaj mi wskazówki (opcjonalnie)",
+      "description": "Od czasu do czasu wskazówki, jak lepiej korzystać z {{appName}}. Możesz zrezygnować w każdej chwili.",
       "button": "Wyślij",
-      "done": "Dzięki!",
-      "error": "Nie udało się wysłać. Spróbować ponownie?"
+      "done": "Wysłano",
+      "error": "Nie udało się wysłać. Spróbować ponownie?",
+      "checkInbox": "Sprawdź skrzynkę, aby potwierdzić."
     }
   },
   "home": {

@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "通过邮件接收技巧",
+      "labelOptional": "通过邮件接收技巧（可选）",
+      "description": "不定期发送让你更好地使用 {{appName}} 的小技巧。可随时退订。",
       "button": "发送",
-      "done": "谢谢！",
-      "error": "发送失败，要重试吗？"
+      "done": "已发送",
+      "error": "发送失败，要重试吗？",
+      "checkInbox": "请查看收件箱完成确认。"
     }
   },
   "home": {

@@ -1249,9 +1249,12 @@
     },
     "tips": {
       "label": "Receber dicas",
+      "labelOptional": "Receber dicas (opcional)",
+      "description": "Dicas de vez em quando para tirar mais proveito do {{appName}}. Cancele quando quiser.",
       "button": "Enviar",
-      "done": "Obrigado!",
-      "error": "Não foi possível enviar. Tentar de novo?"
+      "done": "Enviado",
+      "error": "Não foi possível enviar. Tentar de novo?",
+      "checkInbox": "Verifique sua caixa de entrada para confirmar."
     }
   },
   "home": {

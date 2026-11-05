@@ -935,11 +935,11 @@ fn apply_account(app: &AppHandle, account: &AccountResponse) -> Result<(), Strin
     Ok(())
 }
 
-/// The app's optional "Email me tips": the address, the anonymous device hash
-/// and the app language, nothing else. The website records it the way it
-/// records a signed-in user's address, so a free user who opts in appears in
-/// the admin list; no IP address is stored. The answer is the same whether or
-/// not the address was already on the list.
+/// The app's optional "Email me tips" (setup, or Account while signed out):
+/// the address, the anonymous device hash, the app language and whether this
+/// is Free or the trial, nothing else. The website emails a confirmation link
+/// and stores the address only once it's clicked; no IP address is stored.
+/// The answer is the same whether or not the address was already on the list.
 #[tauri::command]
 #[specta::specta]
 pub async fn subscribe_tips(app: AppHandle, email: String) -> Result<(), String> {
@@ -958,7 +958,7 @@ pub async fn subscribe_tips(app: AppHandle, email: String) -> Result<(), String>
     crate::recall::log_request_if_open(
         env!("BRAND_DOMAIN"),
         "tips",
-        "Your email address, the app language and an anonymous device hash, to send you tips.",
+        "Your email address, the app language, Free or trial, and an anonymous device hash, to send you tips.",
     );
     let response = reqwest::Client::new()
         .post(api_url("/api/subscribe"))
@@ -966,6 +966,8 @@ pub async fn subscribe_tips(app: AppHandle, email: String) -> Result<(), String>
             "email": email,
             "machine": machine,
             "language": language,
+            // Asked during setup, most people are on their trial.
+            "plan": if matches!(status(&app).plan, Plan::Trial) { "trial" } else { "free" },
         }))
         .timeout(std::time::Duration::from_secs(20))
         .send()

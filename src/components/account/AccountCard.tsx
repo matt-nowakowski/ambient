@@ -30,6 +30,7 @@ import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SuccessCheck, TextSwap } from "../ui/Transitions";
 import { spring } from "../ui/Motion";
 import { openUpgrade } from "./usePlan";
+import { TipsSignup } from "./TipsSignup";
 import { friendlyMessage, logError } from "@/lib/errors";
 import { useOsType } from "@/hooks/useOsType";
 import { primaryShortcut } from "@/lib/utils/keyboard";
@@ -180,20 +181,6 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     setPhase("idle");
     setError(null);
     setNotice(null);
-  };
-
-  const [tipsEmail, setTipsEmail] = useState("");
-  const [tipsState, setTipsState] = useState<
-    "idle" | "busy" | "done" | "error"
-  >("idle");
-
-  // Optional, and separate from signing in: most free users never sign in, so
-  // this is the only way they can ask to hear from us.
-  const sendTips = async () => {
-    if (!looksLikeEmail(tipsEmail) || tipsState === "busy") return;
-    setTipsState("busy");
-    const result = await commands.subscribeTips(tipsEmail.trim());
-    setTipsState(result.status === "ok" ? "done" : "error");
   };
 
   /** Busy → "done" for a beat → idle, so the success label shows before the flip. */
@@ -372,75 +359,43 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     description = t("account.signIn.description");
     body = (
       <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendCode();
-        }}
-        className={fieldClass(looksLikeEmail(email))}
-      >
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (phase === "error") setPhase("idle");
-            setError(null);
-          }}
-          placeholder={t("account.signIn.emailPlaceholder")}
-          spellCheck={false}
-          autoComplete="email"
-          aria-label={t("account.signIn.emailLabel")}
-          className="min-w-0 flex-1 bg-transparent text-ui outline-none placeholder:text-ink-3"
-        />
-        <Button
-          type="submit"
-          variant="primary"
-          size="sm"
-          className="h-8 px-4"
-          disabled={!looksLikeEmail(email) || phase === "busy"}
-        >
-          {submitLabel(
-            t("account.signIn.continue"),
-            t("account.signIn.sending"),
-          )}
-        </Button>
-      </form>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            sendTips();
+            sendCode();
           }}
-          className="mt-3 flex items-center gap-2 border-t-[0.5px] border-glass-edge pt-3"
+          className={fieldClass(looksLikeEmail(email))}
         >
           <input
             type="email"
-            value={tipsEmail}
+            value={email}
             onChange={(e) => {
-              setTipsEmail(e.target.value);
-              if (tipsState === "error") setTipsState("idle");
+              setEmail(e.target.value);
+              if (phase === "error") setPhase("idle");
+              setError(null);
             }}
             placeholder={t("account.signIn.emailPlaceholder")}
             spellCheck={false}
             autoComplete="email"
-            aria-label={t("account.tips.label")}
-            className="min-w-0 flex-1 rounded-full border-[0.5px] border-glass-edge bg-glass-strong px-3 py-1.5 text-small outline-none placeholder:text-ink-3"
+            aria-label={t("account.signIn.emailLabel")}
+            className="min-w-0 flex-1 bg-transparent text-ui outline-none placeholder:text-ink-3"
           />
           <Button
             type="submit"
-            variant="ghost"
+            variant="primary"
             size="sm"
-            className="h-8 px-3"
-            disabled={!looksLikeEmail(tipsEmail) || tipsState === "busy"}
+            className="h-8 px-4"
+            disabled={!looksLikeEmail(email) || phase === "busy"}
           >
-            {tipsState === "done"
-              ? t("account.tips.done")
-              : t("account.tips.button")}
+            {submitLabel(
+              t("account.signIn.continue"),
+              t("account.signIn.sending"),
+            )}
           </Button>
         </form>
-        {tipsState === "error" && (
-          <p className="mt-1 text-small text-error">{t("account.tips.error")}</p>
-        )}
+        {/* Optional, and separate from signing in: most Free users never
+            sign in, so this is how they can ask to hear from us. */}
+        <TipsSignup className="mt-4 border-t-[0.5px] border-glass-edge pt-3" />
       </>
     );
   } else if (step === "code") {

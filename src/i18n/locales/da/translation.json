@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Send mig tips",
+      "labelOptional": "Send mig tips (valgfrit)",
+      "description": "Tips en gang imellem om at få mere ud af {{appName}}. Afmeld når som helst.",
       "button": "Send",
-      "done": "Tak!",
-      "error": "Kunne ikke sende. Prøv igen?"
+      "done": "Sendt",
+      "error": "Kunne ikke sende. Prøv igen?",
+      "checkInbox": "Tjek din indbakke for at bekræfte."
     }
   },
   "home": {

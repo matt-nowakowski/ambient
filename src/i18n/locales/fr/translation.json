@@ -1249,9 +1249,12 @@
     },
     "tips": {
       "label": "Recevoir des astuces",
+      "labelOptional": "Recevoir des astuces (facultatif)",
+      "description": "Des astuces de temps en temps pour tirer le meilleur de {{appName}}. Désabonnement à tout moment.",
       "button": "Envoyer",
-      "done": "Merci !",
-      "error": "Envoi impossible. Réessayer ?"
+      "done": "Envoyé",
+      "error": "Envoi impossible. Réessayer ?",
+      "checkInbox": "Vérifiez votre boîte de réception pour confirmer."
     }
   },
   "home": {

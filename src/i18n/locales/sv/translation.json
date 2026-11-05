@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Mejla mig tips",
+      "labelOptional": "Mejla mig tips (valfritt)",
+      "description": "Tips då och då om hur du får ut mer av {{appName}}. Avsluta när du vill.",
       "button": "Skicka",
-      "done": "Tack!",
-      "error": "Kunde inte skicka. Försök igen?"
+      "done": "Skickat",
+      "error": "Kunde inte skicka. Försök igen?",
+      "checkInbox": "Kolla din inkorg för att bekräfta."
     }
   },
   "home": {

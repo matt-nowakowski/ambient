@@ -1249,9 +1249,12 @@
     },
     "tips": {
       "label": "Ricevi consigli",
+      "labelOptional": "Ricevi consigli (facoltativo)",
+      "description": "Consigli ogni tanto per ottenere di più da {{appName}}. Annulli l'iscrizione quando vuoi.",
       "button": "Invia",
-      "done": "Grazie!",
-      "error": "Invio non riuscito. Riprovare?"
+      "done": "Inviato",
+      "error": "Invio non riuscito. Riprovare?",
+      "checkInbox": "Controlla la posta in arrivo per confermare."
     }
   },
   "home": {

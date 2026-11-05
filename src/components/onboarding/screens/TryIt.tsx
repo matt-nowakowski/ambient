@@ -16,6 +16,7 @@ import { WindowBar } from "../WindowBar";
 import { OnboardingShell, ScreenSub, ScreenTitle } from "../OnboardingShell";
 import { LinuxGuide } from "../LinuxGuide";
 import { TelemetryOptIn } from "../TelemetryOptIn";
+import { TipsSignup } from "../../account/TipsSignup";
 import { TrayPanel } from "../TrayPanel";
 import { useOnboardingStore } from "../onboardingStore";
 import { useTryEngine } from "../useTryEngine";
@@ -199,7 +200,7 @@ export const TryIt: React.FC<TryItProps> = ({
   const { t, i18n } = useTranslation();
   const e = useTryEngine({ os });
   const anyDone = e.lessons.hold || e.lessons.tap;
-  const { languages, atLogin, set } = useOnboardingStore();
+  const { languages, atLogin, set, preview } = useOnboardingStore();
   const { refreshAudioDevices } = useSettings();
 
   // The mic list isn't loaded until onboarding ends; load it for the picker.
@@ -792,8 +793,9 @@ export const TryIt: React.FC<TryItProps> = ({
           )}
         </div>
         {/* Always reserves its height so the screen doesn't jump. */}
-        <div className="try-after">
+        <div className="try-after" data-tips={stage === "set" || undefined}>
           {stage === "set" && e.slowWait == null && <TelemetryOptIn />}
+          {stage === "set" && <TipsSignup compact preview={preview} />}
           {e.slowWait != null && (
             <span>
               <Trans

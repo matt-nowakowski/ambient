@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Tipps per E-Mail",
+      "labelOptional": "Tipps per E-Mail (optional)",
+      "description": "Ab und zu Tipps, wie du mehr aus {{appName}} herausholst. Jederzeit abbestellbar.",
       "button": "Senden",
-      "done": "Danke!",
-      "error": "Senden fehlgeschlagen. Nochmal?"
+      "done": "Gesendet",
+      "error": "Senden fehlgeschlagen. Nochmal?",
+      "checkInbox": "Sieh in dein Postfach, um zu bestätigen."
     }
   },
   "home": {
