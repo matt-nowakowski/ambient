@@ -1481,6 +1481,7 @@
       "shortcutNotFound": "No encontré ningún atajo llamado «{{name}}». ¿Quieres saber cómo crear uno?",
       "cantDoYet": "Aún no puedo hacer esto: {{what}}. ¿Te enseño a hacerlo tú?",
       "cantDoYetPlain": "Aún no puedo hacer eso en este equipo. ¿Te enseño a hacerlo tú?",
+      "privateNoAct": "Esta página parece privada, así que no actúo en ella.",
       "cantCloseWindow": "Todavía no puedo cerrar ventanas de otras apps. Pulsa {{keys}} para cerrarla.",
       "cantCloseTab": "Todavía no puedo cerrar pestañas del navegador. Pulsa {{keys}} para cerrarla.",
       "cantQuitApp": "Todavía no puedo cerrar apps. Pulsa {{keys}} con la app delante.",

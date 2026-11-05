@@ -1478,6 +1478,7 @@
       "shortcutNotFound": "找不到名為「{{name}}」的捷徑。想知道怎麼建立嗎？",
       "cantDoYet": "我還做不到：{{what}}。要我教你自己操作嗎？",
       "cantDoYetPlain": "我還無法在這台電腦上做到。要我教你自己操作嗎？",
+      "privateNoAct": "這個頁面看起來是私密的，所以我不會在上面操作。",
       "cantCloseWindow": "我還不能關閉其他 App 的視窗。按 {{keys}} 即可關閉。",
       "cantCloseTab": "我還不能關閉瀏覽器分頁。按 {{keys}} 即可關閉。",
       "cantQuitApp": "我還不能結束 App。在 App 位於最前方時按 {{keys}}。",
@@ -2023,10 +2024,7 @@
       },
       "recall": {
         "title": "回想",
-        "examples": [
-          "我昨天對定價說了什麼？",
-          "找出第三季的簡報。"
-        ],
+        "examples": ["我昨天對定價說了什麼？", "找出第三季的簡報。"],
         "hint": "你說過、看過或做過的事。"
       },
       "suggestions": {

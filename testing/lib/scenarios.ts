@@ -92,6 +92,8 @@ export type Expect = {
   must_not?: MustNot[];
   /** Case-insensitive substrings of some card's text or i18n key ("private", "hud.notice.cantCloseWindow"). */
   shows?: string[];
+  /** Case-insensitive substrings no card's text or i18n key may contain ("cantDoYet"). */
+  not_shows?: string[];
   /** Anything else, judged by the model against the output. */
   judge?: string;
 };

@@ -1481,6 +1481,7 @@
       "shortcutNotFound": "Je n'ai pas trouvé de raccourci nommé « {{name}} ». Voulez-vous savoir comment en créer un ?",
       "cantDoYet": "Je ne sais pas encore faire ceci : {{what}}. Voulez-vous que je vous montre comment le faire vous-même ?",
       "cantDoYetPlain": "Je ne peux pas encore faire ça sur cet ordinateur. Voulez-vous que je vous montre comment le faire vous-même ?",
+      "privateNoAct": "Cette page semble privée, donc je n'y agis pas.",
       "cantCloseWindow": "Je ne peux pas encore fermer les fenêtres des autres apps. Appuyez sur {{keys}} pour la fermer.",
       "cantCloseTab": "Je ne peux pas encore fermer les onglets du navigateur. Appuyez sur {{keys}} pour le fermer.",
       "cantQuitApp": "Je ne peux pas encore quitter les apps. Appuyez sur {{keys}} quand elle est au premier plan.",

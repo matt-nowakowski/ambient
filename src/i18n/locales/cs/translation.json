@@ -1494,6 +1494,7 @@
       "shortcutNotFound": "Nenašel jsem zkratku s názvem „{{name}}“. Chcete vědět, jak ji vytvořit?",
       "cantDoYet": "Tohle zatím neumím: {{what}}. Mám vám ukázat, jak to udělat sami?",
       "cantDoYetPlain": "Tohle na tomto počítači zatím neumím. Mám vám ukázat, jak to udělat sami?",
+      "privateNoAct": "Tahle stránka vypadá soukromě, takže na ní nic nedělám.",
       "cantCloseWindow": "Okna jiných aplikací zatím zavírat neumím. Zavřete ho klávesami {{keys}}.",
       "cantCloseTab": "Karty prohlížeče zatím zavírat neumím. Zavřete ji klávesami {{keys}}.",
       "cantQuitApp": "Aplikace zatím ukončovat neumím. Stiskněte {{keys}}, když je v popředí.",

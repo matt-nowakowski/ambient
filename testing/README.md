@@ -146,6 +146,7 @@ to each of its cases (tags are added, settings merged).
     "contains": ["…"],
     "not_contains": ["…"],
     "shows": ["hud.notice.cantClose"], // some card's text or i18n key
+    "not_shows": ["cantDoYet"], // no card's text or i18n key
     "must_not": ["typed_verbatim", "opened_browser"],
   },
 }
