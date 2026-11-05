@@ -11,6 +11,31 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.11",
+    date: "2026-11-05",
+    title: "Steadier, in every language",
+    summary:
+      "A fixes-only release, tested on Mac, Windows and Linux before it shipped: requests in any language get answered, private pages stay private, and suggestions understand more.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "Questions and requests in any language are answered from the desktop and file windows on Windows and Linux, instead of being typed into the window.",
+          "“Close that”, “never mind” and “what can I say?” work in your language.",
+          "With “No AI” chosen, asking for something tells you AI is off instead of typing it.",
+          "More banking and health pages are recognised as private, in French, Italian, Portuguese and Dutch too, and Ambient says it doesn't act on them.",
+          "Short chats with a deadline, in any language, can get a reminder suggestion.",
+        ],
+      },
+      {
+        heading: "Behind the scenes",
+        items: [
+          "Every release now passes a set of 180+ real-world scenarios in eight languages on Mac, Windows and Linux before it ships.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.10",
     date: "2026-11-05",
     title: "Sharper suggestions, your AI your way",
