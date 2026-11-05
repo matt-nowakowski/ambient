@@ -263,12 +263,17 @@
       },
       "device": {
         "title": "Na tym komputerze",
-        "body": "Prywatnie: Apple Intelligence, jeśli Mac go ma, inaczej model pobrany raz. Nic nie wychodzi do sieci."
+        "body": "Prywatnie: Apple Intelligence, jeśli Mac go ma, inaczej model pobrany raz. Nic nie wychodzi do sieci.",
+        "bodyApple": "Prywatnie: Apple Intelligence na tym Macu. Nic nie trafia do sieci.",
+        "bodyReady": "Prywatnie: model AI, który już jest na tym komputerze. Nic nie trafia do sieci.",
+        "bodyDownload": "Prywatnie: pobiera {{model}} (≈{{size}}) raz, w tle. Potem nic nie trafia do sieci.",
+        "bodyUnavailable": "AI na urządzeniu nie działa na tym komputerze, więc tylko proste reguły. Nic nie trafia do sieci."
       },
       "none": {
         "title": "Bez AI",
         "body": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani wygładzane, pisane czy podpowiadane."
-      }
+      },
+      "continueDownload": "Dalej i pobierz"
     }
   },
   "modelTable": {
@@ -1734,11 +1739,17 @@
           "title": "Tylko na tym komputerze",
           "description": "Nic nie jest wysyłane, by decydować lub odpowiadać. Funkcje wymagające modelu korzystają z prostych reguł albo informują, że nie mogą działać.",
           "titleBasic": "Tylko na tym komputerze (podstawowe, bez AI)",
-          "descriptionBasic": "Nic nie jest wysyłane. Tylko proste reguły: odpowiedzi i pisanie wymagają chmury, dopóki nie pobierzesz AI na urządzenie."
+          "descriptionBasic": "Nic nie jest wysyłane. Tylko proste reguły: odpowiedzi i pisanie wymagają chmury, dopóki nie pobierzesz AI na urządzenie.",
+          "descriptionDownload": "Nic nie jest wysyłane. Ten wybór pobiera {{model}} (≈{{size}}) do działania tutaj; do tego czasu proste reguły.",
+          "descriptionDownloading": "Nic nie jest wysyłane. Pobieranie {{model}} (≈{{size}}); do tego czasu proste reguły."
         },
         "cloud": {
           "title": "Chmura",
           "description": "Najlepsze wyniki. Tekst z ukrytymi poufnymi danymi trafia na serwery {{appName}}."
+        },
+        "none": {
+          "title": "Bez AI",
+          "description": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani wygładzane, pisane czy podpowiadane."
         }
       },
       "cloudSuggestions": {
@@ -1765,8 +1776,18 @@
       "recommended": "Zalecany",
       "basic": "Podstawowy",
       "onThisComputer": "Na tym komputerze",
-      "score": "Dokładność {{accuracy}}%, szybkość {{speed}}%",
-      "scoresNote": "Oceny pochodzą z opublikowanych testów samych modeli, nie z naszych własnych."
+      "scoresNote": "Paski porównują te modele między sobą: jakość według ich opublikowanych benchmarków, szybkość według rozmiaru. Nic nie było mierzone na tym komputerze.",
+      "downloadingModel": "Pobieranie {{model}}… {{percent}}%",
+      "downloadingTag": "Pobieranie",
+      "removeModel": "Usuń {{name}}",
+      "quality": "Jakość",
+      "speed": "Szybkość",
+      "modelInfo": {
+        "qwen3_0_6b": "Mały i szybki, najlżejszy dla pamięci i baterii. Dobry do szlifowania, mniej pewny przy pisaniu i odpowiadaniu.",
+        "qwen3_1_7b_q4": "Dobre szlifowanie i pisanie przy około połowie pobierania wersji 8-bitowej, niewiele tracąc.",
+        "qwen3_1_7b": "Poprzedni model na urządzeniu. Nieco lepszy od wersji 4-bitowej, kosztem większego pobierania.",
+        "qwen3_4b": "Najlepsza jakość na urządzeniu, ale największy i najwolniejszy. Do dobrego pisania i odpowiedzi bez chmury."
+      }
     },
     "telemetry": {
       "title": "Pomóż ulepszyć {{appName}}",

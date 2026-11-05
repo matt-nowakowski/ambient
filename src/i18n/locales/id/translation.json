@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "Di komputer ini",
-        "body": "Pribadi: Apple Intelligence bila Mac mendukungnya, jika tidak model yang diunduh sekali. Tidak ada yang online."
+        "body": "Pribadi: Apple Intelligence bila Mac mendukungnya, jika tidak model yang diunduh sekali. Tidak ada yang online.",
+        "bodyApple": "Privat: Apple Intelligence di Mac ini. Tidak ada yang dikirim ke internet.",
+        "bodyReady": "Privat: model AI yang sudah ada di komputer ini. Tidak ada yang dikirim ke internet.",
+        "bodyDownload": "Privat: mengunduh {{model}} (≈{{size}}) sekali, di latar belakang. Setelah itu tidak ada yang dikirim ke internet.",
+        "bodyUnavailable": "AI di perangkat tidak berjalan di komputer ini, jadi hanya aturan sederhana. Tidak ada yang dikirim ke internet."
       },
       "none": {
         "title": "Tanpa AI",
         "body": "Hanya dikte dan aturan sederhana. Tidak ada yang dikirim, dipoles, ditulis, atau disarankan."
-      }
+      },
+      "continueDownload": "Lanjutkan dan unduh"
     }
   },
   "modelTable": {
@@ -1710,11 +1715,17 @@
           "title": "Hanya di komputer ini",
           "description": "Tidak ada yang dikirim untuk memutuskan atau menjawab. Fitur yang memerlukan model beralih ke aturan sederhana, atau menyatakan tidak bisa.",
           "titleBasic": "Hanya di komputer ini (dasar, tanpa AI)",
-          "descriptionBasic": "Tidak ada yang dikirim. Hanya aturan sederhana: jawaban dan penulisan butuh cloud sampai Anda mengunduh AI di perangkat."
+          "descriptionBasic": "Tidak ada yang dikirim. Hanya aturan sederhana: jawaban dan penulisan butuh cloud sampai Anda mengunduh AI di perangkat.",
+          "descriptionDownload": "Tidak ada yang dikirim. Memilih ini mengunduh {{model}} (≈{{size}}) untuk berjalan di sini; aturan sederhana sampai siap.",
+          "descriptionDownloading": "Tidak ada yang dikirim. Mengunduh {{model}} (≈{{size}}); aturan sederhana sampai siap."
         },
         "cloud": {
           "title": "Cloud",
           "description": "Hasil terbaik. Teks yang telah disamarkan dikirim ke server {{appName}}."
+        },
+        "none": {
+          "title": "Tanpa AI",
+          "description": "Hanya dikte dan aturan sederhana. Tidak ada yang dikirim, dipoles, ditulis, atau disarankan."
         }
       },
       "cloudSuggestions": {
@@ -1741,8 +1752,18 @@
       "recommended": "Disarankan",
       "basic": "Dasar",
       "onThisComputer": "Di komputer ini",
-      "score": "Akurasi {{accuracy}}%, kecepatan {{speed}}%",
-      "scoresNote": "Skornya berasal dari tolok ukur terbitan model itu sendiri, bukan uji coba kami."
+      "scoresNote": "Bilah membandingkan model-model ini satu sama lain: kualitas dari benchmark yang dipublikasikan, kecepatan dari ukurannya. Tidak ada yang diukur di komputer ini.",
+      "downloadingModel": "Mengunduh {{model}}… {{percent}}%",
+      "downloadingTag": "Mengunduh",
+      "removeModel": "Hapus {{name}}",
+      "quality": "Kualitas",
+      "speed": "Kecepatan",
+      "modelInfo": {
+        "qwen3_0_6b": "Mungil dan cepat, paling ringan untuk memori dan baterai. Cukup untuk merapikan, kurang andal untuk menulis dan menjawab.",
+        "qwen3_1_7b_q4": "Merapikan dan menulis dengan baik dengan unduhan sekitar separuh versi 8-bit, tanpa banyak kehilangan.",
+        "qwen3_1_7b": "Model di perangkat sebelumnya. Sedikit lebih baik daripada versi 4-bit, dengan unduhan lebih besar.",
+        "qwen3_4b": "Kualitas terbaik di perangkat, tetapi paling besar dan paling lambat. Untuk menulis dan menjawab dengan baik tanpa cloud."
+      }
     },
     "telemetry": {
       "title": "Bantu tingkatkan {{appName}}",

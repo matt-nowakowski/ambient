@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Cloud, Cpu, MinusCircle } from "lucide-react";
-import { commands, type AgentSettings, type Intelligence } from "@/bindings";
+import {
+  commands,
+  type AgentSettings,
+  type Intelligence,
+  type OnDeviceAiStatus,
+  type ReasoningModelInfo,
+} from "@/bindings";
+import { formatModelSize } from "@/lib/utils/format";
 import { Button } from "../../ui/Button";
+import { Radio } from "../../ui/Radio";
 import { OnboardingShell, ScreenHeader, ScreenMain } from "../OnboardingShell";
 
 interface AiChoiceProps {
@@ -30,27 +38,75 @@ export const AiChoice: React.FC<AiChoiceProps> = ({
 }) => {
   const { t } = useTranslation();
   const [agent, setAgent] = useState<AgentSettings | null>(null);
-  const [choice, setChoice] = useState<Intelligence>("cloud");
+  const [onDevice, setOnDevice] = useState<OnDeviceAiStatus | null>(null);
+  // With no on-device model here: the one "On this computer" downloads.
+  const [model, setModel] = useState<ReasoningModelInfo | null>(null);
+  const [choice, setChoice] = useState<Intelligence | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     let live = true;
-    commands.getAppSettings().then((r) => {
+    Promise.all([
+      commands.getAppSettings(),
+      commands.getOnDeviceAiStatus(),
+      commands.getReasoningModels(),
+    ]).then(([r, status, models]) => {
       const agent = r.status === "ok" ? r.data.agent : undefined;
-      if (live && agent) {
-        setAgent(agent);
-        setChoice(agent.intelligence);
-      }
+      if (!live || !agent) return;
+      setAgent(agent);
+      setOnDevice(status);
+      setModel(models.find((m) => m.selected) ?? null);
+      // A fresh install is "auto", which this screen doesn't offer: start
+      // on this computer where Apple Intelligence is ready, else the cloud.
+      setChoice(
+        agent.intelligence !== "auto"
+          ? agent.intelligence
+          : status.apple_available
+            ? "device"
+            : "cloud",
+      );
     });
     return () => {
       live = false;
     };
   }, []);
 
+  // "On this computer" without Apple Intelligence or a model already here:
+  // the recommended model downloads, so say which and how big.
+  const needsDownload =
+    !!onDevice &&
+    !onDevice.apple_available &&
+    !onDevice.downloaded &&
+    onDevice.supported &&
+    !!model;
+  const unavailable =
+    !!onDevice &&
+    !onDevice.apple_available &&
+    !onDevice.downloaded &&
+    !onDevice.supported;
+
+  const body = (id: Intelligence) => {
+    if (id !== "device" || !onDevice) return t(`onboarding.ai.${id}.body`);
+    if (onDevice.apple_available) return t("onboarding.ai.device.bodyApple");
+    if (onDevice.downloaded) return t("onboarding.ai.device.bodyReady");
+    if (needsDownload && model)
+      return t("onboarding.ai.device.bodyDownload", {
+        model: model.name,
+        size: formatModelSize(onDevice.size_mb),
+      });
+    if (unavailable) return t("onboarding.ai.device.bodyUnavailable");
+    return t("onboarding.ai.device.body");
+  };
+
   const save = async () => {
-    if (!agent) return;
+    if (!agent || !choice) return;
     setSaving(true);
     await commands.setAgentSettings({ ...agent, intelligence: choice });
+    // The download runs on in the background, with its progress (and any
+    // failure, with Retry) in Settings › Privacy.
+    if (choice === "device" && needsDownload) {
+      void commands.downloadOnDeviceAi(null);
+    }
     setSaving(false);
     onContinue();
   };
@@ -60,8 +116,14 @@ export const AiChoice: React.FC<AiChoiceProps> = ({
       progress={progress}
       onBack={onBack}
       primary={
-        <Button variant="primary" onClick={save} disabled={saving || !agent}>
-          {t("onboarding.ai.continue")}
+        <Button
+          variant="primary"
+          onClick={save}
+          disabled={saving || !agent || !choice}
+        >
+          {choice === "device" && needsDownload
+            ? t("onboarding.ai.continueDownload")
+            : t("onboarding.ai.continue")}
         </Button>
       }
     >
@@ -81,27 +143,25 @@ export const AiChoice: React.FC<AiChoiceProps> = ({
           className="flex flex-col gap-2"
         >
           {CHOICES.map((c) => (
-            <label
+            <button
               key={c.id}
-              className="glass flex cursor-pointer items-start gap-3 rounded-panel px-4 py-3"
+              type="button"
+              role="radio"
+              aria-checked={choice === c.id}
+              onClick={() => setChoice(c.id)}
+              className="glass flex items-start gap-3 rounded-panel px-4 py-3 text-start"
             >
-              <input
-                type="radio"
-                name="ai-choice"
-                className="mt-1"
-                checked={choice === c.id}
-                onChange={() => setChoice(c.id)}
-              />
-              <span className="min-w-0">
+              <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2 text-ui">
                   {c.icon}
-                  {t("onboarding.ai." + c.id + ".title")}
+                  {t(`onboarding.ai.${c.id}.title`)}
                 </span>
                 <span className="mt-0.5 block text-small text-ink-2">
-                  {t("onboarding.ai." + c.id + ".body")}
+                  {body(c.id)}
                 </span>
               </span>
-            </label>
+              <Radio checked={choice === c.id} className="mt-0.5" />
+            </button>
           ))}
         </div>
       </ScreenMain>

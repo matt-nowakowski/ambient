@@ -262,12 +262,17 @@
       },
       "device": {
         "title": "Su questo computer",
-        "body": "Privato: Apple Intelligence dove il Mac ce l'ha, altrimenti un modello scaricato una volta. Niente va online."
+        "body": "Privato: Apple Intelligence dove il Mac ce l'ha, altrimenti un modello scaricato una volta. Niente va online.",
+        "bodyApple": "Privato: Apple Intelligence su questo Mac. Niente va online.",
+        "bodyReady": "Privato: il modello di IA già presente su questo computer. Niente va online.",
+        "bodyDownload": "Privato: scarica {{model}} (≈{{size}}) una volta, in background. Dopo, niente va online.",
+        "bodyUnavailable": "L'IA sul dispositivo non funziona su questo computer, quindi solo regole semplici. Niente va online."
       },
       "none": {
         "title": "Nessuna IA",
         "body": "Dettatura semplice e regole di base. Non si invia nulla e non si leviga, scrive o suggerisce niente."
-      }
+      },
+      "continueDownload": "Continua e scarica"
     }
   },
   "modelTable": {
@@ -1721,11 +1726,17 @@
           "title": "Solo su questo computer",
           "description": "Non viene inviato nulla per decidere o rispondere. Le funzioni che richiedono un modello ripiegano su regole semplici, oppure dicono di non poterlo fare.",
           "titleBasic": "Solo su questo computer (base, senza IA)",
-          "descriptionBasic": "Non viene inviato nulla. Solo regole semplici: risposte e scrittura richiedono il cloud finché non scarichi l'IA sul dispositivo."
+          "descriptionBasic": "Non viene inviato nulla. Solo regole semplici: risposte e scrittura richiedono il cloud finché non scarichi l'IA sul dispositivo.",
+          "descriptionDownload": "Non viene inviato nulla. Sceglierlo scarica {{model}} (≈{{size}}) per usarlo qui; regole semplici finché non è pronto.",
+          "descriptionDownloading": "Non viene inviato nulla. Download di {{model}} (≈{{size}}); regole semplici finché non è pronto."
         },
         "cloud": {
           "title": "Cloud",
           "description": "I risultati migliori. Il testo oscurato viene inviato ai server di {{appName}}."
+        },
+        "none": {
+          "title": "Nessuna IA",
+          "description": "Dettatura semplice e regole di base. Non si invia nulla e non si leviga, scrive o suggerisce niente."
         }
       },
       "cloudSuggestions": {
@@ -1752,8 +1763,18 @@
       "recommended": "Consigliato",
       "basic": "Base",
       "onThisComputer": "Su questo computer",
-      "score": "Precisione {{accuracy}}%, velocità {{speed}}%",
-      "scoresNote": "I punteggi vengono dai benchmark pubblicati dei modelli stessi, non da nostri test."
+      "scoresNote": "Le barre confrontano questi modelli tra loro: qualità dai benchmark pubblicati, velocità dalle dimensioni. Nulla è stato misurato su questo computer.",
+      "downloadingModel": "Download di {{model}}… {{percent}}%",
+      "downloadingTag": "Download in corso",
+      "removeModel": "Rimuovi {{name}}",
+      "quality": "Qualità",
+      "speed": "Velocità",
+      "modelInfo": {
+        "qwen3_0_6b": "Minuscolo e rapido, il più leggero per memoria e batteria. Va bene per la rifinitura, meno affidabile per scrivere e rispondere.",
+        "qwen3_1_7b_q4": "Buona rifinitura e scrittura con circa metà del download della versione a 8 bit, perdendo poco.",
+        "qwen3_1_7b": "Il precedente modello sul dispositivo. Un po' migliore della versione a 4 bit, con un download più grande.",
+        "qwen3_4b": "La migliore qualità sul dispositivo, ma il più grande e lento. Per scrivere e rispondere bene senza cloud."
+      }
     },
     "telemetry": {
       "title": "Aiuta a migliorare {{appName}}",

@@ -262,12 +262,17 @@
       },
       "device": {
         "title": "En aquest ordinador",
-        "body": "Privat: Apple Intelligence on el Mac el té, si no un model que descarregues un cop. Res no surt a internet."
+        "body": "Privat: Apple Intelligence on el Mac el té, si no un model que descarregues un cop. Res no surt a internet.",
+        "bodyApple": "Privat: Apple Intelligence en aquest Mac. Res no surt a internet.",
+        "bodyReady": "Privat: el model d'IA que ja és en aquest ordinador. Res no surt a internet.",
+        "bodyDownload": "Privat: baixa {{model}} (≈{{size}}) un cop, en segon pla. Després, res no surt a internet.",
+        "bodyUnavailable": "La IA al dispositiu no funciona en aquest ordinador, així que només hi haurà regles simples. Res no surt a internet."
       },
       "none": {
         "title": "Sense IA",
         "body": "Només dictat i regles senzilles. No s'envia res ni es poleix, escriu o suggereix res."
-      }
+      },
+      "continueDownload": "Continua i baixa"
     }
   },
   "modelTable": {
@@ -1721,11 +1726,17 @@
           "title": "Només en aquest ordinador",
           "description": "No s'envia res per decidir ni respondre. Les funcions que necessiten un model passen a regles simples, o diuen que no poden.",
           "titleBasic": "Només en aquest ordinador (bàsic, sense IA)",
-          "descriptionBasic": "No s'envia res. Només regles simples: les respostes i l'escriptura necessiten el núvol fins que baixis la IA al dispositiu."
+          "descriptionBasic": "No s'envia res. Només regles simples: les respostes i l'escriptura necessiten el núvol fins que baixis la IA al dispositiu.",
+          "descriptionDownload": "No s'envia res. Triar-ho baixa {{model}} (≈{{size}}) per fer-lo servir aquí; regles simples fins que estigui a punt.",
+          "descriptionDownloading": "No s'envia res. S'està baixant {{model}} (≈{{size}}); regles simples fins que estigui a punt."
         },
         "cloud": {
           "title": "Núvol",
           "description": "Els millors resultats. El text s'envia sense dades sensibles als servidors del {{appName}}."
+        },
+        "none": {
+          "title": "Sense IA",
+          "description": "Només dictat i regles senzilles. No s'envia res ni es poleix, escriu o suggereix res."
         }
       },
       "cloudSuggestions": {
@@ -1752,8 +1763,18 @@
       "recommended": "Recomanat",
       "basic": "Bàsic",
       "onThisComputer": "En aquest ordinador",
-      "score": "Precisió {{accuracy}} %, velocitat {{speed}} %",
-      "scoresNote": "Les puntuacions venen dels benchmarks publicats dels propis models, no de proves nostres."
+      "scoresNote": "Les barres comparen aquests models entre ells: la qualitat, segons els benchmarks publicats; la velocitat, segons la mida. Res no s'ha mesurat en aquest ordinador.",
+      "downloadingModel": "S'està baixant {{model}}… {{percent}} %",
+      "downloadingTag": "S'està baixant",
+      "removeModel": "Elimina {{name}}",
+      "quality": "Qualitat",
+      "speed": "Velocitat",
+      "modelInfo": {
+        "qwen3_0_6b": "Petit i ràpid, el més lleuger en memòria i bateria. Bé per polir, menys fiable per escriure i respondre.",
+        "qwen3_1_7b_q4": "Bon polit i bona redacció amb la meitat de baixada que la versió de 8 bits, perdent poc.",
+        "qwen3_1_7b": "L'anterior model al dispositiu. Una mica millor que la versió de 4 bits, amb una baixada més gran.",
+        "qwen3_4b": "La millor qualitat al dispositiu, i el més gran i lent. Per escriure i respondre bé sense el núvol."
+      }
     },
     "telemetry": {
       "title": "Ajuda a millorar {{appName}}",

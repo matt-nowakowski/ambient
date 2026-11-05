@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "在本机上",
-        "body": "私密：Mac 支持时用 Apple Intelligence，否则下载一次模型。任何内容都不会联网。"
+        "body": "私密：Mac 支持时用 Apple Intelligence，否则下载一次模型。任何内容都不会联网。",
+        "bodyApple": "私密：使用这台 Mac 上的 Apple Intelligence。不会有任何内容联网。",
+        "bodyReady": "私密：使用这台电脑上已有的 AI 模型。不会有任何内容联网。",
+        "bodyDownload": "私密：在后台一次性下载 {{model}}（约 {{size}}）。之后不会有任何内容联网。",
+        "bodyUnavailable": "设备端 AI 无法在这台电脑上运行，因此只有简单规则。不会有任何内容联网。"
       },
       "none": {
         "title": "不使用 AI",
         "body": "只做听写和简单规则。不发送任何内容，也不润色、代写或建议。"
-      }
+      },
+      "continueDownload": "继续并下载"
     }
   },
   "modelTable": {
@@ -1710,11 +1715,17 @@
           "title": "仅在这台电脑上",
           "description": "不会发送任何内容来做决定或回答。需要模型的功能会退回到简单规则，或告知无法完成。",
           "titleBasic": "仅限这台电脑（基础，无 AI）",
-          "descriptionBasic": "不会发送任何内容。仅使用简单规则：在下载设备端 AI 之前，回答和写作需要云端。"
+          "descriptionBasic": "不会发送任何内容。仅使用简单规则：在下载设备端 AI 之前，回答和写作需要云端。",
+          "descriptionDownload": "不发送任何内容。选择后会下载 {{model}}（约 {{size}}）在本机运行；就绪前使用简单规则。",
+          "descriptionDownloading": "不发送任何内容。正在下载 {{model}}（约 {{size}}）；就绪前使用简单规则。"
         },
         "cloud": {
           "title": "云端",
           "description": "效果最佳。脱敏后的文本会发送到 {{appName}} 的服务器。"
+        },
+        "none": {
+          "title": "不使用 AI",
+          "description": "只做听写和简单规则。不发送任何内容，也不润色、代写或建议。"
         }
       },
       "cloudSuggestions": {
@@ -1741,8 +1752,18 @@
       "recommended": "推荐",
       "basic": "基础",
       "onThisComputer": "在本机上",
-      "score": "准确度 {{accuracy}}%，速度 {{speed}}%",
-      "scoresNote": "评分来自模型自身公布的基准测试，而非我们自行测试。"
+      "scoresNote": "条形图是这些模型之间的相互比较：质量来自其公开的基准测试，速度来自其大小。均未在这台电脑上实测。",
+      "downloadingModel": "正在下载 {{model}}… {{percent}}%",
+      "downloadingTag": "下载中",
+      "removeModel": "删除 {{name}}",
+      "quality": "质量",
+      "speed": "速度",
+      "modelInfo": {
+        "qwen3_0_6b": "小巧快速，对内存和电池最友好。润色够用，写作和回答不太可靠。",
+        "qwen3_1_7b_q4": "下载量约为 8 位版本的一半，润色和写作依然不错，损失很小。",
+        "qwen3_1_7b": "之前的设备端模型。比 4 位版本略好，但下载更大。",
+        "qwen3_4b": "设备端质量最好，但也最大最慢。适合不用云端也要好好写作和回答。"
+      }
     },
     "telemetry": {
       "title": "帮助改进 {{appName}}",

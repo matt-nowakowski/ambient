@@ -261,12 +261,17 @@
       },
       "device": {
         "title": "Op deze computer",
-        "body": "Privé: Apple Intelligence waar de Mac het heeft, anders een model dat je één keer downloadt. Niets gaat online."
+        "body": "Privé: Apple Intelligence waar de Mac het heeft, anders een model dat je één keer downloadt. Niets gaat online.",
+        "bodyApple": "Privé: Apple Intelligence op deze Mac. Er gaat niets online.",
+        "bodyReady": "Privé: het AI-model dat al op deze computer staat. Er gaat niets online.",
+        "bodyDownload": "Privé: downloadt {{model}} (≈{{size}}) één keer, op de achtergrond. Daarna gaat er niets online.",
+        "bodyUnavailable": "AI op het apparaat werkt niet op deze computer, dus alleen eenvoudige regels. Er gaat niets online."
       },
       "none": {
         "title": "Geen AI",
         "body": "Alleen dicteren en eenvoudige regels. Niets wordt verstuurd en niets wordt gepolijst, geschreven of voorgesteld."
-      }
+      },
+      "continueDownload": "Doorgaan en downloaden"
     }
   },
   "modelTable": {
@@ -1710,11 +1715,17 @@
           "title": "Alleen op deze computer",
           "description": "Er wordt niets verstuurd om te beslissen of te antwoorden. Functies die een model nodig hebben, vallen terug op eenvoudige regels of melden dat ze niet kunnen.",
           "titleBasic": "Alleen op deze computer (basis, zonder AI)",
-          "descriptionBasic": "Er wordt niets verstuurd. Alleen eenvoudige regels: antwoorden en schrijven hebben de cloud nodig tot je AI op het apparaat downloadt."
+          "descriptionBasic": "Er wordt niets verstuurd. Alleen eenvoudige regels: antwoorden en schrijven hebben de cloud nodig tot je AI op het apparaat downloadt.",
+          "descriptionDownload": "Er wordt niets verstuurd. Deze keuze downloadt {{model}} (≈{{size}}) om hier te draaien; tot die tijd eenvoudige regels.",
+          "descriptionDownloading": "Er wordt niets verstuurd. {{model}} (≈{{size}}) wordt gedownload; tot die tijd eenvoudige regels."
         },
         "cloud": {
           "title": "Cloud",
           "description": "De beste resultaten. Geschoonde tekst wordt naar de servers van {{appName}} gestuurd."
+        },
+        "none": {
+          "title": "Geen AI",
+          "description": "Alleen dicteren en eenvoudige regels. Niets wordt verstuurd en niets wordt gepolijst, geschreven of voorgesteld."
         }
       },
       "cloudSuggestions": {
@@ -1741,8 +1752,18 @@
       "recommended": "Aanbevolen",
       "basic": "Eenvoudig",
       "onThisComputer": "Op deze computer",
-      "score": "Nauwkeurigheid {{accuracy}}%, snelheid {{speed}}%",
-      "scoresNote": "De scores komen uit de gepubliceerde benchmarks van de modellen zelf, niet uit eigen tests."
+      "scoresNote": "De balken vergelijken deze modellen met elkaar: kwaliteit uit hun gepubliceerde benchmarks, snelheid uit hun grootte. Niets is op deze computer gemeten.",
+      "downloadingModel": "{{model}} downloaden… {{percent}}%",
+      "downloadingTag": "Downloaden",
+      "removeModel": "{{name}} verwijderen",
+      "quality": "Kwaliteit",
+      "speed": "Snelheid",
+      "modelInfo": {
+        "qwen3_0_6b": "Klein en snel, het zuinigst met geheugen en batterij. Prima voor oppoetsen, minder betrouwbaar bij schrijven en antwoorden.",
+        "qwen3_1_7b_q4": "Goed oppoetsen en schrijven met ongeveer de helft van de download van de 8-bitversie, met weinig verlies.",
+        "qwen3_1_7b": "Het vorige model op het apparaat. Iets beter dan de 4-bitversie, voor een grotere download.",
+        "qwen3_4b": "De beste kwaliteit op het apparaat, en het grootste en traagste. Voor goed schrijven en antwoorden zonder cloud."
+      }
     },
     "telemetry": {
       "title": "Help {{appName}} verbeteren",
