@@ -13,14 +13,15 @@ import {
   logoSvg,
   logosZip,
 } from "@/lib/marketing/catalog";
-import { KINDS, ORIENTATIONS, type CreatorVideo } from "@/lib/marketing/creator";
+import { KINDS, ORIENTATIONS, groupCampaign, type CampaignAsset, type CreatorVideo } from "@/lib/marketing/creator";
 import { BannerGallery, CopyText } from "./client";
 import "./marketing.css";
 
 export const SECTIONS = [
   { id: "video", label: "Launch video" },
   { id: "logos", label: "Logos" },
-  { id: "banners", label: "Banners" },
+  { id: "campaign", label: "Campaign" },
+  { id: "banners", label: "Simple banners" },
   { id: "copy", label: "Copy" },
   { id: "creator", label: "Creator videos" },
 ] as const;
@@ -28,9 +29,21 @@ export const SECTIONS = [
 /**
  * The marketing suite, shared by the admin Marketing tab and the influencer
  * media kit. Read-only in both: everything links to public files. The admin
- * passes a note on adding creator videos in `creatorNote`.
+ * passes notes on adding creator videos and campaign creative in
+ * `creatorNote` and `campaignNote`.
  */
-export function MarketingSuite({ videos, creatorNote }: { videos: CreatorVideo[]; creatorNote?: ReactNode }) {
+export function MarketingSuite({
+  videos,
+  campaign = [],
+  creatorNote,
+  campaignNote,
+}: {
+  videos: CreatorVideo[];
+  campaign?: CampaignAsset[];
+  creatorNote?: ReactNode;
+  campaignNote?: ReactNode;
+}) {
+  const concepts = groupCampaign(campaign);
   return (
     <div className="space-y-14">
       <Section id="video" title="Launch video" sub="The current cut, horizontal and vertical, as MP4, with posters for light and dark.">
@@ -124,7 +137,64 @@ export function MarketingSuite({ videos, creatorNote }: { videos: CreatorVideo[]
         </div>
       </Section>
 
-      <Section id="banners" title="Banners" sub="Ready-made for each platform's size and safe area. Pick a headline and a theme.">
+      <Section id="campaign" title="Campaign" sub="Real screen moments in the app's own UI, laid out for each platform: stories as MP4 and PNG, posts and banners as PNG.">
+        {concepts.length ? (
+          <div className="space-y-8">
+            {concepts.map((c) => (
+              <div key={c.id}>
+                <div className="mb-3 flex items-baseline gap-2">
+                  <h3 className="text-[15px] font-normal tracking-[-0.01em] text-foreground">{c.label}</h3>
+                  <span className="text-[12px] text-muted">
+                    {c.assets.length} file{c.assets.length === 1 ? "" : "s"} · {bytes(c.assets.reduce((n, a) => n + a.bytes, 0))}
+                  </span>
+                </div>
+                <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {c.assets.map((a) => (
+                    <div key={a.id} className="mk-card flex flex-col">
+                      <div className="mk-preview relative overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
+                        {a.isVideo ? (
+                          <video
+                            controls
+                            playsInline
+                            muted
+                            loop
+                            preload={a.poster ? "none" : "metadata"}
+                            poster={a.poster ?? undefined}
+                            src={a.src}
+                            className="absolute inset-0 h-full w-full object-contain"
+                          />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element -- the downloadable file itself
+                          <img src={a.src} alt={a.title} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
+                        )}
+                      </div>
+                      <div className="flex flex-1 flex-col px-3 py-2.5">
+                        <div className="text-[13px] text-foreground">
+                          {a.formatLabel}
+                          {a.isVideo ? ", MP4" : ""}
+                        </div>
+                        <div className="text-[12px] text-muted">
+                          {[a.width && a.height ? `${a.width}×${a.height}` : null, a.theme === "dark" ? "Dark" : "Light", bytes(a.bytes)].filter(Boolean).join(" · ")}
+                        </div>
+                        <div className="mt-auto pt-2.5">
+                          <a href={a.src} download={a.src.split("/").pop()} className={buttonClass("glass", "sm", "!h-7 !px-2.5")}>
+                            Download {a.isVideo ? "MP4" : "PNG"}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Empty>No campaign creative yet.</Empty>
+        )}
+        {campaignNote}
+      </Section>
+
+      <Section id="banners" title="Simple banners" sub="A headline on the brand backdrop, sized for each platform's safe area. Pick a headline and a theme.">
         <BannerGallery />
       </Section>
 

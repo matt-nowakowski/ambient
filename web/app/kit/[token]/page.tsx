@@ -59,7 +59,7 @@ export default async function MediaKitPage({ params }: { params: Promise<{ token
       </nav>
 
       <div className="mt-8">
-        <MarketingSuite videos={creator.videos} />
+        <MarketingSuite videos={creator.videos} campaign={creator.campaign} />
       </div>
 
       <footer className="mt-16 border-t border-[color-mix(in_srgb,#8f8f8f_20%,transparent)] pt-6 text-[13px] text-muted">
