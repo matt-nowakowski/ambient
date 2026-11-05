@@ -218,6 +218,8 @@
       "lang": "pl",
       "screen": "finder_desktop",
       "say": "co mogę powiedzieć",
+      "tags": ["regression"],
+      "regression": "0.1.9 #4: \"what can I say?\" worked only in English",
       "expect": {
         "route": ["help", "answer"],
         "must_not": ["typed"]
@@ -432,6 +434,56 @@
       "regression": "0.1.9 #3: the router now knows \"dismiss\"; follow-ups must still be answered",
       "expect": {
         "route": "answer",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "help.de.desktop",
+      "tags": ["help", "desktop", "regression"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "was kannst du alles",
+      "regression": "0.1.9 #4: \"what can I say?\" worked only in English",
+      "expect": {
+        "route": "help",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "help.es.browser",
+      "tags": ["help", "regression"],
+      "lang": "es",
+      "screen": "browser_article",
+      "say": "¿qué puedo decirte?",
+      "regression": "0.1.9 #4: \"what can I say?\" worked only in English",
+      "expect": {
+        "route": "help",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "help.fr.field",
+      "about": "With a text field focused, asking Ambient what to say still shows the examples.",
+      "tags": ["help", "regression"],
+      "lang": "fr",
+      "screen": "notes_empty",
+      "say": "qu'est-ce que je peux te dire",
+      "regression": "0.1.9 #4: \"what can I say?\" worked only in English",
+      "expect": {
+        "route": "help",
+        "must_not": ["typed"]
+      }
+    },
+    {
+      "id": "help.ja.router",
+      "about": "A phrasing no cue list knows: the router judges it.",
+      "tags": ["help", "desktop", "regression"],
+      "lang": "ja",
+      "screen": "finder_desktop",
+      "say": "何ができるの？",
+      "regression": "0.1.9 #4: \"what can I say?\" worked only in English",
+      "expect": {
+        "route": ["help", "answer"],
         "must_not": ["typed"]
       }
     }

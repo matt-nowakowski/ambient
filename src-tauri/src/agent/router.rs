@@ -205,15 +205,25 @@ pub fn compose_maybe(transcript: &str) -> bool {
 }
 
 /// "What can I say?", "what can you do?", "help": the user wants the examples.
+/// A fast path: English and the commonest phrasings in the main European
+/// languages. Elsewhere the router judges it ("help"), in any language.
 static HELP: Lazy<Regex> = Lazy::new(|| {
     Regex::new(
-        r"(?ix)^\s*(?:
+        r"(?ix)^[\s¿¡]*(?:
             what\s+(?:can|should|do)\s+i\s+(?:say|ask)(?:\s+(?:you|here))?
           | what\s+can\s+you\s+do(?:\s+for\s+me)?
           | what\s+(?:are\s+)?(?:your|the)\s+commands
           | how\s+do\s+i\s+use\s+(?:you|this|ambient)
           | (?:show\s+(?:me\s+)?)?(?:the\s+)?(?:help|examples|commands)
           | help(?:\s+me)?
+          # de, es, fr, it, pt, pl: what can I say / what can you do
+          | was\s+kann\s+ich\s+(?:dir\s+)?sagen | was\s+kannst\s+du(?:\s+alles)?(?:\s+tun|\s+machen)?
+          | qu[eé]\s+(?:te\s+)?puedo\s+(?:decir|pedir)(?:te)? | qu[eé]\s+puedes\s+hacer
+          | qu'est[\s-]ce\s+que\s+je\s+peux\s+(?:te\s+)?dire | que\s+puis[\s-]je\s+dire
+          | qu'est[\s-]ce\s+que\s+tu\s+(?:peux|sais)\s+faire | que\s+(?:peux|sais)[\s-]tu\s+faire
+          | cosa\s+(?:ti\s+)?posso\s+dir(?:e|ti) | cosa\s+(?:puoi|sai)\s+fare
+          | o\s+que\s+(?:eu\s+)?posso\s+(?:te\s+)?dizer | o\s+que\s+(?:voc[eê]\s+|tu\s+)?(?:pode|podes|sabe|sabes)\s+fazer
+          | co\s+mogę\s+(?:ci\s+)?powiedzieć | co\s+(?:potrafisz|umiesz)(?:\s+robić)?
         )\s*[?.!]*\s*$",
     )
     .expect("help cues")
@@ -737,6 +747,7 @@ const TASK: &str = r#"Choose one intent:
 - "recall": they ask about something they said, dictated, read or saw earlier ("what did I say about pricing", "what was that number on the page").
 - "compose": they instruct YOU to write a message for them rather than dictating its words: "tell them we're happy with it", "let her know I'll be late", "say that Thursday works", "reply that everything's ok", "reply to Sam" (with an email or chat open), in any language ("odpisz że wszystko ok", "napisz mu że będę o 5", "dile que llego tarde", "réponds-lui que c'est bon", "antworte, dass alles passt"). The words they'd send would be in the third person or need rewriting ("tell them we're happy" → "We're happy with it."). Decide from the words, not from which app is open. If the transcript reads as the message itself, spoken to its reader, it's "write".
 - "report": they want to report a bug or send feedback or a wish to the makers of this assistant ("report a bug: …", "that didn't work", "tell the team …", "feature request: …", "I wish you could …").
+- "help": they ask YOU what they can say to you or what you can do, in any language ("what can I say?", "co mogę powiedzieć", "was kannst du", "何ができるの"). Asking what to say to someone else is "write" or "compose".
 - "dismiss": only when told one of your cards is on screen: they want that card closed or no longer need it, in any language ("close that", "never mind", "schon gut", "zamknij to", "laisse tomber", "もういい"). Closing a browser tab, a window or another app is "act" with close_window.
 If unsure, choose "write". A message or email being dictated word for word is always "write".
 Resolve relative dates ("Friday", "at 5") against NOW below, in local time. Parts of the day: morning 09:00, afternoon 14:00, evening 18:00, tonight 20:00; a day with no time is 09:00 that day."#;
@@ -756,7 +767,7 @@ const EXAMPLES: &str = r#"<transcript>reply that Thursday works for me</transcri
 {"intent":"answer","query":"What's the weather in Lisbon tomorrow?","needs_web":true,"about_screen":false}"#;
 
 const OUTPUT: &str = r#"JSON only, no prose:
-{"intent":"write|answer|act|recall|compose|report|dismiss","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
+{"intent":"write|answer|act|recall|compose|report|help|dismiss","text":"...","query":"...","needs_web":false,"about_screen":false,"action":null}
 - write: "text" = the transcript cleaned up following RULES, then POLISH RULES below.
 - compose: "query" = the instruction, as said.
 - answer: "query" = the question, made self-contained. "needs_web" = true only if it needs current or specific facts you may not know (news, prices, rates, schedules, recent events, specific businesses). "about_screen" = true if it refers to "this"/the current window.
@@ -847,6 +858,7 @@ fn parse(reply: &str) -> Option<Route> {
         "compose" => nonempty(raw.query)
             .or(nonempty(raw.text))
             .map(Route::Compose),
+        "help" => Some(Route::Help),
         "dismiss" => Some(Route::Dismiss),
         _ => None,
     }
@@ -1103,10 +1115,18 @@ mod tests {
             "What can you do?",
             "Ambient, help",
             "show me the commands",
+            "co mogę powiedzieć",
+            "Was kann ich sagen?",
+            "¿Qué puedes hacer?",
+            "qu'est-ce que je peux dire",
+            "cosa sai fare?",
+            "o que você pode fazer",
         ] {
             assert!(is_help_request(s), "{s}");
         }
         for s in [
+            "co mogę powiedzieć Ani o spóźnieniu",
+            "was kann ich ihm sagen, dass er nicht böse wird",
             "What can I say to Sam about the delay?",
             "help me write this email",
             "I need help with the deck",
