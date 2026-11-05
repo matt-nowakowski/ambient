@@ -7,7 +7,7 @@ import { brand } from "./brand";
 // current version at request time via /dl/<id> (see app/dl/[id]/route.ts),
 // which reads releases/manifest.json that the Release workflow writes to R2.
 // ---------------------------------------------------------------------------
-export const RELEASE_VERSION = "0.1.8";
+export const RELEASE_VERSION = "0.1.9";
 export const GITHUB_REPO = brand.githubRepo; // e.g. "matt-nowakowski/ambient"
 
 const v = RELEASE_VERSION;

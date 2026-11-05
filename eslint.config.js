@@ -16,6 +16,8 @@ export default [
       i18next,
     },
     rules: {
+      // Two cases with one label: the second never runs (setup went blank in 0.1.8).
+      "no-duplicate-case": "error",
       // Catch text in JSX that should be translated
       "i18next/no-literal-string": [
         "error",

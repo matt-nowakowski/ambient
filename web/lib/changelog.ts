@@ -11,6 +11,20 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.9",
+    date: "2026-11-05",
+    title: "Setup fix",
+    summary: "Fixes setup stopping on a blank screen after choosing a speech model in 0.1.8.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "New installs of 0.1.8 could stop on a blank screen after the speech model step, and reopening the app came back to it. Setup now goes on to choose where AI runs, then the demo.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.8",
     date: "2026-11-04",
     title: "Faster, sharper, more yours",

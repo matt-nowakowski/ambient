@@ -220,7 +220,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
           onChoose={chooseModel}
         />
       );
-    case "demo":
+    case "ai":
       return <AiChoice progress={progress} onBack={back} onContinue={next} />;
     case "demo":
       return (
@@ -258,5 +258,11 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
           onDone={finish}
         />
       );
+    default: {
+      // Every step must render: a step without a case left setup blank in
+      // 0.1.8. This fails to compile if one is added without its screen.
+      const missing: never = step;
+      return missing;
+    }
   }
 };
