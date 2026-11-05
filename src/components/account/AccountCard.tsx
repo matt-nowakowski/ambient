@@ -182,6 +182,20 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     setNotice(null);
   };
 
+  const [tipsEmail, setTipsEmail] = useState("");
+  const [tipsState, setTipsState] = useState<
+    "idle" | "busy" | "done" | "error"
+  >("idle");
+
+  // Optional, and separate from signing in: most free users never sign in, so
+  // this is the only way they can ask to hear from us.
+  const sendTips = async () => {
+    if (!looksLikeEmail(tipsEmail) || tipsState === "busy") return;
+    setTipsState("busy");
+    const result = await commands.subscribeTips(tipsEmail.trim());
+    setTipsState(result.status === "ok" ? "done" : "error");
+  };
+
   /** Busy → "done" for a beat → idle, so the success label shows before the flip. */
   const succeed = async (next: PlanStatus) => {
     setPhase("done");
@@ -357,6 +371,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     title = t("account.signIn.title");
     description = t("account.signIn.description");
     body = (
+      <>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -391,6 +406,42 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           )}
         </Button>
       </form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendTips();
+          }}
+          className="mt-3 flex items-center gap-2 border-t-[0.5px] border-glass-edge pt-3"
+        >
+          <input
+            type="email"
+            value={tipsEmail}
+            onChange={(e) => {
+              setTipsEmail(e.target.value);
+              if (tipsState === "error") setTipsState("idle");
+            }}
+            placeholder={t("account.signIn.emailPlaceholder")}
+            spellCheck={false}
+            autoComplete="email"
+            aria-label={t("account.tips.label")}
+            className="min-w-0 flex-1 rounded-full border-[0.5px] border-glass-edge bg-glass-strong px-3 py-1.5 text-small outline-none placeholder:text-ink-3"
+          />
+          <Button
+            type="submit"
+            variant="ghost"
+            size="sm"
+            className="h-8 px-3"
+            disabled={!looksLikeEmail(tipsEmail) || tipsState === "busy"}
+          >
+            {tipsState === "done"
+              ? t("account.tips.done")
+              : t("account.tips.button")}
+          </Button>
+        </form>
+        {tipsState === "error" && (
+          <p className="mt-1 text-small text-error">{t("account.tips.error")}</p>
+        )}
+      </>
     );
   } else if (step === "code") {
     title = t("account.signIn.codeTitle");

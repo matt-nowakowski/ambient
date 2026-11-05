@@ -1223,6 +1223,12 @@
         "casual": "Avslappnat, ingen slutpunkt",
         "polished": "Hela meningar, noggrann interpunktion"
       }
+    },
+    "tips": {
+      "label": "Mejla mig tips",
+      "button": "Skicka",
+      "done": "Tack!",
+      "error": "Kunde inte skicka. Försök igen?"
     }
   },
   "home": {

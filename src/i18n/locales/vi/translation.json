@@ -1223,6 +1223,12 @@
         "casual": "Thoải mái, không có dấu chấm cuối",
         "polished": "Câu đầy đủ, dấu câu cẩn thận"
       }
+    },
+    "tips": {
+      "label": "Gửi mẹo cho tôi",
+      "button": "Gửi",
+      "done": "Cảm ơn!",
+      "error": "Không gửi được. Thử lại?"
     }
   },
   "home": {

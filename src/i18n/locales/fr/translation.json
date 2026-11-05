@@ -1229,6 +1229,12 @@
         "casual": "Détendu, sans point final",
         "polished": "Phrases complètes, ponctuation soignée"
       }
+    },
+    "tips": {
+      "label": "Recevoir des astuces",
+      "button": "Envoyer",
+      "done": "Merci !",
+      "error": "Envoi impossible. Réessayer ?"
     }
   },
   "home": {

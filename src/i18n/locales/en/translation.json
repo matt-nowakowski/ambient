@@ -1223,6 +1223,12 @@
         "casual": "Relaxed, no trailing period",
         "polished": "Full sentences, careful punctuation"
       }
+    },
+    "tips": {
+      "label": "Email me tips",
+      "button": "Send",
+      "done": "Thanks!",
+      "error": "Couldn’t send that. Try again?"
     }
   },
   "home": {

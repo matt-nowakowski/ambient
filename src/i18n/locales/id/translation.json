@@ -1223,6 +1223,12 @@
         "casual": "Santai, tanpa titik di akhir",
         "polished": "Kalimat lengkap, tanda baca cermat"
       }
+    },
+    "tips": {
+      "label": "Kirimi saya tips",
+      "button": "Kirim",
+      "done": "Terima kasih!",
+      "error": "Gagal mengirim. Coba lagi?"
     }
   },
   "home": {

@@ -927,6 +927,7 @@ pub fn run(cli_args: CliArgs) {
             plan::deactivate_license,
             plan::billing_portal_url,
             plan::request_sign_in_code,
+            plan::subscribe_tips,
             plan::verify_sign_in_code,
             plan::refresh_account,
             plan::sign_out,

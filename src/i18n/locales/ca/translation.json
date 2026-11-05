@@ -1229,6 +1229,12 @@
         "casual": "Relaxat, sense punt final",
         "polished": "Frases completes, puntuació acurada"
       }
+    },
+    "tips": {
+      "label": "Envia'm consells",
+      "button": "Envia",
+      "done": "Gràcies!",
+      "error": "No s'ha pogut enviar. Tornar-ho a provar?"
     }
   },
   "home": {

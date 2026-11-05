@@ -1235,6 +1235,12 @@
         "casual": "Luźno, bez kropki na końcu",
         "polished": "Pełne zdania, staranna interpunkcja"
       }
+    },
+    "tips": {
+      "label": "Wysyłaj mi wskazówki",
+      "button": "Wyślij",
+      "done": "Dzięki!",
+      "error": "Nie udało się wysłać. Spróbować ponownie?"
     }
   },
   "home": {

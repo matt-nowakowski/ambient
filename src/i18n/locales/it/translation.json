@@ -1229,6 +1229,12 @@
         "casual": "Rilassato, senza punto finale",
         "polished": "Frasi complete, punteggiatura accurata"
       }
+    },
+    "tips": {
+      "label": "Ricevi consigli",
+      "button": "Invia",
+      "done": "Grazie!",
+      "error": "Invio non riuscito. Riprovare?"
     }
   },
   "home": {

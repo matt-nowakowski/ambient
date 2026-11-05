@@ -1223,6 +1223,12 @@
         "casual": "Afslappet, uden slutpunktum",
         "polished": "Hele sætninger, omhyggelig tegnsætning"
       }
+    },
+    "tips": {
+      "label": "Send mig tips",
+      "button": "Send",
+      "done": "Tak!",
+      "error": "Kunne ikke sende. Prøv igen?"
     }
   },
   "home": {

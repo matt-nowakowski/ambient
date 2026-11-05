@@ -1235,6 +1235,12 @@
         "casual": "Uvolněně, bez tečky na konci",
         "polished": "Celé věty, pečlivá interpunkce"
       }
+    },
+    "tips": {
+      "label": "Posílat tipy",
+      "button": "Odeslat",
+      "done": "Díky!",
+      "error": "Odeslání se nepovedlo. Zkusit znovu?"
     }
   },
   "home": {

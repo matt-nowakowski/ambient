@@ -1223,6 +1223,12 @@
         "casual": "Entspannt, ohne Schlusspunkt",
         "polished": "Ganze Sätze, sorgfältige Zeichensetzung"
       }
+    },
+    "tips": {
+      "label": "Tipps per E-Mail",
+      "button": "Senden",
+      "done": "Danke!",
+      "error": "Senden fehlgeschlagen. Nochmal?"
     }
   },
   "home": {

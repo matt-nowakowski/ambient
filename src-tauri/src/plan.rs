@@ -935,6 +935,56 @@ fn apply_account(app: &AppHandle, account: &AccountResponse) -> Result<(), Strin
     Ok(())
 }
 
+/// The app's optional "Email me tips": the address, the anonymous device hash
+/// and the app language, nothing else. The website records it the way it
+/// records a signed-in user's address, so a free user who opts in appears in
+/// the admin list; no IP address is stored. The answer is the same whether or
+/// not the address was already on the list.
+#[tauri::command]
+#[specta::specta]
+pub async fn subscribe_tips(app: AppHandle, email: String) -> Result<(), String> {
+    let email = email.trim().to_lowercase();
+    if email.len() > 254 || !email.contains('@') {
+        return Err(auth_err("invalid_email"));
+    }
+    let Some(machine) = machine_hash() else {
+        return Err(auth_err("server"));
+    };
+    let language: String = crate::settings::get_settings(&app)
+        .app_language
+        .chars()
+        .take(35)
+        .collect();
+    crate::recall::log_request_if_open(
+        env!("BRAND_DOMAIN"),
+        "tips",
+        "Your email address, the app language and an anonymous device hash, to send you tips.",
+    );
+    let response = reqwest::Client::new()
+        .post(api_url("/api/subscribe"))
+        .json(&serde_json::json!({
+            "email": email,
+            "machine": machine,
+            "language": language,
+        }))
+        .timeout(std::time::Duration::from_secs(20))
+        .send()
+        .await
+        .map_err(|e| {
+            warn!("Tips signup failed: {}", e);
+            auth_err("network")
+        })?;
+    match response.status().as_u16() {
+        200 => Ok(()),
+        400 => Err(auth_err("invalid_email")),
+        429 => Err(auth_err("rate_limited")),
+        code => {
+            warn!("Tips signup returned {}", code);
+            Err(auth_err("server"))
+        }
+    }
+}
+
 /// Emails a 6-digit code. The answer is the same whether or not the email has
 /// bought anything.
 #[tauri::command]

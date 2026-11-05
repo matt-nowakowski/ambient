@@ -1223,6 +1223,12 @@
         "casual": "Ontspannen, zonder slotpunt",
         "polished": "Hele zinnen, zorgvuldige interpunctie"
       }
+    },
+    "tips": {
+      "label": "Tips per e-mail",
+      "button": "Versturen",
+      "done": "Bedankt!",
+      "error": "Versturen mislukt. Opnieuw?"
     }
   },
   "home": {

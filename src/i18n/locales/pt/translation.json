@@ -1229,6 +1229,12 @@
         "casual": "Descontraído, sem ponto final",
         "polished": "Frases completas, pontuação cuidadosa"
       }
+    },
+    "tips": {
+      "label": "Receber dicas",
+      "button": "Enviar",
+      "done": "Obrigado!",
+      "error": "Não foi possível enviar. Tentar de novo?"
     }
   },
   "home": {

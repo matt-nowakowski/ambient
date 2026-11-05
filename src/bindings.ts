@@ -576,6 +576,21 @@ async requestSignInCode(email: string) : Promise<Result<null, string>> {
 }
 },
 /**
+ * The app's optional "Email me tips": the address, the anonymous device hash
+ * and the app language, nothing else. The website records it the way it
+ * records a signed-in user's address, so a free user who opts in appears in
+ * the admin list; no IP address is stored. The answer is the same whether or
+ * not the address was already on the list.
+ */
+async subscribeTips(email: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("subscribe_tips", { email }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
  * Checks the code for the email the last code went to, then stores the
  * session (and the token, if the email has a live subscription).
  */

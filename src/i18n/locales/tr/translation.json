@@ -1223,6 +1223,12 @@
         "casual": "Rahat, sonda nokta yok",
         "polished": "Tam cümleler, özenli noktalama"
       }
+    },
+    "tips": {
+      "label": "Bana ipucu gönderin",
+      "button": "Gönder",
+      "done": "Teşekkürler!",
+      "error": "Gönderilemedi. Yeniden dene?"
     }
   },
   "home": {
