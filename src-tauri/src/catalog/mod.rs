@@ -522,17 +522,6 @@ pub fn resolve_reasoning_model(selected: Option<&str>) -> Option<&'static Reason
         .or_else(default_reasoning_model)
 }
 
-/// Ordered mirror URLs for one reasoning model's file.
-pub fn reasoning_model_mirrors(model: &ReasoningModelFile) -> Vec<MirrorFile> {
-    mirror_files(
-        &model.repo_id,
-        &model.revision,
-        &model.filename,
-        &model.sha256,
-        model.size_bytes,
-    )
-}
-
 /// Ordered mirror URLs for the language detector's file.
 pub fn language_detector_mirrors() -> Vec<MirrorFile> {
     LANGUAGE_DETECTOR.as_ref().map_or_else(Vec::new, |d| {
@@ -652,11 +641,9 @@ mod tests {
             assert!(CATALOG
                 .iter()
                 .all(|d| !d.files.iter().any(|f| f.filename == model.filename)));
-            let mirrors = reasoning_model_mirrors(model);
-            assert!(mirrors[0].url.ends_with(&format!(
-                "/{}/{}/{}",
-                model.repo_id, model.revision, model.filename
-            )));
+            // Deliberately not mirrored: the reasoning models are far too
+            // large for the shared R2 tier, so Hugging Face is their only
+            // source (see scripts/mirror_models.py and managers/model.rs).
         }
     }
 
@@ -666,7 +653,11 @@ mod tests {
         // and file are unchanged, and it stays the catalog's default.
         let old = reasoning_model("qwen3-1.7b").expect("the previous id still resolves");
         assert_eq!(old.filename, "Qwen3-1.7B-Q8_0.gguf");
-        assert_eq!(old.revision, "90862c4b9d2787eaed51d12237eafdfe7c5f6077");
+        // The repo moved from Qwen's account to ours, so on-device downloads
+        // no longer depend on a third party; the file is byte-identical, which
+        // is why the size and sha256 are unchanged.
+        assert_eq!(old.repo_id, "tryambientai/qwen3-1.7b-gguf");
+        assert_eq!(old.revision, "b96556c9a625ccbbc4721092af08af7024a82533");
         assert_eq!(
             default_reasoning_model().map(|m| m.id.as_str()),
             Some("qwen3-1.7b")
