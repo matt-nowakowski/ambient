@@ -10,20 +10,22 @@ export const ADMIN_TABS = [
   { id: "agent", label: "Agent health" },
   { id: "feedback", label: "Feedback" },
   { id: "customers", label: "Customers" },
+  { id: "marketing", label: "Marketing" },
 ] as const;
 
 export type AdminTab = (typeof ADMIN_TABS)[number]["id"];
 
-/** The tabs rendered by app/admin/page.tsx; Customers has its own route. */
-export type DashboardTab = Exclude<AdminTab, "customers">;
+/** The tabs rendered by app/admin/page.tsx; Customers and Marketing have their own routes. */
+export type DashboardTab = Exclude<AdminTab, "customers" | "marketing">;
+const OWN_ROUTE = new Set<AdminTab>(["customers", "marketing"]);
 
 export function parseTab(v: unknown): DashboardTab {
-  return ADMIN_TABS.some((t) => t.id === v && t.id !== "customers") ? (v as DashboardTab) : "overview";
+  return ADMIN_TABS.some((t) => t.id === v && !OWN_ROUTE.has(t.id)) ? (v as DashboardTab) : "overview";
 }
 
-/** `/admin?tab=…` for the dashboard tabs, `/admin/customers` for Customers. Keeps the period and demo flags. */
+/** `/admin?tab=…` for the dashboard tabs, `/admin/<tab>` for the others. Keeps the period and demo flags. */
 export function adminTabHref(tab: AdminTab, opts: { period?: string; demo?: boolean } = {}) {
-  if (tab === "customers") return `/admin/customers${opts.demo ? "?demo=1" : ""}`;
+  if (OWN_ROUTE.has(tab)) return `/admin/${tab}${opts.demo ? "?demo=1" : ""}`;
   const q = new URLSearchParams();
   if (tab !== "overview") q.set("tab", tab);
   if (opts.period && opts.period !== "month") q.set("period", opts.period);

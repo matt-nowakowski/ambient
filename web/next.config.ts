@@ -17,6 +17,25 @@ const nextConfig: NextConfig = {
   // The repo root has its own lockfile (desktop app); pin the web app's root.
   turbopack: { root: __dirname },
   env: { DOWNLOADS_ORIGIN: DOWNLOADS },
+  // The marketing logo and banner routes read the Geist fonts and the logo
+  // SVGs from disk at request time; ship them with those functions.
+  outputFileTracingIncludes: {
+    "/api/brand/**": ["./node_modules/geist/dist/fonts/geist-sans/Geist-{Light,Regular}.ttf", "./public/brand/*.svg"],
+  },
+  async headers() {
+    // The influencer media kit: unlisted, never indexed, and the token in its
+    // URL never leaks to other sites through the Referer header.
+    return [
+      {
+        source: "/kit/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "Cache-Control", value: "private, no-store" },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       { source: "/releases/:path*", destination: `${DOWNLOADS}/releases/:path*`, permanent: false },
