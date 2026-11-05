@@ -17,6 +17,8 @@ on:
 permissions:
   contents: read
 
+# Test builds are never published, so they skip code signing and updater
+# signing (--no-sign); the release workflow builds and signs for real.
 jobs:
   layer1:
     permissions:
@@ -25,7 +27,7 @@ jobs:
     with:
       platform: "ubuntu-24.04"
       target: "x86_64-unknown-linux-gnu"
-      build-args: "--bundles deb"
+      build-args: "--bundles deb --no-sign"
       scenario-tests: "full"
     secrets: inherit
 
@@ -39,10 +41,10 @@ jobs:
         include:
           - platform: "macos-26"
             target: "aarch64-apple-darwin"
-            args: "--target aarch64-apple-darwin"
+            args: "--target aarch64-apple-darwin --no-sign"
           - platform: "windows-latest"
             target: "x86_64-pc-windows-msvc"
-            args: ""
+            args: "--no-sign"
     uses: ./.github/workflows/build.yml
     with:
       platform: ${{ matrix.platform }}
