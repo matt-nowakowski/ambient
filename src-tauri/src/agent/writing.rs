@@ -338,6 +338,12 @@ pub fn instruction_score(transcript: &str, ctx: &Ctx) -> f32 {
     if t.is_empty() || ctx.category == "terminal" {
         return 0.0;
     }
+    // A spoken marker decides: "reply that…" is written, "note: …" never is.
+    match super::markers::detect(t).map(|m| m.kind) {
+        Some(super::markers::Kind::Draft) => return 0.95,
+        Some(super::markers::Kind::Note) => return 0.0,
+        _ => {}
+    }
     let n_words = t.split_whitespace().count();
     let styled = STYLE.is_match(t);
     let mut score: f32 = if REWRITE.is_match(t) {

@@ -626,6 +626,47 @@ pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> De
             return decided(Route::Report(r));
         }
     }
+    // Typing to people in a chat or email: "remind me…" may be for them.
+    let typing_to_people = s.editable && s.messaging && !s.ask;
+    // A spoken marker ("reply that…", "tell her…", "remind me…", "note: …")
+    // is a hard signal: it decides here, before anything weighs the words.
+    if let Some(m) = super::markers::detect(transcript) {
+        use super::markers::Kind;
+        match m.kind {
+            Kind::Draft => return decided(Route::Compose(m.instruction())),
+            // Typed as said, without the marker (see `actions`).
+            Kind::Note => {
+                return Decision {
+                    route: None,
+                    to_agent: false,
+                }
+            }
+            Kind::Remind if !typing_to_people => {
+                let spoken = if m.english && !m.trailing {
+                    transcript.to_string()
+                } else {
+                    format!("remind me to {}", m.body)
+                };
+                // English dates are read here; other languages' go to the
+                // router, which may not type it.
+                match super::when::reminder_request(&spoken, now) {
+                    Some(r) if m.english || r.due.is_some() => {
+                        return decided(Route::Act(Action::Reminder {
+                            due: r.due_string(),
+                            title: if m.english { r.title } else { m.body.clone() },
+                        }))
+                    }
+                    _ => {
+                        return Decision {
+                            route: None,
+                            to_agent: true,
+                        }
+                    }
+                }
+            }
+            Kind::Remind => {}
+        }
+    }
     match compose_intent(transcript) {
         ComposeIntent::Yes(instruction) => return decided(Route::Compose(instruction)),
         // "Tell them it's fine" with nothing to type into: a reply to draft.
@@ -636,8 +677,6 @@ pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> De
         }
         _ => {}
     }
-    // Typing to people in a chat or email: "remind me…" may be for them.
-    let typing_to_people = s.editable && s.messaging && !s.ask;
     if let Some(r) = super::when::reminder_request(transcript, now) {
         if !typing_to_people {
             return decided(Route::Act(Action::Reminder {
@@ -862,6 +901,10 @@ pub async fn route(
     {
         where_.push_str(". With a text field focused, questions and requests are usually text for the people being written to → \"write\", unless they clearly address you, the assistant, or instruct you to write the message for them (\"compose\")");
     }
+    if super::markers::detect(transcript).is_some_and(|m| m.kind == super::markers::Kind::Remind) {
+        where_
+            .push_str(". It starts or ends with \"remind me\" in their language: a reminder (act)");
+    }
     if compose_maybe(transcript) {
         where_.push_str(". The wording may be an instruction to write a message for them: choose \"compose\" if so");
     }
@@ -1069,6 +1112,61 @@ mod tests {
                 "{s}"
             );
         }
+    }
+
+    /// A spoken marker routes on its own, wherever the user is.
+    #[test]
+    fn spoken_markers_decide_before_any_model() {
+        let slack = Situation {
+            editable: true,
+            messaging: true,
+            ..Default::default()
+        };
+        let notes = Situation {
+            editable: true,
+            ..Default::default()
+        };
+        for s in [
+            "reply that everything's ok",
+            "Tell her that I'm running ten minutes late",
+            "let them know that the build is green",
+            "odpisz mu że będę o piątej",
+            "contéstale que llego tarde",
+        ] {
+            let d = decide(s, &slack, now());
+            assert!(matches!(d.route, Some(Route::Compose(_))), "{s}: {d:?}");
+        }
+        assert_eq!(
+            decide("tell her that I'm late", &slack, now()).route,
+            Some(Route::Compose("tell her that I'm late".into()))
+        );
+        // A note is typed, even when it sounds like a question for Ambient.
+        let d = decide(
+            "Note: what's the weather in Lisbon?",
+            &gmail_no_field(),
+            now(),
+        );
+        assert_eq!(
+            d,
+            Decision {
+                route: None,
+                to_agent: false
+            }
+        );
+        // "…, remind me" at the end, with a time.
+        assert_eq!(
+            decide("Call the dentist tomorrow at 9, remind me.", &notes, now()).route,
+            Some(Route::Act(Action::Reminder {
+                title: "Call the dentist".into(),
+                due: Some("2026-11-03T09:00".into()),
+            }))
+        );
+        // Another language's date is the router's to read; never typed.
+        let d = decide("przypomnij mi jutro o dziewiątej o raporcie", &notes, now());
+        assert!(d.route.is_none() && d.to_agent, "{d:?}");
+        // "Remind me" typed to someone in a chat stays the router's call.
+        let d = decide("remind me tomorrow to send the deck", &slack, now());
+        assert!(d.route.is_none() && !d.to_agent, "{d:?}");
     }
 
     #[test]

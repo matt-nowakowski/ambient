@@ -22,7 +22,7 @@ pub enum ComposeIntent {
 
 /// Politeness and filler before the verb ("please", "can you", "could you
 /// please", "I'd like you to", "go ahead and"). Stripped repeatedly.
-const POLITE: &[&[&str]] = &[
+pub(super) const POLITE: &[&[&str]] = &[
     &["please"],
     &["kindly"],
     &["just"],

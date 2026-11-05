@@ -911,6 +911,32 @@ pub(crate) async fn process_dictation_output(
             return handled();
         }
     }
+    // A spoken marker ("reply that…", "remind me…", "note: …") decides
+    // routing before any model (`router::decide`). "Note: …" is typed as
+    // said, without the marker, however much it sounds like a request.
+    let marked = if mode == OutputMode::Dictation {
+        crate::agent::markers::detect(transcription)
+    } else {
+        None
+    };
+    let note = marked
+        .as_ref()
+        .is_some_and(|m| m.kind == crate::agent::markers::Kind::Note);
+    let transcription: &str = match &marked {
+        Some(m) if note => {
+            debug!("marker: note (typed as said, marker removed)");
+            m.body.as_str()
+        }
+        Some(m) => {
+            debug!(
+                "marker: {:?} ({})",
+                m.kind,
+                if m.trailing { "trailing" } else { "leading" }
+            );
+            transcription
+        }
+        None => transcription,
+    };
     let cues = router::cues_cover(&settings.spoken_languages);
     // An answer card is up: what's said next may be a follow-up to it.
     let follow_up = mode == OutputMode::Dictation && crate::hud::showing_answer();
@@ -940,6 +966,7 @@ pub(crate) async fn process_dictation_output(
                 || compose_maybe
                 || reminder.is_some()
                 || report.is_some()
+                || (marked.is_some() && !note)
                 || follow_up
                 // Languages the cues don't cover: in "Always polish" the
                 // router doubles as the polish, so routing every dictation
@@ -977,6 +1004,7 @@ pub(crate) async fn process_dictation_output(
         post_process && (plan.explicit || style != Some(crate::settings::WritingStyle::AsSaid));
     // Typing a prompt into ChatGPT/Claude is writing, however it sounds.
     let routable = (cued || (agent_on && no_field))
+        && !note
         && (ask || !router::always_write_here(&place, transcription));
     let sounds = router::sounds_like_request(transcription);
     let strong = router::strong_request(transcription);

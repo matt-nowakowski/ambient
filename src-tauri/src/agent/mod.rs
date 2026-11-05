@@ -10,6 +10,7 @@ pub mod judge;
 #[cfg(any(target_os = "linux", test))]
 pub(crate) mod linux;
 pub mod llm;
+pub mod markers;
 pub mod notice;
 pub mod personal;
 pub mod proactive;
@@ -1060,6 +1061,9 @@ pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
             due: r.due_string(),
             title: r.title,
         });
+    }
+    if let Some(m) = markers::detect(text).filter(|m| m.kind == markers::Kind::Draft) {
+        return Route::Compose(m.instruction());
     }
     if let compose::ComposeIntent::Yes(i) = compose::compose_intent(text) {
         return Route::Compose(i);
