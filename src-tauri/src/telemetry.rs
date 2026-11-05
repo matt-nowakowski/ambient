@@ -384,6 +384,7 @@ pub fn next_offer_judge(engine: &'static str) {
 
 /// A suggestion was put on screen.
 pub fn suggestion_offered(id: &str, kind: &str, bundle: &str) {
+    crate::testing::record("suggestion", serde_json::json!({ "kind": kind }));
     // Only a verdict from moments ago; anything older was never offered.
     let judge = take(&NEXT_JUDGE)
         .filter(|(_, at)| at.elapsed() < Duration::from_secs(5))
@@ -482,6 +483,10 @@ pub fn next_route_from_wake() {
 
 /// Where a request went. `route` is `router::route_name`.
 pub fn route(route: &'static str, ask_key: bool, had_focus_field: bool) {
+    crate::testing::record(
+        "route",
+        serde_json::json!({ "route": route, "ask": ask_key, "editable": had_focus_field }),
+    );
     let source = take(&NEXT_SOURCE).unwrap_or(if ask_key { "ask_key" } else { "dictation_key" });
     // Asking the agent while "Did you mean to type this?" is up answers it.
     if source != "dictation_key"
@@ -657,6 +662,10 @@ pub fn dictation(polish: bool, elapsed: Duration) {
 /// Smart writing's decision for one dictation: `as_said`, `polished` or
 /// `written`, by `rules` or a `model`, in a coarse app category.
 pub fn write_mode(decision: &'static str, source: &'static str, app: &str) {
+    crate::testing::record(
+        "write_mode",
+        serde_json::json!({ "decision": decision, "source": source }),
+    );
     record(
         "write_mode",
         &[

@@ -61,4 +61,9 @@ pub struct CliArgs {
     /// Emit --transcribe-file results as JSON.
     #[arg(long)]
     pub json: bool,
+
+    /// Run one scenario of the test suite and print what happened as JSON.
+    /// Only together with AMBIENT_TEST_MODE=1 (see `testing`).
+    #[arg(long, value_name = "JSON", hide = true)]
+    pub test_scenario: Option<PathBuf>,
 }

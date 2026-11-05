@@ -333,6 +333,10 @@ pub fn find_with(query: &str, files: Vec<(String, String)>) -> Vec<(String, Stri
 
 /// Spotlight matches only (documents and Mail messages), for recall.
 pub fn spotlight_hits(query: &str) -> Vec<(String, String)> {
+    // Test mode: this computer's files are never searched.
+    if crate::testing::active() {
+        return Vec::new();
+    }
     spotlight(query.trim())
 }
 

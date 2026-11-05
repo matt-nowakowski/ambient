@@ -288,6 +288,9 @@ fn model_path() -> Option<PathBuf> {
 
 /// Downloaded and runnable on this computer.
 pub fn ready() -> bool {
+    if crate::testing::active() {
+        return false;
+    }
     runtime_asset().is_some() && runtime_installed() && model_path().is_some()
 }
 

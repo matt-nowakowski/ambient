@@ -488,6 +488,9 @@ fn with_ledger<T>(app: &AppHandle, f: impl FnOnce(&mut Ledger) -> T) -> Option<T
 /// thread. Nothing when the setting is off, the text was sent at once
 /// (auto-submit), or the field can't be read.
 pub fn watch(app: &AppHandle, text: &str) {
+    if crate::testing::active() {
+        return;
+    }
     let s = settings::get_settings(app);
     if !s.learn_corrections
         || s.auto_submit

@@ -236,6 +236,9 @@ pub fn session_token(app: &AppHandle) -> Option<String> {
 
 /// The signed-in account's email, while signed in.
 pub fn account_email(app: &AppHandle) -> Option<String> {
+    if let Some(s) = crate::testing::scenario() {
+        return s.me.email.clone();
+    }
     stored_session(app).and(stored_str(app, ACCOUNT_EMAIL_FIELD))
 }
 
@@ -353,6 +356,9 @@ pub fn can_dictate(app: &AppHandle) -> bool {
 /// feature within weekly limits (`crate::limits`); this lifts them. The cloud
 /// suggestion judge is the one Pro-only feature.
 pub fn is_paid(app: &AppHandle) -> bool {
+    if crate::testing::active() {
+        return crate::testing::is_paid();
+    }
     active_license(app).0.is_some()
 }
 

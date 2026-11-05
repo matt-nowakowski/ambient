@@ -26,6 +26,12 @@ impl ReminderRequest {
     }
 }
 
+/// Local time now, for reading "tomorrow at 5" and for prompts (the test
+/// suite's scenario sets its own, so a re-run asks the model the same thing).
+pub fn local_now() -> NaiveDateTime {
+    crate::testing::now().unwrap_or_else(|| chrono::Local::now().naive_local())
+}
+
 /// "YYYY-MM-DDTHH:MM", the form actions and the HUD use.
 pub fn format_due(d: &NaiveDateTime) -> String {
     d.format("%Y-%m-%dT%H:%M").to_string()

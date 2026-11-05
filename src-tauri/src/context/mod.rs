@@ -199,6 +199,10 @@ pub fn open_windows(never_watch: &[String], max_chars: usize) -> Vec<OpenWindow>
     let mut skip: Vec<String> = default_never_watch().map(str::to_string).collect();
     skip.extend(never_watch.iter().cloned());
     #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+    // Test mode: only the scenario's window is "open" (read via `snapshot`).
+    if crate::testing::active() {
+        return Vec::new();
+    }
     let windows = platform::open_windows(&skip, max_chars);
     #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
     let windows: Vec<OpenWindow> = {
@@ -370,6 +374,10 @@ static SENSITIVE: std::sync::Mutex<Option<(SensitiveWindow, std::time::Instant)>
 
 fn mark_sensitive(app: &FrontmostApp, title: &str, reason: SensitiveReason) {
     log::trace!("stepping back from a sensitive window ({reason:?})");
+    crate::testing::record(
+        "sensitive",
+        serde_json::json!({ "reason": format!("{reason:?}") }),
+    );
     if let Ok(mut g) = SENSITIVE.lock() {
         *g = Some((
             SensitiveWindow {
@@ -409,6 +417,10 @@ pub fn is_never_watch(bundle_id: &str, extra: &[String]) -> bool {
 /// Whether the screen can be read: Accessibility permission on macOS;
 /// Windows' UI Automation needs none.
 pub fn accessibility_trusted() -> bool {
+    // Test mode never reads the real screen: the scenario's window instead.
+    if crate::testing::active() {
+        return crate::testing::accessibility_trusted();
+    }
     #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         platform::ax_trusted()
@@ -420,6 +432,9 @@ pub fn accessibility_trusted() -> bool {
 }
 
 pub fn frontmost_app() -> Option<FrontmostApp> {
+    if crate::testing::active() {
+        return crate::testing::frontmost_app();
+    }
     #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         platform::frontmost_app()
@@ -452,6 +467,9 @@ static LAST_CHECK: std::sync::Mutex<Option<(String, String)>> = std::sync::Mutex
 /// no browser UI labels or counts, so its snapshot is wrapped as is.
 #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
 fn raw_snapshot(pid: i32, max_chars: usize) -> Option<RawSnapshot> {
+    if crate::testing::active() {
+        return crate::testing::raw_snapshot(max_chars);
+    }
     #[cfg(target_os = "linux")]
     {
         platform::window_snapshot(pid, max_chars).map(|snap| RawSnapshot {
@@ -552,6 +570,9 @@ fn check_place(app: &FrontmostApp, raw: &RawSnapshot, read: bool) -> Result<(), 
 /// (e.g. Gmail's "Reply"). 0 pressed, 1 not found, 2 the press failed,
 /// 3 unavailable.
 pub fn press_labeled(labels: &[&str]) -> i32 {
+    if crate::testing::active() {
+        return crate::testing::press_labeled(labels);
+    }
     #[cfg(target_os = "macos")]
     {
         match frontmost_app() {

@@ -484,6 +484,10 @@ pub fn init(dir: PathBuf, retention_days: i64) -> Result<()> {
 }
 
 pub fn get() -> Option<&'static Recall> {
+    // Test mode: no screen memory, history or ledger.
+    if crate::testing::active() {
+        return None;
+    }
     let (dir, days) = CONFIG.get()?;
     RECALL
         .get_or_try_init(|| {
@@ -498,6 +502,9 @@ pub fn get() -> Option<&'static Recall> {
 /// The store only if it already exists on disk: views like the Privacy Center
 /// shouldn't be what first creates the Keychain key.
 pub fn get_if_open() -> Option<&'static Recall> {
+    if crate::testing::active() {
+        return None;
+    }
     if let Some(r) = RECALL.get() {
         return Some(r);
     }

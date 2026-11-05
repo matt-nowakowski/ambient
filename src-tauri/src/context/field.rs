@@ -75,6 +75,9 @@ pub fn focused_field(read_text: bool, never_watch: &[String]) -> Option<FocusedF
     {
         return None;
     }
+    if crate::testing::active() {
+        return crate::testing::focused_field(read_text);
+    }
     #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         let field = super::platform::focused_field(app.pid, read_text)?;
@@ -102,7 +105,7 @@ pub fn select_chars(start: usize, len: usize) -> bool {
     let Some(app) = super::frontmost_app() else {
         return false;
     };
-    if app.bundle_id == env!("BRAND_IDENTIFIER") {
+    if app.bundle_id == env!("BRAND_IDENTIFIER") || crate::testing::active() {
         return false;
     }
     #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]

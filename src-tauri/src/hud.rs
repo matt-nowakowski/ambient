@@ -417,6 +417,11 @@ pub fn show(app: &AppHandle, content: HudContent) {
         *g = Some(content.clone());
     }
     VISIBLE.store(true, Ordering::SeqCst);
+    // Test mode: the card is recorded, never drawn (and no keys are taken).
+    if crate::testing::active() {
+        crate::testing::record("hud", serde_json::json!({ "card": content }));
+        return;
+    }
     // Esc (and a suggestion's ⏎) while this card is up; see `hud_keys`.
     crate::hud_keys::sync(app);
     let handle = app.clone();
@@ -482,6 +487,10 @@ pub fn hide(app: &AppHandle) {
     VISIBLE.store(false, Ordering::SeqCst);
     if let Ok(mut g) = CURRENT.lock() {
         *g = None;
+    }
+    if crate::testing::active() {
+        crate::testing::record("hud_hide", serde_json::json!({}));
+        return;
     }
     // Esc and ⏎ go back to the user's app.
     crate::hud_keys::sync(app);

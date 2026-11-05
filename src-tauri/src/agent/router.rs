@@ -906,7 +906,9 @@ pub async fn route(
     ask: bool,
     previous: Option<(String, String)>,
 ) -> Option<Route> {
-    let now = chrono::Local::now().format("%A %Y-%m-%d %H:%M").to_string();
+    let now = super::when::local_now()
+        .format("%A %Y-%m-%d %H:%M")
+        .to_string();
     let rules = if polish_rules.trim().is_empty() {
         "Keep the user's words; fix only punctuation and capitalisation.".to_string()
     } else {
