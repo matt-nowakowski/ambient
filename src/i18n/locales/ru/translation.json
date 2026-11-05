@@ -1026,6 +1026,11 @@
     "clear": "Очистить",
     "noOptionsFound": "Вариантов не найдено"
   },
+  "keyboard": {
+    "left": "Левый {{key}}",
+    "right": "Правый {{key}}",
+    "mouse": "Мышь {{number}}"
+  },
   "errors": {
     "loadDirectory": "Ошибка загрузки каталога: {{error}}",
     "micPermissionDeniedTitle": "Доступ к микрофону запрещён",

@@ -1020,6 +1020,11 @@
     "clear": "クリア",
     "noOptionsFound": "オプションが見つかりません"
   },
+  "keyboard": {
+    "left": "左{{key}}",
+    "right": "右{{key}}",
+    "mouse": "マウス{{number}}"
+  },
   "errors": {
     "loadDirectory": "ディレクトリの読み込みエラー：{{error}}",
     "micPermissionDeniedTitle": "マイクへのアクセスが拒否されました",

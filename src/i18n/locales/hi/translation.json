@@ -1020,6 +1020,11 @@
     "clear": "मिटाएं",
     "noOptionsFound": "कोई विकल्प नहीं मिला"
   },
+  "keyboard": {
+    "left": "बायाँ {{key}}",
+    "right": "दायाँ {{key}}",
+    "mouse": "माउस {{number}}"
+  },
   "errors": {
     "loadDirectory": "फ़ोल्डर लोड करने में गड़बड़ी: {{error}}",
     "micPermissionDeniedTitle": "माइक्रोफ़ोन का ऐक्सेस नहीं दिया गया",

@@ -1020,6 +1020,11 @@
     "clear": "Xóa",
     "noOptionsFound": "Không tìm thấy tùy chọn"
   },
+  "keyboard": {
+    "left": "{{key}} trái",
+    "right": "{{key}} phải",
+    "mouse": "Chuột {{number}}"
+  },
   "errors": {
     "loadDirectory": "Lỗi khi tải thư mục: {{error}}",
     "micPermissionDeniedTitle": "Quyền truy cập micrô bị từ chối",

@@ -1020,6 +1020,11 @@
     "clear": "Ryd",
     "noOptionsFound": "Ingen muligheder fundet"
   },
+  "keyboard": {
+    "left": "Venstre {{key}}",
+    "right": "Højre {{key}}",
+    "mouse": "Mus {{number}}"
+  },
   "errors": {
     "loadDirectory": "Fejl ved indlæsning af mappe: {{error}}",
     "micPermissionDeniedTitle": "Mikrofonadgang nægtet",

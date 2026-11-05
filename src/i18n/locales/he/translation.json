@@ -1023,6 +1023,11 @@
     "clear": "נקה",
     "noOptionsFound": "לא נמצאו אפשרויות"
   },
+  "keyboard": {
+    "left": "{{key}} שמאלי",
+    "right": "{{key}} ימני",
+    "mouse": "עכבר {{number}}"
+  },
   "errors": {
     "loadDirectory": "שגיאה בטעינת תיקייה: {{error}}",
     "micPermissionDeniedTitle": "הגישה למיקרופון נדחתה",

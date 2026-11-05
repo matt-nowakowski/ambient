@@ -1020,6 +1020,11 @@
     "clear": "Temizle",
     "noOptionsFound": "Seçenek bulunamadı"
   },
+  "keyboard": {
+    "left": "Sol {{key}}",
+    "right": "Sağ {{key}}",
+    "mouse": "Fare {{number}}"
+  },
   "errors": {
     "loadDirectory": "Dizin yüklenirken hata oluştu: {{error}}",
     "micPermissionDeniedTitle": "Mikrofon erişimi reddedildi",

@@ -1023,6 +1023,11 @@
     "clear": "Borrar",
     "noOptionsFound": "No se encontraron opciones"
   },
+  "keyboard": {
+    "left": "{{key}} izquierda",
+    "right": "{{key}} derecha",
+    "mouse": "Ratón {{number}}"
+  },
   "errors": {
     "loadDirectory": "Error al cargar el directorio: {{error}}",
     "micPermissionDeniedTitle": "Acceso al micrófono denegado",

@@ -1026,6 +1026,11 @@
     "clear": "Wyczyść",
     "noOptionsFound": "Nie znaleziono opcji"
   },
+  "keyboard": {
+    "left": "Lewy {{key}}",
+    "right": "Prawy {{key}}",
+    "mouse": "Mysz {{number}}"
+  },
   "errors": {
     "loadDirectory": "Błąd wczytywania katalogu: {{error}}",
     "micPermissionDeniedTitle": "Odmowa dostępu do mikrofonu",

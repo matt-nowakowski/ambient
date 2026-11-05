@@ -1020,6 +1020,11 @@
     "clear": "Leeren",
     "noOptionsFound": "Keine Optionen gefunden"
   },
+  "keyboard": {
+    "left": "{{key}} links",
+    "right": "{{key}} rechts",
+    "mouse": "Maustaste {{number}}"
+  },
   "errors": {
     "loadDirectory": "Fehler beim Laden des Verzeichnisses: {{error}}",
     "micPermissionDeniedTitle": "Mikrofonzugriff verweigert",

@@ -1020,6 +1020,11 @@
     "clear": "Bersihkan",
     "noOptionsFound": "Tidak ada opsi yang ditemukan"
   },
+  "keyboard": {
+    "left": "{{key}} Kiri",
+    "right": "{{key}} Kanan",
+    "mouse": "Mouse {{number}}"
+  },
   "errors": {
     "loadDirectory": "Kesalahan saat memuat direktori: {{error}}",
     "micPermissionDeniedTitle": "Akses Mikrofon Ditolak",

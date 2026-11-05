@@ -1020,6 +1020,11 @@
     "clear": "Clear",
     "noOptionsFound": "No options found"
   },
+  "keyboard": {
+    "left": "Left {{key}}",
+    "right": "Right {{key}}",
+    "mouse": "Mouse {{number}}"
+  },
   "errors": {
     "loadDirectory": "Error loading directory: {{error}}",
     "micPermissionDeniedTitle": "Microphone Access Denied",

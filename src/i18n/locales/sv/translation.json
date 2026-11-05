@@ -1020,6 +1020,11 @@
     "clear": "Rensa",
     "noOptionsFound": "Inga alternativ hittades"
   },
+  "keyboard": {
+    "left": "Vänster {{key}}",
+    "right": "Höger {{key}}",
+    "mouse": "Mus {{number}}"
+  },
   "errors": {
     "loadDirectory": "Det gick inte att läsa in mappen: {{error}}",
     "micPermissionDeniedTitle": "Mikrofonåtkomst nekad",

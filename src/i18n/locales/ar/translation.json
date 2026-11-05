@@ -1032,6 +1032,11 @@
     "clear": "مسح",
     "noOptionsFound": "لم يتم العثور على خيارات"
   },
+  "keyboard": {
+    "left": "{{key}} الأيسر",
+    "right": "{{key}} الأيمن",
+    "mouse": "زر الفأرة {{number}}"
+  },
   "errors": {
     "loadDirectory": "خطأ في تحميل المجلد: {{error}}",
     "micPermissionDeniedTitle": "تم رفض الوصول إلى الميكروفون",

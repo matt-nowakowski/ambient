@@ -1026,6 +1026,11 @@
     "clear": "Очистити",
     "noOptionsFound": "Опцій не знайдено"
   },
+  "keyboard": {
+    "left": "Лівий {{key}}",
+    "right": "Правий {{key}}",
+    "mouse": "Миша {{number}}"
+  },
   "errors": {
     "loadDirectory": "Помилка завантаження папки: {{error}}",
     "micPermissionDeniedTitle": "Доступ до мікрофона заборонено",

@@ -1020,6 +1020,11 @@
     "clear": "खाली गर्नुहोस्",
     "noOptionsFound": "कुनै विकल्प भेटिएन"
   },
+  "keyboard": {
+    "left": "बायाँ {{key}}",
+    "right": "दायाँ {{key}}",
+    "mouse": "माउस {{number}}"
+  },
   "errors": {
     "loadDirectory": "डाइरेक्टरी लोड गर्दा त्रुटि: {{error}}",
     "micPermissionDeniedTitle": "माइक्रोफोन पहुँच अस्वीकृत गरियो",

@@ -1026,6 +1026,11 @@
     "clear": "Vymazat",
     "noOptionsFound": "Nenalezeny žádné možnosti"
   },
+  "keyboard": {
+    "left": "Levý {{key}}",
+    "right": "Pravý {{key}}",
+    "mouse": "Myš {{number}}"
+  },
   "errors": {
     "loadDirectory": "Chyba při načítání adresáře: {{error}}",
     "micPermissionDeniedTitle": "Přístup k mikrofonu byl odepřen",

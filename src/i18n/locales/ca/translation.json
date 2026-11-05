@@ -1023,6 +1023,11 @@
     "clear": "Neteja",
     "noOptionsFound": "No s'ha trobat cap opció"
   },
+  "keyboard": {
+    "left": "{{key}} esquerra",
+    "right": "{{key}} dreta",
+    "mouse": "Ratolí {{number}}"
+  },
   "errors": {
     "loadDirectory": "Error en carregar el directori: {{error}}",
     "micPermissionDeniedTitle": "Accés al micròfon denegat",

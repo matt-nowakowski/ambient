@@ -1020,6 +1020,11 @@
     "clear": "Wissen",
     "noOptionsFound": "Geen opties gevonden"
   },
+  "keyboard": {
+    "left": "Linker {{key}}",
+    "right": "Rechter {{key}}",
+    "mouse": "Muis {{number}}"
+  },
   "errors": {
     "loadDirectory": "Fout bij laden van map: {{error}}",
     "micPermissionDeniedTitle": "Microfoontoegang geweigerd",
