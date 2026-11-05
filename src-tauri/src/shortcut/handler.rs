@@ -32,6 +32,16 @@ pub fn handle_shortcut_event(
     hotkey_string: &str,
     is_pressed: bool,
 ) {
+    // Esc / ⏎ held for a HUD card. Handled off this thread: it is the
+    // hook's own, and dismissing gives the key back through the hook.
+    if let Some(key) = crate::hud_keys::HudKey::from_binding(binding_id) {
+        if is_pressed {
+            let app = app.clone();
+            std::thread::spawn(move || crate::hud_keys::pressed(&app, key));
+        }
+        return;
+    }
+
     let settings = get_settings(app);
 
     // Transcribe bindings are handled by the coordinator.

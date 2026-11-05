@@ -13,7 +13,6 @@ use std::time::{Duration, Instant};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri::{AppHandle, Emitter, Manager, WebviewUrl};
-use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutState};
 
 #[cfg(target_os = "macos")]
 use tauri_nspanel::{tauri_panel, CollectionBehavior, PanelBuilder, PanelLevel, StyleMask};
@@ -177,7 +176,7 @@ impl HudContent {
         }
     }
 
-    fn id(&self) -> String {
+    pub(crate) fn id(&self) -> String {
         match self {
             HudContent::Answer { id, .. }
             | HudContent::Suggestion { id, .. }
@@ -345,10 +344,6 @@ fn place(app: &AppHandle, height: f64) {
     }
 }
 
-/// Escape closes the HUD. The HUD never takes focus (so Insert pastes into
-/// the user's app), which means it can't see key presses; instead Escape is
-/// registered globally only while the HUD is up.
-static ESCAPE_HELD: AtomicBool = AtomicBool::new(false);
 static VISIBLE: AtomicBool = AtomicBool::new(false);
 
 /// Whether the HUD is on screen (proactive suggestions never interrupt it).
@@ -356,23 +351,13 @@ pub fn is_visible() -> bool {
     VISIBLE.load(Ordering::SeqCst)
 }
 
-fn escape() -> Shortcut {
-    "Escape".parse().expect("valid shortcut")
-}
-
-fn hold_escape(app: &AppHandle) {
-    if ESCAPE_HELD.swap(true, Ordering::SeqCst) {
-        return;
-    }
-    let gs = app.global_shortcut();
-    if gs.is_registered(escape()) {
-        // Recording's cancel shortcut owns Escape right now.
-        ESCAPE_HELD.store(false, Ordering::SeqCst);
-        return;
-    }
-    let registered = gs.on_shortcut(escape(), |app, _, event| {
-        if event.state == ShortcutState::Pressed {
-            let id = current().map(|c| c.id()).unwrap_or_default();
+/// Esc or ⏎, caught while the card advertised it (see `hud_keys`): what a
+/// click on the button it names would do.
+pub fn on_key(app: &AppHandle, card: &HudContent, action: crate::hud_keys::KeyAction) {
+    use crate::hud_keys::KeyAction;
+    let id = card.id();
+    match action {
+        KeyAction::Dismiss => {
             remember_dismissed(&id);
             let _ = app.emit(
                 "hud-action",
@@ -383,16 +368,8 @@ fn hold_escape(app: &AppHandle) {
             );
             hide(app);
         }
-    });
-    if registered.is_err() {
-        ESCAPE_HELD.store(false, Ordering::SeqCst);
-    }
-}
-
-/// Give Escape back (on hide, and before a recording registers its cancel).
-pub fn release_escape(app: &AppHandle) {
-    if ESCAPE_HELD.swap(false, Ordering::SeqCst) {
-        let _ = app.global_shortcut().unregister(escape());
+        KeyAction::Stop => hud_action(app.clone(), id, "stop".into(), None),
+        KeyAction::Accept => hud_action(app.clone(), id, "accept".into(), None),
     }
 }
 
@@ -440,9 +417,8 @@ pub fn show(app: &AppHandle, content: HudContent) {
         *g = Some(content.clone());
     }
     VISIBLE.store(true, Ordering::SeqCst);
-    // The writing chip is passive: it never takes Escape from the app the
-    // user is typing in (it fades on its own).
-    let passive = matches!(content, HudContent::Writing { .. });
+    // Esc (and a suggestion's ⏎) while this card is up; see `hud_keys`.
+    crate::hud_keys::sync(app);
     let handle = app.clone();
     let _ = app.run_on_main_thread(move || {
         if handle.get_webview_window(LABEL).is_none() {
@@ -454,11 +430,6 @@ pub fn show(app: &AppHandle, content: HudContent) {
                 place(&handle, MIN_HEIGHT);
                 order_front(&handle, &w);
             }
-        }
-        if passive {
-            release_escape(&handle);
-        } else {
-            hold_escape(&handle);
         }
     });
 }
@@ -508,11 +479,12 @@ fn order_front(app: &AppHandle, w: &tauri::WebviewWindow) {
 /// Close the HUD: the card dissolves (the HUD webview animates it out on
 /// `hud-close`), then the panel is ordered out.
 pub fn hide(app: &AppHandle) {
-    release_escape(app);
     VISIBLE.store(false, Ordering::SeqCst);
     if let Ok(mut g) = CURRENT.lock() {
         *g = None;
     }
+    // Esc and ⏎ go back to the user's app.
+    crate::hud_keys::sync(app);
     let generation = GENERATION.fetch_add(1, Ordering::SeqCst) + 1;
     let _ = app.emit_to(LABEL, "hud-close", ());
     let handle = app.clone();
@@ -850,6 +822,8 @@ pub fn hud_action(app: AppHandle, id: String, action: String, text: Option<Strin
                 paste_later(&app, text, true);
             }
         }
+        // A suggestion (or offer) accepted: it waits for its result.
+        "accept" => crate::hud_keys::accepted(&app, &id),
         // Mail: open a reply to the message in front, then paste the draft.
         "reply" => {
             hide(&app);
