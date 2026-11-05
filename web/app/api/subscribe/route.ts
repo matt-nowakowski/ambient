@@ -1,4 +1,3 @@
-import { noteTipSubscriber } from "@/lib/activity";
 import { emailListsConfigured, normaliseEmail, requestNewsletter } from "@/lib/email/subscriptions";
 import { machineKey, parseMachine } from "@/lib/machine";
 import { readJson } from "@/lib/polar";
@@ -10,11 +9,11 @@ import { readJson } from "@/lib/polar";
  * filled → silently accepted. Always the same 200 for any valid address, so it
  * can't reveal who's on the list.
  *
- * The app's optional "Email me tips" (Free and not signed in) also sends the
- * device's machine hash, the app language and its plan; when a machine comes
- * with the request the email is recorded in `accounts` (lib/activity.ts) with
- * source "tips", linked to the device's activity rows through a keyed hash. No
- * IP address is stored.
+ * The app's optional "Email me tips" (setup, or Account while not signed in)
+ * also sends the device's machine hash, the app language and, optionally, its
+ * plan. Nothing is stored here: the keyed device hash, language and plan ride
+ * in the signed confirmation link, and the tips record (lib/email/tips.ts) is
+ * written only when the owner of the inbox clicks it. No IP address is stored.
  */
 const WINDOW_MS = 10 * 60_000;
 const hits = new Map<string, number[]>();
@@ -47,10 +46,12 @@ export async function POST(req: Request) {
     console.info("[subscribe] skipped: RESEND_API_KEY or EMAIL_TOKEN_SECRET not set");
     return Response.json({ error: "not_configured", message: "Email updates aren’t set up yet." }, { status: 503 });
   }
-  await requestNewsletter(email);
   // Only the app sends a machine hash; the website's newsletter form doesn't,
-  // and stays out of the admin's list of emails.
+  // gets the monthly-updates confirmation, and stays out of the tips sequence.
   const machine = parseMachine(body?.machine);
-  if (machine) noteTipSubscriber(email, tipPlan(body?.plan), machineKey(machine), tipLanguage(body?.language));
+  await requestNewsletter(
+    email,
+    machine ? { d: machineKey(machine), g: tipLanguage(body?.language), pl: tipPlan(body?.plan) } : undefined,
+  );
   return Response.json({ ok: true });
 }

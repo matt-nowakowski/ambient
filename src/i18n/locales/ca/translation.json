@@ -1249,9 +1249,12 @@
     },
     "tips": {
       "label": "Envia'm consells",
+      "labelOptional": "Envia'm consells (opcional)",
+      "description": "Consells de tant en tant per treure més profit de {{appName}}. Et pots donar de baixa quan vulguis.",
       "button": "Envia",
-      "done": "Gràcies!",
-      "error": "No s'ha pogut enviar. Tornar-ho a provar?"
+      "done": "Enviat",
+      "error": "No s'ha pogut enviar. Tornar-ho a provar?",
+      "checkInbox": "Revisa la safata d'entrada per confirmar-ho."
     }
   },
   "home": {

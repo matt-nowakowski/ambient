@@ -45,6 +45,12 @@
 .try-after > * {
   animation: try-say-fade 220ms ease;
 }
+/* All set adds the optional tips row under the usage line. */
+.try-after[data-tips] {
+  flex-direction: column;
+  gap: 6px;
+  height: 56px;
+}
 
 /* ---------- the window: Demo's, bigger ---------- */
 /* Wallpaper on every side, below the menu bar or above the taskbar. */

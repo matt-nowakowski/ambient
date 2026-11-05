@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Bana ipucu gönderin",
+      "labelOptional": "Bana ipucu gönderin (isteğe bağlı)",
+      "description": "{{appName}}'den daha fazla yararlanmanız için ara sıra ipuçları. İstediğiniz zaman abonelikten çıkın.",
       "button": "Gönder",
-      "done": "Teşekkürler!",
-      "error": "Gönderilemedi. Yeniden dene?"
+      "done": "Gönderildi",
+      "error": "Gönderilemedi. Yeniden dene?",
+      "checkInbox": "Onaylamak için gelen kutunuza bakın."
     }
   },
   "home": {

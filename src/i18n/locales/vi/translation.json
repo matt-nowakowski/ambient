@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Gửi mẹo cho tôi",
+      "labelOptional": "Gửi mẹo cho tôi (tùy chọn)",
+      "description": "Thỉnh thoảng gửi mẹo để dùng {{appName}} hiệu quả hơn. Hủy đăng ký bất cứ lúc nào.",
       "button": "Gửi",
-      "done": "Cảm ơn!",
-      "error": "Không gửi được. Thử lại?"
+      "done": "Đã gửi",
+      "error": "Không gửi được. Thử lại?",
+      "checkInbox": "Kiểm tra hộp thư đến để xác nhận."
     }
   },
   "home": {

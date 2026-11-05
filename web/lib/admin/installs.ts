@@ -21,7 +21,9 @@ import { demoInstallsData } from "./installs-demo";
  * - daily_counts: downloads from the site's /dl links, first launches by
  *   country.
  * - accounts: emails that signed in to the app, and, from 0.1.8, emails that
- *   asked for tips from setup or Account (source 'tips').
+ *   asked for tips from setup or Account (source 'tips', written once
+ *   confirmed from 0.1.9), counted apart from sign-ins.
+ * - tip_sequence: who is still getting tips.
  * - Polar: paying and complimentary subscriptions.
  */
 export const INSTALL_DAYS = 30;
@@ -45,7 +47,10 @@ export type InstallsData = {
   /** OS, version and plan of devices that checked in over the last 7 days, as device-days. */
   mix: { deviceDays: number; os: { key: string; n: number }[]; versions: { key: string; n: number }[]; plans: { key: string; n: number }[] };
   accounts: { email: string; plan: string; source: string | null; language: string | null; deviceHash: string | null; firstSeen: string; lastSeen: string }[];
+  /** Signed-in emails per plan (tips rows excluded). */
   accountTotals: Record<string, number>;
+  /** Confirmed tips addresses that never signed in, and everyone (signed in or not) still in the tips sequence. */
+  tips: { subscribers: number; inSequence: number };
 };
 
 export type PolarCounts = { paying: number; complimentary: number; trialing: number } | null;
@@ -82,7 +87,7 @@ const read = unstable_cache(
     const from = days[0];
     const starts = periodStarts(days[days.length - 1]);
     const sql = await activityDb();
-    const [trials, trialDays, active, activeDays, since, counts, accounts, accountTotals, os, versions, plans, deviceDays] = await sql.transaction([
+    const [trials, trialDays, active, activeDays, since, counts, accounts, accountTotals, os, versions, plans, deviceDays, tipTotals] = await sql.transaction([
       sql`select count(*) as total,
             count(*) filter (where started_at >= now() - interval '7 days') as last7,
             count(*) filter (where started_at >= now() - interval '30 days') as last30,
@@ -99,8 +104,8 @@ const read = unstable_cache(
       sql`select min(start) as first from device_activity`,
       sql`select day, metric, dim, sum(count) as n from daily_counts where day >= ${from}::date group by 1, 2, 3`,
       sql`select email, plan, source, language, device_hash, first_seen, last_seen from accounts
-          order by (plan = 'free') desc, last_seen desc limit 300`,
-      sql`select plan, count(*) as n from accounts group by 1`,
+          order by (plan = 'free' or source is not distinct from 'tips') desc, last_seen desc limit 300`,
+      sql`select plan, count(*) as n from accounts where source is distinct from 'tips' group by 1`,
       sql`select os || '/' || coalesce(arch, 'other') as os, count(*) as n from device_activity
           where period = 'day' and start >= current_date - 6 and os is not null group by 1`,
       sql`select version, count(*) as n from device_activity
@@ -108,6 +113,8 @@ const read = unstable_cache(
       sql`select plan, count(*) as n from device_activity
           where period = 'day' and start >= current_date - 6 and os is not null group by 1`,
       sql`select count(*) as n from device_activity where period = 'day' and start >= current_date - 6 and os is not null`,
+      sql`select (select count(*) from accounts where source = 'tips') as subscribers,
+            (select count(*) from tip_sequence where next_at is not null) as in_sequence`,
     ]);
 
     const idx = new Map(days.map((d, i) => [d, i]));
@@ -192,6 +199,7 @@ const read = unstable_cache(
         lastSeen: iso(r.last_seen),
       })),
       accountTotals: Object.fromEntries(accountTotals.map((r) => [String(r.plan), num(r.n)])),
+      tips: { subscribers: num(tipTotals[0]?.subscribers), inSequence: num(tipTotals[0]?.in_sequence) },
     };
   },
   ["admin-installs-v2"],

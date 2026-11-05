@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Tips per e-mail",
+      "labelOptional": "Tips per e-mail (optioneel)",
+      "description": "Af en toe tips om meer uit {{appName}} te halen. Altijd af te melden.",
       "button": "Versturen",
-      "done": "Bedankt!",
-      "error": "Versturen mislukt. Opnieuw?"
+      "done": "Verstuurd",
+      "error": "Versturen mislukt. Opnieuw?",
+      "checkInbox": "Kijk in je inbox om te bevestigen."
     }
   },
   "home": {

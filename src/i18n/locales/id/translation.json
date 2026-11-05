@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "Kirimi saya tips",
+      "labelOptional": "Kirimi saya tips (opsional)",
+      "description": "Sesekali tips agar makin maksimal memakai {{appName}}. Berhenti berlangganan kapan saja.",
       "button": "Kirim",
-      "done": "Terima kasih!",
-      "error": "Gagal mengirim. Coba lagi?"
+      "done": "Terkirim",
+      "error": "Gagal mengirim. Coba lagi?",
+      "checkInbox": "Cek kotak masuk Anda untuk mengonfirmasi."
     }
   },
   "home": {

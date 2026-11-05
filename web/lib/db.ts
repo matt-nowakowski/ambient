@@ -190,9 +190,11 @@ let activitySchemaReady: Promise<unknown> | null = null;
  *   identifiers of any kind.
  * - accounts: email addresses that signed in to the app (any plan), with the
  *   plan and first and latest sign-in, and, from 0.1.8, emails that asked for
- *   tips without signing in (source 'tips', with the app language and the
- *   keyed device hash, so they can be linked to the device's activity rows).
- *   Pruned ACCOUNT_RETENTION_DAYS after the latest.
+ *   tips without signing in and confirmed the address (source 'tips', with
+ *   the app language and the keyed device hash, so they can be linked to the
+ *   device's activity rows; deleted on unsubscribe). Pruned
+ *   ACCOUNT_RETENTION_DAYS after the latest sign-in, or after confirming tips.
+ * - tip_sequence: progress through the tips emails, per confirmed address.
  */
 export async function activityDb() {
   const sql = await db();
@@ -236,7 +238,22 @@ export async function activityDb() {
     // without storing an IP address. Null on rows from other requests.
     .then(() => sql`alter table accounts add column if not exists source text`)
     .then(() => sql`alter table accounts add column if not exists language text`)
-    .then(() => sql`alter table accounts add column if not exists device_hash text`);
+    .then(() => sql`alter table accounts add column if not exists device_hash text`)
+    // Added in 0.1.9: where each confirmed tips subscriber is in the tips
+    // sequence (lib/email/tips.ts). step = tips sent so far; next_at = when
+    // the next one is due, null once the sequence is done. Deleted on
+    // unsubscribe, and ACCOUNT_RETENTION_DAYS after it started.
+    .then(
+      () => sql`
+    create table if not exists tip_sequence (
+      email text primary key,
+      language text,
+      step integer not null default 0,
+      next_at timestamptz,
+      started_at timestamptz not null default now()
+    )`,
+    )
+    .then(() => sql`create index if not exists tip_sequence_next_at on tip_sequence (next_at)`);
   try {
     await activitySchemaReady;
   } catch (err) {

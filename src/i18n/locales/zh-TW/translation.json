@@ -1243,9 +1243,12 @@
     },
     "tips": {
       "label": "以電子郵件接收技巧",
+      "labelOptional": "以電子郵件接收技巧（選填）",
+      "description": "不定期寄送讓你更善用 {{appName}} 的小技巧。可隨時取消訂閱。",
       "button": "傳送",
-      "done": "謝謝！",
-      "error": "傳送失敗，要重試嗎？"
+      "done": "已傳送",
+      "error": "傳送失敗，要重試嗎？",
+      "checkInbox": "請查看收件匣完成確認。"
     }
   },
   "home": {

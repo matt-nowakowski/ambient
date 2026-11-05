@@ -409,14 +409,20 @@ export default function PrivacyPage() {
                 and token from your device.
               </p>
               <p>
-                <strong>Email me tips (optional).</strong> In Account, while you are not signed in, you
-                can ask us to email you tips on using {brand.name}; the box stays empty until you fill it in. If you do,
-                we keep your email address, your app language and the anonymous device hash described under “Trial and
-                free allowance”, so we can write to you in your language and link the email to the device it came from.
-                We email you once to confirm your address, then send occasional tips ourselves, through our email
-                provider, Resend, with a one-click unsubscribe in every one. We do not store your IP address. We keep
-                your email for tips for up to 12 months after you last asked for them, and sooner if you ask us to
-                delete it; unsubscribing stops the emails straight away.
+                <strong>Email me tips (optional).</strong> On the last screen of setup, and in Account while you are
+                not signed in, you can ask us to email you tips on using {brand.name}; the box stays empty until you
+                fill it in. If you do, we email that address once, through our email provider, Resend, with a link to
+                confirm it. Until the link is clicked, only Resend holds the address, marked unconfirmed, and nothing is
+                stored in our database, so nobody can sign up someone
+                else. Once you confirm, we keep your email address, your app language and the anonymous device hash
+                described under “Trial and free allowance”, so we can write to you in your language (the tips are in
+                English for now) and link the email to the device it came from, plus how far through the tips you are.
+                We then send a short series of tips ourselves: the first a day after you confirm, then one about every
+                two weeks, five in all. Every one has a one-click unsubscribe. We do not store your IP address. If you
+                already signed in with that address, your sign-in record is left as it is. We keep your tips email for
+                up to 12 months after you confirm, and sooner if you ask us to delete it. Unsubscribing stops the emails
+                straight away and deletes it from our database; Resend keeps your address marked as unsubscribed, so we
+                never email you again by mistake.
               </p>
             </>
           ),
@@ -556,7 +562,8 @@ export default function PrivacyPage() {
               <li>Sign-in attempt counters: about an hour, keyed by a one-way hash of your email.</li>
               <li>Signed-in email, plan and sign-in dates: 12 months after your latest sign-in.</li>
               <li>
-                Tips email, app language and device hash: up to 12 months after you last asked for tips, or sooner on request.
+                Tips email, app language, device hash and how far through the tips you are: up to 12 months after you
+                confirm; deleted as soon as you unsubscribe, or sooner on request.
               </li>
               <li>
                 Daily, weekly and monthly activity hashes, with plan and, from the daily check-in, app version, operating
