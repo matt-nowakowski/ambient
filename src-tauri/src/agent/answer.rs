@@ -183,6 +183,11 @@ pub struct Opts {
     /// `contradicts_premise`). A question the user asked carries no
     /// premise: they get their answer whatever it says.
     pub premise: Option<String>,
+    /// What to search the web for when the answer also reads window text
+    /// (an accepted suggestion that needs fresh facts: the error message,
+    /// the company you're meeting). The server searches only the query, so
+    /// only the query leaves for the search provider. Needs `needs_web`.
+    pub web_query: Option<String>,
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -566,6 +571,7 @@ pub async fn run_with(
             &app,
             &prompt,
             needs_web,
+            opts.web_query.as_deref().filter(|_| needs_web),
             opts.write,
             &history,
             &sources_in,
@@ -768,6 +774,7 @@ async fn server_answer(
     app: &AppHandle,
     question: &str,
     needs_web: bool,
+    web_query: Option<&str>,
     write: bool,
     history: &[Turn],
     sources_in: &[Source],
@@ -778,6 +785,7 @@ async fn server_answer(
     let body = serde_json::json!({
         "question": question,
         "needs_web": needs_web,
+        "search_query": web_query,
         "history": history,
         "sources": sources_in,
         "context": context,
@@ -792,7 +800,10 @@ async fn server_answer(
         .next()
         .unwrap_or("")
         .to_string();
-    let searching = needs_web && sources_in.is_empty() && context.is_none();
+    // The server searches when there's no window text, or when a query
+    // was given to search alongside it.
+    let searching =
+        needs_web && sources_in.is_empty() && (context.is_none() || web_query.is_some());
 
     crate::plan::record_hosted_use(app, "ai");
     if searching {
@@ -808,7 +819,11 @@ async fn server_answer(
             &host,
             if needs_web { "search" } else { "answer" },
             &format!(
-                "{question}{}",
+                "{}{question}{}",
+                web_query
+                    .filter(|_| searching)
+                    .map(|q| format!("Web search: {q}\n\n"))
+                    .unwrap_or_default(),
                 context.map(|c| format!("\n\n{c}")).unwrap_or_default()
             ),
         );
