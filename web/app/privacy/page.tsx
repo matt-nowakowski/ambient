@@ -412,7 +412,8 @@ export default function PrivacyPage() {
                 <strong>Email me tips (optional).</strong> On the last screen of setup, and in Account while you are
                 not signed in, you can ask us to email you tips on using {brand.name}; the box stays empty until you
                 fill it in. If you do, we email that address once, through our email provider, Resend, with a link to
-                confirm it. Until the link is clicked we store nothing in our database, so nobody can sign up someone
+                confirm it. Until the link is clicked, only Resend holds the address, marked unconfirmed, and nothing is
+                stored in our database, so nobody can sign up someone
                 else. Once you confirm, we keep your email address, your app language and the anonymous device hash
                 described under “Trial and free allowance”, so we can write to you in your language (the tips are in
                 English for now) and link the email to the device it came from, plus how far through the tips you are.
