@@ -634,8 +634,9 @@ pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> De
         use super::markers::Kind;
         match m.kind {
             Kind::Draft => return decided(Route::Compose(m.instruction())),
-            // Typed as said, without the marker (see `actions`).
-            Kind::Note => {
+            // Typed as said, without the marker (see `actions`). Said with
+            // the Ask key it is still for the agent.
+            Kind::Note if !s.ask => {
                 return Decision {
                     route: None,
                     to_agent: false,
@@ -664,7 +665,7 @@ pub fn decide(transcript: &str, s: &Situation, now: chrono::NaiveDateTime) -> De
                     }
                 }
             }
-            Kind::Remind => {}
+            Kind::Remind | Kind::Note => {}
         }
     }
     match compose_intent(transcript) {
