@@ -189,8 +189,10 @@ let activitySchemaReady: Promise<unknown> | null = null;
  *   downloads by file, version and country, first launches by country. No
  *   identifiers of any kind.
  * - accounts: email addresses that signed in to the app (any plan), with the
- *   plan and first and latest sign-in. Pruned ACCOUNT_RETENTION_DAYS after
- *   the latest.
+ *   plan and first and latest sign-in, and, from 0.1.8, emails that asked for
+ *   tips without signing in (source 'tips', with the app language and the
+ *   keyed device hash, so they can be linked to the device's activity rows).
+ *   Pruned ACCOUNT_RETENTION_DAYS after the latest.
  */
 export async function activityDb() {
   const sql = await db();
@@ -226,7 +228,15 @@ export async function activityDb() {
       first_seen timestamptz not null default now(),
       last_seen timestamptz not null default now()
     )`,
-    );
+    )
+    // Added in 0.1.8 for optional "Email me tips" (optional, no sign-in):
+    // how the row got here ('sign-in' or 'tips'), the app language we should
+    // write tips in, and the keyed device hash (lib/machine.ts), the same
+    // value device_activity rows use, so a tips email can be tied to a device
+    // without storing an IP address. Null on rows from other requests.
+    .then(() => sql`alter table accounts add column if not exists source text`)
+    .then(() => sql`alter table accounts add column if not exists language text`)
+    .then(() => sql`alter table accounts add column if not exists device_hash text`);
   try {
     await activitySchemaReady;
   } catch (err) {

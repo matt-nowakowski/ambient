@@ -156,19 +156,51 @@ export function countDaily(entries: [metric: string, dim: string][]) {
   }
 }
 
+/** How an email got into `accounts`: by signing in, or by asking for tips. */
+const SIGN_IN_SOURCE = "sign-in";
+export const TIPS_SOURCE = "tips";
+
+/**
+ * One row per email. A row that came from tips never downgrades a signed-in
+ * row's plan or source: signing in is the stronger signal, whichever came
+ * first, and the device hash and language are kept once known.
+ */
+async function recordAccount(email: string, plan: string, source: string, deviceHash: string | null, language: string | null) {
+  const sql = await activityDb();
+  await sql`
+    insert into accounts (email, plan, source, language, device_hash)
+    values (${email}, ${plan}, ${source}, ${language}, ${deviceHash})
+    on conflict (email) do update set
+      last_seen = now(),
+      source = case when ${source} = ${SIGN_IN_SOURCE} then ${SIGN_IN_SOURCE} else accounts.source end,
+      plan = case when ${source} = ${SIGN_IN_SOURCE} or accounts.source = ${TIPS_SOURCE} then excluded.plan else accounts.plan end,
+      language = coalesce(excluded.language, accounts.language),
+      device_hash = coalesce(excluded.device_hash, accounts.device_hash)`;
+}
+
 /** Records an email that signed in to the app (verify or refresh), with its plan. */
 export function noteAccount(email: string, plan: string) {
   try {
     if (!isDatabaseConfigured() || !email) return;
     if (alreadySeen(`account|${email}|${plan}`)) return;
-    run(async () => {
-      const sql = await activityDb();
-      await sql`
-        insert into accounts (email, plan) values (${email}, ${plan})
-        on conflict (email) do update set plan = excluded.plan, last_seen = now()`;
-    }, "account");
+    run(() => recordAccount(email, plan, SIGN_IN_SOURCE, null, null), "account");
   } catch {
     // Recording never affects sign-in.
+  }
+}
+
+/**
+ * Records an email that asked for tips from setup or Account without signing
+ * in (optional, Free and trial). Stores the language tips should be written in
+ * and the keyed device hash, so the row can be matched to the device's
+ * activity rows. No IP address is stored.
+ */
+export function noteTipSubscriber(email: string, plan: "free" | "trial", deviceHash: string | null, language: string | null) {
+  try {
+    if (!isDatabaseConfigured() || !email) return;
+    run(() => recordAccount(email, plan, TIPS_SOURCE, deviceHash, language), "account");
+  } catch {
+    // Recording never affects the subscription.
   }
 }
 
