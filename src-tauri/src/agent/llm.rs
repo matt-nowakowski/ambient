@@ -301,9 +301,11 @@ pub async fn traced<F: Future>(f: F) -> (F::Output, Vec<AiUse>) {
 /// otherwise: suggestions, meetings).
 pub fn record(engine: &str, started: Instant) {
     let model = if engine == LOCAL_MODEL_PROVIDER_ID {
+        // The model that actually runs (the saved choice if it's on disk).
         crate::local_llm::app().and_then(|app| {
-            let selected = get_settings(app).agent.on_device_model_id;
-            crate::catalog::resolve_reasoning_model(selected.as_deref()).map(|m| m.id.clone())
+            use tauri::Manager;
+            app.try_state::<std::sync::Arc<crate::managers::model::ModelManager>>()
+                .and_then(|m| m.chosen_reasoning_model().map(|m| m.id.clone()))
         })
     } else {
         None
