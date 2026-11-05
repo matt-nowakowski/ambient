@@ -65,7 +65,7 @@ export const OnDeviceAi: React.FC<{
     setStarting(true);
     try {
       // Failure toasts from the model store's download-failed listener.
-      await commands.downloadOnDeviceAi();
+      await commands.downloadOnDeviceAi(null);
     } finally {
       setStarting(false);
     }
@@ -210,7 +210,7 @@ export const OnDeviceAi: React.FC<{
                     )}
                   </span>
                   <span className="mt-0.5 block text-small text-ink-2">
-                    {m.description}
+                    {m.name}
                     {m.accuracy !== null && m.speed !== null && (
                       <>
                         {" "}

@@ -1153,22 +1153,24 @@ async getOnDeviceAiStatus() : Promise<OnDeviceAiStatus> {
     return await TAURI_INVOKE("get_on_device_ai_status");
 },
 /**
- * Download on-device AI. Progress, completion, cancellation and failure use
- * the model download events under `ON_DEVICE_AI_ID`. Once it's there it
- * becomes the on-device model (on a Mac, instead of Apple Intelligence;
- * the user can switch back).
+ * Download on-device AI: the runtime and `model_id` (else the model this
+ * install runs, or the recommended one). Progress, completion, cancellation
+ * and failure use the model download events under `ON_DEVICE_AI_ID`. Only
+ * once the model is here does it become the choice and the on-device model
+ * (on a Mac, instead of Apple Intelligence; the user can switch back), so a
+ * cancelled or failed download leaves what ran before running.
  */
-async downloadOnDeviceAi() : Promise<Result<null, string>> {
+async downloadOnDeviceAi(modelId: string | null) : Promise<Result<null, string>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("download_on_device_ai") };
+    return { status: "ok", data: await TAURI_INVOKE("download_on_device_ai", { modelId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
 /**
- * Delete on-device AI (runtime and model) and go back to Apple
- * Intelligence where there is one.
+ * Delete on-device AI (the runtime and every reasoning model downloaded)
+ * and go back to Apple Intelligence where there is one.
  */
 async deleteOnDeviceAi() : Promise<Result<null, string>> {
     try {
@@ -1181,20 +1183,31 @@ async deleteOnDeviceAi() : Promise<Result<null, string>> {
 /**
  * Every on-device reasoning model the catalog lists, with its scores and
  * whether it is already here. Drives the picker in setup and in the Privacy
- * Center; the scores come from the models' own published benchmarks, which is
- * what the picker says.
+ * Center.
  */
 async getReasoningModels() : Promise<ReasoningModelInfo[]> {
     return await TAURI_INVOKE("get_reasoning_models");
 },
 /**
- * Remember which reasoning model runs on-device tasks. Passing nothing clears
- * the choice and falls back to the catalog's default. Downloads nothing: the
- * picker downloads the chosen model next, under the usual on-device events.
+ * Run a reasoning model that is already downloaded (one that isn't comes
+ * through `download_on_device_ai`, which saves it once it's here). Passing
+ * nothing clears the choice: any downloaded model, else the recommended one.
  */
 async setReasoningModel(modelId: string | null) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("set_reasoning_model", { modelId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Delete one downloaded reasoning model. If it was the saved choice, the
+ * choice is cleared, so another downloaded model (if any) runs.
+ */
+async deleteReasoningModel(modelId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_reasoning_model", { modelId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -2297,11 +2310,14 @@ email: string | null }
 export type ReasoningModelInfo = { 
 id: string; 
 name: string; 
-description: string; 
 /**
  * Download size, in MB.
  */
 size_mb: number; 
+/**
+ * Relative quality and speed on a 0-1 bar, for the picker's bars:
+ * derived from published benchmarks and parameter count, not measured.
+ */
 accuracy: number | null; 
 speed: number | null; 
 recommended: boolean; 
@@ -2310,15 +2326,15 @@ recommended: boolean;
  */
 basic: boolean; 
 /**
- * What an install that never chose keeps using.
- */
-is_default: boolean; 
-/**
  * Already on this computer.
  */
 downloaded: boolean; 
 /**
- * The one this install runs now.
+ * Being downloaded now.
+ */
+downloading: boolean; 
+/**
+ * The one this install runs (or, with none here, what "Download" gets).
  */
 selected: boolean }
 export type OnDeviceAiStatus = { 

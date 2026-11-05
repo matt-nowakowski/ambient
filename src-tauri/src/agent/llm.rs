@@ -382,6 +382,9 @@ mod tests {
         // Automatic: as before the setting existed.
         assert!(prefers_on_device(Intelligence::Auto, true));
         assert!(!prefers_on_device(Intelligence::Auto, false));
+        // No AI: no model runs, on this computer or anywhere else.
+        assert!(!prefers_on_device(Intelligence::None, true));
+        assert!(!prefers_on_device(Intelligence::None, false));
     }
 
     #[test]

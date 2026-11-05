@@ -702,9 +702,9 @@ pub struct AgentSettings {
     /// other is used when the chosen one isn't available.
     pub on_device_model: OnDeviceModel,
     /// Which downloaded reasoning model runs on-device tasks, by catalog id
-    /// ("Download on-device AI"). None keeps the catalog's default, so an
-    /// install that already downloaded the old 1.7B Q8 model keeps using it
-    /// instead of being asked to download again.
+    /// ("Download on-device AI"), saved only once its download completes.
+    /// None runs whichever is downloaded (an install that already has the
+    /// old 1.7B Q8 keeps it), else downloads the recommended one.
     pub on_device_model_id: Option<String>,
     /// Unix seconds until which all watching is paused.
     pub paused_until: Option<i64>,
@@ -815,8 +815,8 @@ impl AgentSettings {
         self.intelligence == Intelligence::Device
     }
 
-    /// The downloaded reasoning model the user chose, if any. None means the
-    /// catalog's default (see `catalog::resolve_reasoning_model`).
+    /// The downloaded reasoning model the user chose, if any (see
+    /// `catalog::resolve_reasoning_model` for what runs without one).
     pub fn selected_reasoning_model_id(&self) -> Option<&str> {
         self.on_device_model_id.as_deref()
     }

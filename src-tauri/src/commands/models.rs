@@ -115,76 +115,120 @@ pub struct OnDeviceAiStatus {
 pub struct ReasoningModelInfo {
     pub id: String,
     pub name: String,
-    pub description: String,
     /// Download size, in MB.
     pub size_mb: u64,
+    /// Relative quality and speed on a 0-1 bar, for the picker's bars:
+    /// derived from published benchmarks and parameter count, not measured.
     pub accuracy: Option<f32>,
     pub speed: Option<f32>,
     pub recommended: bool,
     /// Small enough that answers and writing are noticeably weaker.
     pub basic: bool,
-    /// What an install that never chose keeps using.
-    pub is_default: bool,
     /// Already on this computer.
     pub downloaded: bool,
-    /// The one this install runs now.
+    /// Being downloaded now.
+    pub downloading: bool,
+    /// The one this install runs (or, with none here, what "Download" gets).
     pub selected: bool,
 }
 
 /// Every on-device reasoning model the catalog lists, with its scores and
 /// whether it is already here. Drives the picker in setup and in the Privacy
-/// Center; the scores come from the models' own published benchmarks, which is
-/// what the picker says.
+/// Center.
 #[tauri::command]
 #[specta::specta]
 pub fn get_reasoning_models(
-    app: AppHandle,
     model_manager: State<'_, Arc<ModelManager>>,
 ) -> Vec<ReasoningModelInfo> {
-    let selected = crate::settings::get_settings(&app).agent.on_device_model_id;
-    let default_id = crate::catalog::default_reasoning_model().map(|m| m.id.clone());
-    let chosen = crate::catalog::resolve_reasoning_model(selected.as_deref()).map(|m| m.id.clone());
+    let chosen = model_manager
+        .chosen_reasoning_model()
+        .map(|m| m.id.as_str());
+    let downloading = model_manager.reasoning_model_downloading();
     crate::catalog::REASONING_MODELS
         .iter()
         .map(|m| ReasoningModelInfo {
             id: m.id.clone(),
             name: m.name.clone(),
-            description: m.description.clone(),
             size_mb: m.size_bytes / (1024 * 1024),
             accuracy: m.accuracy_score,
             speed: m.speed_score,
             recommended: m.recommended,
             basic: m.basic,
-            is_default: default_id.as_deref() == Some(m.id.as_str()),
-            downloaded: model_manager.reasoning_model_downloaded(&m.id)
-                || chosen.as_deref() == Some(m.id.as_str()),
-            selected: chosen.as_deref() == Some(m.id.as_str()),
+            downloaded: model_manager.reasoning_model_downloaded(&m.id),
+            downloading: downloading.as_deref() == Some(m.id.as_str()),
+            selected: chosen == Some(m.id.as_str()),
         })
         .collect()
 }
 
-/// Remember which reasoning model runs on-device tasks. Passing nothing clears
-/// the choice and falls back to the catalog's default. Downloads nothing: the
-/// picker downloads the chosen model next, under the usual on-device events.
+/// Save `model_id` as the reasoning model that runs, and stop the server if
+/// that changes which model runs, so the next task loads the new one instead
+/// of reusing the old one until it idles out.
+fn save_reasoning_model(app: &AppHandle, model_manager: &ModelManager, model_id: Option<String>) {
+    let before = model_manager
+        .chosen_reasoning_model()
+        .map(|m| m.id.as_str());
+    let mut settings = get_settings(app);
+    settings.agent.on_device_model_id = model_id;
+    write_settings(app, settings);
+    if model_manager
+        .chosen_reasoning_model()
+        .map(|m| m.id.as_str())
+        != before
+    {
+        crate::local_llm::stop();
+    }
+}
+
+/// Run a reasoning model that is already downloaded (one that isn't comes
+/// through `download_on_device_ai`, which saves it once it's here). Passing
+/// nothing clears the choice: any downloaded model, else the recommended one.
 #[tauri::command]
 #[specta::specta]
-pub fn set_reasoning_model(app: AppHandle, model_id: Option<String>) -> Result<(), String> {
+pub fn set_reasoning_model(
+    app: AppHandle,
+    model_manager: State<'_, Arc<ModelManager>>,
+    model_id: Option<String>,
+) -> Result<(), String> {
     if let Some(id) = model_id.as_deref() {
         if crate::catalog::reasoning_model(id).is_none() {
             return Err(format!("Unknown on-device model: {id}"));
         }
+        if !model_manager.reasoning_model_downloaded(id) {
+            return Err(format!("Download {id} first"));
+        }
     }
-    let mut settings = crate::settings::get_settings(&app);
-    settings.agent.on_device_model_id = model_id;
-    crate::settings::write_settings(&app, settings);
+    save_reasoning_model(&app, &model_manager, model_id);
+    Ok(())
+}
+
+/// Delete one downloaded reasoning model. If it was the saved choice, the
+/// choice is cleared, so another downloaded model (if any) runs.
+#[tauri::command]
+#[specta::specta]
+pub fn delete_reasoning_model(
+    app: AppHandle,
+    model_manager: State<'_, Arc<ModelManager>>,
+    model_id: String,
+) -> Result<(), String> {
+    model_manager
+        .delete_reasoning_model(&model_id)
+        .map_err(|e| {
+            error!("Deleting on-device model {model_id} failed: {e}");
+            e.to_string()
+        })?;
+    if get_settings(&app).agent.selected_reasoning_model_id() == Some(model_id.as_str()) {
+        save_reasoning_model(&app, &model_manager, None);
+    }
     Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_on_device_ai_status() -> OnDeviceAiStatus {
+pub fn get_on_device_ai_status(model_manager: State<'_, Arc<ModelManager>>) -> OnDeviceAiStatus {
     let runtime = crate::local_llm::runtime_asset();
-    let model = crate::catalog::default_reasoning_model();
+    // The model that runs, or with none here the one "Download" fetches.
+    let model = model_manager.chosen_reasoning_model();
     let size = runtime.map_or(0, |r| r.size) + model.map_or(0, |m| m.size_bytes);
     OnDeviceAiStatus {
         supported: runtime.is_some() && model.is_some(),
@@ -201,40 +245,52 @@ pub fn get_on_device_ai_status() -> OnDeviceAiStatus {
     }
 }
 
-/// Download on-device AI. Progress, completion, cancellation and failure use
-/// the model download events under `ON_DEVICE_AI_ID`. Once it's there it
-/// becomes the on-device model (on a Mac, instead of Apple Intelligence;
-/// the user can switch back).
+/// Download on-device AI: the runtime and `model_id` (else the model this
+/// install runs, or the recommended one). Progress, completion, cancellation
+/// and failure use the model download events under `ON_DEVICE_AI_ID`. Only
+/// once the model is here does it become the choice and the on-device model
+/// (on a Mac, instead of Apple Intelligence; the user can switch back), so a
+/// cancelled or failed download leaves what ran before running.
 #[tauri::command]
 #[specta::specta]
 pub async fn download_on_device_ai(
     app_handle: AppHandle,
     model_manager: State<'_, Arc<ModelManager>>,
+    model_id: Option<String>,
 ) -> Result<(), String> {
     let result = model_manager
-        .download_on_device_ai()
+        .download_on_device_ai(model_id.as_deref())
         .await
         .map_err(|e| e.to_string());
     match &result {
-        Ok(()) if crate::local_llm::ready() => {
-            let mut settings = get_settings(&app_handle);
-            settings.agent.on_device_model = crate::settings::OnDeviceModel::Downloaded;
-            write_settings(&app_handle, settings);
+        Ok(Some(model)) => {
+            save_reasoning_model(&app_handle, &model_manager, Some(model.id.clone()));
+            if crate::local_llm::ready() {
+                let mut settings = get_settings(&app_handle);
+                settings.agent.on_device_model = crate::settings::OnDeviceModel::Downloaded;
+                write_settings(&app_handle, settings);
+            }
+            model_manager.on_device_ai_downloaded();
         }
-        Ok(()) => {}
+        Ok(None) => {}
         Err(error) => {
             error!("On-device AI download failed: {}", error);
             let _ = app_handle.emit(
                 "model-download-failed",
-                serde_json::json!({ "model_id": ON_DEVICE_AI_ID, "error": error }),
+                serde_json::json!({
+                    "model_id": ON_DEVICE_AI_ID,
+                    "error": error,
+                    // Which model, so "Retry" fetches the same one.
+                    "target": model_id,
+                }),
             );
         }
     }
-    result
+    result.map(|_| ())
 }
 
-/// Delete on-device AI (runtime and model) and go back to Apple
-/// Intelligence where there is one.
+/// Delete on-device AI (the runtime and every reasoning model downloaded)
+/// and go back to Apple Intelligence where there is one.
 #[tauri::command]
 #[specta::specta]
 pub fn delete_on_device_ai(
@@ -247,6 +303,7 @@ pub fn delete_on_device_ai(
     })?;
     let mut settings = get_settings(&app_handle);
     settings.agent.on_device_model = crate::settings::OnDeviceModel::Apple;
+    settings.agent.on_device_model_id = None;
     write_settings(&app_handle, settings);
     Ok(())
 }

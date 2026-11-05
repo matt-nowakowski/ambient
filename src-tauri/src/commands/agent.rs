@@ -54,6 +54,9 @@ pub fn set_agent_settings(app: AppHandle, agent: AgentSettings) -> Result<(), St
     s.agent = AgentSettings {
         retention_days: agent.retention_days.clamp(1, 90),
         suggestions_per_hour: agent.suggestions_per_hour.min(20),
+        // Owned by the model commands (saved once a download completes): a
+        // page holding older settings mustn't undo it.
+        on_device_model_id: s.agent.on_device_model_id.clone(),
         ..agent
     };
     // The legacy flag follows the Intelligence choice (older builds read it).
