@@ -679,8 +679,7 @@ export const Demo: React.FC<DemoProps> = ({
           <ScreenHeader
             title={t("onboarding.demo.title")}
             sub={<DemoSentence mode={chapter} phrase={phrase} say={say} />}
-            // 8px, not 4: the bold lead-in would read as the title's next line.
-            subClassName="mt-[8px]! grid items-center justify-items-center"
+            subClassName="grid items-center justify-items-center"
           />
         }
       >
@@ -715,7 +714,7 @@ export const Demo: React.FC<DemoProps> = ({
           {...spaceDoesNotClick}
           // Shrink-wrapped, the two 1fr sides size to the wider of the two,
           // so the keys sit on the screen's centre in any language.
-          className="group/keycaps mt-[26px] inline-grid cursor-pointer grid-cols-[1fr_auto_1fr] items-center gap-[14px] text-small focus-visible:outline-none"
+          className="group/keycaps mt-lead inline-grid cursor-pointer grid-cols-[1fr_auto_1fr] items-center gap-[14px] text-small focus-visible:outline-none"
         >
           <span className="justify-self-end whitespace-nowrap text-ink-3">
             {t("onboarding.demo.yourShortcut")}

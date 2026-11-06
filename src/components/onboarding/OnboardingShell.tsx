@@ -194,21 +194,20 @@ const ALIGN = {
   stretch: "items-stretch",
 } as const;
 
-/** Gap between header and content, per layout. */
-const GAP = {
-  center: "min-h-lead max-h-lead-max flex-[1_1_0]",
-  top: "h-lead flex-none",
-} as const;
-
-/** A screen's main block: header, gap, content. */
+/**
+ * A screen's main block: header, gap, content, on every step the same way
+ * (the --spacing-onb-* and --spacing-lead tokens in App.css): the title a
+ * fixed distance under the progress dashes, the content a fixed gap under
+ * the subtitle. "fit" content takes its own height; "fill" takes the rest
+ * of the screen (a table, a list that scrolls).
+ */
 export const ScreenMain = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
     align?: keyof typeof ALIGN;
     /** Usually a ScreenHeader. */
     header?: React.ReactNode;
-    /** "center" centres everything; "top" pins the header and content fills. */
-    layout?: keyof typeof GAP;
+    layout?: "fit" | "fill";
   }
 >(
   (
@@ -216,7 +215,7 @@ export const ScreenMain = React.forwardRef<
       children,
       align = "center",
       header,
-      layout = "center",
+      layout = "fit",
       className = "",
       ...rest
     },
@@ -225,12 +224,12 @@ export const ScreenMain = React.forwardRef<
     <div
       ref={ref}
       {...rest}
-      className={`flex h-full min-h-0 min-w-0 flex-col ${layout === "center" ? "justify-center-safe" : ""} text-center px-gutter ${className}`}
+      className={`flex h-full min-h-0 min-w-0 flex-col pt-onb-top text-center px-gutter ${className}`}
     >
       {header}
-      {header && <div aria-hidden="true" className={GAP[layout]} />}
+      {header && <div aria-hidden="true" className="h-lead flex-none" />}
       <div
-        className={`flex min-h-0 w-full flex-col ${layout === "top" ? "flex-1" : ""} ${ALIGN[align]}`}
+        className={`flex min-h-0 w-full flex-col ${layout === "fill" ? "flex-1" : ""} ${ALIGN[align]}`}
       >
         {children}
       </div>
@@ -249,7 +248,7 @@ export const ScreenHeader: React.FC<{
 }> = ({ title, sub, subClassName, above }) => (
   <div className="relative w-full flex-none">
     {above && (
-      <div className="absolute inset-x-0 bottom-full mb-[12px]">{above}</div>
+      <div className="absolute inset-x-0 bottom-full mb-[8px]">{above}</div>
     )}
     <ScreenTitle>{title}</ScreenTitle>
     {sub && <ScreenSub className={subClassName}>{sub}</ScreenSub>}
@@ -271,7 +270,7 @@ export const ScreenSub: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = "" }) => (
-  <p className={`mt-[4px] mb-0 text-ink-2 text-pretty ${className}`}>
+  <p className={`mt-onb-sub mb-0 text-ink-2 text-pretty ${className}`}>
     {children}
   </p>
 );

@@ -648,7 +648,7 @@ export const Model: React.FC<ModelProps> = ({
       <ScreenMain
         ref={rootRef}
         data-model-root=""
-        layout="top"
+        layout="fill"
         align="stretch"
         header={<ScreenHeader title={title} sub={sub} />}
       >

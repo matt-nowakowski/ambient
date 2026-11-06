@@ -12,7 +12,6 @@ import {
 import { formatModelSize } from "@/lib/utils/format";
 import { Button } from "../../ui/Button";
 import { Radio } from "../../ui/Radio";
-import { Orb } from "../../orb/Orb";
 import { OnboardingShell, ScreenHeader, ScreenMain } from "../OnboardingShell";
 
 interface AiChoiceProps {
@@ -140,11 +139,6 @@ export const AiChoice: React.FC<AiChoiceProps> = ({
       <ScreenMain
         header={
           <ScreenHeader
-            above={
-              <span className="flex justify-center">
-                <Orb variant="B1" size={22} />
-              </span>
-            }
             title={t("onboarding.ai.title")}
             sub={t("onboarding.ai.sub")}
           />
