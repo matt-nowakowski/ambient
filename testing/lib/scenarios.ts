@@ -16,6 +16,8 @@ export type Focus = {
   value?: string;
   caret?: number;
   selection?: string;
+  /** The field's text is fixed-width (a code editor or terminal). */
+  monospace?: boolean;
 };
 
 export type Screen = {
@@ -89,6 +91,8 @@ export type Expect = {
   contains?: string[];
   /** Case-insensitive substrings the output must not contain. */
   not_contains?: string[];
+  /** Exactly what was typed, spaces and case included. */
+  typed?: string;
   must_not?: MustNot[];
   /** Case-insensitive substrings of some card's text or i18n key ("private", "hud.notice.cantCloseWindow"). */
   shows?: string[];

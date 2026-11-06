@@ -13,6 +13,7 @@ extern "C" {
     fn ambient_press_labeled(pid: i32, labels: *const c_char) -> i32;
     fn ambient_focused_field(pid: i32, read_text: bool) -> *mut c_char;
     fn ambient_select_range(pid: i32, loc: isize, len: isize) -> bool;
+    fn ambient_text_before_caret(pid: i32, max_units: isize) -> *mut c_char;
 }
 
 /// Take ownership of a Swift-allocated JSON string and parse it.
@@ -91,6 +92,29 @@ pub fn focused_field(pid: i32, read_text: bool) -> Option<super::field::FocusedF
         selection: raw.selection.filter(|s| !s.is_empty()),
         caret,
         sel_len,
+    })
+}
+
+#[derive(serde::Deserialize)]
+struct RawBefore {
+    #[serde(default)]
+    secure: bool,
+    before: Option<String>,
+    mono: Option<bool>,
+}
+
+/// What's right before the caret (see `field::caret_context`). AX counts
+/// UTF-16 units; twice `max_chars` of them covers `max_chars` characters,
+/// then the excess is trimmed.
+pub fn text_before_caret(pid: i32, max_chars: usize) -> Option<super::field::CaretContext> {
+    let units = isize::try_from(max_chars.saturating_mul(2)).unwrap_or(isize::MAX);
+    let raw: RawBefore = take_json(unsafe { ambient_text_before_caret(pid, units) })?;
+    if raw.secure {
+        return None;
+    }
+    Some(super::field::CaretContext {
+        before: super::field::last_chars(&raw.before?, max_chars),
+        monospace: raw.mono.unwrap_or(false),
     })
 }
 

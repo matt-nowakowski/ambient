@@ -3,15 +3,21 @@
 //! - Launched from the disk image (directly, or translocated by Gatekeeper):
 //!   offer to move the app to /Applications, then relaunch from there.
 //! - First launch from anywhere else: eject the still-mounted disk image
-//!   (which also closes its Finder window), and once setup is done, offer to
-//!   move `~/Downloads/<Brand>_*.dmg` to the Bin.
+//!   (which also closes its Finder window), remembering which file it was
+//!   mounted from, and once setup is done, offer to move that file to the Bin.
+//!
+//! Never list or stat `~/Downloads` (or Desktop/Documents): macOS guards them
+//! with a privacy prompt ("would like to access files in your Downloads
+//! folder"), which looks suspicious from a dictation app. The image's path
+//! comes from `hdiutil info`, and the file is only touched after the user
+//! says "Move to Bin".
 //!
 //! Each question is asked once; the answers live in `installer.json`.
 
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use tauri::{AppHandle, Manager};
+use tauri::AppHandle;
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
 use tauri_plugin_store::StoreExt;
 
@@ -24,6 +30,9 @@ const EJECTED: &str = "ejected";
 const TRASH_ASKED: &str = "trash_asked";
 /// "Not now" to moving out of the disk image.
 const MOVE_DECLINED: &str = "move_declined";
+/// The disk image files we ejected on the first launch (paths, as `hdiutil`
+/// reported them), for the Bin question.
+const IMAGE_FILES: &str = "image_files";
 
 fn flag(app: &AppHandle, key: &str) -> bool {
     app.store(crate::portable::store_path(STORE_PATH))
@@ -57,30 +66,117 @@ fn running_bundle() -> Option<PathBuf> {
         .map(Path::to_path_buf)
 }
 
-/// Mount points of attached disk images, from `hdiutil info`.
-fn image_mount_points() -> Vec<PathBuf> {
+/// One attached disk image from `hdiutil info`: the file it was mounted
+/// from (if reported) and its mount points.
+#[derive(Debug, Default, PartialEq)]
+struct AttachedImage {
+    file: Option<PathBuf>,
+    mount_points: Vec<PathBuf>,
+}
+
+/// Parse `hdiutil info`: images are separated by a line of `=`, each with an
+/// `image-path : …` line and device lines ending in `/Volumes/…`.
+fn parse_hdiutil_info(text: &str) -> Vec<AttachedImage> {
+    let mut images = Vec::new();
+    let mut current: Option<AttachedImage> = None;
+    for line in text.lines() {
+        if line.starts_with("====") {
+            images.extend(current.take());
+            current = Some(AttachedImage::default());
+            continue;
+        }
+        let Some(image) = current.as_mut() else {
+            continue;
+        };
+        if let Some(rest) = line.strip_prefix("image-path") {
+            if let Some((_, path)) = rest.split_once(':') {
+                let path = path.trim();
+                if !path.is_empty() {
+                    image.file = Some(PathBuf::from(path));
+                }
+            }
+        } else if let Some(i) = line.find("/Volumes/") {
+            image.mount_points.push(PathBuf::from(line[i..].trim_end()));
+        }
+    }
+    images.extend(current);
+    images
+}
+
+fn attached_images() -> Vec<AttachedImage> {
     let Ok(out) = Command::new("/usr/bin/hdiutil").arg("info").output() else {
         return Vec::new();
     };
-    String::from_utf8_lossy(&out.stdout)
-        .lines()
-        .filter_map(|line| line.find("/Volumes/").map(|i| PathBuf::from(&line[i..])))
+    parse_hdiutil_info(&String::from_utf8_lossy(&out.stdout))
+}
+
+/// Whether a mount point is one of our installer volumes: named after the
+/// brand and holding `<Brand>.app`.
+fn is_our_volume(mp: &Path) -> bool {
+    let brand = env!("BRAND_NAME");
+    mp.file_name()
+        .and_then(|n| n.to_str())
+        .is_some_and(|n| n.starts_with(brand))
+        && mp.join(format!("{brand}.app")).is_dir()
+}
+
+/// Our own installer images that are attached, with their mount points
+/// narrowed to our volumes.
+fn our_attached_images() -> Vec<AttachedImage> {
+    attached_images()
+        .into_iter()
+        .filter_map(|mut image| {
+            image.mount_points.retain(|mp| is_our_volume(mp));
+            (!image.mount_points.is_empty()).then_some(image)
+        })
         .collect()
 }
 
-/// Our own installer images that are mounted: a disk image whose volume is
-/// named after the brand and holds `<Brand>.app`.
+/// Mount points of our installer images.
 fn our_mounted_images() -> Vec<PathBuf> {
-    let brand = env!("BRAND_NAME");
-    image_mount_points()
+    our_attached_images()
         .into_iter()
-        .filter(|mp| {
-            mp.file_name()
-                .and_then(|n| n.to_str())
-                .is_some_and(|n| n.starts_with(brand))
-                && mp.join(format!("{brand}.app")).is_dir()
-        })
+        .flat_map(|image| image.mount_points)
         .collect()
+}
+
+/// The image files remembered on the first launch.
+fn remembered_image_files(app: &AppHandle) -> Vec<PathBuf> {
+    app.store(crate::portable::store_path(STORE_PATH))
+        .ok()
+        .and_then(|s| s.get(IMAGE_FILES))
+        .and_then(|v| serde_json::from_value::<Vec<String>>(v).ok())
+        .unwrap_or_default()
+        .into_iter()
+        .map(PathBuf::from)
+        .collect()
+}
+
+fn remember_image_files(app: &AppHandle, files: &[PathBuf]) {
+    let files: Vec<String> = files
+        .iter()
+        .map(|p| p.to_string_lossy().into_owned())
+        .collect();
+    match app.store(crate::portable::store_path(STORE_PATH)) {
+        Ok(store) => {
+            store.set(IMAGE_FILES, serde_json::json!(files));
+            if let Err(e) = store.save() {
+                log::warn!("installer: couldn't save the image path: {e}");
+            }
+        }
+        Err(e) => log::warn!("installer: couldn't open the store: {e}"),
+    }
+}
+
+/// Only offer to bin a file that is plainly our installer: a `.dmg` named
+/// `<Brand>_…`.
+fn is_our_installer_file(path: &Path, brand: &str) -> bool {
+    path.extension()
+        .is_some_and(|e| e.eq_ignore_ascii_case("dmg"))
+        && path
+            .file_name()
+            .and_then(|n| n.to_str())
+            .is_some_and(|n| n.starts_with(&format!("{brand}_")))
 }
 
 fn eject(mount_point: &Path) {
@@ -136,9 +232,20 @@ pub fn on_launch(app: &AppHandle) -> bool {
     }
     if !flag(app, EJECTED) {
         set_flag(app, EJECTED);
-        std::thread::spawn(|| {
-            for mp in our_mounted_images() {
-                eject(&mp);
+        let handle = app.clone();
+        std::thread::spawn(move || {
+            let images = our_attached_images();
+            let brand = env!("BRAND_NAME");
+            let files: Vec<PathBuf> = images
+                .iter()
+                .filter_map(|image| image.file.clone())
+                .filter(|f| is_our_installer_file(f, brand))
+                .collect();
+            if !files.is_empty() {
+                remember_image_files(&handle, &files);
+            }
+            for mp in images.iter().flat_map(|image| &image.mount_points) {
+                eject(mp);
             }
         });
     }
@@ -232,32 +339,19 @@ fn relaunch_from(app: &AppHandle, dest: &Path) {
 }
 
 /// Setup is done: offer once to put the downloaded installer in the Bin.
+/// Only the image file we were installed from (remembered when it was
+/// ejected) is offered, and nothing in the user's folders is read, listed or
+/// even checked for existence until they say yes: those folders are behind a
+/// macOS privacy prompt.
 pub fn offer_trash_installer(app: &AppHandle) {
     if flag(app, TRASH_ASKED) || launched_from_image().is_some() {
         return;
     }
-    let Ok(downloads) = app.path().download_dir() else {
-        return;
-    };
-    let prefix = format!("{}_", env!("BRAND_NAME"));
-    let dmgs: Vec<PathBuf> = std::fs::read_dir(&downloads)
-        .map(|entries| {
-            entries
-                .flatten()
-                .map(|e| e.path())
-                .filter(|p| {
-                    p.is_file()
-                        && p.extension().is_some_and(|e| e.eq_ignore_ascii_case("dmg"))
-                        && p.file_name()
-                            .and_then(|n| n.to_str())
-                            .is_some_and(|n| n.starts_with(&prefix))
-                })
-                .collect()
-        })
-        .unwrap_or_default();
+    let dmgs = remembered_image_files(app);
     if dmgs.is_empty() {
         return;
     }
+    let prefix = format!("{}_", env!("BRAND_NAME"));
     set_flag(app, TRASH_ASKED);
 
     let s = strings(app);
@@ -280,7 +374,7 @@ pub fn offer_trash_installer(app: &AppHandle) {
         ))
         .show(move |yes| {
             if !yes {
-                log::info!("installer: keeping the installer in Downloads");
+                log::info!("installer: keeping the installer");
                 return;
             }
             // A still-mounted image can't go to the Bin cleanly.
@@ -294,4 +388,59 @@ pub fn offer_trash_installer(app: &AppHandle) {
                 }
             }
         });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const INFO: &str = "framework       : 671.140.2
+driver          : 10.15v671.140.2
+================================================
+image-path      : /Users/sam/Downloads/Ambient_0.1.11_aarch64.dmg
+image-alias     : /Users/sam/Downloads/Ambient_0.1.11_aarch64.dmg
+shadow-path     : <none>
+image-type      : read-only disk image
+/dev/disk4\tGUID_partition_scheme\t
+/dev/disk4s1\tApple_HFS\t/Volumes/Ambient
+================================================
+image-path      : /Users/sam/Desktop/Other Thing.dmg
+/dev/disk5\tFDisk_partition_scheme\t
+/dev/disk5s1\tApple_HFS\t/Volumes/Other Thing 1
+";
+
+    #[test]
+    fn hdiutil_info_gives_each_image_file_and_its_volumes() {
+        let images = parse_hdiutil_info(INFO);
+        assert_eq!(
+            images,
+            vec![
+                AttachedImage {
+                    file: Some(PathBuf::from(
+                        "/Users/sam/Downloads/Ambient_0.1.11_aarch64.dmg"
+                    )),
+                    mount_points: vec![PathBuf::from("/Volumes/Ambient")],
+                },
+                AttachedImage {
+                    file: Some(PathBuf::from("/Users/sam/Desktop/Other Thing.dmg")),
+                    mount_points: vec![PathBuf::from("/Volumes/Other Thing 1")],
+                },
+            ]
+        );
+        assert!(parse_hdiutil_info("framework : 1\n").is_empty());
+    }
+
+    #[test]
+    fn only_our_named_installer_is_offered_for_the_bin() {
+        let ok = Path::new("/Users/sam/Downloads/Ambient_0.1.11_aarch64.dmg");
+        assert!(is_our_installer_file(ok, "Ambient"));
+        assert!(!is_our_installer_file(
+            Path::new("/Users/sam/Downloads/Other.dmg"),
+            "Ambient"
+        ));
+        assert!(!is_our_installer_file(
+            Path::new("/Users/sam/Downloads/Ambient_notes.pdf"),
+            "Ambient"
+        ));
+    }
 }

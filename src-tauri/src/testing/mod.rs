@@ -67,6 +67,8 @@ pub struct Focus {
     /// Caret position in characters of `value`.
     pub caret: Option<usize>,
     pub selection: Option<String>,
+    /// The field's text is fixed-width (a code editor or terminal).
+    pub monospace: bool,
 }
 
 /// The window in front, as the platform reader would report it.
@@ -350,6 +352,23 @@ pub fn focused_field(read_text: bool) -> Option<crate::context::field::FocusedFi
             .caret
             .or_else(|| f.value.as_deref().map(|v| v.chars().count())),
         sel_len,
+    })
+}
+
+/// What's right before the caret: the scenario field's text up to its
+/// caret (the end when unset). None when no field has focus or the field's
+/// text isn't given.
+pub fn caret_context(max_chars: usize) -> Option<crate::context::field::CaretContext> {
+    let f = &scenario()?.screen.as_ref()?.focus;
+    if !f.editable || f.secure {
+        return None;
+    }
+    let value = f.value.as_deref()?;
+    let caret = f.caret.unwrap_or_else(|| value.chars().count());
+    let before: String = value.chars().take(caret).collect();
+    Some(crate::context::field::CaretContext {
+        before: crate::context::field::last_chars(&before, max_chars),
+        monospace: f.monospace,
     })
 }
 
