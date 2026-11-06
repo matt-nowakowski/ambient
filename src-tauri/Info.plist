@@ -12,5 +12,10 @@
   <string>Ambient creates reminders when you ask it to, like “remind me at 5 to call Sam”.</string>
   <key>NSRemindersUsageDescription</key>
   <string>Ambient creates reminders when you ask it to.</string>
+  <!-- Ambient mostly runs from the menu bar with its window closed. Without
+       this, App Nap throttles the background loop that notices moments for
+       suggestions, meetings and hands-free, so they arrive late or not at all. -->
+  <key>NSAppSleepDisabled</key>
+  <true/>
 </dict>
 </plist>
