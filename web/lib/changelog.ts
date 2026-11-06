@@ -11,6 +11,31 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.20",
+    date: "2026-11-06",
+    title: "Tidier, and clearer about what it reads",
+    summary:
+      "Copy any part of a card, tidier pages with smoother motion, and if you're upgrading, a short note on what Ambient reads now.",
+    sections: [
+      {
+        heading: "Improved",
+        items: [
+          "Select any text on a card to copy just that part.",
+          "Reading the window you're in and suggestions are now on for everyone, including people upgrading. Home shows a one-time note saying so, with a button to Privacy if you'd rather turn them off. Turning them off sticks, and replaying the tour no longer turns them back on.",
+          "Privacy, Settings, Meetings and Account have more room to breathe, buttons no longer wrap, and sections open and close smoothly.",
+        ],
+      },
+      {
+        heading: "Fixed",
+        items: [
+          "Commands you dictate at a shell prompt, like \"echo tell her I'll be late\", are typed as you said them.",
+          "A sentence that happens to start with \"never mind\" is typed instead of closing a card, and \"never mind\" with no card up is typed rather than ignored.",
+          "Cards finish dissolving before they close.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.19",
     date: "2026-11-06",
     title: "Sees what you see",
