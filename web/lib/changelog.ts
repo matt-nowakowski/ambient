@@ -11,6 +11,25 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.19",
+    date: "2026-11-06",
+    title: "Sees what you see",
+    summary:
+      "Ambient now reads the window you're in from the start, so it understands requests like \"tell Claude to wait\" right where you are.",
+    sections: [
+      {
+        heading: "Improved",
+        items: [
+          "Reading the screen and suggestions are on from the start, so Ambient understands what you say with the window you say it in. You can turn either off in Privacy.",
+          "\"Say that Claude should wait\" in a terminal, or a message to any AI, is written for you and typed there, not typed word for word.",
+          "\"Close that\" with one of Ambient's cards up closes the card, in any language.",
+          "Cards now dissolve when they go, instead of just closing.",
+          "A tidier on-device AI section in Privacy, and the \"Never watch this app\" button no longer wraps.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.18",
     date: "2026-11-06",
     title: "It reads the moment",
