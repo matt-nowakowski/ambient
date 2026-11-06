@@ -201,6 +201,11 @@ pub fn activate(path: &Path) -> PathBuf {
 fn settings_for(patch: &Value) -> Result<crate::settings::AppSettings, String> {
     let mut base =
         serde_json::to_value(crate::settings::get_default_settings()).map_err(|e| e.to_string())?;
+    // A scenario is someone past setup (setup's Try it types plain words).
+    merge(
+        &mut base,
+        &serde_json::json!({ "onboarding_completed": true }),
+    );
     merge(&mut base, patch);
     serde_json::from_value(base).map_err(|e| e.to_string())
 }
@@ -385,6 +390,8 @@ mod tests {
         // Untouched fields keep their defaults.
         let d = crate::settings::get_default_settings();
         assert_eq!(s.agent.routing, d.agent.routing);
+        // Past setup, so dictation isn't held to setup's plain Try it.
+        assert!(s.onboarding_completed);
     }
 
     #[test]

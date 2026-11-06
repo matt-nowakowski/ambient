@@ -1030,7 +1030,10 @@ pub(crate) async fn process_dictation_output(
     let reminder =
         crate::agent::when::reminder_request(transcription, crate::agent::when::local_now());
     let report = crate::agent::report::report_intent(transcription);
-    let agent_on = mode == OutputMode::Dictation && settings.agent.routing;
+    // Not in setup's Try it, which shows plain dictation (see
+    // `WritePlan::for_dictation`).
+    let agent_on =
+        mode == OutputMode::Dictation && settings.agent.routing && settings.onboarding_completed;
     let cued = ask
         || (agent_on
             && (router::looks_like_request(transcription)
