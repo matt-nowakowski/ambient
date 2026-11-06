@@ -357,6 +357,78 @@ fn should_force_show_permissions_window(app: &AppHandle) -> bool {
     false
 }
 
+/// Whether a launch can turn on the shortcuts and paste by itself: onboarding
+/// is done, the input permission is there (Accessibility on macOS), the
+/// selected model isn't a retired one waiting to be replaced, and no
+/// permissions screen is about to take over. Otherwise the window's own flow
+/// turns them on once the user is through it.
+fn input_ready_at_startup(
+    onboarding_completed: bool,
+    input_permission: bool,
+    selected_model_retired: bool,
+    permissions_window: bool,
+) -> bool {
+    onboarding_completed && input_permission && !selected_model_retired && !permissions_window
+}
+
+/// Shortcuts and paste for a returning user, from Rust at launch. They used
+/// to wait for the main window's interface to call `initialize_shortcuts`,
+/// which a window that starts hidden (login item, `--start-hidden`) may run
+/// late or not at all while macOS, WebView2 or WebKitGTK hold its page back.
+/// Both commands are idempotent, so the interface calling them again later
+/// is harmless.
+fn init_input_at_startup(app: &AppHandle, permissions_window: bool) {
+    let settings = settings::get_settings(app);
+    #[cfg(target_os = "macos")]
+    let input_permission = context::accessibility_trusted();
+    #[cfg(not(target_os = "macos"))]
+    let input_permission = true;
+    let selected_model_retired = app
+        .state::<Arc<ModelManager>>()
+        .get_retired_models()
+        .iter()
+        .any(|m| m.id == settings.selected_model);
+    if !input_ready_at_startup(
+        settings.onboarding_completed,
+        input_permission,
+        selected_model_retired,
+        permissions_window,
+    ) {
+        log::info!(
+            "shortcuts wait for the window (onboarding done: {}, permission: {}, retired model: {}, permissions screen: {})",
+            settings.onboarding_completed,
+            input_permission,
+            selected_model_retired,
+            permissions_window
+        );
+        return;
+    }
+    if let Err(e) = commands::initialize_enigo(app.clone()) {
+        log::warn!("paste not ready at launch: {e}");
+    }
+    if let Err(e) = commands::initialize_shortcuts(app.clone()) {
+        log::warn!("shortcuts not ready at launch: {e}");
+    }
+}
+
+#[cfg(test)]
+mod input_at_startup_tests {
+    use super::input_ready_at_startup;
+
+    #[test]
+    fn a_returning_user_gets_shortcuts_without_the_window() {
+        assert!(input_ready_at_startup(true, true, false, false));
+    }
+
+    #[test]
+    fn onboarding_permissions_and_model_updates_keep_the_window_in_charge() {
+        assert!(!input_ready_at_startup(false, true, false, false));
+        assert!(!input_ready_at_startup(true, false, false, false));
+        assert!(!input_ready_at_startup(true, true, true, false));
+        assert!(!input_ready_at_startup(true, true, false, true));
+    }
+}
+
 fn initialize_core_logic(app_handle: &AppHandle) {
     // Start the trial on first launch, and keep the account and Pro token fresh.
     plan::spawn_refresh_task(app_handle.clone());
@@ -364,10 +436,9 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     // The downloaded on-device model (started on demand, stopped when idle).
     local_llm::init(app_handle);
 
-    // Note: Enigo (keyboard/mouse simulation) is NOT initialized here.
-    // The frontend is responsible for calling the `initialize_enigo` command
-    // after onboarding completes. This avoids triggering permission dialogs
-    // on macOS before the user is ready.
+    // Note: Enigo (keyboard/mouse simulation) is NOT initialized here. A
+    // returning user gets it from `init_input_at_startup`; a new one from
+    // onboarding, after permissions, so no permission dialog shows early.
 
     // Initialize the managers. The audio recorder receives the streaming router
     // explicitly, so always-on microphone startup can wire live-preview frames
@@ -408,10 +479,9 @@ fn initialize_core_logic(app_handle: &AppHandle) {
     app_handle.manage(updates::UpdateManager::new());
     app_handle.manage(TranscriptionJobManager::new(app_handle));
 
-    // Note: Shortcuts are NOT initialized here.
-    // The frontend is responsible for calling the `initialize_shortcuts` command
-    // after permissions are confirmed (on macOS) or after onboarding completes.
-    // This matches the pattern used for Enigo initialization.
+    // Note: Shortcuts are NOT initialized here: `init_input_at_startup` turns
+    // them on (with Enigo) for a returning user once setup has the rest ready;
+    // onboarding turns them on from the interface after permissions.
 
     // Set up signal handlers for toggling transcription. On Linux, SIGUSR1 is
     // deliberately not handled — it belongs to WebKitGTK's garbage collector
@@ -1366,6 +1436,12 @@ pub fn run(cli_args: CliArgs) {
             // Other dictation apps that may share Ambient's shortcut.
             dictation_apps::init(&app_handle);
 
+            let should_force_show = should_force_show_permissions_window(&app_handle);
+
+            // A returning user's shortcuts and paste work from here, with the
+            // window closed: the window's own startup check is only a backup.
+            init_input_at_startup(&app_handle, should_force_show);
+
             // Populate the overlay-enabled cache from initial settings so the
             // audio path (overlay::emit_levels, called ~24 Hz during recording)
             // can do a single atomic load instead of reading the Tauri store.
@@ -1399,7 +1475,6 @@ pub fn run(cli_args: CliArgs) {
             // CLI --start-hidden flag overrides the setting.
             // But if permission onboarding is required, always show the window.
             let should_hide = settings.start_hidden || cli_args.start_hidden;
-            let should_force_show = should_force_show_permissions_window(&app_handle);
 
             // If start_hidden but tray is disabled, we must show the window
             // anyway. Without a tray icon, the dock is the only way back in.
