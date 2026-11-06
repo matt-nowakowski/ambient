@@ -39,12 +39,13 @@ export default function ActionsPage() {
       <DocSection id="what-it-wont-do" title="What it won’t do yet">
         <p>
           Acting inside other apps, like filing a ticket in Linear, is computer use. It’s coming soon. Until then,{" "}
-          {brand.name} says so and does nothing.
+          {brand.name} says so and offers to show you how to do it yourself. On a private page, like your bank, it
+          doesn’t act at all.
         </p>
         <Callout title="On Windows and Linux">
-          Reminders are scheduled notifications, with Undo. If notifications are off, or Linux has no systemd user
+          Reminders are scheduled notifications, with Undo, so they need a time. If notifications are off, or Linux has no systemd user
           session, it says so and offers to add it to your calendar instead. Events open as an .ics file in your calendar
-          app, so they have no Undo. On Linux, “run my … shortcut” runs your own script from{" "}
+          app (or are saved to Downloads if there isn’t one), so they have no Undo. On Linux, “run my … shortcut” runs your own script from{" "}
           <C>{`~/.local/share/${brand.slug}/actions/`}</C> or opens an app of that name (see{" "}
           <Link href="/docs/linux#files-calendar-actions" className="text-foreground underline underline-offset-4">
             Linux setup

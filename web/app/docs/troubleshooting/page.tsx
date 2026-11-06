@@ -96,7 +96,7 @@ export default function TroubleshootingPage() {
           <li>On macOS, check the Accessibility permission above.</li>
           <li>
             Some apps (terminals, remote desktops, games) ignore the default paste shortcut. Try a different paste
-            method in {brand.name} → Settings.
+            method in {brand.name} → Settings → Advanced.
           </li>
           <li>The transcript is also kept in History, so you can copy it from there.</li>
           <li>

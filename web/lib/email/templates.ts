@@ -388,7 +388,7 @@ export function winBack(d: MarketingData): Rendered {
         items: [
           { icon: "ask", k: "No weekly limits", v: "Answers, actions, suggestions and smart writing, as often as you like (fair use)." },
           { icon: "wave", k: "Unlimited meeting notes", v: "Any call, no bot. Summary, decisions, action items and a follow-up email." },
-          { icon: "sparkle", k: "Longer recall", v: "Screen memory for 7 days by default, up to 90, and cloud suggestions if you choose." },
+          { icon: "sparkle", k: "Longer recall", v: "Screen memory for 7 days by default, up to 30, and cloud suggestions if you choose." },
         ],
       },
       { t: "button", href: url("/pricing"), label: "See Pro" },
@@ -537,7 +537,7 @@ export function tipSuggestions(d: MarketingData): Rendered {
         t: "steps",
         title: "Turn it on",
         items: [
-          ["Open ", { b: brand.name }, " and go to ", { b: "Settings › Privacy" }, "."],
+          ["Open ", { b: brand.name }, " and go to ", { b: "Privacy" }, "."],
           ["Switch on ", { b: "Offer suggestions" }, "."],
           ["Carry on working. The first one shows up when it’s useful."],
         ],
@@ -595,7 +595,7 @@ export function tipRecall(d: MarketingData): Rendered {
         t: "callout",
         icon: "shield",
         k: "Screen memory, if you want it",
-        v: "Switch on “Remember what you’ve seen” in Settings › Privacy and it can recall what was on screen too, saved as text and encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro, up to 90.",
+        v: "Switch on “Remember what you’ve seen” in Privacy and it can recall what was on screen too, saved as text and encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro, up to 30.",
       },
       { t: "button", href: url("/docs/recall"), label: "Where it looks" },
       { t: "sign" },

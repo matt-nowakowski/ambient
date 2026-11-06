@@ -138,7 +138,7 @@ export const nothingToConnect = {
   sources: [
     { k: "Your screen", v: "The text of the window in front of you." },
     { k: "Your open windows", v: "Every app you have open, read when you ask." },
-    { k: "Spotlight", v: "Your files: Spotlight on a Mac (Mail and notes too), Windows Search, or Tracker on Linux." },
+    { k: "Spotlight", v: "Your files: Spotlight on a Mac (documents and Mail), Windows Search, or Tracker on Linux." },
     { k: "Calendar and Reminders", v: "Your own: Calendar and Reminders on a Mac; Outlook and notifications on Windows; GNOME Calendar and notifications on Linux." },
     { k: "Your Shortcuts", v: "Run by name: Shortcuts on a Mac, Start menu shortcuts or Power Automate flows on Windows, your scripts on Linux." },
     { k: "Your browser", v: "Drive and Gmail searches open in the browser you’re already signed in to." },
@@ -208,7 +208,7 @@ export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">
     { say: "Open nytimes.com.", then: "Opens the site in your default browser." },
     { say: "Search for flights to Lisbon in March.", then: "Opens the search in your browser, so you see the results yourself." },
     { say: "Run my standup shortcut.", then: "Runs your shortcut with that name: Shortcuts on a Mac, a Start menu shortcut or Power Automate flow on Windows, a script on Linux." },
-    { say: "Open Linear and file a ticket for the login bug.", then: "Not yet. It tells you computer use is coming soon and does nothing." },
+    { say: "Open Linear and file a ticket for the login bug.", then: "Not yet. It says so and offers to show you how to do it yourself." },
   ],
   recall: [
     { say: "What did I say about pricing yesterday?", then: "Answers from your dictation history, with when you said it." },

@@ -5,7 +5,7 @@ import { guideMetadata, guidePage, trySaying } from "@/lib/guide";
 export const metadata = guideMetadata("meetings");
 
 const nudges = [
-  { k: "They asked you something", v: "Find it: looks for the answer in your files, or on the web." },
+  { k: "They asked you something, or a fact came up", v: "Find it: looks for it in your files, or on the web." },
   { k: "You promised something", v: "Remind me: adds a reminder so you follow through." },
   { k: "A question worth asking", v: "Copy: puts it on the clipboard to paste into the chat." },
 ] as const;
@@ -15,7 +15,7 @@ const after = [
   { k: "Decisions", v: "What was agreed." },
   { k: "Action items", v: "Who does what, and by when." },
   { k: "Questions for you", v: "What they asked that still needs an answer." },
-  { k: "Follow-up email", v: "A draft, ready to copy and send." },
+  { k: "Follow-up email", v: "Click Draft follow-up for one, ready to copy and send." },
 ] as const;
 
 export default function MeetingsPage() {
@@ -28,10 +28,13 @@ export default function MeetingsPage() {
 
       <DocSection id="start" title="Start notes">
         <p>
-          Click <strong>Start notes</strong> in {brand.name} → Meetings. Or turn on meeting suggestions: when a call app
-          is open and your microphone is in use, it asks “Take notes for this call?”
+          Click <strong>Start now</strong> in {brand.name} → Meetings. Or turn on call detection there: when a call app is
+          in front and it’s using your microphone, {brand.name} asks “Take notes for this call?”
         </p>
-        <p>Works with Zoom, Google Meet, Microsoft Teams, FaceTime and Slack huddles. If it plays on your computer, it works.</p>
+        <p>
+          It notices Zoom, Microsoft Teams, FaceTime, Slack, Discord and Webex, and Google Meet, Teams or Zoom in a
+          browser. Notes work with any call: if it plays on your computer, it works.
+        </p>
       </DocSection>
 
       <DocSection id="during-the-call" title="During the call">
@@ -45,8 +48,8 @@ export default function MeetingsPage() {
 
       <DocSection id="after-the-call" title="After the call">
         <p>
-          Click Stop and summarise. When the call ends, a card says your notes are ready: open them, copy them, or, signed
-          in, click <strong>Email to me</strong>.
+          When the call ends, click <strong>Stop and summarise</strong>. A card says your notes are ready: open them, copy
+          them, or, signed in, click <strong>Email to me</strong> (or have them emailed after every call).
         </p>
         <DocRows items={after} />
       </DocSection>
