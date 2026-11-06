@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "brand": "node scripts/sync-brand.mjs",
     "predev": "node scripts/sync-brand.mjs",

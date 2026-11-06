@@ -1,0 +1,45 @@
+# Licence policy for the app's Rust dependencies: permissive licences only.
+# CI runs `cargo deny check licenses` (code-quality.yml); run it locally from
+# src-tauri/ after adding a crate.
+
+[graph]
+all-features = false
+
+[licenses]
+# Every licence a dependency may use. Anything else (GPL, AGPL, LGPL, SSPL,
+# unlicensed crates) fails the check.
+allow = [
+  "MIT",
+  "MIT-0",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "Zlib",
+  "0BSD",
+  "MPL-2.0",
+  "Unicode-3.0",
+  "Unicode-DFS-2016",
+  "CC0-1.0",
+  "OFL-1.1",
+  "BSL-1.0",
+  "Unlicense",
+  "CDLA-Permissive-2.0",
+]
+confidence-threshold = 0.9
+# The list is a policy, not an inventory: allowing a licence no crate uses yet
+# (OFL for a font crate, say) is fine.
+unused-allowed-license = "allow"
+
+# tauri-nspanel's manifest has no licence field; its repo ships LICENSE_MIT
+# and LICENSE_APACHE-2.0 (Copyright (c) 2023 - Present Victor Aremu).
+[[licenses.clarify]]
+crate = "tauri-nspanel"
+expression = "MIT OR Apache-2.0"
+license-files = []
+
+[licenses.private]
+# The app crate (publish = false) is ours and under LICENSE; the vendored
+# crates in vendor/ declare MIT or Apache-2.0 and are checked like any other.
+ignore = true
