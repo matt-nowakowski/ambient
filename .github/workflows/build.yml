@@ -932,7 +932,19 @@ jobs:
               throw "Silent portable install failed for $($pkg.FullName) with exit code $($proc.ExitCode)"
             }
             Assert-PackageContents -Root $installDir -Label "Installed NSIS"
-            Remove-Item -Recurse -Force $installDir
+            # The check above starts ambient.exe; Windows (or Defender) can hold
+            # the file for a moment after it exits. Retry, and never fail the
+            # build over cleaning a temp folder.
+            for ($i = 0; $i -lt 10; $i++) {
+              try { Remove-Item -Recurse -Force $installDir -ErrorAction Stop; break }
+              catch {
+                if ($i -eq 9) { Write-Warning "Couldn't remove ${installDir}: $_" }
+                else {
+                  Get-Process ambient -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+                  Start-Sleep -Seconds 2
+                }
+              }
+            }
           }
 
           # Administrative install extracts the MSI payload without elevation.
@@ -954,7 +966,19 @@ jobs:
               throw "Administrative install failed for $($pkg.FullName) with exit code $($proc.ExitCode)"
             }
             Assert-PackageContents -Root $installDir -Label "Installed MSI"
-            Remove-Item -Recurse -Force $installDir
+            # The check above starts ambient.exe; Windows (or Defender) can hold
+            # the file for a moment after it exits. Retry, and never fail the
+            # build over cleaning a temp folder.
+            for ($i = 0; $i -lt 10; $i++) {
+              try { Remove-Item -Recurse -Force $installDir -ErrorAction Stop; break }
+              catch {
+                if ($i -eq 9) { Write-Warning "Couldn't remove ${installDir}: $_" }
+                else {
+                  Get-Process ambient -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+                  Start-Sleep -Seconds 2
+                }
+              }
+            }
           }
 
       - name: Upload artifacts (Windows)
