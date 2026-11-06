@@ -1332,6 +1332,12 @@
       "off": "Not reading your screen.",
       "on": "Allowed: {{list}}",
       "paused": "Paused. Nothing is being read."
+    },
+    "screenNotice": {
+      "title": "{{appName}} now reads the window you're in",
+      "body": "So it understands what you mean. Secrets are removed first, and private pages are never read. Suggestions are on too. Turn either off in Privacy.",
+      "open": "Open Privacy",
+      "dismiss": "Got it"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Couldn't copy the command",
     "capabilities": {
       "title": "What {{appName}} may do",
-      "description": "Each is off until you turn it on.",
+      "description": "Reading the window you're in and suggestions are on from the start. The rest stay off until you turn them on.",
       "screen_context": {
         "title": "Read what you ask about",
         "reads": "Reads the window you ask about, and your open windows when you ask it to find something.",

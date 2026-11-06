@@ -1348,6 +1348,12 @@
       "off": "Obrazovka se nečte.",
       "on": "Povoleno: {{list}}",
       "paused": "Pozastaveno. Nic se nečte."
+    },
+    "screenNotice": {
+      "title": "{{appName}} teď čte okno, ve kterém jste",
+      "body": "Aby rozuměl, co myslíte. Tajné údaje se nejdřív odstraní a soukromé stránky se nikdy nečtou. Návrhy jsou také zapnuté. Obojí můžete vypnout v Soukromí.",
+      "open": "Otevřít Soukromí",
+      "dismiss": "Rozumím"
     }
   },
   "hud": {
@@ -1607,7 +1613,7 @@
     "commandCopyFailed": "Příkaz se nepodařilo zkopírovat",
     "capabilities": {
       "title": "Co smí {{appName}} dělat",
-      "description": "Každá funkce je vypnutá, dokud ji nezapnete.",
+      "description": "Čtení okna, ve kterém jste, a návrhy jsou zapnuté od začátku. Ostatní zůstávají vypnuté, dokud je nezapnete.",
       "screen_context": {
         "title": "Číst to, na co se ptáte",
         "reads": "Čte okno, na které se ptáte, a otevřená okna, když ho požádáte, ať něco najde.",

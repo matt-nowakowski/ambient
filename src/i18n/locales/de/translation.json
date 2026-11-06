@@ -1327,6 +1327,12 @@
       "off": "Liest deinen Bildschirm nicht.",
       "on": "Erlaubt: {{list}}",
       "paused": "Pausiert. Es wird nichts gelesen."
+    },
+    "screenNotice": {
+      "title": "{{appName}} liest jetzt das Fenster, in dem du bist",
+      "body": "Damit es versteht, was du meinst. Geheimes wird vorher entfernt, und private Seiten werden nie gelesen. Vorschläge sind auch an. Beides lässt sich unter Datenschutz ausschalten.",
+      "open": "Datenschutz öffnen",
+      "dismiss": "Verstanden"
     }
   },
   "hud": {
@@ -1586,7 +1592,7 @@
     "commandCopyFailed": "Befehl konnte nicht kopiert werden",
     "capabilities": {
       "title": "Was {{appName}} darf",
-      "description": "Alles bleibt aus, bis du es einschaltest.",
+      "description": "Das Lesen des Fensters, in dem du bist, und Vorschläge sind von Anfang an an. Der Rest bleibt aus, bis du ihn einschaltest.",
       "screen_context": {
         "title": "Lesen, wonach du fragst",
         "reads": "Liest das Fenster, nach dem du fragst, und deine offenen Fenster, wenn du etwas suchen lässt.",

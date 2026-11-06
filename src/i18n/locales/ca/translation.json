@@ -1340,6 +1340,12 @@
       "off": "No s'està llegint la pantalla.",
       "on": "Permès: {{list}}",
       "paused": "En pausa. No s'està llegint res."
+    },
+    "screenNotice": {
+      "title": "Ara {{appName}} llegeix la finestra on sou",
+      "body": "Perquè entengui què voleu dir. Primer s'eliminen les dades secretes i mai no es llegeixen pàgines privades. Els suggeriments també estan activats. Podeu desactivar-los a Privadesa.",
+      "open": "Obre Privadesa",
+      "dismiss": "Entesos"
     }
   },
   "hud": {
@@ -1599,7 +1605,7 @@
     "commandCopyFailed": "No s'ha pogut copiar l'ordre",
     "capabilities": {
       "title": "Què pot fer el {{appName}}",
-      "description": "Cadascuna està desactivada fins que l'activeu.",
+      "description": "La lectura de la finestra on sou i els suggeriments estan activats des del principi. La resta continuen desactivats fins que els activeu.",
       "screen_context": {
         "title": "Llegir el que pregunteu",
         "reads": "Llegeix la finestra sobre la qual pregunteu, i les finestres obertes quan li demaneu que trobi alguna cosa.",

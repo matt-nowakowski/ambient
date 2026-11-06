@@ -1335,6 +1335,12 @@
       "off": "Votre écran n’est pas lu.",
       "on": "Autorisé : {{list}}",
       "paused": "En pause. Rien n’est lu."
+    },
+    "screenNotice": {
+      "title": "{{appName}} lit désormais la fenêtre où vous êtes",
+      "body": "Pour comprendre ce que vous voulez dire. Les données secrètes sont retirées d’abord, et les pages privées ne sont jamais lues. Les suggestions sont aussi activées. Désactivez l’un ou l’autre dans Confidentialité.",
+      "open": "Ouvrir Confidentialité",
+      "dismiss": "Compris"
     }
   },
   "hud": {
@@ -1594,7 +1600,7 @@
     "commandCopyFailed": "Impossible de copier la commande",
     "capabilities": {
       "title": "Ce que {{appName}} peut faire",
-      "description": "Chaque option reste désactivée jusqu’à ce que vous l’activiez.",
+      "description": "La lecture de la fenêtre où vous êtes et les suggestions sont activées dès le départ. Le reste reste désactivé jusqu’à ce que vous l’activiez.",
       "screen_context": {
         "title": "Lire ce que vous demandez",
         "reads": "Lit la fenêtre concernée, et vos fenêtres ouvertes quand vous lui demandez de trouver quelque chose.",

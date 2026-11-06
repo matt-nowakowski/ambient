@@ -1332,6 +1332,12 @@
       "off": "Læser ikke din skærm.",
       "on": "Tilladt: {{list}}",
       "paused": "Sat på pause. Intet læses."
+    },
+    "screenNotice": {
+      "title": "{{appName}} læser nu det vindue, du er i",
+      "body": "Så den forstår, hvad du mener. Hemmeligheder fjernes først, og private sider læses aldrig. Forslag er også slået til. Slå dem fra under Privatliv.",
+      "open": "Åbn Privatliv",
+      "dismiss": "Forstået"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Kunne ikke kopiere kommandoen",
     "capabilities": {
       "title": "Hvad {{appName}} må",
-      "description": "Alt er slået fra, indtil du slår det til.",
+      "description": "Læsning af det vindue, du er i, og forslag er slået til fra start. Resten er slået fra, indtil du slår dem til.",
       "screen_context": {
         "title": "Læs det, du spørger om",
         "reads": "Læser det vindue, du spørger om, og dine åbne vinduer, når du beder den finde noget.",

@@ -1630,7 +1630,13 @@ suggestion_prefs: Partial<{ [key in string]: SuggestionPref }>;
  * process name): it writes and polishes less where it was reverted.
  * Shown in the Privacy Center with Undo.
  */
-writing_prefs: Partial<{ [key in string]: WritingPref }> }
+writing_prefs: Partial<{ [key in string]: WritingPref }>; 
+/**
+ * The one-time note on Home that screen reading and suggestions were
+ * turned on by an upgrade, with the way to turn them off. Set by the
+ * schema 4 migration, cleared when it's dismissed; it never comes back.
+ */
+screen_notice: boolean }
 export type AgentStatus = { settings: AgentSettings; 
 /**
  * Accessibility permission (needed to read any window).

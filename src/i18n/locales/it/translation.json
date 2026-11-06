@@ -1340,6 +1340,12 @@
       "off": "Lo schermo non viene letto.",
       "on": "Consentito: {{list}}",
       "paused": "In pausa. Non viene letto nulla."
+    },
+    "screenNotice": {
+      "title": "{{appName}} ora legge la finestra in cui ti trovi",
+      "body": "Per capire cosa intendi. I dati segreti vengono rimossi prima e le pagine private non vengono mai lette. Anche i suggerimenti sono attivi. Puoi disattivarli in Privacy.",
+      "open": "Apri Privacy",
+      "dismiss": "Ho capito"
     }
   },
   "hud": {
@@ -1599,7 +1605,7 @@
     "commandCopyFailed": "Impossibile copiare il comando",
     "capabilities": {
       "title": "Cosa può fare {{appName}}",
-      "description": "Ognuna resta disattivata finché non la attivi.",
+      "description": "La lettura della finestra in cui ti trovi e i suggerimenti sono attivi fin dall'inizio. Il resto resta disattivato finché non lo attivi.",
       "screen_context": {
         "title": "Leggi ciò di cui chiedi",
         "reads": "Legge la finestra di cui chiedi, e le finestre aperte quando gli chiedi di trovare qualcosa.",

@@ -1332,6 +1332,12 @@
       "off": "Läser inte din skärm.",
       "on": "Tillåtet: {{list}}",
       "paused": "Pausad. Inget läses."
+    },
+    "screenNotice": {
+      "title": "{{appName}} läser nu fönstret du är i",
+      "body": "Så att den förstår vad du menar. Hemligheter tas bort först, och privata sidor läses aldrig. Förslag är också på. Stäng av dem under Integritet.",
+      "open": "Öppna Integritet",
+      "dismiss": "Uppfattat"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Kunde inte kopiera kommandot",
     "capabilities": {
       "title": "Vad {{appName}} får göra",
-      "description": "Allt är avstängt tills du slår på det.",
+      "description": "Att läsa fönstret du är i och förslag är på från början. Resten är avstängt tills du slår på det.",
       "screen_context": {
         "title": "Läs det du frågar om",
         "reads": "Läser fönstret du frågar om, och dina öppna fönster när du ber den hitta något.",

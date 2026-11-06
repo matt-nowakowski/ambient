@@ -57,6 +57,9 @@ pub fn set_agent_settings(app: AppHandle, agent: AgentSettings) -> Result<(), St
         // Owned by the model commands (saved once a download completes): a
         // page holding older settings mustn't undo it.
         on_device_model_id: s.agent.on_device_model_id.clone(),
+        // The upgrade note only ever goes away: a page holding older
+        // settings mustn't bring it back.
+        screen_notice: s.agent.screen_notice && agent.screen_notice,
         ..agent
     };
     // The legacy flag follows the Intelligence choice (older builds read it).

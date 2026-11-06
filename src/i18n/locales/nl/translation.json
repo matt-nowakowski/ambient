@@ -1332,6 +1332,12 @@
       "off": "Je scherm wordt niet gelezen.",
       "on": "Toegestaan: {{list}}",
       "paused": "Gepauzeerd. Er wordt niets gelezen."
+    },
+    "screenNotice": {
+      "title": "{{appName}} leest nu het venster waarin je zit",
+      "body": "Zodat het begrijpt wat je bedoelt. Geheimen worden eerst verwijderd en privépagina's worden nooit gelezen. Suggesties staan ook aan. Zet ze uit bij Privacy.",
+      "open": "Privacy openen",
+      "dismiss": "Begrepen"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Kon de opdracht niet kopiëren",
     "capabilities": {
       "title": "Wat {{appName}} mag doen",
-      "description": "Alles staat uit tot je het aanzet.",
+      "description": "Het venster lezen waarin je zit en suggesties staan vanaf het begin aan. De rest staat uit tot je het aanzet.",
       "screen_context": {
         "title": "Lezen waar je naar vraagt",
         "reads": "Leest het venster waar je naar vraagt, en je open vensters als je iets laat zoeken.",

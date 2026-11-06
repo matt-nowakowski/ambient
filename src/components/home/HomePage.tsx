@@ -18,6 +18,7 @@ import { pickAndTranscribeFiles } from "../settings/history/transcribeFiles";
 import { usePlan } from "../account/usePlan";
 import { PlanSummary } from "../account/PlanSummary";
 import { PrivacySummary } from "./PrivacySummary";
+import { ScreenNotice } from "./ScreenNotice";
 import { GetStartedCard } from "../getstarted/GetStartedCard";
 import { Keycaps } from "../shared/Keycaps";
 import { EmptyState } from "../ui/EmptyState";
@@ -146,6 +147,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <Stagger className="mx-auto flex w-full max-w-3xl flex-col gap-grid">
+      <ScreenNotice onOpenPrivacy={onOpenPrivacy} />
       <StaggerItem>
         <GetStartedCard onOpenPrivacy={onOpenPrivacy} />
       </StaggerItem>

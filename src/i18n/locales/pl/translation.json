@@ -1343,6 +1343,12 @@
       "off": "Ekran nie jest odczytywany.",
       "on": "Dozwolone: {{list}}",
       "paused": "Wstrzymano. Nic nie jest odczytywane."
+    },
+    "screenNotice": {
+      "title": "{{appName}} czyta teraz okno, w którym jesteś",
+      "body": "Żeby rozumieć, o co ci chodzi. Poufne dane są najpierw usuwane, a prywatne strony nigdy nie są czytane. Sugestie też są włączone. Każde z nich wyłączysz w Prywatności.",
+      "open": "Otwórz Prywatność",
+      "dismiss": "Rozumiem"
     }
   },
   "hud": {
@@ -1602,7 +1608,7 @@
     "commandCopyFailed": "Nie udało się skopiować polecenia",
     "capabilities": {
       "title": "Co może robić {{appName}}",
-      "description": "Każda funkcja jest wyłączona, dopóki jej nie włączysz.",
+      "description": "Czytanie okna, w którym jesteś, i sugestie są włączone od początku. Pozostałe funkcje są wyłączone, dopóki ich nie włączysz.",
       "screen_context": {
         "title": "Czytaj to, o co pytasz",
         "reads": "Odczytuje okno, o które pytasz, oraz otwarte okna, gdy prosisz o znalezienie czegoś.",

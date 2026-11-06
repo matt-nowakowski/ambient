@@ -1335,6 +1335,12 @@
       "off": "No se está leyendo tu pantalla.",
       "on": "Permitido: {{list}}",
       "paused": "En pausa. No se está leyendo nada."
+    },
+    "screenNotice": {
+      "title": "{{appName}} ahora lee la ventana en la que estás",
+      "body": "Para entender lo que quieres decir. Primero se quitan los datos secretos y nunca lee páginas privadas. Las sugerencias también están activadas. Desactiva cualquiera de las dos en Privacidad.",
+      "open": "Abrir Privacidad",
+      "dismiss": "Entendido"
     }
   },
   "hud": {
@@ -1594,7 +1600,7 @@
     "commandCopyFailed": "No se pudo copiar el comando",
     "capabilities": {
       "title": "Qué puede hacer {{appName}}",
-      "description": "Todo está desactivado hasta que lo actives.",
+      "description": "La lectura de la ventana en la que estás y las sugerencias están activadas desde el principio. Lo demás sigue desactivado hasta que lo actives.",
       "screen_context": {
         "title": "Leer lo que preguntas",
         "reads": "Lee la ventana sobre la que preguntas, y tus ventanas abiertas cuando le pides que busque algo.",

@@ -573,7 +573,8 @@ pub struct AppSettings {
     #[serde(default)]
     pub intro_seen: bool,
     /// The ambient agent (Pro): routing, screen context, memory, privacy.
-    /// Everything that reads the screen is off until the user opts in.
+    /// Screen context and suggestions are on by default (off in the Privacy
+    /// Center); screen memory stays off until the user opts in.
     #[serde(default)]
     pub agent: AgentSettings,
     /// Opt-in anonymous usage counts (telemetry.rs). Off until the user
@@ -722,6 +723,10 @@ pub struct AgentSettings {
     /// process name): it writes and polishes less where it was reverted.
     /// Shown in the Privacy Center with Undo.
     pub writing_prefs: std::collections::BTreeMap<String, WritingPref>,
+    /// The one-time note on Home that screen reading and suggestions were
+    /// turned on by an upgrade, with the way to turn them off. Set by the
+    /// schema 4 migration, cleared when it's dismissed; it never comes back.
+    pub screen_notice: bool,
 }
 
 /// Reverts of smart writing in one app.
@@ -807,6 +812,7 @@ impl Default for AgentSettings {
             suggestions_per_hour: crate::agent::budget::HOURLY_CAP,
             suggestion_prefs: Default::default(),
             writing_prefs: Default::default(),
+            screen_notice: false,
         }
     }
 }
@@ -838,7 +844,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 3;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 4;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -1523,6 +1529,18 @@ fn apply_settings_migrations(
         settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
         updated = true;
     }
+    if stored_schema_version < 4 {
+        // Screen context and suggestions are on for everyone since 0.1.19,
+        // but a stored `false` (the old default) outlived the new defaults.
+        // Turn both on once and say so on Home, with the way back; turning
+        // either off afterwards sticks. Screen memory stays opt-in.
+        let changed = !settings.agent.screen_context || !settings.agent.proactive;
+        settings.agent.screen_context = true;
+        settings.agent.proactive = true;
+        settings.agent.screen_notice = changed;
+        settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
+        updated = true;
+    }
 
     // The generic GPU choice was removed in favor of Auto or an exact device.
     // Normalize settings created by builds that exposed that short-lived option.
@@ -2007,6 +2025,56 @@ mod tests {
         });
         apply_settings_migrations(&mut settings, &raw);
         assert_eq!(settings.overlay_style, OverlayStyle::Live);
+    }
+
+    #[test]
+    fn agent_defaults_read_the_screen_but_keep_no_memory() {
+        let agent = get_default_settings().agent;
+        assert!(agent.screen_context);
+        assert!(agent.proactive);
+        assert!(!agent.screen_memory);
+        assert!(!agent.screen_notice);
+    }
+
+    #[test]
+    fn screen_reading_turns_on_once_with_a_notice() {
+        let mut settings = get_default_settings();
+        settings.agent.screen_context = false;
+        settings.agent.proactive = false;
+        let raw = serde_json::json!({
+            "selected_model": "",
+            "agent": { "screen_context": false, "proactive": false },
+            "settings_schema_version": 3
+        });
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert!(settings.agent.screen_context);
+        assert!(settings.agent.proactive);
+        assert!(!settings.agent.screen_memory);
+        assert!(settings.agent.screen_notice);
+        assert_eq!(
+            settings.settings_schema_version,
+            CURRENT_SETTINGS_SCHEMA_VERSION
+        );
+
+        // Already on: nothing changed, so nothing to tell.
+        let mut settings = get_default_settings();
+        let raw = serde_json::json!({ "selected_model": "", "settings_schema_version": 3 });
+        apply_settings_migrations(&mut settings, &raw);
+        assert!(!settings.agent.screen_notice);
+
+        // Turned off after the migration: it sticks.
+        let mut settings = get_default_settings();
+        settings.agent.screen_context = false;
+        settings.agent.proactive = false;
+        let raw = serde_json::json!({
+            "selected_model": "",
+            "agent": { "screen_context": false, "proactive": false },
+            "settings_schema_version": CURRENT_SETTINGS_SCHEMA_VERSION
+        });
+        apply_settings_migrations(&mut settings, &raw);
+        assert!(!settings.agent.screen_context);
+        assert!(!settings.agent.proactive);
+        assert!(!settings.agent.screen_notice);
     }
 
     #[test]

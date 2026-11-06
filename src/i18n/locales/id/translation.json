@@ -1332,6 +1332,12 @@
       "off": "Layar Anda tidak dibaca.",
       "on": "Diizinkan: {{list}}",
       "paused": "Dijeda. Tidak ada yang dibaca."
+    },
+    "screenNotice": {
+      "title": "{{appName}} kini membaca jendela yang sedang Anda gunakan",
+      "body": "Agar memahami maksud Anda. Data rahasia dihapus lebih dulu, dan halaman pribadi tidak pernah dibaca. Saran juga aktif. Nonaktifkan salah satunya di Privasi.",
+      "open": "Buka Privasi",
+      "dismiss": "Mengerti"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Tidak bisa menyalin perintah",
     "capabilities": {
       "title": "Yang boleh dilakukan {{appName}}",
-      "description": "Masing-masing nonaktif sampai Anda mengaktifkannya.",
+      "description": "Membaca jendela yang sedang Anda gunakan dan saran aktif sejak awal. Sisanya tetap nonaktif sampai Anda mengaktifkannya.",
       "screen_context": {
         "title": "Baca yang Anda tanyakan",
         "reads": "Membaca jendela yang Anda tanyakan, dan jendela yang terbuka saat Anda memintanya mencari sesuatu.",

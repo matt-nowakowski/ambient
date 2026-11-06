@@ -1332,6 +1332,12 @@
       "off": "Không đọc màn hình của bạn.",
       "on": "Đã cho phép: {{list}}",
       "paused": "Đã tạm dừng. Không đọc gì cả."
+    },
+    "screenNotice": {
+      "title": "{{appName}} giờ đọc cửa sổ bạn đang dùng",
+      "body": "Để hiểu ý bạn. Thông tin bí mật được xóa trước, và trang riêng tư không bao giờ được đọc. Gợi ý cũng đang bật. Tắt mục nào cũng được trong Quyền riêng tư.",
+      "open": "Mở Quyền riêng tư",
+      "dismiss": "Đã hiểu"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Không thể sao chép lệnh",
     "capabilities": {
       "title": "Những gì {{appName}} được làm",
-      "description": "Mỗi mục đều tắt cho đến khi bạn bật.",
+      "description": "Đọc cửa sổ bạn đang dùng và gợi ý được bật ngay từ đầu. Các mục còn lại vẫn tắt cho đến khi bạn bật.",
       "screen_context": {
         "title": "Đọc những gì bạn hỏi",
         "reads": "Đọc cửa sổ bạn hỏi đến, và các cửa sổ đang mở khi bạn nhờ tìm thứ gì đó.",

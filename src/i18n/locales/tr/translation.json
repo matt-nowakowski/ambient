@@ -1332,6 +1332,12 @@
       "off": "Ekranınız okunmuyor.",
       "on": "İzin verilenler: {{list}}",
       "paused": "Duraklatıldı. Hiçbir şey okunmuyor."
+    },
+    "screenNotice": {
+      "title": "{{appName}} artık bulunduğunuz pencereyi okuyor",
+      "body": "Ne demek istediğinizi anlamak için. Gizli bilgiler önce kaldırılır ve özel sayfalar asla okunmaz. Öneriler de açık. İkisini de Gizlilik'ten kapatabilirsiniz.",
+      "open": "Gizlilik'i aç",
+      "dismiss": "Anladım"
     }
   },
   "hud": {
@@ -1591,7 +1597,7 @@
     "commandCopyFailed": "Komut kopyalanamadı",
     "capabilities": {
       "title": "{{appName}} neler yapabilir",
-      "description": "Her biri siz açana kadar kapalıdır.",
+      "description": "Bulunduğunuz pencereyi okuma ve öneriler baştan açıktır. Diğerleri siz açana kadar kapalı kalır.",
       "screen_context": {
         "title": "Sorduğunuzu oku",
         "reads": "Sorduğunuz pencereyi ve bir şey bulmasını istediğinizde açık pencerelerinizi okur.",

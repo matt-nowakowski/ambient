@@ -1340,6 +1340,12 @@
       "off": "Sua tela não está sendo lida.",
       "on": "Permitido: {{list}}",
       "paused": "Pausado. Nada está sendo lido."
+    },
+    "screenNotice": {
+      "title": "O {{appName}} agora lê a janela em que você está",
+      "body": "Para entender o que você quer dizer. Dados secretos são removidos antes, e páginas privadas nunca são lidas. As sugestões também estão ativadas. Desative qualquer um em Privacidade.",
+      "open": "Abrir Privacidade",
+      "dismiss": "Entendi"
     }
   },
   "hud": {
@@ -1599,7 +1605,7 @@
     "commandCopyFailed": "Não foi possível copiar o comando",
     "capabilities": {
       "title": "O que o {{appName}} pode fazer",
-      "description": "Cada um fica desativado até você ativar.",
+      "description": "A leitura da janela em que você está e as sugestões ficam ativadas desde o início. O resto fica desativado até você ativar.",
       "screen_context": {
         "title": "Ler o que você pergunta",
         "reads": "Lê a janela sobre a qual você pergunta, e suas janelas abertas quando você pede para encontrar algo.",
