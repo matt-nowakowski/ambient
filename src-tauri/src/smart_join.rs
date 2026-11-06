@@ -271,8 +271,8 @@ const COMMON_WORDS: &[&str] = &[
     "sono", "è", // Portuguese
     "às", "eu", "então", "isso", "mas", "muito", "não", "na", "nas", "os", "ou", "uma", "um",
     "você", // Polish
-    "ale", "bo", "czy", "dla", "jak", "jeszcze", "jest", "już", "także", "tak", "też", "to", "więc",
-    "że", "nie", "się", "są", // Dutch
+    "ale", "bo", "czy", "dla", "jak", "jeszcze", "jest", "już", "także", "tak", "też", "to",
+    "więc", "że", "nie", "się", "są", // Dutch
     "dat", "een", "en", "het", "ik", "maar", "niet", "ook", "want",
 ];
 
