@@ -9,6 +9,7 @@ import { ReliablePasteToggle } from "./ReliablePaste";
 import { RecordingBuffer } from "./RecordingBuffer";
 import { LanguageDetectionWindow } from "./LanguageDetectionWindow";
 import { SettingsGroup } from "../../ui/SettingsGroup";
+import { Stagger } from "../../ui/Motion";
 import { AlwaysOnMicrophone } from "../AlwaysOnMicrophone";
 import { SoundPicker } from "../SoundPicker";
 import { ClamshellMicrophoneSelector } from "../ClamshellMicrophoneSelector";
@@ -32,7 +33,7 @@ export const DebugSettings: React.FC<DebugSettingsProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-section">
+    <Stagger className="max-w-3xl w-full mx-auto space-y-section">
       <SettingsGroup title={t("settings.debug.title")}>
         <LogLevelSelector grouped={true} />
         <WhatsNewPreview descriptionMode="tooltip" grouped={true} />
@@ -76,6 +77,6 @@ export const DebugSettings: React.FC<DebugSettingsProps> = ({
         <KeyboardDiagnostic />
         <LiveLogViewer descriptionMode="tooltip" grouped={true} />
       </SettingsGroup>
-    </div>
+    </Stagger>
   );
 };

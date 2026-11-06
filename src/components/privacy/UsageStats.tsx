@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useSettings } from "@/hooks/useSettings";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { ToggleSwitch } from "../ui/ToggleSwitch";
+import { expand } from "../ui/Motion";
 import { WhatsShared } from "../telemetry/WhatsShared";
 
 /** Privacy: the switch for anonymous usage counts (off by default), with
@@ -34,10 +36,16 @@ export const UsageStats: React.FC = () => {
           <ChevronDown
             width={13}
             height={13}
-            className={`transition-transform ${open ? "rotate-180" : ""}`}
+            className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
           />
         </button>
-        {open && <WhatsShared className="mt-3" />}
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div {...expand} className="overflow-hidden">
+              <WhatsShared className="mt-3" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </SettingsGroup>
   );

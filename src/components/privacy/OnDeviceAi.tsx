@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
 import { Download, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   commands,
   type AgentSettings,
@@ -15,6 +16,7 @@ import { useModelStore } from "@/stores/modelStore";
 import { SpeedBars } from "@/components/shared/SpeedBars";
 import { Button } from "../ui/Button";
 import { Radio } from "../ui/Radio";
+import { expand } from "../ui/Motion";
 
 /** Download id of on-device AI (`ON_DEVICE_AI_ID` in Rust). */
 export const ON_DEVICE_AI_ID = "on-device-ai";
@@ -160,32 +162,36 @@ export const OnDeviceAi: React.FC<{
           </Button>
         )}
       </div>
-      {downloading && (
-        <div className="mt-3">
-          <div
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(progress?.percentage ?? 0)}
-            className="h-1 overflow-hidden rounded-full bg-glass-press"
-          >
-            <div
-              className="h-full rounded-full bg-background-ui transition-[width] duration-300"
-              style={{ width: `${progress?.percentage ?? 0}%` }}
-            />
-          </div>
-          <p className="mt-1 text-meta text-ink-3">
-            {pending
-              ? t("privacy.onDeviceAi.downloadingModel", {
-                  model: pending.name,
-                  percent: Math.round(progress?.percentage ?? 0),
-                })
-              : t("privacy.onDeviceAi.downloading", {
-                  percent: Math.round(progress?.percentage ?? 0),
-                })}
-          </p>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {downloading && (
+          <motion.div {...expand} className="overflow-hidden">
+            <div className="mt-3">
+              <div
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(progress?.percentage ?? 0)}
+                className="h-1 overflow-hidden rounded-full bg-glass-press"
+              >
+                <div
+                  className="h-full rounded-full bg-background-ui transition-[width] duration-300"
+                  style={{ width: `${progress?.percentage ?? 0}%` }}
+                />
+              </div>
+              <p className="mt-1 text-meta text-ink-3">
+                {pending
+                  ? t("privacy.onDeviceAi.downloadingModel", {
+                      model: pending.name,
+                      percent: Math.round(progress?.percentage ?? 0),
+                    })
+                  : t("privacy.onDeviceAi.downloading", {
+                      percent: Math.round(progress?.percentage ?? 0),
+                    })}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {models.length > 1 && (
         <div className="mt-4">
           <p className="text-meta text-ink-3">
@@ -207,7 +213,7 @@ export const OnDeviceAi: React.FC<{
                   aria-checked={m.selected}
                   disabled={downloading}
                   onClick={() => choose(m)}
-                  className="flex min-w-0 flex-1 items-center gap-3 px-3 py-2.5 text-start disabled:cursor-default disabled:opacity-60"
+                  className="flex min-w-0 flex-1 items-center gap-3 px-item-x py-item-y text-start disabled:cursor-default disabled:opacity-60"
                 >
                   <Radio checked={m.selected} className="shrink-0" />
                   <span className="min-w-0 flex-1">
@@ -216,21 +222,34 @@ export const OnDeviceAi: React.FC<{
                       <span className="text-meta tabular-nums text-ink-3">
                         {formatModelSize(m.size_mb)}
                       </span>
-                      {[
-                        m.recommended && t("privacy.onDeviceAi.recommended"),
-                        m.basic && t("privacy.onDeviceAi.basic"),
-                        m.downloading
-                          ? t("privacy.onDeviceAi.downloadingTag")
-                          : m.downloaded &&
-                            t("privacy.onDeviceAi.onThisComputer"),
-                      ]
-                        .filter(Boolean)
+                      {(
+                        [
+                          m.recommended && {
+                            kind: "recommended",
+                            label: t("privacy.onDeviceAi.recommended"),
+                          },
+                          m.basic && {
+                            kind: "basic",
+                            label: t("privacy.onDeviceAi.basic"),
+                          },
+                          m.downloading
+                            ? {
+                                kind: "downloading",
+                                label: t("privacy.onDeviceAi.downloadingTag"),
+                              }
+                            : m.downloaded && {
+                                kind: "downloaded",
+                                label: t("privacy.onDeviceAi.onThisComputer"),
+                              },
+                        ] as const
+                      )
+                        .filter((tag) => tag !== false)
                         .map((tag) => (
                           <span
-                            key={String(tag)}
+                            key={tag.kind}
                             className="whitespace-nowrap rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2"
                           >
-                            {tag}
+                            {tag.label}
                           </span>
                         ))}
                     </span>
@@ -241,7 +260,7 @@ export const OnDeviceAi: React.FC<{
                     )}
                   </span>
                   {m.accuracy !== null && m.speed !== null && (
-                    <span className="grid shrink-0 grid-cols-[auto_auto] items-center gap-x-2 gap-y-1 text-meta text-ink-3">
+                    <span className="ms-1 grid shrink-0 grid-cols-[auto_auto] items-center gap-x-2 gap-y-1 whitespace-nowrap text-meta text-ink-3">
                       <span className="text-end">
                         {t("privacy.onDeviceAi.quality")}
                       </span>
@@ -287,7 +306,7 @@ export const OnDeviceAi: React.FC<{
         <div
           role="radiogroup"
           aria-label={t("privacy.onDeviceAi.use")}
-          className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2"
+          className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2"
         >
           <span className="text-small text-ink-2">
             {t("privacy.onDeviceAi.use")}
@@ -301,7 +320,7 @@ export const OnDeviceAi: React.FC<{
                 role="radio"
                 aria-checked={picked}
                 onClick={() => save({ ...settings, on_device_model: engine })}
-                className="flex items-center gap-2 text-small"
+                className="flex items-center gap-inline whitespace-nowrap text-small"
               >
                 <Radio checked={picked} />
                 {t(`privacy.onDeviceAi.engines.${engine}`)}

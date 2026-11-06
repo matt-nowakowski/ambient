@@ -127,7 +127,12 @@ export const PlanSummary: React.FC<{ onOpenAccount: () => void }> = ({
         )}
       </button>
       {status.plan !== "pro" && status.plan !== "team" && (
-        <Button variant="primary" size="sm" onClick={openUpgrade}>
+        <Button
+          variant="primary"
+          size="sm"
+          className="shrink-0"
+          onClick={openUpgrade}
+        >
           {t("account.upgradeTo", { plan: t("account.plans.pro") })}
         </Button>
       )}

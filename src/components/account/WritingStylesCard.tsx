@@ -113,7 +113,7 @@ export const WritingStylesCard: React.FC = () => {
                   {s.label}
                 </span>
                 <Dropdown
-                  className="w-36"
+                  className="w-36 shrink-0"
                   options={options}
                   selectedValue={s.style}
                   disabled={busy}

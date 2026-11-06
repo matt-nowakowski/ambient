@@ -5,6 +5,7 @@ import { ModelUnloadTimeoutSetting } from "../ModelUnloadTimeout";
 import { CustomWords } from "../CustomWords";
 import { LearnCorrections } from "../LearnCorrections";
 import { SettingsGroup } from "../../ui/SettingsGroup";
+import { Stagger } from "../../ui/Motion";
 import { StartHidden } from "../StartHidden";
 import { AutostartToggle } from "../AutostartToggle";
 import { ShowTrayIcon } from "../ShowTrayIcon";
@@ -32,7 +33,7 @@ export const AdvancedSettings: React.FC = () => {
   const experimentalEnabled = getSetting("experimental_enabled") || false;
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-section">
+    <Stagger className="max-w-3xl w-full mx-auto space-y-section">
       <SettingsGroup title={t("settings.advanced.groups.app")}>
         <StartHidden descriptionMode="tooltip" grouped={true} />
         <AutostartToggle descriptionMode="tooltip" grouped={true} />
@@ -78,6 +79,6 @@ export const AdvancedSettings: React.FC = () => {
           <LanguageDetection descriptionMode="tooltip" grouped={true} />
         </SettingsGroup>
       )}
-    </div>
+    </Stagger>
   );
 };

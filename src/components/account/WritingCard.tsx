@@ -27,7 +27,7 @@ export const WritingCard: React.FC = () => {
         <span className="grid size-8 shrink-0 place-items-center rounded-card bg-glass-press">
           <PenLine width={15} height={15} strokeWidth={1.75} />
         </span>
-        <div>
+        <div className="min-w-0">
           <h2 className="text-ui font-medium">{t("account.writing.title")}</h2>
           <p className="mt-0.5 max-w-md text-small text-ink-2">
             {t("account.writing.description")}

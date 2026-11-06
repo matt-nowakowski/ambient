@@ -6,6 +6,7 @@ import { ChannelSelector } from "../ChannelSelector";
 import { ShortcutInput } from "../ShortcutInput";
 import { AgentRouting, WakeWord } from "../AgentRouting";
 import { SettingsGroup } from "../../ui/SettingsGroup";
+import { Stagger } from "../../ui/Motion";
 import { OutputDeviceSelector } from "../OutputDeviceSelector";
 import { ShortcutActivationSetting } from "../ShortcutActivation";
 import { AutoStopOnPause } from "../AutoStopOnPause";
@@ -29,7 +30,7 @@ export const GeneralSettings: React.FC = () => {
     (getSetting("spoken_languages") ?? []).some(isChinese) ||
     (getSetting("chinese_script") ?? "as_transcribed") !== "as_transcribed";
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-section">
+    <Stagger className="max-w-3xl w-full mx-auto space-y-section">
       <SettingsGroup title={t("settings.general.title")}>
         <ShortcutInput shortcutId="transcribe" grouped={true} />
         <ShortcutActivationSetting descriptionMode="tooltip" grouped={true} />
@@ -66,6 +67,6 @@ export const GeneralSettings: React.FC = () => {
         />
         <VolumeSlider disabled={!audioFeedbackEnabled} />
       </SettingsGroup>
-    </div>
+    </Stagger>
   );
 };

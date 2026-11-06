@@ -50,7 +50,7 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
   return (
     <section className="glass rounded-panel p-card">
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <p className="text-section font-medium text-ink-3">
             {t("getStarted.title")}
           </p>
@@ -62,7 +62,7 @@ export const GetStartedCard: React.FC<{ onOpenPrivacy: () => void }> = ({
           type="button"
           aria-label={t("getStarted.hide")}
           onClick={dismiss}
-          className="rounded-control p-1 text-ink-3 hover:bg-glass-hover hover:text-text"
+          className="shrink-0 rounded-control p-1 text-ink-3 hover:bg-glass-hover hover:text-text"
         >
           <X width={13} height={13} />
         </button>

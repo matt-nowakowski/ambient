@@ -59,6 +59,7 @@ import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
 import { UsageStats } from "./UsageStats";
 import { OnDeviceAi, useOnDeviceAiDownloading } from "./OnDeviceAi";
+import { Stagger, StaggerItem, expand } from "../ui/Motion";
 
 const RETENTION_CHOICES = [1, 3, 7, 14, 30];
 /** The guarantees, always shown at the top: four short lines. */
@@ -433,12 +434,12 @@ export const PrivacyCenter: React.FC = () => {
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
             {t(`privacy.capabilities.${cap}.title`)}
             {unsupported ? (
-              <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+              <span className="whitespace-nowrap rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
                 {t("privacy.macOnly")}
               </span>
             ) : (
               hint && (
-                <span className="rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                <span className="whitespace-nowrap rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
                   {hint}
                 </span>
               )
@@ -478,7 +479,7 @@ export const PrivacyCenter: React.FC = () => {
                   key={d}
                   type="button"
                   onClick={() => save({ ...s, retention_days: d })}
-                  className={`rounded-full px-2.5 py-0.5 text-meta transition-colors ${
+                  className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-meta transition-colors ${
                     s.retention_days === d
                       ? "bg-text text-background"
                       : "bg-glass-press text-ink-2 hover:text-text"
@@ -577,131 +578,141 @@ export const PrivacyCenter: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-3xl w-full mx-auto">
-      <header className="mb-section">
-        <h1 className="text-title font-light">{t("privacy.title")}</h1>
-        <p className="mt-1 max-w-xl text-small text-ink-2">
-          {t("privacy.promise")}
-        </p>
-      </header>
+    <Stagger className="max-w-3xl w-full mx-auto">
+      <StaggerItem>
+        <header className="mb-section">
+          <h1 className="text-title font-light">{t("privacy.title")}</h1>
+          <p className="mt-1 max-w-xl text-small text-ink-2">
+            {t("privacy.promise")}
+          </p>
+        </header>
+      </StaggerItem>
 
       <div className="space-y-section">
         {/* The promise: four short lines, always in view. */}
-        <ul className="grid grid-cols-2 gap-2">
-          {PROMISES.map(({ key, icon: Icon }) => (
-            <li
-              key={key}
-              className="glass flex items-center gap-2.5 rounded-card px-3 py-2.5"
-            >
-              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
-                <Icon width={14} height={14} strokeWidth={1.75} />
-              </span>
-              <span className="text-small text-ink-2">
-                {t(`privacy.promises.${key}`)}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <StaggerItem>
+          <ul className="grid grid-cols-2 gap-inline">
+            {PROMISES.map(({ key, icon: Icon }) => (
+              <li
+                key={key}
+                className="glass flex items-center gap-3 rounded-card px-item-x py-item-y"
+              >
+                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+                  <Icon width={14} height={14} strokeWidth={1.75} />
+                </span>
+                <span className="min-w-0 text-small text-ink-2">
+                  {t(`privacy.promises.${key}`)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </StaggerItem>
 
         {/* State + pause */}
-        <div className="glass rounded-panel px-card py-3.5">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="relative grid size-8 shrink-0 place-items-center rounded-full bg-glass-press">
-                <ShieldCheck width={15} height={15} strokeWidth={1.75} />
-                <span
-                  aria-hidden="true"
-                  className={`absolute end-0 top-0 size-2 rounded-full ${
-                    state === "on"
-                      ? "bg-moss"
-                      : state === "paused"
-                        ? "bg-warning"
-                        : "bg-ink-3"
-                  }`}
-                />
-              </span>
-              <div className="min-w-0">
-                <p className="text-ui font-medium">
-                  {t(`privacy.state.${state}`)}
+        <StaggerItem>
+          <div className="glass rounded-panel p-card">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="relative grid size-8 shrink-0 place-items-center rounded-full bg-glass-press">
+                  <ShieldCheck width={15} height={15} strokeWidth={1.75} />
+                  <span
+                    aria-hidden="true"
+                    className={`absolute end-0 top-0 size-2 rounded-full ${
+                      state === "on"
+                        ? "bg-moss"
+                        : state === "paused"
+                          ? "bg-warning"
+                          : "bg-ink-3"
+                    }`}
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-ui font-medium">
+                    {t(`privacy.state.${state}`)}
+                  </p>
+                  <p className="truncate text-small text-ink-2">
+                    {status.paused && s.paused_until
+                      ? t("privacy.state.pausedUntil", {
+                          time: time(s.paused_until),
+                        })
+                      : t(`privacy.state.${state}Detail`)}
+                  </p>
+                </div>
+              </div>
+              {state !== "off" &&
+                (status.paused ? (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="shrink-0 whitespace-nowrap"
+                    onClick={() => commands.pauseAgent(null).then(refresh)}
+                  >
+                    {t("privacy.state.resume")}
+                  </Button>
+                ) : (
+                  <MoreMenu
+                    className="shrink-0"
+                    text={t("privacy.state.pause")}
+                    label={t("privacy.state.pause")}
+                    items={pauseItems}
+                  />
+                ))}
+            </div>
+            {!status.accessibility && IS_LINUX && (
+              <div className="mt-4 space-y-2 border-t-[0.5px] border-glass-edge pt-4">
+                <p className="text-small text-ink-2">
+                  {t("privacy.accessibilityLinux")}
                 </p>
-                <p className="truncate text-small text-ink-2">
-                  {status.paused && s.paused_until
-                    ? t("privacy.state.pausedUntil", {
-                        time: time(s.paused_until),
-                      })
-                    : t(`privacy.state.${state}Detail`)}
+                <div className="flex items-center justify-between gap-4">
+                  <code className="min-w-0 truncate rounded-chip bg-glass-press px-2 py-1 font-mono text-meta text-ink-2">
+                    {LINUX_A11Y_COMMAND}
+                  </code>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="shrink-0 whitespace-nowrap"
+                    onClick={() =>
+                      navigator.clipboard
+                        .writeText(LINUX_A11Y_COMMAND)
+                        .then(() => toast.success(t("privacy.commandCopied")))
+                        .catch(() =>
+                          toast.error(t("privacy.commandCopyFailed")),
+                        )
+                    }
+                  >
+                    {t("privacy.copyCommand")}
+                  </Button>
+                </div>
+                <p className="text-meta text-ink-3">
+                  {t("privacy.accessibilityLinuxChrome")}
                 </p>
               </div>
-            </div>
-            {state !== "off" &&
-              (status.paused ? (
+            )}
+            {!status.accessibility && !IS_LINUX && (
+              <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
+                <p className="min-w-0 text-small text-ink-2">
+                  {t("privacy.accessibility")}
+                </p>
                 <Button
                   variant="secondary"
                   size="sm"
                   className="shrink-0 whitespace-nowrap"
-                  onClick={() => commands.pauseAgent(null).then(refresh)}
+                  onClick={() => requestAccessibilityPermission()}
                 >
-                  {t("privacy.state.resume")}
+                  {t("privacy.grant")}
                 </Button>
-              ) : (
-                <MoreMenu
-                  className="shrink-0"
-                  text={t("privacy.state.pause")}
-                  label={t("privacy.state.pause")}
-                  items={pauseItems}
-                />
-              ))}
+              </div>
+            )}
           </div>
-          {!status.accessibility && IS_LINUX && (
-            <div className="mt-3 space-y-2 border-t-[0.5px] border-glass-edge pt-3">
-              <p className="text-small text-ink-2">
-                {t("privacy.accessibilityLinux")}
-              </p>
-              <div className="flex items-center justify-between gap-4">
-                <code className="min-w-0 truncate rounded-chip bg-glass-press px-2 py-1 font-mono text-meta text-ink-2">
-                  {LINUX_A11Y_COMMAND}
-                </code>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="shrink-0 whitespace-nowrap"
-                  onClick={() =>
-                    navigator.clipboard
-                      .writeText(LINUX_A11Y_COMMAND)
-                      .then(() => toast.success(t("privacy.commandCopied")))
-                      .catch(() => toast.error(t("privacy.commandCopyFailed")))
-                  }
-                >
-                  {t("privacy.copyCommand")}
-                </Button>
-              </div>
-              <p className="text-meta text-ink-3">
-                {t("privacy.accessibilityLinuxChrome")}
-              </p>
-            </div>
-          )}
-          {!status.accessibility && !IS_LINUX && (
-            <div className="mt-3 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-3">
-              <p className="min-w-0 text-small text-ink-2">
-                {t("privacy.accessibility")}
-              </p>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="shrink-0 whitespace-nowrap"
-                onClick={() => requestAccessibilityPermission()}
-              >
-                {t("privacy.grant")}
-              </Button>
-            </div>
-          )}
-        </div>
+        </StaggerItem>
 
-        <AtAGlance reads={reads} cloud={cloud} paused={status.paused} />
+        <StaggerItem>
+          <AtAGlance reads={reads} cloud={cloud} paused={status.paused} />
+        </StaggerItem>
 
         {/* Capabilities, grouped by what they touch. Each row: what it reads,
             then (smaller) what leaves the Mac. */}
-        <div className="space-y-label">
+        <StaggerItem className="space-y-label">
           <div className="px-row-x">
             <h2 className="text-section font-medium text-ink-3">
               {t("privacy.capabilities.title")}
@@ -720,65 +731,69 @@ export const PrivacyCenter: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
+        </StaggerItem>
 
         {/* Suggestions: one switch, then what it has learned by voice. */}
         <SettingsGroup title={t("privacy.suggestions.title")}>
           {capabilityRow("proactive", Sparkles)}
-          {s.proactive && (
-            <div className="px-row-x py-row-y">
-              <p className="text-meta font-medium text-ink-3">
-                {t("privacy.suggestions.learned.title")}
-              </p>
-              {learned.length === 0 ? (
-                <p className="mt-1 text-small text-ink-2">
-                  {t("privacy.suggestions.learned.empty")}
-                </p>
-              ) : (
-                <ul className="mt-1 divide-y divide-glass-edge">
-                  {learned.map(({ kind, app }) => (
-                    <li
-                      key={`${kind}:${app ?? ""}`}
-                      className="flex items-center gap-3 py-2"
-                    >
-                      <BellOff
-                        width={13}
-                        height={13}
-                        strokeWidth={1.75}
-                        className="shrink-0 text-ink-3"
-                        aria-hidden="true"
-                      />
-                      <span
-                        className="min-w-0 flex-1 text-small"
-                        title={app ?? undefined}
-                      >
-                        {app === null
-                          ? t("privacy.suggestions.learned.never", {
-                              kind: kindLabel(kind),
-                            })
-                          : t("privacy.suggestions.learned.notIn", {
-                              kind: kindLabel(kind),
-                              app: appName(app),
-                            })}
-                      </span>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="shrink-0 whitespace-nowrap"
-                        onClick={() => undoPref(kind, app)}
-                      >
-                        <Undo2 width={12} height={12} aria-hidden="true" />
-                        {t("privacy.suggestions.learned.undo")}
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <p className="mt-3 text-meta text-ink-3">
-                {t("privacy.suggestions.teach")}
-              </p>
-            </div>
-          )}
+          <AnimatePresence initial={false}>
+            {s.proactive && (
+              <motion.div {...expand} className="overflow-hidden">
+                <div className="px-row-x py-row-y">
+                  <p className="text-meta font-medium text-ink-3">
+                    {t("privacy.suggestions.learned.title")}
+                  </p>
+                  {learned.length === 0 ? (
+                    <p className="mt-1 text-small text-ink-2">
+                      {t("privacy.suggestions.learned.empty")}
+                    </p>
+                  ) : (
+                    <ul className="mt-1 divide-y divide-glass-edge">
+                      {learned.map(({ kind, app }) => (
+                        <li
+                          key={`${kind}:${app ?? ""}`}
+                          className="flex items-center gap-3 py-2"
+                        >
+                          <BellOff
+                            width={13}
+                            height={13}
+                            strokeWidth={1.75}
+                            className="shrink-0 text-ink-3"
+                            aria-hidden="true"
+                          />
+                          <span
+                            className="min-w-0 flex-1 text-small"
+                            title={app ?? undefined}
+                          >
+                            {app === null
+                              ? t("privacy.suggestions.learned.never", {
+                                  kind: kindLabel(kind),
+                                })
+                              : t("privacy.suggestions.learned.notIn", {
+                                  kind: kindLabel(kind),
+                                  app: appName(app),
+                                })}
+                          </span>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            className="shrink-0 whitespace-nowrap"
+                            onClick={() => undoPref(kind, app)}
+                          >
+                            <Undo2 width={12} height={12} aria-hidden="true" />
+                            {t("privacy.suggestions.learned.undo")}
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <p className="mt-3 text-meta text-ink-3">
+                    {t("privacy.suggestions.teach")}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </SettingsGroup>
 
         {/* Writing: what "Use my words" taught it, per app. */}
@@ -835,7 +850,13 @@ export const PrivacyCenter: React.FC = () => {
           description={t("privacy.intelligence.description")}
         >
           <div className="flex items-center gap-2 px-row-x pt-3 pb-1 text-meta text-ink-3">
-            <Cpu width={12} height={12} strokeWidth={1.75} aria-hidden="true" />
+            <Cpu
+              width={12}
+              height={12}
+              strokeWidth={1.75}
+              className="shrink-0"
+              aria-hidden="true"
+            />
             {!status.on_device_ready
               ? t("privacy.intelligence.capability.none")
               : onDeviceAi?.engine === "downloaded"
@@ -917,58 +938,66 @@ export const PrivacyCenter: React.FC = () => {
               download={downloadAi}
             />
           )}
-          {/* Automatic, with an on-device model: also use it for answers? */}
-          {s.intelligence === "auto" && status.on_device_ready && (
-            <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
-              <div className="min-w-0">
-                <p className="text-ui">
-                  {onDeviceAi?.engine === "downloaded"
-                    ? t("privacy.engine.titleDownloaded")
-                    : t("privacy.engine.title")}
-                </p>
-                <p className="mt-0.5 max-w-lg text-small text-ink-2">
-                  {onDeviceAi?.engine === "downloaded"
-                    ? t("privacy.engine.descriptionDownloaded")
-                    : t("privacy.engine.description")}
-                </p>
-              </div>
-              <Switch
-                checked={s.on_device_when_possible}
-                ariaLabel={t("privacy.engine.title")}
-                onChange={(on) => save({ ...s, on_device_when_possible: on })}
-              />
-            </div>
-          )}
-          {/* Automatic, no on-device model: the one-time cloud offer's answer. */}
-          {s.intelligence === "auto" && !status.on_device_ready && (
-            <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
-              <div className="min-w-0">
-                <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
-                  {t("privacy.intelligence.cloudSuggestions.title")}
-                  {!paid && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
-                      <Lock width={10} height={10} />
-                      {t("account.plans.pro")}
-                    </span>
-                  )}
-                </p>
-                <p className="mt-0.5 max-w-lg text-small text-ink-2">
-                  {t("privacy.intelligence.cloudSuggestions.description")}
-                </p>
-              </div>
-              <Switch
-                checked={paid && s.cloud_suggestions === "accepted"}
-                disabled={!paid}
-                ariaLabel={t("privacy.intelligence.cloudSuggestions.title")}
-                onChange={(on) =>
-                  save({
-                    ...s,
-                    cloud_suggestions: on ? "accepted" : "declined",
-                  })
-                }
-              />
-            </div>
-          )}
+          <AnimatePresence initial={false}>
+            {/* Automatic, with an on-device model: also use it for answers? */}
+            {s.intelligence === "auto" && status.on_device_ready && (
+              <motion.div key="engine" {...expand} className="overflow-hidden">
+                <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
+                  <div className="min-w-0">
+                    <p className="text-ui">
+                      {onDeviceAi?.engine === "downloaded"
+                        ? t("privacy.engine.titleDownloaded")
+                        : t("privacy.engine.title")}
+                    </p>
+                    <p className="mt-0.5 max-w-lg text-small text-ink-2">
+                      {onDeviceAi?.engine === "downloaded"
+                        ? t("privacy.engine.descriptionDownloaded")
+                        : t("privacy.engine.description")}
+                    </p>
+                  </div>
+                  <Switch
+                    checked={s.on_device_when_possible}
+                    ariaLabel={t("privacy.engine.title")}
+                    onChange={(on) =>
+                      save({ ...s, on_device_when_possible: on })
+                    }
+                  />
+                </div>
+              </motion.div>
+            )}
+            {/* Automatic, no on-device model: the one-time cloud offer's answer. */}
+            {s.intelligence === "auto" && !status.on_device_ready && (
+              <motion.div key="cloud" {...expand} className="overflow-hidden">
+                <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
+                  <div className="min-w-0">
+                    <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
+                      {t("privacy.intelligence.cloudSuggestions.title")}
+                      {!paid && (
+                        <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
+                          <Lock width={10} height={10} />
+                          {t("account.plans.pro")}
+                        </span>
+                      )}
+                    </p>
+                    <p className="mt-0.5 max-w-lg text-small text-ink-2">
+                      {t("privacy.intelligence.cloudSuggestions.description")}
+                    </p>
+                  </div>
+                  <Switch
+                    checked={paid && s.cloud_suggestions === "accepted"}
+                    disabled={!paid}
+                    ariaLabel={t("privacy.intelligence.cloudSuggestions.title")}
+                    onChange={(on) =>
+                      save({
+                        ...s,
+                        cloud_suggestions: on ? "accepted" : "declined",
+                      })
+                    }
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </SettingsGroup>
 
         {/* What Ambient sees */}
@@ -979,7 +1008,7 @@ export const PrivacyCenter: React.FC = () => {
           >
             <div className="px-row-x py-row-y">
               <div className="flex items-center justify-between gap-4">
-                <p className="text-small text-ink-2">
+                <p className="min-w-0 text-small text-ink-2">
                   {previewing
                     ? t("privacy.preview.switchNow")
                     : t("privacy.preview.hint")}
@@ -987,6 +1016,7 @@ export const PrivacyCenter: React.FC = () => {
                 <Button
                   variant="secondary"
                   size="sm"
+                  className="shrink-0"
                   disabled={previewing}
                   onClick={runPreview}
                 >
@@ -996,21 +1026,16 @@ export const PrivacyCenter: React.FC = () => {
               </div>
               <AnimatePresence>
                 {(preview || previewNote) && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="overflow-hidden"
-                  >
+                  <motion.div {...expand} className="overflow-hidden">
                     {previewNote && (
                       <p className="mt-3 text-small text-ink-2">
                         {previewNote}
                       </p>
                     )}
                     {preview && (
-                      <div className="mt-3 rounded-card bg-glass-press p-3">
+                      <div className="mt-3 rounded-card bg-glass-press px-item-x py-item-y">
                         <div className="flex items-center justify-between gap-3">
-                          <p className="truncate text-small">
+                          <p className="min-w-0 truncate text-small">
                             <span className="font-medium">
                               {preview.app?.name}
                             </span>
@@ -1102,16 +1127,16 @@ export const PrivacyCenter: React.FC = () => {
                       : "",
                   })}
                 </p>
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-3 space-y-1.5">
                   {status.stats.by_app.map((a) => (
                     <li
                       key={a.bundle_id}
-                      className="flex items-center justify-between text-small"
+                      className="flex items-center justify-between gap-4 text-small"
                     >
-                      <span title={a.bundle_id}>
+                      <span className="min-w-0 truncate" title={a.bundle_id}>
                         {shortBundle(a.bundle_id)}
                       </span>
-                      <span className="flex items-center gap-3 text-ink-2">
+                      <span className="flex shrink-0 items-center gap-3 whitespace-nowrap text-ink-2">
                         {t("privacy.stored.entries", { count: a.entries })}
                         <button
                           type="button"
@@ -1156,7 +1181,7 @@ export const PrivacyCenter: React.FC = () => {
             </p>
           ) : (
             ledger.map((e) => (
-              <div key={e.id} className="px-row-x py-2.5">
+              <div key={e.id} className="px-row-x py-row-y">
                 <button
                   type="button"
                   onClick={() =>
@@ -1173,25 +1198,29 @@ export const PrivacyCenter: React.FC = () => {
                     })}
                     <span className="text-ink-3"> → {e.destination}</span>
                   </span>
-                  <span className="tabular-nums text-ink-3">
+                  <span className="shrink-0 whitespace-nowrap tabular-nums text-ink-3">
                     {t("privacy.ledger.bytes", { count: e.bytes })}
                   </span>
                   <ChevronDown
                     width={13}
                     height={13}
-                    className={`text-ink-3 transition-transform ${openLedger === e.id ? "rotate-180" : ""}`}
+                    className={`shrink-0 text-ink-3 transition-transform ${openLedger === e.id ? "rotate-180" : ""}`}
                   />
                 </button>
-                {openLedger === e.id && (
-                  <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded-card bg-glass-press p-3 text-meta leading-relaxed text-ink-2">
-                    {e.preview}
-                  </pre>
-                )}
+                <AnimatePresence initial={false}>
+                  {openLedger === e.id && (
+                    <motion.div {...expand} className="overflow-hidden">
+                      <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded-card bg-glass-press p-3 text-meta leading-relaxed text-ink-2">
+                        {e.preview}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))
           )}
         </SettingsGroup>
       </div>
-    </div>
+    </Stagger>
   );
 };

@@ -40,7 +40,7 @@ export const PrivacySummary: React.FC<{ onOpenPrivacy: () => void }> = ({
         </span>
         <span className="block truncate text-small text-ink-2">{line}</span>
       </span>
-      <ChevronRight width={14} height={14} className="text-ink-3" />
+      <ChevronRight width={14} height={14} className="shrink-0 text-ink-3" />
     </button>
   );
 };

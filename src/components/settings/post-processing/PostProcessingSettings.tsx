@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { SettingsGroup } from "@/components/ui";
+import { Stagger } from "@/components/ui/Motion";
 import { ShortcutInput } from "../ShortcutInput";
 
 // Prompts are behind-the-scenes work, not a user feature: there is no prompt
@@ -12,7 +13,7 @@ export const PostProcessingSettings: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-section">
+    <Stagger className="max-w-3xl w-full mx-auto space-y-section">
       <SettingsGroup title={t("settings.postProcessing.hotkey.title")}>
         <ShortcutInput
           shortcutId="transcribe_with_post_process"
@@ -20,6 +21,6 @@ export const PostProcessingSettings: React.FC = () => {
           grouped={true}
         />
       </SettingsGroup>
-    </div>
+    </Stagger>
   );
 };

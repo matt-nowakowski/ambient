@@ -29,6 +29,7 @@ import { BRAND } from "@/lib/brand";
 import { Orb } from "../orb/Orb";
 import { Button } from "../ui/Button";
 import { SettingsGroup } from "../ui/SettingsGroup";
+import { Stagger, StaggerItem, easeOutSoft } from "../ui/Motion";
 import { useSettings } from "../../hooks/useSettings";
 import { openUpgrade } from "../account/usePlan";
 import { EmailNotesButton, MeetingsEmailSetting } from "./MeetingsEmail";
@@ -245,46 +246,49 @@ export const MeetingsPage: React.FC = () => {
         </div>
       ) : null;
     return (
-      <div className="max-w-3xl w-full mx-auto">
-        <button
-          type="button"
-          onClick={() => setOpen(null)}
-          className="mb-4 inline-flex items-center gap-1.5 text-small text-ink-2 hover:text-text"
-        >
-          <ArrowLeft width={13} height={13} />
-          {t("meetings.all")}
-        </button>
-        <header className="mb-section flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-title font-light">
-              {s?.title || t("meetings.untitled")}
-            </h1>
-            <p className="mt-1 text-small text-ink-2">
-              {when(open.started)}
-              {open.ended && ` · ${clock((open.ended - open.started) * 1000)}`}
-            </p>
-          </div>
-          <div className="flex shrink-0 gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => copy(toMarkdown(open, t, when(open.started)))}
-            >
-              <Copy width={13} height={13} />
-              {t("meetings.copyMarkdown")}
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={busy || !s}
-              onClick={() => draftFollowUp(open.id)}
-            >
-              <Mail width={13} height={13} />
-              {t("meetings.followUp")}
-            </Button>
-            <EmailNotesButton id={open.id} disabled={!s} />
-          </div>
-        </header>
+      <Stagger key={`meeting-${open.id}`} className="max-w-3xl w-full mx-auto">
+        <StaggerItem>
+          <button
+            type="button"
+            onClick={() => setOpen(null)}
+            className="mb-4 inline-flex items-center gap-1.5 text-small text-ink-2 hover:text-text"
+          >
+            <ArrowLeft width={13} height={13} />
+            {t("meetings.all")}
+          </button>
+          <header className="mb-section flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <h1 className="text-title font-light">
+                {s?.title || t("meetings.untitled")}
+              </h1>
+              <p className="mt-1 text-small text-ink-2">
+                {when(open.started)}
+                {open.ended &&
+                  ` · ${clock((open.ended - open.started) * 1000)}`}
+              </p>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => copy(toMarkdown(open, t, when(open.started)))}
+              >
+                <Copy width={13} height={13} />
+                {t("meetings.copyMarkdown")}
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                disabled={busy || !s}
+                onClick={() => draftFollowUp(open.id)}
+              >
+                <Mail width={13} height={13} />
+                {t("meetings.followUp")}
+              </Button>
+              <EmailNotesButton id={open.id} disabled={!s} />
+            </div>
+          </header>
+        </StaggerItem>
         <div className="space-y-section">
           <AnimatePresence>
             {followUp && (
@@ -292,6 +296,7 @@ export const MeetingsPage: React.FC = () => {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: 0.26, ease: easeOutSoft }}
               >
                 <SettingsGroup title={t("meetings.followUpTitle")}>
                   <div className="px-row-x py-row-y">
@@ -324,7 +329,9 @@ export const MeetingsPage: React.FC = () => {
               {section(t("meetings.questions"), s.questions_for_you)}
             </SettingsGroup>
           ) : (
-            <p className="text-small text-ink-2">{t("meetings.noSummary")}</p>
+            <StaggerItem>
+              <p className="text-small text-ink-2">{t("meetings.noSummary")}</p>
+            </StaggerItem>
           )}
           {open.body.notes.length > 0 && (
             <SettingsGroup title={t("meetings.notes")}>
@@ -336,7 +343,7 @@ export const MeetingsPage: React.FC = () => {
           <SettingsGroup title={t("meetings.transcript")}>
             <Transcript segments={open.body.segments} />
           </SettingsGroup>
-          <div className="flex justify-end">
+          <StaggerItem className="flex justify-end">
             <Button
               variant="danger-ghost"
               size="sm"
@@ -345,9 +352,9 @@ export const MeetingsPage: React.FC = () => {
               <Trash2 width={13} height={13} />
               {t("meetings.delete")}
             </Button>
-          </div>
+          </StaggerItem>
         </div>
-      </div>
+      </Stagger>
     );
   }
 
@@ -362,89 +369,101 @@ export const MeetingsPage: React.FC = () => {
         : "on"
       : "off";
   return (
-    <div className="max-w-3xl w-full mx-auto">
-      <header className="mb-section">
-        <h1 className="text-title font-light">{t("meetings.title")}</h1>
-        <p className="mt-1 max-w-xl text-small text-ink-2">
-          {t("meetings.intro")}
-        </p>
-      </header>
+    <Stagger key="list" className="max-w-3xl w-full mx-auto">
+      <StaggerItem>
+        <header className="mb-section">
+          <h1 className="text-title font-light">{t("meetings.title")}</h1>
+          <p className="mt-1 max-w-xl text-small text-ink-2">
+            {t("meetings.intro")}
+          </p>
+        </header>
+      </StaggerItem>
       <div className="space-y-section">
-        {state.active ? (
-          <div className="glass rounded-panel p-card">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex min-w-0 items-center gap-3">
-                <span className="relative grid size-8 shrink-0 place-items-center">
-                  <Orb variant="C2" size={22} />
-                  <span className="absolute end-0 top-0 size-2 rounded-full bg-[#ef4444]" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-ui font-medium">
-                    {t("meetings.live", { time: clock(elapsed) })}
-                  </p>
-                  <p className="text-small text-ink-2">
-                    {state.system_audio
-                      ? t("meetings.capturingBoth")
-                      : t("meetings.capturingMic")}
-                  </p>
+        <StaggerItem>
+          {state.active ? (
+            <div className="glass rounded-panel p-card">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="relative grid size-8 shrink-0 place-items-center">
+                    <Orb variant="C2" size={22} />
+                    <span className="absolute end-0 top-0 size-2 rounded-full bg-[#ef4444]" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-ui font-medium">
+                      {t("meetings.live", { time: clock(elapsed) })}
+                    </p>
+                    <p className="text-small text-ink-2">
+                      {state.system_audio
+                        ? t("meetings.capturingBoth")
+                        : t("meetings.capturingMic")}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <Button
-                variant="primary"
-                size="sm"
-                className="shrink-0 whitespace-nowrap"
-                disabled={busy}
-                onClick={stop}
-              >
-                <Square width={11} height={11} />
-                {t("meetings.stop")}
-              </Button>
-            </div>
-            {state.active && state.warning && (
-              <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-                <p className="text-small text-ink-2">{t(state.warning)}</p>
-                {state.warning === "meetings.systemAudio.noPermission" && (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => openUrl(SCREEN_RECORDING_SETTINGS)}
-                  >
-                    {t("meetings.openSettings")}
-                  </Button>
-                )}
-              </div>
-            )}
-            {state.active && (
-              <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-                <p className="text-small text-ink-2">{t("meetings.consent")}</p>
                 <Button
-                  variant="ghost"
+                  variant="primary"
                   size="sm"
-                  onClick={() =>
-                    copy(t("meetings.consentMessage", { appName: BRAND.name }))
-                  }
+                  className="shrink-0 whitespace-nowrap"
+                  disabled={busy}
+                  onClick={stop}
                 >
-                  {t("meetings.copyConsent")}
+                  <Square width={11} height={11} />
+                  {t("meetings.stop")}
                 </Button>
               </div>
-            )}
-          </div>
-        ) : (
-          <IdleCard
-            detection={autoState}
-            busy={busy}
-            freeLeft={
-              usage?.meetings_limit != null
-                ? t("meetings.freeLeft", {
-                    left: Math.max(0, usage.meetings_limit - usage.meetings),
-                    limit: usage.meetings_limit,
-                  })
-                : null
-            }
-            onTurnOn={turnOnDetection}
-            onStart={start}
-          />
-        )}
+              {state.active && state.warning && (
+                <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
+                  <p className="min-w-0 text-small text-ink-2">
+                    {t(state.warning)}
+                  </p>
+                  {state.warning === "meetings.systemAudio.noPermission" && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="shrink-0"
+                      onClick={() => openUrl(SCREEN_RECORDING_SETTINGS)}
+                    >
+                      {t("meetings.openSettings")}
+                    </Button>
+                  )}
+                </div>
+              )}
+              {state.active && (
+                <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
+                  <p className="min-w-0 text-small text-ink-2">
+                    {t("meetings.consent")}
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="shrink-0"
+                    onClick={() =>
+                      copy(
+                        t("meetings.consentMessage", { appName: BRAND.name }),
+                      )
+                    }
+                  >
+                    {t("meetings.copyConsent")}
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <IdleCard
+              detection={autoState}
+              busy={busy}
+              freeLeft={
+                usage?.meetings_limit != null
+                  ? t("meetings.freeLeft", {
+                      left: Math.max(0, usage.meetings_limit - usage.meetings),
+                      limit: usage.meetings_limit,
+                    })
+                  : null
+              }
+              onTurnOn={turnOnDetection}
+              onStart={start}
+            />
+          )}
+        </StaggerItem>
 
         {state.active && live && (
           <>
@@ -489,11 +508,11 @@ export const MeetingsPage: React.FC = () => {
                     <span className="block truncate text-ui">
                       {m.title || t("meetings.untitled")}
                     </span>
-                    <span className="text-small text-ink-3">
+                    <span className="mt-0.5 block text-small text-ink-3">
                       {when(m.started)}
                     </span>
                   </span>
-                  <span className="shrink-0 text-small text-ink-3">
+                  <span className="shrink-0 whitespace-nowrap text-small text-ink-3">
                     {m.ended
                       ? clock((m.ended - m.started) * 1000)
                       : t("meetings.unfinished")}
@@ -503,7 +522,7 @@ export const MeetingsPage: React.FC = () => {
           )}
         </SettingsGroup>
       </div>
-    </div>
+    </Stagger>
   );
 };
 

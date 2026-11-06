@@ -67,11 +67,11 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
   return (
     <section className="glass rounded-panel p-card">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-3">
+        <div className="flex min-w-0 items-start gap-3">
           <span className="grid size-8 shrink-0 place-items-center rounded-card bg-glass-press">
             <Sparkles width={15} height={15} strokeWidth={1.75} />
           </span>
-          <div>
+          <div className="min-w-0">
             <h2 className="text-ui font-medium">{t("account.polish.title")}</h2>
             <p className="mt-0.5 max-w-md text-small text-ink-2">
               {t("account.polish.description")}
@@ -119,7 +119,7 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
 
       {onDeviceAvailable && (
         <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-          <div>
+          <div className="min-w-0">
             <p className="text-ui">{t("account.polish.onDevice")}</p>
             <p className="mt-0.5 text-small text-ink-2">
               {t("account.polish.onDeviceDescription")}

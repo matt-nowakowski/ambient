@@ -79,7 +79,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
   if (descriptionMode === "tooltip") {
     return (
       <div data-search-row className={horizontalContainerClasses}>
-        <div className="max-w-2/3">
+        <div className="min-w-0 max-w-2/3">
           <div className="flex items-center gap-inline">
             <h3
               className={`text-ui font-normal ${disabled ? "opacity-50" : ""}`}
@@ -97,7 +97,7 @@ export const SettingContainer: React.FC<SettingContainerProps> = ({
 
   return (
     <div data-search-row className={horizontalContainerClasses}>
-      <div className="max-w-2/3">
+      <div className="min-w-0 max-w-2/3">
         <h3 className={`text-ui font-normal ${disabled ? "opacity-50" : ""}`}>
           {title}
         </h3>

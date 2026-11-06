@@ -18,6 +18,15 @@ export const softSpring = {
 
 export const easeOutSoft = [0.22, 1, 0.36, 1] as const;
 
+/** Expand/collapse in place: the height folds and the content fades. Spread
+ * on a motion element with `overflow-hidden`, inside AnimatePresence. */
+export const expand = {
+  initial: { opacity: 0, height: 0 },
+  animate: { opacity: 1, height: "auto" },
+  exit: { opacity: 0, height: 0 },
+  transition: { duration: 0.26, ease: easeOutSoft },
+} as const;
+
 /** Cross-fades between pages keyed by `id`: rise in with a hint of blur. */
 export const PageTransition: React.FC<{
   id: string;

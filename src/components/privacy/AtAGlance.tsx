@@ -41,7 +41,7 @@ export const AtAGlance: React.FC<{
                 key={item.key}
                 type="button"
                 onClick={() => jump(item.target)}
-                className="rounded-full bg-glass-press px-2.5 py-0.5 text-meta text-ink-2 transition-colors hover:text-text"
+                className="whitespace-nowrap rounded-full bg-glass-press px-2.5 py-0.5 text-meta text-ink-2 transition-colors hover:text-text"
               >
                 {item.label}
               </button>

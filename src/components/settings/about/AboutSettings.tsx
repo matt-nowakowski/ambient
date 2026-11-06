@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { SettingsGroup } from "../../ui/SettingsGroup";
+import { AnimatePresence, motion } from "motion/react";
+import { Stagger, expand } from "../../ui/Motion";
 import { SettingContainer } from "../../ui/SettingContainer";
 import { Button } from "../../ui/Button";
 import { type as osType } from "@tauri-apps/plugin-os";
@@ -38,7 +40,7 @@ export const AboutSettings: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-3xl w-full mx-auto space-y-section">
+    <Stagger className="max-w-3xl w-full mx-auto space-y-section">
       <SettingsGroup title={t("settings.about.title")}>
         <AppLanguageSelector descriptionMode="tooltip" grouped={true} />
         <ThemeSelector descriptionMode="tooltip" grouped={true} />
@@ -126,13 +128,17 @@ export const AboutSettings: React.FC = () => {
                 : "settings.about.acknowledgments.licenses.show",
             )}
           </button>
-          {showLicenses && (
-            <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap rounded-card bg-wash p-3 text-meta text-ink-2">
-              {thirdPartyNotices}
-            </pre>
-          )}
+          <AnimatePresence initial={false}>
+            {showLicenses && (
+              <motion.div {...expand} className="overflow-hidden">
+                <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap rounded-card bg-wash p-3 text-meta text-ink-2">
+                  {thirdPartyNotices}
+                </pre>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </SettingContainer>
       </SettingsGroup>
-    </div>
+    </Stagger>
   );
 };
