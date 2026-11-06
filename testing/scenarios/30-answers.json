@@ -425,6 +425,83 @@
         "language": "de",
         "must_not": ["opened_browser", "typed"]
       }
+    },
+    {
+      "id": "answer.en.sources.many",
+      "about": "A web answer with five results (two from one site) shows at most three source chips, one per site, and no [n] citation markers in its text.",
+      "tags": ["sources", "regression"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "how many people live in Lisbon",
+      "regression": "0.1.11 HUD: web answers said \"[4]\" in the text and showed five long source chips",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "card_text_not_matches": [
+          "\\[\\^?\\d{1,3}([,–-]\\s*\\d{1,3})*\\]",
+          "【\\d"
+        ],
+        "min_sources": 1,
+        "max_sources": 3,
+        "sources_distinct_sites": true,
+        "language": "en"
+      }
+    },
+    {
+      "id": "answer.de.sources.many",
+      "about": "A web answer with five results (two from one site) shows at most three source chips, one per site, and no [n] citation markers in its text.",
+      "tags": ["sources", "regression"],
+      "lang": "de",
+      "screen": "finder_desktop",
+      "say": "wie viele Einwohner hat Lissabon",
+      "regression": "0.1.11 HUD: web answers said \"[4]\" in the text and showed five long source chips",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "card_text_not_matches": [
+          "\\[\\^?\\d{1,3}([,–-]\\s*\\d{1,3})*\\]",
+          "【\\d"
+        ],
+        "min_sources": 1,
+        "max_sources": 3,
+        "sources_distinct_sites": true,
+        "language": "de"
+      }
+    },
+    {
+      "id": "answer.pl.sources.many",
+      "about": "A web answer with five results (two from one site) shows at most three source chips, one per site, and no [n] citation markers in its text.",
+      "tags": ["sources", "regression"],
+      "lang": "pl",
+      "screen": "finder_desktop",
+      "say": "ile mieszkańców ma Lizbona",
+      "regression": "0.1.11 HUD: web answers said \"[4]\" in the text and showed five long source chips",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "card_text_not_matches": [
+          "\\[\\^?\\d{1,3}([,–-]\\s*\\d{1,3})*\\]",
+          "【\\d"
+        ],
+        "min_sources": 1,
+        "max_sources": 3,
+        "sources_distinct_sites": true,
+        "language": "pl"
+      }
+    },
+    {
+      "id": "answer.en.weather.no-citations",
+      "about": "A web answer's text never carries [n] citation markers, and its sources stay few.",
+      "tags": ["sources", "weather"],
+      "lang": "en",
+      "screen": "finder_desktop",
+      "say": "will it rain in Lisbon tomorrow",
+      "expect": {
+        "route": "answer",
+        "must_not": ["opened_browser", "typed"],
+        "card_text_not_matches": ["\\[\\^?\\d{1,3}([,–-]\\s*\\d{1,3})*\\]"],
+        "max_sources": 3
+      }
     }
   ]
 }

@@ -1443,7 +1443,7 @@
       "title": "Bunu mu yazmak istediniz?",
       "composed": "İşte taslağınız.",
       "focusHint": "Eklemek için bir metin alanına tıklayın.",
-      "askInstead": "Bunun yerine {{appName}} uygulamasına sor"
+      "askInstead": "{{appName}} uygulamasına sor"
     },
     "source": {
       "searchDrive": "Google Drive’da ara",

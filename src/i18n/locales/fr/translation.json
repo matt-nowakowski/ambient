@@ -1446,7 +1446,7 @@
       "title": "Vouliez-vous taper ceci ?",
       "composed": "Voici votre brouillon.",
       "focusHint": "Cliquez dans un champ de texte pour l’insérer.",
-      "askInstead": "Demander plutôt à {{appName}}"
+      "askInstead": "Demander à {{appName}}"
     },
     "source": {
       "searchDrive": "Rechercher dans Google Drive",

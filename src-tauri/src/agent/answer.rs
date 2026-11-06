@@ -312,15 +312,118 @@ pub fn actions_for(text: &str, s: Situation) -> Vec<HudAnswerAction> {
     out
 }
 
-fn to_chips(sources: &[Source]) -> Vec<HudSource> {
-    sources
+// ── Citation markers ──────────────────────────────────────────────────────
+//
+// The card shows its sources as chips, so "[4]" in an answer points at
+// nothing, and Insert would type it into the user's document. The server's
+// prompt asks for none and strips any that slip through
+// (web/lib/answer-core.ts); this is the same rule, for older servers and
+// answers made on this computer.
+
+/// `[1]`, `[1, 2]`, `[1-3]`, `[^1]`, `【1】`, `【1†source】`.
+const CITE: &str = r"(?:\[\^?\d{1,3}(?:\s*[,–-]\s*\^?\d{1,3})*\]|【\d{1,3}[^】\n]{0,40}】)";
+/// Markers that open a line, with the space after them.
+static CITE_LEADING: Lazy<Regex> =
+    Lazy::new(|| Regex::new(&format!(r"(?m)^(?:{CITE}[^\S\n]*)+")).expect("leading citations"));
+/// Markers inside a line, with the space before them.
+static CITE_INNER: Lazy<Regex> =
+    Lazy::new(|| Regex::new(&format!(r"[^\S\n]*{CITE}")).expect("citations"));
+/// Code keeps its brackets: fenced blocks (closed or still streaming) and `inline`.
+static CODE_SPAN: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?s)```.*?(?:```|\z)|`[^`\n]*`").expect("code span"));
+
+/// One run of prose without its markers. A marker right before "(" is a
+/// markdown link's text, not a citation, and stays.
+fn strip_prose_citations(prose: &str, mid_line: bool) -> String {
+    // A run that follows code on the same line doesn't start a line.
+    let marked = if mid_line {
+        format!("\u{0}{prose}")
+    } else {
+        prose.to_string()
+    };
+    let keep_links = |re: &Regex, s: &str| -> String {
+        let mut out = String::with_capacity(s.len());
+        let mut at = 0;
+        for m in re.find_iter(s) {
+            out.push_str(&s[at..m.start()]);
+            if s[m.end()..].starts_with('(') {
+                out.push_str(m.as_str());
+            }
+            at = m.end();
+        }
+        out.push_str(&s[at..]);
+        out
+    };
+    let once = keep_links(&CITE_LEADING, &marked);
+    let twice = keep_links(&CITE_INNER, &once);
+    twice.strip_prefix('\u{0}').unwrap_or(&twice).to_string()
+}
+
+/// An answer without citation markers; code is left as it is.
+pub fn strip_citations(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    let mut at = 0;
+    for m in CODE_SPAN.find_iter(text) {
+        let mid_line = at > 0 && !text[..at].ends_with('\n');
+        out.push_str(&strip_prose_citations(&text[at..m.start()], mid_line));
+        out.push_str(m.as_str());
+        at = m.end();
+    }
+    let mid_line = at > 0 && !text[..at].ends_with('\n');
+    out.push_str(&strip_prose_citations(&text[at..], mid_line));
+    out
+}
+
+/// Web results shown as chips: the card is a glance, not a bibliography.
+/// The model still reads every result; only the chips are capped.
+const MAX_WEB_CHIPS: usize = 3;
+/// All the chips a card shows: the window read, results, the user's links.
+const MAX_CHIPS: usize = 4;
+
+/// The site a link is on ("www.bbc.co.uk" and "bbc.co.uk" are one site), so
+/// a card never shows two chips for the same place.
+fn site_of(url: &str) -> Option<String> {
+    let rest = url
+        .strip_prefix("https://")
+        .or_else(|| url.strip_prefix("http://"))?;
+    let host = rest.split(['/', '?', '#']).next().unwrap_or_default();
+    let host = host.rsplit_once('@').map_or(host, |(_, h)| h);
+    let host = host.split(':').next().unwrap_or_default().to_lowercase();
+    let host = host.strip_prefix("www.").unwrap_or(&host).to_string();
+    (!host.is_empty()).then_some(host)
+}
+
+/// The card's chips: the window it read first, then the web results in the
+/// order they came (best first), then the user's own links; one per site,
+/// at most [`MAX_WEB_CHIPS`] results and [`MAX_CHIPS`] in all.
+fn to_chips(window: Option<HudSource>, web: &[Source], extra: &[Source]) -> Vec<HudSource> {
+    let chip = |s: &Source| HudSource {
+        title: s.title.clone(),
+        url: s.url.clone(),
+    };
+    let meaningful = |s: &&Source| super::personal::is_meaningful_source(&s.title, &s.url);
+    let mut seen = std::collections::HashSet::new();
+    let mut fresh = |c: &HudSource| {
+        seen.insert(site_of(&c.url).unwrap_or_else(|| format!("{}\n{}", c.url, c.title)))
+    };
+    let mut out: Vec<HudSource> = window.into_iter().filter(|c| fresh(c)).collect();
+    let results: Vec<HudSource> = web
         .iter()
-        .filter(|s| super::personal::is_meaningful_source(&s.title, &s.url))
-        .map(|s| HudSource {
-            title: s.title.clone(),
-            url: s.url.clone(),
-        })
-        .collect()
+        .filter(meaningful)
+        .map(chip)
+        .filter(|c| fresh(c))
+        .take(MAX_WEB_CHIPS)
+        .collect();
+    out.extend(results);
+    out.extend(
+        extra
+            .iter()
+            .filter(meaningful)
+            .map(chip)
+            .filter(|c| fresh(c)),
+    );
+    out.truncate(MAX_CHIPS);
+    out
 }
 
 // ── The card's two halves have to agree ───────────────────────────────────
@@ -496,6 +599,12 @@ pub async fn run_with(
                      done: bool,
                      actions: Vec<HudAnswerAction>,
                      note: Option<String>| {
+        // Answers never show citation markers; a draft is the user's text.
+        let text = &if opts.write {
+            text.to_string()
+        } else {
+            strip_citations(text)
+        };
         if !text.is_empty() {
             first_words.get_or_init(|| started.elapsed());
         }
@@ -511,14 +620,8 @@ pub async fn run_with(
                 return;
             }
         }
-        let all: Vec<Source> = sources.iter().chain(extra.iter()).cloned().collect();
-        let mut chips: Vec<HudSource> = window_chip
-            .lock()
-            .ok()
-            .and_then(|g| g.clone())
-            .into_iter()
-            .collect();
-        chips.extend(to_chips(&all));
+        let window = window_chip.lock().ok().and_then(|g| g.clone());
+        let chips = to_chips(window, sources, &extra);
         hud::show(
             &app,
             HudContent::Answer {
@@ -661,7 +764,12 @@ pub async fn run_with(
 
     // Whatever streamed in, the card, the draft and the history get the
     // answer without any leaked reasoning; nothing left is a failure.
+    // An answer's citation markers go too: they'd be inserted and remembered.
     let result = result.and_then(|a| match super::reasoning::answer_of(&a.text) {
+        Some(text) if !opts.write => Ok(Answered {
+            text: strip_citations(&text),
+            ..a
+        }),
         Some(text) => Ok(Answered { text, ..a }),
         None => Err("hud.status.failed".to_string()),
     });
@@ -1066,6 +1174,73 @@ async fn server_answer(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn citation_markers_are_stripped_but_code_and_links_keep_theirs() {
+        let cases = [
+            (
+                "Sunny, 19 °C [1]. Rain unlikely [2][4].",
+                "Sunny, 19 °C. Rain unlikely.",
+            ),
+            (
+                "Sunny[1], warm [1, 2] and dry [3-5].",
+                "Sunny, warm and dry.",
+            ),
+            ("See note[^1] and 【4†source】 here.", "See note and here."),
+            (
+                "[1] Lisbon is sunny.\n[2] Porto too.",
+                "Lisbon is sunny.\nPorto too.",
+            ),
+            ("Use `arr[1]` here [2].", "Use `arr[1]` here."),
+            (
+                "```py\nx = a[1]\n```\nDone [1].",
+                "```py\nx = a[1]\n```\nDone.",
+            ),
+            (
+                "In [2024] the [1](https://x.y) link.",
+                "In [2024] the [1](https://x.y) link.",
+            ),
+            ("`x`[1] foo", "`x` foo"),
+            ("Still streaming:\n```\nb[2]", "Still streaming:\n```\nb[2]"),
+        ];
+        for (input, want) in cases {
+            assert_eq!(strip_citations(input), want, "{input}");
+        }
+    }
+
+    #[test]
+    fn at_most_three_results_one_per_site() {
+        let src = |title: &str, url: &str| Source {
+            title: title.into(),
+            url: url.into(),
+            excerpt: String::new(),
+        };
+        let web = [
+            src("Forecast", "https://weather.example.com/a"),
+            src("Same site", "https://www.weather.example.com/b"),
+            src("BBC", "https://bbc.co.uk/weather"),
+            src("IPMA", "https://ipma.pt/"),
+            src("AccuWeather", "https://accuweather.com/x"),
+        ];
+        let chips = to_chips(None, &web, &[]);
+        let titles: Vec<&str> = chips.iter().map(|c| c.title.as_str()).collect();
+        assert_eq!(titles, ["Forecast", "BBC", "IPMA"]);
+
+        // The window read comes first and counts toward the four.
+        let window = HudSource {
+            title: "Lisbon — Wikipedia".into(),
+            url: "https://en.wikipedia.org/wiki/Lisbon".into(),
+        };
+        let extra = [src("hud.source.searchGmail", "https://mail.google.com/x")];
+        let chips = to_chips(Some(window), &web, &extra);
+        assert_eq!(chips.len(), 4);
+        assert_eq!(chips[0].title, "Lisbon — Wikipedia");
+        assert_eq!(
+            site_of("https://user@WWW.Example.com:8080/x"),
+            Some("example.com".into())
+        );
+        assert_eq!(site_of("file:///Users/me/a.pdf"), None);
+    }
 
     fn kinds(a: &[HudAnswerAction]) -> Vec<&str> {
         a.iter().map(|a| a.kind.as_str()).collect()

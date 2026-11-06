@@ -94,6 +94,14 @@ export type Expect = {
   shows?: string[];
   /** Case-insensitive substrings no card's text or i18n key may contain ("cantDoYet"). */
   not_shows?: string[];
+  /** Regular expressions no card's text may match ("\\[\\d+\\]": no citation markers). */
+  card_text_not_matches?: string[];
+  /** No answer card shows more source chips than this. */
+  max_sources?: number;
+  /** Some answer card shows at least this many source chips. */
+  min_sources?: number;
+  /** No answer card shows two source chips from the same site. */
+  sources_distinct_sites?: boolean;
   /** Anything else, judged by the model against the output. */
   judge?: string;
 };

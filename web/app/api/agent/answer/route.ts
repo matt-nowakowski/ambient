@@ -15,6 +15,7 @@ import {
   MAX_TOKENS,
   MAX_TOKENS_WRITE,
   answerMessages,
+  citationStream,
 } from "@/lib/answer-core";
 
 export const maxDuration = 30;
@@ -177,12 +178,19 @@ export async function POST(req: Request) {
     async start(controller) {
       controller.enqueue(sse("sources", sources));
       const reader = deltas.getReader();
+      // Answers never carry "[1]"-style markers (the card shows sources as
+      // chips); drafts are the user's text and pass through untouched.
+      const cites = writing ? null : citationStream();
+      const send = (t: string) => {
+        if (t) controller.enqueue(sse(null, { t }));
+      };
       try {
         for (;;) {
           const { value, done } = await reader.read();
           if (done) break;
-          controller.enqueue(sse(null, { t: value }));
+          send(cites ? cites.push(value) : value);
         }
+        if (cites) send(cites.flush());
         controller.enqueue(sse("done", {}));
       } catch (err) {
         console.error("[agent] stream failed", err);

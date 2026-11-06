@@ -1454,7 +1454,7 @@
       "title": "Czy to miało zostać wpisane?",
       "composed": "Oto Twój szkic.",
       "focusHint": "Kliknij pole tekstowe, aby go wstawić.",
-      "askInstead": "Zapytaj zamiast tego {{appName}}"
+      "askInstead": "Zapytaj {{appName}}"
     },
     "source": {
       "searchDrive": "Szukaj na Dysku Google",

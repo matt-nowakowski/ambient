@@ -1330,7 +1330,7 @@
     "copied": "Kopiert",
     "inserted": "Eingefügt ✓",
     "clickToCopy": "Klicken zum Kopieren",
-    "followUpHint": "Halte dein Tastenkürzel gedrückt, um nachzufragen",
+    "followUpHint": "Kürzel halten, um nachzufragen",
     "yes": "Ja",
     "notNow": "Nicht jetzt",
     "stop": "Stopp",
@@ -1438,7 +1438,7 @@
       "title": "Wolltest du das tippen?",
       "composed": "Hier ist dein Entwurf.",
       "focusHint": "Klicke in ein Textfeld, um ihn einzufügen.",
-      "askInstead": "Stattdessen {{appName}} fragen"
+      "askInstead": "{{appName}} fragen"
     },
     "source": {
       "searchDrive": "In Google Drive suchen",
@@ -1542,7 +1542,7 @@
       "couldntWrite": "Das ging gerade nicht, daher steht es so da, wie du es gesagt hast.",
       "couldntPolish": "Das Glätten ging gerade nicht, daher steht es so da, wie du es gesagt hast.",
       "rewritten": "Umgeschrieben",
-      "undoRewrite": "Umschreiben rückgängig",
+      "undoRewrite": "Rückgängig",
       "copiedOriginal": "Dein ursprünglicher Text ist kopiert. Zum Ersetzen einfügen.",
       "couldntRewrite": "Das ließ sich gerade nicht umschreiben, dein Text bleibt unverändert."
     },

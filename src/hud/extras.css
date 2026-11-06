@@ -1,25 +1,25 @@
 /* 👍/👎 on cards, and the meeting notes card. Kept apart from hud.css. */
 
 .hud-thumbs {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 2px;
 }
 
+/* Same height and corner as the HUD's buttons; transitions and the pressed
+   state come from hud.css, so reduced motion covers these too. */
 .hud-card .hud-thumbs button {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   padding: 0;
   border: 0;
-  border-radius: 7px;
+  border-radius: 8px;
   background: transparent;
   color: var(--h-faint);
   cursor: pointer;
-  transition:
-    background 120ms ease,
-    color 120ms ease;
 }
 
 .hud-card .hud-thumbs button:hover {
@@ -31,8 +31,13 @@
   color: var(--h-ink);
 }
 
-.hud-actions .hud-thumbs {
-  margin-left: 4px;
+/* Rated: both are done, but the one chosen stays at full strength. */
+.hud-card .hud-thumbs button[aria-pressed="true"]:disabled {
+  opacity: 1;
+}
+
+.hud-card .hud-thumbs button:disabled:hover {
+  background: transparent;
 }
 
 /* A dismissed card comes apart into its own dots rather than just fading. */
