@@ -1024,6 +1024,7 @@ export const PrivacyCenter: React.FC = () => {
                           <Button
                             variant="ghost"
                             size="sm"
+                            className="shrink-0 whitespace-nowrap"
                             onClick={() =>
                               neverWatch(preview.app?.bundle_id ?? "")
                             }

@@ -23,7 +23,7 @@ const MIN_HEIGHT: f64 = 72.0;
 const MAX_HEIGHT: f64 = 560.0;
 const MARGIN: f64 = 16.0;
 /// How long the card takes to dissolve before the panel is ordered out.
-const CLOSE_MS: u64 = 200;
+const CLOSE_MS: u64 = 500;
 
 #[cfg(target_os = "macos")]
 tauri_panel! {

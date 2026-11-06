@@ -187,19 +187,19 @@ export const OnDeviceAi: React.FC<{
         </div>
       )}
       {models.length > 1 && (
-        <div className="mt-3">
-          <p className="text-small text-ink-2">
+        <div className="mt-4">
+          <p className="text-meta text-ink-3">
             {t("privacy.onDeviceAi.models")}
           </p>
           <div
             role="radiogroup"
             aria-label={t("privacy.onDeviceAi.models")}
-            className="mt-1 flex flex-col"
+            className="mt-2 divide-y divide-glass-edge overflow-hidden rounded-card bg-glass-press"
           >
             {models.map((m) => (
               <div
                 key={m.id}
-                className="flex items-start gap-2 rounded-control hover:bg-glass-hover"
+                className="flex items-center gap-2 pe-2 hover:bg-glass-hover"
               >
                 <button
                   type="button"
@@ -207,59 +207,57 @@ export const OnDeviceAi: React.FC<{
                   aria-checked={m.selected}
                   disabled={downloading}
                   onClick={() => choose(m)}
-                  className="flex min-w-0 flex-1 items-start gap-2.5 px-2 py-1.5 text-start disabled:cursor-default disabled:opacity-60"
+                  className="flex min-w-0 flex-1 items-center gap-3 px-3 py-2.5 text-start disabled:cursor-default disabled:opacity-60"
                 >
-                  <Radio checked={m.selected} className="mt-px" />
+                  <Radio checked={m.selected} className="shrink-0" />
                   <span className="min-w-0 flex-1">
-                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
-                      {m.name}
+                    <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                      <span className="text-ui">{m.name}</span>
                       <span className="text-meta tabular-nums text-ink-3">
                         {formatModelSize(m.size_mb)}
                       </span>
-                      {m.recommended && (
-                        <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
-                          {t("privacy.onDeviceAi.recommended")}
-                        </span>
-                      )}
-                      {m.basic && (
-                        <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
-                          {t("privacy.onDeviceAi.basic")}
-                        </span>
-                      )}
-                      {m.downloading ? (
-                        <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
-                          {t("privacy.onDeviceAi.downloadingTag")}
-                        </span>
-                      ) : (
-                        m.downloaded && (
-                          <span className="rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2">
-                            {t("privacy.onDeviceAi.onThisComputer")}
+                      {[
+                        m.recommended && t("privacy.onDeviceAi.recommended"),
+                        m.basic && t("privacy.onDeviceAi.basic"),
+                        m.downloading
+                          ? t("privacy.onDeviceAi.downloadingTag")
+                          : m.downloaded &&
+                            t("privacy.onDeviceAi.onThisComputer"),
+                      ]
+                        .filter(Boolean)
+                        .map((tag) => (
+                          <span
+                            key={String(tag)}
+                            className="whitespace-nowrap rounded-full bg-glass-hover px-2 py-0.5 text-meta text-ink-2"
+                          >
+                            {tag}
                           </span>
-                        )
-                      )}
+                        ))}
                     </span>
-                    <span className="mt-0.5 block text-small text-ink-2">
-                      {description(m)}
-                    </span>
-                    {m.accuracy !== null && m.speed !== null && (
-                      <span className="mt-1 flex items-center gap-4 text-meta text-ink-3">
-                        <span className="flex items-center gap-1.5">
-                          {t("privacy.onDeviceAi.quality")}
-                          <SpeedBars
-                            level={bars(m.accuracy, bestAccuracy)}
-                            className="h-[10px]!"
-                          />
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          {t("privacy.onDeviceAi.speed")}
-                          <SpeedBars
-                            level={bars(m.speed, bestSpeed)}
-                            className="h-[10px]!"
-                          />
-                        </span>
+                    {description(m) && (
+                      <span className="mt-0.5 block text-small text-ink-2">
+                        {description(m)}
                       </span>
                     )}
                   </span>
+                  {m.accuracy !== null && m.speed !== null && (
+                    <span className="grid shrink-0 grid-cols-[auto_auto] items-center gap-x-2 gap-y-1 text-meta text-ink-3">
+                      <span className="text-end">
+                        {t("privacy.onDeviceAi.quality")}
+                      </span>
+                      <SpeedBars
+                        level={bars(m.accuracy, bestAccuracy)}
+                        className="h-[10px]!"
+                      />
+                      <span className="text-end">
+                        {t("privacy.onDeviceAi.speed")}
+                      </span>
+                      <SpeedBars
+                        level={bars(m.speed, bestSpeed)}
+                        className="h-[10px]!"
+                      />
+                    </span>
+                  )}
                 </button>
                 {m.downloaded && !downloading && (
                   <button
@@ -271,7 +269,7 @@ export const OnDeviceAi: React.FC<{
                     title={t("privacy.onDeviceAi.removeModel", {
                       name: m.name,
                     })}
-                    className="mt-1 grid size-7 shrink-0 place-items-center rounded-control text-ink-3 hover:bg-glass-press hover:text-text"
+                    className="grid size-7 shrink-0 place-items-center rounded-control text-ink-3 hover:bg-glass-press hover:text-text"
                   >
                     <Trash2 width={12} height={12} aria-hidden="true" />
                   </button>
@@ -279,7 +277,7 @@ export const OnDeviceAi: React.FC<{
               </div>
             ))}
           </div>
-          <p className="mt-1 text-meta text-ink-3">
+          <p className="mt-2 max-w-lg text-meta text-ink-3">
             {t("privacy.onDeviceAi.scoresNote")}
           </p>
         </div>
