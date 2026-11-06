@@ -227,10 +227,6 @@
       "hint": "Bạn có thể thay đổi những mục này sau trong Cài đặt",
       "highFiveLabel": "Đập tay",
       "atLogin": "Khởi động {{appName}} khi tôi đăng nhập",
-      "polish": {
-        "title": "Chỉnh chu phần đọc chính tả của tôi bằng AI",
-        "description": "Tắt: lời đọc được gõ ngay. Bật: lời nói lộn xộn được làm gọn trước (chỉ gửi văn bản, không bao giờ gửi âm thanh). Dù thế nào, {{appName}} vẫn viết giúp bạn khi bạn yêu cầu."
-      },
       "finish": "Xong",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Chỉ đọc chính tả thông thường. Không gửi gì cả."
       },
       "continueDownload": "Tiếp tục và tải xuống"
+    },
+    "choices": {
+      "title": "Thêm vài lựa chọn",
+      "sub": "Tất cả đều tùy chọn, và tắt cho đến khi bạn bật.",
+      "polish": {
+        "title": "Chỉnh chu phần đọc chính tả của tôi bằng AI",
+        "body": "Chỉnh lời nói lộn xộn trước khi gõ. Chỉ gửi văn bản, không bao giờ gửi âm thanh.",
+        "bodyDevice": "Chỉnh lời nói lộn xộn trước khi gõ, ngay trên máy tính này."
+      },
+      "telemetry": "Chia sẻ số liệu sử dụng ẩn danh, không bao giờ là những gì bạn nói, gõ hay thấy."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Chào mừng",
           "permissions": "Quyền",
           "model": "Mô hình",
+          "ai": "Nơi AI chạy",
+          "choices": "Lựa chọn khác",
           "demo": "Demo",
           "try": "Thử xem",
           "done": "Hoàn tất"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Gửi mẹo cho tôi",
-      "labelOptional": "Gửi mẹo cho tôi (tùy chọn)",
       "description": "Thỉnh thoảng gửi mẹo để dùng {{appName}} hiệu quả hơn. Hủy đăng ký bất cứ lúc nào.",
+      "short": "Thỉnh thoảng vài mẹo hay. Hủy đăng ký bất cứ lúc nào.",
       "button": "Gửi",
-      "done": "Đã gửi",
       "error": "Không gửi được. Thử lại?",
       "checkInbox": "Kiểm tra hộp thư đến để xác nhận."
     }
@@ -2071,7 +2078,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Giúp cải thiện {{appName}}: chia sẻ số liệu sử dụng ẩn danh, không bao giờ là những gì bạn nói, gõ hay thấy.",
     "whatsShared": "Những gì được chia sẻ",
     "sharedTitle": "Chỉ số đếm và thời gian ẩn danh",
     "shared": {

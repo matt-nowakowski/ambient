@@ -228,10 +228,6 @@
       "hint": "Puedes cambiar esto más tarde en Configuración",
       "highFiveLabel": "Choca esos cinco",
       "atLogin": "Iniciar {{appName}} al iniciar sesión",
-      "polish": {
-        "title": "Pulir mi dictado con IA",
-        "description": "Desactivado, el dictado se escribe al instante. Activado, primero se limpia el habla desordenada (se envía el texto, nunca el audio). En ambos casos, {{appName}} escribe por ti cuando se lo pides."
-      },
       "finish": "Listo",
       "panel": {
         "name": "{{appName}}",
@@ -273,6 +269,16 @@
         "body": "Solo dictado simple. No se envía nada."
       },
       "continueDownload": "Continuar y descargar"
+    },
+    "choices": {
+      "title": "Unas cuantas opciones más",
+      "sub": "Todo es opcional y está desactivado hasta que lo actives.",
+      "polish": {
+        "title": "Pulir mi dictado con IA",
+        "body": "Ordena el habla desordenada antes de escribirla. Se envía el texto, nunca el audio.",
+        "bodyDevice": "Ordena el habla desordenada antes de escribirla, en este ordenador."
+      },
+      "telemetry": "Comparte recuentos de uso anónimos, nunca lo que dices, escribes o ves."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Bienvenida",
           "permissions": "Permisos",
           "model": "Modelo",
+          "ai": "Dónde funciona la IA",
+          "choices": "Más opciones",
           "demo": "Demostración",
           "try": "Pruébalo",
           "done": "Todo listo"
@@ -1264,10 +1272,9 @@
     },
     "tips": {
       "label": "Envíame consejos",
-      "labelOptional": "Envíenme consejos (opcional)",
       "description": "Consejos de vez en cuando para sacar más partido a {{appName}}. Date de baja cuando quieras.",
+      "short": "Algún consejo de vez en cuando. Date de baja cuando quieras.",
       "button": "Enviar",
-      "done": "Enviado",
       "error": "No se pudo enviar. ¿Otra vez?",
       "checkInbox": "Revisa tu bandeja de entrada para confirmar."
     }
@@ -2081,7 +2088,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Ayuda a mejorar {{appName}}: comparte recuentos de uso anónimos, nunca lo que dices, escribes o ves.",
     "whatsShared": "Qué se comparte",
     "sharedTitle": "Solo recuentos y tiempos anónimos",
     "shared": {

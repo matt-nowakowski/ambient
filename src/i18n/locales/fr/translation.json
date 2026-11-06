@@ -228,10 +228,6 @@
       "hint": "Vous pourrez modifier tout cela plus tard dans les Paramètres",
       "highFiveLabel": "Tope là",
       "atLogin": "Lancer {{appName}} à l’ouverture de ma session",
-      "polish": {
-        "title": "Peaufiner ma dictée avec l'IA",
-        "description": "Désactivé, la dictée est tapée instantanément. Activé, la parole hésitante est d'abord nettoyée (le texte est envoyé, jamais l'audio). Dans les deux cas, {{appName}} écrit pour vous quand vous le demandez."
-      },
       "finish": "Terminé",
       "panel": {
         "name": "{{appName}}",
@@ -273,6 +269,16 @@
         "body": "Dictée simple uniquement. Rien n'est envoyé."
       },
       "continueDownload": "Continuer et télécharger"
+    },
+    "choices": {
+      "title": "Encore quelques choix",
+      "sub": "Tout est facultatif, et désactivé tant que vous ne l'activez pas.",
+      "polish": {
+        "title": "Peaufiner ma dictée avec l'IA",
+        "body": "Met de l'ordre dans une dictée brouillonne avant de la taper. Le texte est envoyé, jamais l'audio.",
+        "bodyDevice": "Met de l'ordre dans une dictée brouillonne avant de la taper, sur cet ordinateur."
+      },
+      "telemetry": "Partagez des statistiques d'usage anonymes, jamais ce que vous dites, tapez ou voyez."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Bienvenue",
           "permissions": "Autorisations",
           "model": "Modèle",
+          "ai": "Où tourne l'IA",
+          "choices": "Autres choix",
           "demo": "Démo",
           "try": "Essai",
           "done": "Tout est prêt"
@@ -1264,10 +1272,9 @@
     },
     "tips": {
       "label": "Recevoir des astuces",
-      "labelOptional": "Recevoir des astuces (facultatif)",
       "description": "Des astuces de temps en temps pour tirer le meilleur de {{appName}}. Désabonnement à tout moment.",
+      "short": "Quelques astuces de temps en temps. Désabonnement à tout moment.",
       "button": "Envoyer",
-      "done": "Envoyé",
       "error": "Envoi impossible. Réessayer ?",
       "checkInbox": "Vérifiez votre boîte de réception pour confirmer."
     }
@@ -2081,7 +2088,6 @@
     "escape": "échap"
   },
   "telemetry": {
-    "optIn": "Aidez à améliorer {{appName}} : partagez des statistiques d'usage anonymes, jamais ce que vous dites, tapez ou voyez.",
     "whatsShared": "Ce qui est partagé",
     "sharedTitle": "Uniquement des comptages et des durées anonymes",
     "shared": {

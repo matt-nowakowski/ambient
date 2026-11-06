@@ -227,10 +227,6 @@
       "hint": "You can change these later in Settings",
       "highFiveLabel": "High five",
       "atLogin": "Start {{appName}} when I log in",
-      "polish": {
-        "title": "Tidy up my dictation with AI",
-        "description": "Off, dictation types instantly. On, messy speech is cleaned up first (the text is sent, never audio). Either way, {{appName}} writes for you when you ask."
-      },
       "finish": "Done",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Plain dictation only. Nothing is sent."
       },
       "continueDownload": "Continue and download"
+    },
+    "choices": {
+      "title": "A few more choices",
+      "sub": "All optional, and off unless you turn them on.",
+      "polish": {
+        "title": "Tidy up my dictation with AI",
+        "body": "Tidies messy speech before it's typed. Text is sent, never audio.",
+        "bodyDevice": "Tidies messy speech before it's typed, on this computer."
+      },
+      "telemetry": "Share anonymous usage counts, never what you say, type or see."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Welcome",
           "permissions": "Permissions",
           "model": "Model",
+          "ai": "Where the AI runs",
+          "choices": "More choices",
           "demo": "Demo",
           "try": "Try it",
           "done": "All set"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Email me tips",
-      "labelOptional": "Email me tips (optional)",
       "description": "Occasional tips on getting more from {{appName}}. Unsubscribe anytime.",
+      "short": "A few tips now and then. Unsubscribe anytime.",
       "button": "Send",
-      "done": "Sent",
       "error": "Couldn’t send that. Try again?",
       "checkInbox": "Check your inbox to confirm."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Help improve {{appName}}: share anonymous usage counts, never what you say, type or see.",
     "whatsShared": "What's shared",
     "sharedTitle": "Anonymous counts and timings only",
     "shared": {

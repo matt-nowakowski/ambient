@@ -227,10 +227,6 @@
       "hint": "Du kan ændre disse senere i Indstillinger",
       "highFiveLabel": "Highfive",
       "atLogin": "Start {{appName}}, når jeg logger ind",
-      "polish": {
-        "title": "Gør min diktering pæn med AI",
-        "description": "Fra: diktering skrives med det samme. Til: rodet tale ryddes op først (teksten sendes, aldrig lyd). Uanset hvad skriver {{appName}} for dig, når du beder om det."
-      },
       "finish": "Færdig",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Kun almindelig diktering. Intet sendes."
       },
       "continueDownload": "Fortsæt og download"
+    },
+    "choices": {
+      "title": "Et par valg mere",
+      "sub": "Alt er valgfrit og slået fra, indtil du slår det til.",
+      "polish": {
+        "title": "Gør min diktering pæn med AI",
+        "body": "Rydder op i rodet tale, før den skrives. Tekst sendes, aldrig lyd.",
+        "bodyDevice": "Rydder op i rodet tale, før den skrives, på denne computer."
+      },
+      "telemetry": "Del anonyme brugstal, aldrig hvad du siger, skriver eller ser."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Velkommen",
           "permissions": "Tilladelser",
           "model": "Model",
+          "ai": "Hvor AI'en kører",
+          "choices": "Flere valg",
           "demo": "Demo",
           "try": "Prøv det",
           "done": "Klar"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Send mig tips",
-      "labelOptional": "Send mig tips (valgfrit)",
       "description": "Tips en gang imellem om at få mere ud af {{appName}}. Afmeld når som helst.",
+      "short": "Et par tips en gang imellem. Afmeld når som helst.",
       "button": "Send",
-      "done": "Sendt",
       "error": "Kunne ikke sende. Prøv igen?",
       "checkInbox": "Tjek din indbakke for at bekræfte."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Hjælp med at forbedre {{appName}}: del anonyme brugstal, aldrig hvad du siger, skriver eller ser.",
     "whatsShared": "Hvad der deles",
     "sharedTitle": "Kun anonyme optællinger og tider",
     "shared": {

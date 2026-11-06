@@ -227,10 +227,6 @@
       "hint": "Du kannst das später in den Einstellungen ändern",
       "highFiveLabel": "High Five",
       "atLogin": "{{appName}} beim Anmelden starten",
-      "polish": {
-        "title": "Mein Diktat mit KI glätten",
-        "description": "Aus: Diktat wird sofort getippt. An: Unsaubere Sprache wird zuerst geglättet (gesendet wird der Text, nie Audio). So oder so schreibt {{appName}} für dich, wenn du darum bittest."
-      },
       "finish": "Fertig",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Nur einfaches Diktieren. Nichts wird gesendet."
       },
       "continueDownload": "Weiter und laden"
+    },
+    "choices": {
+      "title": "Noch ein paar Entscheidungen",
+      "sub": "Alles optional und aus, bis du es einschaltest.",
+      "polish": {
+        "title": "Mein Diktat mit KI glätten",
+        "body": "Glättet holprige Sprache, bevor sie getippt wird. Gesendet wird Text, nie Audio.",
+        "bodyDevice": "Glättet holprige Sprache, bevor sie getippt wird, auf diesem Computer."
+      },
+      "telemetry": "Teile anonyme Nutzungszahlen, nie, was du sagst, tippst oder siehst."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Willkommen",
           "permissions": "Berechtigungen",
           "model": "Modell",
+          "ai": "Wo die KI läuft",
+          "choices": "Weitere Optionen",
           "demo": "Demo",
           "try": "Ausprobieren",
           "done": "Alles bereit"
@@ -1258,10 +1266,9 @@
     },
     "tips": {
       "label": "Tipps per E-Mail",
-      "labelOptional": "Tipps per E-Mail (optional)",
       "description": "Ab und zu Tipps, wie du mehr aus {{appName}} herausholst. Jederzeit abbestellbar.",
+      "short": "Ab und zu ein paar Tipps. Jederzeit abbestellbar.",
       "button": "Senden",
-      "done": "Gesendet",
       "error": "Senden fehlgeschlagen. Nochmal?",
       "checkInbox": "Sieh in dein Postfach, um zu bestätigen."
     }
@@ -2069,7 +2076,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Hilf mit, {{appName}} zu verbessern: Teile anonyme Nutzungszahlen, nie, was du sagst, tippst oder siehst.",
     "whatsShared": "Was geteilt wird",
     "sharedTitle": "Nur anonyme Zählungen und Zeiten",
     "shared": {

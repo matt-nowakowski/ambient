@@ -16,6 +16,7 @@ import { Welcome } from "./screens/Welcome";
 import { Permissions } from "./screens/Permissions";
 import { Model } from "./screens/Model";
 import { AiChoice } from "./screens/AiChoice";
+import { Choices } from "./screens/Choices";
 import { Demo } from "./screens/Demo";
 import { TryIt } from "./screens/TryIt";
 import { useOsType } from "@/hooks/useOsType";
@@ -222,6 +223,8 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
       );
     case "ai":
       return <AiChoice progress={progress} onBack={back} onContinue={next} />;
+    case "choices":
+      return <Choices progress={progress} onBack={back} onContinue={next} />;
     case "demo":
       return (
         <Demo

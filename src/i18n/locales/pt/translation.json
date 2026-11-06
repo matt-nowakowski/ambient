@@ -228,10 +228,6 @@
       "hint": "Você pode alterar isso depois nas Configurações",
       "highFiveLabel": "Toca aqui",
       "atLogin": "Abrir o {{appName}} ao iniciar a sessão",
-      "polish": {
-        "title": "Refinar meu ditado com IA",
-        "description": "Desligado, o ditado é digitado na hora. Ligado, a fala bagunçada é limpa primeiro (o texto é enviado, nunca o áudio). De qualquer forma, o {{appName}} escreve por você quando você pede."
-      },
       "finish": "Concluído",
       "panel": {
         "name": "{{appName}}",
@@ -273,6 +269,16 @@
         "body": "Só ditado simples. Nada é enviado."
       },
       "continueDownload": "Continuar e baixar"
+    },
+    "choices": {
+      "title": "Mais algumas escolhas",
+      "sub": "Tudo opcional, e desligado até você ativar.",
+      "polish": {
+        "title": "Refinar meu ditado com IA",
+        "body": "Arruma a fala bagunçada antes de digitá-la. O texto é enviado, nunca o áudio.",
+        "bodyDevice": "Arruma a fala bagunçada antes de digitá-la, neste computador."
+      },
+      "telemetry": "Compartilhe contagens de uso anônimas, nunca o que você diz, digita ou vê."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Boas-vindas",
           "permissions": "Permissões",
           "model": "Modelo",
+          "ai": "Onde a IA funciona",
+          "choices": "Mais escolhas",
           "demo": "Demonstração",
           "try": "Experimente",
           "done": "Tudo pronto"
@@ -1269,10 +1277,9 @@
     },
     "tips": {
       "label": "Receber dicas",
-      "labelOptional": "Receber dicas (opcional)",
       "description": "Dicas de vez em quando para tirar mais proveito do {{appName}}. Cancele quando quiser.",
+      "short": "Algumas dicas de vez em quando. Cancele quando quiser.",
       "button": "Enviar",
-      "done": "Enviado",
       "error": "Não foi possível enviar. Tentar de novo?",
       "checkInbox": "Verifique sua caixa de entrada para confirmar."
     }
@@ -2086,7 +2093,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Ajude a melhorar o {{appName}}: compartilhe contagens de uso anônimas, nunca o que você diz, digita ou vê.",
     "whatsShared": "O que é compartilhado",
     "sharedTitle": "Apenas contagens e tempos anônimos",
     "shared": {

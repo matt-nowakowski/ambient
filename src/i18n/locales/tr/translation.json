@@ -227,10 +227,6 @@
       "hint": "Bunları daha sonra Ayarlar’dan değiştirebilirsiniz",
       "highFiveLabel": "Çak bir beşlik",
       "atLogin": "Oturum açtığımda {{appName}} uygulamasını başlat",
-      "polish": {
-        "title": "Dikteimi yapay zekâyla toparla",
-        "description": "Kapalıyken dikte anında yazılır. Açıkken dağınık konuşma önce toparlanır (metin gönderilir, ses asla). Her iki durumda da istediğinde {{appName}} senin için yazar."
-      },
       "finish": "Bitti",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Yalnızca düz dikte. Hiçbir şey gönderilmez."
       },
       "continueDownload": "Devam et ve indir"
+    },
+    "choices": {
+      "title": "Birkaç seçim daha",
+      "sub": "Hepsi isteğe bağlı ve siz açana kadar kapalı.",
+      "polish": {
+        "title": "Dikteimi yapay zekâyla toparla",
+        "body": "Dağınık konuşmayı yazılmadan önce toparlar. Metin gönderilir, ses asla.",
+        "bodyDevice": "Dağınık konuşmayı yazılmadan önce bu bilgisayarda toparlar."
+      },
+      "telemetry": "Anonim kullanım sayılarını paylaş, söylediklerini, yazdıklarını veya gördüklerini asla."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Hoş geldiniz",
           "permissions": "İzinler",
           "model": "Model",
+          "ai": "Yapay zekânın çalıştığı yer",
+          "choices": "Diğer seçimler",
           "demo": "Demo",
           "try": "Deneyin",
           "done": "Hazır"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Bana ipucu gönderin",
-      "labelOptional": "Bana ipucu gönderin (isteğe bağlı)",
       "description": "{{appName}}'den daha fazla yararlanmanız için ara sıra ipuçları. İstediğiniz zaman abonelikten çıkın.",
+      "short": "Arada bir birkaç ipucu. İstediğiniz zaman abonelikten çıkın.",
       "button": "Gönder",
-      "done": "Gönderildi",
       "error": "Gönderilemedi. Yeniden dene?",
       "checkInbox": "Onaylamak için gelen kutunuza bakın."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "{{appName}} uygulamasını geliştirmeye yardım et: anonim kullanım sayılarını paylaş, söylediklerini, yazdıklarını veya gördüklerini asla.",
     "whatsShared": "Neler paylaşılır",
     "sharedTitle": "Yalnızca anonim sayılar ve süreler",
     "shared": {

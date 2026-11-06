@@ -227,10 +227,6 @@
       "hint": "Je kunt dit later wijzigen in de instellingen",
       "highFiveLabel": "High five",
       "atLogin": "{{appName}} starten als ik inlog",
-      "polish": {
-        "title": "Mijn dictaat opschonen met AI",
-        "description": "Uit: dictaat wordt meteen getypt. Aan: rommelige spraak wordt eerst opgeschoond (de tekst wordt verstuurd, nooit audio). Hoe dan ook schrijft {{appName}} voor je als je erom vraagt."
-      },
       "finish": "Klaar",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Alleen gewoon dicteren. Er wordt niets verstuurd."
       },
       "continueDownload": "Doorgaan en downloaden"
+    },
+    "choices": {
+      "title": "Nog een paar keuzes",
+      "sub": "Alles is optioneel, en uit tot je het aanzet.",
+      "polish": {
+        "title": "Mijn dictaat opschonen met AI",
+        "body": "Maakt rommelige spraak netjes voordat die getypt wordt. Tekst wordt verstuurd, nooit audio.",
+        "bodyDevice": "Maakt rommelige spraak netjes voordat die getypt wordt, op deze computer."
+      },
+      "telemetry": "Deel anonieme gebruikstellingen, nooit wat je zegt, typt of ziet."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Welkom",
           "permissions": "Machtigingen",
           "model": "Model",
+          "ai": "Waar de AI draait",
+          "choices": "Meer keuzes",
           "demo": "Demo",
           "try": "Proberen",
           "done": "Klaar"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Tips per e-mail",
-      "labelOptional": "Tips per e-mail (optioneel)",
       "description": "Af en toe tips om meer uit {{appName}} te halen. Altijd af te melden.",
+      "short": "Af en toe een paar tips. Altijd af te melden.",
       "button": "Versturen",
-      "done": "Verstuurd",
       "error": "Versturen mislukt. Opnieuw?",
       "checkInbox": "Kijk in je inbox om te bevestigen."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Help {{appName}} verbeteren: deel anonieme gebruikstellingen, nooit wat je zegt, typt of ziet.",
     "whatsShared": "Wat wordt gedeeld",
     "sharedTitle": "Alleen anonieme tellingen en tijden",
     "shared": {

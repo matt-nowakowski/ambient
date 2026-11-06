@@ -227,10 +227,6 @@
       "hint": "Du kan ändra detta senare i Inställningar",
       "highFiveLabel": "High five",
       "atLogin": "Starta {{appName}} när jag loggar in",
-      "polish": {
-        "title": "Snygga till min diktering med AI",
-        "description": "Av: dikteringen skrivs direkt. På: rörigt tal städas upp först (texten skickas, aldrig ljud). Oavsett skriver {{appName}} åt dig när du ber om det."
-      },
       "finish": "Klar",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "Bara vanlig diktering. Inget skickas."
       },
       "continueDownload": "Fortsätt och ladda ned"
+    },
+    "choices": {
+      "title": "Några val till",
+      "sub": "Allt är valfritt och avstängt tills du slår på det.",
+      "polish": {
+        "title": "Snygga till min diktering med AI",
+        "body": "Snyggar till rörigt tal innan det skrivs. Text skickas, aldrig ljud.",
+        "bodyDevice": "Snyggar till rörigt tal innan det skrivs, på den här datorn."
+      },
+      "telemetry": "Dela anonym användningsstatistik, aldrig vad du säger, skriver eller ser."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Välkommen",
           "permissions": "Behörigheter",
           "model": "Modell",
+          "ai": "Var AI:n körs",
+          "choices": "Fler val",
           "demo": "Demo",
           "try": "Testa",
           "done": "Klart"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Mejla mig tips",
-      "labelOptional": "Mejla mig tips (valfritt)",
       "description": "Tips då och då om hur du får ut mer av {{appName}}. Avsluta när du vill.",
+      "short": "Några tips då och då. Avsluta när du vill.",
       "button": "Skicka",
-      "done": "Skickat",
       "error": "Kunde inte skicka. Försök igen?",
       "checkInbox": "Kolla din inkorg för att bekräfta."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Hjälp till att förbättra {{appName}}: dela anonym användningsstatistik, aldrig vad du säger, skriver eller ser.",
     "whatsShared": "Vad som delas",
     "sharedTitle": "Bara anonyma räkningar och tider",
     "shared": {

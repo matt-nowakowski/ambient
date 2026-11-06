@@ -228,10 +228,6 @@
       "hint": "Puoi cambiare queste scelte più tardi nelle Impostazioni",
       "highFiveLabel": "Batti il cinque",
       "atLogin": "Avvia {{appName}} quando accedo",
-      "polish": {
-        "title": "Rifinisci la mia dettatura con l'IA",
-        "description": "Spento, la dettatura viene scritta subito. Acceso, il parlato disordinato viene prima ripulito (si invia il testo, mai l'audio). In entrambi i casi, {{appName}} scrive per te quando glielo chiedi."
-      },
       "finish": "Fatto",
       "panel": {
         "name": "{{appName}}",
@@ -273,6 +269,16 @@
         "body": "Solo dettatura semplice. Non viene inviato nulla."
       },
       "continueDownload": "Continua e scarica"
+    },
+    "choices": {
+      "title": "Ancora qualche scelta",
+      "sub": "Tutto facoltativo, e spento finché non lo attivi.",
+      "polish": {
+        "title": "Rifinisci la mia dettatura con l'IA",
+        "body": "Riordina il parlato confuso prima di scriverlo. Viene inviato il testo, mai l'audio.",
+        "bodyDevice": "Riordina il parlato confuso prima di scriverlo, su questo computer."
+      },
+      "telemetry": "Condividi conteggi d'uso anonimi, mai ciò che dici, scrivi o vedi."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Benvenuto",
           "permissions": "Permessi",
           "model": "Modello",
+          "ai": "Dove funziona l'IA",
+          "choices": "Altre scelte",
           "demo": "Demo",
           "try": "Provalo",
           "done": "Tutto pronto"
@@ -1269,10 +1277,9 @@
     },
     "tips": {
       "label": "Ricevi consigli",
-      "labelOptional": "Ricevi consigli (facoltativo)",
       "description": "Consigli ogni tanto per ottenere di più da {{appName}}. Annulli l'iscrizione quando vuoi.",
+      "short": "Qualche consiglio ogni tanto. Disiscriviti quando vuoi.",
       "button": "Invia",
-      "done": "Inviato",
       "error": "Invio non riuscito. Riprovare?",
       "checkInbox": "Controlla la posta in arrivo per confermare."
     }
@@ -2086,7 +2093,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Aiuta a migliorare {{appName}}: condividi conteggi d'uso anonimi, mai ciò che dici, scrivi o vedi.",
     "whatsShared": "Cosa viene condiviso",
     "sharedTitle": "Solo conteggi e tempi anonimi",
     "shared": {

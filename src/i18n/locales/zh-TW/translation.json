@@ -227,10 +227,6 @@
       "hint": "之後可以隨時在「設定」中變更",
       "highFiveLabel": "擊掌",
       "atLogin": "登入時啟動 {{appName}}",
-      "polish": {
-        "title": "用 AI 整理我的聽寫",
-        "description": "關閉時，聽寫會立即輸入。開啟時，會先整理凌亂的口語（只傳送文字，從不傳送音訊）。無論哪種，你開口要求時 {{appName}} 都會替你寫。"
-      },
       "finish": "完成",
       "panel": {
         "name": "{{appName}}",
@@ -272,6 +268,16 @@
         "body": "僅一般聽寫。不傳送任何內容。"
       },
       "continueDownload": "繼續並下載"
+    },
+    "choices": {
+      "title": "再做幾個選擇",
+      "sub": "全部可選，在你開啟之前都是關閉的。",
+      "polish": {
+        "title": "用 AI 整理我的聽寫",
+        "body": "在輸入前把凌亂的口語整理好。只傳送文字，絕不傳送音訊。",
+        "bodyDevice": "在輸入前，在這台電腦上把凌亂的口語整理好。"
+      },
+      "telemetry": "分享匿名使用次數，絕不包括你說的、輸入的或看到的內容。"
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "歡迎",
           "permissions": "權限",
           "model": "模型",
+          "ai": "AI 在哪裡執行",
+          "choices": "更多選擇",
           "demo": "示範",
           "try": "試用",
           "done": "設定完成"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "以電子郵件接收技巧",
-      "labelOptional": "以電子郵件接收技巧（選填）",
       "description": "不定期寄送讓你更善用 {{appName}} 的小技巧。可隨時取消訂閱。",
+      "short": "偶爾寄送一些小技巧。可隨時取消訂閱。",
       "button": "傳送",
-      "done": "已傳送",
       "error": "傳送失敗，要重試嗎？",
       "checkInbox": "請查看收件匣完成確認。"
     }
@@ -2071,7 +2078,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "協助改善 {{appName}}：分享匿名使用次數，絕不包括你說的、輸入的或看到的內容。",
     "whatsShared": "分享哪些內容",
     "sharedTitle": "僅匿名次數與耗時",
     "shared": {

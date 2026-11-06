@@ -229,10 +229,6 @@
       "hint": "Możesz to później zmienić w Ustawieniach",
       "highFiveLabel": "Piątka",
       "atLogin": "Uruchamiaj {{appName}} po zalogowaniu",
-      "polish": {
-        "title": "Szlifuj moje dyktowanie z AI",
-        "description": "Wyłączone: dyktowanie wpisuje się od razu. Włączone: chaotyczna mowa jest najpierw szlifowana (wysyłany jest tekst, nigdy dźwięk). Tak czy inaczej {{appName}} napisze za Ciebie, gdy poprosisz."
-      },
       "finish": "Gotowe",
       "panel": {
         "name": "{{appName}}",
@@ -274,6 +270,16 @@
         "body": "Tylko zwykłe dyktowanie. Nic nie jest wysyłane."
       },
       "continueDownload": "Dalej i pobierz"
+    },
+    "choices": {
+      "title": "Jeszcze kilka wyborów",
+      "sub": "Wszystko opcjonalne i wyłączone, dopóki tego nie włączysz.",
+      "polish": {
+        "title": "Szlifuj moje dyktowanie z AI",
+        "body": "Porządkuje chaotyczną mowę, zanim zostanie wpisana. Wysyłany jest tekst, nigdy dźwięk.",
+        "bodyDevice": "Porządkuje chaotyczną mowę, zanim zostanie wpisana, na tym komputerze."
+      },
+      "telemetry": "Udostępniaj anonimowe statystyki użycia, nigdy tego, co mówisz, piszesz lub widzisz."
     }
   },
   "modelTable": {
@@ -828,6 +834,8 @@
           "welcome": "Powitanie",
           "permissions": "Uprawnienia",
           "model": "Model",
+          "ai": "Gdzie działa AI",
+          "choices": "Więcej wyborów",
           "demo": "Demo",
           "try": "Wypróbuj",
           "done": "Gotowe"
@@ -1270,10 +1278,9 @@
     },
     "tips": {
       "label": "Wysyłaj mi wskazówki",
-      "labelOptional": "Wysyłaj mi wskazówki (opcjonalnie)",
       "description": "Od czasu do czasu wskazówki, jak lepiej korzystać z {{appName}}. Możesz zrezygnować w każdej chwili.",
+      "short": "Od czasu do czasu kilka wskazówek. Wypisz się w każdej chwili.",
       "button": "Wyślij",
-      "done": "Wysłano",
       "error": "Nie udało się wysłać. Spróbować ponownie?",
       "checkInbox": "Sprawdź skrzynkę, aby potwierdzić."
     }
@@ -2093,7 +2100,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Pomóż ulepszyć {{appName}}: udostępniaj anonimowe statystyki użycia, nigdy tego, co mówisz, piszesz lub widzisz.",
     "whatsShared": "Co jest udostępniane",
     "sharedTitle": "Tylko anonimowe liczniki i czasy",
     "shared": {
