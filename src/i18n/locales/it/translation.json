@@ -1166,6 +1166,7 @@
       "pasteFailed": "Impossibile leggere gli appunti. Incolla con {{keys}}.",
       "holder": "Accesso eseguito come",
       "renewsLabel": "Rinnovo",
+      "endsLabel": "Scadenza",
       "copied": "Copiata",
       "errors": {
         "network": "Impossibile raggiungere {{appName}} per l'attivazione. Controlla la connessione e riprova.",

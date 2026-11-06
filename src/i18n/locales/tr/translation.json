@@ -1161,6 +1161,7 @@
       "pasteFailed": "Pano okunamadı. Bunun yerine {{keys}} ile yapıştırın.",
       "holder": "Giriş yapılan hesap",
       "renewsLabel": "Yenilenme",
+      "endsLabel": "Bitiş",
       "copied": "Kopyalandı",
       "errors": {
         "network": "Etkinleştirmek için {{appName}} sunucusuna ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin.",

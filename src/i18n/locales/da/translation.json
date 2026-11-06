@@ -1161,6 +1161,7 @@
       "pasteFailed": "Kunne ikke læse udklipsholderen. Indsæt med {{keys}} i stedet.",
       "holder": "Logget ind som",
       "renewsLabel": "Fornyes",
+      "endsLabel": "Slutter",
       "copied": "Kopieret",
       "errors": {
         "network": "Kunne ikke nå {{appName}} for at aktivere. Tjek din forbindelse, og prøv igen.",

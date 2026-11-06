@@ -1166,6 +1166,7 @@
       "pasteFailed": "Não foi possível ler a área de transferência. Cole com {{keys}}.",
       "holder": "Conectado como",
       "renewsLabel": "Renova em",
+      "endsLabel": "Termina em",
       "copied": "Copiado",
       "errors": {
         "network": "Não foi possível conectar ao {{appName}} para ativar. Verifique sua conexão e tente novamente.",

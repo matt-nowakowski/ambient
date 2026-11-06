@@ -52,6 +52,12 @@ const ERROR_PREFIX: &str = "license_error:";
 /// Set once the first-launch trial has been asked for (granted or not).
 const TRIAL_REQUESTED_FIELD: &str = "trial_requested";
 const USAGE_FIELD: &str = "usage";
+/// The billing period the server sent with the stored token (servers from
+/// 0.1.20 on), saved with that token's `exp` so it never outlives it.
+const BILLING_FIELD: &str = "billing_period";
+/// The server's grace after the paid period: a subscription's token expires
+/// at period end + this (`GRACE_SECONDS` in web/lib/license.ts).
+const GRACE_SECS: i64 = 7 * 24 * 3600;
 /// Trade a redeemed code's token for a fresh one this long before it expires.
 const REFRESH_BEFORE_SECS: i64 = 5 * 24 * 3600;
 /// How often the background task checks whether a refresh is due.
@@ -88,6 +94,16 @@ struct LicensePayload {
     exp: i64,
 }
 
+/// When the paid period really ends and whether it renews, as the server
+/// reports it next to a token. Both optional: older servers send neither.
+#[derive(Serialize, Deserialize, Clone, Copy, Debug, Default, PartialEq)]
+struct BillingPeriod {
+    #[serde(default, rename = "periodEnd")]
+    period_end: Option<i64>,
+    #[serde(default, rename = "cancelAtPeriodEnd")]
+    cancel_at_period_end: Option<bool>,
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 struct WeeklyUsage {
     /// Unix seconds of the local Monday 00:00 this count belongs to.
@@ -102,6 +118,12 @@ pub struct PlanStatus {
     pub email: Option<String>,
     /// Unix seconds when the stored token stops working without a refresh.
     pub license_expires_at: Option<f64>,
+    /// Unix seconds the paid period ends (Pro/Team only): the renewal date,
+    /// or the last day when `cancel_at_period_end`. The token runs a 7-day
+    /// grace past it.
+    pub period_end: Option<f64>,
+    /// The subscription is set to end at `period_end` rather than renew.
+    pub cancel_at_period_end: bool,
     /// Why a stored token isn't granting a paid plan (expired, invalid).
     pub license_problem: Option<String>,
     /// The gift or support code (`red-grizzly-4320`) the active Pro/Team
@@ -304,6 +326,56 @@ fn active_license(app: &AppHandle) -> (Option<LicensePayload>, Option<String>) {
     }
 }
 
+/// Saves the billing period that came with a token, or clears it when the
+/// server sent none (an older server), so a stale one is never shown.
+fn save_billing(app: &AppHandle, key: &str, billing: BillingPeriod) -> Result<(), String> {
+    let store = app
+        .store(crate::portable::store_path(STORE_PATH))
+        .map_err(|e| e.to_string())?;
+    match (verify_key(key), billing.period_end) {
+        (Ok(payload), Some(_)) => store.set(
+            BILLING_FIELD,
+            serde_json::json!({ "exp": payload.exp, "billing": billing }),
+        ),
+        _ => {
+            store.delete(BILLING_FIELD);
+        }
+    }
+    store.save().map_err(|e| e.to_string())
+}
+
+/// The saved billing period and the token `exp` it belongs to.
+fn stored_billing(app: &AppHandle) -> Option<(i64, BillingPeriod)> {
+    let store = app.store(crate::portable::store_path(STORE_PATH)).ok()?;
+    let v = store.get(BILLING_FIELD)?;
+    let exp = v.get("exp")?.as_i64()?;
+    let billing = serde_json::from_value(v.get("billing")?.clone()).ok()?;
+    Some((exp, billing))
+}
+
+/// Period end and whether it's cancelled, for a paid token. Uses what the
+/// server sent with this exact token; otherwise (an older server, or a token
+/// from before 0.1.20) the token's expiry less the grace, assumed to renew.
+fn period_for(
+    plan: Plan,
+    token_exp: i64,
+    saved: Option<(i64, BillingPeriod)>,
+) -> (Option<f64>, bool) {
+    if !matches!(plan, Plan::Pro | Plan::Team) {
+        return (None, false);
+    }
+    match saved {
+        Some((
+            exp,
+            BillingPeriod {
+                period_end: Some(end),
+                cancel_at_period_end,
+            },
+        )) if exp == token_exp => (Some(end as f64), cancel_at_period_end.unwrap_or(false)),
+        _ => (Some((token_exp - GRACE_SECS) as f64), false),
+    }
+}
+
 pub fn status(app: &AppHandle) -> PlanStatus {
     let (license, license_problem) = active_license(app);
     let (_, week_end) = current_week();
@@ -313,23 +385,32 @@ pub fn status(app: &AppHandle) -> PlanStatus {
         .map(|p| p.exp as f64);
     let account_email = account_email(app);
     match license {
-        Some(payload) => PlanStatus {
-            plan: plan_from_payload(&payload),
-            license_code: matches!(plan_from_payload(&payload), Plan::Pro | Plan::Team)
-                .then(|| stored_code(app))
-                .flatten(),
-            email: Some(payload.email),
-            license_expires_at: stored_exp,
-            license_problem: None,
-            account_email,
-            words_this_week: words,
-            weekly_word_limit: None,
-            week_resets_at: week_end as f64,
-        },
+        Some(payload) => {
+            let plan = plan_from_payload(&payload);
+            let (period_end, cancel_at_period_end) =
+                period_for(plan, payload.exp, stored_billing(app));
+            PlanStatus {
+                plan,
+                license_code: matches!(plan_from_payload(&payload), Plan::Pro | Plan::Team)
+                    .then(|| stored_code(app))
+                    .flatten(),
+                email: Some(payload.email),
+                license_expires_at: stored_exp,
+                period_end,
+                cancel_at_period_end,
+                license_problem: None,
+                account_email,
+                words_this_week: words,
+                weekly_word_limit: None,
+                week_resets_at: week_end as f64,
+            }
+        }
         None => PlanStatus {
             plan: Plan::Free,
             email: None,
             license_expires_at: stored_exp,
+            period_end: None,
+            cancel_at_period_end: false,
             license_problem,
             license_code: None,
             account_email,
@@ -721,6 +802,8 @@ fn api_url(path: &str) -> String {
 #[derive(Deserialize)]
 struct RefreshResponse {
     key: String,
+    #[serde(flatten)]
+    billing: BillingPeriod,
 }
 
 /// Trades a redeemed code's token for a fresh one shortly before it expires,
@@ -759,6 +842,7 @@ async fn refresh(app: &AppHandle) -> Result<(), String> {
             let body: RefreshResponse = response.json().await.map_err(|e| e.to_string())?;
             verify_key(&body.key)?;
             save_key(app, Some(&body.key))?;
+            save_billing(app, &body.key, body.billing)?;
             info!("Pro token refreshed");
             let _ = app.emit("plan-changed", status(app));
             Ok(())
@@ -796,6 +880,8 @@ pub fn get_plan_status(app: AppHandle) -> PlanStatus {
 struct ActivateResponse {
     key: String,
     code: String,
+    #[serde(flatten)]
+    billing: BillingPeriod,
 }
 
 /// Trades a human code for the signed token at `/api/license/activate`.
@@ -842,6 +928,7 @@ pub async fn activate_license(app: AppHandle, key: String) -> Result<PlanStatus,
     let code = normalize_code(&key).ok_or_else(|| format!("{ERROR_PREFIX}invalid_code"))?;
     let activated = activate_code(&code).await?;
     save_key(&app, Some(&activated.key))?;
+    save_billing(&app, &activated.key, activated.billing)?;
     save_code(&app, Some(&activated.code))?;
     save_str(&app, LICENSE_SOURCE_FIELD, Some("code"))?;
     info!("Pro redeemed from a code");
@@ -925,6 +1012,8 @@ struct AccountResponse {
     email: String,
     /// The signed token while a subscription is live; `None` on Free.
     key: Option<String>,
+    #[serde(flatten)]
+    billing: BillingPeriod,
 }
 
 /// Stores a verified or refreshed account: the session always, the token
@@ -938,6 +1027,7 @@ fn apply_account(app: &AppHandle, account: &AccountResponse) -> Result<(), Strin
         Some(key) => {
             verify_key(key)?;
             save_key(app, Some(key))?;
+            save_billing(app, key, account.billing)?;
             save_code(app, None)?;
             save_str(app, LICENSE_SOURCE_FIELD, Some("account"))?;
         }
@@ -1329,5 +1419,51 @@ mod tests {
         assert!(start <= now() && now() < end);
         let hours = (end - start) / 3600;
         assert!((167..=169).contains(&hours), "{hours}");
+    }
+
+    #[test]
+    fn account_response_reads_old_and_new_servers() {
+        let old: AccountResponse = serde_json::from_str(
+            r#"{"session":"s","email":"a@b.c","plan":"pro","key":"k","exp":10}"#,
+        )
+        .unwrap();
+        assert_eq!(old.billing, BillingPeriod::default());
+        let new: AccountResponse = serde_json::from_str(
+            r#"{"session":"s","email":"a@b.c","plan":"pro","key":"k","exp":10,"periodEnd":5,"cancelAtPeriodEnd":true}"#,
+        )
+        .unwrap();
+        assert_eq!(new.billing.period_end, Some(5));
+        assert_eq!(new.billing.cancel_at_period_end, Some(true));
+        let free: AccountResponse = serde_json::from_str(
+            r#"{"session":"s","email":"a@b.c","plan":"free","key":null,"exp":null,"periodEnd":null,"cancelAtPeriodEnd":false}"#,
+        )
+        .unwrap();
+        assert!(free.key.is_none() && free.billing.period_end.is_none());
+    }
+
+    #[test]
+    fn period_end_comes_from_the_server_or_the_token() {
+        let exp = 2_000_000_000;
+        let cancelled = BillingPeriod {
+            period_end: Some(exp - GRACE_SECS),
+            cancel_at_period_end: Some(true),
+        };
+        // What the server sent with this token.
+        assert_eq!(
+            period_for(Plan::Pro, exp, Some((exp, cancelled))),
+            (Some((exp - GRACE_SECS) as f64), true)
+        );
+        // Saved for an older token, or nothing saved (older server): the
+        // token's expiry less the grace, assumed to renew.
+        assert_eq!(
+            period_for(Plan::Pro, exp, Some((exp - 1, cancelled))),
+            (Some((exp - GRACE_SECS) as f64), false)
+        );
+        assert_eq!(
+            period_for(Plan::Team, exp, None),
+            (Some((exp - GRACE_SECS) as f64), false)
+        );
+        // A trial ends on its own date; no renewal line.
+        assert_eq!(period_for(Plan::Trial, exp, None), (None, false));
     }
 }

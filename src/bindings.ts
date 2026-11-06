@@ -2402,6 +2402,16 @@ email: string | null;
  */
 license_expires_at: number | null; 
 /**
+ * Unix seconds the paid period ends (Pro/Team only): the renewal date,
+ * or the last day when `cancel_at_period_end`. The token runs a 7-day
+ * grace past it.
+ */
+period_end: number | null; 
+/**
+ * The subscription is set to end at `period_end` rather than renew.
+ */
+cancel_at_period_end: boolean; 
+/**
  * Why a stored token isn't granting a paid plan (expired, invalid).
  */
 license_problem: string | null; 

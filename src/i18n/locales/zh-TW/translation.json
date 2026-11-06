@@ -1161,6 +1161,7 @@
       "pasteFailed": "無法讀取剪貼簿。請改用 {{keys}} 貼上。",
       "holder": "目前登入",
       "renewsLabel": "續訂日期",
+      "endsLabel": "結束日期",
       "copied": "已複製",
       "errors": {
         "network": "無法連線至 {{appName}} 進行啟用。請檢查網路連線後再試一次。",

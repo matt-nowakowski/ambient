@@ -1166,6 +1166,7 @@
       "pasteFailed": "No s’ha pogut llegir el porta-retalls. Enganxeu amb {{keys}}.",
       "holder": "Sessió iniciada com a",
       "renewsLabel": "Es renova",
+      "endsLabel": "Finalitza",
       "copied": "Copiat",
       "errors": {
         "network": "No s'ha pogut connectar amb el {{appName}} per activar-lo. Comproveu la connexió i torneu-ho a provar.",

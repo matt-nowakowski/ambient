@@ -1161,6 +1161,7 @@
       "pasteFailed": "Couldn't read the clipboard. Paste with {{keys}} instead.",
       "holder": "Signed in as",
       "renewsLabel": "Renews",
+      "endsLabel": "Ends",
       "copied": "Copied",
       "errors": {
         "network": "Couldn't reach {{appName}} to activate. Check your connection and try again.",

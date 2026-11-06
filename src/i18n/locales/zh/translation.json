@@ -1161,6 +1161,7 @@
       "pasteFailed": "无法读取剪贴板。请改用 {{keys}} 粘贴。",
       "holder": "当前登录",
       "renewsLabel": "续订日期",
+      "endsLabel": "结束日期",
       "copied": "已复制",
       "errors": {
         "network": "无法连接 {{appName}} 进行激活。请检查网络连接后重试。",

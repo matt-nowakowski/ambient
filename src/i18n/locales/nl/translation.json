@@ -1161,6 +1161,7 @@
       "pasteFailed": "Kan het klembord niet lezen. Plak in plaats daarvan met {{keys}}.",
       "holder": "Ingelogd als",
       "renewsLabel": "Verlengt op",
+      "endsLabel": "Eindigt op",
       "copied": "Gekopieerd",
       "errors": {
         "network": "Kan {{appName}} niet bereiken om te activeren. Controleer je verbinding en probeer het opnieuw.",

@@ -1161,6 +1161,7 @@
       "pasteFailed": "No se pudo leer el portapapeles. Pega con {{keys}}.",
       "holder": "Sesión iniciada como",
       "renewsLabel": "Se renueva",
+      "endsLabel": "Finaliza",
       "copied": "Copiado",
       "errors": {
         "network": "No se pudo conectar con {{appName}} para activar. Revisa tu conexión e inténtalo de nuevo.",

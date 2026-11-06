@@ -1156,6 +1156,7 @@
       "pasteFailed": "Die Zwischenablage konnte nicht gelesen werden. Füge stattdessen mit {{keys}} ein.",
       "holder": "Angemeldet als",
       "renewsLabel": "Verlängert am",
+      "endsLabel": "Endet am",
       "copied": "Kopiert",
       "errors": {
         "network": "{{appName}} ist zum Aktivieren nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",

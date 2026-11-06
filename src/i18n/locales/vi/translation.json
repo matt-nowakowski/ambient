@@ -1161,6 +1161,7 @@
       "pasteFailed": "Không đọc được bảng nhớ tạm. Hãy dán bằng {{keys}}.",
       "holder": "Đã đăng nhập với",
       "renewsLabel": "Gia hạn",
+      "endsLabel": "Kết thúc",
       "copied": "Đã sao chép",
       "errors": {
         "network": "Không thể kết nối {{appName}} để kích hoạt. Hãy kiểm tra kết nối và thử lại.",

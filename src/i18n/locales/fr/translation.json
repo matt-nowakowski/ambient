@@ -1161,6 +1161,7 @@
       "pasteFailed": "Impossible de lire le presse-papiers. Collez avec {{keys}} à la place.",
       "holder": "Connecté en tant que",
       "renewsLabel": "Renouvellement",
+      "endsLabel": "Fin",
       "copied": "Copié",
       "errors": {
         "network": "Impossible de joindre {{appName}} pour l’activation. Vérifiez votre connexion et réessayez.",

@@ -266,11 +266,14 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     else setError(t("account.signIn.errors.network"));
   };
 
-  const renewal = status.license_expires_at
-    ? new Date(status.license_expires_at * 1000).toLocaleDateString(
-        i18n.language,
-        { month: "long", day: "numeric", year: "numeric" },
-      )
+  // The real end of the paid period: "Ends" once cancelled, else "Renews".
+  // (license_expires_at runs a week past it, for grace.)
+  const renewal = status.period_end
+    ? new Date(status.period_end * 1000).toLocaleDateString(i18n.language, {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
     : null;
 
   const menuItems: MoreMenuItem[] = [
@@ -641,7 +644,9 @@ export const AccountCard: React.FC<AccountCardProps> = ({
                 {renewal && (
                   <div className="shrink-0 text-end">
                     <p className="text-meta text-ink-3">
-                      {t("account.card.renewsLabel")}
+                      {status.cancel_at_period_end
+                        ? t("account.card.endsLabel")
+                        : t("account.card.renewsLabel")}
                     </p>
                     <p className="tabular-nums">{renewal}</p>
                   </div>

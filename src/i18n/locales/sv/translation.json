@@ -1161,6 +1161,7 @@
       "pasteFailed": "Det gick inte att läsa urklippet. Klistra in med {{keys}} i stället.",
       "holder": "Inloggad som",
       "renewsLabel": "Förnyas",
+      "endsLabel": "Slutar",
       "copied": "Kopierad",
       "errors": {
         "network": "Kunde inte nå {{appName}} för att aktivera. Kontrollera anslutningen och försök igen.",

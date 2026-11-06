@@ -1161,6 +1161,7 @@
       "pasteFailed": "클립보드를 읽을 수 없습니다. 대신 {{keys}}로 붙여넣으세요.",
       "holder": "로그인 계정",
       "renewsLabel": "갱신일",
+      "endsLabel": "종료일",
       "copied": "복사됨",
       "errors": {
         "network": "활성화를 위해 {{appName}}에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.",

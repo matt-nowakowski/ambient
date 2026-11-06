@@ -1171,6 +1171,7 @@
       "pasteFailed": "Schránku se nepodařilo přečíst. Vložte místo toho pomocí {{keys}}.",
       "holder": "Přihlášeno jako",
       "renewsLabel": "Obnovuje se",
+      "endsLabel": "Končí",
       "copied": "Zkopírováno",
       "errors": {
         "network": "Nepodařilo se spojit s {{appName}} kvůli aktivaci. Zkontrolujte připojení a zkuste to znovu.",

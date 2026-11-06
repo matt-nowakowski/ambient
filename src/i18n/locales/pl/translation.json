@@ -1166,6 +1166,7 @@
       "pasteFailed": "Nie udało się odczytać schowka. Wklej za pomocą {{keys}}.",
       "holder": "Zalogowano jako",
       "renewsLabel": "Odnawia się",
+      "endsLabel": "Kończy się",
       "copied": "Skopiowano",
       "errors": {
         "network": "Nie udało się połączyć z {{appName}}, aby aktywować. Sprawdź połączenie i spróbuj ponownie.",
