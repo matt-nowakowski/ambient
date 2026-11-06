@@ -12,8 +12,27 @@
 export const TIP_FIRST_DELAY_DAYS = 1;
 export const TIP_GAP_DAYS = 21;
 export const SLACK_HOURS = 6;
-/** At most this many tips per cron run (Resend's default rate limit is a few requests a second). */
-export const TIPS_PER_RUN = 30;
+/**
+ * Email quota. Resend's free plan allows 100 emails a day for the whole
+ * account, shared by everything we send. Sign-in codes, billing links,
+ * welcome emails and meeting notes can't wait; tips can. So tips only use
+ * what's left after keeping EMAIL_RESERVE free for the rest of the day, and
+ * never more than TIPS_PER_RUN in a run. Anything not sent stays due and goes
+ * out on a later run. Raise these when the Resend plan grows.
+ */
+export const DAILY_EMAIL_LIMIT = 100;
+export const EMAIL_RESERVE = 60;
+/** At most this many tips per cron run, well under the daily limit. */
+export const TIPS_PER_RUN = 20;
+
+/**
+ * How many tips this run may send, given the emails sent in the last 24
+ * hours. Unknown (Resend couldn't be read) sends none: tips can wait a day.
+ */
+export function tipsBudget(sentLast24h: number | null): number {
+  if (sentLast24h === null || !Number.isFinite(sentLast24h)) return 0;
+  return Math.max(0, Math.min(TIPS_PER_RUN, DAILY_EMAIL_LIMIT - EMAIL_RESERVE - sentLast24h));
+}
 
 const DAY_MS = 86_400_000;
 const after = (from: Date, days: number) => new Date(from.getTime() + days * DAY_MS - SLACK_HOURS * 3_600_000);

@@ -6,7 +6,7 @@
  * Run: bun scripts/tips-schedule-test.ts
  */
 import { TIP_SEQUENCES } from "../lib/email/templates";
-import { TIP_GAP_DAYS, TIP_FIRST_DELAY_DAYS, TIP_LANGUAGES, afterTip, dueTips, firstTipAt, tipLanguage, type TipRow } from "../lib/email/tip-schedule";
+import { DAILY_EMAIL_LIMIT, EMAIL_RESERVE, TIPS_PER_RUN, TIP_GAP_DAYS, TIP_FIRST_DELAY_DAYS, TIP_LANGUAGES, afterTip, dueTips, firstTipAt, tipLanguage, tipsBudget, type TipRow } from "../lib/email/tip-schedule";
 
 let failures = 0;
 function check(name: string, cond: boolean) {
@@ -79,6 +79,13 @@ check("every language has the same number of tips", TIP_LANGUAGES.every((l) => T
 // Language: English for now, whatever the app language.
 check("English app → English tips", tipLanguage("en") === "en");
 check("unknown app language → English", tipLanguage("sv") === "en" && tipLanguage(null) === "en" && tipLanguage("zh-TW") === "en");
+
+// Quota: tips leave room for sign-in codes and billing links.
+check("a quiet day: tips up to the per-run cap", tipsBudget(0) === TIPS_PER_RUN);
+check("tips never eat into the reserve", tipsBudget(30) === DAILY_EMAIL_LIMIT - EMAIL_RESERVE - 30);
+check("a busy day skips tips", tipsBudget(DAILY_EMAIL_LIMIT - EMAIL_RESERVE) === 0 && tipsBudget(95) === 0 && tipsBudget(500) === 0);
+check("an unknown count skips tips", tipsBudget(null) === 0);
+check("the cap plus the reserve fits in the daily limit", TIPS_PER_RUN + EMAIL_RESERVE <= DAILY_EMAIL_LIMIT);
 
 // Every tip renders as marketing with the unsubscribe link and the tips reason.
 for (const [i, tip] of TIP_SEQUENCES.en.entries()) {

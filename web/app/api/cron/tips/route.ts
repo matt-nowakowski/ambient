@@ -6,8 +6,9 @@ export const maxDuration = 60;
 /**
  * Daily tips (Vercel Cron, see vercel.json; 15:41 UTC, daytime in Europe and
  * the Americas): sends each confirmed tips subscriber the next tip once it's
- * due (lib/email/tip-schedule.ts), at most TIPS_PER_RUN a run. Anyone who
- * unsubscribed in Resend meanwhile is dropped instead.
+ * due (lib/email/tip-schedule.ts), at most TIPS_PER_RUN a run and only
+ * while today's Resend count leaves room for sign-in codes and billing links
+ * (tipsBudget). Anyone who unsubscribed in Resend meanwhile is dropped instead.
  *
  * Vercel sends `Authorization: Bearer $CRON_SECRET`; without CRON_SECRET set
  * the endpoint refuses to run at all.
@@ -24,7 +25,7 @@ export async function GET(req: Request) {
   if (!authorized(req, secret)) return Response.json({ error: "unauthorized" }, { status: 401 });
   try {
     const result = await runTips();
-    console.info(`[tips] due=${result.due} sent=${result.sent} stopped=${result.stopped} failed=${result.failed}`);
+    console.info(`[tips] budget=${result.budget} due=${result.due} sent=${result.sent} stopped=${result.stopped} failed=${result.failed}`);
     return Response.json(result, { headers: { "Cache-Control": "no-store" } });
   } catch (err) {
     console.error("[tips] failed:", err instanceof Error ? err.message.slice(0, 120) : "error");

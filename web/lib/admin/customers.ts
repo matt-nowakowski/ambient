@@ -1,5 +1,6 @@
 import "server-only";
 import { getContact, resendApi, resendConfigured } from "../email/resend";
+import { DAILY_EMAIL_LIMIT } from "../email/tip-schedule";
 import { getPolar } from "../polar";
 import { ambientProductIds, getPolarStats, type CustomerRow } from "./metrics";
 
@@ -110,7 +111,7 @@ export async function listSentEmails(opts: { since: number; maxPages: number }):
   return { ok: true, emails, complete: false };
 }
 
-export const DAILY_LIMIT = 100;
+export const DAILY_LIMIT = DAILY_EMAIL_LIMIT;
 
 /** Emails sent in the last 24 hours against Resend Free's 100/day. Counted fresh, never cached. */
 export async function dailyQuota(): Promise<{ ok: true; used: number; limit: number; remaining: number } | { ok: false; error: string }> {

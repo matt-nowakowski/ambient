@@ -4,7 +4,8 @@ import { activityDb, isDatabaseConfigured } from "../db";
 import { resendApi, sendEmail } from "./resend";
 import { emailHash, unsubscribeLinks } from "./subscriptions";
 import { TIP_SEQUENCES } from "./templates";
-import { afterTip, dueTips, firstTipAt, tipLanguage, TIPS_PER_RUN } from "./tip-schedule";
+import { dailyQuota } from "../admin/customers";
+import { afterTip, dueTips, firstTipAt, tipLanguage, tipsBudget } from "./tip-schedule";
 import type { TipsRequest } from "./tokens";
 
 /**
@@ -64,22 +65,29 @@ const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 /** Every language has the same tips, so English's count is the sequence length. */
 const TIP_COUNT = TIP_SEQUENCES.en.length;
 
-export type TipsRun = { due: number; sent: number; stopped: number; failed: number };
+export type TipsRun = { due: number; sent: number; stopped: number; failed: number; budget: number };
 
 /**
- * Sends every tip that's due, up to TIPS_PER_RUN, one at a time and spaced
- * out for Resend's rate limit. A tip that fails stays due for the next run;
+ * Sends the tips that are due, up to today's tips budget (tipsBudget in
+ * tip-schedule.ts: what's left of Resend's daily quota after a reserve for
+ * sign-in codes and billing links), one at a time and spaced out for
+ * Resend's rate limit. Tips over the budget stay due for a later run. A tip that fails stays due for the next run;
  * the idempotency key (address + step) stops a retry within 24 hours from
  * sending it twice.
  */
 export async function runTips(now = new Date()): Promise<TipsRun> {
-  const run: TipsRun = { due: 0, sent: 0, stopped: 0, failed: 0 };
+  const run: TipsRun = { due: 0, sent: 0, stopped: 0, failed: 0, budget: 0 };
   if (!isDatabaseConfigured()) return run;
+  // Counted before anything else, so a busy day skips the run without waking Neon.
+  const quota = await dailyQuota();
+  if (!quota.ok) console.error("[tips] couldn't read today's email count; skipping this run");
+  run.budget = tipsBudget(quota.ok ? quota.used : null);
+  if (run.budget === 0) return run;
   const sql = await activityDb();
   const rows = await sql`
     select email, step, next_at, language from tip_sequence
     where next_at is not null and next_at <= ${now.toISOString()}::timestamptz
-    order by next_at limit ${TIPS_PER_RUN}`;
+    order by next_at limit ${run.budget}`;
   const due = dueTips(
     rows.map((r: Record<string, unknown>) => ({
       email: String(r.email),
@@ -89,6 +97,7 @@ export async function runTips(now = new Date()): Promise<TipsRun> {
     })),
     now,
     TIP_COUNT,
+    run.budget,
   );
   run.due = due.length;
 
