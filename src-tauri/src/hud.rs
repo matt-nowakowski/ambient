@@ -277,6 +277,9 @@ pub fn create(app: &AppHandle) {
         .inner_size(WIDTH, MIN_HEIGHT)
         .decorations(false)
         .transparent(true)
+        // The card draws its own shadow; Windows' frame shadow and 1px
+        // border would outline the whole transparent window.
+        .shadow(false)
         .always_on_top(true)
         .skip_taskbar(true)
         .focused(false)
@@ -508,10 +511,27 @@ pub fn hide(app: &AppHandle) {
                 return;
             }
             if let Some(w) = h.get_webview_window(LABEL) {
-                let _ = w.hide();
+                order_out(&w);
             }
         });
     });
+}
+
+/// Take the panel off screen. On Windows it must mirror `order_front`: the
+/// panel was shown with `ShowWindow` directly, so tao still thinks it's
+/// hidden and `WebviewWindow::hide` does nothing. The faded-out card then
+/// stayed behind as an empty, always-on-top frame with a shadow that no
+/// click could dismiss.
+fn order_out(w: &tauri::WebviewWindow) {
+    #[cfg(target_os = "windows")]
+    if let Ok(hwnd) = w.hwnd() {
+        use windows::Win32::UI::WindowsAndMessaging::{ShowWindow, SW_HIDE};
+        unsafe {
+            let _ = ShowWindow(hwnd, SW_HIDE);
+        }
+        return;
+    }
+    let _ = w.hide();
 }
 
 // ── Click outside, and the draft card's Insert ──────────────────────────
