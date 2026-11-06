@@ -95,7 +95,7 @@ export const DEPENDENCIES: Dependency[] = [
     },
     liveEnv: ["POLAR_ACCESS_TOKEN"],
     keyHowTo: "Already set. Polar → Settings → Access tokens; read scopes needed: orders:read, subscriptions:read.",
-    shared: "Organization shared with fisco: every number here is filtered to Ambient's product ids.",
+    shared: "Organization shared with another project: every number here is filtered to Ambient's product ids.",
   },
 
   // ── AI & data ──────────────────────────────────────────────────────────
@@ -205,13 +205,13 @@ export const DEPENDENCIES: Dependency[] = [
       classBPer1M: { amount: 0.36, confirmed: true, source: "https://developers.cloudflare.com/r2/pricing/", asOf: ASOF },
     },
     limits: [
-      { label: "Storage (account)", used: null, limit: 10, unit: "GB", confirmed: true, note: "Another project (firme) uses ~2.8 GB" },
+      { label: "Storage (account)", used: null, limit: 10, unit: "GB", confirmed: true, note: "Shared with another project" },
       { label: "Class A ops", used: null, limit: 1_000_000, unit: "ops", confirmed: true },
       { label: "Class B ops", used: null, limit: 10_000_000, unit: "ops", confirmed: true },
     ],
     liveEnv: ["CLOUDFLARE_API_TOKEN", "CLOUDFLARE_ACCOUNT_ID"],
     keyHowTo: "Cloudflare → My profile → API tokens → custom token, permission Account · Account Analytics · Read → CLOUDFLARE_API_TOKEN. Account id from the R2 overview → CLOUDFLARE_ACCOUNT_ID.",
-    shared: "The 10 GB free tier is account-wide, shared with firme.",
+    shared: "The 10 GB free tier is account-wide, shared with another project.",
     notes: ["Egress is free."],
   },
 
@@ -239,7 +239,7 @@ export const DEPENDENCIES: Dependency[] = [
     plan: "Free",
     planConfirmed: true,
     fixed: { price: { amount: 0, confirmed: true, source: "Matt", asOf: ASOF }, per: "month" },
-    limits: [{ label: "Actions minutes (private)", used: null, limit: 2_000, unit: "min", confirmed: true, note: "Blocked by billing: builds run on Matt's Mac (self-hosted)" }],
+    limits: [{ label: "Actions minutes (private)", used: null, limit: 2_000, unit: "min", confirmed: true, note: "See ADMIN_RISKS" }],
   },
 
   // ── Email & domain ─────────────────────────────────────────────────────
@@ -333,14 +333,15 @@ export const OTHER_DEPENDENCIES: OtherDependency[] = [
   { name: "Geist (npm, OFL)", purpose: "Site font", cost: "$0" },
 ];
 
-export const RISKS: string[] = [
-  "The Polar organization is shared with fisco: a settings change there affects Ambient checkout.",
-  "The Cloudflare R2 free tier (10 GB) is shared with firme, and a card is on file: overage bills silently. The launch video will add to it.",
-  "Windows installers are unsigned (no code-signing certificate).",
-  "GitHub Actions is blocked by billing: every release builds on Matt's Mac.",
-  "Apple Developer membership and Developer ID certificate expiry dates are not recorded (set them in costs.ts).",
-  "Tavily, ElevenLabs, ImprovMX and Resend are on free plans: hitting a quota breaks the feature until upgraded.",
-];
+/**
+ * Operational risks shown on the Costs tab. They describe internal accounts and
+ * weak spots, so they live in the ADMIN_RISKS env var (one per line), never in
+ * this public repo.
+ */
+export const RISKS: string[] = (process.env.ADMIN_RISKS ?? "")
+  .split("\n")
+  .map((line) => line.trim())
+  .filter(Boolean);
 
 /** Share of a fixed price per month. */
 export function monthlyFixed(dep: Dependency, now = new Date()): number {
