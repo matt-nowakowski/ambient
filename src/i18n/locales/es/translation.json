@@ -1345,7 +1345,7 @@
     "copied": "Copiado",
     "inserted": "Insertado ✓",
     "clickToCopy": "Haz clic para copiar",
-    "followUpHint": "Mantén pulsado tu atajo para seguir preguntando",
+    "followUpHint": "Mantén tu atajo para seguir",
     "yes": "Sí",
     "notNow": "Ahora no",
     "stop": "Detener",
@@ -1453,7 +1453,7 @@
       "title": "¿Querías escribir esto?",
       "composed": "Aquí tienes el borrador.",
       "focusHint": "Haz clic en un campo de texto para insertarlo.",
-      "askInstead": "Preguntar a {{appName}} en su lugar"
+      "askInstead": "Preguntar a {{appName}}"
     },
     "source": {
       "searchDrive": "Buscar en Google Drive",

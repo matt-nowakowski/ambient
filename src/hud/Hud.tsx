@@ -20,6 +20,7 @@ import {
 import { Orb } from "@/components/orb/Orb";
 import "./hud.css";
 import { AnswerText } from "./AnswerText";
+import { stripCitations } from "./parseAnswer";
 import { MeetingNotesCard } from "./MeetingNotesCard";
 import { Thumbs } from "./Thumbs";
 import { WritingChip } from "./WritingChip";
@@ -69,6 +70,10 @@ const parseLocal = (s: string) => {
     ? new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5])
     : new Date(Number.NaN);
 };
+
+/** Source chips under an answer, at most (the window read, three web
+ * results, or the user's own links); Rust sends no more than this. */
+const MAX_CHIPS = 4;
 
 /** Action kinds that act on the user's app and so lead the row. */
 const PRIMARY = new Set(["insert", "replace", "reply"]);
@@ -227,7 +232,14 @@ export default function Hud() {
 
   // A streaming answer scrolls with its text, smoothly, until the user
   // scrolls up to read; reaching the bottom again picks it back up.
-  const answerText = content?.kind === "answer" ? content.text : "";
+  // A web answer's text without "[1]"-style markers: its sources are the
+  // chips below. Rust and the server strip them already; this is the net.
+  const answerText =
+    content?.kind !== "answer"
+      ? ""
+      : content.sources.some((s) => /^https?:/.test(s.url))
+        ? stripCitations(content.text)
+        : content.text;
   useEffect(() => {
     const el = answerRef.current;
     if (!el || !stickRef.current) return;
@@ -247,11 +259,11 @@ export default function Hud() {
         (e.metaKey || e.ctrlKey) &&
         e.key.toLowerCase() === "c" &&
         content?.kind === "answer" &&
-        content.text &&
+        answerText &&
         !window.getSelection()?.toString()
       ) {
         e.preventDefault();
-        copy("copy", content.text);
+        copy("copy", answerText);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -400,6 +412,24 @@ export default function Hud() {
     commands.hudAction(id, "accept", null);
   };
 
+  /** The chips under an answer: one per site, at most MAX_CHIPS. Rust
+   * already picks them (agent/answer.rs `to_chips`); this keeps the card
+   * tidy whatever arrives. */
+  const chips = (sources: HudSource[]) => {
+    const seen = new Set<string>();
+    return sources
+      .filter((s) => {
+        const site =
+          /^https?:\/\/(?:[^/?#@]*@)?(?:www\.)?([^/?#:]+)/i
+            .exec(s.url)?.[1]
+            ?.toLowerCase() ?? `${s.url}\n${s.title}`;
+        if (seen.has(site)) return false;
+        seen.add(site);
+        return true;
+      })
+      .slice(0, MAX_CHIPS);
+  };
+
   /** Rust sends i18n keys for its own source titles (e.g. "Search Gmail"). */
   const sourceTitle = (s: HudSource) =>
     s.title.startsWith("hud.")
@@ -442,7 +472,6 @@ export default function Hud() {
             key="card"
             ref={cardRef}
             className="hud-card"
-            style={{ position: "relative" }}
             initial={hidden}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={gone}
@@ -468,9 +497,9 @@ export default function Hud() {
                   onMouseUp={onAnswerMouseUp}
                   onScroll={onAnswerScroll}
                 >
-                  {content.text ? (
+                  {answerText ? (
                     <AnswerText
-                      text={content.text}
+                      text={answerText}
                       onCopy={copyPiece}
                       onOpen={(url) => commands.hudAction("", "open", url)}
                     />
@@ -497,8 +526,8 @@ export default function Hud() {
                 </AnimatePresence>
                 {content.note && <p className="hud-note">{t(content.note)}</p>}
                 {content.sources.length > 0 && (
-                  <ol className="hud-sources" aria-label={t("hud.sources")}>
-                    {content.sources.slice(0, 5).map((s, i) => (
+                  <ul className="hud-sources" aria-label={t("hud.sources")}>
+                    {chips(content.sources).map((s, i) => (
                       <li key={`${s.url}-${i}`}>
                         {s.url ? (
                           <button
@@ -507,16 +536,14 @@ export default function Hud() {
                             onClick={() =>
                               commands.hudAction("", "open", s.url)
                             }
-                            title={s.url}
+                            title={`${sourceTitle(s)}\n${s.url}`}
                           >
-                            <span className="hud-source-n">{i + 1}</span>
                             <span className="hud-chip-label">
                               {sourceTitle(s)}
                             </span>
                           </button>
                         ) : (
-                          <span className="hud-chip" title={s.title}>
-                            <span className="hud-source-n">{i + 1}</span>
+                          <span className="hud-chip" title={sourceTitle(s)}>
                             <span className="hud-chip-label">
                               {sourceTitle(s)}
                             </span>
@@ -524,7 +551,7 @@ export default function Hud() {
                         )}
                       </li>
                     ))}
-                  </ol>
+                  </ul>
                 )}
                 {/* Streaming: Stop keeps what has arrived. */}
                 {!content.done && content.text && (
@@ -571,14 +598,19 @@ export default function Hud() {
                         }
                         disabled={busy !== null}
                         aria-busy={busy === a.kind}
-                        onClick={() => runAction(content.id, content.text, a)}
+                        onClick={() => runAction(content.id, answerText, a)}
                       >
                         {busy === a.kind && <Spinner />}
                         {actionLabel(a)}
                       </button>
                     ))}
-                    <span className="hud-hint">{t("hud.followUpHint")}</span>
-                    <Thumbs id={content.id} />
+                    {/* The hint and the rating stay together at the end. */}
+                    <span className="hud-actions-end">
+                      <span className="hud-hint" title={t("hud.followUpHint")}>
+                        {t("hud.followUpHint")}
+                      </span>
+                      <Thumbs id={content.id} />
+                    </span>
                   </footer>
                 )}
               </>
@@ -692,40 +724,43 @@ export default function Hud() {
                     ...fill(content.vars),
                   })}
                 </span>
-                {/* The label says what will happen ("Draft reply"); once
+                {/* One group, so a narrow row moves the buttons together. */}
+                <span className="hud-suggestion-buttons">
+                  {/* The label says what will happen ("Draft reply"); once
                     accepted it shows progress until the result arrives. */}
-                <button
-                  type="button"
-                  className="hud-primary"
-                  aria-busy={busy === "accept"}
-                  disabled={busy !== null}
-                  onClick={() => acceptSuggestion(content.id)}
-                >
-                  {busy === "accept" && <Spinner />}
-                  {content.accept_label
-                    ? t(content.accept_label, {
-                        defaultValue: content.accept_label,
-                      })
-                    : t("hud.yes")}
-                  {!busy && <kbd>{KEY_ENTER}</kbd>}
-                </button>
-                <button
-                  type="button"
-                  disabled={busy !== null}
-                  onClick={dismiss}
-                >
-                  {t("hud.notNow")}
-                  <kbd>{KEY_ESC}</kbd>
-                </button>
-                {/* The offer's own words: a new suggestion keeps the id. */}
-                <Thumbs
-                  id={content.id}
-                  token={JSON.stringify([
-                    content.title,
-                    content.accept_label,
-                    content.vars,
-                  ])}
-                />
+                  <button
+                    type="button"
+                    className="hud-primary"
+                    aria-busy={busy === "accept"}
+                    disabled={busy !== null}
+                    onClick={() => acceptSuggestion(content.id)}
+                  >
+                    {busy === "accept" && <Spinner />}
+                    {content.accept_label
+                      ? t(content.accept_label, {
+                          defaultValue: content.accept_label,
+                        })
+                      : t("hud.yes")}
+                    {!busy && <kbd>{KEY_ENTER}</kbd>}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={busy !== null}
+                    onClick={dismiss}
+                  >
+                    {t("hud.notNow")}
+                    <kbd>{KEY_ESC}</kbd>
+                  </button>
+                  {/* The offer's own words: a new suggestion keeps the id. */}
+                  <Thumbs
+                    id={content.id}
+                    token={JSON.stringify([
+                      content.title,
+                      content.accept_label,
+                      content.vars,
+                    ])}
+                  />
+                </span>
                 {tip && (
                   <span className="hud-tip">
                     {t(

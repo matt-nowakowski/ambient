@@ -1342,7 +1342,7 @@
     "copied": "Gekopieerd",
     "inserted": "Ingevoegd ✓",
     "clickToCopy": "Klik om te kopiëren",
-    "followUpHint": "Houd je sneltoets ingedrukt om door te vragen",
+    "followUpHint": "Houd je sneltoets vast om door te vragen",
     "yes": "Ja",
     "notNow": "Niet nu",
     "stop": "Stop",
@@ -1450,7 +1450,7 @@
       "title": "Wilde je dit typen?",
       "composed": "Hier is je concept.",
       "focusHint": "Klik in een tekstveld om het in te voegen.",
-      "askInstead": "Vraag het liever aan {{appName}}"
+      "askInstead": "Vraag het {{appName}}"
     },
     "source": {
       "searchDrive": "Zoeken in Google Drive",
@@ -1554,7 +1554,7 @@
       "couldntWrite": "Schrijven lukte nu niet, dus het staat er zoals je het zei.",
       "couldntPolish": "Oppoetsen lukte nu niet, dus het staat er zoals je het zei.",
       "rewritten": "Herschreven",
-      "undoRewrite": "Herschrijven ongedaan maken",
+      "undoRewrite": "Ongedaan maken",
       "copiedOriginal": "Je oorspronkelijke tekst is gekopieerd. Plak om te vervangen.",
       "couldntRewrite": "Herschrijven lukte nu niet, dus je tekst is ongewijzigd."
     },

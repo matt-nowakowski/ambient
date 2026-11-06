@@ -237,6 +237,36 @@ mod imp {
         })
     }
 
+    /// What's right before the caret or selection (see
+    /// `field::caret_context`). AT-SPI doesn't report fonts here, so
+    /// `monospace` stays false (code editors are told apart by app).
+    pub fn text_before_caret(
+        pid: i32,
+        max_chars: usize,
+    ) -> Option<super::super::field::CaretContext> {
+        let bus = Bus::open()?;
+        let n = focused_text_node(&bus, pid)?;
+        let start = match bus.selection_range(&n) {
+            Some((s, e)) if e > s => s,
+            _ => bus.caret(&n)?,
+        };
+        if start < 0 {
+            return None;
+        }
+        let from = start
+            .saturating_sub(i32::try_from(max_chars).unwrap_or(i32::MAX))
+            .max(0);
+        let before = if start == 0 {
+            String::new()
+        } else {
+            bus.text_range(&n, from, start)?
+        };
+        Some(super::super::field::CaretContext {
+            before: super::super::field::last_chars(&before, max_chars),
+            monospace: false,
+        })
+    }
+
     /// Select characters `start..start + len` of the focused field.
     pub fn select_chars(pid: i32, start: usize, len: usize) -> bool {
         let Some(bus) = Bus::open() else {

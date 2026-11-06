@@ -1918,46 +1918,44 @@ impl ShortcutAction for TranscribeAction {
                                             );
                                             return;
                                         }
-                                        let typed_text = final_text.clone();
-                                        let outcome =
-                                            match utils::paste(final_text, ah_clone.clone()) {
-                                                Ok(()) => {
-                                                    debug!(
-                                                        "Text pasted successfully in {:?}",
-                                                        paste_time.elapsed()
-                                                    );
-                                                    finish_details(details, &[]);
-                                                    crate::plan::record_words(
+                                        let outcome = match utils::paste_dictation(
+                                            final_text,
+                                            ah_clone.clone(),
+                                        ) {
+                                            Ok(typed_text) => {
+                                                debug!(
+                                                    "Text pasted successfully in {:?}",
+                                                    paste_time.elapsed()
+                                                );
+                                                finish_details(details, &[]);
+                                                crate::plan::record_words(
+                                                    &ah_clone,
+                                                    dictated_words,
+                                                );
+                                                // Watch for word fixes to learn.
+                                                crate::corrections::watch(&ah_clone, &typed_text);
+                                                // Polished: the chip with
+                                                // "Use my words" (a note
+                                                // when it couldn't).
+                                                if let Some(how) = typed_how {
+                                                    crate::agent::writing::after_insert(
                                                         &ah_clone,
-                                                        dictated_words,
-                                                    );
-                                                    // Watch for word fixes to learn.
-                                                    crate::corrections::watch(
-                                                        &ah_clone,
+                                                        how,
                                                         &typed_text,
                                                     );
-                                                    // Polished: the chip with
-                                                    // "Use my words" (a note
-                                                    // when it couldn't).
-                                                    if let Some(how) = typed_how {
-                                                        crate::agent::writing::after_insert(
-                                                            &ah_clone,
-                                                            how,
-                                                            &typed_text,
-                                                        );
-                                                    } else if let Some(q) = &offer_search {
-                                                        crate::agent::offer_search_instead(
-                                                            &ah_clone, q,
-                                                        );
-                                                    }
-                                                    TranscriptionOutcome::Typed
+                                                } else if let Some(q) = &offer_search {
+                                                    crate::agent::offer_search_instead(
+                                                        &ah_clone, q,
+                                                    );
                                                 }
-                                                Err(e) => {
-                                                    error!("Failed to paste transcription: {}", e);
-                                                    let _ = ah_clone.emit("paste-error", ());
-                                                    TranscriptionOutcome::Failed
-                                                }
-                                            };
+                                                TranscriptionOutcome::Typed
+                                            }
+                                            Err(e) => {
+                                                error!("Failed to paste transcription: {}", e);
+                                                let _ = ah_clone.emit("paste-error", ());
+                                                TranscriptionOutcome::Failed
+                                            }
+                                        };
                                         // A new session may have started while
                                         // this paste ran; the UI is now its.
                                         if RECORDING_SESSION.load(Ordering::SeqCst) == session {

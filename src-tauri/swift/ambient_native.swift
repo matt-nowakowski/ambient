@@ -418,6 +418,52 @@ public func ambient_focused_field(_ pid: Int32, _ readText: Bool) -> UnsafeMutab
     return json(result)
 }
 
+/// The text right before the caret (or the selection) in the focused element
+/// of `pid`: at most `maxUnits` UTF-16 units, as JSON {"before", "mono"}.
+/// "before" is "" at the start of the field; "mono" is set when the app says
+/// the text there is in a fixed-width font (a code editor or terminal).
+/// Never reads a password field (returns {"secure": true}).
+@_cdecl("ambient_text_before_caret")
+public func ambient_text_before_caret(_ pid: Int32, _ maxUnits: Int) -> UnsafeMutablePointer<CChar>? {
+    guard AXIsProcessTrusted() else { return nil }
+    let app = AXUIElementCreateApplication(pid_t(pid))
+    AXUIElementSetMessagingTimeout(app, 0.25)
+    guard let obj = attr(app, kAXFocusedUIElementAttribute),
+          CFGetTypeID(obj) == AXUIElementGetTypeID() else { return nil }
+    let focused = obj as! AXUIElement
+    if stringAttr(focused, kAXRoleAttribute) == "AXSecureTextField" { return json(["secure": true]) }
+    guard let rangeObj = attr(focused, kAXSelectedTextRangeAttribute),
+          CFGetTypeID(rangeObj) == AXValueGetTypeID() else { return nil }
+    var sel = CFRange()
+    guard AXValueGetValue(rangeObj as! AXValue, .cfRange, &sel), sel.location >= 0 else { return nil }
+    if sel.location == 0 { return json(["before": ""]) }
+    let n = min(max(maxUnits, 1), sel.location)
+    var range = CFRange(location: sel.location - n, length: n)
+    guard let rangeValue = AXValueCreate(.cfRange, &range) else { return nil }
+    var result: [String: Any] = [:]
+    var out: CFTypeRef?
+    if AXUIElementCopyParameterizedAttributeValue(
+        focused, kAXStringForRangeParameterizedAttribute as CFString, rangeValue, &out) == .success,
+       let s = out as? String {
+        result["before"] = s
+    } else if let v = stringAttr(focused, kAXValueAttribute), v.utf16.count <= 200_000,
+              sel.location <= v.utf16.count {
+        let units = Array(v.utf16)[(sel.location - n)..<sel.location]
+        result["before"] = String(decoding: units, as: UTF16.self)
+    } else {
+        return nil
+    }
+    var styled: CFTypeRef?
+    if AXUIElementCopyParameterizedAttributeValue(
+        focused, kAXAttributedStringForRangeParameterizedAttribute as CFString, rangeValue, &styled) == .success,
+       let a = styled as? NSAttributedString, a.length > 0,
+       let font = a.attribute(NSAttributedString.Key("AXFont"), at: a.length - 1, effectiveRange: nil) as? [String: Any],
+       let name = font["AXFontName"] as? String {
+        result["mono"] = NSFont(name: name, size: 12)?.isFixedPitch ?? false
+    }
+    return json(result)
+}
+
 /// Select `len` UTF-16 units from `loc` in the focused element of `pid`.
 /// True when the app accepted the new range.
 @_cdecl("ambient_select_range")

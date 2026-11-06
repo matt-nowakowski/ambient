@@ -688,6 +688,40 @@ pub fn focused_field(pid: i32, read_text: bool) -> Option<super::field::FocusedF
     })
 }
 
+/// What's right before the caret or selection (see
+/// `field::caret_context`): the selection's start, widened back by
+/// `max_chars` characters. UI Automation doesn't report fonts here, so
+/// `monospace` stays false (code editors are told apart by app).
+pub fn text_before_caret(pid: i32, max_chars: usize) -> Option<super::field::CaretContext> {
+    let el = focused_in(pid)?;
+    if is_password(&el) {
+        return None;
+    }
+    let pattern = text_pattern(&el)?;
+    let ranges = unsafe { pattern.GetSelection() }.ok()?;
+    let sel = unsafe { ranges.GetElement(0) }.ok()?;
+    let r = unsafe { sel.Clone() }.ok()?;
+    // Collapse to the selection's start, then reach back.
+    unsafe {
+        r.MoveEndpointByRange(
+            TextPatternRangeEndpoint_End,
+            &sel,
+            TextPatternRangeEndpoint_Start,
+        )
+    }
+    .ok()?;
+    let back = i32::try_from(max_chars)
+        .unwrap_or(i32::MAX)
+        .saturating_neg();
+    unsafe { r.MoveEndpointByUnit(TextPatternRangeEndpoint_Start, TextUnit_Character, back) }
+        .ok()?;
+    let before = range_text(&r).unwrap_or_default();
+    Some(super::field::CaretContext {
+        before: super::field::last_chars(&before, max_chars),
+        monospace: false,
+    })
+}
+
 /// Select characters `start..start + len` of the focused field.
 pub fn select_chars(pid: i32, start: usize, len: usize) -> bool {
     (|| -> Option<bool> {

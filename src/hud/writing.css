@@ -20,27 +20,3 @@
 .hud-writing[data-decision="editing"] .hud-writing-label {
   color: var(--h-muted);
 }
-
-.hud-writing button {
-  display: inline-flex;
-  align-items: center;
-  height: 26px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--h-raise);
-  color: var(--h-ink);
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 120ms ease;
-}
-
-.hud-writing button:hover {
-  background: var(--h-raise-hover);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hud-writing button {
-    transition: none;
-  }
-}

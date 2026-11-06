@@ -12,6 +12,10 @@
   --h-surface: rgba(18, 18, 22, 0.74);
   --h-raise: rgba(255, 255, 255, 0.08);
   --h-raise-hover: rgba(255, 255, 255, 0.14);
+  --h-raise-active: rgba(255, 255, 255, 0.18);
+  --h-focus: rgba(255, 255, 255, 0.6);
+  --h-link: #a5cdff;
+  --h-link-line: rgba(165, 205, 255, 0.4);
   --h-hair: rgba(255, 255, 255, 0.1);
   --h-success: #4ade80;
   --h-error: #f87171;
@@ -45,6 +49,9 @@
     inset 0 0 0 0.5px rgba(255, 255, 255, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  /* Chromium (WebView2) lets an animating child, the countdown bar, square
+     off a rounded corner that overflow alone should clip. */
+  clip-path: inset(0 round var(--h-radius));
   transform-origin: top right;
   /* The glass is dark in both themes, so its orbs are always light. */
   --orb-fg: #f5f5f5;
@@ -73,6 +80,8 @@
   margin-top: 8px;
   max-height: 340px;
   overflow-y: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
   font-size: 13px;
   line-height: 1.55;
   font-weight: 380;
@@ -84,30 +93,31 @@
   color: var(--h-faint);
 }
 
+/* One row of chips: each shrinks (its title ending in "…") rather than
+   wrapping; the full title shows on hover. */
 .hud-sources {
   list-style: none;
   margin: 10px 0 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
   gap: 6px;
 }
 
 .hud-sources li {
-  min-width: 0;
-  max-width: 100%;
+  flex: 0 1 auto;
+  min-width: 44px;
+  max-width: 160px;
+  display: flex;
 }
 
-/* One line, even padding all round; long titles end in an ellipsis inside
-   the label, never against the chip's edge. */
 .hud-chip {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  max-width: 200px;
+  min-width: 0;
+  max-width: 100%;
   height: 22px;
-  padding: 0 8px 0 4px;
+  padding: 0 8px;
   border: 0;
   border-radius: 7px;
   background: var(--h-raise);
@@ -132,17 +142,6 @@ button.hud-chip:hover {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.hud-source-n {
-  flex: none;
-  display: inline-grid;
-  place-items: center;
-  width: 15px;
-  height: 15px;
-  border-radius: 4px;
-  background: var(--h-hair);
-  font-size: 10px;
 }
 
 .hud-note {
@@ -194,6 +193,7 @@ button.hud-chip:hover {
 
 .hud-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   margin-top: 12px;
@@ -205,24 +205,37 @@ button.hud-chip:hover {
   font-family: inherit;
 }
 
-.hud-actions button,
-.hud-suggestion button {
+/* One button for every card: a single line, never squeezed. A row that runs
+   out of room wraps whole buttons onto the next line instead. */
+.hud-actions > button,
+.hud-suggestion-buttons > button,
+.hud-writing > button,
+.hud-card .hud-undo {
+  flex: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  box-sizing: border-box;
   height: 26px;
+  min-width: 56px;
+  max-width: 100%;
   padding: 0 10px;
   border: 0;
   border-radius: 8px;
   background: var(--h-raise);
   color: var(--h-ink);
   font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
   cursor: pointer;
-  transition: background 120ms ease;
 }
 
-.hud-actions button:hover,
-.hud-suggestion button:hover {
+.hud-actions > button:hover,
+.hud-suggestion-buttons > button:hover,
+.hud-writing > button:hover,
+.hud-card .hud-undo:hover {
   background: var(--h-raise-hover);
 }
 
@@ -241,10 +254,25 @@ button.hud-chip:hover {
   opacity: 0.55;
 }
 
+.hud-actions-end {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+/* Right-aligned; on a row too full for it, it takes the next line. */
 .hud-hint {
   margin-left: auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   font-size: 11px;
   color: var(--h-faint);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .hud-suggestion {
@@ -261,13 +289,24 @@ button.hud-chip:hover {
   color: var(--h-faint);
 }
 
+/* The title keeps at least this much room beside the buttons; with less,
+   the buttons move to a line of their own. */
 .hud-suggestion-title {
-  flex: 1;
+  flex: 1 1 120px;
   min-width: 0;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.hud-suggestion-buttons {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  margin-left: auto;
 }
 
 .hud-timer {
@@ -327,18 +366,6 @@ button.hud-chip:hover {
 
 .hud-undo {
   margin-left: auto;
-  height: 24px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 7px;
-  background: var(--h-raise);
-  color: var(--h-ink);
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.hud-undo:hover {
-  background: var(--h-raise-hover);
 }
 
 /* Notices: what was done, or why not and what instead. */
@@ -387,11 +414,6 @@ button.hud-chip:hover {
   accent-color: var(--h-ink);
 }
 
-.hud-actions button:disabled {
-  opacity: 0.45;
-  cursor: default;
-}
-
 /* ── Button states: hover, pressed, focus, disabled, busy ─────────────── */
 
 .hud-card button {
@@ -404,11 +426,12 @@ button.hud-chip:hover {
 
 .hud-actions button:active:not(:disabled),
 .hud-suggestion button:active:not(:disabled),
+.hud-writing button:active:not(:disabled),
 button.hud-chip:active,
 .hud-close:active,
 .hud-undo:active {
   transform: scale(0.97);
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--h-raise-active);
 }
 
 .hud-card .hud-primary:active:not(:disabled) {
@@ -418,12 +441,11 @@ button.hud-chip:active,
 .hud-card button:focus-visible,
 .hud-card [role="button"]:focus-visible,
 .hud-link:focus-visible {
-  outline: 1.5px solid rgba(255, 255, 255, 0.6);
+  outline: 1.5px solid var(--h-focus);
   outline-offset: 1px;
 }
 
-.hud-card button:disabled,
-.hud-suggestion button:disabled {
+.hud-card button:disabled {
   opacity: 0.45;
   cursor: default;
 }
@@ -481,12 +503,7 @@ button.hud-chip:active,
   }
 }
 
-/* ── Answer text: smooth scrolling, code, links, "Copied" ───────────── */
-
-.hud-answer {
-  scroll-behavior: smooth;
-  overscroll-behavior: contain;
-}
+/* ── Answer text: code, links, "Copied" ─────────────────────────────── */
 
 .hud-code-block {
   position: relative;
@@ -530,7 +547,7 @@ button.hud-chip:active,
 .hud-inline-code {
   padding: 0 4px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--h-raise);
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: 0.92em;
   cursor: copy;
@@ -538,7 +555,7 @@ button.hud-chip:active,
 }
 
 .hud-inline-code:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--h-raise-hover);
 }
 
 .hud-link-wrap {
@@ -546,12 +563,13 @@ button.hud-chip:active,
 }
 
 .hud-link {
-  color: #a5cdff;
+  color: var(--h-link);
   text-decoration: underline;
-  text-decoration-color: rgba(165, 205, 255, 0.4);
+  text-decoration-color: var(--h-link-line);
   text-underline-offset: 2px;
   white-space: normal;
-  word-break: break-all;
+  /* Long links break only where they must, not mid-word on every line. */
+  overflow-wrap: anywhere;
   cursor: pointer;
 }
 
@@ -605,6 +623,7 @@ button.hud-chip:active,
   }
   .hud-actions button:active:not(:disabled),
   .hud-suggestion button:active:not(:disabled),
+  .hud-writing button:active:not(:disabled),
   button.hud-chip:active,
   .hud-close:active,
   .hud-undo:active {

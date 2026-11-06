@@ -98,6 +98,53 @@ pub fn focused_field(read_text: bool, never_watch: &[String]) -> Option<FocusedF
     }
 }
 
+/// The few characters right before the caret (or the selection) of the
+/// focused field, for joining a dictation to what's already typed.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct CaretContext {
+    /// Up to `max_chars` characters; empty at the start of the field.
+    pub before: String,
+    /// The text is set in a fixed-width font (a code editor or terminal),
+    /// when the platform says which font.
+    pub monospace: bool,
+}
+
+/// What's right before the caret in the app in front, or None when it can't
+/// be read (no field, no position, a password field, a private or
+/// never-watch app). Ambient's own windows are read too (the onboarding's
+/// practice note). Only used on this computer, then forgotten.
+pub fn caret_context(max_chars: usize, never_watch: &[String]) -> Option<CaretContext> {
+    let app = super::frontmost_app()?;
+    if super::sensitive::sensitive_app(&app.name, &app.bundle_id).is_some()
+        || super::is_never_watch(&app.bundle_id, never_watch)
+        || !super::accessibility_trusted()
+    {
+        return None;
+    }
+    if crate::testing::active() {
+        return crate::testing::caret_context(max_chars);
+    }
+    #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+    {
+        let ctx = super::platform::text_before_caret(app.pid, max_chars)?;
+        if super::sensitive::detect(&ctx.before).is_some() {
+            return None;
+        }
+        Some(ctx)
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
+    {
+        let _ = max_chars;
+        None
+    }
+}
+
+/// The last `n` characters of `s`.
+pub fn last_chars(s: &str, n: usize) -> String {
+    let count = s.chars().count();
+    s.chars().skip(count.saturating_sub(n)).collect()
+}
+
 /// Select `len` characters from `start` in the focused field of the app in
 /// front. True when the app took the selection (the caller verifies by
 /// reading it back).

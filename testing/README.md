@@ -145,8 +145,13 @@ to each of its cases (tags are added, settings merged).
     "judge": "Anything else, in a sentence.",
     "contains": ["…"],
     "not_contains": ["…"],
+    "typed": " not doing much", // exactly what was typed (spaces, case)
     "shows": ["hud.notice.cantClose"], // some card's text or i18n key
     "not_shows": ["cantDoYet"], // no card's text or i18n key
+    "card_text_not_matches": ["\\[\\d+\\]"], // regexes no card's text may match
+    "max_sources": 3, // no answer card shows more source chips
+    "min_sources": 1, // some answer card shows at least this many
+    "sources_distinct_sites": true, // never two chips from one site
     "must_not": ["typed_verbatim", "opened_browser"],
   },
 }
@@ -155,7 +160,9 @@ to each of its cases (tags are added, settings merged).
 A screen: `app` and `bundle` (each a string, or per OS:
 `{"macos": "com.apple.mail", "windows": "olk.exe", "linux": "thunderbird"}`),
 `title`, `url`, `text` (the window's text, as the screen reader returns it),
-`focus` (`role`, `editable`, `secure`, `value`, `caret`, `selection`), and
+`focus` (`role`, `editable`, `secure`, `value`, `caret`, `selection`,
+`monospace` for a code editor or terminal; `value` up to `caret` is what's
+before the caret, which a dictation is joined to), and
 for private-place checks `frame_urls`, `frame_titles`, `ui_labels`,
 `private_window`. `reply_button: true` lets "press Reply" succeed.
 

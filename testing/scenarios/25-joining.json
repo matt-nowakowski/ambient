@@ -1,0 +1,419 @@
+{
+  "defaults": {
+    "tags": ["joining", "dictate"],
+    "plan": "pro",
+    "settings": {
+      "intelligence": "none",
+      "polish": false,
+      "writing": "as_said"
+    }
+  },
+  "cases": [
+    {
+      "id": "join.en.second-take",
+      "about": "A second take into the same field continues the sentence: a space, and no capital on a common word.",
+      "tags": ["critical", "regression"],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "We're just staying in San Miguel",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "We're just staying in San Miguel"
+        }
+      },
+      "say": "Not doing much to be honest",
+      "expect": {
+        "route": "write",
+        "typed": " not doing much to be honest",
+        "must_not": ["model_call"]
+      },
+      "regression": "0.1.11: two dictations in a row typed \"San MiguelNot doing much\""
+    },
+    {
+      "id": "join.en.after-sentence",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "It works.",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "It works."
+        }
+      },
+      "say": "then we ship it",
+      "expect": {
+        "route": "write",
+        "typed": " Then we ship it",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.start-of-field",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": ""
+        }
+      },
+      "say": "Hello there",
+      "expect": {
+        "route": "write",
+        "typed": "Hello there",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.new-line",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "Hi Anna,\n",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "Hi Anna,\n"
+        }
+      },
+      "say": "Thanks for the notes",
+      "expect": {
+        "route": "write",
+        "typed": "Thanks for the notes",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.keeps-names",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "We flew to",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "We flew to"
+        }
+      },
+      "say": "San Miguel on Friday",
+      "expect": {
+        "route": "write",
+        "typed": " San Miguel on Friday",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.keeps-i",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "and then",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "and then"
+        }
+      },
+      "say": "I left early",
+      "expect": {
+        "route": "write",
+        "typed": " I left early",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.open-bracket",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "the plan (",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "the plan ("
+        }
+      },
+      "say": "Draft two",
+      "expect": {
+        "route": "write",
+        "typed": "Draft two",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.pl.second-take",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "pl",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "Jesteśmy w Krakowie",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "Jesteśmy w Krakowie"
+        }
+      },
+      "say": "Ale jutro wracamy",
+      "expect": {
+        "route": "write",
+        "typed": " ale jutro wracamy",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.de.keeps-sie",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "de",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "Danke,",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "Danke,"
+        }
+      },
+      "say": "Sie sind sehr nett",
+      "expect": {
+        "route": "write",
+        "typed": " Sie sind sehr nett",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.zh.no-space",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "zh",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "我们在北京",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "我们在北京"
+        }
+      },
+      "say": "明天回家",
+      "expect": {
+        "route": "write",
+        "typed": "明天回家",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.ja.no-space",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "ja",
+      "screen": {
+        "app": {
+          "macos": "Notes",
+          "windows": "Notepad",
+          "linux": "Text Editor"
+        },
+        "bundle": {
+          "macos": "com.apple.Notes",
+          "windows": "notepad.exe",
+          "linux": "org.gnome.texteditor"
+        },
+        "title": "Notes",
+        "text": "東京にいます。",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "東京にいます。"
+        }
+      },
+      "say": "明日帰ります",
+      "expect": {
+        "route": "write",
+        "typed": "明日帰ります",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.code-member",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Visual Studio Code",
+          "windows": "Visual Studio Code",
+          "linux": "Visual Studio Code"
+        },
+        "bundle": {
+          "macos": "com.microsoft.VSCode",
+          "windows": "code.exe",
+          "linux": "code"
+        },
+        "title": "Notes",
+        "text": "user.",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "user.",
+          "monospace": true
+        }
+      },
+      "say": "name",
+      "expect": {
+        "route": "write",
+        "typed": "name",
+        "must_not": ["model_call"]
+      }
+    },
+    {
+      "id": "join.en.code-prose",
+      "about": "A dictation is joined to the text before the caret: a space and the case to fit, none where the language or field takes none.",
+      "tags": [],
+      "lang": "en",
+      "screen": {
+        "app": {
+          "macos": "Visual Studio Code",
+          "windows": "Visual Studio Code",
+          "linux": "Visual Studio Code"
+        },
+        "bundle": {
+          "macos": "com.microsoft.VSCode",
+          "windows": "code.exe",
+          "linux": "code"
+        },
+        "title": "Notes",
+        "text": "fix the login bug",
+        "focus": {
+          "role": "AXTextArea",
+          "editable": true,
+          "value": "fix the login bug",
+          "monospace": true
+        }
+      },
+      "say": "Then run the tests",
+      "expect": {
+        "route": "write",
+        "typed": " Then run the tests",
+        "must_not": ["model_call"]
+      }
+    }
+  ]
+}

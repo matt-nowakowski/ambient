@@ -1466,7 +1466,7 @@
       "title": "Chtěli jste napsat tohle?",
       "composed": "Tady je koncept.",
       "focusHint": "Klikněte do textového pole a vložte ho.",
-      "askInstead": "Zeptat se raději aplikace {{appName}}"
+      "askInstead": "Zeptat se {{appName}}"
     },
     "source": {
       "searchDrive": "Hledat na Disku Google",

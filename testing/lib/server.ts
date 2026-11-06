@@ -14,6 +14,7 @@
  */
 import {
   answerMessages,
+  stripCitations,
   MAX_TOKENS,
   MAX_TOKENS_WRITE,
 } from "../../web/lib/answer-core";
@@ -169,8 +170,9 @@ async function answer(model: Model, body: Record<string, unknown>) {
   const enc = new TextEncoder();
   const sse = (event: string | null, data: unknown) =>
     `${event ? `event: ${event}\n` : ""}data: ${JSON.stringify(data)}\n\n`;
-  const out =
-    sse("sources", sources) + sse(null, { t: text }) + sse("done", {});
+  // As the server does: answers lose citation markers, drafts don't.
+  const t = writing ? text : stripCitations(text);
+  const out = sse("sources", sources) + sse(null, { t }) + sse("done", {});
   return new Response(enc.encode(out), {
     headers: { "Content-Type": "text/event-stream" },
   });
