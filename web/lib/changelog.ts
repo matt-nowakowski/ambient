@@ -13,10 +13,19 @@ export const changelog: Release[] = [
   {
     version: "0.1.17",
     date: "2026-11-06",
-    title: "Steadier on Mac and Windows",
+    title: "It reads the moment",
     summary:
-      "Fixes a crash when Ambient replied to an email in Gmail, and cards that left an empty frame behind on Windows.",
+      "Ambient now works out what you want from what you say and what's on your screen, in any app and any language, instead of following fixed rules.",
     sections: [
+      {
+        heading: "New",
+        items: [
+          "Every dictation is understood in context: Ambient looks at what you said and the window you're in, then types it, tidies it, writes a reply for you, answers, or acts. No more lists of apps or phrases deciding for it.",
+          "\"Reply to this email saying it's all good\" works on any mail site, in any language: Ambient finds the reply button on the page itself.",
+          "Answer Ambient's cards in your own words, in any language: \"sure, tell her Thursday works\", \"not now\", \"stop showing these\".",
+          "Follows your Intelligence setting: on your computer when you choose that, in the cloud otherwise. With No AI, your words are typed exactly as you said them.",
+        ],
+      },
       {
         heading: "Fixed",
         items: [
