@@ -40,7 +40,7 @@ export default function SuggestionsPage() {
 
       <DocSection id="turn-it-on" title="Turn it on">
         <p>
-          Off until you turn it on: in setup (“It offers help, too”), or with <strong>Offer suggestions</strong> in{" "}
+          Off until you turn it on: in the tour after setup (“It offers help, too”), or with <strong>Offer suggestions</strong> in{" "}
           {brand.name} → Privacy. It works on macOS, Windows and Linux (on Linux, turn{" "}
           <Link href="/docs/linux#accessibility" className="text-foreground underline underline-offset-4">
             accessibility on
@@ -48,11 +48,13 @@ export default function SuggestionsPage() {
           ).
         </p>
         <p>
-          It decides on your computer from the window’s text, and nothing is sent until you accept. With{" "}
+          It decides on your computer from the window’s text. With{" "}
           <Link href="/docs/privacy#on-device-ai" className="text-foreground underline underline-offset-4">
             on-device AI
           </Link>{" "}
-          it judges better; without it, simple rules. On Pro you can choose to have the cloud decide instead. Free gets up to {brand.freeSuggestionsPerWeek} suggestions a week.
+          it judges better; without it, simple rules. On Pro, with Intelligence on Cloud, or after you say yes to the
+          one-time offer on Automatic, the cloud decides instead, from a redacted snippet of the window. Each check is
+          listed in Privacy. With No AI, simple rules only. Free gets up to {brand.freeSuggestionsPerWeek} suggestions a week.
         </p>
       </DocSection>
 

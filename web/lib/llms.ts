@@ -32,6 +32,7 @@ import {
   nothingToConnect,
   platformNote,
   routingRules,
+  setupSteps,
   suggestionMoments,
   talkingWays,
   trySaying,
@@ -56,7 +57,7 @@ function facts() {
     `- Built on ${upstream.name} by ${upstream.author} (${upstream.license}), an open-source dictation app.`,
     `- Pro removes the weekly limits (fair use). The agent, on Free and Pro: it decides from what you say whether to write, answer (with sources, web search only when needed), act (calendar, reminders, open apps and links, run your shortcuts) or recall; meeting notes for any call with no bot; suggestions decided on the computer (or, optionally on Pro, in the cloud); and recall from local sources with nothing to connect.`,
     `- Smart writing (dictation): per dictation, ${brand.name} types the words as said, polishes them, or writes the message for you from an instruction (“tell him I can’t make it, be polite”), and rewrites selected text on request (“make this more formal”). A chip shows what it did; “Use my words” (click, or say “use my words”, “undo that” or “just what I said”) takes it back, and Edit changes it by voice (“shorter”, “warmer”). It decides from what is on screen in any app (not an app list), understands “reply that…” / “write that…” in many languages, and addresses replies to the sender, not the user. It learns per app, follows per-app and per-site styles (as said, casual, polished; Account → Writing) and offers to remember words the user corrects twice. Setting: Writing = Smart (default), Always as I said, or Always polish. Polishing needs AI polish on, which is off by default for new installs so dictation is instant; writing for you works with it off. Only Polished or Written insertions spend AI uses; deciding how to write is a background call that never does.`,
-    `- Optional on-device AI: a downloadable model (Qwen3 1.7B, about 1.7 GB, run by llama.cpp) on macOS, Windows and Linux; polish, smart writing, routing, suggestion judging and short answers then run on the computer. On a Mac it is an alternative to Apple Intelligence. Without an on-device model, Intelligence “On this computer only” is basic (simple rules, no AI).`,
+    `- Optional on-device AI: a downloadable model (Qwen3, four sizes; recommended Qwen3 1.7B 4-bit, about 1.1 GB; run by llama.cpp) on macOS, Windows and Linux; polish, smart writing, routing, suggestion judging and short answers then run on the computer. On a Mac it is an alternative to Apple Intelligence. Without an on-device model, Intelligence “On this computer only” is basic (simple rules, no AI).`,
     `- ${brand.name} never talks out loud. It answers on screen and nudges with one-line suggestions.`,
     `- Talking to ${brand.name}: hold the Ask shortcut; or start with “Hey ${brand.name}” on the dictation key (works in AI chat apps and messaging apps, where plain dictation is typed); or, optionally, turn on hands-free and just say “Hey ${brand.name}, …” with no key. Hands-free is off by default, listens on the computer, checks only the first couple of seconds of speech for the phrase and drops everything else; nothing is recorded or sent until the phrase is said.`,
     `- No bots, no accounts, no integrations to connect. ${nothingToConnect.lead} Everything that reads the screen is off until the user turns it on.`,
@@ -166,6 +167,9 @@ function guideFull() {
   const head = (slug: string) => `## ${page(slug).title} (${url(page(slug).path)})\n\n${page(slug).intro}\n`;
   return [
     `${head("getting-started")}
+Setup (first run):
+${rows(setupSteps)}
+
 Talking to ${brand.name}:
 ${rows(talkingWays)}
 ${greetingsNote}
@@ -179,7 +183,7 @@ How it decides:
 ${rows(routingRules)}
 - “Typed it. Search this instead?”: if it typed something that sounded like a question, a chip offers to answer it instead for a few seconds.
 
-The answer card: Insert pastes the answer where the cursor was; Copy; sources link to the pages and files used; Esc closes it and nothing is saved; hold the shortcut within 90 seconds to follow up.
+The answer card: Insert pastes the answer where the cursor was; Copy, or select any part to copy it (click code to copy it); up to three sources, one per site, link to the pages and files used; Esc closes it and nothing is saved; hold the shortcut within 90 seconds to follow up.
 
 ${nothingToConnect.title} ${nothingToConnect.lead} ${nothingToConnect.body}
 ${rows(nothingToConnect.sources)}
@@ -192,7 +196,7 @@ ${platformNote}
     `${head("recall")}\nTry saying:\n${say(trySaying.recall)}\n`,
     `${head("meetings")}\nTry saying:\n${say(trySaying.meetings)}\n\nDuring the call: a live transcript of You and Them, rolling notes and nudges (Find it, Remind me, Copy). After: summary, decisions, action items, questions for you and a follow-up email draft; a card says the notes are ready, with Email to me when signed in. A consent message is offered to paste into the call chat. No bot joins. Audio is never saved.\n`,
     `${head("suggestions")}\nMoments:\n${rows(suggestionMoments)}\n\nWhen one appears, try saying:\n${say(trySaying.suggestions)}\n`,
-    `${head("privacy")}\nSwitches: Read what you ask about; Remember what you’ve seen; Offer suggestions; Meeting notes; Hands-free; Share anonymous usage counts (counts and timings only, off by default). Intelligence: Automatic, On this computer only, or Cloud. On-device AI: optional download (Privacy → On-device AI). “Right now” at the top of Privacy shows what reads the screen and what can send text to the cloud. What you’ve told me: suggestions you turned down and per-app writing preferences, with Undo. Never read: password fields, password managers and Keychain, private windows, crypto wallets, and any window showing a recovery phrase or private key. Secrets are removed before text is sent. The network ledger lists every request and exactly what it sent.\n`,
+    `${head("privacy")}\nSwitches: Read what you ask about; Remember what you’ve seen; Offer suggestions; Meeting notes; Hands-free; Share anonymous usage counts (counts and timings only, off by default). Intelligence (chosen in setup): Automatic, On this computer only, Cloud, or No AI (no model runs, nothing sent for AI). On-device AI: optional download (Privacy → On-device AI). Suggestions are decided on the computer; on Pro, with Intelligence on Cloud or after accepting a one-time offer on Automatic, a redacted window snippet is sent to decide. “Right now” at the top of Privacy shows what reads the screen and what can send text to the cloud. What you’ve told me: suggestions you turned down and per-app writing preferences, with Undo. Never read: password fields, password managers and Keychain, private windows, crypto wallets, private pages (banking, payment, medical, password and ID pages, recognised by what they show), and any window showing a recovery phrase or private key. Secrets are removed before text is sent. The network ledger (Privacy → Requests that left this computer) lists every request and exactly what it sent, for 30 days: AI, downloads, update checks, the daily check-in, trial, sign-in and plan checks.\n`,
   ].join("\n");
 }
 

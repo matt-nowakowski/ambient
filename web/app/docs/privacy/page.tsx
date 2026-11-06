@@ -12,7 +12,7 @@ const switches = [
   { k: "Hands-free", v: `Listens on your computer for “Hey ${brand.name}”. Nothing is sent until you say it.` },
   { k: "Share anonymous usage counts", v: "Counts and timings only, never what you say, type or see." },
   { k: "Meeting notes", v: "Listens to your microphone and the call while notes are on." },
-  { k: "Intelligence", v: "Where the AI runs: Automatic (default), On this computer only (nothing sent), or Cloud." },
+  { k: "Intelligence", v: "Where the AI runs, chosen in setup: Automatic, On this computer only (nothing sent), Cloud, or No AI." },
 ] as const;
 
 const never = [
@@ -22,10 +22,12 @@ const never = [
   { k: "Private and incognito windows", v: "Skipped." },
   { k: "Crypto wallets", v: "MetaMask, Ledger Live, Phantom, Exodus, Electrum, Trezor and others. Skipped, always." },
   { k: "Recovery phrases and private keys", v: `The whole window is dropped. ${brand.name} shows that it paused there.` },
+  { k: "Private pages", v: "Banking, payment, medical, password and ID pages, recognised by what they show, in any language. Ask about one and it says it doesn’t read them." },
 ] as const;
 
 const onDevice = [
-  { k: "What it is", v: "A small AI model (Qwen3 1.7B, about 1.7 GB) run by llama.cpp on your computer. Optional, on every OS." },
+  { k: "What it is", v: "A small AI model run by llama.cpp on your computer. Optional, on every OS." },
+  { k: "Models", v: "Qwen3 in four sizes, 0.6 to 2.5 GB. Recommended: Qwen3 1.7B (4-bit), about 1.1 GB. Switch or remove any time." },
   { k: "What runs on it", v: "Polish, smart writing, deciding what you meant, suggestions and short answers." },
   { k: "Without it", v: "“On this computer only” means basic: simple rules, no AI. Answers and writing for you need the cloud." },
   { k: "On a Mac", v: "An alternative to Apple Intelligence." },
@@ -34,7 +36,7 @@ const onDevice = [
 const check = [
   { k: "Right now", v: "The top of Privacy: what reads your screen and what can send text to the cloud, at a glance." },
   { k: `What ${brand.name} sees`, v: "Click Preview, switch to any window, and see exactly what it would read after redaction." },
-  { k: "Requests that left this computer", v: "Every request and exactly what it sent. Kept 30 days." },
+  { k: "Requests that left this computer", v: "Every request and exactly what it sent: AI, downloads, update checks, the daily check-in, trial, sign-in and plan checks. Kept 30 days." },
   { k: "What’s stored", v: "Screen memory by app. Delete one app’s, or everything." },
   { k: "What you’ve told me", v: "The suggestions you turned down, and how you like your writing, per app. Undo any of it." },
 ] as const;
@@ -64,6 +66,10 @@ export default function PrivacyDocsPage() {
           Set Intelligence to this and AI runs only on your device (on-device AI, or Apple Intelligence on a Mac), with
           web search off. Nothing is sent for AI at all.
         </Callout>
+        <p>
+          <strong>No AI</strong> goes further: no model runs anywhere. Dictation is typed as you said it, and asking for
+          something that needs AI tells you so.
+        </p>
       </DocSection>
 
       <DocSection id="on-device-ai" title="On-device AI">

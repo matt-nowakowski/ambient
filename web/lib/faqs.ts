@@ -21,7 +21,7 @@ export const faqs: FaqItem[] = [
   },
   {
     q: "What leaves my computer?",
-    a: `Never your audio. Speech recognition runs on your device. When an AI feature needs a model, only the text it needs is sent, with passwords, card numbers, API keys and one-time codes removed first. Screen features are off until you turn them on, and password managers, private windows and crypto wallets are never read. Set Intelligence to “On this computer only” and nothing is sent for AI at all. Anonymous usage counts (never what you say, type or see) are shared only if you opt in, and feedback only when you send it. Every request is listed in the app’s Privacy Center.`,
+    a: `Never your audio. Speech recognition runs on your device. When an AI feature needs a model, only the text it needs is sent, with passwords, card numbers, API keys and one-time codes removed first. Screen features are off until you turn them on, and password managers, private windows and crypto wallets are never read. Set Intelligence to “On this computer only” or “No AI” and nothing is sent for AI at all. Anonymous usage counts (never what you say, type or see) are shared only if you opt in, and feedback only when you send it. Every request is listed in the app’s Privacy Center.`,
   },
   plans,
   {
@@ -30,7 +30,7 @@ export const faqs: FaqItem[] = [
   },
   {
     q: "Does it work offline?",
-    a: "Dictation does. Once a model is downloaded, it works with no connection: on a plane, behind a strict firewall. AI features use our server by default. Download the optional on-device AI (about 1.7 GB, any computer), or use Apple Intelligence on a Mac, and polish, smart writing and suggestions run offline too. Web answers need a connection.",
+    a: "Dictation does. Once a model is downloaded, it works with no connection: on a plane, behind a strict firewall. AI features use our server unless you choose otherwise. Download the optional on-device AI (about 1.1 GB, any computer), or use Apple Intelligence on a Mac, and polish, smart writing and suggestions run offline too. Web answers need a connection.",
   },
   {
     q: `How is it different from ${competitors.join(" or ")}?`,
@@ -46,7 +46,7 @@ export const homeFaqs: FaqItem[] = [
   },
   {
     q: "What leaves my computer?",
-    a: `Never your audio. Only the text a feature needs, with passwords, card numbers, keys and codes removed first. Choose “On this computer only” and nothing is sent for AI.`,
+    a: `Never your audio. Only the text a feature needs, with passwords, card numbers, keys and codes removed first. Choose “On this computer only” or “No AI” and nothing is sent for AI.`,
   },
   {
     q: "What’s free, and what does Pro cost?",

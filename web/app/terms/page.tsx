@@ -41,13 +41,13 @@ export default function TermsPage() {
                 <strong>Speech models</strong> are made by third parties (such as NVIDIA, OpenAI, Mistral, Alibaba and
                 others), are downloaded separately when you choose them, and come under their own licence terms, shown
                 on each model’s page. Most allow commercial use; some do not. You are responsible for following the
-                licence of any model you choose to use. The optional on-device AI model (Qwen3 1.7B by Alibaba, Apache-2.0)
-                and the llama.cpp runtime that runs it (MIT) are downloaded only if you choose, under their own licences.
+                licence of any model you choose to use. The optional on-device AI models (Qwen3 by Alibaba, Apache-2.0)
+                and the llama.cpp runtime that runs them (MIT) are downloaded only if you choose, under their own licences.
               </p>
               <p>
                 {brand.name} is built on <a href={upstream.url}>{upstream.name}</a> by {upstream.author}, which is released
                 under the {upstream.license} licence. Open-source components remain under their own licences, and nothing
-                in these terms limits your rights under them. See the third-party notices included with the app.
+                in these terms limits your rights under them. See the third-party notices in the app, under Settings → About → Acknowledgments.
               </p>
             </>
           ),
