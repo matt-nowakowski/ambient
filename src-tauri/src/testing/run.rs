@@ -50,6 +50,9 @@ async fn run(app: AppHandle) -> Value {
         "processed": processed,
         "events": super::events(),
         "hud_final": crate::hud::current().and_then(|c| serde_json::to_value(c).ok()),
+        // Every scenario runs with no window at all (the suite also passes
+        // `--start-hidden`): the pipeline must never need the main window.
+        "windows": tauri::Manager::webview_windows(&app).keys().cloned().collect::<Vec<_>>(),
     })
 }
 

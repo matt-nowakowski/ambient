@@ -14,6 +14,8 @@ export type AppReport = {
   processed: Record<string, any> | null;
   events: Ev[];
   hud_final: Record<string, any> | null;
+  /** Webview windows open at the end (none: it ran from the menu bar). */
+  windows?: string[];
 };
 
 export type Outcome = {

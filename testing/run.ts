@@ -156,7 +156,8 @@ async function main() {
 
 /** One launch of the app in test mode; `code` is null when it had to be killed. */
 async function launch(file: string) {
-  const proc = Bun.spawn([bin, "--test-scenario", file], {
+  // Hidden, as from the menu bar or tray: nothing may depend on the window.
+  const proc = Bun.spawn([bin, "--start-hidden", "--test-scenario", file], {
     env: {
       ...process.env,
       AMBIENT_TEST_MODE: "1",
@@ -238,6 +239,15 @@ async function runOne(
     join(out, "scenarios", `${c.id}.report.json`),
     JSON.stringify(report, null, 2),
   );
+  // Everything works with the window closed: a scenario that needed one
+  // (or opened one) fails, whatever else it did.
+  if (report.windows?.length) {
+    return {
+      ...base,
+      status: "fail",
+      reasons: [`a window was open: ${report.windows.join(", ")}`],
+    };
+  }
   const modelCalls = log.calls.filter(
     (x) => x.path !== "/api/ai/v1/models",
   ).length;
