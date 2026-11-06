@@ -9,11 +9,11 @@
 // `releases/download/v<version>/…` tag URL instead of a moving `latest` link.
 
 export const PORTABLE_RELEASES_URL =
-  "https://github.com/matt-nowakowski/ambient/releases/latest";
+  "https://tryambient.ai/download";
 
 /**
  * Pick the NSIS installer URL for the running target out of the update manifest.
- * Falls back to the generic releases page whenever there is no matching entry —
+ * Falls back to the website's download page whenever there is no matching entry —
  * e.g. a portable install on a platform Ambient ships no NSIS bundle for.
  *
  * @param rawJson `Update.rawJson`, the deserialized `latest.json` manifest

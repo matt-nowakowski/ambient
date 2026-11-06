@@ -1003,8 +1003,8 @@
     "portableUpdateTitle": "需要手動更新",
     "portableUpdateMessage": "可攜式安裝無法自動更新。請透過下方按鈕下載適用於你的系統的安裝程式，執行後安裝到相同資料夾，你的 Data/ 資料夾（設定、模型、錄音）會保留在原處。",
     "portableUpdateButton": "下載安裝程式",
-    "portableUpdateBrowseMessage": "可攜式安裝無法自動更新。請從 GitHub Releases 下載適用於你的系統的最新版本，並安裝到相同資料夾，你的 Data/ 資料夾（設定、模型、錄音）會保留在原處。",
-    "portableUpdateBrowseButton": "開啟 GitHub Releases"
+    "portableUpdateBrowseMessage": "可攜式安裝無法自動更新。請從 tryambient.ai 下載適用於你的系統的最新版本，並安裝到相同資料夾，你的 Data/ 資料夾（設定、模型、錄音）會保留在原處。",
+    "portableUpdateBrowseButton": "開啟下載頁面"
   },
   "updates": {
     "busy": "{{appName}} 正在忙碌。可以等你忙完後再重新啟動。",

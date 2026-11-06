@@ -1006,8 +1006,8 @@
     "portableUpdateTitle": "Actualización manual necesaria",
     "portableUpdateMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga abajo el instalador para tu sistema, ejecútalo e instálalo en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
     "portableUpdateButton": "Descargar instalador",
-    "portableUpdateBrowseMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga la versión más reciente para tu sistema desde GitHub Releases e instálala en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
-    "portableUpdateBrowseButton": "Abrir GitHub Releases"
+    "portableUpdateBrowseMessage": "Las instalaciones portátiles no se pueden actualizar automáticamente. Descarga la versión más reciente para tu sistema desde tryambient.ai e instálala en la misma carpeta: tu carpeta Data/ (configuración, modelos, grabaciones) se conserva.",
+    "portableUpdateBrowseButton": "Abrir la página de descarga"
   },
   "updates": {
     "busy": "{{appName}} está ocupado ahora mismo. El reinicio puede esperar a que termines.",

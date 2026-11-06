@@ -1006,8 +1006,8 @@
     "portableUpdateTitle": "Cal actualitzar manualment",
     "portableUpdateMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixeu l'instal·lador per al vostre sistema a continuació, executeu-lo i instal·leu-lo a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
     "portableUpdateButton": "Baixa l'instal·lador",
-    "portableUpdateBrowseMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixeu l'última versió per al vostre sistema des de GitHub Releases i instal·leu-la a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
-    "portableUpdateBrowseButton": "Obre GitHub Releases"
+    "portableUpdateBrowseMessage": "Les instal·lacions portables no es poden actualitzar automàticament. Baixeu l'última versió per al vostre sistema des de tryambient.ai i instal·leu-la a la mateixa carpeta. La carpeta Data/ (configuració, models i enregistraments) es conserva.",
+    "portableUpdateBrowseButton": "Obre la pàgina de baixada"
   },
   "updates": {
     "busy": "{{appName}} està ocupat ara mateix. Reiniciar pot esperar que hàgiu acabat.",

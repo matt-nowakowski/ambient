@@ -1003,8 +1003,8 @@
     "portableUpdateTitle": "Manuel opdatering påkrævet",
     "portableUpdateMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent installationsprogrammet til dit system nedenfor, kør det, og installer i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
     "portableUpdateButton": "Hent installationsprogram",
-    "portableUpdateBrowseMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent den nyeste version til dit system fra GitHub Releases, og installer den i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
-    "portableUpdateBrowseButton": "Åbn GitHub Releases"
+    "portableUpdateBrowseMessage": "Flytbare installationer kan ikke opdateres automatisk. Hent den nyeste version til dit system fra tryambient.ai, og installer den i den samme mappe — din Data/-mappe (indstillinger, modeller, optagelser) bliver bevaret.",
+    "portableUpdateBrowseButton": "Åbn downloadsiden"
   },
   "updates": {
     "busy": "{{appName}} er i gang lige nu. Genstart kan vente, til du er færdig.",

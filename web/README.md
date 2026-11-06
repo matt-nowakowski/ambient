@@ -48,9 +48,9 @@ swap, texts reveal, shimmer, accordion, toast, success check — see attribution
 and `liquid-gooey` (MIT) for the pricing toggle pill. Everything respects `prefers-reduced-motion`.
 The logo is the AICSS "Lens" orb (B1), vendored in `components/orb/` (MIT).
 
-Installer links live in `lib/releases.ts`: set `RELEASE_VERSION` there and `githubRepo` in
-`brand.config.json`. Links point at
-`https://github.com/<githubRepo>/releases/latest/download/<file>`.
+Installer links go through `/dl/<id>` (`app/dl/[id]/route.ts`), which reads the release
+manifest from our download storage and redirects to the right file; `RELEASE_VERSION` in
+`lib/releases.ts` is only the version shown on the page.
 
 ## Licensing
 
