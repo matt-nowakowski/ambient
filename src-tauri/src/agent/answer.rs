@@ -320,7 +320,7 @@ pub fn actions_for(text: &str, s: Situation) -> Vec<HudAnswerAction> {
 // (web/lib/answer-core.ts); this is the same rule, for older servers and
 // answers made on this computer.
 
-/// [1], [1, 2], [1-3], [^1], 【1】, 【1†source】.
+/// `[1]`, `[1, 2]`, `[1-3]`, `[^1]`, `【1】`, `【1†source】`.
 const CITE: &str = r"(?:\[\^?\d{1,3}(?:\s*[,–-]\s*\^?\d{1,3})*\]|【\d{1,3}[^】\n]{0,40}】)";
 /// Markers that open a line, with the space after them.
 static CITE_LEADING: Lazy<Regex> =
