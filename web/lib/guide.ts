@@ -208,7 +208,7 @@ export const trySaying: Record<Exclude<GuideSlug, "getting-started" | "privacy">
     { say: "Open nytimes.com.", then: "Opens the site in your default browser." },
     { say: "Search for flights to Lisbon in March.", then: "Opens the search in your browser, so you see the results yourself." },
     { say: "Run my standup shortcut.", then: "Runs your shortcut with that name: Shortcuts on a Mac, a Start menu shortcut or Power Automate flow on Windows, a script on Linux." },
-    { say: "Open Linear and file a ticket for the login bug.", then: "Not yet. It tells you computer use is coming soon and does nothing." },
+    { say: "Open Linear and file a ticket for the login bug.", then: "Not yet. It says so and offers to show you how to do it yourself." },
   ],
   recall: [
     { say: "What did I say about pricing yesterday?", then: "Answers from your dictation history, with when you said it." },

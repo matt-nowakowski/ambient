@@ -192,7 +192,7 @@ ${platformNote}
 `,
     `${head("writing")}\nTry saying:\n${say(trySaying.writing)}\n\nWhat it does:\n${rows(writingOutcomes)}\n\nTake it back: click Use my words, or say “use my words”, “undo that” or “just what I said”. It learns per app; see and undo it in Privacy → Writing → What you’ve told me.\n\nMake it yours:\n${rows(writingYours)}\n\nThe Writing setting (Account → Writing):\n${rows(writingSettings)}\n`,
     `${head("answers")}\nTry saying:\n${say(trySaying.answers)}\n`,
-    `${head("actions")}\nTry saying:\n${say(trySaying.actions)}\n\nReminders and events show Undo for a few seconds. On Windows and Linux, reminders are scheduled notifications and events open as an .ics file.\n`,
+    `${head("actions")}\nTry saying:\n${say(trySaying.actions)}\n\nReminders and events show Undo for a few seconds. On Windows and Linux, reminders are scheduled notifications (they need a time) and events open as an .ics file. What it can't do yet, like acting inside other apps, it says so and offers to show you how.\n`,
     `${head("recall")}\nTry saying:\n${say(trySaying.recall)}\n`,
     `${head("meetings")}\nTry saying:\n${say(trySaying.meetings)}\n\nDuring the call: a live transcript of You and Them, rolling notes and nudges (Find it, Remind me, Copy). After: summary, decisions, action items, questions for you and a follow-up email draft; a card says the notes are ready, with Email to me when signed in. A consent message is offered to paste into the call chat. No bot joins. Audio is never saved.\n`,
     `${head("suggestions")}\nMoments:\n${rows(suggestionMoments)}\n\nWhen one appears, try saying:\n${say(trySaying.suggestions)}\n`,
