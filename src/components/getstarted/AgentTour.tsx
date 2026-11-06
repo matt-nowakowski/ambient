@@ -37,6 +37,17 @@ const CAPABILITIES: Capability[] = [
   "screen_memory",
 ];
 
+/** The switches as they're saved (the app's defaults until settings load). */
+const pickedFrom = (
+  agent: AgentSettings | undefined,
+): Record<Capability, boolean> => ({
+  screen_context: agent?.screen_context ?? true,
+  proactive: agent?.proactive ?? true,
+  meetings: agent?.meetings ?? false,
+  wake_word: agent?.wake_word ?? false,
+  screen_memory: agent?.screen_memory ?? false,
+});
+
 /** Meet the agent; it offers help, too; choose what it may do. */
 type TourStep = 0 | 1 | 2;
 const KEYS: Record<TourStep, string> = {
@@ -48,7 +59,7 @@ const KEYS: Record<TourStep, string> = {
 /**
  * Introduces the agent after setup (and to anyone updating into it): what it
  * does, a live try with the Ask shortcut, that it offers help on its own
- * (suggestions, off until switched on), and what it may do, each with its
+ * (suggestions, on unless switched off), and what it may do, each with its
  * privacy promise in a line. Steps of the same height; skippable.
  */
 export const AgentTour: React.FC = () => {
@@ -70,23 +81,29 @@ export const AgentTour: React.FC = () => {
   }, [tourOpen, paid]);
   const [step, setStep] = useState<TourStep>(0);
   const agent = getSetting("agent");
-  const [picked, setPicked] = useState<Record<Capability, boolean>>({
-    screen_context: true,
-    // On by default, like the app's setting; the tour lets them turn it off.
-    proactive: true,
-    meetings: true,
-    wake_word: false,
-    screen_memory: false,
-  });
+  const [picked, setPicked] = useState<Record<Capability, boolean>>(() =>
+    pickedFrom(agent),
+  );
   const steps: TourStep[] = screenAgent ? [0, 1, 2] : [0];
   const last = steps[steps.length - 1];
 
   useEffect(() => {
-    if (!tourOpen) return;
-    setStep(0);
-    // A replayed tour shows suggestions as they are now.
-    setPicked((p) => ({ ...p, proactive: agent?.proactive ?? true }));
+    if (tourOpen) setStep(0);
   }, [tourOpen]);
+
+  // Every time it opens, the switches start from what's saved, so a replayed
+  // tour never turns back on what was turned off in Privacy. Seeded once per
+  // opening (settings may arrive a moment later), never while it's in use.
+  const seeded = useRef(false);
+  useEffect(() => {
+    if (!tourOpen) {
+      seeded.current = false;
+      return;
+    }
+    if (seeded.current || !agent) return;
+    seeded.current = true;
+    setPicked(pickedFrom(agent));
+  }, [tourOpen, agent]);
 
   /** "Offer suggestions" is saved the moment it's switched, so it holds
    * even if the tour is skipped after. */
