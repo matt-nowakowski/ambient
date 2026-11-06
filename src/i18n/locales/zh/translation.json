@@ -227,10 +227,6 @@
       "hint": "这些内容以后可以在“设置”中更改",
       "highFiveLabel": "击掌",
       "atLogin": "登录时启动 {{appName}}",
-      "polish": {
-        "title": "用 AI 整理我的听写",
-        "description": "关闭时，听写会立即输入。开启时，会先整理凌乱的口语（只发送文字，从不发送音频）。无论哪种，你开口要求时 {{appName}} 都会替你写。"
-      },
       "finish": "完成",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "在其他应用中不起作用？<guide>Linux 设置指南</guide>"
     },
     "ai": {
-      "title": "AI 在哪里运行",
-      "sub": "你随时可以在设置中更改。",
-      "continue": "继续",
+      "title": "AI 在哪里运行？",
+      "sub": "用于润色、起草、回答和建议。语音识别始终在这台电脑上进行。",
+      "hint": "你可以随时在设置中更改。",
       "cloud": {
         "title": "在云端",
-        "body": "效果最好。你的文字会发送到我们的服务器进行润色和回答；音频绝不发送。"
+        "body": "效果最好。只发送文字，从不发送你的音频。"
       },
       "device": {
         "title": "在本机上",
-        "body": "私密：Mac 支持时用 Apple Intelligence，否则下载一次模型。任何内容都不会联网。",
-        "bodyApple": "私密：使用这台 Mac 上的 Apple Intelligence。不会有任何内容联网。",
-        "bodyReady": "私密：使用这台电脑上已有的 AI 模型。不会有任何内容联网。",
-        "bodyDownload": "私密：在后台一次性下载 {{model}}（约 {{size}}）。之后不会有任何内容联网。",
-        "bodyUnavailable": "设备端 AI 无法在这台电脑上运行，因此只有简单规则。不会有任何内容联网。"
+        "body": "私密。任何内容都不会联网。",
+        "bodyApple": "私密，使用 Apple Intelligence。任何内容都不会联网。",
+        "bodyReady": "私密，使用这里已有的模型。任何内容都不会联网。",
+        "bodyDownload": "私密。在后台下载一次 {{model}}（≈{{size}}）。",
+        "bodyUnavailable": "此电脑不支持，所以只用简单规则。任何内容都不会联网。"
       },
       "none": {
         "title": "不使用 AI",
-        "body": "只做听写和简单规则。不发送任何内容，也不润色、代写或建议。"
+        "body": "仅普通听写。不发送任何内容。"
       },
       "continueDownload": "继续并下载"
+    },
+    "choices": {
+      "title": "再做几个选择",
+      "sub": "全部可选，在你开启之前都是关闭的。",
+      "polish": {
+        "title": "用 AI 整理我的听写",
+        "body": "在输入前把凌乱的口语整理好。只发送文字，从不发送音频。",
+        "bodyDevice": "在输入前，在这台电脑上把凌乱的口语整理好。"
+      },
+      "telemetry": "分享匿名使用计数，绝不包括你说的、输入的或看到的内容。"
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "欢迎",
           "permissions": "权限",
           "model": "模型",
+          "ai": "AI 在哪里运行",
+          "choices": "更多选择",
           "demo": "演示",
           "try": "试一试",
           "done": "完成"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "通过邮件接收技巧",
-      "labelOptional": "通过邮件接收技巧（可选）",
       "description": "不定期发送让你更好地使用 {{appName}} 的小技巧。可随时退订。",
+      "short": "偶尔发送一些小技巧。可随时退订。",
       "button": "发送",
-      "done": "已发送",
       "error": "发送失败，要重试吗？",
       "checkInbox": "请查看收件箱完成确认。"
     }
@@ -2071,7 +2078,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "帮助改进 {{appName}}：分享匿名使用计数，绝不包括你说的、输入的或看到的内容。",
     "whatsShared": "共享哪些内容",
     "sharedTitle": "仅匿名计数和耗时",
     "shared": {

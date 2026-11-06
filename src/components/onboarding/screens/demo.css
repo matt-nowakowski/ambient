@@ -178,6 +178,20 @@
     inset 0 0.5px 0 rgb(255 255 255 / 0.5),
     0 10px 30px rgb(40 20 50 / 0.16);
 }
+/* A suggestion is up: the window softens and steps back so the card leads. */
+.demo-app,
+.demo-pill-wrap {
+  transition:
+    filter 420ms var(--ease-glide),
+    opacity 420ms var(--ease-glide),
+    scale 420ms var(--ease-glide);
+}
+.demo-screen[data-suggesting] .demo-app,
+.demo-screen[data-suggesting] .demo-pill-wrap {
+  filter: blur(2.5px) saturate(0.85);
+  opacity: 0.55;
+  scale: 0.985;
+}
 .demo-app-body {
   min-height: 107.5px;
   padding: 5px 12.5px 12.5px;
@@ -361,6 +375,16 @@
   .demo-swap,
   .demo-click {
     animation: none !important;
+  }
+  /* Still dimmed, without the blur or the step back. */
+  .demo-app,
+  .demo-pill-wrap {
+    transition: none;
+  }
+  .demo-screen[data-suggesting] .demo-app,
+  .demo-screen[data-suggesting] .demo-pill-wrap {
+    filter: none;
+    scale: none;
   }
 }
 

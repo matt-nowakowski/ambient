@@ -227,10 +227,6 @@
       "hint": "Bunları daha sonra Ayarlar’dan değiştirebilirsiniz",
       "highFiveLabel": "Çak bir beşlik",
       "atLogin": "Oturum açtığımda {{appName}} uygulamasını başlat",
-      "polish": {
-        "title": "Dikteimi yapay zekâyla toparla",
-        "description": "Kapalıyken dikte anında yazılır. Açıkken dağınık konuşma önce toparlanır (metin gönderilir, ses asla). Her iki durumda da istediğinde {{appName}} senin için yazar."
-      },
       "finish": "Bitti",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "Diğer uygulamalarda çalışmıyor mu? <guide>Linux kurulum rehberi</guide>"
     },
     "ai": {
-      "title": "Yapay zekâ nerede çalışır",
-      "sub": "Bunu İşlemler'den istediğin zaman değiştirebilirsin.",
-      "continue": "Devam",
+      "title": "Yapay zekâ nerede çalışsın?",
+      "sub": "Düzeltme, taslak, yanıt ve öneriler için. Konuşma tanıma her zaman bu bilgisayarda kalır.",
+      "hint": "Bunu istediğiniz zaman Ayarlar'dan değiştirebilirsiniz.",
       "cloud": {
         "title": "Bulutta",
-        "body": "En iyi sonuçlar. Metnin düzeltilmek ve yanıtlanmak için sunucumuza gider; sesin asla."
+        "body": "En iyi sonuçlar. Metin gönderilir, sesiniz asla."
       },
       "device": {
         "title": "Bu bilgisayarda",
-        "body": "Gizli: Mac'te varsa Apple Intelligence, yoksa bir kez indirdiğin bir model. Hiçbir şey çevrimiçi olmaz.",
-        "bodyApple": "Gizli: bu Mac'te Apple Intelligence. Hiçbir şey çevrimiçine gitmez.",
-        "bodyReady": "Gizli: bu bilgisayarda zaten olan yapay zekâ modeli. Hiçbir şey çevrimiçine gitmez.",
-        "bodyDownload": "Gizli: {{model}} (≈{{size}}) bir kez, arka planda indirilir. Sonrasında hiçbir şey çevrimiçine gitmez.",
-        "bodyUnavailable": "Cihaz üzerinde yapay zekâ bu bilgisayarda çalışmıyor, bu yüzden yalnızca basit kurallar. Hiçbir şey çevrimiçine gitmez."
+        "body": "Gizli. Hiçbir şey internete çıkmaz.",
+        "bodyApple": "Gizli, Apple Intelligence ile. Hiçbir şey internete çıkmaz.",
+        "bodyReady": "Gizli, burada zaten olan modelle. Hiçbir şey internete çıkmaz.",
+        "bodyDownload": "Gizli. {{model}} (≈{{size}}) arka planda bir kez indirilir.",
+        "bodyUnavailable": "Burada desteklenmiyor, bu yüzden yalnızca basit kurallar. Hiçbir şey internete çıkmaz."
       },
       "none": {
         "title": "Yapay zekâ yok",
-        "body": "Yalnızca dikte ve basit kurallar. Hiçbir şey gönderilmez, düzeltilmez, yazılmaz veya önerilmez."
+        "body": "Yalnızca düz dikte. Hiçbir şey gönderilmez."
       },
       "continueDownload": "Devam et ve indir"
+    },
+    "choices": {
+      "title": "Birkaç seçim daha",
+      "sub": "Hepsi isteğe bağlı ve siz açana kadar kapalı.",
+      "polish": {
+        "title": "Dikteimi yapay zekâyla toparla",
+        "body": "Dağınık konuşmayı yazılmadan önce toparlar. Metin gönderilir, ses asla.",
+        "bodyDevice": "Dağınık konuşmayı yazılmadan önce bu bilgisayarda toparlar."
+      },
+      "telemetry": "Anonim kullanım sayılarını paylaş, söylediklerini, yazdıklarını veya gördüklerini asla."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Hoş geldiniz",
           "permissions": "İzinler",
           "model": "Model",
+          "ai": "Yapay zekânın çalıştığı yer",
+          "choices": "Diğer seçimler",
           "demo": "Demo",
           "try": "Deneyin",
           "done": "Hazır"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Bana ipucu gönderin",
-      "labelOptional": "Bana ipucu gönderin (isteğe bağlı)",
       "description": "{{appName}}'den daha fazla yararlanmanız için ara sıra ipuçları. İstediğiniz zaman abonelikten çıkın.",
+      "short": "Arada bir birkaç ipucu. İstediğiniz zaman abonelikten çıkın.",
       "button": "Gönder",
-      "done": "Gönderildi",
       "error": "Gönderilemedi. Yeniden dene?",
       "checkInbox": "Onaylamak için gelen kutunuza bakın."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "{{appName}} uygulamasını geliştirmeye yardım et: anonim kullanım sayılarını paylaş, söylediklerini, yazdıklarını veya gördüklerini asla.",
     "whatsShared": "Neler paylaşılır",
     "sharedTitle": "Yalnızca anonim sayılar ve süreler",
     "shared": {

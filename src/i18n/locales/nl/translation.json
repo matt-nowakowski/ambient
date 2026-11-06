@@ -227,10 +227,6 @@
       "hint": "Je kunt dit later wijzigen in de instellingen",
       "highFiveLabel": "High five",
       "atLogin": "{{appName}} starten als ik inlog",
-      "polish": {
-        "title": "Mijn dictaat opschonen met AI",
-        "description": "Uit: dictaat wordt meteen getypt. Aan: rommelige spraak wordt eerst opgeschoond (de tekst wordt verstuurd, nooit audio). Hoe dan ook schrijft {{appName}} voor je als je erom vraagt."
-      },
       "finish": "Klaar",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "Werkt het niet in andere apps? <guide>Linux-installatiegids</guide>"
     },
     "ai": {
-      "title": "Waar de AI draait",
-      "sub": "Je kunt dit altijd wijzigen in Instellingen.",
-      "continue": "Doorgaan",
+      "title": "Waar moet de AI draaien?",
+      "sub": "Voor bijschaven, concepten, antwoorden en suggesties. Spraakherkenning blijft altijd op deze computer.",
+      "hint": "Je kunt dit altijd wijzigen in Instellingen.",
       "cloud": {
         "title": "In de cloud",
-        "body": "De beste resultaten. Je tekst gaat naar onze server om te polijsten en te antwoorden; je audio nooit."
+        "body": "Beste resultaten. Tekst wordt verstuurd, nooit je audio."
       },
       "device": {
         "title": "Op deze computer",
-        "body": "Privé: Apple Intelligence waar de Mac het heeft, anders een model dat je één keer downloadt. Niets gaat online.",
-        "bodyApple": "Privé: Apple Intelligence op deze Mac. Er gaat niets online.",
-        "bodyReady": "Privé: het AI-model dat al op deze computer staat. Er gaat niets online.",
-        "bodyDownload": "Privé: downloadt {{model}} (≈{{size}}) één keer, op de achtergrond. Daarna gaat er niets online.",
-        "bodyUnavailable": "AI op het apparaat werkt niet op deze computer, dus alleen eenvoudige regels. Er gaat niets online."
+        "body": "Privé. Er gaat niets online.",
+        "bodyApple": "Privé, met Apple Intelligence. Er gaat niets online.",
+        "bodyReady": "Privé, met het model dat hier al staat. Er gaat niets online.",
+        "bodyDownload": "Privé. Downloadt {{model}} (≈{{size}}) één keer, op de achtergrond.",
+        "bodyUnavailable": "Hier niet ondersteund, dus alleen eenvoudige regels. Er gaat niets online."
       },
       "none": {
         "title": "Geen AI",
-        "body": "Alleen dicteren en eenvoudige regels. Niets wordt verstuurd en niets wordt gepolijst, geschreven of voorgesteld."
+        "body": "Alleen gewoon dicteren. Er wordt niets verstuurd."
       },
       "continueDownload": "Doorgaan en downloaden"
+    },
+    "choices": {
+      "title": "Nog een paar keuzes",
+      "sub": "Alles is optioneel, en uit tot je het aanzet.",
+      "polish": {
+        "title": "Mijn dictaat opschonen met AI",
+        "body": "Maakt rommelige spraak netjes voordat die getypt wordt. Tekst wordt verstuurd, nooit audio.",
+        "bodyDevice": "Maakt rommelige spraak netjes voordat die getypt wordt, op deze computer."
+      },
+      "telemetry": "Deel anonieme gebruikstellingen, nooit wat je zegt, typt of ziet."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Welkom",
           "permissions": "Machtigingen",
           "model": "Model",
+          "ai": "Waar de AI draait",
+          "choices": "Meer keuzes",
           "demo": "Demo",
           "try": "Proberen",
           "done": "Klaar"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Tips per e-mail",
-      "labelOptional": "Tips per e-mail (optioneel)",
       "description": "Af en toe tips om meer uit {{appName}} te halen. Altijd af te melden.",
+      "short": "Af en toe een paar tips. Altijd af te melden.",
       "button": "Versturen",
-      "done": "Verstuurd",
       "error": "Versturen mislukt. Opnieuw?",
       "checkInbox": "Kijk in je inbox om te bevestigen."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Help {{appName}} verbeteren: deel anonieme gebruikstellingen, nooit wat je zegt, typt of ziet.",
     "whatsShared": "Wat wordt gedeeld",
     "sharedTitle": "Alleen anonieme tellingen en tijden",
     "shared": {

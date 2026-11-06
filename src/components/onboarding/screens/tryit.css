@@ -1,27 +1,26 @@
 /* Try it (TryIt.tsx): Demo's drawn screen at about 1.75×. */
 
-/* The title tight under the progress dashes; the screen fills the rest. */
+/* Every step's header spacing (the --spacing-onb-* and --spacing-lead tokens);
+   only the side padding is narrower, for the drawn screen. The screen fills
+   the rest. */
 .try-main {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding: 0 28px 12px;
+  padding: var(--spacing-onb-top) 28px 12px;
   text-align: center;
-}
-.try-main > h1 {
-  margin-top: 2px;
 }
 .try-screen {
   /* All set's panel: inset, width, and the room the note makes for it. */
   --try-panel-end: 12px;
-  --try-panel-width: 310px;
+  --try-panel-width: 370px;
   --try-panel-gap: 14px;
   position: relative;
   align-self: stretch;
   flex: 1;
   min-height: 0;
-  margin-top: 16px;
+  margin-top: var(--spacing-lead);
   border-radius: 12px;
   overflow: hidden;
   isolation: isolate;
@@ -31,7 +30,9 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-text) 9%, transparent);
 }
 
-/* The slow-take hint; its height is always kept so the screen never jumps. */
+/* The slow-take hint; its height is kept while trying so the screen never
+   jumps. On All set it folds away with the note's move, and the screen
+   grows into the room, for the panel. */
 .try-after {
   flex: none;
   display: flex;
@@ -39,17 +40,19 @@
   justify-content: center;
   height: 22px;
   margin-top: 8px;
+  overflow: hidden;
   font-size: var(--text-small);
   color: var(--color-ink-3);
+  transition:
+    height 620ms var(--ease-glide) 280ms,
+    margin-top 620ms var(--ease-glide) 280ms;
+}
+.try-after[data-gone] {
+  height: 0;
+  margin-top: 0;
 }
 .try-after > * {
   animation: try-say-fade 220ms ease;
-}
-/* All set adds the optional tips row under the usage line. */
-.try-after[data-tips] {
-  flex-direction: column;
-  gap: 6px;
-  height: 56px;
 }
 
 /* ---------- the window: Demo's, bigger ---------- */
@@ -357,10 +360,13 @@
   animation: try-say-fade 260ms ease both;
 }
 .try-main > p.try-swap {
-  height: 24px;
-  line-height: 24px;
+  height: 21px;
+  line-height: 21px;
 }
+/* Small keys, centred on the line, so the line stays its height. */
 .try-sub-keys {
+  position: relative;
+  top: -1px;
   margin: 0 3px;
 }
 
@@ -490,10 +496,14 @@
   /* Level with the note window, its tail up to the icon. */
   top: 44px;
   inset-inline-end: var(--try-panel-end);
+  display: flex;
+  flex-direction: column;
   width: var(--try-panel-width);
-  padding: 6px;
+  /* Never past the screen's bottom (top, on the taskbar): the rows scroll. */
+  max-height: calc(100% - 44px - 8px);
+  padding: 8px;
   border: 1px solid var(--try-panel-edge);
-  border-radius: 16px;
+  border-radius: 18px;
   background: var(--try-panel-fill);
   box-shadow: 0 14px 34px -12px rgb(0 0 0 / 0.3);
   font-size: var(--text-small);
@@ -548,11 +558,12 @@
   border-radius: 0 0 3px 0;
 }
 .try-panel-head {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 4px 4px;
-  padding: 6px 6px 10px;
+  margin: 0 6px 6px;
+  padding: 6px 8px 10px;
   border-bottom: 1px solid var(--color-line);
 }
 .try-panel-name {
@@ -576,7 +587,35 @@
   background: var(--color-moss);
 }
 .try-panel-download {
+  flex: none;
   padding: 2px 10px 8px;
+}
+/* The rows: they scroll when there's no room, fading out on the side
+   there's more rather than being cut. */
+.try-panel-body {
+  --try-fade-top: 0px;
+  --try-fade-bottom: 0px;
+  min-height: 0;
+  margin: 0 -8px -8px;
+  padding: 0 8px 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Opens at the top, however the room changes as the screen grows. */
+  overflow-anchor: none;
+  scrollbar-width: thin;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--try-fade-top),
+    #000 calc(100% - var(--try-fade-bottom)),
+    transparent
+  );
+}
+.try-panel-body[data-more-above] {
+  --try-fade-top: 18px;
+}
+.try-panel-body[data-more-below] {
+  --try-fade-bottom: 28px;
 }
 /* Rows: label, value, then a chevron (another screen) or the keys (changed
    here). */
@@ -586,7 +625,7 @@
   gap: 10px;
   width: 100%;
   min-height: 40px;
-  padding: 6px 10px;
+  padding: 7px 12px;
   border: 0;
   border-radius: 10px;
   background: none;
@@ -637,12 +676,20 @@ button.try-panel-row:focus-visible {
   transform: scaleX(-1);
 }
 .try-panel-rule {
-  margin: 4px 10px;
+  margin: 6px 12px;
   border: 0;
   border-top: 1px solid var(--color-line);
 }
+/* A switch row: the switch level with the label's first line, so a line
+   under the label runs the row's full width. */
 .try-panel-row.is-switch {
+  align-items: flex-start;
+  gap: 16px;
   cursor: default;
+}
+.try-panel-row.is-switch > :last-child {
+  flex: none;
+  margin-top: -2px;
 }
 .try-panel-row.is-switch .try-panel-label {
   flex: 1;
@@ -667,6 +714,34 @@ button.try-panel-row:focus-visible {
   color: var(--color-ink-3);
   text-wrap: pretty;
 }
+/* "What's shared", in a row's line. */
+.try-panel-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line-strong);
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.try-panel-link:hover {
+  color: var(--color-text);
+}
+.try-panel-link:focus-visible {
+  outline: 2px solid var(--color-logo-primary);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+/* The list it opens, in place under the row. */
+.try-panel-shared {
+  margin: 0 10px 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--color-wash);
+  animation: try-say-fade 220ms ease;
+}
 
 /* Infinite loops would strobe under the global 1ms rule: stop them. */
 @media (prefers-reduced-motion: reduce) {
@@ -675,7 +750,8 @@ button.try-panel-row:focus-visible {
   .try-bubble::after,
   .try-say,
   .try-notes,
-  .try-note-page {
+  .try-note-page,
+  .try-after {
     transition: none;
   }
   .try-say-main,
@@ -686,7 +762,8 @@ button.try-panel-row:focus-visible {
   .try-swap,
   .desktop-tray[data-caught],
   .try-leaving,
-  .try-panel {
+  .try-panel,
+  .try-panel-shared {
     animation: none !important;
   }
 }

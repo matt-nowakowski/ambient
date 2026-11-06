@@ -227,10 +227,6 @@
       "hint": "Bạn có thể thay đổi những mục này sau trong Cài đặt",
       "highFiveLabel": "Đập tay",
       "atLogin": "Khởi động {{appName}} khi tôi đăng nhập",
-      "polish": {
-        "title": "Chỉnh chu phần đọc chính tả của tôi bằng AI",
-        "description": "Tắt: lời đọc được gõ ngay. Bật: lời nói lộn xộn được làm gọn trước (chỉ gửi văn bản, không bao giờ gửi âm thanh). Dù thế nào, {{appName}} vẫn viết giúp bạn khi bạn yêu cầu."
-      },
       "finish": "Xong",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "Không hoạt động trong các ứng dụng khác? <guide>Hướng dẫn thiết lập Linux</guide>"
     },
     "ai": {
-      "title": "AI chạy ở đâu",
-      "sub": "Bạn có thể đổi bất cứ lúc nào trong Cài đặt.",
-      "continue": "Tiếp tục",
+      "title": "AI nên chạy ở đâu?",
+      "sub": "Để trau chuốt, soạn nháp, trả lời và gợi ý. Nhận dạng giọng nói luôn ở trên máy tính này.",
+      "hint": "Bạn có thể đổi điều này bất cứ lúc nào trong Cài đặt.",
       "cloud": {
         "title": "Trên đám mây",
-        "body": "Kết quả tốt nhất. Văn bản của bạn được gửi tới máy chủ của chúng tôi để trau chuốt và trả lời; âm thanh thì không."
+        "body": "Kết quả tốt nhất. Chỉ gửi văn bản, không bao giờ gửi âm thanh của bạn."
       },
       "device": {
         "title": "Trên máy này",
-        "body": "Riêng tư: Apple Intelligence nếu máy Mac có, nếu không thì tải mô hình một lần. Không gì lên mạng.",
-        "bodyApple": "Riêng tư: Apple Intelligence trên máy Mac này. Không gì được gửi lên mạng.",
-        "bodyReady": "Riêng tư: mô hình AI đã có sẵn trên máy tính này. Không gì được gửi lên mạng.",
-        "bodyDownload": "Riêng tư: tải {{model}} (≈{{size}}) một lần, ở chế độ nền. Sau đó không gì được gửi lên mạng.",
-        "bodyUnavailable": "AI trên thiết bị không chạy được trên máy tính này, nên chỉ có quy tắc đơn giản. Không gì được gửi lên mạng."
+        "body": "Riêng tư. Không có gì lên mạng.",
+        "bodyApple": "Riêng tư, với Apple Intelligence. Không có gì lên mạng.",
+        "bodyReady": "Riêng tư, với mô hình đã có ở đây. Không có gì lên mạng.",
+        "bodyDownload": "Riêng tư. Tải {{model}} (≈{{size}}) một lần, ở chế độ nền.",
+        "bodyUnavailable": "Không được hỗ trợ ở đây, nên chỉ có quy tắc đơn giản. Không có gì lên mạng."
       },
       "none": {
         "title": "Không dùng AI",
-        "body": "Chỉ đọc chính tả và quy tắc đơn giản. Không gửi gì, không trau chuốt, viết hay gợi ý gì."
+        "body": "Chỉ đọc chính tả thông thường. Không gửi gì cả."
       },
       "continueDownload": "Tiếp tục và tải xuống"
+    },
+    "choices": {
+      "title": "Thêm vài lựa chọn",
+      "sub": "Tất cả đều tùy chọn, và tắt cho đến khi bạn bật.",
+      "polish": {
+        "title": "Chỉnh chu phần đọc chính tả của tôi bằng AI",
+        "body": "Chỉnh lời nói lộn xộn trước khi gõ. Chỉ gửi văn bản, không bao giờ gửi âm thanh.",
+        "bodyDevice": "Chỉnh lời nói lộn xộn trước khi gõ, ngay trên máy tính này."
+      },
+      "telemetry": "Chia sẻ số liệu sử dụng ẩn danh, không bao giờ là những gì bạn nói, gõ hay thấy."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Chào mừng",
           "permissions": "Quyền",
           "model": "Mô hình",
+          "ai": "Nơi AI chạy",
+          "choices": "Lựa chọn khác",
           "demo": "Demo",
           "try": "Thử xem",
           "done": "Hoàn tất"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Gửi mẹo cho tôi",
-      "labelOptional": "Gửi mẹo cho tôi (tùy chọn)",
       "description": "Thỉnh thoảng gửi mẹo để dùng {{appName}} hiệu quả hơn. Hủy đăng ký bất cứ lúc nào.",
+      "short": "Thỉnh thoảng vài mẹo hay. Hủy đăng ký bất cứ lúc nào.",
       "button": "Gửi",
-      "done": "Đã gửi",
       "error": "Không gửi được. Thử lại?",
       "checkInbox": "Kiểm tra hộp thư đến để xác nhận."
     }
@@ -2071,7 +2078,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Giúp cải thiện {{appName}}: chia sẻ số liệu sử dụng ẩn danh, không bao giờ là những gì bạn nói, gõ hay thấy.",
     "whatsShared": "Những gì được chia sẻ",
     "sharedTitle": "Chỉ số đếm và thời gian ẩn danh",
     "shared": {

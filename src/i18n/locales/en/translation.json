@@ -227,10 +227,6 @@
       "hint": "You can change these later in Settings",
       "highFiveLabel": "High five",
       "atLogin": "Start {{appName}} when I log in",
-      "polish": {
-        "title": "Tidy up my dictation with AI",
-        "description": "Off, dictation types instantly. On, messy speech is cleaned up first (the text is sent, never audio). Either way, {{appName}} writes for you when you ask."
-      },
       "finish": "Done",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "Not working in other apps? <guide>Linux setup guide</guide>"
     },
     "ai": {
-      "title": "Where the AI runs",
-      "sub": "You can change this any time in Settings.",
-      "continue": "Continue",
+      "title": "Where should the AI run?",
+      "sub": "For polishing, drafts, answers and suggestions. Speech recognition always stays on this computer.",
+      "hint": "You can change this any time in Settings.",
       "cloud": {
         "title": "In the cloud",
-        "body": "The best results. Your text goes to our server to polish and answer; your audio never does."
+        "body": "Best results. Text is sent, never your audio."
       },
       "device": {
         "title": "On this computer",
-        "body": "Private: Apple Intelligence where the Mac has it, otherwise a model you download once. Nothing goes online.",
-        "bodyApple": "Private: Apple Intelligence on this Mac. Nothing goes online.",
-        "bodyReady": "Private: the AI model already on this computer. Nothing goes online.",
-        "bodyDownload": "Private: downloads {{model}} (≈{{size}}) once, in the background. Nothing goes online after that.",
-        "bodyUnavailable": "On-device AI doesn't run on this computer, so this means simple rules only. Nothing goes online."
+        "body": "Private. Nothing goes online.",
+        "bodyApple": "Private, with Apple Intelligence. Nothing goes online.",
+        "bodyReady": "Private, with the model already here. Nothing goes online.",
+        "bodyDownload": "Private. Downloads {{model}} (≈{{size}}) once, in the background.",
+        "bodyUnavailable": "Not supported here, so simple rules only. Nothing goes online."
       },
       "none": {
         "title": "No AI",
-        "body": "Plain dictation and simple rules. Nothing is sent, and nothing is polished, drafted or suggested."
+        "body": "Plain dictation only. Nothing is sent."
       },
       "continueDownload": "Continue and download"
+    },
+    "choices": {
+      "title": "A few more choices",
+      "sub": "All optional, and off unless you turn them on.",
+      "polish": {
+        "title": "Tidy up my dictation with AI",
+        "body": "Tidies messy speech before it's typed. Text is sent, never audio.",
+        "bodyDevice": "Tidies messy speech before it's typed, on this computer."
+      },
+      "telemetry": "Share anonymous usage counts, never what you say, type or see."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Welcome",
           "permissions": "Permissions",
           "model": "Model",
+          "ai": "Where the AI runs",
+          "choices": "More choices",
           "demo": "Demo",
           "try": "Try it",
           "done": "All set"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Email me tips",
-      "labelOptional": "Email me tips (optional)",
       "description": "Occasional tips on getting more from {{appName}}. Unsubscribe anytime.",
+      "short": "A few tips now and then. Unsubscribe anytime.",
       "button": "Send",
-      "done": "Sent",
       "error": "Couldn’t send that. Try again?",
       "checkInbox": "Check your inbox to confirm."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Help improve {{appName}}: share anonymous usage counts, never what you say, type or see.",
     "whatsShared": "What's shared",
     "sharedTitle": "Anonymous counts and timings only",
     "shared": {

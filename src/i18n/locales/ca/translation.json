@@ -228,10 +228,6 @@
       "hint": "Podeu canviar-ho més tard a la configuració",
       "highFiveLabel": "Xoqueu-la",
       "atLogin": "Inicia el {{appName}} quan entri a la sessió",
-      "polish": {
-        "title": "Polir el meu dictat amb IA",
-        "description": "Desactivat, el dictat s'escriu a l'instant. Activat, primer es neteja la parla desordenada (s'envia el text, mai l'àudio). En tots dos casos, {{appName}} escriu per tu quan li ho demanes."
-      },
       "finish": "Fet",
       "panel": {
         "name": "{{appName}}",
@@ -253,26 +249,36 @@
       "done": "No funciona a altres aplicacions? <guide>Guia de configuració per a Linux</guide>"
     },
     "ai": {
-      "title": "On s'executa la IA",
-      "sub": "Ho pots canviar quan vulguis a Configuració.",
-      "continue": "Continua",
+      "title": "On ha de funcionar la IA?",
+      "sub": "Per polir, esborranys, respostes i suggeriments. El reconeixement de veu sempre es queda en aquest ordinador.",
+      "hint": "Ho pots canviar quan vulguis a Configuració.",
       "cloud": {
         "title": "Al núvol",
-        "body": "Els millors resultats. El teu text va al nostre servidor per polir-lo i respondre; l'àudio mai."
+        "body": "Els millors resultats. S'envia el text, mai el teu àudio."
       },
       "device": {
         "title": "En aquest ordinador",
-        "body": "Privat: Apple Intelligence on el Mac el té, si no un model que descarregues un cop. Res no surt a internet.",
-        "bodyApple": "Privat: Apple Intelligence en aquest Mac. Res no surt a internet.",
-        "bodyReady": "Privat: el model d'IA que ja és en aquest ordinador. Res no surt a internet.",
-        "bodyDownload": "Privat: baixa {{model}} (≈{{size}}) un cop, en segon pla. Després, res no surt a internet.",
-        "bodyUnavailable": "La IA al dispositiu no funciona en aquest ordinador, així que només hi haurà regles simples. Res no surt a internet."
+        "body": "Privat. Res no surt a internet.",
+        "bodyApple": "Privat, amb Apple Intelligence. Res no surt a internet.",
+        "bodyReady": "Privat, amb el model que ja hi ha aquí. Res no surt a internet.",
+        "bodyDownload": "Privat. Baixa {{model}} (≈{{size}}) un cop, en segon pla.",
+        "bodyUnavailable": "No és compatible aquí, així que només regles simples. Res no surt a internet."
       },
       "none": {
         "title": "Sense IA",
-        "body": "Només dictat i regles senzilles. No s'envia res ni es poleix, escriu o suggereix res."
+        "body": "Només dictat senzill. No s'envia res."
       },
       "continueDownload": "Continua i baixa"
+    },
+    "choices": {
+      "title": "Unes quantes opcions més",
+      "sub": "Tot és opcional, i desactivat fins que ho activis.",
+      "polish": {
+        "title": "Polir el meu dictat amb IA",
+        "body": "Endreça la parla desordenada abans d'escriure-la. S'envia el text, mai l'àudio.",
+        "bodyDevice": "Endreça la parla desordenada abans d'escriure-la, en aquest ordinador."
+      },
+      "telemetry": "Comparteix recomptes d'ús anònims, mai el que dius, escrius o veus."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Benvinguda",
           "permissions": "Permisos",
           "model": "Model",
+          "ai": "On funciona la IA",
+          "choices": "Més opcions",
           "demo": "Demostració",
           "try": "Prova-ho",
           "done": "Tot a punt"
@@ -1269,10 +1277,9 @@
     },
     "tips": {
       "label": "Envia'm consells",
-      "labelOptional": "Envia'm consells (opcional)",
       "description": "Consells de tant en tant per treure més profit de {{appName}}. Et pots donar de baixa quan vulguis.",
+      "short": "Algun consell de tant en tant. Cancel·la quan vulguis.",
       "button": "Envia",
-      "done": "Enviat",
       "error": "No s'ha pogut enviar. Tornar-ho a provar?",
       "checkInbox": "Revisa la safata d'entrada per confirmar-ho."
     }
@@ -2086,7 +2093,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Ajuda a millorar {{appName}}: comparteix recomptes d'ús anònims, mai el que dius, escrius o veus.",
     "whatsShared": "Què es comparteix",
     "sharedTitle": "Només recomptes i temps anònims",
     "shared": {

@@ -101,16 +101,9 @@ export const Welcome: React.FC<WelcomeProps> = ({ progress, onContinue }) => {
         </Button>
       }
     >
-      <div className="flex h-full min-h-0 flex-col items-center px-gutter pt-[6px] pb-[4px] text-center">
-        {/* The intro just showed the full lockup: here, only the mark. */}
-        <motion.span
-          className="mb-[14px] block"
-          initial={intro ? { opacity: 0, scale: 0.6 } : false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 240, damping: 18 }}
-        >
-          <Orb variant="B1" size={22} />
-        </motion.span>
+      {/* ScreenMain's spacing (pt-onb-top, mt-lead), with the motion
+          wrappers ScreenMain can't take. */}
+      <div className="flex h-full min-h-0 flex-col items-center px-gutter pt-onb-top pb-[4px] text-center">
         <motion.div
           className="w-full"
           initial={intro ? { opacity: 0, y: 12, filter: "blur(6px)" } : false}
@@ -128,6 +121,18 @@ export const Welcome: React.FC<WelcomeProps> = ({ progress, onContinue }) => {
           }}
         >
           <ScreenHeader
+            above={
+              // The intro just showed the full lockup: here, only the mark,
+              // out of flow so the title sits where every step's does.
+              <motion.span
+                className="flex justify-center"
+                initial={intro ? { opacity: 0, scale: 0.6 } : false}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 240, damping: 18 }}
+              >
+                <Orb variant="B1" size={22} />
+              </motion.span>
+            }
             title={t("onboarding.welcome.title")}
             sub={t("onboarding.welcome.subtitle")}
           />

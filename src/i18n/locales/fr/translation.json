@@ -228,10 +228,6 @@
       "hint": "Vous pourrez modifier tout cela plus tard dans les Paramètres",
       "highFiveLabel": "Tope là",
       "atLogin": "Lancer {{appName}} à l’ouverture de ma session",
-      "polish": {
-        "title": "Peaufiner ma dictée avec l'IA",
-        "description": "Désactivé, la dictée est tapée instantanément. Activé, la parole hésitante est d'abord nettoyée (le texte est envoyé, jamais l'audio). Dans les deux cas, {{appName}} écrit pour vous quand vous le demandez."
-      },
       "finish": "Terminé",
       "panel": {
         "name": "{{appName}}",
@@ -253,26 +249,36 @@
       "done": "Ça ne marche pas dans les autres apps ? <guide>Guide de configuration Linux</guide>"
     },
     "ai": {
-      "title": "Où tourne l'IA",
-      "sub": "Vous pouvez changer cela à tout moment dans les Réglages.",
-      "continue": "Continuer",
+      "title": "Où l'IA doit-elle tourner ?",
+      "sub": "Pour peaufiner, rédiger, répondre et suggérer. La reconnaissance vocale reste toujours sur cet ordinateur.",
+      "hint": "Vous pouvez changer cela à tout moment dans les Réglages.",
       "cloud": {
         "title": "Dans le cloud",
-        "body": "Les meilleurs résultats. Votre texte est envoyé à notre serveur pour être peaufiné et obtenir des réponses ; votre audio, jamais."
+        "body": "Les meilleurs résultats. Le texte est envoyé, jamais votre audio."
       },
       "device": {
         "title": "Sur cet ordinateur",
-        "body": "Privé : Apple Intelligence quand le Mac l'a, sinon un modèle téléchargé une fois. Rien ne sort en ligne.",
-        "bodyApple": "Privé : Apple Intelligence sur ce Mac. Rien ne part en ligne.",
-        "bodyReady": "Privé : le modèle d'IA déjà présent sur cet ordinateur. Rien ne part en ligne.",
-        "bodyDownload": "Privé : télécharge {{model}} (≈{{size}}) une fois, en arrière-plan. Ensuite, rien ne part en ligne.",
-        "bodyUnavailable": "L'IA sur l'appareil ne fonctionne pas sur cet ordinateur : ce sera des règles simples uniquement. Rien ne part en ligne."
+        "body": "Privé. Rien ne part en ligne.",
+        "bodyApple": "Privé, avec Apple Intelligence. Rien ne part en ligne.",
+        "bodyReady": "Privé, avec le modèle déjà présent. Rien ne part en ligne.",
+        "bodyDownload": "Privé. Télécharge {{model}} (≈{{size}}) une fois, en arrière-plan.",
+        "bodyUnavailable": "Non pris en charge ici, donc règles simples uniquement. Rien ne part en ligne."
       },
       "none": {
         "title": "Pas d'IA",
-        "body": "Dictée simple et règles basiques. Rien n'est envoyé, rien n'est peaufiné, rédigé ni suggéré."
+        "body": "Dictée simple uniquement. Rien n'est envoyé."
       },
       "continueDownload": "Continuer et télécharger"
+    },
+    "choices": {
+      "title": "Encore quelques choix",
+      "sub": "Tout est facultatif, et désactivé tant que vous ne l'activez pas.",
+      "polish": {
+        "title": "Peaufiner ma dictée avec l'IA",
+        "body": "Met de l'ordre dans une dictée brouillonne avant de la taper. Le texte est envoyé, jamais l'audio.",
+        "bodyDevice": "Met de l'ordre dans une dictée brouillonne avant de la taper, sur cet ordinateur."
+      },
+      "telemetry": "Partagez des statistiques d'usage anonymes, jamais ce que vous dites, tapez ou voyez."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Bienvenue",
           "permissions": "Autorisations",
           "model": "Modèle",
+          "ai": "Où tourne l'IA",
+          "choices": "Autres choix",
           "demo": "Démo",
           "try": "Essai",
           "done": "Tout est prêt"
@@ -1264,10 +1272,9 @@
     },
     "tips": {
       "label": "Recevoir des astuces",
-      "labelOptional": "Recevoir des astuces (facultatif)",
       "description": "Des astuces de temps en temps pour tirer le meilleur de {{appName}}. Désabonnement à tout moment.",
+      "short": "Quelques astuces de temps en temps. Désabonnement à tout moment.",
       "button": "Envoyer",
-      "done": "Envoyé",
       "error": "Envoi impossible. Réessayer ?",
       "checkInbox": "Vérifiez votre boîte de réception pour confirmer."
     }
@@ -2081,7 +2088,6 @@
     "escape": "échap"
   },
   "telemetry": {
-    "optIn": "Aidez à améliorer {{appName}} : partagez des statistiques d'usage anonymes, jamais ce que vous dites, tapez ou voyez.",
     "whatsShared": "Ce qui est partagé",
     "sharedTitle": "Uniquement des comptages et des durées anonymes",
     "shared": {

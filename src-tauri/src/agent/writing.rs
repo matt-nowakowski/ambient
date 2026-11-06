@@ -622,7 +622,14 @@ impl WritePlan {
 
     /// A dictation; `explicit_polish` is the polish shortcut.
     pub fn for_dictation(app: &AppHandle, explicit_polish: bool) -> Self {
-        let mode = settings::get_settings(app).writing_mode;
+        let settings = settings::get_settings(app);
+        // Setup's Try it shows plain dictation: the words, typed at once.
+        // Polish and smart writing start once setup is done (All set's AI
+        // polish switch, or Settings), even if polish was already on.
+        if !settings.onboarding_completed {
+            return Self::fixed(false);
+        }
+        let mode = settings.writing_mode;
         let polish_on = explicit_polish || crate::plan::polish_every_dictation(app);
         Self {
             mode,

@@ -228,10 +228,6 @@
       "hint": "Você pode alterar isso depois nas Configurações",
       "highFiveLabel": "Toca aqui",
       "atLogin": "Abrir o {{appName}} ao iniciar a sessão",
-      "polish": {
-        "title": "Refinar meu ditado com IA",
-        "description": "Desligado, o ditado é digitado na hora. Ligado, a fala bagunçada é limpa primeiro (o texto é enviado, nunca o áudio). De qualquer forma, o {{appName}} escreve por você quando você pede."
-      },
       "finish": "Concluído",
       "panel": {
         "name": "{{appName}}",
@@ -253,26 +249,36 @@
       "done": "Não funciona em outros apps? <guide>Guia de configuração do Linux</guide>"
     },
     "ai": {
-      "title": "Onde a IA funciona",
-      "sub": "Podes mudar isto a qualquer altura nas Definições.",
-      "continue": "Continuar",
+      "title": "Onde a IA deve funcionar?",
+      "sub": "Para polir, rascunhos, respostas e sugestões. O reconhecimento de fala fica sempre neste computador.",
+      "hint": "Você pode mudar isso a qualquer momento nos Ajustes.",
       "cloud": {
         "title": "Na nuvem",
-        "body": "Os melhores resultados. O teu texto vai para o nosso servidor para polir e responder; o teu áudio nunca."
+        "body": "Os melhores resultados. O texto é enviado, nunca o seu áudio."
       },
       "device": {
         "title": "Neste computador",
-        "body": "Privado: Apple Intelligence onde o Mac tem, senão um modelo que descarregas uma vez. Nada vai para a internet.",
-        "bodyApple": "Privado: Apple Intelligence neste Mac. Nada vai para a internet.",
-        "bodyReady": "Privado: o modelo de IA que já está neste computador. Nada vai para a internet.",
-        "bodyDownload": "Privado: baixa {{model}} (≈{{size}}) uma vez, em segundo plano. Depois disso, nada vai para a internet.",
-        "bodyUnavailable": "A IA no dispositivo não roda neste computador, então serão só regras simples. Nada vai para a internet."
+        "body": "Privado. Nada vai para a internet.",
+        "bodyApple": "Privado, com Apple Intelligence. Nada vai para a internet.",
+        "bodyReady": "Privado, com o modelo que já está aqui. Nada vai para a internet.",
+        "bodyDownload": "Privado. Baixa {{model}} (≈{{size}}) uma vez, em segundo plano.",
+        "bodyUnavailable": "Não é compatível aqui, então só regras simples. Nada vai para a internet."
       },
       "none": {
         "title": "Sem IA",
-        "body": "Ditado simples e regras básicas. Nada é enviado, nada é polido, escrito ou sugerido."
+        "body": "Só ditado simples. Nada é enviado."
       },
       "continueDownload": "Continuar e baixar"
+    },
+    "choices": {
+      "title": "Mais algumas escolhas",
+      "sub": "Tudo opcional, e desligado até você ativar.",
+      "polish": {
+        "title": "Refinar meu ditado com IA",
+        "body": "Arruma a fala bagunçada antes de digitá-la. O texto é enviado, nunca o áudio.",
+        "bodyDevice": "Arruma a fala bagunçada antes de digitá-la, neste computador."
+      },
+      "telemetry": "Compartilhe contagens de uso anônimas, nunca o que você diz, digita ou vê."
     }
   },
   "modelTable": {
@@ -825,6 +831,8 @@
           "welcome": "Boas-vindas",
           "permissions": "Permissões",
           "model": "Modelo",
+          "ai": "Onde a IA funciona",
+          "choices": "Mais escolhas",
           "demo": "Demonstração",
           "try": "Experimente",
           "done": "Tudo pronto"
@@ -1269,10 +1277,9 @@
     },
     "tips": {
       "label": "Receber dicas",
-      "labelOptional": "Receber dicas (opcional)",
       "description": "Dicas de vez em quando para tirar mais proveito do {{appName}}. Cancele quando quiser.",
+      "short": "Algumas dicas de vez em quando. Cancele quando quiser.",
       "button": "Enviar",
-      "done": "Enviado",
       "error": "Não foi possível enviar. Tentar de novo?",
       "checkInbox": "Verifique sua caixa de entrada para confirmar."
     }
@@ -2086,7 +2093,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Ajude a melhorar o {{appName}}: compartilhe contagens de uso anônimas, nunca o que você diz, digita ou vê.",
     "whatsShared": "O que é compartilhado",
     "sharedTitle": "Apenas contagens e tempos anônimos",
     "shared": {

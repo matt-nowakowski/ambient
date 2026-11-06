@@ -227,10 +227,6 @@
       "hint": "Du kan ændre disse senere i Indstillinger",
       "highFiveLabel": "Highfive",
       "atLogin": "Start {{appName}}, når jeg logger ind",
-      "polish": {
-        "title": "Gør min diktering pæn med AI",
-        "description": "Fra: diktering skrives med det samme. Til: rodet tale ryddes op først (teksten sendes, aldrig lyd). Uanset hvad skriver {{appName}} for dig, når du beder om det."
-      },
       "finish": "Færdig",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "Virker det ikke i andre apps? <guide>Linux-opsætningsguide</guide>"
     },
     "ai": {
-      "title": "Hvor AI'en kører",
-      "sub": "Du kan ændre det når som helst i Indstillinger.",
-      "continue": "Fortsæt",
+      "title": "Hvor skal AI'en køre?",
+      "sub": "Til finpudsning, udkast, svar og forslag. Talegenkendelse bliver altid på denne computer.",
+      "hint": "Du kan ændre det når som helst i Indstillinger.",
       "cloud": {
         "title": "I skyen",
-        "body": "De bedste resultater. Din tekst går til vores server for at blive poleret og svare; din lyd aldrig."
+        "body": "Bedste resultater. Tekst sendes, aldrig din lyd."
       },
       "device": {
         "title": "På denne computer",
-        "body": "Privat: Apple Intelligence hvor computeren har det, ellers en model du henter én gang. Intet går online.",
-        "bodyApple": "Privat: Apple Intelligence på denne Mac. Intet går online.",
-        "bodyReady": "Privat: AI-modellen, der allerede er på denne computer. Intet går online.",
-        "bodyDownload": "Privat: downloader {{model}} (≈{{size}}) én gang i baggrunden. Derefter går intet online.",
-        "bodyUnavailable": "AI på enheden kører ikke på denne computer, så kun enkle regler. Intet går online."
+        "body": "Privat. Intet går online.",
+        "bodyApple": "Privat, med Apple Intelligence. Intet går online.",
+        "bodyReady": "Privat, med modellen der allerede er her. Intet går online.",
+        "bodyDownload": "Privat. Henter {{model}} (≈{{size}}) én gang, i baggrunden.",
+        "bodyUnavailable": "Understøttes ikke her, så kun simple regler. Intet går online."
       },
       "none": {
         "title": "Ingen AI",
-        "body": "Kun diktering og enkle regler. Intet sendes, og intet poleres, skrives eller foreslås."
+        "body": "Kun almindelig diktering. Intet sendes."
       },
       "continueDownload": "Fortsæt og download"
+    },
+    "choices": {
+      "title": "Et par valg mere",
+      "sub": "Alt er valgfrit og slået fra, indtil du slår det til.",
+      "polish": {
+        "title": "Gør min diktering pæn med AI",
+        "body": "Rydder op i rodet tale, før den skrives. Tekst sendes, aldrig lyd.",
+        "bodyDevice": "Rydder op i rodet tale, før den skrives, på denne computer."
+      },
+      "telemetry": "Del anonyme brugstal, aldrig hvad du siger, skriver eller ser."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Velkommen",
           "permissions": "Tilladelser",
           "model": "Model",
+          "ai": "Hvor AI'en kører",
+          "choices": "Flere valg",
           "demo": "Demo",
           "try": "Prøv det",
           "done": "Klar"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Send mig tips",
-      "labelOptional": "Send mig tips (valgfrit)",
       "description": "Tips en gang imellem om at få mere ud af {{appName}}. Afmeld når som helst.",
+      "short": "Et par tips en gang imellem. Afmeld når som helst.",
       "button": "Send",
-      "done": "Sendt",
       "error": "Kunne ikke sende. Prøv igen?",
       "checkInbox": "Tjek din indbakke for at bekræfte."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Hjælp med at forbedre {{appName}}: del anonyme brugstal, aldrig hvad du siger, skriver eller ser.",
     "whatsShared": "Hvad der deles",
     "sharedTitle": "Kun anonyme optællinger og tider",
     "shared": {

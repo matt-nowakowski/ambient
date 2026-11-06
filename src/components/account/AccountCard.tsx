@@ -395,7 +395,12 @@ export const AccountCard: React.FC<AccountCardProps> = ({
         </form>
         {/* Optional, and separate from signing in: most Free users never
             sign in, so this is how they can ask to hear from us. */}
-        <TipsSignup className="mt-4 border-t-[0.5px] border-glass-edge pt-3" />
+        <div className="mt-4 border-t-[0.5px] border-glass-edge pt-3">
+          <h3 id="account-tips" className="m-0 text-ui font-medium text-text">
+            {t("account.tips.label")}
+          </h3>
+          <TipsSignup labelledBy="account-tips" className="mt-0.5" />
+        </div>
       </>
     );
   } else if (step === "code") {

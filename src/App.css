@@ -138,11 +138,14 @@
   --spacing-control: 28px; /* md buttons, dropdown triggers, fields */
   --spacing-control-lg: 36px; /* onboarding's large buttons */
 
-  /* Onboarding's side gutter. */
-  --spacing-gutter: 64px;
-  /* Gap under a screen's title; grows to the max when there's room. */
-  --spacing-lead: 20px;
-  --spacing-lead-max: 32px;
+  /* Onboarding's step layout (OnboardingShell's ScreenMain and ScreenHeader;
+     Try it's own frame uses the same values). Every step: the title the same
+     distance under the progress dashes, the subtitle a fixed gap under it,
+     the content a fixed gap under that. */
+  --spacing-gutter: 64px; /* side padding */
+  --spacing-onb-top: 22px; /* progress row → title */
+  --spacing-onb-sub: 8px; /* title → subtitle */
+  --spacing-lead: 24px; /* subtitle → content */
 
   --ease-glide: cubic-bezier(0.22, 1, 0.36, 1);
 

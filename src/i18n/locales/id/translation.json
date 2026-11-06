@@ -227,10 +227,6 @@
       "hint": "Anda dapat mengubahnya nanti di Pengaturan",
       "highFiveLabel": "Tos",
       "atLogin": "Jalankan {{appName}} saat saya masuk",
-      "polish": {
-        "title": "Rapikan dikte saya dengan AI",
-        "description": "Mati: dikte langsung diketik. Nyala: ucapan yang berantakan dirapikan dulu (teks yang dikirim, tidak pernah audio). Bagaimanapun, {{appName}} menuliskan untukmu saat kamu minta."
-      },
       "finish": "Selesai",
       "panel": {
         "name": "{{appName}}",
@@ -252,26 +248,36 @@
       "done": "Tidak berfungsi di aplikasi lain? <guide>Panduan penyiapan Linux</guide>"
     },
     "ai": {
-      "title": "Di mana AI berjalan",
-      "sub": "Kamu bisa mengubahnya kapan saja di Pengaturan.",
-      "continue": "Lanjut",
+      "title": "Di mana AI sebaiknya berjalan?",
+      "sub": "Untuk merapikan, draf, jawaban, dan saran. Pengenalan suara selalu tetap di komputer ini.",
+      "hint": "Anda bisa mengubahnya kapan saja di Pengaturan.",
       "cloud": {
         "title": "Di cloud",
-        "body": "Hasil terbaik. Teksmu dikirim ke server kami untuk dipoles dan dijawab; audionya tidak pernah."
+        "body": "Hasil terbaik. Teks dikirim, audio Anda tidak pernah."
       },
       "device": {
         "title": "Di komputer ini",
-        "body": "Pribadi: Apple Intelligence bila Mac mendukungnya, jika tidak model yang diunduh sekali. Tidak ada yang online.",
-        "bodyApple": "Privat: Apple Intelligence di Mac ini. Tidak ada yang dikirim ke internet.",
-        "bodyReady": "Privat: model AI yang sudah ada di komputer ini. Tidak ada yang dikirim ke internet.",
-        "bodyDownload": "Privat: mengunduh {{model}} (≈{{size}}) sekali, di latar belakang. Setelah itu tidak ada yang dikirim ke internet.",
-        "bodyUnavailable": "AI di perangkat tidak berjalan di komputer ini, jadi hanya aturan sederhana. Tidak ada yang dikirim ke internet."
+        "body": "Privat. Tidak ada yang online.",
+        "bodyApple": "Privat, dengan Apple Intelligence. Tidak ada yang online.",
+        "bodyReady": "Privat, dengan model yang sudah ada di sini. Tidak ada yang online.",
+        "bodyDownload": "Privat. Mengunduh {{model}} (≈{{size}}) sekali, di latar belakang.",
+        "bodyUnavailable": "Tidak didukung di sini, jadi hanya aturan sederhana. Tidak ada yang online."
       },
       "none": {
         "title": "Tanpa AI",
-        "body": "Hanya dikte dan aturan sederhana. Tidak ada yang dikirim, dipoles, ditulis, atau disarankan."
+        "body": "Hanya dikte biasa. Tidak ada yang dikirim."
       },
       "continueDownload": "Lanjutkan dan unduh"
+    },
+    "choices": {
+      "title": "Beberapa pilihan lagi",
+      "sub": "Semuanya opsional, dan mati kecuali Anda menyalakannya.",
+      "polish": {
+        "title": "Rapikan dikte saya dengan AI",
+        "body": "Merapikan ucapan yang berantakan sebelum diketik. Teks dikirim, audio tidak pernah.",
+        "bodyDevice": "Merapikan ucapan yang berantakan sebelum diketik, di komputer ini."
+      },
+      "telemetry": "Bagikan hitungan penggunaan anonim, tidak pernah apa yang Anda ucapkan, ketik, atau lihat."
     }
   },
   "modelTable": {
@@ -822,6 +828,8 @@
           "welcome": "Selamat datang",
           "permissions": "Izin",
           "model": "Model",
+          "ai": "Tempat AI berjalan",
+          "choices": "Pilihan lainnya",
           "demo": "Demo",
           "try": "Coba",
           "done": "Selesai"
@@ -1263,10 +1271,9 @@
     },
     "tips": {
       "label": "Kirimi saya tips",
-      "labelOptional": "Kirimi saya tips (opsional)",
       "description": "Sesekali tips agar makin maksimal memakai {{appName}}. Berhenti berlangganan kapan saja.",
+      "short": "Beberapa tips sesekali. Berhenti berlangganan kapan saja.",
       "button": "Kirim",
-      "done": "Terkirim",
       "error": "Gagal mengirim. Coba lagi?",
       "checkInbox": "Cek kotak masuk Anda untuk mengonfirmasi."
     }
@@ -2074,7 +2081,6 @@
     "escape": "esc"
   },
   "telemetry": {
-    "optIn": "Bantu tingkatkan {{appName}}: bagikan hitungan penggunaan anonim, tidak pernah apa yang Anda ucapkan, ketik, atau lihat.",
     "whatsShared": "Yang dibagikan",
     "sharedTitle": "Hanya hitungan dan waktu anonim",
     "shared": {

@@ -613,7 +613,7 @@ export const PrivacyCenter: React.FC = () => {
                   aria-hidden="true"
                   className={`absolute end-0 top-0 size-2 rounded-full ${
                     state === "on"
-                      ? "bg-[#22c55e]"
+                      ? "bg-moss"
                       : state === "paused"
                         ? "bg-warning"
                         : "bg-ink-3"
@@ -658,7 +658,7 @@ export const PrivacyCenter: React.FC = () => {
                 {t("privacy.accessibilityLinux")}
               </p>
               <div className="flex items-center justify-between gap-4">
-                <code className="min-w-0 truncate rounded-md bg-glass-press px-2 py-1 font-mono text-meta text-ink-2">
+                <code className="min-w-0 truncate rounded-chip bg-glass-press px-2 py-1 font-mono text-meta text-ink-2">
                   {LINUX_A11Y_COMMAND}
                 </code>
                 <Button
