@@ -22,8 +22,8 @@ export default function PrivacyPage() {
           {brand.name} is built so that your voice stays yours. This policy explains, in plain English, what data the{" "}
           {brand.name} desktop app and the website at {siteUrl.replace(/^https?:\/\//, "")} handle, why, and what you can
           do about it. The short version: <strong>your audio never leaves your device</strong>, and neither do your
-          dictation transcripts. AI features use our server by default for the best quality, or your Mac’s Apple
-          Intelligence if you choose. When a feature needs our server, only the text it needs is sent, it is not stored, and you can see every request in
+          dictation transcripts. AI features run on our server for the best results, on your computer if you choose
+          (Apple Intelligence on a Mac, or a model you download), or not at all with No AI. When a feature needs our server, only the text it needs is sent, it is not stored, and you can see every request in
           the app’s Privacy Center.
         </p>
       }
@@ -61,8 +61,9 @@ export default function PrivacyPage() {
               <p>
                 {brand.name} uses a language model to polish dictation, answer questions, write drafts, summarise text and
                 meetings, decide whether to offer a suggestion, and work out what you are asking it to do. Every feature
-                works on macOS, Windows and Linux. The <strong>Intelligence</strong> setting chooses where the model runs:
-                Automatic (the default), On this computer only, Cloud, or No AI.
+                works on macOS, Windows and Linux. The <strong>Intelligence</strong> setting, which you choose during setup and
+                can change any time in the Privacy Center, decides where the model runs: Automatic, On this computer
+                only, Cloud, or No AI.
               </p>
               <ul>
                 <li>
@@ -92,8 +93,9 @@ export default function PrivacyPage() {
                 <strong>AI polish.</strong> AI polish tidies the text you dictate. It is off by default for new installs
                 and can be turned on during setup or at any time in Account; while it is off, ordinary dictation stays on
                 your computer. When you ask {brand.name} to write a message for you, it does so whether or not polish is
-                on; for a reply, the request also includes your name and signed-in email and the name of the person
-                you’re answering, so the message is addressed to the right person. When it is on, the text you dictate (never audio) is processed as
+                on; for a reply, the request also includes your name as set on your computer (on macOS and Linux), your
+                signed-in email if you are signed in, and the name of the person you’re answering as shown in the
+                window, so the message is addressed to the right person. When it is on, the text you dictate (never audio) is processed as
                 described above, and each request sent to our server is listed on the app’s Privacy page. If you also
                 let {brand.name} read the window you ask about, polish includes up to 20 names it sees there (people,
                 @handles, product names) so they are spelled right; the rest of the window text stays on your
@@ -122,8 +124,8 @@ export default function PrivacyPage() {
                 on our server, and no text is sent for AI processing: dictation is typed as you said it, nothing is
                 polished, drafted, answered or judged, and suggestions use only simple on-device rules. Asking for
                 something that needs AI tells you so. Requests that are not AI (sign-in and plan checks, the daily
-                check-in, the settings and update checks, and anything you choose to send, such as feedback) still
-                happen as described below.
+                check-in, the settings and update checks, downloads, and anything you choose to send, such as feedback)
+                still happen as described below.
               </p>
               <p>
                 <strong>Secrets are removed first.</strong> Before text from your screen leaves your device, the app
@@ -147,8 +149,18 @@ export default function PrivacyPage() {
               <p>
                 Apps and sites on the <strong>never-watch list</strong> are never read. By default it includes password
                 managers, crypto wallets, private and incognito browser windows and messaging apps, and you can add any app
-                or site. Password fields are never read. Only the text a request needs is sent, after secrets are
-                redacted as described above, and only when the request can’t be handled on your device.
+                or site. Password fields are never read. <strong>Private pages</strong>, such as online banking, payment,
+                medical, password and government ID pages, are recognised on your device from what they show (their
+                address, title and content, in any language) and are then not read or used. Only the text a request
+                needs is sent, after secrets are redacted as described above, and only when the request can’t be
+                handled on your device.
+              </p>
+              <p>
+                <strong>Joining dictations.</strong> So that a dictation joins what you have already typed with the
+                right space and capital letter, the app reads the few characters just before your cursor in the app
+                you are typing into, whether or not screen context is on. It never does this in password fields,
+                password managers, crypto wallets or never-watch apps. Those characters are used on your computer and forgotten; they are
+                never stored or sent.
               </p>
               <p>
                 <strong>Screen memory</strong> is a separate opt-in. If you turn it on, window text is saved on your
@@ -223,14 +235,16 @@ export default function PrivacyPage() {
           title: "Proactive suggestions (optional)",
           body: (
             <p>
-              If you turn on suggestions, {brand.name} decides whether to offer help with the window you are using. On
-              Macs with Apple Intelligence it decides on the device, and otherwise with local rules; nothing is sent
-              unless you accept a suggestion. <strong>Suggestions from the cloud</strong> (optional, Pro, off until you
-              say yes) let a computer without an on-device model ask our server instead: the app name, window title and
-              up to 3,500 characters of the window’s text, with secrets redacted first, are sent to decide, and the
-              answer is a short yes or no with a one-line offer. This text is not stored or logged, every such request
-              appears in the app’s list of requests that left your computer, and you can turn it off at any time. The
-              other exception is meeting
+              If you turn on suggestions, {brand.name} decides whether to offer help with the window you are using. With
+              an on-device model (Apple Intelligence, or the model you downloaded) it decides on the device, and
+              otherwise with local rules; nothing is sent unless you accept a suggestion. The exception is{" "}
+              <strong>suggestions from the cloud</strong>, on Pro and during the trial: with Intelligence set to Cloud,
+              or, on Automatic without an on-device model, after you say yes to a one-time offer, the app asks our
+              server instead. The app name, window title and up to 3,500 characters of the window’s text, with secrets
+              redacted first, are sent to decide, and the answer is a short yes or no with a one-line offer. This text
+              is not stored or logged, every such request appears in the app’s list of requests that left your
+              computer, and you can stop it at any time by changing the Intelligence setting or turning suggestions
+              off. With No AI, only local rules decide. The other exception is meeting
               nudges: during a meeting you have chosen to take notes on, the app checks the last few minutes of the
               transcript about every 90 seconds, on your device when possible and otherwise through our server as
               described above. Preferences learned from your feedback (for example, “don’t show me these”) are stored
@@ -259,7 +273,7 @@ export default function PrivacyPage() {
             <>
               <p>
                 We can only make the assistant better from real use, so the app can share anonymous usage counts with us.
-                This is <strong>off until you turn it on</strong>: on the “You’re all set” screen at the end of setup, or
+                This is <strong>off until you turn it on</strong>: in setup, under “A few more choices”, or
                 with <strong>Share anonymous usage counts</strong> in the app’s Privacy Center. While it is off, none of
                 these statistics are collected or sent. (The daily check-in described in “How many people use the app” is
                 separate and is sent either way.)
@@ -418,7 +432,13 @@ export default function PrivacyPage() {
                 and token from your device.
               </p>
               <p>
-                <strong>Email me tips (optional).</strong> On the last screen of setup, and in Account while you are
+                <strong>License codes.</strong> If you redeem a gift or support code in the app, it sends the code and
+                the device hash described under “Trial and free allowance” to our server, which checks the code and
+                returns a signed license token. We keep each code with the Polar customer ID, email and plan it was
+                issued for; the device hash sent with it is not stored.
+              </p>
+              <p>
+                <strong>Email me tips (optional).</strong> In setup, under “A few more choices”, and in Account while you are
                 not signed in, you can ask us to email you tips on using {brand.name}; the box stays empty until you
                 fill it in. If you do, we email that address once, through our email provider, Resend, with a link to
                 confirm it. Until the link is clicked, only Resend holds the address, marked unconfirmed, and nothing is
@@ -468,6 +488,10 @@ export default function PrivacyPage() {
                 type, and plan (see “How many people use the app”). Our server does not store your IP address with it.
               </li>
               <li>
+                <strong>Connection warm-up:</strong> just before a request to our AI server, the app may open the
+                connection with an empty request, so the answer comes sooner. Nothing about you or your text is sent.
+              </li>
+              <li>
                 <strong>Assistant settings check:</strong> on launch and at most once a day, the app downloads the
                 assistant’s tuning settings (for example how often it may offer suggestions) from our website. The request
                 carries only your IP address and the app version; nothing about you or your use is sent. If it fails, the
@@ -475,7 +499,8 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Network ledger:</strong> the app keeps a local, encrypted log of every request it sends (including
-                downloads, update checks, sign-in and the daily check-in) and the text that was sent, for 30 days, which
+                downloads, update checks, the trial and allowance checks, sign-in, the billing link and the daily
+                check-in) and what was sent (the first 4,500 characters of it, and its full size), for 30 days, which
                 you can view in the Privacy Center. It stays on your device.
               </li>
             </ul>
@@ -550,8 +575,8 @@ export default function PrivacyPage() {
                 <li>our email provider, for messages you send us.</li>
               </ul>
               <p>
-                Model files are downloaded directly from Hugging Face, which handles those requests under its own privacy
-                policy. Apple Intelligence runs on your Mac; {brand.name} sends nothing to Apple. These providers may process data outside the UAE, including in the United States and the European Union.
+                Model files are downloaded directly from Hugging Face, and the llama.cpp program for on-device AI from
+                GitHub, which handle those requests under their own privacy policies. Apple Intelligence runs on your Mac; {brand.name} sends nothing to Apple. These providers may process data outside the UAE, including in the United States and the European Union.
                 Where required, we rely on appropriate safeguards such as standard contractual clauses.
               </p>
             </>
