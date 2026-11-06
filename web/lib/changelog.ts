@@ -11,6 +11,23 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.15",
+    date: "2026-11-06",
+    title: "Works from the menu bar",
+    summary:
+      "Everything Ambient does now works with its window closed, right from your menu bar or tray, including straight after you log in.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "When Ambient started hidden at login, dictation shortcuts and pasting could stay off until you opened its window. They're on from the start now.",
+          "If dictation can't start, paste or transcribe while the window is closed, Ambient tells you in a small card instead of failing quietly.",
+          "On Windows, Ambient asks not to be slowed down in the background, so suggestions, meetings and hands-free stay on time.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.14",
     date: "2026-11-06",
     title: "Every request, on the record",
