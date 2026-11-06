@@ -1,3 +1,5 @@
+For Ambient maintainers. Building is not licensed (see [LICENSE](LICENSE)).
+
 # Build Instructions
 
 This guide covers how to set up the development environment and build Ambient from source across different platforms.
