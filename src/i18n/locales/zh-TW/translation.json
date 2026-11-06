@@ -252,24 +252,24 @@
       "done": "在其他應用程式中沒有作用嗎？<guide>Linux 設定指南</guide>"
     },
     "ai": {
-      "title": "AI 在哪裡執行",
-      "sub": "你隨時可以在設定中更改。",
-      "continue": "繼續",
+      "title": "AI 要在哪裡執行？",
+      "sub": "用於潤飾、草擬、回答和建議。語音辨識一律在這台電腦上進行。",
+      "hint": "你可以隨時在設定中變更。",
       "cloud": {
         "title": "在雲端",
-        "body": "效果最好。你的文字會傳送到我們的伺服器進行潤飾和回答；音訊絕不傳送。"
+        "body": "效果最好。只傳送文字，絕不傳送你的音訊。"
       },
       "device": {
         "title": "在本機上",
-        "body": "私密：Mac 支援時用 Apple Intelligence，否則下載一次模型。任何內容都不會連網。",
-        "bodyApple": "私密：使用這台 Mac 上的 Apple Intelligence。不會有任何內容連網。",
-        "bodyReady": "私密：使用這台電腦上已有的 AI 模型。不會有任何內容連網。",
-        "bodyDownload": "私密：在背景一次下載 {{model}}（約 {{size}}）。之後不會有任何內容連網。",
-        "bodyUnavailable": "裝置上的 AI 無法在這台電腦上執行，因此只有簡單規則。不會有任何內容連網。"
+        "body": "私密。任何內容都不會連上網路。",
+        "bodyApple": "私密，使用 Apple Intelligence。任何內容都不會連上網路。",
+        "bodyReady": "私密，使用這裡已有的模型。任何內容都不會連上網路。",
+        "bodyDownload": "私密。在背景下載一次 {{model}}（≈{{size}}）。",
+        "bodyUnavailable": "這台電腦不支援，所以只用簡單規則。任何內容都不會連上網路。"
       },
       "none": {
         "title": "不使用 AI",
-        "body": "只做聽寫和簡單規則。不傳送任何內容，也不潤飾、代寫或建議。"
+        "body": "僅一般聽寫。不傳送任何內容。"
       },
       "continueDownload": "繼續並下載"
     }

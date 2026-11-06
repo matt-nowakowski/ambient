@@ -253,24 +253,24 @@
       "done": "¿No funciona en otras apps? <guide>Guía de configuración para Linux</guide>"
     },
     "ai": {
-      "title": "Dónde funciona la IA",
-      "sub": "Puedes cambiarlo cuando quieras en Ajustes.",
-      "continue": "Continuar",
+      "title": "¿Dónde debe funcionar la IA?",
+      "sub": "Para pulir, borradores, respuestas y sugerencias. El reconocimiento de voz siempre se queda en este ordenador.",
+      "hint": "Puedes cambiarlo cuando quieras en Ajustes.",
       "cloud": {
         "title": "En la nube",
-        "body": "Los mejores resultados. Tu texto va a nuestro servidor para pulir y responder; tu audio nunca."
+        "body": "Los mejores resultados. Se envía el texto, nunca tu audio."
       },
       "device": {
         "title": "En este equipo",
-        "body": "Privado: Apple Intelligence donde el Mac lo tiene, si no un modelo que descargas una vez. Nada sale a internet.",
-        "bodyApple": "Privado: Apple Intelligence en este Mac. Nada sale a internet.",
-        "bodyReady": "Privado: el modelo de IA que ya está en este ordenador. Nada sale a internet.",
-        "bodyDownload": "Privado: descarga {{model}} (≈{{size}}) una vez, en segundo plano. Después, nada sale a internet.",
-        "bodyUnavailable": "La IA en el dispositivo no funciona en este ordenador, así que solo habrá reglas simples. Nada sale a internet."
+        "body": "Privado. Nada sale a internet.",
+        "bodyApple": "Privado, con Apple Intelligence. Nada sale a internet.",
+        "bodyReady": "Privado, con el modelo que ya está aquí. Nada sale a internet.",
+        "bodyDownload": "Privado. Descarga {{model}} (≈{{size}}) una vez, en segundo plano.",
+        "bodyUnavailable": "No es compatible aquí, así que solo reglas simples. Nada sale a internet."
       },
       "none": {
         "title": "Sin IA",
-        "body": "Dictado simple y reglas sencillas. No se envía nada y no se pule, redacta ni sugiere nada."
+        "body": "Solo dictado simple. No se envía nada."
       },
       "continueDownload": "Continuar y descargar"
     }

@@ -252,24 +252,24 @@
       "done": "Funktioniert in anderen Apps nicht? <guide>Linux-Einrichtungsanleitung</guide>"
     },
     "ai": {
-      "title": "Wo die KI läuft",
-      "sub": "Du kannst das jederzeit in den Einstellungen ändern.",
-      "continue": "Weiter",
+      "title": "Wo soll die KI laufen?",
+      "sub": "Fürs Glätten, Entwürfe, Antworten und Vorschläge. Die Spracherkennung bleibt immer auf diesem Computer.",
+      "hint": "Du kannst das jederzeit in den Einstellungen ändern.",
       "cloud": {
         "title": "In der Cloud",
-        "body": "Die besten Ergebnisse. Dein Text geht zum Glätten und Antworten an unseren Server; deine Aufnahme nie."
+        "body": "Die besten Ergebnisse. Text wird gesendet, nie dein Audio."
       },
       "device": {
         "title": "Auf diesem Computer",
-        "body": "Privat: Apple Intelligence, wo der Mac es hat, sonst ein einmal geladenes Modell. Nichts geht online.",
-        "bodyApple": "Privat: Apple Intelligence auf diesem Mac. Nichts geht online.",
-        "bodyReady": "Privat: das KI-Modell, das schon auf diesem Computer ist. Nichts geht online.",
-        "bodyDownload": "Privat: lädt {{model}} (≈{{size}}) einmal im Hintergrund. Danach geht nichts mehr online.",
-        "bodyUnavailable": "KI auf dem Gerät läuft auf diesem Computer nicht, also nur einfache Regeln. Nichts geht online."
+        "body": "Privat. Nichts geht online.",
+        "bodyApple": "Privat, mit Apple Intelligence. Nichts geht online.",
+        "bodyReady": "Privat, mit dem Modell, das schon hier ist. Nichts geht online.",
+        "bodyDownload": "Privat. Lädt {{model}} (≈{{size}}) einmal im Hintergrund.",
+        "bodyUnavailable": "Hier nicht unterstützt, also nur einfache Regeln. Nichts geht online."
       },
       "none": {
         "title": "Keine KI",
-        "body": "Reine Diktatfunktion und einfache Regeln. Nichts wird gesendet, nichts geglättet, verfasst oder vorgeschlagen."
+        "body": "Nur einfaches Diktieren. Nichts wird gesendet."
       },
       "continueDownload": "Weiter und laden"
     }

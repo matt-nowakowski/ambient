@@ -252,24 +252,24 @@
       "done": "在其他应用中不起作用？<guide>Linux 设置指南</guide>"
     },
     "ai": {
-      "title": "AI 在哪里运行",
-      "sub": "你随时可以在设置中更改。",
-      "continue": "继续",
+      "title": "AI 在哪里运行？",
+      "sub": "用于润色、起草、回答和建议。语音识别始终在这台电脑上进行。",
+      "hint": "你可以随时在设置中更改。",
       "cloud": {
         "title": "在云端",
-        "body": "效果最好。你的文字会发送到我们的服务器进行润色和回答；音频绝不发送。"
+        "body": "效果最好。只发送文字，从不发送你的音频。"
       },
       "device": {
         "title": "在本机上",
-        "body": "私密：Mac 支持时用 Apple Intelligence，否则下载一次模型。任何内容都不会联网。",
-        "bodyApple": "私密：使用这台 Mac 上的 Apple Intelligence。不会有任何内容联网。",
-        "bodyReady": "私密：使用这台电脑上已有的 AI 模型。不会有任何内容联网。",
-        "bodyDownload": "私密：在后台一次性下载 {{model}}（约 {{size}}）。之后不会有任何内容联网。",
-        "bodyUnavailable": "设备端 AI 无法在这台电脑上运行，因此只有简单规则。不会有任何内容联网。"
+        "body": "私密。任何内容都不会联网。",
+        "bodyApple": "私密，使用 Apple Intelligence。任何内容都不会联网。",
+        "bodyReady": "私密，使用这里已有的模型。任何内容都不会联网。",
+        "bodyDownload": "私密。在后台下载一次 {{model}}（≈{{size}}）。",
+        "bodyUnavailable": "此电脑不支持，所以只用简单规则。任何内容都不会联网。"
       },
       "none": {
         "title": "不使用 AI",
-        "body": "只做听写和简单规则。不发送任何内容，也不润色、代写或建议。"
+        "body": "仅普通听写。不发送任何内容。"
       },
       "continueDownload": "继续并下载"
     }

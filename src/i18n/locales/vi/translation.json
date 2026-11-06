@@ -252,24 +252,24 @@
       "done": "Không hoạt động trong các ứng dụng khác? <guide>Hướng dẫn thiết lập Linux</guide>"
     },
     "ai": {
-      "title": "AI chạy ở đâu",
-      "sub": "Bạn có thể đổi bất cứ lúc nào trong Cài đặt.",
-      "continue": "Tiếp tục",
+      "title": "AI nên chạy ở đâu?",
+      "sub": "Để trau chuốt, soạn nháp, trả lời và gợi ý. Nhận dạng giọng nói luôn ở trên máy tính này.",
+      "hint": "Bạn có thể đổi điều này bất cứ lúc nào trong Cài đặt.",
       "cloud": {
         "title": "Trên đám mây",
-        "body": "Kết quả tốt nhất. Văn bản của bạn được gửi tới máy chủ của chúng tôi để trau chuốt và trả lời; âm thanh thì không."
+        "body": "Kết quả tốt nhất. Chỉ gửi văn bản, không bao giờ gửi âm thanh của bạn."
       },
       "device": {
         "title": "Trên máy này",
-        "body": "Riêng tư: Apple Intelligence nếu máy Mac có, nếu không thì tải mô hình một lần. Không gì lên mạng.",
-        "bodyApple": "Riêng tư: Apple Intelligence trên máy Mac này. Không gì được gửi lên mạng.",
-        "bodyReady": "Riêng tư: mô hình AI đã có sẵn trên máy tính này. Không gì được gửi lên mạng.",
-        "bodyDownload": "Riêng tư: tải {{model}} (≈{{size}}) một lần, ở chế độ nền. Sau đó không gì được gửi lên mạng.",
-        "bodyUnavailable": "AI trên thiết bị không chạy được trên máy tính này, nên chỉ có quy tắc đơn giản. Không gì được gửi lên mạng."
+        "body": "Riêng tư. Không có gì lên mạng.",
+        "bodyApple": "Riêng tư, với Apple Intelligence. Không có gì lên mạng.",
+        "bodyReady": "Riêng tư, với mô hình đã có ở đây. Không có gì lên mạng.",
+        "bodyDownload": "Riêng tư. Tải {{model}} (≈{{size}}) một lần, ở chế độ nền.",
+        "bodyUnavailable": "Không được hỗ trợ ở đây, nên chỉ có quy tắc đơn giản. Không có gì lên mạng."
       },
       "none": {
         "title": "Không dùng AI",
-        "body": "Chỉ đọc chính tả và quy tắc đơn giản. Không gửi gì, không trau chuốt, viết hay gợi ý gì."
+        "body": "Chỉ đọc chính tả thông thường. Không gửi gì cả."
       },
       "continueDownload": "Tiếp tục và tải xuống"
     }

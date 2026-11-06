@@ -252,24 +252,24 @@
       "done": "Virker det ikke i andre apps? <guide>Linux-opsætningsguide</guide>"
     },
     "ai": {
-      "title": "Hvor AI'en kører",
-      "sub": "Du kan ændre det når som helst i Indstillinger.",
-      "continue": "Fortsæt",
+      "title": "Hvor skal AI'en køre?",
+      "sub": "Til finpudsning, udkast, svar og forslag. Talegenkendelse bliver altid på denne computer.",
+      "hint": "Du kan ændre det når som helst i Indstillinger.",
       "cloud": {
         "title": "I skyen",
-        "body": "De bedste resultater. Din tekst går til vores server for at blive poleret og svare; din lyd aldrig."
+        "body": "Bedste resultater. Tekst sendes, aldrig din lyd."
       },
       "device": {
         "title": "På denne computer",
-        "body": "Privat: Apple Intelligence hvor computeren har det, ellers en model du henter én gang. Intet går online.",
-        "bodyApple": "Privat: Apple Intelligence på denne Mac. Intet går online.",
-        "bodyReady": "Privat: AI-modellen, der allerede er på denne computer. Intet går online.",
-        "bodyDownload": "Privat: downloader {{model}} (≈{{size}}) én gang i baggrunden. Derefter går intet online.",
-        "bodyUnavailable": "AI på enheden kører ikke på denne computer, så kun enkle regler. Intet går online."
+        "body": "Privat. Intet går online.",
+        "bodyApple": "Privat, med Apple Intelligence. Intet går online.",
+        "bodyReady": "Privat, med modellen der allerede er her. Intet går online.",
+        "bodyDownload": "Privat. Henter {{model}} (≈{{size}}) én gang, i baggrunden.",
+        "bodyUnavailable": "Understøttes ikke her, så kun simple regler. Intet går online."
       },
       "none": {
         "title": "Ingen AI",
-        "body": "Kun diktering og enkle regler. Intet sendes, og intet poleres, skrives eller foreslås."
+        "body": "Kun almindelig diktering. Intet sendes."
       },
       "continueDownload": "Fortsæt og download"
     }

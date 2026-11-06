@@ -254,24 +254,24 @@
       "done": "Nie działa w innych aplikacjach? <guide>Poradnik konfiguracji dla Linuksa</guide>"
     },
     "ai": {
-      "title": "Gdzie działa AI",
-      "sub": "Możesz to zmienić w każdej chwili w Ustawieniach.",
-      "continue": "Dalej",
+      "title": "Gdzie ma działać AI?",
+      "sub": "Do szlifowania, szkiców, odpowiedzi i sugestii. Rozpoznawanie mowy zawsze zostaje na tym komputerze.",
+      "hint": "Możesz to zmienić w każdej chwili w Ustawieniach.",
       "cloud": {
         "title": "W chmurze",
-        "body": "Najlepsze wyniki. Twój tekst trafia na nasz serwer, który go szlifuje i odpowiada; dźwięk nigdy."
+        "body": "Najlepsze wyniki. Wysyłany jest tekst, nigdy Twój dźwięk."
       },
       "device": {
         "title": "Na tym komputerze",
-        "body": "Prywatnie: Apple Intelligence, jeśli Mac go ma, inaczej model pobrany raz. Nic nie wychodzi do sieci.",
-        "bodyApple": "Prywatnie: Apple Intelligence na tym Macu. Nic nie trafia do sieci.",
-        "bodyReady": "Prywatnie: model AI, który już jest na tym komputerze. Nic nie trafia do sieci.",
-        "bodyDownload": "Prywatnie: pobiera {{model}} (≈{{size}}) raz, w tle. Potem nic nie trafia do sieci.",
-        "bodyUnavailable": "AI na urządzeniu nie działa na tym komputerze, więc tylko proste reguły. Nic nie trafia do sieci."
+        "body": "Prywatnie. Nic nie trafia do sieci.",
+        "bodyApple": "Prywatnie, z Apple Intelligence. Nic nie trafia do sieci.",
+        "bodyReady": "Prywatnie, z modelem, który już tu jest. Nic nie trafia do sieci.",
+        "bodyDownload": "Prywatnie. Raz pobiera {{model}} (≈{{size}}) w tle.",
+        "bodyUnavailable": "Nieobsługiwane tutaj, więc tylko proste reguły. Nic nie trafia do sieci."
       },
       "none": {
         "title": "Bez AI",
-        "body": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani szlifowane, pisane czy podpowiadane."
+        "body": "Tylko zwykłe dyktowanie. Nic nie jest wysyłane."
       },
       "continueDownload": "Dalej i pobierz"
     }

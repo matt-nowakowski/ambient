@@ -252,24 +252,24 @@
       "done": "Werkt het niet in andere apps? <guide>Linux-installatiegids</guide>"
     },
     "ai": {
-      "title": "Waar de AI draait",
-      "sub": "Je kunt dit altijd wijzigen in Instellingen.",
-      "continue": "Doorgaan",
+      "title": "Waar moet de AI draaien?",
+      "sub": "Voor bijschaven, concepten, antwoorden en suggesties. Spraakherkenning blijft altijd op deze computer.",
+      "hint": "Je kunt dit altijd wijzigen in Instellingen.",
       "cloud": {
         "title": "In de cloud",
-        "body": "De beste resultaten. Je tekst gaat naar onze server om te polijsten en te antwoorden; je audio nooit."
+        "body": "Beste resultaten. Tekst wordt verstuurd, nooit je audio."
       },
       "device": {
         "title": "Op deze computer",
-        "body": "Privé: Apple Intelligence waar de Mac het heeft, anders een model dat je één keer downloadt. Niets gaat online.",
-        "bodyApple": "Privé: Apple Intelligence op deze Mac. Er gaat niets online.",
-        "bodyReady": "Privé: het AI-model dat al op deze computer staat. Er gaat niets online.",
-        "bodyDownload": "Privé: downloadt {{model}} (≈{{size}}) één keer, op de achtergrond. Daarna gaat er niets online.",
-        "bodyUnavailable": "AI op het apparaat werkt niet op deze computer, dus alleen eenvoudige regels. Er gaat niets online."
+        "body": "Privé. Er gaat niets online.",
+        "bodyApple": "Privé, met Apple Intelligence. Er gaat niets online.",
+        "bodyReady": "Privé, met het model dat hier al staat. Er gaat niets online.",
+        "bodyDownload": "Privé. Downloadt {{model}} (≈{{size}}) één keer, op de achtergrond.",
+        "bodyUnavailable": "Hier niet ondersteund, dus alleen eenvoudige regels. Er gaat niets online."
       },
       "none": {
         "title": "Geen AI",
-        "body": "Alleen dicteren en eenvoudige regels. Niets wordt verstuurd en niets wordt gepolijst, geschreven of voorgesteld."
+        "body": "Alleen gewoon dicteren. Er wordt niets verstuurd."
       },
       "continueDownload": "Doorgaan en downloaden"
     }

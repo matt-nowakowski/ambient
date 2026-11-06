@@ -252,24 +252,24 @@
       "done": "Not working in other apps? <guide>Linux setup guide</guide>"
     },
     "ai": {
-      "title": "Where the AI runs",
-      "sub": "You can change this any time in Settings.",
-      "continue": "Continue",
+      "title": "Where should the AI run?",
+      "sub": "For polishing, drafts, answers and suggestions. Speech recognition always stays on this computer.",
+      "hint": "You can change this any time in Settings.",
       "cloud": {
         "title": "In the cloud",
-        "body": "The best results. Your text goes to our server to polish and answer; your audio never does."
+        "body": "Best results. Text is sent, never your audio."
       },
       "device": {
         "title": "On this computer",
-        "body": "Private: Apple Intelligence where the Mac has it, otherwise a model you download once. Nothing goes online.",
-        "bodyApple": "Private: Apple Intelligence on this Mac. Nothing goes online.",
-        "bodyReady": "Private: the AI model already on this computer. Nothing goes online.",
-        "bodyDownload": "Private: downloads {{model}} (≈{{size}}) once, in the background. Nothing goes online after that.",
-        "bodyUnavailable": "On-device AI doesn't run on this computer, so this means simple rules only. Nothing goes online."
+        "body": "Private. Nothing goes online.",
+        "bodyApple": "Private, with Apple Intelligence. Nothing goes online.",
+        "bodyReady": "Private, with the model already here. Nothing goes online.",
+        "bodyDownload": "Private. Downloads {{model}} (≈{{size}}) once, in the background.",
+        "bodyUnavailable": "Not supported here, so simple rules only. Nothing goes online."
       },
       "none": {
         "title": "No AI",
-        "body": "Plain dictation and simple rules. Nothing is sent, and nothing is polished, drafted or suggested."
+        "body": "Plain dictation only. Nothing is sent."
       },
       "continueDownload": "Continue and download"
     }

@@ -252,24 +252,24 @@
       "done": "Tidak berfungsi di aplikasi lain? <guide>Panduan penyiapan Linux</guide>"
     },
     "ai": {
-      "title": "Di mana AI berjalan",
-      "sub": "Kamu bisa mengubahnya kapan saja di Pengaturan.",
-      "continue": "Lanjut",
+      "title": "Di mana AI sebaiknya berjalan?",
+      "sub": "Untuk merapikan, draf, jawaban, dan saran. Pengenalan suara selalu tetap di komputer ini.",
+      "hint": "Anda bisa mengubahnya kapan saja di Pengaturan.",
       "cloud": {
         "title": "Di cloud",
-        "body": "Hasil terbaik. Teksmu dikirim ke server kami untuk dipoles dan dijawab; audionya tidak pernah."
+        "body": "Hasil terbaik. Teks dikirim, audio Anda tidak pernah."
       },
       "device": {
         "title": "Di komputer ini",
-        "body": "Pribadi: Apple Intelligence bila Mac mendukungnya, jika tidak model yang diunduh sekali. Tidak ada yang online.",
-        "bodyApple": "Privat: Apple Intelligence di Mac ini. Tidak ada yang dikirim ke internet.",
-        "bodyReady": "Privat: model AI yang sudah ada di komputer ini. Tidak ada yang dikirim ke internet.",
-        "bodyDownload": "Privat: mengunduh {{model}} (≈{{size}}) sekali, di latar belakang. Setelah itu tidak ada yang dikirim ke internet.",
-        "bodyUnavailable": "AI di perangkat tidak berjalan di komputer ini, jadi hanya aturan sederhana. Tidak ada yang dikirim ke internet."
+        "body": "Privat. Tidak ada yang online.",
+        "bodyApple": "Privat, dengan Apple Intelligence. Tidak ada yang online.",
+        "bodyReady": "Privat, dengan model yang sudah ada di sini. Tidak ada yang online.",
+        "bodyDownload": "Privat. Mengunduh {{model}} (≈{{size}}) sekali, di latar belakang.",
+        "bodyUnavailable": "Tidak didukung di sini, jadi hanya aturan sederhana. Tidak ada yang online."
       },
       "none": {
         "title": "Tanpa AI",
-        "body": "Hanya dikte dan aturan sederhana. Tidak ada yang dikirim, dipoles, ditulis, atau disarankan."
+        "body": "Hanya dikte biasa. Tidak ada yang dikirim."
       },
       "continueDownload": "Lanjutkan dan unduh"
     }

@@ -253,24 +253,24 @@
       "done": "Non funziona in altre app? <guide>Guida alla configurazione su Linux</guide>"
     },
     "ai": {
-      "title": "Dove gira l'IA",
-      "sub": "Puoi cambiarlo quando vuoi nelle Impostazioni.",
-      "continue": "Continua",
+      "title": "Dove deve funzionare l'IA?",
+      "sub": "Per rifinire, bozze, risposte e suggerimenti. Il riconoscimento vocale resta sempre su questo computer.",
+      "hint": "Puoi cambiarlo quando vuoi nelle Impostazioni.",
       "cloud": {
         "title": "Nel cloud",
-        "body": "I risultati migliori. Il tuo testo va al nostro server per essere levigato e per rispondere; il tuo audio mai."
+        "body": "I risultati migliori. Viene inviato il testo, mai il tuo audio."
       },
       "device": {
         "title": "Su questo computer",
-        "body": "Privato: Apple Intelligence dove il Mac ce l'ha, altrimenti un modello scaricato una volta. Niente va online.",
-        "bodyApple": "Privato: Apple Intelligence su questo Mac. Niente va online.",
-        "bodyReady": "Privato: il modello di IA già presente su questo computer. Niente va online.",
-        "bodyDownload": "Privato: scarica {{model}} (≈{{size}}) una volta, in background. Dopo, niente va online.",
-        "bodyUnavailable": "L'IA sul dispositivo non funziona su questo computer, quindi solo regole semplici. Niente va online."
+        "body": "Privato. Niente va online.",
+        "bodyApple": "Privato, con Apple Intelligence. Niente va online.",
+        "bodyReady": "Privato, con il modello già presente. Niente va online.",
+        "bodyDownload": "Privato. Scarica {{model}} (≈{{size}}) una volta, in background.",
+        "bodyUnavailable": "Non supportato qui, quindi solo regole semplici. Niente va online."
       },
       "none": {
         "title": "Nessuna IA",
-        "body": "Dettatura semplice e regole di base. Non si invia nulla e non si leviga, scrive o suggerisce niente."
+        "body": "Solo dettatura semplice. Non viene inviato nulla."
       },
       "continueDownload": "Continua e scarica"
     }

@@ -254,24 +254,24 @@
       "done": "Nefunguje to v jiných aplikacích? <guide>Průvodce nastavením pro Linux</guide>"
     },
     "ai": {
-      "title": "Kde AI běží",
-      "sub": "Změníte to kdykoli v Nastavení.",
-      "continue": "Pokračovat",
+      "title": "Kde má AI běžet?",
+      "sub": "Pro uhlazení, koncepty, odpovědi a návrhy. Rozpoznávání řeči vždy zůstává v tomto počítači.",
+      "hint": "Kdykoli to můžete změnit v Nastavení.",
       "cloud": {
         "title": "V cloudu",
-        "body": "Nejlepší výsledky. Váš text jde na náš server kvůli úpravě a odpovědi; zvuk nikdy."
+        "body": "Nejlepší výsledky. Odesílá se text, nikdy váš zvuk."
       },
       "device": {
         "title": "Na tomto počítači",
-        "body": "Soukromé: Apple Intelligence, kde ho Mac má, jinak model stažený jednou. Nic nejde online.",
-        "bodyApple": "Soukromé: Apple Intelligence na tomto Macu. Nic nejde online.",
-        "bodyReady": "Soukromé: model AI, který už je v tomto počítači. Nic nejde online.",
-        "bodyDownload": "Soukromé: jednou na pozadí stáhne {{model}} (≈{{size}}). Pak už nic nejde online.",
-        "bodyUnavailable": "AI v zařízení na tomto počítači neběží, takže jen jednoduchá pravidla. Nic nejde online."
+        "body": "Soukromé. Nic nejde online.",
+        "bodyApple": "Soukromé, s Apple Intelligence. Nic nejde online.",
+        "bodyReady": "Soukromé, s modelem, který už tu je. Nic nejde online.",
+        "bodyDownload": "Soukromé. Jednou stáhne {{model}} (≈{{size}}), na pozadí.",
+        "bodyUnavailable": "Tady není podporováno, takže jen jednoduchá pravidla. Nic nejde online."
       },
       "none": {
         "title": "Bez AI",
-        "body": "Jen diktování a jednoduchá pravidla. Nic se neposílá a nic se neupravuje, nepíše ani nenavrhuje."
+        "body": "Jen obyčejné diktování. Nic se neodesílá."
       },
       "continueDownload": "Pokračovat a stáhnout"
     }
