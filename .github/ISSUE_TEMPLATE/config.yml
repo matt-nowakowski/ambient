@@ -1,0 +1,9 @@
+# Bugs and ideas reach us through the app or by email, where we answer them.
+blank_issues_enabled: false
+contact_links:
+  - name: Report a bug or share an idea
+    url: https://tryambient.ai/contact
+    about: Use Send feedback in the app (it shows you exactly what it sends), or email hello@tryambient.ai.
+  - name: Report a security problem
+    url: https://tryambient.ai/contact
+    about: Privately, please, to legal@tryambient.ai with the subject "Security". See SECURITY.md.
