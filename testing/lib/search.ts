@@ -5,6 +5,39 @@
  */
 type Result = { title: string; url: string; excerpt: string };
 
+/** A question with many results, two from one site: the card shows at
+ * most three, one per site, and the answer cites none of them by number. */
+const MANY: Result[] = [
+  {
+    title:
+      "Lisbon population 2026 — Example Statistics Portal, city and metro area figures",
+    url: "https://stats.example.com/lisbon",
+    excerpt:
+      "Lisbon's city proper has about 548,000 residents; the metropolitan area about 2.9 million.",
+  },
+  {
+    title: "Lisbon metropolitan area — Example Statistics Portal",
+    url: "https://www.stats.example.com/lisbon-metro",
+    excerpt: "The Lisbon metropolitan area counts roughly 2.9 million people.",
+  },
+  {
+    title: "Lisbon — Example Encyclopedia",
+    url: "https://encyclopedia.example.com/lisbon",
+    excerpt:
+      "Lisbon is the capital of Portugal, with around 550,000 people in the city.",
+  },
+  {
+    title: "Portugal census results — Example Government Office",
+    url: "https://census.example.gov/pt",
+    excerpt: "Census figures put the Lisbon municipality at 545,796 residents.",
+  },
+  {
+    title: "Largest cities in Europe — Example Atlas",
+    url: "https://atlas.example.org/europe-cities",
+    excerpt: "Lisbon ranks among the EU's mid-sized capitals by population.",
+  },
+];
+
 const CANNED: { match: RegExp; results: Result[] }[] = [
   {
     match:
@@ -40,6 +73,11 @@ const CANNED: { match: RegExp; results: Result[] }[] = [
           "Today's main stories: a new climate agreement, a tech launch, and the local team won 2–1.",
       },
     ],
+  },
+  {
+    match:
+      /population|inhabitants|how many people|ludność|mieszkańc|einwohner|bevölkerung|población|habitantes/i,
+    results: MANY,
   },
 ];
 

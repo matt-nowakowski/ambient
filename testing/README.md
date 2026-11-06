@@ -147,6 +147,10 @@ to each of its cases (tags are added, settings merged).
     "not_contains": ["…"],
     "shows": ["hud.notice.cantClose"], // some card's text or i18n key
     "not_shows": ["cantDoYet"], // no card's text or i18n key
+    "card_text_not_matches": ["\\[\\d+\\]"], // regexes no card's text may match
+    "max_sources": 3, // no answer card shows more source chips
+    "min_sources": 1, // some answer card shows at least this many
+    "sources_distinct_sites": true, // never two chips from one site
     "must_not": ["typed_verbatim", "opened_browser"],
   },
 }

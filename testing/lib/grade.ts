@@ -27,6 +27,8 @@ export type Outcome = {
   cards: string[];
   /** Every card's text, title or i18n key, for `shows`. */
   cardTexts: string[];
+  /** Each answer card's source chips, as shown. */
+  answerSources: { title: string; url: string }[][];
   modelCalls: number;
   sensitive: boolean;
   notice?: string;
@@ -65,6 +67,9 @@ export function outcomeOf(r: AppReport, c: Case, proxyCalls: number): Outcome {
         (t): t is string => typeof t === "string",
       ),
     ),
+    answerSources: cards
+      .filter((c) => c.kind === "answer")
+      .map((c) => (c.sources ?? []) as { title: string; url: string }[]),
     modelCalls: proxyCalls,
     sensitive,
     notice: lastCard("notice")?.text,
@@ -224,6 +229,26 @@ export function exactChecks(o: Outcome, c: Case): string[] {
   for (const s of e.not_shows ?? []) {
     if (o.cardTexts.some((t) => t.toLowerCase().includes(s.toLowerCase()))) {
       bad.push(`a card shows "${s}"`);
+    }
+  }
+  for (const re of e.card_text_not_matches ?? []) {
+    const hit = o.cardTexts.find((t) => new RegExp(re).test(t));
+    if (hit) bad.push(`a card's text matches /${re}/: "${clip(hit)}"`);
+  }
+  const most = Math.max(0, ...o.answerSources.map((s) => s.length));
+  if (e.max_sources !== undefined && most > e.max_sources)
+    bad.push(`an answer shows ${most} sources (at most ${e.max_sources})`);
+  if (e.min_sources !== undefined && most < e.min_sources)
+    bad.push(`answers show ${most} sources (at least ${e.min_sources})`);
+  if (e.sources_distinct_sites) {
+    const site = (u: string) =>
+      /^https?:\/\/(?:www\.)?([^/?#:]+)/i.exec(u)?.[1]?.toLowerCase() ?? u;
+    for (const s of o.answerSources) {
+      const sites = s.map((x) => site(x.url));
+      if (new Set(sites).size < sites.length)
+        bad.push(
+          `an answer shows two sources from one site (${sites.join(", ")})`,
+        );
     }
   }
   for (const m of e.must_not ?? []) {
