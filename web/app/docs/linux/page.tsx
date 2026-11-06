@@ -68,7 +68,11 @@ export default function LinuxPage() {
           </li>
         </ul>
         <p>Other flags you can bind:</p>
-        <Cmd>{`${bin} --toggle-post-process   # record with AI post-processing\n${bin} --cancel                # cancel the current recording`}</Cmd>
+        <Cmd>{`${bin} --toggle-post-process   # dictate and polish what you said\n${bin} --cancel                # cancel the current recording`}</Cmd>
+        <p>
+          The Ask shortcut has no flag yet. On Wayland, turn on hands-free in {brand.name} → Settings and say “Hey{" "}
+          {brand.name}” instead.
+        </p>
       </DocSection>
 
       <DocSection id="pasting-text" title="Pasting text">
@@ -90,7 +94,8 @@ export default function LinuxPage() {
         <Cmd>{`# Debian / Ubuntu\nsudo apt install wtype ydotool xdotool\n\n# Fedora\nsudo dnf install wtype ydotool xdotool`}</Cmd>
         <p>
           {brand.name} picks the first available tool automatically: on Wayland it tries wtype (except on GNOME and
-          KDE), then dotool, then ydotool; on X11 it tries xdotool, then ydotool.
+          KDE), then dotool, then ydotool; on X11 it tries xdotool, then ydotool. With the Direct paste method you can
+          pick one yourself: <strong>Typing Tool</strong> in {brand.name} → Settings → Advanced.
         </p>
       </DocSection>
 
