@@ -472,8 +472,9 @@ impl Recall {
 }
 
 /// Where the store lives and its retention, recorded at startup. The store
-/// itself (and its Keychain key) is only opened on first use, so people who
-/// never touch the agent never touch the Keychain.
+/// itself (and its Keychain key) is opened on first use: the first request the
+/// app ledgers (trial, check-in, settings check), so every request that leaves
+/// is in the Privacy Center, including those made before the agent is used.
 static CONFIG: once_cell::sync::OnceCell<(PathBuf, i64)> = once_cell::sync::OnceCell::new();
 static RECALL: once_cell::sync::OnceCell<Recall> = once_cell::sync::OnceCell::new();
 
@@ -516,20 +517,10 @@ pub fn get_if_open() -> Option<&'static Recall> {
     }
 }
 
-/// Ledger an outbound request if the store is open. Never fails the caller.
+/// Ledger an outbound request, opening the store if needed. Never fails the
+/// caller. Every outbound call site calls this (see docs/VERIFY.md).
 pub fn log_request(destination: &str, purpose: &str, payload: &str) {
     if let Some(r) = get() {
-        if let Err(e) = r.log_request(destination, purpose, payload) {
-            log::warn!("network ledger write failed: {e}");
-        }
-    }
-}
-
-/// Ledger a request only if the store already exists: used for requests made
-/// before anyone has touched the agent (trial, sign-in), so they never create
-/// the Keychain key on their own.
-pub fn log_request_if_open(destination: &str, purpose: &str, payload: &str) {
-    if let Some(r) = get_if_open() {
         if let Err(e) = r.log_request(destination, purpose, payload) {
             log::warn!("network ledger write failed: {e}");
         }

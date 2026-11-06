@@ -1688,7 +1688,9 @@
         "config": "Controllo impostazioni (nulla inviato)",
         "meeting_email": "Email con le note della riunione",
         "feedback": "Feedback",
-        "checkin": "Segnale giornaliero"
+        "checkin": "Segnale giornaliero",
+        "download": "Download (non viene inviato nulla)",
+        "update": "Controllo aggiornamenti (non viene inviato nulla)"
       },
       "bytes_many": "{{count}} byte"
     },

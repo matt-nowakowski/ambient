@@ -221,6 +221,11 @@ async fn run_check(app: AppHandle, manual: bool) {
     }
 
     set_status(&app, UpdatePhase::Checking, None, false, manual, None);
+    // The check is a plain GET of the feed (the endpoints carry no
+    // placeholders): nothing about this install is sent.
+    for endpoint in updater_endpoints(&app) {
+        crate::recall::log_request(&crate::telemetry::host_of(&endpoint), "update", "");
+    }
 
     // Without a timeout a stalled endpoint would hang the check forever (the
     // plugin sets none), leave `checking` stuck and stop every later check this
@@ -251,6 +256,22 @@ async fn run_check(app: AppHandle, manual: bool) {
             finish(&app, manual, Some("updates.checkFailed"));
         }
     }
+}
+
+/// The update feed URLs from tauri.conf.json (`plugins.updater.endpoints`).
+fn updater_endpoints(app: &AppHandle) -> Vec<String> {
+    app.config()
+        .plugins
+        .0
+        .get("updater")
+        .and_then(|u| u.get("endpoints"))
+        .and_then(|e| e.as_array())
+        .map(|a| {
+            a.iter()
+                .filter_map(|v| v.as_str().map(str::to_string))
+                .collect()
+        })
+        .unwrap_or_default()
 }
 
 /// Clears the in-flight flag and publishes the result of a check that found
@@ -301,6 +322,11 @@ async fn on_found(app: &AppHandle, update: tauri_plugin_updater::Update, manual:
 
     // download() verifies the signature against the updater pubkey and only
     // then hands back the bytes.
+    crate::recall::log_request(
+        &crate::telemetry::host_of(update.download_url.as_str()),
+        "download",
+        "",
+    );
     let downloaded = update.download(|_, _| {}, || {}).await;
 
     if let Some(state) = manager(app) {

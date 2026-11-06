@@ -1695,7 +1695,9 @@
         "config": "Sprawdzenie ustawień (nic nie wysłano)",
         "meeting_email": "E-mail z notatkami ze spotkania",
         "feedback": "Opinia",
-        "checkin": "Codzienne zgłoszenie"
+        "checkin": "Codzienne zgłoszenie",
+        "download": "Pobieranie (nic nie jest wysyłane)",
+        "update": "Sprawdzanie aktualizacji (nic nie jest wysyłane)"
       }
     },
     "engine": {

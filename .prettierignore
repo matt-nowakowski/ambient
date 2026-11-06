@@ -28,3 +28,13 @@ packages/models/dist
 # Scenario suite outputs
 testing/out
 testing/.cache
+
+# Website and video build outputs
+web/.next
+web/.vercel
+web/next-env.d.ts
+video/out
+**/*.tsbuildinfo
+
+# Vendored Rust crates (upstream formatting)
+src-tauri/vendor

@@ -1678,7 +1678,9 @@
         "config": "Ayar kontrolü (hiçbir şey gönderilmez)",
         "meeting_email": "Toplantı notları e-postası",
         "feedback": "Geri bildirim",
-        "checkin": "Günlük yoklama"
+        "checkin": "Günlük yoklama",
+        "download": "İndirme (hiçbir şey gönderilmez)",
+        "update": "Güncelleme denetimi (hiçbir şey gönderilmez)"
       }
     },
     "engine": {

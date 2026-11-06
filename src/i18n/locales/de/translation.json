@@ -1673,7 +1673,9 @@
         "config": "Einstellungsabgleich (nichts gesendet)",
         "meeting_email": "Meeting-Notizen per E-Mail",
         "feedback": "Feedback",
-        "checkin": "Tägliche Rückmeldung"
+        "checkin": "Tägliche Rückmeldung",
+        "download": "Download (nichts gesendet)",
+        "update": "Update-Prüfung (nichts gesendet)"
       }
     },
     "engine": {

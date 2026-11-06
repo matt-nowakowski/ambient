@@ -1,6 +1,7 @@
 {
   "name": "ambient-launch-video",
   "private": true,
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "studio": "remotion studio",

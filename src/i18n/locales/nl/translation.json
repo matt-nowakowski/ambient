@@ -1678,7 +1678,9 @@
         "config": "Instellingencheck (niets verstuurd)",
         "meeting_email": "E-mail met vergadernotities",
         "feedback": "Feedback",
-        "checkin": "Dagelijkse check-in"
+        "checkin": "Dagelijkse check-in",
+        "download": "Download (er wordt niets verzonden)",
+        "update": "Controle op updates (er wordt niets verzonden)"
       }
     },
     "engine": {

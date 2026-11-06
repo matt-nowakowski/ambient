@@ -96,7 +96,7 @@ async fn check_in(app: &AppHandle) -> bool {
     };
     let body = body(&machine, crate::plan::status(app).plan);
     let url = format!("{}/api/ping", crate::agent::answer::api_base());
-    crate::recall::log_request_if_open(&crate::telemetry::host_of(&url), "checkin", &body);
+    crate::recall::log_request(&crate::telemetry::host_of(&url), "checkin", &body);
     let sent = reqwest::Client::new()
         .post(&url)
         .header("Content-Type", "application/json")

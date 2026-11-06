@@ -464,7 +464,7 @@ async fn start_trial_if_new(app: &AppHandle) {
     let Some(machine) = machine_hash() else {
         return;
     };
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "trial",
         &format!("Device hash: {machine}"),
@@ -521,6 +521,11 @@ pub async fn get_polish_usage(app: AppHandle) -> Result<PolishUsage, String> {
 
 async fn server_polish_usage() -> Result<PolishUsage, String> {
     let machine = machine_hash().ok_or("Could not identify this device.")?;
+    crate::recall::log_request(
+        env!("BRAND_DOMAIN"),
+        "license",
+        &format!("Device hash: {machine}, to read this week's Free AI uses."),
+    );
     let response = reqwest::Client::new()
         .get(api_url("/api/usage"))
         .query(&[("machine", machine)])
@@ -737,7 +742,7 @@ async fn refresh(app: &AppHandle) -> Result<(), String> {
     if payload.exp - now() > REFRESH_BEFORE_SECS {
         return Ok(());
     }
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "license",
         "Your Pro access from a redeemed code (a signed token with your email, plan and expiry), to renew it.",
@@ -797,10 +802,10 @@ struct ActivateResponse {
 /// Errors are `license_error:<kind>` for the UI to translate.
 async fn activate_code(code: &str) -> Result<ActivateResponse, String> {
     let err = |kind: &str| format!("{ERROR_PREFIX}{kind}");
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "license",
-        "The gift or support code you typed, to redeem it on this device.",
+        "The gift or support code you typed and an anonymous device hash, to redeem it on this device.",
     );
     let response = reqwest::Client::new()
         .post(api_url("/api/license/activate"))
@@ -866,6 +871,11 @@ struct PortalResponse {
 #[specta::specta]
 pub async fn billing_portal_url(app: AppHandle) -> Result<String, String> {
     let key = stored_key(&app).ok_or("Sign in to manage billing.")?;
+    crate::recall::log_request(
+        env!("BRAND_DOMAIN"),
+        "license",
+        "Your Pro access (a signed token with your email, plan and expiry), for a billing link.",
+    );
     let response = reqwest::Client::new()
         .post(api_url("/api/billing/portal"))
         .json(&serde_json::json!({ "key": key }))
@@ -961,7 +971,7 @@ pub async fn subscribe_tips(app: AppHandle, email: String) -> Result<(), String>
         .chars()
         .take(35)
         .collect();
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "tips",
         "Your email address, the app language, Free or trial, and an anonymous device hash, to send you tips.",
@@ -1002,7 +1012,7 @@ pub async fn request_sign_in_code(email: String) -> Result<(), String> {
     if email.len() > 254 || !email.contains('@') {
         return Err(auth_err("invalid_email"));
     }
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "license",
         "Your email address, to send you a sign-in code.",
@@ -1047,7 +1057,7 @@ pub async fn verify_sign_in_code(app: AppHandle, code: String) -> Result<PlanSta
     if code.len() != 6 {
         return Err(auth_err("invalid_code"));
     }
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "license",
         "Your email address and the sign-in code you typed, to sign you in.",
@@ -1096,7 +1106,7 @@ async fn refresh_account_now(app: &AppHandle) -> Result<(), String> {
         return Ok(());
     };
     *LAST_ACCOUNT_CHECK.lock().unwrap_or_else(|e| e.into_inner()) = Some(Instant::now());
-    crate::recall::log_request_if_open(
+    crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "license",
         "Your sign-in session (a signed token with your email), to check your plan.",

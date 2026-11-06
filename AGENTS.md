@@ -1,231 +1,137 @@
 # AGENTS.md
 
-This file provides guidance to AI coding assistants working with code in this repository.
+Guidance for AI coding assistants working in this repository.
 
-## Development Commands
+Ambient is a desktop colleague: a live agent that writes, answers, acts,
+remembers and offers suggestions on screen (it never talks out loud), plus
+meeting notes and free, unlimited dictation. It runs on macOS, Windows and
+Linux with the same agent features everywhere; only where the intelligence
+runs differs (the Intelligence setting: Automatic, On this computer only,
+Cloud, No AI). The repo is public so users can verify what the app does
+(see `docs/VERIFY.md`); the licence is view-only. The app and website never
+link to the repo.
 
-**Prerequisites:**
+## Layout
 
-- [Rust](https://rustup.rs/) (latest stable)
-- [Bun](https://bun.sh/) package manager
+- `src-tauri/` Rust core (Tauri 2). `src/` React interface. `web/` website and
+  the API the app calls (Next.js on Vercel). `testing/` scenario suite.
+  `video/` launch video (Remotion). `packages/models` model catalog.
+- `docs/ARCHITECTURE.md` has the data-flow diagram and the full module map;
+  `docs/VERIFY.md` maps each privacy claim to code.
 
-**Core Development:**
+### The Rust core (`src-tauri/src/`)
+
+- `lib.rs` startup and managers; `settings.rs` the settings store (and the
+  `Intelligence` enum); `commands/` Tauri commands for the UI; `cli.rs` flags.
+- Speech: `managers/audio.rs`, `audio_toolkit/` (capture, Silero VAD),
+  `managers/transcription*.rs`, `engine_supervisor/` (transcribe-cpp in a
+  supervised worker), `language_detection/`.
+- Dictation: `transcription_coordinator.rs` → `actions.rs` (polish, paste),
+  `clipboard.rs`, `paste_tx/`, `corrections.rs`, `screen_names.rs`.
+- `agent/`: `router.rs` decides write / answer / act / recall; `writing.rs`
+  smart writing; `answer.rs` answer cards (server or on device); `act.rs`
+  actions; `proactive.rs` + `judge.rs` suggestions; `wake.rs` hands-free;
+  `llm.rs` is the single place a model is called (`ai_off` stops every call
+  under No AI).
+- `context/`: screen text through accessibility APIs; never-watch list,
+  private-page judgement (`judge.rs`, `sensitive.rs`), redaction (`redact.rs`).
+- `recall/`: encrypted local store (screen memory, meetings, the network
+  ledger). `recall::log_request` must be called before any outbound request.
+- `meeting/`: capture, segmentation, notes; `deliver.rs` emails notes.
+- `hud.rs` (+ `hud_linux.rs`, `hud_keys.rs`): the HUD panel for cards.
+- `plan.rs` trial, sign-in, license tokens; `limits.rs` Free's limits;
+  `telemetry.rs` opt-in counts; `checkin.rs` daily check-in;
+  `remote_config.rs` remote tunables; `updates.rs` self-update.
+- `local_llm.rs`: the downloaded on-device model via llama-server on
+  127.0.0.1; `apple_intelligence.rs` Apple's on-device model.
+- `testing/`: the hidden test mode the scenario suite drives.
+
+## Commands
 
 ```bash
-# Install dependencies
-bun install
+bun install                       # root and video use bun; web uses npm (package-lock.json, what Vercel builds with)
+bun run tauri dev                 # the app (CMAKE_POLICY_VERSION_MINIMUM=3.5 if cmake complains on macOS)
+cd web && npm ci && npm run dev   # the website
 
-# Run in development mode
-bun run tauri dev
-# If cmake error on macOS:
-CMAKE_POLICY_VERSION_MINIMUM=3.5 bun run tauri dev
-
-# Build for production
-bun run tauri build
-
-# Frontend only development
-bun run dev        # Start Vite dev server
-bun run build      # Build frontend (TypeScript + Vite)
-bun run preview    # Preview built frontend
+bun run lint                      # ESLint (src/)
+bun run format:check              # Prettier + cargo fmt (bun run format to fix)
+bun run check:translations        # every locale has the English keys
+bun run check:egress              # only allowlisted files reach the network
+cd src-tauri && cargo test        # Rust tests; cargo clippy before committing
+cd src-tauri && cargo deny check licenses   # dependency licences (deny.toml)
+cd web && npx tsc --noEmit        # if you touched web/
+bun run test:scenarios            # scenario suite (testing/README.md)
 ```
 
-**Linting and Formatting (run before committing):**
+When several agents share a machine, prefix cargo commands with the shared
+`CARGO_TARGET_DIR` you were given (disk is tight). Platform setup is in
+[BUILD.md](BUILD.md).
 
-```bash
-bun run lint              # ESLint for frontend
-bun run lint:fix          # ESLint with auto-fix
-bun run format            # Prettier + cargo fmt
-bun run format:check      # Check formatting without changes
-bun run format:frontend   # Prettier only
-bun run format:backend    # cargo fmt only
-```
+## Rules
 
-**Model Setup:** the Silero VAD model (`src-tauri/resources/models/silero-vad-v6.2-F32.gguf`)
-is committed; speech models download at runtime from our hosted catalog.
+- **Network.** Any new outbound request goes in a file on the allowlist in
+  `scripts/check-egress.ts`, calls `crate::recall::log_request(destination,
+purpose, exactly_what_is_sent)` first, gets a `privacy.ledger.purpose.*`
+  label in every locale, and a row in `docs/VERIFY.md`. Audio never goes near
+  it. Screen text is redacted (`context::redact::redact`) before it leaves.
+  If it changes what the privacy policy says, update `web/app/privacy/page.tsx`.
+- **Remote config.** `web/lib/agent/config-schema.json` is mirrored by the
+  bounds in `remote_config.rs` (a test checks they match): change both.
+- **Free's AI pool.** Background routing calls don't spend it:
+  `completionKind` in `web/lib/ai.ts` matches system-prompt prefixes ("You
+  route a voice transcript", "You decide how to type what the user just
+  dictated"). Keep the prefixes or update `completionKind` in the same change.
+- **i18n.** Every user-facing string goes through i18next (ESLint enforces
+  it in JSX). Add the English key to `src/i18n/locales/en/translation.json`
+  and real translations to every other locale, keeping `{{variables}}` and
+  CLDR plural forms. A new language: copy `en/translation.json` to
+  `locales/<code>/` and add it to `LANGUAGE_METADATA` in
+  `src/i18n/languages.ts`.
+- **Branding.** The name is never hardcoded; it comes from
+  `brand.config.json`: `{{appName}}` in locales, `BRAND` from `@/lib/brand`
+  in React, `env!("BRAND_NAME")` etc. in Rust (from `build.rs`),
+  `web/lib/brand.ts` on the website. `bun run brand` rewrites static files;
+  `bun run brand:check` fails CI on drift.
+- **Vendored code** (`src-tauri/vendor/ambient-*`, `packages/models`) keeps
+  its LICENSE and NOTICE; list new third-party code in
+  `THIRD_PARTY_NOTICES.md` (shown in the app under About › Acknowledgments).
+  To change the model catalog, edit `packages/models/catalog.json`, then
+  `bun install && bun run sync:catalog`.
+- **Tauri commands.** Regenerate `src/bindings.ts` (tauri-specta), or
+  hand-edit it consistently and say so.
+- **Style.** Rust: `cargo fmt`, `cargo clippy`, no `unwrap` in production
+  paths. TypeScript: strict, no `any`, functional components, Tailwind,
+  `@/` → `src/`. Match the surrounding comment density and tone: plain,
+  short, warm.
+- **Commits.** Conventional prefixes (`feat:`, `fix:`, `docs:`, `refactor:`,
+  `chore:`), message about why. Commit explicit paths only (other agents
+  may have staged work). Never commit keys, `.env` files or audio.
 
-For detailed platform-specific build setup, see [BUILD.md](BUILD.md).
+## Releases
 
-## Architecture Overview
+The release gate is the scenario suite: `release.yml` builds through
+`build.yml` with the full suite run on the built app, and publishes only if
+it passes. A release is a version bump
+in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` (+ `Cargo.lock`),
+`package.json` and `RELEASE_VERSION` in `web/lib/releases.ts`, a
+`web/lib/changelog.ts` entry, and a `v*` tag that only the repo admin can
+push. Agents don't tag, push, release or deploy.
 
-Ambient is a cross-platform desktop speech-to-text application built with Tauri 2.x (Rust backend + React/TypeScript frontend).
+## CLI flags
 
-### Backend Structure (src-tauri/src/)
+`--toggle-transcription`, `--toggle-post-process`, `--cancel` (sent to the
+running instance through `tauri_plugin_single_instance`), `--start-hidden`,
+`--no-tray`, `--debug`. They are runtime-only and never change saved
+settings. Definitions in `cli.rs`, applied in `lib.rs`, shared logic in
+`signal_handle.rs`.
 
-- `lib.rs` - Main entry point, Tauri setup, manager initialization
-- `managers/` - Core business logic:
-  - `audio.rs` - Audio recording and device management
-  - `model.rs` - Model downloading and management
-  - `transcription.rs` - Speech-to-text processing pipeline
-  - `history.rs` - Transcription history storage
-- `audio_toolkit/` - Low-level audio processing:
-  - `audio/` - Recording sink (VAD, levels, live streaming feed), output devices, WAV I/O
-  - `vad/` - Voice Activity Detection (Silero VAD)
-- `commands/` - Tauri command handlers for frontend communication
-- `cli.rs` - CLI argument definitions (clap derive)
-- `shortcut.rs` - Global keyboard shortcut handling
-- `settings.rs` - Application settings management
-- `overlay.rs` - Recording overlay window (platform-specific)
-- `signal_handle.rs` - `send_transcription_input()` reusable function
-- `utils.rs` - Platform detection helpers
+## Platform notes
 
-### Frontend Structure (src/)
-
-- `App.tsx` - Main component with onboarding flow
-- `components/` - React UI components:
-  - `settings/` - Settings UI
-  - `model-selector/` - Model management interface
-  - `onboarding/` - First-run experience
-  - `overlay/` - Recording overlay UI
-  - `update-checker/` - App update notifications
-  - `shared/`, `ui/`, `icons/`, `footer/` - Shared components
-- `hooks/useSettings.ts` - Settings state management hook
-- `stores/settingsStore.ts` - Zustand store for settings
-- `bindings.ts` - Auto-generated Tauri type bindings (via tauri-specta)
-- `overlay/` - Recording overlay window entry point
-- `lib/types.ts` - Shared TypeScript type definitions
-
-### Key Architecture Patterns
-
-**Manager Pattern:** Core functionality organized into managers (Audio, Model, Transcription) initialized at startup and managed via Tauri state.
-
-**Command-Event Architecture:** Frontend → Backend via Tauri commands; Backend → Frontend via events.
-
-**Pipeline Processing:** Audio → VAD → Whisper/Parakeet → Text output → Clipboard/Paste
-
-**State Flow:** Zustand → Tauri Command → Rust State → Persistence (tauri-plugin-store)
-
-### Technology Stack
-
-**Core Libraries:**
-
-- `transcribe-cpp` - Local speech recognition (Whisper, Parakeet, Moonshine, SenseVoice, etc.; GGML/GGUF) with GPU acceleration
-- `ambient-recorder` - Microphone capture: device selection, resampling to 16 kHz, failure detection
-- `transcribe-cpp` (Silero VAD v6, CPU-only, in-process) / `earshot` - Voice Activity Detection
-- `rdev` - Global keyboard shortcuts
-- `rodio` - Audio playback for feedback sounds
-
-### Application Flow
-
-1. **Initialization:** App starts minimized to tray, loads settings, initializes managers
-2. **Model Setup:** First-run downloads preferred Whisper model (Small/Medium/Turbo/Large)
-3. **Recording:** Global shortcut triggers audio recording with VAD filtering
-4. **Processing:** Audio sent to Whisper model for transcription
-5. **Output:** Text pasted to active application via system clipboard
-
-### Settings System
-
-Settings are stored using Tauri's store plugin with reactive updates:
-
-- Keyboard shortcuts (configurable, supports push-to-talk)
-- Audio devices (microphone/output selection)
-- Model preferences (Small/Medium/Turbo/Large Whisper variants)
-- Audio feedback and translation options
-
-### Single Instance Architecture
-
-The app enforces single instance behavior — launching when already running brings the settings window to front rather than creating a new process. Remote control flags (`--toggle-transcription`, etc.) work by launching a second instance that sends args to the running instance via `tauri_plugin_single_instance`, then exits.
-
-## Internationalization (i18n)
-
-All user-facing strings must use i18next translations. ESLint enforces this (no hardcoded strings in JSX).
-
-**Adding new text:**
-
-1. Add key to `src/i18n/locales/en/translation.json`
-2. Use in component: `const { t } = useTranslation(); t('key.path')`
-
-**File structure:**
-
-```
-src/i18n/
-├── index.ts           # i18n setup
-├── languages.ts       # Language metadata
-└── locales/
-    ├── en/translation.json  # English (source)
-    ├── de/, es/, fr/, ja/, ru/, zh/, ...
-    └── ...
-```
-
-**Translation rules:**
-
-- Every locale has the same keys as `en` (`bun run check:translations`). Translate values only.
-- Keep `{{variables}}` (e.g. `{{appName}}`, `{{error}}`) and the JSON structure intact.
-- Keep translations concise and natural; match the English tone.
-- A new language: copy `en/translation.json` to `locales/<ISO 639-1 code>/translation.json`
-  and add its names to `LANGUAGE_METADATA` in `src/i18n/languages.ts`; the app discovers
-  languages from the locale folders.
-
-## Code Style
-
-**Rust:**
-
-- Run `cargo fmt` and `cargo clippy` before committing
-- Handle errors explicitly (avoid unwrap in production)
-- Use descriptive names, add doc comments for public APIs
-
-**TypeScript/React:**
-
-- Strict TypeScript, avoid `any` types
-- Functional components with hooks
-- Tailwind CSS for styling
-- Path aliases: `@/` → `./src/`
-
-## CLI Parameters
-
-Ambient supports command-line parameters on all platforms for integration with scripts, window managers, and autostart configurations.
-
-**Implementation:** `cli.rs` (definitions), `main.rs` (parsing), `lib.rs` (applying), `signal_handle.rs` (shared logic)
-
-| Flag                     | Description                                                |
-| ------------------------ | ---------------------------------------------------------- |
-| `--toggle-transcription` | Toggle recording on/off on a running instance              |
-| `--toggle-post-process`  | Toggle recording with post-processing on/off               |
-| `--cancel`               | Cancel the current operation on a running instance         |
-| `--start-hidden`         | Launch without showing the main window (tray icon visible) |
-| `--no-tray`              | Launch without system tray (closing window quits the app)  |
-| `--debug`                | Enable debug mode with verbose (Trace) logging             |
-
-**Key design decisions:**
-
-- CLI flags are runtime-only overrides — they do NOT modify persisted settings
-- Remote control flags work via `tauri_plugin_single_instance`: second instance sends args, then exits
-- `send_transcription_input()` in `signal_handle.rs` is shared between signal handlers and CLI
-
-## Debug Mode
-
-Access debug features: `Cmd+Shift+D` (macOS) or `Ctrl+Shift+D` (Windows/Linux)
-
-## Platform Notes
-
-- **macOS**: Metal acceleration, accessibility permissions required for keyboard shortcuts
-- **Windows**: Vulkan acceleration, code signing. Implicit Vulkan layers (overlays, capture hooks) are disabled for the Ambient process via `VK_LOADER_LAYERS_DISABLE=~implicit~` set in `main.rs`; opt out with `AMBIENT_KEEP_VULKAN_IMPLICIT_LAYERS=1` or by setting `VK_LOADER_LAYERS_DISABLE` yourself
-- **Linux**: OpenBLAS + Vulkan, limited Wayland support, overlay uses GTK layer shell (disable with `AMBIENT_NO_GTK_LAYER_SHELL=1`)
-
-## Troubleshooting
-
-See the [Troubleshooting](README.md#troubleshooting) section in README.md.
-
-## Branding
-
-The product name is never hardcoded. It comes from `brand.config.json`:
-
-- UI strings: `{{appName}}` in locale files (i18next default variable).
-- React: `import { BRAND } from "@/lib/brand"`.
-- Rust: `env!("BRAND_NAME")`, `env!("BRAND_SLUG")`, etc. (emitted by `build.rs`).
-- Static files (tauri.conf.json, Cargo.toml, NSIS, CI, docs) are rewritten by `bun run brand`.
-
-Vendored code lives in this repo and is owned here: the crates `ambient-keys`,
-`ambient-recorder` and `ambient-cpal` in `src-tauri/vendor/` (path dependencies), and the
-model catalog package `@ambient/models` in `packages/models`. Each keeps its LICENSE and a
-NOTICE; `THIRD_PARTY_NOTICES.md` (shown in About › Acknowledgments) lists them. Model files
-are served from our Hugging Face account (`tryambientai`), with `tryambient.ai/models` as the
-mirror fallback. To change the catalog, edit `packages/models/catalog.json`, then
-`bun install && bun run sync:catalog`.
-
-## Plans
-
-`src-tauri/src/plan.rs` owns the Free weekly word allowance, email sign-in
-(session + refresh) and license-token verification; the website in `web/`
-signs people in (`/api/auth/*`) and mints tokens. See README "Plans and licensing".
-
-**Commits:** Use conventional commit prefixes (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`). Focus the message on _why_, not _what_.
+- macOS: Metal; Accessibility permission for shortcuts and screen text; the
+  memory key lives in the Keychain (release builds).
+- Windows: Vulkan; implicit Vulkan layers are disabled for the process
+  (`VK_LOADER_LAYERS_DISABLE=~implicit~` in `main.rs`; opt out with
+  `AMBIENT_KEEP_VULKAN_IMPLICIT_LAYERS=1`). Windows and Linux code can't be
+  run on a Mac; cross-check that it compiles.
+- Linux: OpenBLAS + Vulkan; the overlay uses GTK layer shell (disable with
+  `AMBIENT_NO_GTK_LAYER_SHELL=1`); limited Wayland support.

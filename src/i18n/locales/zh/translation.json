@@ -1678,7 +1678,9 @@
         "config": "设置检查（不发送任何内容）",
         "meeting_email": "会议笔记邮件",
         "feedback": "反馈",
-        "checkin": "每日签到"
+        "checkin": "每日签到",
+        "download": "下载（不发送任何内容）",
+        "update": "检查更新（不发送任何内容）"
       }
     },
     "engine": {

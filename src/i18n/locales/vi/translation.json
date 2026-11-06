@@ -1678,7 +1678,9 @@
         "config": "Kiểm tra cài đặt (không gửi gì)",
         "meeting_email": "Email ghi chú cuộc họp",
         "feedback": "Phản hồi",
-        "checkin": "Điểm danh hằng ngày"
+        "checkin": "Điểm danh hằng ngày",
+        "download": "Tải xuống (không gửi gì)",
+        "update": "Kiểm tra cập nhật (không gửi gì)"
       }
     },
     "engine": {

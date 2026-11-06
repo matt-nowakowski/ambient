@@ -1678,7 +1678,9 @@
         "config": "Tjek af indstillinger (intet sendt)",
         "meeting_email": "E-mail med mødenoter",
         "feedback": "Feedback",
-        "checkin": "Daglig indtjekning"
+        "checkin": "Daglig indtjekning",
+        "download": "Download (intet sendes)",
+        "update": "Søgning efter opdateringer (intet sendes)"
       }
     },
     "engine": {
