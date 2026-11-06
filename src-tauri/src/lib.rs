@@ -198,6 +198,19 @@ pub(crate) fn refresh_dock_icon(app: &AppHandle) {
     }
 }
 
+/// A scenario test run must never appear in the Dock, not even for the moment
+/// before `setup` sets the activation policy: a bare binary starts as a regular
+/// app, and a run that is killed mid-way can leave a stale tile behind. Called
+/// from `main` before Tauri starts, when the test mode is requested.
+#[cfg(target_os = "macos")]
+pub fn hide_test_run_from_dock() {
+    use objc2_app_kit::{NSApplication, NSApplicationActivationPolicy};
+    if let Some(mtm) = objc2::MainThreadMarker::new() {
+        NSApplication::sharedApplication(mtm)
+            .setActivationPolicy(NSApplicationActivationPolicy::Prohibited);
+    }
+}
+
 #[cfg(target_os = "macos")]
 fn set_dock_icon_from_bundle(app: &AppHandle) {
     let _ = app.run_on_main_thread(|| {

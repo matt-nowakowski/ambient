@@ -34,5 +34,10 @@ fn main() {
     }
 
     let cli_args = CliArgs::parse();
+    #[cfg(target_os = "macos")]
+    if cli_args.test_scenario.is_some() && std::env::var("AMBIENT_TEST_MODE").as_deref() == Ok("1")
+    {
+        ambient_app_lib::hide_test_run_from_dock();
+    }
     ambient_app_lib::run(cli_args)
 }
