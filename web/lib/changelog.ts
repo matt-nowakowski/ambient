@@ -24,6 +24,7 @@ export const changelog: Release[] = [
           "Reading the window you're in and suggestions are now on for everyone, including people upgrading. Home shows a one-time note saying so, with a button to Privacy if you'd rather turn them off. Turning them off sticks, and replaying the tour no longer turns them back on.",
           "Privacy, Settings, Meetings and Account have more room to breathe, buttons no longer wrap, and sections open and close smoothly.",
           "Manage or cancel your plan from Account, or from tryambient.ai/billing.",
+          "Account shows the real date your plan renews, or \"Ends\" with its last day if you've cancelled.",
         ],
       },
       {
@@ -32,6 +33,7 @@ export const changelog: Release[] = [
           "Commands you dictate at a shell prompt, like \"echo tell her I'll be late\", are typed as you said them.",
           "A sentence that happens to start with \"never mind\" is typed instead of closing a card, and \"never mind\" with no card up is typed rather than ignored.",
           "Cards finish dissolving before they close.",
+          "If a renewal payment fails, Pro keeps working while your card is retried, instead of switching off within hours.",
         ],
       },
     ],
