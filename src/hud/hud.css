@@ -84,30 +84,31 @@
   color: var(--h-faint);
 }
 
+/* One row of chips: each shrinks (its title ending in "…") rather than
+   wrapping; the full title shows on hover. */
 .hud-sources {
   list-style: none;
   margin: 10px 0 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
   gap: 6px;
 }
 
 .hud-sources li {
-  min-width: 0;
-  max-width: 100%;
+  flex: 0 1 auto;
+  min-width: 44px;
+  max-width: 160px;
+  display: flex;
 }
 
-/* One line, even padding all round; long titles end in an ellipsis inside
-   the label, never against the chip's edge. */
 .hud-chip {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  max-width: 200px;
+  min-width: 0;
+  max-width: 100%;
   height: 22px;
-  padding: 0 8px 0 4px;
+  padding: 0 8px;
   border: 0;
   border-radius: 7px;
   background: var(--h-raise);
@@ -132,17 +133,6 @@ button.hud-chip:hover {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.hud-source-n {
-  flex: none;
-  display: inline-grid;
-  place-items: center;
-  width: 15px;
-  height: 15px;
-  border-radius: 4px;
-  background: var(--h-hair);
-  font-size: 10px;
 }
 
 .hud-note {

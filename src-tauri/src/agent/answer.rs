@@ -374,15 +374,56 @@ pub fn strip_citations(text: &str) -> String {
     out
 }
 
-fn to_chips(sources: &[Source]) -> Vec<HudSource> {
-    sources
+/// Web results shown as chips: the card is a glance, not a bibliography.
+/// The model still reads every result; only the chips are capped.
+const MAX_WEB_CHIPS: usize = 3;
+/// All the chips a card shows: the window read, results, the user's links.
+const MAX_CHIPS: usize = 4;
+
+/// The site a link is on ("www.bbc.co.uk" and "bbc.co.uk" are one site), so
+/// a card never shows two chips for the same place.
+fn site_of(url: &str) -> Option<String> {
+    let rest = url
+        .strip_prefix("https://")
+        .or_else(|| url.strip_prefix("http://"))?;
+    let host = rest.split(['/', '?', '#']).next().unwrap_or_default();
+    let host = host.rsplit_once('@').map_or(host, |(_, h)| h);
+    let host = host.split(':').next().unwrap_or_default().to_lowercase();
+    let host = host.strip_prefix("www.").unwrap_or(&host).to_string();
+    (!host.is_empty()).then_some(host)
+}
+
+/// The card's chips: the window it read first, then the web results in the
+/// order they came (best first), then the user's own links; one per site,
+/// at most [`MAX_WEB_CHIPS`] results and [`MAX_CHIPS`] in all.
+fn to_chips(window: Option<HudSource>, web: &[Source], extra: &[Source]) -> Vec<HudSource> {
+    let chip = |s: &Source| HudSource {
+        title: s.title.clone(),
+        url: s.url.clone(),
+    };
+    let meaningful = |s: &&Source| super::personal::is_meaningful_source(&s.title, &s.url);
+    let mut seen = std::collections::HashSet::new();
+    let mut fresh = |c: &HudSource| {
+        seen.insert(site_of(&c.url).unwrap_or_else(|| format!("{}\n{}", c.url, c.title)))
+    };
+    let mut out: Vec<HudSource> = window.into_iter().filter(|c| fresh(c)).collect();
+    let results: Vec<HudSource> = web
         .iter()
-        .filter(|s| super::personal::is_meaningful_source(&s.title, &s.url))
-        .map(|s| HudSource {
-            title: s.title.clone(),
-            url: s.url.clone(),
-        })
-        .collect()
+        .filter(meaningful)
+        .map(chip)
+        .filter(|c| fresh(c))
+        .take(MAX_WEB_CHIPS)
+        .collect();
+    out.extend(results);
+    out.extend(
+        extra
+            .iter()
+            .filter(meaningful)
+            .map(chip)
+            .filter(|c| fresh(c)),
+    );
+    out.truncate(MAX_CHIPS);
+    out
 }
 
 // ── The card's two halves have to agree ───────────────────────────────────
@@ -579,14 +620,8 @@ pub async fn run_with(
                 return;
             }
         }
-        let all: Vec<Source> = sources.iter().chain(extra.iter()).cloned().collect();
-        let mut chips: Vec<HudSource> = window_chip
-            .lock()
-            .ok()
-            .and_then(|g| g.clone())
-            .into_iter()
-            .collect();
-        chips.extend(to_chips(&all));
+        let window = window_chip.lock().ok().and_then(|g| g.clone());
+        let chips = to_chips(window, sources, &extra);
         hud::show(
             &app,
             HudContent::Answer {
@@ -1171,6 +1206,40 @@ mod tests {
         for (input, want) in cases {
             assert_eq!(strip_citations(input), want, "{input}");
         }
+    }
+
+    #[test]
+    fn at_most_three_results_one_per_site() {
+        let src = |title: &str, url: &str| Source {
+            title: title.into(),
+            url: url.into(),
+            excerpt: String::new(),
+        };
+        let web = [
+            src("Forecast", "https://weather.example.com/a"),
+            src("Same site", "https://www.weather.example.com/b"),
+            src("BBC", "https://bbc.co.uk/weather"),
+            src("IPMA", "https://ipma.pt/"),
+            src("AccuWeather", "https://accuweather.com/x"),
+        ];
+        let chips = to_chips(None, &web, &[]);
+        let titles: Vec<&str> = chips.iter().map(|c| c.title.as_str()).collect();
+        assert_eq!(titles, ["Forecast", "BBC", "IPMA"]);
+
+        // The window read comes first and counts toward the four.
+        let window = HudSource {
+            title: "Lisbon — Wikipedia".into(),
+            url: "https://en.wikipedia.org/wiki/Lisbon".into(),
+        };
+        let extra = [src("hud.source.searchGmail", "https://mail.google.com/x")];
+        let chips = to_chips(Some(window), &web, &extra);
+        assert_eq!(chips.len(), 4);
+        assert_eq!(chips[0].title, "Lisbon — Wikipedia");
+        assert_eq!(
+            site_of("https://user@WWW.Example.com:8080/x"),
+            Some("example.com".into())
+        );
+        assert_eq!(site_of("file:///Users/me/a.pdf"), None);
     }
 
     fn kinds(a: &[HudAnswerAction]) -> Vec<&str> {

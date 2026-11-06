@@ -71,6 +71,10 @@ const parseLocal = (s: string) => {
     : new Date(Number.NaN);
 };
 
+/** Source chips under an answer, at most (the window read, three web
+ * results, or the user's own links); Rust sends no more than this. */
+const MAX_CHIPS = 4;
+
 /** Action kinds that act on the user's app and so lead the row. */
 const PRIMARY = new Set(["insert", "replace", "reply"]);
 
@@ -408,6 +412,24 @@ export default function Hud() {
     commands.hudAction(id, "accept", null);
   };
 
+  /** The chips under an answer: one per site, at most MAX_CHIPS. Rust
+   * already picks them (agent/answer.rs `to_chips`); this keeps the card
+   * tidy whatever arrives. */
+  const chips = (sources: HudSource[]) => {
+    const seen = new Set<string>();
+    return sources
+      .filter((s) => {
+        const site =
+          /^https?:\/\/(?:[^/?#@]*@)?(?:www\.)?([^/?#:]+)/i
+            .exec(s.url)?.[1]
+            ?.toLowerCase() ?? `${s.url}\n${s.title}`;
+        if (seen.has(site)) return false;
+        seen.add(site);
+        return true;
+      })
+      .slice(0, MAX_CHIPS);
+  };
+
   /** Rust sends i18n keys for its own source titles (e.g. "Search Gmail"). */
   const sourceTitle = (s: HudSource) =>
     s.title.startsWith("hud.")
@@ -505,8 +527,8 @@ export default function Hud() {
                 </AnimatePresence>
                 {content.note && <p className="hud-note">{t(content.note)}</p>}
                 {content.sources.length > 0 && (
-                  <ol className="hud-sources" aria-label={t("hud.sources")}>
-                    {content.sources.slice(0, 5).map((s, i) => (
+                  <ul className="hud-sources" aria-label={t("hud.sources")}>
+                    {chips(content.sources).map((s, i) => (
                       <li key={`${s.url}-${i}`}>
                         {s.url ? (
                           <button
@@ -515,16 +537,14 @@ export default function Hud() {
                             onClick={() =>
                               commands.hudAction("", "open", s.url)
                             }
-                            title={s.url}
+                            title={`${sourceTitle(s)}\n${s.url}`}
                           >
-                            <span className="hud-source-n">{i + 1}</span>
                             <span className="hud-chip-label">
                               {sourceTitle(s)}
                             </span>
                           </button>
                         ) : (
-                          <span className="hud-chip" title={s.title}>
-                            <span className="hud-source-n">{i + 1}</span>
+                          <span className="hud-chip" title={sourceTitle(s)}>
                             <span className="hud-chip-label">
                               {sourceTitle(s)}
                             </span>
@@ -532,7 +552,7 @@ export default function Hud() {
                         )}
                       </li>
                     ))}
-                  </ol>
+                  </ul>
                 )}
                 {/* Streaming: Stop keeps what has arrived. */}
                 {!content.done && content.text && (
