@@ -1697,7 +1697,11 @@
         "feedback": "Opinia",
         "checkin": "Codzienne zgłoszenie",
         "download": "Pobieranie (nic nie jest wysyłane)",
-        "update": "Sprawdzanie aktualizacji (nic nie jest wysyłane)"
+        "update": "Sprawdzanie aktualizacji (nic nie jest wysyłane)",
+        "tips": "Zapis na wskazówki",
+        "route": "Rozumienie Twojej prośby",
+        "write_mode": "Sprawdzenie inteligentnego pisania",
+        "onboarding_reply": "Demo podczas konfiguracji"
       }
     },
     "engine": {

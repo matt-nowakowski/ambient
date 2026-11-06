@@ -1686,7 +1686,11 @@
         "feedback": "Comentarios",
         "checkin": "Registro diario",
         "download": "Descarga (no se envía nada)",
-        "update": "Búsqueda de actualizaciones (no se envía nada)"
+        "update": "Búsqueda de actualizaciones (no se envía nada)",
+        "tips": "Suscripción a consejos",
+        "route": "Entender tu petición",
+        "write_mode": "Comprobación de escritura inteligente",
+        "onboarding_reply": "Demostración de la configuración"
       }
     },
     "engine": {

@@ -1680,7 +1680,11 @@
         "feedback": "Geri bildirim",
         "checkin": "Günlük yoklama",
         "download": "İndirme (hiçbir şey gönderilmez)",
-        "update": "Güncelleme denetimi (hiçbir şey gönderilmez)"
+        "update": "Güncelleme denetimi (hiçbir şey gönderilmez)",
+        "tips": "İpuçlarına kayıt",
+        "route": "İsteğinizi anlama",
+        "write_mode": "Akıllı yazma denetimi",
+        "onboarding_reply": "Kurulum demosu"
       }
     },
     "engine": {

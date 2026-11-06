@@ -1680,7 +1680,11 @@
         "feedback": "Feedback",
         "checkin": "Daglig indtjekning",
         "download": "Download (intet sendes)",
-        "update": "Søgning efter opdateringer (intet sendes)"
+        "update": "Søgning efter opdateringer (intet sendes)",
+        "tips": "Tilmelding til tips",
+        "route": "Forståelse af din anmodning",
+        "write_mode": "Tjek af smart skrivning",
+        "onboarding_reply": "Demo under opsætning"
       }
     },
     "engine": {

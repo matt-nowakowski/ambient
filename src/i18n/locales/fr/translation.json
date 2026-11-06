@@ -1685,7 +1685,11 @@
         "feedback": "Avis",
         "checkin": "Signal quotidien",
         "download": "Téléchargement (rien n’est envoyé)",
-        "update": "Recherche de mises à jour (rien n’est envoyé)"
+        "update": "Recherche de mises à jour (rien n’est envoyé)",
+        "tips": "Inscription aux conseils",
+        "route": "Comprendre votre demande",
+        "write_mode": "Vérification de l'écriture intelligente",
+        "onboarding_reply": "Démo de configuration"
       },
       "bytes_many": "{{count}} octets"
     },

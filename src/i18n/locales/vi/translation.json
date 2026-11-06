@@ -1680,7 +1680,11 @@
         "feedback": "Phản hồi",
         "checkin": "Điểm danh hằng ngày",
         "download": "Tải xuống (không gửi gì)",
-        "update": "Kiểm tra cập nhật (không gửi gì)"
+        "update": "Kiểm tra cập nhật (không gửi gì)",
+        "tips": "Đăng ký mẹo",
+        "route": "Hiểu yêu cầu của bạn",
+        "write_mode": "Kiểm tra viết thông minh",
+        "onboarding_reply": "Bản demo khi thiết lập"
       }
     },
     "engine": {
@@ -2033,7 +2037,10 @@
       },
       "recall": {
         "title": "Nhớ",
-        "examples": ["Hôm qua tôi đã nói gì về giá?", "Tìm bản trình bày Q3."],
+        "examples": [
+          "Hôm qua tôi đã nói gì về giá?",
+          "Tìm bản trình bày Q3."
+        ],
         "hint": "Những gì bạn đã nói, đã thấy hoặc đã làm."
       },
       "suggestions": {

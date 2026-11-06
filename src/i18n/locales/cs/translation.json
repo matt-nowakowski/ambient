@@ -1702,7 +1702,11 @@
         "feedback": "Zpětná vazba",
         "checkin": "Denní ohlášení",
         "download": "Stahování (nic se neodesílá)",
-        "update": "Kontrola aktualizací (nic se neodesílá)"
+        "update": "Kontrola aktualizací (nic se neodesílá)",
+        "tips": "Přihlášení k tipům",
+        "route": "Porozumění vašemu požadavku",
+        "write_mode": "Kontrola chytrého psaní",
+        "onboarding_reply": "Ukázka při nastavení"
       }
     },
     "engine": {

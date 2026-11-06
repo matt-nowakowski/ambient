@@ -1690,7 +1690,11 @@
         "feedback": "Comentaris",
         "checkin": "Registre diari",
         "download": "Baixada (no s'envia res)",
-        "update": "Comprovació d'actualitzacions (no s'envia res)"
+        "update": "Comprovació d'actualitzacions (no s'envia res)",
+        "tips": "Subscripció a consells",
+        "route": "Entendre la teva petició",
+        "write_mode": "Comprovació d'escriptura intel·ligent",
+        "onboarding_reply": "Demostració de la configuració"
       },
       "bytes_many": "{{count}} bytes"
     },

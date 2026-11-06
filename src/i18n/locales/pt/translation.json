@@ -1690,7 +1690,11 @@
         "feedback": "Feedback",
         "checkin": "Check-in diário",
         "download": "Transferência (nada é enviado)",
-        "update": "Verificação de atualizações (nada é enviado)"
+        "update": "Verificação de atualizações (nada é enviado)",
+        "tips": "Subscrição de dicas",
+        "route": "Perceber o seu pedido",
+        "write_mode": "Verificação da escrita inteligente",
+        "onboarding_reply": "Demonstração da configuração"
       },
       "bytes_many": "{{count}} bytes"
     },

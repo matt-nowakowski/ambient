@@ -1680,7 +1680,11 @@
         "feedback": "Feedback",
         "checkin": "Daglig incheckning",
         "download": "Nedladdning (inget skickas)",
-        "update": "Uppdateringskontroll (inget skickas)"
+        "update": "Uppdateringskontroll (inget skickas)",
+        "tips": "Anmälan till tips",
+        "route": "Förstå din begäran",
+        "write_mode": "Kontroll för smart skrivande",
+        "onboarding_reply": "Demo vid konfiguration"
       }
     },
     "engine": {

@@ -1675,7 +1675,11 @@
         "feedback": "Feedback",
         "checkin": "Tägliche Rückmeldung",
         "download": "Download (nichts gesendet)",
-        "update": "Update-Prüfung (nichts gesendet)"
+        "update": "Update-Prüfung (nichts gesendet)",
+        "tips": "Tipps-Anmeldung",
+        "route": "Deine Anfrage verstehen",
+        "write_mode": "Prüfung für smartes Schreiben",
+        "onboarding_reply": "Demo bei der Einrichtung"
       }
     },
     "engine": {

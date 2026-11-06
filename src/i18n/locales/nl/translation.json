@@ -1680,7 +1680,11 @@
         "feedback": "Feedback",
         "checkin": "Dagelijkse check-in",
         "download": "Download (er wordt niets verzonden)",
-        "update": "Controle op updates (er wordt niets verzonden)"
+        "update": "Controle op updates (er wordt niets verzonden)",
+        "tips": "Aanmelding voor tips",
+        "route": "Je verzoek begrijpen",
+        "write_mode": "Controle voor slim schrijven",
+        "onboarding_reply": "Demo bij instellen"
       }
     },
     "engine": {

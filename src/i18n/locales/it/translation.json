@@ -1690,7 +1690,11 @@
         "feedback": "Feedback",
         "checkin": "Segnale giornaliero",
         "download": "Download (non viene inviato nulla)",
-        "update": "Controllo aggiornamenti (non viene inviato nulla)"
+        "update": "Controllo aggiornamenti (non viene inviato nulla)",
+        "tips": "Iscrizione ai consigli",
+        "route": "Capire la tua richiesta",
+        "write_mode": "Controllo della scrittura intelligente",
+        "onboarding_reply": "Demo della configurazione"
       },
       "bytes_many": "{{count}} byte"
     },

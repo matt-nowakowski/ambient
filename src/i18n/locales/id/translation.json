@@ -1680,7 +1680,11 @@
         "feedback": "Masukan",
         "checkin": "Check-in harian",
         "download": "Unduhan (tidak ada yang dikirim)",
-        "update": "Pemeriksaan pembaruan (tidak ada yang dikirim)"
+        "update": "Pemeriksaan pembaruan (tidak ada yang dikirim)",
+        "tips": "Daftar tips",
+        "route": "Memahami permintaan Anda",
+        "write_mode": "Pemeriksaan penulisan pintar",
+        "onboarding_reply": "Demo penyiapan"
       }
     },
     "engine": {
