@@ -285,8 +285,8 @@ See `.env.example`. For local dev, copy it to `.env.local` (gitignored).
 | `NEXT_PUBLIC_APP_URL`       | Absolute URLs (Polar redirect, OG)   |
 | `POLAR_ACCESS_TOKEN`        | checkout, refresh, portal, success   |
 | `POLAR_ENV`                 | `production` or `sandbox`            |
-| `POLAR_PRODUCT_PRO_MONTHLY` | checkout                             |
-| `POLAR_PRODUCT_PRO_YEARLY`  | checkout                             |
+| `POLAR_PRODUCT_PRO_MONTHLY` | checkout, and which subscriptions unlock Pro (none set → none do) |
+| `POLAR_PRODUCT_PRO_YEARLY`  | checkout, and which subscriptions unlock Pro |
 | `LICENSE_PRIVATE_KEY`       | success page, refresh, welcome email |
 | `LICENSE_CODE_TEST_BYPASS`  | `1` skips the Polar active-subscription check at code activation; local testing only (ignored in production builds and on Vercel) |
 | `RESEND_API_KEY`            | all email (unset → logged no-op)     |
@@ -295,8 +295,17 @@ See `.env.example`. For local dev, copy it to `.env.local` (gitignored).
 | `AUTH_SECRET`               | app sign-in challenges and sessions (≥ 32 chars; changing it signs everyone out) |
 | `RESEND_AUDIENCE_CUSTOMERS` | segment id (optional: found or created by name) |
 | `RESEND_AUDIENCE_NEWSLETTER`| segment id (optional: found or created by name) |
-| `CRON_SECRET`               | **required** for `/api/cron/tune` (daily agent auto-tuning; unset → the cron refuses with 503 and the config stays as is) |
+| `CRON_SECRET`               | **required** for `/api/cron/tune` (daily agent auto-tuning) and `/api/cron/tips` (unset → both refuse with 503) |
 | `FEEDBACK_NOTIFY_EMAIL`     | optional: email each new feedback item to this address (unset → none) |
+| `POLAR_PRODUCT_TEAM`        | optional: Team product id(s), comma-separated |
+| `DATABASE_URL`              | Neon: license codes, sign-in throttles, trials, AI allowance, activity, tips |
+| `BASETEN_API_KEY`           | hosted AI routes (unset → 503) |
+| `AI_MODEL`                  | optional: Baseten model id |
+| `TAVILY_API_KEY`            | web results in answers |
+| `DOWNLOADS_ORIGIN`          | `/dl/<id>` download redirects (the R2 public origin) |
+| `ADMIN_EMAILS`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET` | `/admin` (all three, or it 404s) |
+| `ADMIN_RISKS`, `VERCEL_API_TOKEN`, `NEON_API_KEY`, `NEON_PROJECT_ID`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `ELEVENLABS_API_KEY`, `IMPROVMX_API_KEY` | optional admin cards |
+| `MEDIA_KIT_TOKEN`           | optional: the `/kit/<token>` media kit |
 
 ## Deploy to Vercel
 

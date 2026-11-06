@@ -119,6 +119,17 @@ in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` (+ `Cargo.lock`),
 `web/lib/changelog.ts` entry, and a `v*` tag that only the repo admin can
 push. Agents don't tag, push, release or deploy.
 
+**Rolling back.** There is no rollback: the updater only installs a higher
+version, and once a release publishes, `release.yml` deletes every older
+version from R2 (after a 15-minute grace), so the download links and the
+update feed only ever offer the newest build. A bad release is fixed by
+shipping N+1 with the last good code: on `main`, revert the bad commits
+(`git revert --no-edit <first-bad>^..<last-bad>`; leave the version bump
+and changelog of N in place), bump everything to N+1 as
+above, add a changelog entry that says what was undone, and have the admin
+tag `vN+1` (the tag must be on `main`). The website (Vercel) is separate:
+roll it back in Vercel by promoting an earlier deployment.
+
 ## CLI flags
 
 `--toggle-transcription`, `--toggle-post-process`, `--cancel` (sent to the
