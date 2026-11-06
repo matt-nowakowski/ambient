@@ -7,7 +7,7 @@ import { defaultShortcut } from "@/lib/releases";
 
 export const metadata: Metadata = pageMetadata({
   title: "Troubleshooting",
-  description: `Fix common ${brand.name} problems: shortcuts and macOS Secure Input, microphone and accessibility permissions, pasting, a cut-off first word, and other dictation apps.`,
+  description: `Fix common ${brand.name} problems: the Windows SmartScreen prompt, shortcuts and macOS Secure Input, microphone and accessibility permissions, pasting, a cut-off first word, and other dictation apps.`,
   path: "/docs/troubleshooting",
 });
 
@@ -19,6 +19,31 @@ export default function TroubleshootingPage() {
         title="Troubleshooting"
         intro={`Most problems come down to a permission or another app holding the keyboard. Start here.`}
       />
+
+      <DocSection id="windows-protected-your-pc" title="“Windows protected your PC” when installing">
+        <p>
+          Windows shows this SmartScreen message for installers from publishers it hasn’t seen much of yet. {brand.name}’s
+          Windows installer isn’t code-signed yet (signing is coming), so Windows can’t name the publisher. It isn’t a
+          sign that anything is wrong with the file. To install:
+        </p>
+        <ol>
+          <li>
+            Click <strong>More info</strong>.
+          </li>
+          <li>
+            Check that the app is <C>{`${brand.name}_…_x64-setup.exe`}</C> (or <C>arm64-setup.exe</C>), then click{" "}
+            <strong>Run anyway</strong>.
+          </li>
+        </ol>
+        <p>
+          To be sure you have the real installer, download it only from{" "}
+          <Link href="/download" className="text-foreground underline underline-offset-4">
+            the download page
+          </Link>{" "}
+          on {brand.domain}, which serves it over HTTPS. Once installed, every update {brand.name} downloads is checked
+          against its signing key before it’s applied. If anything looks off, email us before running it.
+        </p>
+      </DocSection>
 
       <DocSection
         id="shortcuts-stopped-working-on-macos-secure-input"

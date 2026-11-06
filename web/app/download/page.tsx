@@ -80,6 +80,18 @@ export default function DownloadPage() {
               </LiftCard>
             ))}
           </Stagger>
+          <p className="mt-6 max-w-2xl text-[13px] leading-relaxed text-subtle">
+            <span className="text-muted">On Windows,</span> you may see “Windows protected your PC”. The installer
+            isn’t code-signed yet (that’s coming), so Windows doesn’t recognise the publisher. Click{" "}
+            <span className="text-muted">More info</span>, check the app is {brand.name}’s setup file, then{" "}
+            <span className="text-muted">Run anyway</span>. Only download it from this page.{" "}
+            <Link
+              href="/docs/troubleshooting#windows-protected-your-pc"
+              className="text-foreground underline decoration-border-strong underline-offset-4"
+            >
+              More about this
+            </Link>
+          </p>
         </Container>
       </section>
 
