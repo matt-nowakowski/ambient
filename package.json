@@ -18,6 +18,7 @@
     "test:hud": "bun src/hud/parseAnswer.test.ts",
     "test:scenarios": "bun testing/run.ts",
     "check:translations": "bun scripts/check-translations.ts",
+    "check:egress": "bun scripts/check-egress.ts",
     "check:model-languages": "bun scripts/check-model-language-coverage.ts",
     "sync:catalog": "bun scripts/sync-catalog.ts",
     "check:catalog": "bun scripts/sync-catalog.ts --check",
