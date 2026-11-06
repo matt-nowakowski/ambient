@@ -11,7 +11,7 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
-    version: "0.1.13",
+    version: "0.1.14",
     date: "2026-11-06",
     title: "Every request, on the record",
     summary:
@@ -22,6 +22,12 @@ export const changelog: Release[] = [
         items: [
           "Requests that left this computer now lists everything: model and update downloads, update checks, the daily check-in, the trial, sign-in, plan and Free allowance checks, and the billing link.",
           "The privacy policy now covers No AI, downloads, cloud suggestion checks and license codes, and the few characters read before your cursor to join dictations, which never leave your computer.",
+        ],
+      },
+      {
+        heading: "Fixed",
+        items: [
+          "On a Mac, suggestions, meeting offers and hands-free now keep working while Ambient lives only in the menu bar, with its window closed.",
         ],
       },
       {
