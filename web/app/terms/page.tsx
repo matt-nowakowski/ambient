@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/legal";
-import { brand, company, emails, mailto, upstream } from "@/lib/brand";
+import { brand, company, emails, freeMeetingsPerMonth, mailto, upstream } from "@/lib/brand";
 import { LEGAL_EFFECTIVE } from "@/lib/legal";
 import { pageMetadata } from "@/lib/seo";
 
@@ -60,12 +60,12 @@ export default function TermsPage() {
               <ul>
                 <li>
                   <strong>Free</strong> is free to use, subject to any usage limits shown on the{" "}
-                  <Link href="/pricing">pricing page</Link>. It includes 25 AI uses a week, shared across polish,
+                  <Link href="/pricing">pricing page</Link>. It includes {brand.freePolishPerWeek} AI uses a week, shared across polish,
                   answers, actions, Ask and meeting summaries, which resets each Monday (UTC); unused uses don’t carry
-                  over. Free also includes 2 meetings a month.
+                  over. Free also includes {freeMeetingsPerMonth} meetings a month.
                 </li>
                 <li>
-                  <strong>Free trial:</strong> new installs get Pro features free for 7 days, with no card required. One
+                  <strong>Free trial:</strong> new installs get Pro features free for {brand.trialDays} days, with no card required. One
                   trial per computer. When it ends you move to Free automatically and are never charged.
                 </li>
                 <li>
