@@ -59,51 +59,6 @@ const Chevron = () => (
   </svg>
 );
 
-// Provider ids from settings.rs (as in AiPolishCard).
-const HOSTED = "ambient";
-const ON_DEVICE = "apple_intelligence";
-
-/** AI polish, off for new installs (dictation types instantly; smart
- * writing still drafts when asked): saved the moment it's switched (not in a
- * preview), like Account's AI polish switch. Turning it back on picks our
- * hosted model if none is chosen; it still runs on device where it can. */
-const PolishRow: React.FC = () => {
-  const { t } = useTranslation();
-  const { getSetting, updateSetting, setPostProcessProvider } = useSettings();
-  const preview = useOnboardingStore((s) => s.preview);
-  const provider = getSetting("post_process_provider_id") ?? "";
-  const chosen = provider === HOSTED || provider === ON_DEVICE;
-  const saved = (getSetting("post_process_enabled") ?? false) && chosen;
-  const [on, setOn] = useState(saved);
-  useEffect(() => setOn(saved), [saved]);
-
-  const toggle = async (next: boolean) => {
-    setOn(next);
-    if (preview) return;
-    if (next && !chosen) await setPostProcessProvider(HOSTED);
-    await updateSetting("post_process_enabled", next);
-  };
-
-  return (
-    <div className="try-panel-row is-switch">
-      {/* Switch draws its own <label>; the words toggle it too. */}
-      <span className="try-panel-text" onClick={() => toggle(!on)}>
-        <span id="try-panel-polish" className="try-panel-label">
-          {t("onboarding.done.polish.title")}
-        </span>
-        <span id="try-panel-polish-sub" className="try-panel-sub">
-          {t("onboarding.done.polish.description")}
-        </span>
-      </span>
-      <Switch
-        checked={on}
-        onChange={toggle}
-        ariaLabelledBy="try-panel-polish"
-      />
-    </div>
-  );
-};
-
 /** "Make Ambient your dictation app": the exclusive-shortcuts switch, on by
  * default, as a choice made here rather than a setting found later. Names
  * any other dictation app it spotted. Saved the moment it's switched (not in
@@ -164,6 +119,46 @@ const DictationAppRow: React.FC = () => {
   );
 };
 
+/** The panel's rows: they scroll inside the panel when the screen is too
+ * short for them all (a long translation, a download line), with a soft
+ * edge on the side there's more. */
+const PanelBody: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const rows = useRef<HTMLDivElement>(null);
+  const [more, setMore] = useState({ above: false, below: false });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !rows.current) return;
+    const measure = () => {
+      const above = el.scrollTop > 1;
+      const below = el.scrollTop + el.clientHeight < el.scrollHeight - 1;
+      setMore((m) =>
+        m.above === above && m.below === below ? m : { above, below },
+      );
+    };
+    measure();
+    el.addEventListener("scroll", measure, { passive: true });
+    const observer = new ResizeObserver(measure);
+    // The panel's room, and the rows' height (a row appears, text wraps).
+    observer.observe(el);
+    observer.observe(rows.current);
+    return () => {
+      el.removeEventListener("scroll", measure);
+      observer.disconnect();
+    };
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className="try-panel-body"
+      data-more-above={more.above || undefined}
+      data-more-below={more.below || undefined}
+    >
+      <div ref={rows}>{children}</div>
+    </div>
+  );
+};
+
 /**
  * All set's summary panel under the drawn tray icon. Clicks here never take
  * focus from the note, so the shortcut keeps typing there.
@@ -217,97 +212,98 @@ export const TrayPanel: React.FC<TrayPanelProps> = ({
         )}
       </div>
       {!ready && <div className="try-panel-download">{download}</div>}
-      <button
-        type="button"
-        className="try-panel-row"
-        aria-label={t("onboarding.done.panel.changeLanguages", {
-          languages: languagesText,
-        })}
-        onClick={onChangeLanguages}
-      >
-        <span className="try-panel-label">
-          {t("onboarding.done.panel.languages")}
-        </span>
-        <span className="try-panel-value">{languagesText}</span>
-        <Chevron />
-      </button>
-      <button
-        type="button"
-        className="try-panel-row"
-        aria-label={t("onboarding.done.panel.changeModel", {
-          model: modelName,
-        })}
-        onClick={onChangeModel}
-      >
-        <span className="try-panel-label">
-          {t("onboarding.done.panel.model")}
-        </span>
-        <span className="try-panel-value" title={modelName}>
-          {modelName}
-        </span>
-        <Chevron />
-      </button>
-      <div
-        ref={keysRow}
-        className="try-panel-keys"
-        data-capturing={capturing || undefined}
-      >
+      <PanelBody>
         <button
           type="button"
-          className="try-panel-row group/keycaps"
-          aria-label={
-            capturing
-              ? t("onboarding.demo.pressKeys")
-              : t("onboarding.try.changeKeys", { keys: keysLabel })
-          }
-          {...spaceDoesNotClick}
-          onClick={() => {
-            // The click that just cancelled capture.
-            if (performance.now() - resetAt.current < 800) return;
-            if (!capturing) capture.start();
-          }}
+          className="try-panel-row"
+          aria-label={t("onboarding.done.panel.changeLanguages", {
+            languages: languagesText,
+          })}
+          onClick={onChangeLanguages}
         >
           <span className="try-panel-label">
-            {t("onboarding.done.panel.shortcut")}
+            {t("onboarding.done.panel.languages")}
           </span>
-          <span ref={keysBox} className="try-panel-keybox">
-            {!capturing ? (
-              <Keycaps
-                binding={shortcut}
-                osType={os}
-                size="line"
-                pressed={keysDown}
-                lift
-              />
-            ) : (
-              <CapturedKeys
-                partial={capture.partial}
-                osType={os}
-                size="line"
-                slotLabel={t("settings.general.shortcut.pressKeys")}
-              />
-            )}
-          </span>
+          <span className="try-panel-value">{languagesText}</span>
+          <Chevron />
         </button>
-      </div>
-      <hr className="try-panel-rule" />
-      <DictationAppRow />
-      <div className="try-panel-row is-switch">
-        {/* Switch draws its own <label>; the words toggle it too. */}
-        <span
-          id="try-panel-login"
-          className="try-panel-label"
-          onClick={() => onAtLogin(!atLogin)}
+        <button
+          type="button"
+          className="try-panel-row"
+          aria-label={t("onboarding.done.panel.changeModel", {
+            model: modelName,
+          })}
+          onClick={onChangeModel}
         >
-          {t("onboarding.done.atLogin")}
-        </span>
-        <Switch
-          checked={atLogin}
-          onChange={onAtLogin}
-          ariaLabelledBy="try-panel-login"
-        />
-      </div>
-      <PolishRow />
+          <span className="try-panel-label">
+            {t("onboarding.done.panel.model")}
+          </span>
+          <span className="try-panel-value" title={modelName}>
+            {modelName}
+          </span>
+          <Chevron />
+        </button>
+        <div
+          ref={keysRow}
+          className="try-panel-keys"
+          data-capturing={capturing || undefined}
+        >
+          <button
+            type="button"
+            className="try-panel-row group/keycaps"
+            aria-label={
+              capturing
+                ? t("onboarding.demo.pressKeys")
+                : t("onboarding.try.changeKeys", { keys: keysLabel })
+            }
+            {...spaceDoesNotClick}
+            onClick={() => {
+              // The click that just cancelled capture.
+              if (performance.now() - resetAt.current < 800) return;
+              if (!capturing) capture.start();
+            }}
+          >
+            <span className="try-panel-label">
+              {t("onboarding.done.panel.shortcut")}
+            </span>
+            <span ref={keysBox} className="try-panel-keybox">
+              {!capturing ? (
+                <Keycaps
+                  binding={shortcut}
+                  osType={os}
+                  size="line"
+                  pressed={keysDown}
+                  lift
+                />
+              ) : (
+                <CapturedKeys
+                  partial={capture.partial}
+                  osType={os}
+                  size="line"
+                  slotLabel={t("settings.general.shortcut.pressKeys")}
+                />
+              )}
+            </span>
+          </button>
+        </div>
+        <hr className="try-panel-rule" />
+        <DictationAppRow />
+        <div className="try-panel-row is-switch">
+          {/* Switch draws its own <label>; the words toggle it too. */}
+          <span
+            id="try-panel-login"
+            className="try-panel-label"
+            onClick={() => onAtLogin(!atLogin)}
+          >
+            {t("onboarding.done.atLogin")}
+          </span>
+          <Switch
+            checked={atLogin}
+            onChange={onAtLogin}
+            ariaLabelledBy="try-panel-login"
+          />
+        </div>
+      </PanelBody>
     </div>
   );
 };

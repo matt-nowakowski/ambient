@@ -15,8 +15,6 @@ import { DesktopBar } from "../DesktopBar";
 import { WindowBar } from "../WindowBar";
 import { OnboardingShell, ScreenSub, ScreenTitle } from "../OnboardingShell";
 import { LinuxGuide } from "../LinuxGuide";
-import { TelemetryOptIn } from "../TelemetryOptIn";
-import { TipsSignup } from "../../account/TipsSignup";
 import { TrayPanel } from "../TrayPanel";
 import { useOnboardingStore } from "../onboardingStore";
 import { useTryEngine } from "../useTryEngine";
@@ -200,7 +198,7 @@ export const TryIt: React.FC<TryItProps> = ({
   const { t, i18n } = useTranslation();
   const e = useTryEngine({ os });
   const anyDone = e.lessons.hold || e.lessons.tap;
-  const { languages, atLogin, set, preview } = useOnboardingStore();
+  const { languages, atLogin, set } = useOnboardingStore();
   const { refreshAudioDevices } = useSettings();
 
   // The mic list isn't loaded until onboarding ends; load it for the picker.
@@ -625,7 +623,7 @@ export const TryIt: React.FC<TryItProps> = ({
                     className="try-sub-keys"
                     binding={e.shortcut}
                     osType={os}
-                    size="line"
+                    size="screen"
                     pressed={e.keysDown}
                   />
                 ),
@@ -792,10 +790,13 @@ export const TryIt: React.FC<TryItProps> = ({
             />
           )}
         </div>
-        {/* Always reserves its height so the screen doesn't jump. */}
-        <div className="try-after" data-tips={stage === "set" || undefined}>
-          {stage === "set" && e.slowWait == null && <TelemetryOptIn />}
-          {stage === "set" && <TipsSignup compact preview={preview} />}
+        {/* Reserves its height while trying so the screen doesn't jump; on
+            All set it folds away (unless a slow take has something to say)
+            and the screen takes the room, for the panel. */}
+        <div
+          className="try-after"
+          data-gone={(stage === "set" && e.slowWait == null) || undefined}
+        >
           {e.slowWait != null && (
             <span>
               <Trans
