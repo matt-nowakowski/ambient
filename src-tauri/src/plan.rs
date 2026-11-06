@@ -805,7 +805,7 @@ async fn activate_code(code: &str) -> Result<ActivateResponse, String> {
     crate::recall::log_request(
         env!("BRAND_DOMAIN"),
         "license",
-        "The gift or support code you typed, to redeem it on this device.",
+        "The gift or support code you typed and an anonymous device hash, to redeem it on this device.",
     );
     let response = reqwest::Client::new()
         .post(api_url("/api/license/activate"))
