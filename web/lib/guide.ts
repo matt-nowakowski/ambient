@@ -145,11 +145,23 @@ export const nothingToConnect = {
   ],
 } as const;
 
+/** First-run setup, step by step, as the app ships it. */
+export const setupSteps = [
+  { k: "Welcome", v: "Pick every language you’ll speak, and the language of the app." },
+  { k: "Permissions", v: "The microphone, and on a Mac, Accessibility so your shortcut works and text lands where you type." },
+  { k: "Speech model", v: "Turns your voice into text, on your computer. It downloads while you finish setup." },
+  { k: "Where should the AI run?", v: "For polishing, drafts, answers and suggestions: in the cloud, on this computer, or No AI. Speech recognition always stays on your computer." },
+  { k: "A few more choices", v: "Tidy up dictation with AI, share anonymous usage counts, email me tips. All optional, all off unless you turn them on." },
+  { k: "Demo", v: "Your shortcut, and what it does: types, answers, acts, remembers and offers help. Change the shortcut here." },
+  { k: "Try it", v: "Dictate into a practice note: hold the keys, then tap them. Plain dictation, so you feel the speed." },
+  { k: "All set", v: "Where it lives (menu bar or tray), start at login, and whether it’s your dictation app." },
+] as const;
+
 /** How routing decides. */
 export const routingRules = [
   {
     k: "Writing is the default",
-    v: "Talking to a person? Your words are polished and typed at your cursor. When unsure, it types.",
+    v: "Talking to a person? Your words are typed at your cursor, polished if AI polish is on. When unsure, it types.",
   },
   {
     k: "AI chat apps",

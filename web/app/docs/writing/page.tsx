@@ -20,6 +20,10 @@ export default function WritingPage() {
           It judges from what’s on screen, not a list of apps: a reply under a message drafts in Messages, Slack and Mail
           alike, and goes to the sender, not to you. When it isn’t sure, it types what you said.
         </p>
+        <p>
+          Dictate right after text you’ve typed and it adds the space and capital you’d expect, in any app. In code
+          editors and terminals it leaves case alone.
+        </p>
         <DocRows items={writingOutcomes} />
       </DocSection>
 

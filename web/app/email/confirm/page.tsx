@@ -34,12 +34,12 @@ export default async function ConfirmPage({ searchParams }: { searchParams: Prom
 
   const [title, body] = done
     ? tips
-      ? ["You’re in.", `Your first ${brand.name} tip arrives tomorrow, then one about every two weeks. Every one has a one-click unsubscribe.`]
+      ? ["You’re in.", `Your first ${brand.name} tip arrives tomorrow, then one about every three weeks, five in all. Every one has a one-click unsubscribe.`]
       : ["You’re in.", `At most one email a month: one thing worth trying in ${brand.name}, and what’s new. Every one has a one-click unsubscribe.`]
     : error || !valid
       ? ["That link didn’t work.", "It may have expired (links last 7 days). Sign up again and we’ll send a fresh one."]
       : tips
-        ? ["One click to confirm.", `Confirm and you’ll get a few short tips on getting more from ${brand.name}, about two weeks apart.`]
+        ? ["One click to confirm.", `Confirm and you’ll get five short tips on getting more from ${brand.name}, about three weeks apart.`]
         : ["One click to confirm.", `Confirm and you’ll get ${brand.name} updates, at most once a month.`];
 
   return (

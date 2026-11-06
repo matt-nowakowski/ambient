@@ -111,7 +111,9 @@ export default function DownloadPage() {
             </Step>
           </Stagger>
           <p className="mt-6 text-[13px] text-subtle">
-            The shortcut, push-to-talk vs. toggle, and model can be changed in Settings. On Linux, see{" "}
+            Setup walks you through it: your languages, permissions, a speech model, where the AI runs, a few optional
+            choices, and a quick try. The shortcut, push-to-talk vs. toggle, and model can be changed in Settings. On
+            Linux, see{" "}
             <Link href="/docs/linux" className="text-foreground underline decoration-border-strong underline-offset-4">
               Linux setup
             </Link>

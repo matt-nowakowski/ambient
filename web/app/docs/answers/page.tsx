@@ -25,12 +25,13 @@ export default function AnswersPage() {
 
       <DocSection id="web-search" title="Web search">
         <p>It searches only for current or specific facts: news, prices, rates, schedules, businesses.</p>
-        <p>Only your question is sent to the search. Set Intelligence to On this computer only to switch web search off.</p>
+        <p>Only your question is sent to the search. Set Intelligence to On this computer only, or No AI, to switch web search off.</p>
       </DocSection>
 
       <DocSection id="using-the-answer" title="Using the answer">
         <p>
-          Insert pastes it where your cursor was. Copy puts it on the clipboard. Esc closes the card. Hold your shortcut
+          Insert pastes it where your cursor was. Copy puts it on the clipboard, or select any part to copy just that. Up
+          to three sources, one per site, sit under the answer. Esc closes the card. Hold your shortcut
           within 90 seconds to follow up. More in{" "}
           <Link href="/docs/getting-started#the-answer-card" className={link}>
             the answer card

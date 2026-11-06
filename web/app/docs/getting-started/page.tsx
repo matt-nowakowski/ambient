@@ -12,6 +12,7 @@ import {
   nothingToConnect,
   platformNote,
   routingRules,
+  setupSteps,
   talkingWays,
 } from "@/lib/guide";
 
@@ -34,6 +35,12 @@ export default function GettingStartedPage() {
   return (
     <>
       <DocHeader eyebrow="Docs" title={p.title} intro={p.intro} />
+
+      <DocSection id="setup" title="Setup">
+        <p>A couple of minutes, once. Permissions is skipped on Linux, and when everything is already allowed.</p>
+        <DocRows items={setupSteps} />
+        <p>Then a short tour: what the agent does, that it offers help, and what it may read.</p>
+      </DocSection>
 
       <DocSection id="talking-to-ambient" title={`Talking to ${brand.name}`}>
         <p>Three ways. Without one of them, the dictation key types.</p>
@@ -105,7 +112,10 @@ export default function GettingStartedPage() {
             <strong>Copy</strong> puts it on the clipboard.
           </li>
           <li>
-            <strong>Sources</strong> link to the pages and files it used.
+            <strong>Sources</strong>, up to three, link to the pages and files it used.
+          </li>
+          <li>
+            <strong>Select</strong> any text to copy it. Click code to copy it.
           </li>
           <li>
             <strong>Esc</strong> closes it. Nothing is saved.
@@ -144,7 +154,7 @@ export default function GettingStartedPage() {
       <DocSection id="turn-on-what-you-want" title="Turn on what you want">
         <p>
           Dictation and questions work straight away. Anything that reads your screen is off until you switch it on in{" "}
-          {brand.name} → Privacy. Suggestions are off too: setup offers them (“It offers help, too”), or turn on{" "}
+          {brand.name} → Privacy. Suggestions are off too: the tour after setup offers them (“It offers help, too”), or turn on{" "}
           <strong>Offer suggestions</strong> later. See{" "}
           <Link href="/docs/privacy" className={link}>
             Privacy controls
