@@ -211,6 +211,11 @@ export function exactChecks(o: Outcome, c: Case): string[] {
       `suggestion: expected ${kinds.join(" or ")}, got ${o.suggestion ?? "none"}`,
     );
   }
+  if (e.typed !== undefined && o.output !== e.typed) {
+    bad.push(
+      `typed ${JSON.stringify(o.output ?? "")}, expected ${JSON.stringify(e.typed)}`,
+    );
+  }
   const out = (o.output ?? "").toLowerCase();
   for (const s of e.contains ?? [])
     if (!out.includes(s.toLowerCase())) bad.push(`output lacks "${s}"`);

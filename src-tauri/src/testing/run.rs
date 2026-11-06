@@ -125,9 +125,9 @@ async fn dictation(app: &AppHandle, transcript: &str, key: Key) -> Value {
             if crate::agent::draft_instead_of_paste(&app, &text) {
                 return;
             }
-            if crate::clipboard::paste(text.clone(), app.clone()).is_ok() {
+            if let Ok(typed) = crate::clipboard::paste_dictation(text.clone(), app.clone()) {
                 if let Some(how) = how {
-                    crate::agent::writing::after_insert(&app, how, &text);
+                    crate::agent::writing::after_insert(&app, how, &typed);
                 } else if let Some(q) = &offer {
                     crate::agent::offer_search_instead(&app, q);
                 }

@@ -314,6 +314,12 @@ impl Bus {
         Some(text.replace('\u{FFFC}', " "))
     }
 
+    /// Characters `start..end` of the node's text.
+    pub fn text_range(&self, n: &Node, start: i32, end: i32) -> Option<String> {
+        let text: String = call(&self.conn, n, TEXT, "GetText", &(start, end))?;
+        Some(text.replace('\u{FFFC}', " "))
+    }
+
     /// The first selected range of the node's text.
     pub fn selection(&self, n: &Node, max: usize) -> Option<String> {
         let count: i32 = call(&self.conn, n, TEXT, "GetNSelections", &())?;

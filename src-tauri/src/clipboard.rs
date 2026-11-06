@@ -942,6 +942,89 @@ pub fn paste_exact(text: String, app_handle: AppHandle) -> Result<(), String> {
     paste_with(text, app_handle, false)
 }
 
+/// The last dictation typed, for joining the next one when the field can't
+/// be read: the app it went to and what ended up there. Kept in memory only.
+struct LastPaste {
+    bundle: String,
+    pid: i32,
+    typed: String,
+    at: std::time::Instant,
+}
+
+static LAST_PASTE: Mutex<Option<LastPaste>> = Mutex::new(None);
+/// How long the last paste stands in for an unreadable field.
+const REMEMBER_PASTE: Duration = Duration::from_secs(120);
+
+/// Paste a dictation (or text written from one) at the caret, joined to
+/// what's already before it (`smart_join`): a space between two takes in a
+/// row, and the first letter's case to fit. What's before the caret is read
+/// from the field, else taken from the last paste into the same app in the
+/// last two minutes. Returns the words as typed, without a joining space,
+/// for callers that later look for or replace them. Call off the main thread.
+pub fn paste_dictation(text: String, app_handle: AppHandle) -> Result<String, String> {
+    if !is_pasteable(&text) {
+        return paste(text.clone(), app_handle).map(|()| text);
+    }
+    let front = crate::context::frontmost_app().unwrap_or_default();
+    let joined = join_at_caret(&app_handle, &front, &text);
+    if joined.space || joined.text != text {
+        log::debug!(
+            "paste: joined to the text before the caret (space {}, case changed {})",
+            joined.space,
+            joined.text != text
+        );
+    }
+    let typed = joined.typed();
+    paste(typed.clone(), app_handle.clone())?;
+    let settings = get_settings(&app_handle);
+    if settings.paste_method != PasteMethod::None && !front.bundle_id.is_empty() {
+        let typed = if settings.append_trailing_space {
+            format!("{typed} ")
+        } else {
+            typed
+        };
+        if let Ok(mut last) = LAST_PASTE.lock() {
+            *last = Some(LastPaste {
+                bundle: front.bundle_id,
+                pid: front.pid,
+                typed,
+                at: std::time::Instant::now(),
+            });
+        }
+    }
+    Ok(joined.text)
+}
+
+fn join_at_caret(
+    app_handle: &AppHandle,
+    front: &crate::context::FrontmostApp,
+    text: &str,
+) -> crate::smart_join::Joined {
+    let never_watch = get_settings(app_handle).agent.never_watch;
+    let read = crate::context::field::caret_context(crate::smart_join::BEFORE_CHARS, &never_watch);
+    let dev = crate::agent::proactive::is_dev_app(&front.bundle_id);
+    let (before, monospace) = match read {
+        Some(ctx) => (ctx.before, ctx.monospace),
+        None => {
+            let remembered = LAST_PASTE.lock().ok().and_then(|last| {
+                last.as_ref()
+                    .filter(|l| {
+                        l.bundle == front.bundle_id
+                            && l.pid == front.pid
+                            && l.at.elapsed() < REMEMBER_PASTE
+                    })
+                    .map(|l| l.typed.clone())
+            });
+            match remembered {
+                Some(typed) => (typed, false),
+                // Nothing known: typed as it is.
+                None => (String::new(), false),
+            }
+        }
+    };
+    crate::smart_join::join(&before, text, monospace || dev)
+}
+
 fn paste_with(text: String, app_handle: AppHandle, trailing_space: bool) -> Result<(), String> {
     // Nothing said (a silent auto-stop, VAD trimming everything): paste
     // nothing, rather than ⌘V over whatever the clipboard already holds.

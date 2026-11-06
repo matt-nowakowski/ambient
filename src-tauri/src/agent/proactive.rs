@@ -764,6 +764,12 @@ fn conversation(snap: &ContextSnapshot) -> bool {
             && shape::messaging_text(snap.text.as_deref().unwrap_or("")))
 }
 
+/// A known terminal or code editor (for dictation joining, where the field
+/// itself can't say).
+pub fn is_dev_app(bundle: &str) -> bool {
+    is_in(DEV_APPS, bundle)
+}
+
 /// A terminal or code editor: a known one, or text with shell prompts.
 fn dev_screen(snap: &ContextSnapshot) -> bool {
     is_in(DEV_APPS, snap.app.bundle_id.as_str())

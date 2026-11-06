@@ -781,7 +781,14 @@ fn paste_later(app: &AppHandle, text: String, select_all: bool) {
             }
             std::thread::sleep(Duration::from_millis(80));
         }
-        if let Err(e) = crate::clipboard::paste(text, handle) {
+        // Inserted at the caret: joined to what's there. Replacing all of
+        // the field's text: exactly the text.
+        let pasted = if select_all {
+            crate::clipboard::paste(text, handle)
+        } else {
+            crate::clipboard::paste_dictation(text, handle).map(|_| ())
+        };
+        if let Err(e) = pasted {
             log::warn!("HUD paste failed: {e}");
         }
     });

@@ -1442,24 +1442,36 @@ pub fn deliver_written(app: &AppHandle, text: &str, smart: &SmartWrite) -> bool 
             show_note(app, "hud.writing.copiedEdit");
             return true;
         }
-    } else if let Err(e) = crate::clipboard::paste(text.to_string(), app.clone()) {
-        log::warn!("inserting the written text failed: {e}");
-        return false;
-    } else {
-        // Watch for word fixes to learn.
-        crate::corrections::watch(app, text);
+        after_insert(app, written(smart), text);
+        return true;
     }
-    after_insert(
-        app,
-        Typed {
-            decision: Decision::Written,
-            raw: smart.raw.clone(),
-            note: None,
-            rewrite: smart.rewrite,
-        },
-        text,
-    );
-    true
+    // A rewrite goes over the selection, spaced as it was.
+    let pasted = if smart.rewrite {
+        crate::clipboard::paste(text.to_string(), app.clone()).map(|()| text.to_string())
+    } else {
+        crate::clipboard::paste_dictation(text.to_string(), app.clone())
+    };
+    match pasted {
+        Err(e) => {
+            log::warn!("inserting the written text failed: {e}");
+            false
+        }
+        Ok(typed) => {
+            // Watch for word fixes to learn.
+            crate::corrections::watch(app, &typed);
+            after_insert(app, written(smart), &typed);
+            true
+        }
+    }
+}
+
+fn written(smart: &SmartWrite) -> Typed {
+    Typed {
+        decision: Decision::Written,
+        raw: smart.raw.clone(),
+        note: None,
+        rewrite: smart.rewrite,
+    }
 }
 
 /// Writing failed (Free's week spent, offline…): type their words as said
@@ -1478,7 +1490,7 @@ pub fn written_failed(app: &AppHandle, smart: SmartWrite, error_key: &str) {
         std::thread::sleep(Duration::from_millis(150));
         if smart.replaces.is_none()
             && !smart.rewrite
-            && crate::clipboard::paste(smart.raw.clone(), app.clone()).is_err()
+            && crate::clipboard::paste_dictation(smart.raw.clone(), app.clone()).is_err()
         {
             return;
         }

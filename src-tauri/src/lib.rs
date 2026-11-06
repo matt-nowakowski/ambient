@@ -44,6 +44,7 @@ mod secure_input;
 mod settings;
 mod shortcut;
 mod signal_handle;
+mod smart_join;
 mod system_languages;
 mod telemetry;
 mod testing;

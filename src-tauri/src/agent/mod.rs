@@ -906,7 +906,7 @@ pub fn deliver_draft(
         }
         if can_insert {
             log::debug!("compose: a text field has focus; inserting the draft");
-            if let Err(e) = crate::clipboard::paste(text.clone(), handle.clone()) {
+            if let Err(e) = crate::clipboard::paste_dictation(text.clone(), handle.clone()) {
                 log::warn!("inserting the draft failed: {e}");
                 show_draft(&handle, "hud.draft.composed", text, false);
             }
