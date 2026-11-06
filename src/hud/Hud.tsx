@@ -472,7 +472,6 @@ export default function Hud() {
             key="card"
             ref={cardRef}
             className="hud-card"
-            style={{ position: "relative" }}
             initial={hidden}
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={gone}

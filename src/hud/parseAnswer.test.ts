@@ -10,7 +10,7 @@ assert.deepEqual(parseAnswer("Just text."), [
 assert.deepEqual(parseAnswer("Use this:\n```rust\nfn main() {}\n```\nDone."), [
   { kind: "text", text: "Use this:\n" },
   { kind: "code", text: "fn main() {}", block: true },
-  { kind: "text", text: "\nDone." },
+  { kind: "text", text: "Done." },
 ]);
 
 // Still streaming: an open fence is already code.

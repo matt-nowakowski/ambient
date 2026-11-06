@@ -63,6 +63,7 @@ export function MeetingNotesCard({
           <button
             type="button"
             disabled={sending}
+            aria-busy={sending}
             onClick={() => commands.hudAction(card.id, "email_notes", null)}
           >
             {sending ? t("hud.notes.sending") : t("hud.notes.email")}

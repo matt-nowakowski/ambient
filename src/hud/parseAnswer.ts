@@ -62,8 +62,13 @@ export function parseAnswer(src: string): Segment[] {
     if (m[0] === "") break; // `$` matched at the very end
     inline(src.slice(at, m.index));
     const code = m[1].replace(/\n$/, "");
-    if (code.trim()) out.push({ kind: "code", text: code, block: true });
     at = (m.index ?? 0) + m[0].length;
+    if (code.trim()) {
+      out.push({ kind: "code", text: code, block: true });
+      // The block is its own line already: the newline after the fence
+      // would show as an empty line under it.
+      if (src[at] === "\n") at += 1;
+    }
   }
   inline(src.slice(at));
   return out;
