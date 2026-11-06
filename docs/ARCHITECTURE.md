@@ -17,7 +17,7 @@ flowchart LR
     direction TB
     mic["Microphone and call audio<br/>managers/audio.rs, meeting/capture.rs"]
     stt["Speech to text, in-process<br/>transcribe-cpp, engine_supervisor/"]
-    screen["Screen text (opt-in)<br/>context/: never-watch, private pages,<br/>password fields skipped"]
+    screen["Screen text (on by default, off in Privacy)<br/>context/: never-watch, private pages,<br/>password fields skipped"]
     redact["Redaction<br/>context/redact.rs"]
     agent["Agent: route, write, answer, act, suggest<br/>agent/, actions.rs"]
     local["On-device model<br/>Apple Intelligence, or llama-server on 127.0.0.1<br/>local_llm.rs"]

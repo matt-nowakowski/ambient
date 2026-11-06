@@ -90,7 +90,7 @@ export const suggestions = {
   short: "When it can help, it offers once. Say “yes”, or ignore it. It learns.",
   /** The examples as short chips, for the landing page. */
   chips: ["Summarise a long thread", "Reply to Ana?", "Remind me?", "Explain a failing test", "Translate a page", "Add a date to your calendar", "Tighten a draft", "Prep for a meeting"],
-  promiseShort: "Off until you turn it on. Decided on your computer unless you choose the cloud.",
+  promiseShort: "On from the start, off with one switch in Privacy. Decided on your computer unless you choose the cloud.",
   examples: [
     "A long email thread: “Want me to summarise these 40 messages?”",
     "Someone waiting on you: “Reply to Ana?”, then just say what to say",
@@ -101,7 +101,7 @@ export const suggestions = {
     "A long draft: tighten it",
     "A meeting in a few minutes: prep notes",
   ],
-  promise: "Off until you turn it on. Decided on your computer, or by the cloud only if you choose it (Pro). Every check is listed in Privacy.",
+  promise: "On from the start, off with one switch in Privacy. Decided on your computer, or by the cloud only if you choose it (Pro). Every check is listed in Privacy.",
 };
 
 /** Writing: dictation as an assistant. The landing page's compact section. */
@@ -129,8 +129,8 @@ export const trust = {
   eyebrow: "Privacy",
   title: "What it hears, sees, keeps and sends.",
   /** The landing-page headline and line. */
-  short: { title: "Your voice never leaves your computer.", body: "Nothing reads your screen until you turn it on." },
-  body: "Nothing reads your screen until you turn it on. Here is exactly how it behaves.",
+  short: { title: "Your voice never leaves your computer.", body: "It reads the window you’re in, redacted, and never private pages. Turn it off in Privacy." },
+  body: "It reads the window you’re in to understand you, redacted, and never private pages or apps you’ve told it never to watch. Here is exactly how it behaves.",
   /** The landing page: four promises, as icons with short labels. */
   promises: [
     { k: "Your voice stays here", v: "Speech recognition runs on your computer.", orb: "B1" },
@@ -171,7 +171,7 @@ export const trust = {
     },
   ],
   points: [
-    { k: "Off until you turn it on", v: "Screen reading is switched on one capability at a time, by you. Text only, never screenshots." },
+    { k: "The window you’re in, redacted", v: "Where your system allows, it reads the text of the window you’re in to understand what you mean, with secrets removed first. Text only, never screenshots. Turn it off in Privacy; screen memory stays off until you turn it on." },
     {
       k: "Never-watch list",
       v: "Password managers, Keychain, Messages, WhatsApp, Signal, Telegram and private or incognito windows, by default. Add any app you like.",
@@ -390,7 +390,7 @@ export const featureGroups: FeatureGroup[] = [
     id: "suggestions",
     heading: "Suggestions",
     pro: true,
-    intro: `Switch it on and it nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. Decided on your computer unless you choose the cloud (Pro). Up to ${brand.freeSuggestionsPerWeek} a week on Free.`,
+    intro: `It nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. On from the start, off in Privacy. Decided on your computer unless you choose the cloud (Pro). Up to ${brand.freeSuggestionsPerWeek} a week on Free.`,
     items: [
       { title: "Email and chat", body: "Long threads: summarise them. A question waiting for you: dictate the gist, get the reply. A date: add it to your calendar. A deadline: “Remind me?”", orb: "B4" },
       { title: "Writing", body: "A long draft: tighten it.", orb: "S4" },

@@ -76,14 +76,14 @@ export const guidePages = [
     "Suggestions",
     "Suggestions",
     `Every moment where ${brand.name} offers a next step, and how to answer it by voice.`,
-    "When it can help, it offers one next step. Say “yes” or “not now”, and it learns. Off until you turn it on.",
+    "When it can help, it offers one next step. Say “yes” or “not now”, and it learns. On from the start; turn it off in Privacy.",
   ),
   page(
     "privacy",
     "Privacy",
     "Privacy controls",
     `What ${brand.name} reads, what it never reads, what it keeps and what it sends, and the switches that control each.`,
-    "Nothing reads your screen until you turn it on. Here is what each switch does, and what is never read.",
+    "It reads the window you’re in to understand you, redacted, and never private pages. Here is what each switch does, and what is never read.",
   ),
 ] as const satisfies readonly GuidePage[];
 

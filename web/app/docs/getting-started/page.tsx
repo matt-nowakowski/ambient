@@ -151,11 +151,12 @@ export default function GettingStartedPage() {
         <p>No OAuth. No API keys. The only account is the email you sign in with for Pro.</p>
       </DocSection>
 
-      <DocSection id="turn-on-what-you-want" title="Turn on what you want">
+      <DocSection id="turn-on-what-you-want" title="Choose what it may do">
         <p>
-          Dictation and questions work straight away. Anything that reads your screen is off until you switch it on in{" "}
-          {brand.name} → Privacy. Suggestions are off too: the tour after setup offers them (“It offers help, too”), or turn on{" "}
-          <strong>Offer suggestions</strong> later. See{" "}
+          Dictation and questions work straight away. To understand you, {brand.name} reads the window you’re in, where your
+          system allows, redacted and never on private pages, and offers suggestions when it can help. Both are on from the
+          start: turn either off in the tour after setup or in {brand.name} → Privacy (<strong>Read what you ask about</strong>,{" "}
+          <strong>Offer suggestions</strong>). Screen memory, meeting notes and hands-free stay off until you turn them on. See{" "}
           <Link href="/docs/privacy" className={link}>
             Privacy controls
           </Link>

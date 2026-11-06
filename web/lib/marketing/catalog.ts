@@ -176,7 +176,7 @@ export const copySnippets: { title: string; items: Snippet[] }[] = [
         text: "Speech recognition runs on your computer and your audio is never sent or stored. Passwords and crypto wallets are never read, secrets are removed before anything is sent, and every request is on the record in the app.",
       },
       { label: "Meetings", text: "Notes for any call (Zoom, Meet, Teams, FaceTime, Slack huddles). No bot joins. Audio is never saved." },
-      { label: "Screen", text: "Nothing reads your screen until you turn it on, one capability at a time. Text only, never screenshots." },
+      { label: "Screen", text: "It reads the window you’re in to understand you, redacted, never private pages or never-watch apps. Text only, never screenshots. Turn it off in Privacy." },
     ],
   },
   {
@@ -201,7 +201,7 @@ export const copyDos = [
 export const copyDonts = [
   "Don't say it speaks, talks back or has a voice. It never talks out loud; it answers on screen.",
   "Don't call it a meeting bot or say it joins calls. No bot joins; notes happen on your computer.",
-  "Don't say it reads everything on your screen. Screen reading is off until you turn it on.",
+  "Don't say it reads everything on your screen. It reads the window you’re in, redacted, never private pages or never-watch apps, and you can turn it off in Privacy.",
   "Don't promise features marked “soon”, like using your apps for you.",
   "Don't recolour, stretch or add effects to the logo. Use the light or dark file as given.",
 ];

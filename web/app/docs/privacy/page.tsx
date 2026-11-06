@@ -48,7 +48,10 @@ export default function PrivacyDocsPage() {
       <DocHeader eyebrow="Docs" title={p.title} intro={p.intro} />
 
       <DocSection id="switches" title="The switches">
-        <p>All in {brand.name} → Privacy. Each is off until you turn it on, except Intelligence.</p>
+        <p>
+          All in {brand.name} → Privacy. Read what you ask about and Offer suggestions are on from the start, where your
+          system allows; the others are off until you turn them on. Intelligence is chosen in setup.
+        </p>
         <DocRows items={switches} />
       </DocSection>
 

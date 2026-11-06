@@ -38,10 +38,10 @@ export default function SuggestionsPage() {
         </ul>
       </DocSection>
 
-      <DocSection id="turn-it-on" title="Turn it on">
+      <DocSection id="turn-it-on" title="On or off">
         <p>
-          Off until you turn it on: in the tour after setup (“It offers help, too”), or with <strong>Offer suggestions</strong> in{" "}
-          {brand.name} → Privacy. It works on macOS, Windows and Linux (on Linux, turn{" "}
+          On from the start. Turn it off in the tour after setup (“It offers help, too”), or with{" "}
+          <strong>Offer suggestions</strong> in {brand.name} → Privacy. It works on macOS, Windows and Linux (on Linux, turn{" "}
           <Link href="/docs/linux#accessibility" className="text-foreground underline underline-offset-4">
             accessibility on
           </Link>
