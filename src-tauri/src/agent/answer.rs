@@ -189,6 +189,34 @@ pub fn prefetch_screen(app: &AppHandle) {
     });
 }
 
+/// How long a read taken when recording started stays usable for deciding
+/// what was said: about a long dictation, while the same app is in front.
+const DECISION_FRESH: Duration = Duration::from_secs(120);
+
+/// The window in front for deciding what the user wants (`router::route`):
+/// the read taken when recording started if the same app is still in
+/// front, otherwise a new one. Redacted, never a private window, and only
+/// while reading the screen is allowed. Left in place for an answer that
+/// follows.
+pub async fn decision_screen(app: &AppHandle) -> Option<String> {
+    let front = context::frontmost_app().map(|f| f.pid);
+    let cached = PREFETCH.lock().ok().and_then(|g| g.clone());
+    if let Some((at, s)) = cached {
+        if at.elapsed() < DECISION_FRESH && front == Some(s.pid) {
+            return Some(s.text);
+        }
+    }
+    let a = app.clone();
+    let screen = tauri::async_runtime::spawn_blocking(move || capture_screen(&a))
+        .await
+        .ok()
+        .flatten()?;
+    if let Ok(mut g) = PREFETCH.lock() {
+        *g = Some((Instant::now(), screen.clone()));
+    }
+    Some(screen.text)
+}
+
 /// The window in front: the prefetched capture if it's fresh and still the
 /// same app, otherwise a new one.
 async fn screen(app: &AppHandle) -> Option<Screen> {
@@ -784,14 +812,9 @@ pub async fn run_with(
                 started.elapsed(),
                 needs_web,
             );
+            // Reply is offered when the decision saw how to open one here.
             let situation = tauri::async_runtime::spawn_blocking(|| {
-                let place = super::router::place();
-                (
-                    super::can_insert_here(),
-                    crate::context::is_mail_app(&place.bundle_id)
-                        || (super::is_browser(&place.bundle_id)
-                            && super::is_webmail_window(&place.url, &place.title)),
-                )
+                (super::can_insert_here(), super::can_open_reply())
             })
             .await
             .unwrap_or((true, false));

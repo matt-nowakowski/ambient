@@ -25,14 +25,14 @@ bun run test:scenarios --as-os windows # Windows app ids on this build (an early
    suite's local server. It prints one JSON report and exits.
 
    One scenario = one process, so no state leaks between scenarios. What
-   runs is the real code: `actions::process_dictation_output` (markers, the
-   first pass, the router, smart writing), then what the stop path does with
+   runs is the real code: `actions::process_dictation_output` (the decision,
+   `agent::router::route`, and typing or polishing), then what the stop path does with
    the result (`agent::handle`, `writing::write_now`, the paste or "Did you
    mean to type this?"); for a screen, `context::snapshot` (the private-place
    judge) and `agent::proactive::consider`.
 
 2. **The local server** (`lib/server.ts`) stands in for ours:
-   `/api/ai/v1/chat/completions` (router, polish, how-to-type), and
+   `/api/ai/v1/chat/completions` (the decision, polish), and
    `/api/agent/answer` and `/api/agent/suggest` built from the server's own
    prompt code (`web/lib/answer-core.ts`, `web/lib/suggest-core.ts`). Web
    search returns canned results (`lib/search.ts`, never Tavily). Nothing

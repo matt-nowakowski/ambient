@@ -3839,21 +3839,6 @@ fn classify_feedback_locally(t: &str) -> Option<&'static str> {
     None
 }
 
-async fn classify_feedback(app: &AppHandle, t: &str) -> Option<&'static str> {
-    if let Some(answer) = classify_feedback_locally(t) {
-        return Some(answer);
-    }
-    if t.split_whitespace().count() > 8 {
-        return None;
-    }
-    let system = "A suggestion is on the user's screen and they just replied by voice, in any language. Classify the reply: yes (accept), no (not now), never (stop showing this kind), not_here (stop it in this app only), other (not a reply to the suggestion). Answer with one word only.";
-    let reply = super::llm::complete(app, "suggestion", system, t).await?;
-    let word = reply.trim().to_lowercase();
-    ["not_here", "never", "yes", "no"]
-        .into_iter()
-        .find(|w| word.starts_with(w))
-}
-
 /// A suggestion or meeting nudge is on screen, waiting for an answer.
 pub fn awaiting_reply() -> bool {
     super::report::awaiting()
@@ -3942,18 +3927,61 @@ fn reply_with_content(app: &AppHandle, transcript: &str) -> bool {
     true
 }
 
-pub async fn handle_voice_feedback(app: &AppHandle, transcript: &str) -> bool {
-    if reply_with_content(app, transcript) {
-        return true;
+/// A suggestion or meeting nudge on screen, for the decision
+/// (`router::route`): what it offers and the answers it takes.
+pub fn voice_card() -> Option<super::router::Card> {
+    if !hud::is_visible() {
+        return None;
     }
-    let t = transcript.trim();
-    if t.split_whitespace().count() > 14 || !awaiting_reply() {
+    if crate::meeting::pending_nudge().is_some() {
+        return Some(super::router::Card {
+            about: "it offers to take notes in the meeting they're in".into(),
+            replies: vec!["yes", "no", "never"],
+        });
+    }
+    let st = STATE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    let p = st.pending.values().next()?;
+    let names: Vec<String> = p.vars.iter().map(|(k, v)| format!("{k}: {v}")).collect();
+    let mut about = format!("a suggestion ({}) in {}", p.kind.name(), p.header);
+    if !names.is_empty() {
+        about.push_str(&format!(", about {}", names.join(", ")));
+    }
+    about.push_str(". \"yes\" accepts it, \"no\" not now, \"never\" stops this kind, \"not_here\" stops it in this app");
+    if matches!(p.kind, Kind::DraftReply | Kind::SummariseThread) {
+        about.push_str("; accepting with words of their own puts them in \"say\"");
+    }
+    Some(super::router::Card {
+        about,
+        replies: vec!["yes", "no", "never", "not_here"],
+    })
+}
+
+/// Act on the decision's answer to a suggestion or nudge. False when none
+/// is up.
+pub fn voice_reply(app: &AppHandle, reply: &str, say: Option<&str>) -> bool {
+    if !matches!(reply, "yes" | "no" | "never" | "not_here") {
         return false;
     }
-    let Some(answer) = classify_feedback(app, t).await else {
-        return false;
-    };
-    apply_feedback(app, answer)
+    if reply == "yes" {
+        if let Some(content) = say.filter(|s| !s.trim().is_empty()) {
+            let draftable = STATE
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .pending
+                .iter()
+                .find(|(_, p)| matches!(p.kind, Kind::DraftReply | Kind::SummariseThread))
+                .map(|(id, _)| id.clone());
+            if let Some(id) = draftable.filter(|_| hud::is_visible()) {
+                hud::hide(app);
+                crate::telemetry::reply_by_voice(false);
+                accept_with(app, &id, content);
+                return true;
+            }
+        }
+    }
+    apply_feedback(app, reply)
 }
 
 /// Act on "yes" / "no" / "never" / "not_here" for what's on screen.

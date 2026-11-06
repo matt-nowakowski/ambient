@@ -84,15 +84,19 @@ export default function PrivacyPage() {
                 </li>
               </ul>
               <p>
-                <strong>Voice requests.</strong> When you speak, the app decides whether your words are text to type or a
-                request for the assistant. Ordinary dictation is typed (polished first if AI polish is on). Only if your words look like a request
-                are they sent to our server to work out what you want and pick out details such as times or app names. What is sent is only what you
-                said, never what is on your screen.
+                <strong>Voice requests.</strong> When you speak, the app works out what you want: words to type, a message to
+                write for you, an answer, an action, or a reply to one of its own cards. It decides from what you said together
+                with the window you are in: its app and title and, if you let {brand.name} read your screen, its text, with
+                details such as email addresses, phone and card numbers and keys removed first. Private windows (banking,
+                password managers, medical and government pages and the like) and apps on your never-watch list are never read.
+                Where the Intelligence setting runs AI on your computer, this decision stays on your computer; otherwise it is
+                sent to our server for that one decision and not stored. With No AI nothing is sent: your words are typed as
+                you said them.
               </p>
               <p>
                 <strong>AI polish.</strong> AI polish tidies the text you dictate. It is off by default for new installs
-                and can be turned on during setup or at any time in Account; while it is off, ordinary dictation stays on
-                your computer. When you ask {brand.name} to write a message for you, it does so whether or not polish is
+                and can be turned on during setup or at any time in Account; while it is off, your words are typed as you
+                said them (the decision described under Voice requests still runs). When you ask {brand.name} to write a message for you, it does so whether or not polish is
                 on; for a reply, the request also includes your name as set on your computer (on macOS and Linux), your
                 signed-in email if you are signed in, and the name of the person you’re answering as shown in the
                 window, so the message is addressed to the right person. When it is on, the text you dictate (never audio) is processed as
@@ -102,11 +106,10 @@ export default function PrivacyPage() {
                 computer.
                 </p>
                 <p>
-                <strong>Smart writing.</strong> With the Writing setting on Smart (the default), plain speech is typed as you
-                said it without calling a model. When your words read as an instruction to write something, when they are
-                unclear, or when you ask to rewrite text you have selected, what you said (and that selected text) is
-                processed as described above to decide and write it. Choose “Always as I said” to have your exact words typed
-                unless you ask {brand.name} by name. Your per-app writing preferences are stored on your device.
+                <strong>Smart writing.</strong> With the Writing setting on Smart (the default), the same decision says whether
+                to type your words as you said them, tidy them, or write something for you; when you ask to rewrite text you
+                have selected, that text is processed as described above to rewrite it. Choose “Always as I said” to have your
+                exact words typed unless you use the Ask key. Your per-app writing preferences are stored on your device.
               </p>
               <p>
                 <strong>Web search.</strong> For questions that need the web, our server sends only the search query to

@@ -22,7 +22,7 @@
     },
     {
       "id": "noai.en.question",
-      "about": "No AI: a question is answered by saying it needs AI, never silence.",
+      "about": "No AI, a question on the desktop: nothing sent, nothing typed into the window. With no model to understand it, it is offered with Copy (and \"Ask instead\", which says AI is off), never silence.",
       "tags": ["no-ai", "critical", "regression"],
       "lang": "en",
       "screen": "finder_desktop",
@@ -34,8 +34,7 @@
       },
       "regression": "0.1.9 #7: with No AI, a question on the Windows/Linux desktop was typed into File Explorer / Files",
       "expect": {
-        "route": "answer",
-        "shows": ["hud.status.aiOff"],
+        "route": "did_you_mean",
         "must_not": ["model_call", "silent", "typed"]
       }
     },
@@ -71,8 +70,8 @@
       }
     },
     {
-      "id": "noai.en.reminder-rules",
-      "about": "No AI: an English reminder is read by the rules, with no model.",
+      "id": "noai.en.reminder",
+      "about": "No AI, a reminder on the desktop: no phrase rules stand in for a model, so it is offered with Copy (and \"Ask instead\", which says AI is off), never typed or lost.",
       "tags": ["no-ai"],
       "lang": "en",
       "screen": "finder_desktop",
@@ -83,8 +82,8 @@
         "writing": "smart"
       },
       "expect": {
-        "route": "remind",
-        "must_not": ["model_call"]
+        "route": "did_you_mean",
+        "must_not": ["model_call", "silent", "typed"]
       }
     },
     {

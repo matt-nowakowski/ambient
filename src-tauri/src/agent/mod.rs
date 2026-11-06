@@ -5,13 +5,11 @@
 pub mod act;
 pub mod answer;
 pub mod budget;
-pub mod compose;
 mod fresh;
 pub mod judge;
 #[cfg(any(target_os = "linux", test))]
 pub(crate) mod linux;
 pub mod llm;
-pub mod markers;
 pub mod notice;
 pub mod personal;
 pub mod proactive;
@@ -81,10 +79,6 @@ fn is_recording(app: &AppHandle) -> bool {
 /// The last app the user was in that isn't Ambient itself, so "about this"
 /// still works after the user clicks into an Ambient window.
 static LAST_USER_APP: Mutex<Option<FrontmostApp>> = Mutex::new(None);
-
-pub fn last_user_app() -> Option<FrontmostApp> {
-    LAST_USER_APP.lock().ok().and_then(|g| g.clone())
-}
 
 /// Set while the agent tour's "Try it now" is on screen.
 static TOUR_TRY: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
@@ -518,13 +512,19 @@ pub fn handle(app: &AppHandle, route: Route) {
         Route::Act(_) => milestone(app, "action"),
         Route::Recall(_) => milestone(app, "recall"),
         Route::Compose(_) => milestone(app, "answer"),
-        Route::Write(_) | Route::Help | Route::Dismiss | Route::Handled | Route::Report(_) => {}
+        Route::Write { .. }
+        | Route::Rewrite(_)
+        | Route::CardReply { .. }
+        | Route::Help
+        | Route::Dismiss
+        | Route::Handled
+        | Route::Report(_) => {}
     }
     log::debug!("agent: handling {}", router::route_name(Some(&route)));
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
         match route {
-            Route::Write(_) | Route::Handled => {}
+            Route::Write { .. } | Route::Rewrite(_) | Route::CardReply { .. } | Route::Handled => {}
             Route::Help => crate::hud::show(&app, crate::hud::HudContent::Help),
             Route::Dismiss => crate::hud::hide(&app),
             // "Send this to the team?": nothing leaves until Send. A report
@@ -934,32 +934,6 @@ fn reply_then_paste(app: &AppHandle, text: String) {
     }
 }
 
-/// Gmail's Reply, as the button or link is named in its main languages.
-const REPLY_LABELS: &[&str] = &[
-    "Reply",
-    "Responder",
-    "Antworten",
-    "Répondre",
-    "Rispondi",
-    "Odpowiedz",
-    "Ответить",
-    "Відповісти",
-    "Beantwoorden",
-    "Svara",
-    "Svar",
-    "Odpovědět",
-    "Yanıtla",
-    "Balas",
-    "Trả lời",
-    "返信",
-    "回复",
-    "回覆",
-    "답장",
-    "השב",
-    "رد",
-    "जवाब दें",
-];
-
 /// Webmail in a browser, from the URL or the window title. Google Workspace
 /// titles end with the organisation's "… Mail", not "Gmail":
 /// "Subject - sam@acme.com - Acme Mail".
@@ -969,32 +943,60 @@ pub fn is_webmail_window(url: &str, title: &str) -> bool {
         || (title.ends_with(" Mail") && title.contains('@') && title.contains(" - "))
 }
 
-/// Send ⌘R (Ctrl+R elsewhere) or a bare key to the app in front.
-fn send_key(app: &AppHandle, key: char, command: bool) -> bool {
+/// A key combination as the model wrote it ("cmd+r", "ctrl+shift+n", "r"):
+/// its modifiers and its one key. None for anything else.
+fn parse_combo(combo: &str) -> Option<(Vec<enigo::Key>, enigo::Key)> {
+    use enigo::Key;
+    let mut mods = Vec::new();
+    let mut key = None;
+    for part in combo.split('+').map(|p| p.trim().to_lowercase()) {
+        let m = match part.as_str() {
+            "cmd" | "command" | "meta" | "super" | "win" => Some(Key::Meta),
+            "ctrl" | "control" => Some(Key::Control),
+            "alt" | "option" | "opt" => Some(Key::Alt),
+            "shift" => Some(Key::Shift),
+            _ => None,
+        };
+        match m {
+            Some(m) => mods.push(m),
+            None if key.is_none() => {
+                let mut chars = part.chars();
+                key = match (chars.next(), chars.next()) {
+                    (Some(c), None) => Some(Key::Unicode(c)),
+                    _ => match part.as_str() {
+                        "enter" | "return" => Some(Key::Return),
+                        "tab" => Some(Key::Tab),
+                        "esc" | "escape" => Some(Key::Escape),
+                        _ => None,
+                    },
+                };
+                key?;
+            }
+            None => return None,
+        }
+    }
+    Some((mods, key?))
+}
+
+/// Press a key combination in the app in front, on the main thread (a letter
+/// key looks up the keyboard layout, which macOS only allows there).
+fn send_keys(app: &AppHandle, combo: &str) -> bool {
     if crate::testing::active() {
-        crate::testing::record(
-            "key",
-            serde_json::json!({ "key": key.to_string(), "command": command }),
-        );
+        crate::testing::record("key", serde_json::json!({ "keys": combo }));
         return false;
     }
-    // On the main thread: a letter key looks up the keyboard layout, which
-    // macOS only allows there (it killed the app on Gmail's "r" fallback).
+    let Some((mods, key)) = parse_combo(combo) else {
+        return false;
+    };
     crate::clipboard::with_enigo(app, move |enigo| {
-        use enigo::{Direction, Key, Keyboard};
-        #[cfg(target_os = "macos")]
-        let modifier = Key::Meta;
-        #[cfg(not(target_os = "macos"))]
-        let modifier = Key::Control;
-        if command {
-            enigo
-                .key(modifier, Direction::Press)
-                .map_err(|e| e.to_string())?;
+        use enigo::{Direction, Keyboard};
+        for m in &mods {
+            enigo.key(*m, Direction::Press).map_err(|e| e.to_string())?;
         }
-        let clicked = enigo.key(Key::Unicode(key), Direction::Click);
+        let clicked = enigo.key(key, Direction::Click);
         std::thread::sleep(Duration::from_millis(30));
-        if command {
-            let _ = enigo.key(modifier, Direction::Release);
+        for m in mods.iter().rev() {
+            let _ = enigo.key(*m, Direction::Release);
         }
         clicked.map_err(|e| e.to_string())
     })
@@ -1015,43 +1017,61 @@ fn wait_for_field(timeout: Duration) -> Option<bool> {
     last
 }
 
-/// Open a reply box: Mail with ⌘R; Gmail in a browser by pressing its Reply
-/// button through accessibility (works whether or not Gmail's keyboard
-/// shortcuts are on), else its "r" shortcut. Ok once a text field has focus.
-fn open_reply_box(app: &AppHandle) -> Result<&'static str, &'static str> {
-    let place = router::place();
-    // Apple Mail (⌘R) and Outlook on Windows (Ctrl+R).
-    if context::is_mail_app(&place.bundle_id) {
-        if !send_key(app, 'r', true) {
-            return Err("mail: couldn't send cmd-r");
-        }
-        // The compose body doesn't always report itself as a text field;
-        // ⌘R / Ctrl+R reliably opens and focuses it, so paste unless focus
-        // is certainly elsewhere.
-        return match wait_for_field(Duration::from_millis(1500)) {
-            Some(false) => Err("mail: cmd-r opened no reply"),
-            _ => Ok("mail cmd-r"),
-        };
+/// How to open a reply to what's in front, as the last decision read it
+/// off the screen (`router::Opener`). Kept briefly: the draft it's for is
+/// written in the meantime.
+static REPLY_OPENER: Mutex<Option<(Instant, router::Opener)>> = Mutex::new(None);
+const OPENER_FRESH: Duration = Duration::from_secs(90);
+
+pub(crate) fn set_reply_opener(open: Option<router::Opener>) {
+    if let Ok(mut g) = REPLY_OPENER.lock() {
+        *g = open.map(|o| (Instant::now(), o));
     }
-    if is_browser(&place.bundle_id) && is_webmail_window(&place.url, &place.title) {
-        let pressed = context::press_labeled(REPLY_LABELS);
+}
+
+fn reply_opener() -> Option<router::Opener> {
+    REPLY_OPENER
+        .lock()
+        .ok()?
+        .as_ref()
+        .filter(|(at, _)| at.elapsed() < OPENER_FRESH)
+        .map(|(_, o)| o.clone())
+}
+
+/// Whether a reply box can be opened for what's in front (the draft card
+/// then offers Reply).
+pub(crate) fn can_open_reply() -> bool {
+    reply_opener().is_some()
+}
+
+/// Open a reply box the way the decision read off the screen: press the
+/// button or link with that label (where the OS lets us), else the app's
+/// shortcut. Ok once a text field has focus.
+fn open_reply_box(app: &AppHandle) -> Result<&'static str, &'static str> {
+    let Some(open) = reply_opener() else {
+        return Err("no way to open a reply was seen");
+    };
+    if let Some(label) = open.button.as_deref() {
+        let pressed = context::press_labeled(&[label]);
         log::debug!(
-            "compose: gmail reply button press result {pressed} (0 pressed, 1 not found, 2 failed, 3 unavailable)"
+            "compose: reply button press result {pressed} (0 pressed, 1 not found, 2 failed, 3 unavailable)"
         );
         if pressed == 0 && wait_for_field(Duration::from_millis(2500)) == Some(true) {
-            return Ok("gmail reply button");
+            return Ok("reply button");
         }
-        // Gmail's own shortcut, which only works with keyboard shortcuts on
-        // and focus on the thread. Never typed into a field: focus isn't one.
-        if field_state().0 == Some(false)
-            && send_key(app, 'r', false)
-            && wait_for_field(Duration::from_millis(2000)) == Some(true)
-        {
-            return Ok("gmail r shortcut");
-        }
-        return Err("gmail: no reply field took focus");
     }
-    Err("not mail or gmail")
+    // The app's own shortcut. Never typed into a field: focus isn't one.
+    if let Some(keys) = open.keys.as_deref() {
+        if field_state().0 != Some(true) && send_keys(app, keys) {
+            // Some compose bodies don't report themselves as a text field:
+            // paste unless focus is certainly elsewhere.
+            return match wait_for_field(Duration::from_millis(2000)) {
+                Some(false) => Err("the shortcut opened no reply"),
+                _ => Ok("reply shortcut"),
+            };
+        }
+    }
+    Err("no reply box took focus")
 }
 
 /// The HUD's "Reply" on a drafted answer: open a reply and paste the draft.
@@ -1087,43 +1107,97 @@ pub fn ask_instead(app: &AppHandle, text: String) {
     });
 }
 
-/// Route words that are certainly for the agent: the first passes, then
-/// the router told never to write; an answer when it can't decide.
+/// Route words that are certainly for the agent ("Ask instead", hands-free):
+/// decided by reasoning like any dictation, never typed; an answer when no
+/// model can decide (it says why).
 pub(crate) async fn route_for_agent(app: &AppHandle, text: &str) -> Route {
-    if router::is_help_request(text) {
-        return Route::Help;
-    }
-    if let Some(r) = report::report_intent(text) {
-        return Route::Report(r);
-    }
-    if let Some(r) = when::reminder_request(text, when::local_now()) {
-        return Route::Act(router::Action::Reminder {
-            due: r.due_string(),
-            title: r.title,
-        });
-    }
-    if let Some(m) = markers::detect(text).filter(|m| m.kind == markers::Kind::Draft) {
-        return Route::Compose(m.instruction());
-    }
-    if let compose::ComposeIntent::Yes(i) = compose::compose_intent(text) {
-        return Route::Compose(i);
-    }
     let answer = || Route::Answer {
         query: text.to_string(),
         needs_web: false,
         about_screen: false,
     };
-    if llm::target(app).is_none() {
+    if llm::target(app).is_none() || llm::needs_cloud(app) {
         return answer();
     }
     let agent = crate::settings::get_settings(app).agent;
-    let place = tauri::async_runtime::spawn_blocking(move || router::place_for(true, &agent))
+    let place = tauri::async_runtime::spawn_blocking(move || router::place_for(false, &agent))
         .await
         .unwrap_or_default();
-    match router::route(app, text, "", &place, true, answer::last_turn(), false).await {
-        Some(Route::Write(_)) | None => answer(),
-        Some(r) => r,
+    let screen = answer::decision_screen(app).await;
+    let decided = router::route(
+        app,
+        router::Moment {
+            transcript: text,
+            place: &place,
+            screen: screen.as_deref(),
+            selection: false,
+            ask: true,
+            previous: answer::last_turn(),
+            card: None,
+            typing: router::Typing::AsSaid,
+        },
+    )
+    .await;
+    match decided {
+        Some(router::Decided {
+            route: Route::Compose(instruction),
+            open,
+            ..
+        }) => {
+            set_reply_opener(open);
+            Route::Compose(instruction)
+        }
+        Some(router::Decided {
+            route:
+                Route::Write { .. } | Route::Rewrite(_) | Route::CardReply { .. } | Route::Handled,
+            ..
+        })
+        | None => answer(),
+        Some(d) => d.route,
     }
+}
+
+// ── Answering Ambient's own cards by voice ───────────────────────────────
+
+/// The card on screen, as the decision is told about it, with the answers
+/// it takes. None when no card of Ambient's is up.
+pub(crate) fn voice_card(app: &AppHandle) -> Option<router::Card> {
+    let _ = app;
+    if let Some(card) = report::voice_card() {
+        return Some(card);
+    }
+    if let Some(card) = proactive::voice_card() {
+        return Some(card);
+    }
+    if writing::can_use_my_words() {
+        return Some(router::Card {
+            about: "you just typed a cleaned-up or written version of what they said; they can ask for their own words back".into(),
+            replies: vec!["undo"],
+        });
+    }
+    let content = crate::hud::current().filter(|_| crate::hud::is_visible())?;
+    let about = match content {
+        crate::hud::HudContent::Answer { question, .. } => {
+            format!("your answer to \"{question}\"")
+        }
+        crate::hud::HudContent::Draft { .. } => "a draft you wrote for them".into(),
+        crate::hud::HudContent::Help => "examples of what they can say".into(),
+        crate::hud::HudContent::Writing { .. } => return None,
+        _ => "a notice".into(),
+    };
+    Some(router::Card {
+        about,
+        replies: Vec::new(),
+    })
+}
+
+/// Act on an answer to the card on screen (see `voice_card`). False when
+/// no card takes it any more.
+pub(crate) fn answer_card(app: &AppHandle, reply: &str, say: Option<&str>) -> bool {
+    if reply == "undo" {
+        return writing::use_my_words(app);
+    }
+    report::voice_reply(app, reply) || proactive::voice_reply(app, reply, say)
 }
 
 // ── "Search this instead?" ───────────────────────────────────────────────

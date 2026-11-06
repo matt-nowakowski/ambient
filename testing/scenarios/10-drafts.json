@@ -9,6 +9,26 @@
     }
   },
   "screens": {
+    "gmail_thread_lucia_es": {
+      "app": {
+        "macos": "Google Chrome",
+        "windows": "Google Chrome",
+        "linux": "Google Chrome"
+      },
+      "bundle": {
+        "macos": "com.google.Chrome",
+        "windows": "chrome.exe",
+        "linux": "google-chrome"
+      },
+      "title": "Presupuesto Q1 - matt@example.com - Gmail",
+      "url": "https://mail.google.com/mail/u/0/#inbox/FMfcgz456",
+      "text": "Presupuesto Q1\nRecibidos\nLucía Fernández <lucia@acme.es>\npara mí\nHola Matt,\n\nTe adjunto el presupuesto del primer trimestre. ¿Lo revisas y me dices si está todo bien?\n\nGracias,\nLucía\nResponder\nReenviar",
+      "focus": {
+        "role": "AXWebArea",
+        "editable": false
+      },
+      "reply_button": true
+    },
     "mail_reply_quoted_mine": {
       "app": {
         "macos": "Mail",
@@ -434,6 +454,21 @@
         "recipient": "Sam",
         "language": "en",
         "must_not": ["typed_verbatim"]
+      }
+    },
+    {
+      "id": "draft.es.gmail.no-reply-box",
+      "about": "Gmail in Spanish, a thread open with no reply box: the reply is drafted to Lucía in Spanish, with the reply opened the way the screen shows (no per-site rules).",
+      "tags": ["gmail", "critical", "regression"],
+      "lang": "es",
+      "screen": "gmail_thread_lucia_es",
+      "say": "responde a este correo diciendo que está todo bien",
+      "regression": "0.1.16: \"Reply to this email saying it's all good\" in Gmail with the window closed fell back to a hard-coded Gmail shortcut and crashed the app",
+      "expect": {
+        "route": "draft",
+        "recipient": "Lucía",
+        "language": "es",
+        "must_not": ["typed_verbatim", "silent"]
       }
     },
     {

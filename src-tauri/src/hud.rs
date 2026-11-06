@@ -397,13 +397,6 @@ pub fn current() -> Option<HudContent> {
     CURRENT.lock().ok().and_then(|g| g.clone())
 }
 
-/// An answer card (or the help card) is on screen, so what the user says
-/// next is probably a follow-up.
-pub fn showing_answer() -> bool {
-    is_visible()
-        && current().is_some_and(|c| matches!(c, HudContent::Answer { .. } | HudContent::Help))
-}
-
 /// Show (or update) the HUD. Safe to call from any thread.
 pub fn show(app: &AppHandle, content: HudContent) {
     if let HudContent::Answer { id, .. } = &content {

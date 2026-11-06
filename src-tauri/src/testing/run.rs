@@ -213,7 +213,7 @@ fn is_final(e: &Value) -> bool {
 fn route_json(route: &Route) -> Value {
     let name = crate::agent::router::route_name(Some(route));
     match route {
-        Route::Write(text) => json!({ "name": name, "text": text }),
+        Route::Write { tidy, for_you } => json!({ "name": name, "tidy": tidy, "for_you": for_you }),
         Route::Answer {
             query,
             needs_web,
@@ -227,7 +227,8 @@ fn route_json(route: &Route) -> Value {
             "kind": act_kind(action),
         }),
         Route::Recall(q) => json!({ "name": name, "query": q }),
-        Route::Compose(i) => json!({ "name": name, "instruction": i }),
+        Route::Compose(i) | Route::Rewrite(i) => json!({ "name": name, "instruction": i }),
+        Route::CardReply { reply, say } => json!({ "name": name, "reply": reply, "say": say }),
         Route::Report(r) => json!({ "name": name, "message": r.message, "explicit": r.explicit }),
         Route::Help | Route::Dismiss | Route::Handled => json!({ "name": name }),
     }

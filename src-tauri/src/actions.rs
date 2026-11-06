@@ -739,175 +739,42 @@ pub(crate) async fn process_transcription_output(
     .await
 }
 
-/// What smart writing knows by the time it decides.
-struct SmartInputs {
-    plan: crate::agent::writing::WritePlan,
-    ctx: crate::agent::writing::Ctx,
-    bundle: String,
-    /// The router (a model) read the words and didn't say "compose".
-    router_ran: bool,
-    /// The router's polished text, when it polished.
-    router_text: Option<String>,
-    /// Long enough to be worth polishing (`WritePlan::polish_worth_it`).
-    polish_worth_it: bool,
-    /// The user's style for this app or site.
-    style: Option<crate::settings::WritingStyle>,
-    started: Instant,
-}
-
-/// Smart writing's decision for a dictation into a text field: as said (no
-/// model call, as fast as plain dictation), polished, or written for the
-/// user. "As said" whenever unsure or when AI isn't available.
-async fn smart_write(
-    app: &AppHandle,
-    settings: &AppSettings,
-    transcription: &str,
-    i: SmartInputs,
-    working: &impl Fn(),
-    written: &impl Fn(String, crate::agent::writing::Source) -> ProcessedTranscription,
-) -> ProcessedTranscription {
-    use crate::agent::writing::{self, Decision, Source, Typed, Verdict};
-    let tunables = writing::tunables_for(settings, &i.bundle);
-    let (mut decision, source) = match writing::classify(transcription, &i.ctx, &tunables) {
-        Verdict::Decided(d) => (d, Source::Rules),
-        // The router already asked a model, which didn't say "compose".
-        Verdict::Ambiguous { fallback } if i.router_ran => (fallback, Source::Model),
-        Verdict::Ambiguous { fallback } => {
-            working();
-            match writing::model_decide(app, transcription, &i.ctx).await {
-                Some(d) => (d, Source::Model),
-                None => (fallback, Source::Rules),
-            }
-        }
-    };
-    // Polishing needs AI polish turned on (and more than a few words);
-    // writing for the user doesn't: it's an agent action, and needs only a
-    // model it may use ("On this computer only" without one never sends
-    // anything).
-    // The user's style here: "as said" types their words unless polish
-    // was asked for or Ambient was addressed; "polished" polishes clean
-    // speech too.
-    use crate::settings::WritingStyle;
-    match i.style {
-        Some(WritingStyle::AsSaid) if !i.plan.explicit => {
-            if decision == Decision::Polished || (decision == Decision::Written && !i.ctx.addressed)
-            {
-                decision = Decision::AsSaid;
-            }
-        }
-        Some(WritingStyle::Polished) if decision == Decision::AsSaid => {
-            decision = Decision::Polished;
-        }
-        _ => {}
-    }
-    if (decision == Decision::Polished && !(i.plan.polish_on && i.polish_worth_it))
-        || (decision == Decision::Written && crate::agent::llm::needs_cloud(app))
-    {
-        decision = Decision::AsSaid;
-    }
-    // Free's weekly AI uses are spent (polish and writing share the pool):
-    // as said, and `limits` says so gently, once that week.
-    if decision != Decision::AsSaid && !crate::limits::ai_available(app) {
-        crate::limits::ai_spent(app, crate::limits::Show::Once);
-        decision = Decision::AsSaid;
-    }
-    crate::telemetry::write_mode(decision.name(), source.name(), &i.bundle);
-    debug!(
-        "writing: {} by {} after {:?} (fresh {:?}, replying {}, selection {})",
-        decision.name(),
-        source.name(),
-        i.started.elapsed(),
-        i.ctx.scene.fresh,
-        i.ctx.scene.replying,
-        i.ctx.has_selection
-    );
-    let as_said = || ProcessedTranscription {
-        final_text: crate::agent::styles::finish(i.style, transcription),
-        post_processed_text: None,
-        post_process_prompt: None,
-        agent_route: None,
-        offer_search: None,
-        writing: None,
-        written: None,
-    };
-    match decision {
-        Decision::Written => written(
-            crate::agent::router::without_address(transcription)
-                .trim()
-                .to_string(),
-            source,
-        ),
-        Decision::AsSaid => {
-            crate::telemetry::dictation(false, i.started.elapsed());
-            as_said()
-        }
-        Decision::Polished => {
-            let polished = match i.router_text {
-                Some(t) => Polish::Text(t),
-                None => {
-                    working();
-                    match post_process_transcription(
-                        app,
-                        settings,
-                        transcription,
-                        crate::agent::styles::note(i.style),
-                    )
-                    .await
-                    {
-                        Polish::Text(t) => Polish::Text(keep_custom_spellings(settings, t)),
-                        other => other,
-                    }
-                }
-            };
-            let failed = polished == Polish::Failed;
-            let polished = polished.text();
-            debug!(
-                "writing: polish ready {:?} after the transcript",
-                i.started.elapsed()
-            );
-            crate::telemetry::dictation(polished.is_some(), i.started.elapsed());
-            match polished {
-                // Polish changed something: say so, and offer their words.
-                Some(text) if !text.trim().is_empty() && text.trim() != transcription.trim() => {
-                    let text = crate::agent::styles::finish(i.style, &text);
-                    ProcessedTranscription {
-                        final_text: text.clone(),
-                        post_processed_text: Some(text),
-                        post_process_prompt: selected_polish_prompt(settings),
-                        agent_route: None,
-                        offer_search: None,
-                        writing: Some(Typed {
-                            decision: Decision::Polished,
-                            raw: transcription.to_string(),
-                            note: None,
-                            rewrite: false,
-                        }),
-                        written: None,
-                    }
-                }
-                // Nothing to clean up after all.
-                Some(_) => as_said(),
-                None => {
-                    crate::telemetry::error("polish", "failed");
-                    // A spent pool was said by `limits` (post_process_transcription);
-                    // a failure says so quietly once the words are typed.
-                    ProcessedTranscription {
-                        writing: failed.then(|| polish_failed_note(transcription)),
-                        ..as_said()
-                    }
-                }
-            }
-        }
-    }
-}
-
 /// Called when a slow path starts (polishing, writing, a model deciding), to
 /// show the "Polishing" state that "as said" never needs.
 pub(crate) type OnWorking = Box<dyn Fn() + Send + Sync>;
 
-/// Turn a transcript into what's typed, or a request for the agent. For a
-/// dictation, `plan` says how it may be written (smart writing: as said,
-/// polished, or written for the user; see `agent::writing`).
+/// How the user wants dictation typed here: their writing mode, the polish
+/// shortcut, and their style for this app or site.
+fn typing_for(
+    plan: &crate::agent::writing::WritePlan,
+    style: Option<crate::settings::WritingStyle>,
+) -> crate::agent::router::Typing {
+    use crate::agent::router::Typing;
+    use crate::settings::{WritingMode, WritingStyle};
+    if plan.force_polish {
+        return Typing::Polished;
+    }
+    match style {
+        Some(WritingStyle::AsSaid) => return Typing::AsSaid,
+        Some(WritingStyle::Polished) => return Typing::Polished,
+        _ => {}
+    }
+    match plan.mode {
+        WritingMode::Smart => Typing::WhenItHelps,
+        WritingMode::Polish => Typing::Polished,
+        WritingMode::AsSaid => Typing::AsSaid,
+    }
+}
+
+/// Turn a transcript into what's typed, or a request for the agent.
+///
+/// Every dictation is decided by reasoning (`router::route`): what was said,
+/// with the screen, picks whether it's typed (as said or tidied), written
+/// for the user, answered, acted on, or an answer to one of Ambient's cards.
+/// Without a model (No AI, on this computer only without one, offline,
+/// Free's routing allowance spent, past the deadline), the words are typed
+/// as said, and the Ask key says what's missing in a card. Files, setup's
+/// Try it and a user who turned the agent off get plain dictation.
 pub(crate) async fn process_dictation_output(
     app: &AppHandle,
     transcription: &str,
@@ -915,32 +782,23 @@ pub(crate) async fn process_dictation_output(
     mode: OutputMode,
     on_working: Option<OnWorking>,
 ) -> ProcessedTranscription {
+    use crate::agent::router::{self, Route, Typing};
     use crate::agent::writing;
     let started = Instant::now();
     let settings = get_settings(app);
-    // Polish may happen: always (the polish shortcut, "Always polish"), or
-    // when smart writing decides so; never for a few words ("sounds good"),
-    // which can't gain enough to wait for a model.
     let polish_worth_it = plan.polish_worth_it(
         transcription,
         crate::remote_config::agent_config()
             .writing
             .skip_polish_words,
     );
-    let post_process = (plan.force_polish || (plan.smart() && plan.polish_on)) && polish_worth_it;
     let working = || {
         if let Some(f) = &on_working {
             f();
         }
     };
-    let mut final_text = transcription.to_string();
-    let mut post_processed_text: Option<String> = None;
-    let mut post_process_prompt: Option<String> = None;
-
-    // Voice agent routing: only phrases that look like a request pay for the
-    // router call, and its "write" result doubles as the polish.
     let ask = mode == OutputMode::Ask;
-    use crate::agent::router::{self, Action, Route};
+    let blank = is_blank_transcription(transcription);
     let handled = || ProcessedTranscription {
         final_text: String::new(),
         post_processed_text: None,
@@ -950,202 +808,8 @@ pub(crate) async fn process_dictation_output(
         writing: None,
         written: None,
     };
-    // One of Ambient's cards is up (not the smart-writing chip, which fades
-    // by itself, and words said beside it are dictation): what's said may
-    // close it.
-    let card_up = mode != OutputMode::File
-        && crate::hud::is_visible()
-        && !matches!(
-            crate::hud::current(),
-            None | Some(crate::hud::HudContent::Writing { .. })
-        );
-    if mode != OutputMode::File {
-        // A report card is up: "send it", "cancel", or (after Edit) the new
-        // message.
-        if crate::agent::report::handle_voice(app, transcription) {
-            return handled();
-        }
-        // Right after smart writing typed something: "use my words" takes
-        // it back; after Edit, what's said is how to change it.
-        if mode == OutputMode::Dictation && writing::handle_voice(app, transcription) {
-            return handled();
-        }
-        // Saying "yes", "not now" or "don't show me these" while a
-        // suggestion is up answers the suggestion instead of typing.
-        if crate::agent::proactive::handle_voice_feedback(app, transcription).await {
-            return handled();
-        }
-        // "Close that", "never mind" with one of Ambient's cards up: close
-        // it (every OS). The phrases are a fast path; the router judges the
-        // rest, in any language.
-        if card_up && router::dismiss_request(transcription) {
-            debug!("agent: card dismissed by voice");
-            crate::hud::hide(app);
-            return handled();
-        }
-    }
-    // A spoken marker ("reply that…", "remind me…", "note: …") decides
-    // routing before any model (`router::decide`). "Note: …" is typed as
-    // said, without the marker, however much it sounds like a request.
-    let marked = if mode == OutputMode::Dictation {
-        crate::agent::markers::detect(transcription)
-    } else {
-        None
-    };
-    let note = marked
-        .as_ref()
-        .is_some_and(|m| m.kind == crate::agent::markers::Kind::Note);
-    let transcription: &str = match &marked {
-        Some(m) if note => {
-            debug!("marker: note (typed as said, marker removed)");
-            m.body.as_str()
-        }
-        Some(m) => {
-            debug!(
-                "marker: {:?} ({})",
-                m.kind,
-                if m.trailing { "trailing" } else { "leading" }
-            );
-            transcription
-        }
-        None => transcription,
-    };
-    let cues = router::cues_cover(&settings.spoken_languages);
-    // An answer card is up: what's said next may be a follow-up to it.
-    let follow_up = mode == OutputMode::Dictation && crate::hud::showing_answer();
-    let help = router::is_help_request(transcription);
-    let compose_first = crate::agent::compose::compose_intent(transcription);
-    let compose_maybe = compose_first == crate::agent::compose::ComposeIntent::Maybe;
-    let compose_yes = !compose_maybe && compose_first != crate::agent::compose::ComposeIntent::No;
-    if compose_yes || compose_maybe {
-        debug!(
-            "compose first pass: {}",
-            if compose_yes {
-                "yes"
-            } else {
-                "maybe (router decides)"
-            }
-        );
-    }
-    let reminder =
-        crate::agent::when::reminder_request(transcription, crate::agent::when::local_now());
-    let report = crate::agent::report::report_intent(transcription);
-    // Not in setup's Try it, which shows plain dictation (see
-    // `WritePlan::for_dictation`).
-    let agent_on =
-        mode == OutputMode::Dictation && settings.agent.routing && settings.onboarding_completed;
-    let cued = ask
-        || (agent_on
-            && (router::looks_like_request(transcription)
-                || help
-                || compose_yes
-                || compose_maybe
-                || reminder.is_some()
-                || report.is_some()
-                || (marked.is_some() && !note)
-                || follow_up
-                // Languages the cues don't cover: in "Always polish" the
-                // router doubles as the polish, so routing every dictation
-                // costs nothing extra. In Smart it would put a model round
-                // trip in front of every dictation, even clean ones typed
-                // as said; there the cues (multilingual for drafting) decide.
-                || (!cues && post_process && !plan.smart())));
-    // Smart writing decides per dictation, with a text field to write in.
-    let smart_wanted =
-        mode == OutputMode::Dictation && plan.smart() && !is_blank_transcription(transcription);
-    // Where the user is: needed to route, and to know whether there's a
-    // text field at all (with none, speech is for the agent by default).
-    // A style set for some app or site needs to know where this goes.
-    let styled = mode == OutputMode::Dictation && !settings.app_styles.is_empty();
-    let place = if cued || agent_on || smart_wanted || styled {
-        // This dictation is going to the router: let an app or site the lists
-        // do not know be judged by its screen (see router::place_for).
-        let agent = settings.agent.clone();
-        tauri::async_runtime::spawn_blocking(move || router::place_for(cued, &agent))
-            .await
-            .unwrap_or_default()
-    } else {
-        Default::default()
-    };
-    let no_field = place.no_field;
-    crate::agent::styles::note_place(&place);
-    let style = if mode == OutputMode::Dictation {
-        crate::agent::styles::for_place(&settings, &place)
-    } else {
-        None
-    };
-    let style_note = crate::agent::styles::note(style);
-    // "As said" here: no polish unless asked for (the polish shortcut).
-    let post_process =
-        post_process && (plan.explicit || style != Some(crate::settings::WritingStyle::AsSaid));
-    // Typing a prompt into ChatGPT/Claude is writing, however it sounds.
-    let routable = (cued || (agent_on && no_field))
-        && !note
-        && (ask || !router::always_write_here(&place, transcription));
-    let sounds = router::sounds_like_request(transcription);
-    let strong = router::strong_request(transcription);
-    if agent_on || ask {
-        debug!(
-            "route inputs: no_field={no_field} editable={} messaging={} sounds_like_request={sounds} strong={strong} reminder={} report={} follow_up={follow_up}",
-            place.editable,
-            place.is_messaging(),
-            reminder.is_some(),
-            report.as_ref().map_or("none", |r| if r.explicit { "explicit" } else { "vague" }),
-        );
-    }
-    let smart_here = smart_wanted && !no_field && !ask;
-    let addressed = router::addresses_ambient(transcription);
-    // Written for the user without naming Ambient only in Smart; in "Always
-    // as I said" and "Always polish" an instruction is typed like any words.
-    let may_write = mode != OutputMode::Dictation
-        || ask
-        || addressed
-        || (plan.writes_unasked() && style != Some(crate::settings::WritingStyle::AsSaid));
-    // A selection to rewrite, and the field around the caret (a fresh
-    // message, a reply): read here, never sent.
-    let (has_selection, scene) = if smart_here {
-        let a = app.clone();
-        let (app_name, title) = (place.app.clone(), place.title.clone());
-        tauri::async_runtime::spawn_blocking(move || writing::read_field(&a, &app_name, &title))
-            .await
-            .unwrap_or_default()
-    } else {
-        Default::default()
-    };
-    let written = |instruction: String, source: writing::Source| {
-        crate::telemetry::write_mode("written", source.name(), &place.bundle_id);
-        crate::telemetry::route("compose", ask, place.editable);
-        debug!(
-            "writing: written for you ({}), selection={has_selection}",
-            source.name()
-        );
-        ProcessedTranscription {
-            final_text: String::new(),
-            post_processed_text: None,
-            post_process_prompt: None,
-            agent_route: None,
-            offer_search: None,
-            writing: None,
-            written: Some(writing::WriteRequest {
-                instruction,
-                raw: transcription.to_string(),
-                has_selection,
-                context: None,
-                replaces: None,
-                style,
-            }),
-        }
-    };
-    // "Make this more formal" with text selected: a rewrite of it, decided
-    // before any router call.
-    if smart_here && has_selection && writing::is_rewrite_command(transcription) {
-        return written(
-            router::without_address(transcription).trim().to_string(),
-            writing::Source::Rules,
-        );
-    }
-    let agent_route = |route: Route| {
-        crate::telemetry::route(router::route_name(Some(&route)), ask, place.editable);
+    let agent_route = |route: Route, editable: bool| {
+        crate::telemetry::route(router::route_name(Some(&route)), ask, editable);
         ProcessedTranscription {
             final_text: String::new(),
             post_processed_text: None,
@@ -1156,247 +820,319 @@ pub(crate) async fn process_dictation_output(
             written: None,
         }
     };
-    let decision = router::decide(
-        transcription,
-        &router::Situation {
-            no_field,
-            editable: place.editable,
-            messaging: place.is_messaging(),
-            ai_chat: place.is_ai_chat(),
-            ask,
-            follow_up,
-            did_you_mean_bias: crate::remote_config::agent_config().did_you_mean_bias,
-        },
-        crate::agent::when::local_now(),
-    );
-    let decision = if mode == OutputMode::Dictation
-        && !no_field
-        && !may_write
-        && matches!(decision.route, Some(Route::Compose(_)))
+
+    // The user pressed Edit on Ambient's writing or on a report: what's
+    // said next is the change (their choice, not a guess).
+    if mode == OutputMode::Dictation
+        && !blank
+        && (writing::handle_edit(app, transcription)
+            || crate::agent::report::handle_edit(app, transcription))
     {
-        router::Decision {
-            route: None,
-            to_agent: false,
-        }
-    } else {
-        decision
-    };
-    if routable && !is_blank_transcription(transcription) {
-        // Right after an answer, "that's wrong": offer to report it.
-        if (follow_up || no_field || ask)
-            && crate::agent::report::offer_after_answer(app, transcription)
-        {
-            return handled();
-        }
-        // Decided here, with no model call: "what can I say?", "reply here
-        // saying …" (drafted, never typed word for word), "remind me
-        // tomorrow morning to …", "report a bug: …".
-        // "Reply saying Thursday works" with a field focused: written for
-        // them, typed in place with "Use my words".
-        if let Some(Route::Compose(instruction)) = &decision.route {
-            if mode == OutputMode::Dictation && !no_field {
-                return written(instruction.clone(), writing::Source::Rules);
-            }
-        }
-        if let Some(route) = decision.route {
-            return agent_route(route);
-        }
-    }
-    let to_agent = decision.to_agent;
-    if routable && to_agent && !is_blank_transcription(transcription) {
-        // Show it was heard straight away, and read the screen while the
-        // router decides.
-        crate::hud::show(
-            app,
-            crate::hud::HudContent::Listening {
-                heard: transcription.trim().to_string(),
-            },
-        );
-        crate::agent::answer::prefetch_screen(app);
-        if crate::agent::llm::target(app).is_none() {
-            // No model to route with: answer it (the server says why if it can't).
-            return agent_route(Route::Answer {
-                query: transcription.to_string(),
-                needs_web: false,
-                about_screen: false,
-            });
-        }
-    }
-    // What the router made of it, for smart writing: it ran (a model read
-    // the words and didn't say "compose"), and its polished text.
-    let mut router_ran = false;
-    let mut router_text: Option<String> = None;
-    if routable
-        && !is_blank_transcription(transcription)
-        && crate::agent::llm::target(app).is_some()
-    {
-        let rules = if post_process {
-            let prompt = selected_polish_prompt(&settings).unwrap_or_default();
-            match style_note {
-                Some(note) => format!("{prompt}\n\n{note}"),
-                None => prompt,
-            }
-        } else {
-            String::new()
-        };
-        let previous = (ask || follow_up || sounds)
-            .then(crate::agent::answer::last_turn)
-            .flatten();
-        let routed = router::route(
-            app,
-            transcription,
-            &rules,
-            &place,
-            to_agent,
-            previous,
-            card_up,
-        )
-        .await;
-        // "Schon gut", "zamknij to" over a card: closed, like the fast path.
-        if routed == Some(Route::Dismiss) && card_up {
-            debug!("agent: card dismissed by voice (router)");
-            crate::telemetry::route("dismiss", ask, place.editable);
-            crate::hud::hide(app);
-            return handled();
-        }
-        // Never typed when it's for the agent: if the router still said
-        // "write" (or couldn't say), answer it instead. "Dismiss" with no
-        // card up means nothing: the same.
-        let routed = match routed {
-            Some(Route::Dismiss) => None,
-            r => r,
-        };
-        let routed = match routed {
-            Some(Route::Write(_)) | None if to_agent => Some(Route::Answer {
-                query: transcription.to_string(),
-                needs_web: false,
-                about_screen: false,
-            }),
-            // The router's reminder without a time: the words may have one.
-            Some(Route::Act(Action::Reminder { title, due: None })) => {
-                Some(Route::Act(Action::Reminder {
-                    title,
-                    due: reminder.as_ref().and_then(|r| r.due_string()),
-                }))
-            }
-            other => other,
-        };
-        match routed {
-            // The router says it's an instruction to write.
-            Some(Route::Compose(instruction))
-                if mode == OutputMode::Dictation && !no_field && may_write =>
-            {
-                return written(instruction, writing::Source::Model);
-            }
-            // ...but in "Always as I said" or "Always polish" it's typed.
-            Some(Route::Compose(_)) if mode == OutputMode::Dictation && !no_field => {
-                router_ran = true;
-                crate::telemetry::route("write", ask, place.editable);
-            }
-            Some(Route::Write(text)) if smart_here => {
-                router_ran = true;
-                if post_process {
-                    router_text = Some(keep_custom_spellings(&settings, text));
-                }
-                crate::telemetry::route("write", ask, place.editable);
-            }
-            Some(Route::Write(text)) => {
-                if post_process {
-                    let text = keep_custom_spellings(&settings, text);
-                    post_processed_text = Some(text.clone());
-                    post_process_prompt = Some(rules);
-                    final_text = text;
-                }
-                let final_text = crate::agent::styles::finish(style, &final_text);
-                // Only where a search is plausible: not when writing to people
-                // (messaging, email, docs) or prompting an AI assistant, and
-                // not with no field (that card offers "Ask instead").
-                let question = transcription.trim_end().ends_with('?')
-                    || router::starts_like_question(transcription);
-                let offer_search = (!to_agent
-                    && !no_field
-                    && question
-                    && !place.is_messaging()
-                    && !place.is_ai_chat())
-                .then(|| transcription.trim().to_string());
-                crate::telemetry::route("write", ask, place.editable);
-                crate::telemetry::dictation(post_processed_text.is_some(), started.elapsed());
-                return ProcessedTranscription {
-                    final_text,
-                    post_processed_text,
-                    post_process_prompt,
-                    agent_route: None,
-                    offer_search,
-                    writing: None,
-                    written: None,
-                };
-            }
-            Some(route) => return agent_route(route),
-            // Router unavailable or unsure: fall through to plain dictation.
-            None => crate::telemetry::route("none", ask, place.editable),
-        }
+        return handled();
     }
 
-    if smart_here {
-        return smart_write(
+    // Not in setup's Try it, which shows plain dictation (see
+    // `WritePlan::for_dictation`), and not when the user turned the agent off.
+    let agent_on = ask
+        || (mode == OutputMode::Dictation
+            && settings.agent.routing
+            && settings.onboarding_completed);
+    let model = agent_on
+        && !blank
+        && crate::agent::llm::target(app).is_some()
+        && !crate::agent::llm::needs_cloud(app);
+
+    let place = if mode == OutputMode::File {
+        Default::default()
+    } else {
+        let agent = settings.agent.clone();
+        tauri::async_runtime::spawn_blocking(move || router::place_for(false, &agent))
+            .await
+            .unwrap_or_default()
+    };
+    crate::agent::styles::note_place(&place);
+    let style = if mode == OutputMode::Dictation {
+        crate::agent::styles::for_place(&settings, &place)
+    } else {
+        None
+    };
+    let typing = typing_for(&plan, style);
+
+    if ask && !model && !blank {
+        // No model to decide with: the answer path says why (No AI, on this
+        // computer only without a model, Free's allowance).
+        return agent_route(
+            Route::Answer {
+                query: transcription.to_string(),
+                needs_web: false,
+                about_screen: false,
+            },
+            place.editable,
+        );
+    }
+
+    if model {
+        working();
+        // Text selected in the field (a rewrite), read here and never sent.
+        let selection = if mode == OutputMode::Dictation && place.editable {
+            let a = app.clone();
+            tauri::async_runtime::spawn_blocking(move || writing::has_selection(&a))
+                .await
+                .unwrap_or(false)
+        } else {
+            false
+        };
+        let screen = crate::agent::answer::decision_screen(app).await;
+        let previous = crate::agent::answer::last_turn();
+        let card = crate::agent::voice_card(app);
+        let decided = router::route(
+            app,
+            router::Moment {
+                transcript: transcription,
+                place: &place,
+                screen: screen.as_deref(),
+                selection,
+                ask,
+                previous,
+                card,
+                typing,
+            },
+        )
+        .await;
+        debug!(
+            "decided {} after {:?}",
+            router::route_name(decided.as_ref().map(|d| &d.route)),
+            started.elapsed()
+        );
+        let written = |instruction: String, has_selection: bool| {
+            crate::telemetry::write_mode("written", "model", &place.bundle_id);
+            crate::telemetry::route("compose", ask, place.editable);
+            ProcessedTranscription {
+                final_text: String::new(),
+                post_processed_text: None,
+                post_process_prompt: None,
+                agent_route: None,
+                offer_search: None,
+                writing: None,
+                written: Some(writing::WriteRequest {
+                    instruction,
+                    raw: transcription.to_string(),
+                    has_selection,
+                    context: None,
+                    replaces: None,
+                    style,
+                }),
+            }
+        };
+        // Written for them without asking Ambient by name only in Smart; in
+        // "Always as I said" and "Always polish" an instruction is typed
+        // like any words unless they spoke to Ambient (the user's setting).
+        let addressed = decided.as_ref().is_some_and(|d| d.addressed);
+        let may_write = ask
+            || addressed
+            || mode != OutputMode::Dictation
+            || (plan.writes_unasked() && style != Some(crate::settings::WritingStyle::AsSaid));
+        // Words said only to say how to type it ("note: …") aren't typed.
+        let words = decided
+            .as_ref()
+            .and_then(|d| d.drop.as_deref())
+            .map(|d| router::without(transcription, d))
+            .filter(|w| !w.is_empty())
+            .unwrap_or_else(|| transcription.to_string());
+        match decided.map(|d| (d.route, d.open)) {
+            Some((Route::CardReply { reply, say }, _)) => {
+                if crate::agent::answer_card(app, &reply, say.as_deref()) {
+                    return handled();
+                }
+            }
+            Some((Route::Dismiss, _)) => {
+                if crate::hud::is_visible() {
+                    crate::telemetry::route("dismiss", ask, place.editable);
+                    crate::hud::hide(app);
+                }
+                return handled();
+            }
+            // Compose with a field focused: written in place, with "Use my
+            // words". With none, drafted and offered (or put into a reply it
+            // opens, `open`).
+            Some((Route::Compose(instruction), _))
+                if mode == OutputMode::Dictation
+                    && place.editable
+                    && !place.no_field
+                    && may_write =>
+            {
+                return written(instruction, false);
+            }
+            Some((Route::Compose(instruction), open))
+                if !place.editable || place.no_field || ask =>
+            {
+                crate::agent::set_reply_opener(open);
+                return agent_route(Route::Compose(instruction), place.editable);
+            }
+            Some((Route::Rewrite(instruction), _)) if selection && may_write => {
+                return written(instruction, true);
+            }
+            Some((Route::Write { .. }, _))
+            | Some((Route::Compose(_), _))
+            | Some((Route::Rewrite(_), _))
+                if ask =>
+            {
+                return agent_route(
+                    Route::Answer {
+                        query: transcription.to_string(),
+                        needs_web: false,
+                        about_screen: false,
+                    },
+                    place.editable,
+                );
+            }
+            Some((Route::Write { tidy, for_you }, _)) => {
+                let tidy = match typing {
+                    Typing::AsSaid => false,
+                    Typing::Polished => true,
+                    Typing::WhenItHelps => tidy,
+                };
+                let offer = for_you.then(|| words.trim().to_string());
+                crate::telemetry::route("write", ask, place.editable);
+                return type_it(
+                    app,
+                    &settings,
+                    &words,
+                    &plan,
+                    style,
+                    tidy && polish_worth_it,
+                    offer,
+                    started,
+                    &working,
+                )
+                .await;
+            }
+            // Compose or Rewrite the user's setting types as words.
+            Some((Route::Compose(_), _)) | Some((Route::Rewrite(_), _)) => {
+                crate::telemetry::route("write", ask, place.editable);
+                return type_it(
+                    app,
+                    &settings,
+                    transcription,
+                    &plan,
+                    style,
+                    typing == Typing::Polished && polish_worth_it,
+                    None,
+                    started,
+                    &working,
+                )
+                .await;
+            }
+            Some((route, _)) => return agent_route(route, place.editable),
+            None => crate::telemetry::route("none", ask, place.editable),
+        }
+        // Undecided (no reply, an error, past the deadline): as said.
+        return type_it(
             app,
             &settings,
             transcription,
-            SmartInputs {
-                plan,
-                ctx: writing::Ctx {
-                    has_selection,
-                    category: crate::telemetry::app_category(&place.bundle_id),
-                    ai_chat: place.is_ai_chat(),
-                    addressed,
-                    scene,
-                },
-                bundle: place.bundle_id.clone(),
-                router_ran,
-                router_text,
-                polish_worth_it,
-                style,
-                started,
-            },
+            &plan,
+            style,
+            false,
+            None,
+            started,
             &working,
-            &written,
         )
         .await;
     }
 
-    // The words always survive a failed polish: typed as said, then a
-    // quiet note (dictation only; a file transcription keeps its text too).
-    let mut polish_failed = false;
-    if post_process {
-        working();
-        match post_process_transcription(app, &settings, &final_text, style_note).await {
-            Polish::Text(processed_text) => {
-                let processed_text = keep_custom_spellings(&settings, processed_text);
-                post_processed_text = Some(processed_text.clone());
-                final_text = processed_text;
+    // Plain dictation: files, Try it, the agent turned off, or no model.
+    let polish = (plan.force_polish || typing == Typing::Polished)
+        && plan.polish_on
+        && polish_worth_it
+        && (mode == OutputMode::File || !agent_on || model);
+    type_it(
+        app,
+        &settings,
+        transcription,
+        &plan,
+        style,
+        polish,
+        None,
+        started,
+        &working,
+    )
+    .await
+}
 
-                post_process_prompt = selected_polish_prompt(&settings);
-            }
-            Polish::Failed => {
-                crate::telemetry::error("polish", "failed");
-                polish_failed = mode == OutputMode::Dictation;
-            }
-            Polish::Skipped => crate::telemetry::error("polish", "failed"),
-        }
-    }
-    if mode == OutputMode::Dictation {
-        crate::telemetry::dictation(post_processed_text.is_some(), started.elapsed());
-        final_text = crate::agent::styles::finish(style, &final_text);
-    }
-
-    ProcessedTranscription {
-        writing: polish_failed.then(|| polish_failed_note(transcription)),
-        final_text,
-        post_processed_text,
-        post_process_prompt,
+/// Type the words: tidied by the polish prompt when `polish`, else as said.
+/// The words always survive a failed polish: typed as said, then a quiet
+/// note. `offer`: it may have been meant for Ambient; offer "Ask instead".
+#[allow(clippy::too_many_arguments)]
+async fn type_it(
+    app: &AppHandle,
+    settings: &AppSettings,
+    transcription: &str,
+    plan: &crate::agent::writing::WritePlan,
+    style: Option<crate::settings::WritingStyle>,
+    polish: bool,
+    offer: Option<String>,
+    started: Instant,
+    working: &impl Fn(),
+) -> ProcessedTranscription {
+    use crate::agent::writing::{Decision, Typed};
+    let as_said = |offer: Option<String>| ProcessedTranscription {
+        final_text: crate::agent::styles::finish(style, transcription),
+        post_processed_text: None,
+        post_process_prompt: None,
         agent_route: None,
-        offer_search: None,
+        offer_search: offer,
+        writing: None,
         written: None,
+    };
+    if !polish || !plan.polish_on {
+        crate::telemetry::dictation(false, started.elapsed());
+        return as_said(offer);
+    }
+    working();
+    let polished = match post_process_transcription(
+        app,
+        settings,
+        transcription,
+        crate::agent::styles::note(style),
+    )
+    .await
+    {
+        Polish::Text(t) => Polish::Text(keep_custom_spellings(settings, t)),
+        other => other,
+    };
+    let failed = polished == Polish::Failed;
+    let polished = polished.text();
+    crate::telemetry::dictation(polished.is_some(), started.elapsed());
+    match polished {
+        // Polish changed something: say so, and offer their words (only
+        // where Ambient chose to polish; "Always polish" just polishes).
+        Some(text) if !text.trim().is_empty() && text.trim() != transcription.trim() => {
+            let text = crate::agent::styles::finish(style, &text);
+            ProcessedTranscription {
+                final_text: text.clone(),
+                post_processed_text: Some(text),
+                post_process_prompt: selected_polish_prompt(settings),
+                agent_route: None,
+                offer_search: offer,
+                writing: plan.smart().then(|| Typed {
+                    decision: Decision::Polished,
+                    raw: transcription.to_string(),
+                    note: None,
+                    rewrite: false,
+                }),
+                written: None,
+            }
+        }
+        // Nothing to clean up after all.
+        Some(_) => as_said(offer),
+        None => {
+            crate::telemetry::error("polish", "failed");
+            ProcessedTranscription {
+                writing: failed.then(|| polish_failed_note(transcription)),
+                ..as_said(offer)
+            }
+        }
     }
 }
 
@@ -1404,6 +1140,19 @@ impl ShortcutAction for TranscribeAction {
     fn start(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
+        // Read the window now, while the user speaks, for deciding what they
+        // want when they stop (only with a model to decide; the read stays on
+        // this computer unless it's part of that decision).
+        {
+            let s = get_settings(app);
+            if s.agent.routing
+                && s.onboarding_completed
+                && crate::agent::llm::target(app).is_some()
+                && !crate::agent::llm::needs_cloud(app)
+            {
+                crate::agent::answer::prefetch_screen(app);
+            }
+        }
 
         // Load model in the background
         let tm = app.state::<Arc<TranscriptionManager>>();

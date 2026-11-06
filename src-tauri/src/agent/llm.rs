@@ -260,26 +260,17 @@ pub async fn run_on(
     out
 }
 
-/// The on-device model, whatever the provider setting (callers check the
-/// plan and the Intelligence setting first). None without one or on failure.
-pub async fn complete_on_device(system: &str, user: &str) -> Option<String> {
-    run_on(engine()?, system, user, Default::default()).await
-}
-
-/// Skip the on-device attempt (used where the on-device model already had
-/// its say, like routing), within `limits` (an output cap, a deadline).
-/// Still on-device in on-device-only mode.
-pub async fn complete_hosted_limited(
+/// Like `complete`, within `limits` (an output cap, a deadline): on this
+/// computer when the Intelligence setting wants it there and a model is
+/// ready, else the provider it names.
+pub async fn complete_limited(
     app: &AppHandle,
     purpose: &str,
     system: &str,
     user: &str,
     limits: crate::llm_client::RequestLimits,
 ) -> Option<String> {
-    if get_settings(app).agent.device_only() {
-        return complete_inner(app, purpose, system, user, true, limits).await;
-    }
-    complete_inner(app, purpose, system, user, false, limits).await
+    complete_inner(app, purpose, system, user, true, limits).await
 }
 
 // ── Pacing ──────────────────────────────────────────────────────────────────

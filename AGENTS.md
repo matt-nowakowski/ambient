@@ -28,8 +28,10 @@ link to the repo.
   supervised worker), `language_detection/`.
 - Dictation: `transcription_coordinator.rs` → `actions.rs` (polish, paste),
   `clipboard.rs`, `paste_tx/`, `corrections.rs`, `screen_names.rs`.
-- `agent/`: `router.rs` decides write / answer / act / recall; `writing.rs`
-  smart writing; `answer.rs` answer cards (server or on device); `act.rs`
+- `agent/`: `router.rs` decides, by reasoning over what was said and the
+  screen, whether to type, write, answer, act or answer a card (never app,
+  site or phrase rules; only guards stay as code); `writing.rs` smart
+  writing; `answer.rs` answer cards (server or on device); `act.rs`
   actions; `proactive.rs` + `judge.rs` suggestions; `wake.rs` hands-free;
   `llm.rs` is the single place a model is called (`ai_off` stops every call
   under No AI).
