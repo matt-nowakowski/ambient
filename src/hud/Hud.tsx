@@ -447,8 +447,9 @@ export default function Hud() {
   // Leaving is a dissolve: the card softens, lifts and opens a touch while the
   // dots below scatter out of it, so a dismissal reads as the card coming
   // apart rather than switching off. Slow enough to be seen (~0.45 s), and
-  // it finishes inside Rust's CLOSE_MS (500 ms), before the panel is ordered
-  // out. Reduced motion: a short fade, and no dots at all.
+  // tied to Rust's CLOSE_MS (650 ms in hud.rs), which orders the panel out
+  // after it with margin to spare: lengthen these and that goes up too.
+  // Reduced motion: a short fade, and no dots at all.
   const gone = reduceMotion
     ? { opacity: 0, transition: { duration: 0.08, ease: "linear" as const } }
     : {
@@ -998,6 +999,7 @@ export default function Hud() {
                       scale: [0.5, 1, 0.35],
                       x: dot.x,
                       y: dot.y,
+                      // Within hud.rs's CLOSE_MS (650 ms); change together.
                       transition: { duration: 0.45, ease: "easeOut" },
                     }}
                   />

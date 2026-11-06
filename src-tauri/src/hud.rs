@@ -23,7 +23,10 @@ const MIN_HEIGHT: f64 = 72.0;
 const MAX_HEIGHT: f64 = 560.0;
 const MARGIN: f64 = 16.0;
 /// How long the card takes to dissolve before the panel is ordered out.
-const CLOSE_MS: u64 = 500;
+/// Tied to the exit animation in `src/hud/Hud.tsx` (0.42 s card, 0.45 s
+/// dots): keep a clear margin over the longer one, or a busy webview gets
+/// its card cut off mid-dissolve. Change both together.
+const CLOSE_MS: u64 = 650;
 
 #[cfg(target_os = "macos")]
 tauri_panel! {
