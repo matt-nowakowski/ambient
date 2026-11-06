@@ -577,8 +577,13 @@ export default function Hud() {
                         {actionLabel(a)}
                       </button>
                     ))}
-                    <span className="hud-hint">{t("hud.followUpHint")}</span>
-                    <Thumbs id={content.id} />
+                    {/* The hint and the rating stay together at the end. */}
+                    <span className="hud-actions-end">
+                      <span className="hud-hint" title={t("hud.followUpHint")}>
+                        {t("hud.followUpHint")}
+                      </span>
+                      <Thumbs id={content.id} />
+                    </span>
                   </footer>
                 )}
               </>
@@ -692,40 +697,43 @@ export default function Hud() {
                     ...fill(content.vars),
                   })}
                 </span>
-                {/* The label says what will happen ("Draft reply"); once
+                {/* One group, so a narrow row moves the buttons together. */}
+                <span className="hud-suggestion-buttons">
+                  {/* The label says what will happen ("Draft reply"); once
                     accepted it shows progress until the result arrives. */}
-                <button
-                  type="button"
-                  className="hud-primary"
-                  aria-busy={busy === "accept"}
-                  disabled={busy !== null}
-                  onClick={() => acceptSuggestion(content.id)}
-                >
-                  {busy === "accept" && <Spinner />}
-                  {content.accept_label
-                    ? t(content.accept_label, {
-                        defaultValue: content.accept_label,
-                      })
-                    : t("hud.yes")}
-                  {!busy && <kbd>{KEY_ENTER}</kbd>}
-                </button>
-                <button
-                  type="button"
-                  disabled={busy !== null}
-                  onClick={dismiss}
-                >
-                  {t("hud.notNow")}
-                  <kbd>{KEY_ESC}</kbd>
-                </button>
-                {/* The offer's own words: a new suggestion keeps the id. */}
-                <Thumbs
-                  id={content.id}
-                  token={JSON.stringify([
-                    content.title,
-                    content.accept_label,
-                    content.vars,
-                  ])}
-                />
+                  <button
+                    type="button"
+                    className="hud-primary"
+                    aria-busy={busy === "accept"}
+                    disabled={busy !== null}
+                    onClick={() => acceptSuggestion(content.id)}
+                  >
+                    {busy === "accept" && <Spinner />}
+                    {content.accept_label
+                      ? t(content.accept_label, {
+                          defaultValue: content.accept_label,
+                        })
+                      : t("hud.yes")}
+                    {!busy && <kbd>{KEY_ENTER}</kbd>}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={busy !== null}
+                    onClick={dismiss}
+                  >
+                    {t("hud.notNow")}
+                    <kbd>{KEY_ESC}</kbd>
+                  </button>
+                  {/* The offer's own words: a new suggestion keeps the id. */}
+                  <Thumbs
+                    id={content.id}
+                    token={JSON.stringify([
+                      content.title,
+                      content.accept_label,
+                      content.vars,
+                    ])}
+                  />
+                </span>
                 {tip && (
                   <span className="hud-tip">
                     {t(

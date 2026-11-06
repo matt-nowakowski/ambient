@@ -194,6 +194,7 @@ button.hud-chip:hover {
 
 .hud-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   margin-top: 12px;
@@ -205,24 +206,37 @@ button.hud-chip:hover {
   font-family: inherit;
 }
 
-.hud-actions button,
-.hud-suggestion button {
+/* One button for every card: a single line, never squeezed. A row that runs
+   out of room wraps whole buttons onto the next line instead. */
+.hud-actions > button,
+.hud-suggestion-buttons > button,
+.hud-writing > button,
+.hud-card .hud-undo {
+  flex: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  box-sizing: border-box;
   height: 26px;
+  min-width: 56px;
+  max-width: 100%;
   padding: 0 10px;
   border: 0;
   border-radius: 8px;
   background: var(--h-raise);
   color: var(--h-ink);
   font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
   cursor: pointer;
-  transition: background 120ms ease;
 }
 
-.hud-actions button:hover,
-.hud-suggestion button:hover {
+.hud-actions > button:hover,
+.hud-suggestion-buttons > button:hover,
+.hud-writing > button:hover,
+.hud-card .hud-undo:hover {
   background: var(--h-raise-hover);
 }
 
@@ -241,10 +255,25 @@ button.hud-chip:hover {
   opacity: 0.55;
 }
 
+.hud-actions-end {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+/* Right-aligned; on a row too full for it, it takes the next line. */
 .hud-hint {
   margin-left: auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   font-size: 11px;
   color: var(--h-faint);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .hud-suggestion {
@@ -261,13 +290,24 @@ button.hud-chip:hover {
   color: var(--h-faint);
 }
 
+/* The title keeps at least this much room beside the buttons; with less,
+   the buttons move to a line of their own. */
 .hud-suggestion-title {
-  flex: 1;
+  flex: 1 1 120px;
   min-width: 0;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.hud-suggestion-buttons {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  margin-left: auto;
 }
 
 .hud-timer {
@@ -327,18 +367,6 @@ button.hud-chip:hover {
 
 .hud-undo {
   margin-left: auto;
-  height: 24px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 7px;
-  background: var(--h-raise);
-  color: var(--h-ink);
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.hud-undo:hover {
-  background: var(--h-raise-hover);
 }
 
 /* Notices: what was done, or why not and what instead. */
@@ -404,6 +432,7 @@ button.hud-chip:hover {
 
 .hud-actions button:active:not(:disabled),
 .hud-suggestion button:active:not(:disabled),
+.hud-writing button:active:not(:disabled),
 button.hud-chip:active,
 .hud-close:active,
 .hud-undo:active {
@@ -605,6 +634,7 @@ button.hud-chip:active,
   }
   .hud-actions button:active:not(:disabled),
   .hud-suggestion button:active:not(:disabled),
+  .hud-writing button:active:not(:disabled),
   button.hud-chip:active,
   .hud-close:active,
   .hud-undo:active {

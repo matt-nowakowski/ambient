@@ -1,6 +1,7 @@
 /* 👍/👎 on cards, and the meeting notes card. Kept apart from hud.css. */
 
 .hud-thumbs {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -29,10 +30,6 @@
 
 .hud-card .hud-thumbs button[aria-pressed="true"] {
   color: var(--h-ink);
-}
-
-.hud-actions .hud-thumbs {
-  margin-left: 4px;
 }
 
 /* A dismissed card comes apart into its own dots rather than just fading. */
