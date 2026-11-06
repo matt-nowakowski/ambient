@@ -219,6 +219,18 @@ jobs:
             --cache-control "no-cache"
           cat manifest.json
 
+      # The website caches the download manifest for a minute and serves the
+      # old copy to the first visitor after it changes. Ask for every link now
+      # (and again after retiring) so no visitor gets a link to a removed file.
+      - name: Refresh the website's download links
+        run: |
+          for pass in 1 2; do
+            for id in macArm macIntel winX64 winArm linuxAppImage linuxDeb linuxRpm; do
+              curl -s -o /dev/null --max-time 10 "https://tryambient.ai/dl/$id" || true
+            done
+            sleep 65
+          done
+
       - name: Publish GitHub release
         run: gh api -X PATCH "repos/${{ github.repository }}/releases/$RELEASE_ID" -F draft=false --silent
 
@@ -235,3 +247,6 @@ jobs:
           done
           echo "R2 releases after:"
           aws s3 ls "$R2/releases/" --recursive
+          for id in macArm macIntel winX64 winArm linuxAppImage linuxDeb linuxRpm; do
+            curl -s -o /dev/null --max-time 10 "https://tryambient.ai/dl/$id" || true
+          done
