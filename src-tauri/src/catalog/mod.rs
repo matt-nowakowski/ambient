@@ -618,6 +618,16 @@ mod tests {
     }
 
     #[test]
+    fn every_model_is_ours_to_move() {
+        // portable::adopt_shared_models moves only this org's repos out of the
+        // shared cache; a model published elsewhere would be left behind.
+        let org = format!("{}/", crate::portable::MODEL_ORG);
+        for m in &ROOT.models {
+            assert!(m.repository.starts_with(&org), "{}", m.repository);
+        }
+    }
+
+    #[test]
     fn ids_are_unique() {
         let mut ids: Vec<&str> = CATALOG.iter().map(|d| d.id.as_str()).collect();
         ids.sort_unstable();

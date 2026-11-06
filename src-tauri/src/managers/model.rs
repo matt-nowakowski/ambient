@@ -306,20 +306,16 @@ pub struct DownloadProgress {
     pub bytes_per_sec: Option<f64>,
 }
 
-/// Return the active HF cache followed by the pre-v0.9.6 cache for portable
-/// upgrades. Downloads still use `Cache::from_env()` and therefore only write
-/// to the active portable cache.
+/// Return Ambient's own HF cache followed by the shared one, where older
+/// releases downloaded (and where models that couldn't be moved stay).
+/// Downloads still use `Cache::from_env()` and therefore only write to ours.
 fn hf_caches() -> Vec<Cache> {
     let current = Cache::from_env();
     let mut caches = vec![current.clone()];
 
-    if crate::portable::is_portable() {
-        let legacy = crate::portable::previous_hf_home()
-            .map(|home| Cache::new(home.join("hub")))
-            .unwrap_or_default();
-        if legacy.path() != current.path() {
-            caches.push(legacy);
-        }
+    let shared = crate::portable::shared_hf_cache();
+    if shared.path() != current.path() {
+        caches.push(shared);
     }
 
     caches
