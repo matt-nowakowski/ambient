@@ -11,6 +11,22 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.16",
+    date: "2026-11-06",
+    title: "Models in one place",
+    summary:
+      "Speech models now live in Ambient's own folder, so they're never shared with other tools and uninstalling Ambient removes them too.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "Downloaded models were kept in a cache folder shared with other apps, where another tool's clean-up could delete them and uninstalling Ambient left them behind. They now live in Ambient's own folder.",
+          "Models you've already downloaded move there the first time you open this version, instantly and without downloading again. Other apps' models aren't touched.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.15",
     date: "2026-11-06",
     title: "Works from the menu bar",
