@@ -62,7 +62,7 @@ export default function PrivacyPage() {
                 {brand.name} uses a language model to polish dictation, answer questions, write drafts, summarise text and
                 meetings, decide whether to offer a suggestion, and work out what you are asking it to do. Every feature
                 works on macOS, Windows and Linux. The <strong>Intelligence</strong> setting chooses where the model runs:
-                Automatic (the default), On this computer only, or Cloud.
+                Automatic (the default), On this computer only, Cloud, or No AI.
               </p>
               <ul>
                 <li>
@@ -118,6 +118,14 @@ export default function PrivacyPage() {
                 cloud.
               </p>
               <p>
+                <strong>No AI.</strong> With Intelligence set to “No AI”, no language model runs, on your device or
+                on our server, and no text is sent for AI processing: dictation is typed as you said it, nothing is
+                polished, drafted, answered or judged, and suggestions use only simple on-device rules. Asking for
+                something that needs AI tells you so. Requests that are not AI (sign-in and plan checks, the daily
+                check-in, the settings and update checks, and anything you choose to send, such as feedback) still
+                happen as described below.
+              </p>
+              <p>
                 <strong>Secrets are removed first.</strong> Before text from your screen leaves your device, the app
                 redacts things that look like secrets, such as card numbers, API keys, passwords and one-time codes.
               </p>
@@ -144,8 +152,9 @@ export default function PrivacyPage() {
               </p>
               <p>
                 <strong>Screen memory</strong> is a separate opt-in. If you turn it on, window text is saved on your
-                device, encrypted (AES-256-GCM, with the key kept in your macOS Keychain, or in a key file in the app’s
-                own data folder on Windows and Linux), so you can find things you
+                device, encrypted (AES-256-GCM, with the key kept in your macOS Keychain, sealed to your Windows account
+                with Windows data protection, or in a key file in the app’s own data folder on Linux), so you can find
+                things you
                 saw earlier. On Pro it is kept for 7 days by default (you can choose 1 to 90 days); on Free it keeps the
                 last 24 hours. You can delete it for a single app or entirely at any time. Screen memory is never
                 uploaded.
@@ -437,12 +446,14 @@ export default function PrivacyPage() {
                 the app downloads it from Hugging Face (huggingface.co), and from our backup storage at Cloudflare if that
                 fails. The on-device AI also needs the llama.cpp program that runs it, downloaded from GitHub (or our
                 backup storage). The host sees your IP address
-                and the file requested, as with any download. Nothing about your audio or transcripts is sent.
+                and the file requested, as with any download. Nothing about your audio or transcripts is sent. Each
+                download is listed in the Privacy Center with the address it came from.
               </li>
               <li>
                 <strong>Update checks:</strong> if enabled, the app asks our website for the latest version, and updates
-                are downloaded from our storage at Cloudflare. These requests carry your IP address and app version. You
-                can turn update checks off in settings.
+                are downloaded from our storage at Cloudflare. These requests carry your IP address and the file
+                requested; nothing about you or your use is sent. Each check and download is listed in the Privacy
+                Center. You can turn update checks off in settings.
               </li>
               <li>
                 <strong>Installer downloads:</strong> installers on the website are served from our storage at
@@ -463,8 +474,9 @@ export default function PrivacyPage() {
                 app keeps its built-in settings.
               </li>
               <li>
-                <strong>Network ledger:</strong> the app keeps a local, encrypted log of every request it sends and the
-                text that was sent, for 30 days, which you can view in the Privacy Center. It stays on your device.
+                <strong>Network ledger:</strong> the app keeps a local, encrypted log of every request it sends (including
+                downloads, update checks, sign-in and the daily check-in) and the text that was sent, for 30 days, which
+                you can view in the Privacy Center. It stays on your device.
               </li>
             </ul>
           ),

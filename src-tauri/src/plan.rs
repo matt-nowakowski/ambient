@@ -521,6 +521,11 @@ pub async fn get_polish_usage(app: AppHandle) -> Result<PolishUsage, String> {
 
 async fn server_polish_usage() -> Result<PolishUsage, String> {
     let machine = machine_hash().ok_or("Could not identify this device.")?;
+    crate::recall::log_request(
+        env!("BRAND_DOMAIN"),
+        "license",
+        &format!("Device hash: {machine}, to read this week's Free AI uses."),
+    );
     let response = reqwest::Client::new()
         .get(api_url("/api/usage"))
         .query(&[("machine", machine)])
@@ -866,6 +871,11 @@ struct PortalResponse {
 #[specta::specta]
 pub async fn billing_portal_url(app: AppHandle) -> Result<String, String> {
     let key = stored_key(&app).ok_or("Sign in to manage billing.")?;
+    crate::recall::log_request(
+        env!("BRAND_DOMAIN"),
+        "license",
+        "Your Pro access (a signed token with your email, plan and expiry), for a billing link.",
+    );
     let response = reqwest::Client::new()
         .post(api_url("/api/billing/portal"))
         .json(&serde_json::json!({ "key": key }))
