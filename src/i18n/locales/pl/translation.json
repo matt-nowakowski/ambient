@@ -1139,6 +1139,13 @@
     "upgrade": "Ulepsz",
     "upgradeTo": "Przejdź na {{plan}}",
     "manageBilling": "Zarządzaj płatnościami",
+    "billing": {
+      "description": "Zmień lub anuluj plan, zaktualizuj kartę, pobierz faktury.",
+      "pastTitle": "Masz wcześniejszy plan?",
+      "pastDescription": "Pobierz dawne faktury lub zarządzaj wcześniejszym planem w przeglądarce.",
+      "openWeb": "Otwórz stronę płatności",
+      "opening": "Otwieranie…"
+    },
     "usage": "{{used}} z {{limit}} słów w tym tygodniu",
     "usageShort": "{{used}} / {{limit}} słów",
     "resets": "Limit odnowi się: {{date}}",

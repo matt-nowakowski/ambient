@@ -1134,6 +1134,13 @@
     "upgrade": "アップグレード",
     "upgradeTo": "{{plan}} にアップグレード",
     "manageBilling": "お支払いの管理",
+    "billing": {
+      "description": "プランの変更や解約、カードの更新、請求書のダウンロードができます。",
+      "pastTitle": "以前プランをご利用でしたか？",
+      "pastDescription": "過去の請求書のダウンロードや以前のプランの管理はウェブで行えます。",
+      "openWeb": "お支払いページを開く",
+      "opening": "開いています…"
+    },
     "usage": "今週は {{limit}} 語中 {{used}} 語を使用",
     "usageShort": "{{used}} / {{limit}} 語",
     "resets": "{{date}} にリセット",

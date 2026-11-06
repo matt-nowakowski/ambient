@@ -1139,6 +1139,13 @@
     "upgrade": "Millora el pla",
     "upgradeTo": "Passa a {{plan}}",
     "manageBilling": "Gestiona la facturació",
+    "billing": {
+      "description": "Canvieu o cancel·leu el pla, actualitzeu la targeta i baixeu les factures.",
+      "pastTitle": "Teníeu un pla abans?",
+      "pastDescription": "Baixeu factures antigues o gestioneu un pla anterior al web.",
+      "openWeb": "Obre la pàgina de facturació",
+      "opening": "S'està obrint…"
+    },
     "usage": "{{used}} de {{limit}} paraules aquesta setmana",
     "usageShort": "{{used}} / {{limit}} paraules",
     "resets": "Es restableix el {{date}}",

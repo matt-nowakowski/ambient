@@ -1134,6 +1134,13 @@
     "upgrade": "Upgrade",
     "upgradeTo": "Upgrade to {{plan}}",
     "manageBilling": "Manage billing",
+    "billing": {
+      "description": "Change or cancel your plan, update your card, download invoices.",
+      "pastTitle": "Had a plan before?",
+      "pastDescription": "Download past invoices or manage an old plan on the web.",
+      "openWeb": "Open billing page",
+      "opening": "Opening…"
+    },
     "usage": "{{used}} of {{limit}} words this week",
     "usageShort": "{{used}} / {{limit}} words",
     "resets": "Resets {{date}}",

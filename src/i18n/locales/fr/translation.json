@@ -1134,6 +1134,13 @@
     "upgrade": "Mettre à niveau",
     "upgradeTo": "Passer à {{plan}}",
     "manageBilling": "Gérer la facturation",
+    "billing": {
+      "description": "Changez ou résiliez votre offre, mettez à jour votre carte, téléchargez vos factures.",
+      "pastTitle": "Vous aviez une offre auparavant ?",
+      "pastDescription": "Téléchargez vos anciennes factures ou gérez une ancienne offre sur le web.",
+      "openWeb": "Ouvrir la page de facturation",
+      "opening": "Ouverture…"
+    },
     "usage": "{{used}} sur {{limit}} mots cette semaine",
     "usageShort": "{{used}} / {{limit}} mots",
     "resets": "Réinitialisation le {{date}}",

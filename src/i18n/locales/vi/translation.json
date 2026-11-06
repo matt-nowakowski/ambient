@@ -1134,6 +1134,13 @@
     "upgrade": "Nâng cấp",
     "upgradeTo": "Nâng cấp lên {{plan}}",
     "manageBilling": "Quản lý thanh toán",
+    "billing": {
+      "description": "Đổi hoặc hủy gói, cập nhật thẻ, tải hóa đơn.",
+      "pastTitle": "Bạn từng có gói trước đây?",
+      "pastDescription": "Tải hóa đơn cũ hoặc quản lý gói cũ trên web.",
+      "openWeb": "Mở trang thanh toán",
+      "opening": "Đang mở…"
+    },
     "usage": "{{used}} trên {{limit}} từ trong tuần này",
     "usageShort": "{{used}} / {{limit}} từ",
     "resets": "Đặt lại vào {{date}}",

@@ -1134,6 +1134,13 @@
     "upgrade": "Uppgradera",
     "upgradeTo": "Uppgradera till {{plan}}",
     "manageBilling": "Hantera fakturering",
+    "billing": {
+      "description": "Byt eller avsluta ditt abonnemang, uppdatera ditt kort, ladda ner fakturor.",
+      "pastTitle": "Har du haft ett abonnemang tidigare?",
+      "pastDescription": "Ladda ner tidigare fakturor eller hantera ett gammalt abonnemang på webben.",
+      "openWeb": "Öppna faktureringssidan",
+      "opening": "Öppnar…"
+    },
     "usage": "{{used}} av {{limit}} ord den här veckan",
     "usageShort": "{{used}} / {{limit}} ord",
     "resets": "Återställs {{date}}",

@@ -8,6 +8,7 @@ import { Button } from "../ui/Button";
 import { Stagger, StaggerItem } from "../ui/Motion";
 import { AccountCard } from "./AccountCard";
 import { AiPolishCard } from "./AiPolishCard";
+import { BillingCard } from "./BillingCard";
 import { WritingCard } from "./WritingCard";
 import { WritingStylesCard } from "./WritingStylesCard";
 import { isPaid, openUpgrade, usePlan } from "./usePlan";
@@ -140,6 +141,14 @@ export const AccountSettings: React.FC = () => {
               )}
             </div>
           </div>
+        </StaggerItem>
+
+        <StaggerItem>
+          <BillingCard
+            status={status}
+            onManageBilling={manageBilling}
+            busy={busy}
+          />
         </StaggerItem>
 
         <StaggerItem>

@@ -1134,6 +1134,13 @@
     "upgrade": "Yükselt",
     "upgradeTo": "{{plan}} planına yükselt",
     "manageBilling": "Faturalandırmayı yönet",
+    "billing": {
+      "description": "Planınızı değiştirin veya iptal edin, kartınızı güncelleyin, faturaları indirin.",
+      "pastTitle": "Daha önce bir planınız var mıydı?",
+      "pastDescription": "Geçmiş faturaları indirin veya eski bir planı web üzerinden yönetin.",
+      "openWeb": "Faturalandırma sayfasını aç",
+      "opening": "Açılıyor…"
+    },
     "usage": "Bu hafta {{used}} / {{limit}} kelime",
     "usageShort": "{{used}} / {{limit}} kelime",
     "resets": "{{date}} tarihinde sıfırlanır",

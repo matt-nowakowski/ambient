@@ -1129,6 +1129,13 @@
     "upgrade": "Upgrade",
     "upgradeTo": "Auf {{plan}} upgraden",
     "manageBilling": "Abrechnung verwalten",
+    "billing": {
+      "description": "Tarif ändern oder kündigen, Karte aktualisieren, Rechnungen herunterladen.",
+      "pastTitle": "Hattest du schon einmal einen Tarif?",
+      "pastDescription": "Lade frühere Rechnungen herunter oder verwalte einen alten Tarif im Web.",
+      "openWeb": "Abrechnungsseite öffnen",
+      "opening": "Wird geöffnet…"
+    },
     "usage": "{{used}} von {{limit}} Wörtern diese Woche",
     "usageShort": "{{used}} / {{limit}} Wörter",
     "resets": "Wird zurückgesetzt am {{date}}",

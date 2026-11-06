@@ -1134,6 +1134,13 @@
     "upgrade": "Opgrader",
     "upgradeTo": "Opgrader til {{plan}}",
     "manageBilling": "Administrer fakturering",
+    "billing": {
+      "description": "Skift eller opsig dit abonnement, opdater dit kort, download fakturaer.",
+      "pastTitle": "Har du haft et abonnement før?",
+      "pastDescription": "Download tidligere fakturaer eller administrer et gammelt abonnement på nettet.",
+      "openWeb": "Åbn faktureringssiden",
+      "opening": "Åbner…"
+    },
     "usage": "{{used}} af {{limit}} ord denne uge",
     "usageShort": "{{used}} / {{limit}} ord",
     "resets": "Nulstilles {{date}}",

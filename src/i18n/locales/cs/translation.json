@@ -1144,6 +1144,13 @@
     "upgrade": "Upgradovat",
     "upgradeTo": "Upgradovat na {{plan}}",
     "manageBilling": "Spravovat fakturaci",
+    "billing": {
+      "description": "Změňte nebo zrušte předplatné, aktualizujte kartu, stáhněte faktury.",
+      "pastTitle": "Měli jste dříve předplatné?",
+      "pastDescription": "Stáhněte starší faktury nebo spravujte dřívější předplatné na webu.",
+      "openWeb": "Otevřít stránku fakturace",
+      "opening": "Otevírání…"
+    },
     "usage": "{{used}} z {{limit}} slov tento týden",
     "usageShort": "{{used}} / {{limit}} slov",
     "resets": "Obnoví se {{date}}",

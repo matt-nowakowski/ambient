@@ -1134,6 +1134,13 @@
     "upgrade": "업그레이드",
     "upgradeTo": "{{plan}}(으)로 업그레이드",
     "manageBilling": "결제 관리",
+    "billing": {
+      "description": "요금제를 변경하거나 해지하고, 카드를 업데이트하고, 청구서를 다운로드하세요.",
+      "pastTitle": "이전에 요금제를 사용하셨나요?",
+      "pastDescription": "웹에서 지난 청구서를 다운로드하거나 이전 요금제를 관리하세요.",
+      "openWeb": "결제 페이지 열기",
+      "opening": "여는 중…"
+    },
     "usage": "이번 주 {{limit}}단어 중 {{used}}단어 사용",
     "usageShort": "{{used}} / {{limit}}단어",
     "resets": "{{date}}에 초기화됩니다",

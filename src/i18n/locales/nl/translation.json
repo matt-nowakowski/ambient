@@ -1134,6 +1134,13 @@
     "upgrade": "Upgraden",
     "upgradeTo": "Upgraden naar {{plan}}",
     "manageBilling": "Facturering beheren",
+    "billing": {
+      "description": "Wijzig of annuleer je abonnement, werk je kaart bij, download facturen.",
+      "pastTitle": "Had je eerder een abonnement?",
+      "pastDescription": "Download eerdere facturen of beheer een oud abonnement op het web.",
+      "openWeb": "Factureringspagina openen",
+      "opening": "Openen…"
+    },
     "usage": "{{used}} van {{limit}} woorden deze week",
     "usageShort": "{{used}} / {{limit}} woorden",
     "resets": "Wordt gereset op {{date}}",

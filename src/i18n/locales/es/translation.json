@@ -1134,6 +1134,13 @@
     "upgrade": "Mejorar plan",
     "upgradeTo": "Mejorar a {{plan}}",
     "manageBilling": "Administrar facturación",
+    "billing": {
+      "description": "Cambia o cancela tu plan, actualiza tu tarjeta y descarga facturas.",
+      "pastTitle": "¿Tenías un plan antes?",
+      "pastDescription": "Descarga facturas anteriores o administra un plan antiguo en la web.",
+      "openWeb": "Abrir página de facturación",
+      "opening": "Abriendo…"
+    },
     "usage": "{{used}} de {{limit}} palabras esta semana",
     "usageShort": "{{used}} / {{limit}} palabras",
     "resets": "Se restablece el {{date}}",

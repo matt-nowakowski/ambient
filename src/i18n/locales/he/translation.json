@@ -1139,6 +1139,13 @@
     "upgrade": "שדרוג",
     "upgradeTo": "שדרוג ל-{{plan}}",
     "manageBilling": "ניהול חיוב",
+    "billing": {
+      "description": "שנה או בטל את התוכנית, עדכן את הכרטיס והורד חשבוניות.",
+      "pastTitle": "הייתה לך תוכנית בעבר?",
+      "pastDescription": "הורד חשבוניות קודמות או נהל תוכנית ישנה באתר.",
+      "openWeb": "פתיחת דף החיוב",
+      "opening": "פותח…"
+    },
     "usage": "{{used}} מתוך {{limit}} מילים השבוע",
     "usageShort": "{{used}} / {{limit}} מילים",
     "resets": "מתאפס ב-{{date}}",

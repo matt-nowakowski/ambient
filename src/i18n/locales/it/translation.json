@@ -1139,6 +1139,13 @@
     "upgrade": "Aggiorna piano",
     "upgradeTo": "Passa a {{plan}}",
     "manageBilling": "Gestisci fatturazione",
+    "billing": {
+      "description": "Cambia o annulla il piano, aggiorna la carta, scarica le fatture.",
+      "pastTitle": "Avevi già un piano?",
+      "pastDescription": "Scarica le fatture passate o gestisci un vecchio piano sul web.",
+      "openWeb": "Apri la pagina di fatturazione",
+      "opening": "Apertura…"
+    },
     "usage": "{{used}} di {{limit}} parole questa settimana",
     "usageShort": "{{used}} / {{limit}} parole",
     "resets": "Si azzera il {{date}}",

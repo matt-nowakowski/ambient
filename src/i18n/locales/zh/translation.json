@@ -1134,6 +1134,13 @@
     "upgrade": "升级",
     "upgradeTo": "升级到 {{plan}}",
     "manageBilling": "管理账单",
+    "billing": {
+      "description": "更改或取消你的方案、更新银行卡、下载发票。",
+      "pastTitle": "以前订阅过方案？",
+      "pastDescription": "在网页上下载过往发票或管理以前的方案。",
+      "openWeb": "打开账单页面",
+      "opening": "正在打开…"
+    },
     "usage": "本周已使用 {{used}} / {{limit}} 个词",
     "usageShort": "{{used}} / {{limit}} 词",
     "resets": "{{date}} 重置",

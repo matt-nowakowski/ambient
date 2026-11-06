@@ -1134,6 +1134,13 @@
     "upgrade": "Tingkatkan",
     "upgradeTo": "Tingkatkan ke {{plan}}",
     "manageBilling": "Kelola penagihan",
+    "billing": {
+      "description": "Ubah atau batalkan paket, perbarui kartu, unduh faktur.",
+      "pastTitle": "Pernah punya paket sebelumnya?",
+      "pastDescription": "Unduh faktur lama atau kelola paket lama di web.",
+      "openWeb": "Buka halaman penagihan",
+      "opening": "Membuka…"
+    },
     "usage": "{{used}} dari {{limit}} kata minggu ini",
     "usageShort": "{{used}} / {{limit}} kata",
     "resets": "Direset pada {{date}}",
