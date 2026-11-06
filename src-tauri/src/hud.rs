@@ -794,11 +794,7 @@ fn paste_later(app: &AppHandle, text: String, select_all: bool) {
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_millis(150));
         if select_all {
-            if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
-                if let Ok(mut enigo) = state.0.lock() {
-                    let _ = crate::input::send_select_all(&mut enigo);
-                }
-            }
+            let _ = crate::clipboard::with_enigo(&handle, crate::input::send_select_all);
             std::thread::sleep(Duration::from_millis(80));
         }
         // Inserted at the caret: joined to what's there. Replacing all of
@@ -820,12 +816,8 @@ fn undo_later(app: &AppHandle) {
     let handle = app.clone();
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_millis(150));
-        if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
-            if let Ok(mut enigo) = state.0.lock() {
-                if let Err(e) = crate::input::send_undo(&mut enigo) {
-                    log::warn!("HUD undo failed: {e}");
-                }
-            }
+        if let Err(e) = crate::clipboard::with_enigo(&handle, crate::input::send_undo) {
+            log::warn!("HUD undo failed: {e}");
         }
     });
 }

@@ -334,3 +334,46 @@ pub fn paste_text_direct(enigo: &mut Enigo, text: &str) -> Result<(), String> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    /// A letter key (`Key::Unicode`) looks up the keyboard layout, which
+    /// macOS only allows on the main thread; off it, the app is killed. Key
+    /// presses go through `clipboard::with_enigo`, which hops there. Only
+    /// these files take the shared Enigo directly, for keys that need no
+    /// layout lookup (Return, mouse position) or on their own main-thread
+    /// path.
+    #[test]
+    fn keys_are_pressed_on_the_main_thread() {
+        const DIRECT: [&str; 5] = [
+            "clipboard.rs",
+            "input.rs",
+            "paste_tx/macos.rs",
+            "paste_tx/windows.rs",
+            "commands/mod.rs",
+        ];
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut stack = vec![root.clone()];
+        while let Some(dir) = stack.pop() {
+            for entry in std::fs::read_dir(&dir).unwrap().flatten() {
+                let path = entry.path();
+                if path.is_dir() {
+                    stack.push(path);
+                    continue;
+                }
+                let rel = path
+                    .strip_prefix(&root)
+                    .unwrap()
+                    .to_string_lossy()
+                    .replace('\\', "/");
+                if path.extension().is_some_and(|e| e == "rs") && !DIRECT.contains(&rel.as_str()) {
+                    let code = std::fs::read_to_string(&path).unwrap();
+                    assert!(
+                        !code.contains("EnigoState>()"),
+                        "{rel} takes Enigo directly; use clipboard::with_enigo"
+                    );
+                }
+            }
+        }
+    }
+}

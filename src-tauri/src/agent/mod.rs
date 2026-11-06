@@ -978,25 +978,27 @@ fn send_key(app: &AppHandle, key: char, command: bool) -> bool {
         );
         return false;
     }
-    app.try_state::<crate::input::EnigoState>()
-        .and_then(|state| {
-            let mut enigo = state.0.lock().ok()?;
-            use enigo::{Direction, Key, Keyboard};
-            #[cfg(target_os = "macos")]
-            let modifier = Key::Meta;
-            #[cfg(not(target_os = "macos"))]
-            let modifier = Key::Control;
-            if command {
-                enigo.key(modifier, Direction::Press).ok()?;
-            }
-            let clicked = enigo.key(Key::Unicode(key), Direction::Click);
-            std::thread::sleep(Duration::from_millis(30));
-            if command {
-                let _ = enigo.key(modifier, Direction::Release);
-            }
-            clicked.ok()
-        })
-        .is_some()
+    // On the main thread: a letter key looks up the keyboard layout, which
+    // macOS only allows there (it killed the app on Gmail's "r" fallback).
+    crate::clipboard::with_enigo(app, move |enigo| {
+        use enigo::{Direction, Key, Keyboard};
+        #[cfg(target_os = "macos")]
+        let modifier = Key::Meta;
+        #[cfg(not(target_os = "macos"))]
+        let modifier = Key::Control;
+        if command {
+            enigo
+                .key(modifier, Direction::Press)
+                .map_err(|e| e.to_string())?;
+        }
+        let clicked = enigo.key(Key::Unicode(key), Direction::Click);
+        std::thread::sleep(Duration::from_millis(30));
+        if command {
+            let _ = enigo.key(modifier, Direction::Release);
+        }
+        clicked.map_err(|e| e.to_string())
+    })
+    .is_ok()
 }
 
 /// Wait for a text field to take focus (the reply body), up to `timeout`.
@@ -1162,11 +1164,7 @@ fn on_chip_action(app: &AppHandle, id: &str, action: &str) {
     let handle = app.clone();
     std::thread::spawn(move || {
         std::thread::sleep(Duration::from_millis(150));
-        if let Some(state) = handle.try_state::<crate::input::EnigoState>() {
-            if let Ok(mut enigo) = state.0.lock() {
-                let _ = crate::input::send_undo(&mut enigo);
-            }
-        }
+        let _ = crate::clipboard::with_enigo(&handle, crate::input::send_undo);
         tauri::async_runtime::spawn(
             async move { answer::run(handle, text, true, false, None).await },
         );
