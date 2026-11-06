@@ -1671,7 +1671,9 @@
         "config": "Kontroll av inställningar (inget skickas)",
         "meeting_email": "E-post med mötesanteckningar",
         "feedback": "Feedback",
-        "checkin": "Daglig incheckning"
+        "checkin": "Daglig incheckning",
+        "download": "Nedladdning (inget skickas)",
+        "update": "Uppdateringskontroll (inget skickas)"
       }
     },
     "engine": {

@@ -1693,7 +1693,9 @@
         "config": "Kontrola nastavení (nic se neodesílá)",
         "meeting_email": "E-mail s poznámkami ze schůzky",
         "feedback": "Zpětná vazba",
-        "checkin": "Denní ohlášení"
+        "checkin": "Denní ohlášení",
+        "download": "Stahování (nic se neodesílá)",
+        "update": "Kontrola aktualizací (nic se neodesílá)"
       }
     },
     "engine": {

@@ -1681,7 +1681,9 @@
         "config": "Comprovació de la configuració (no s'envia res)",
         "meeting_email": "Correu amb les notes de la reunió",
         "feedback": "Comentaris",
-        "checkin": "Registre diari"
+        "checkin": "Registre diari",
+        "download": "Baixada (no s'envia res)",
+        "update": "Comprovació d'actualitzacions (no s'envia res)"
       },
       "bytes_many": "{{count}} bytes"
     },

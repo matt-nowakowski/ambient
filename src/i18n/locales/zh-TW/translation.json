@@ -1671,7 +1671,9 @@
         "config": "設定檢查（不傳送任何內容）",
         "meeting_email": "會議筆記電子郵件",
         "feedback": "意見回饋",
-        "checkin": "每日報到"
+        "checkin": "每日報到",
+        "download": "下載（不傳送任何內容）",
+        "update": "檢查更新（不傳送任何內容）"
       }
     },
     "engine": {

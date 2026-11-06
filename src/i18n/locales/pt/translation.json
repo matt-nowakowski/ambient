@@ -1681,7 +1681,9 @@
         "config": "Verificação de configurações (nada enviado)",
         "meeting_email": "E-mail com notas da reunião",
         "feedback": "Feedback",
-        "checkin": "Check-in diário"
+        "checkin": "Check-in diário",
+        "download": "Transferência (nada é enviado)",
+        "update": "Verificação de atualizações (nada é enviado)"
       },
       "bytes_many": "{{count}} bytes"
     },

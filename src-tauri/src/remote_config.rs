@@ -344,7 +344,7 @@ async fn fetch(app: &AppHandle) {
         crate::agent::answer::api_base(),
         env!("CARGO_PKG_VERSION")
     );
-    crate::recall::log_request_if_open(&crate::telemetry::host_of(&url), "config", "");
+    crate::recall::log_request(&crate::telemetry::host_of(&url), "config", "");
     let res = reqwest::Client::new()
         .get(&url)
         .timeout(Duration::from_secs(15))

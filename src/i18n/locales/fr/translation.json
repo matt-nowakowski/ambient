@@ -1676,7 +1676,9 @@
         "config": "Vérification des réglages (rien n'est envoyé)",
         "meeting_email": "E-mail des notes de réunion",
         "feedback": "Avis",
-        "checkin": "Signal quotidien"
+        "checkin": "Signal quotidien",
+        "download": "Téléchargement (rien n’est envoyé)",
+        "update": "Recherche de mises à jour (rien n’est envoyé)"
       },
       "bytes_many": "{{count}} octets"
     },

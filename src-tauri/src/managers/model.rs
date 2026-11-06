@@ -2058,6 +2058,12 @@ impl ModelManager {
                 RepoType::Model,
                 revision.clone(),
             ));
+            // A download sends nothing but the file it asks for.
+            crate::recall::log_request(
+                &format!("huggingface.co/{repo_id}/{filename}"),
+                "download",
+                "",
+            );
             let progress =
                 HfDownloadProgress::new(self.app_handle.clone(), transfer.progress.clone());
 

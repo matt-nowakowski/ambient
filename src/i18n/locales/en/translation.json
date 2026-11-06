@@ -1671,7 +1671,9 @@
         "config": "Settings check (nothing sent)",
         "meeting_email": "Meeting notes email",
         "feedback": "Feedback",
-        "checkin": "Daily check-in"
+        "checkin": "Daily check-in",
+        "download": "Download (nothing sent)",
+        "update": "Update check (nothing sent)"
       }
     },
     "engine": {

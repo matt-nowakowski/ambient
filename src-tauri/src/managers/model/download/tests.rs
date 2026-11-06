@@ -577,3 +577,12 @@ async fn http_cancel_during_stalled_body_keeps_partial() {
         "bytes received before the cancel must be kept for resume"
     );
 }
+
+#[test]
+fn ledger_address_drops_scheme_and_query() {
+    assert_eq!(
+        ledger_address("https://tryambient.ai/models/a.gguf?x=1#y"),
+        "tryambient.ai/models/a.gguf"
+    );
+    assert_eq!(ledger_address("example.com/f.bin"), "example.com/f.bin");
+}

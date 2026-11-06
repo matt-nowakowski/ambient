@@ -1677,7 +1677,9 @@
         "config": "Comprobación de ajustes (no se envía nada)",
         "meeting_email": "Correo con notas de reunión",
         "feedback": "Comentarios",
-        "checkin": "Registro diario"
+        "checkin": "Registro diario",
+        "download": "Descarga (no se envía nada)",
+        "update": "Búsqueda de actualizaciones (no se envía nada)"
       }
     },
     "engine": {

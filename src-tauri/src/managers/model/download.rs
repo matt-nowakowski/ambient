@@ -78,6 +78,13 @@ impl RateMeter {
 }
 
 /// Start offset of a `Content-Range: bytes <start>-<end>/<total>` header.
+/// `host/path` of a download URL, without the scheme or query, for the
+/// network ledger.
+fn ledger_address(url: &str) -> String {
+    let rest = url.split_once("://").map_or(url, |(_, r)| r);
+    rest.split(['?', '#']).next().unwrap_or(rest).to_string()
+}
+
 fn content_range_start(value: &str) -> Option<u64> {
     let range = value.trim().strip_prefix("bytes")?.trim_start();
     range.split('-').next()?.trim().parse().ok()
@@ -182,6 +189,9 @@ impl ModelManager {
         expected_sha256: Option<&str>,
         cancel_token: &CancellationToken,
     ) -> Result<HttpDownloadOutcome> {
+        // A download sends nothing but the file it asks for (and a byte range
+        // when resuming): ledger the address, no payload.
+        crate::recall::log_request(&ledger_address(url), "download", "");
         let app_handle = self.app_handle.clone();
         let id = target.model_id.clone();
         Self::download_http_resumable_with_events(

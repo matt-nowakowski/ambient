@@ -1671,7 +1671,9 @@
         "config": "Pemeriksaan pengaturan (tidak ada yang dikirim)",
         "meeting_email": "Email catatan rapat",
         "feedback": "Masukan",
-        "checkin": "Check-in harian"
+        "checkin": "Check-in harian",
+        "download": "Unduhan (tidak ada yang dikirim)",
+        "update": "Pemeriksaan pembaruan (tidak ada yang dikirim)"
       }
     },
     "engine": {
