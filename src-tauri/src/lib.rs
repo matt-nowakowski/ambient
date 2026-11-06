@@ -203,6 +203,14 @@ pub(crate) fn refresh_dock_icon(app: &AppHandle) {
 /// before `setup` sets the activation policy: a bare binary starts as a regular
 /// app, and a run that is killed mid-way can leave a stale tile behind. Called
 /// from `main` before Tauri starts, when the test mode is requested.
+/// Windows: keep this process out of power throttling (EcoQoS) so the tray
+/// app runs at full speed with no window. Called first thing in `main`, by the
+/// app and by its transcription worker.
+#[cfg(target_os = "windows")]
+pub fn keep_full_speed_in_background() {
+    win::power::keep_full_speed();
+}
+
 #[cfg(target_os = "macos")]
 pub fn hide_test_run_from_dock() {
     use objc2_app_kit::{NSApplication, NSApplicationActivationPolicy};

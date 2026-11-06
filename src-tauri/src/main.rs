@@ -17,6 +17,10 @@ fn main() {
 
     #[cfg(target_os = "windows")]
     {
+        // Ambient lives in the tray; Windows would otherwise throttle a
+        // windowless process (see win/power.rs).
+        ambient_app_lib::keep_full_speed_in_background();
+
         // Avoid overlay/capture layer crashes (#2049). Set before backend
         // initialization, preserving user overrides.
         if std::env::var_os("VK_LOADER_LAYERS_DISABLE").is_none()
