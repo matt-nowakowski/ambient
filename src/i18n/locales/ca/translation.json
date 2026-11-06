@@ -1829,7 +1829,7 @@
       "perWeek": "Gratuït: {{limit}} per setmana",
       "perMonth": "Gratuït: {{limit}} al mes",
       "hours": "Gratuït: {{limit}} hores",
-      "retention": "El pla Gratuït conserva les últimes {{limit}} hores. Pro conserva fins a 90 dies."
+      "retention": "El pla Gratuït conserva les últimes {{limit}} hores. Pro conserva fins a 30 dies."
     },
     "depends": {
       "screenContext": "Els suggeriments i la memòria no ho necessiten.",

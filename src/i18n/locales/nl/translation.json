@@ -1817,7 +1817,7 @@
       "perWeek": "Gratis: {{limit}} per week",
       "perMonth": "Gratis: {{limit}} per maand",
       "hours": "Gratis: {{limit}} uur",
-      "retention": "Gratis bewaart de laatste {{limit}} uur. Pro bewaart tot 90 dagen."
+      "retention": "Gratis bewaart de laatste {{limit}} uur. Pro bewaart tot 30 dagen."
     },
     "depends": {
       "screenContext": "Suggesties en geheugen hebben dit niet nodig.",

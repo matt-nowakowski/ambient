@@ -1817,7 +1817,7 @@
       "perWeek": "Ücretsiz: haftada {{limit}}",
       "perMonth": "Ücretsiz: ayda {{limit}}",
       "hours": "Ücretsiz: {{limit}} saat",
-      "retention": "Ücretsiz plan son {{limit}} saati saklar. Pro 90 güne kadar saklar."
+      "retention": "Ücretsiz plan son {{limit}} saati saklar. Pro 30 güne kadar saklar."
     },
     "depends": {
       "screenContext": "Öneriler ve bellek buna ihtiyaç duymaz.",

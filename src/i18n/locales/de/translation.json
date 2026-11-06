@@ -1812,7 +1812,7 @@
       "perWeek": "Kostenlos: {{limit}} pro Woche",
       "perMonth": "Kostenlos: {{limit}} pro Monat",
       "hours": "Kostenlos: {{limit}} Stunden",
-      "retention": "Kostenlos bleiben die letzten {{limit}} Stunden gespeichert. Pro behält bis zu 90 Tage."
+      "retention": "Kostenlos bleiben die letzten {{limit}} Stunden gespeichert. Pro behält bis zu 30 Tage."
     },
     "depends": {
       "screenContext": "Vorschläge und Gedächtnis brauchen das nicht.",

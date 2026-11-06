@@ -1824,7 +1824,7 @@
       "perWeek": "Gratuit : {{limit}} par semaine",
       "perMonth": "Gratuit : {{limit}} par mois",
       "hours": "Gratuit : {{limit}} heures",
-      "retention": "L'offre Gratuit garde les {{limit}} dernières heures. Pro garde jusqu'à 90 jours."
+      "retention": "L'offre Gratuit garde les {{limit}} dernières heures. Pro garde jusqu'à 30 jours."
     },
     "depends": {
       "screenContext": "Les suggestions et la mémoire n’en ont pas besoin.",

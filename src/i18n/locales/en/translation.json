@@ -1817,7 +1817,7 @@
       "perWeek": "Free: {{limit}} a week",
       "perMonth": "Free: {{limit}} a month",
       "hours": "Free: {{limit}} hours",
-      "retention": "Free keeps the last {{limit}} hours. Pro keeps up to 90 days."
+      "retention": "Free keeps the last {{limit}} hours. Pro keeps up to 30 days."
     },
     "depends": {
       "screenContext": "Suggestions and memory don't need it.",

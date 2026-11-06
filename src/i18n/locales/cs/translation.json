@@ -1841,7 +1841,7 @@
       "perWeek": "Zdarma: {{limit}} týdně",
       "perMonth": "Zdarma: {{limit}} měsíčně",
       "hours": "Zdarma: {{limit}} hodin",
-      "retention": "Bezplatný tarif uchovává posledních {{limit}} hodin. Pro uchovává až 90 dní."
+      "retention": "Bezplatný tarif uchovává posledních {{limit}} hodin. Pro uchovává až 30 dní."
     },
     "depends": {
       "screenContext": "Návrhy a paměť to nepotřebují.",

@@ -1817,7 +1817,7 @@
       "perWeek": "Gratis: {{limit}} per minggu",
       "perMonth": "Gratis: {{limit}} per bulan",
       "hours": "Gratis: {{limit}} jam",
-      "retention": "Paket Gratis menyimpan {{limit}} jam terakhir. Pro menyimpan hingga 90 hari."
+      "retention": "Paket Gratis menyimpan {{limit}} jam terakhir. Pro menyimpan hingga 30 hari."
     },
     "depends": {
       "screenContext": "Saran dan memori tidak memerlukannya.",

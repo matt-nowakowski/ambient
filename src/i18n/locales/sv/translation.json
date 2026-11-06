@@ -1817,7 +1817,7 @@
       "perWeek": "Gratis: {{limit}} i veckan",
       "perMonth": "Gratis: {{limit}} i månaden",
       "hours": "Gratis: {{limit}} timmar",
-      "retention": "Gratis sparar de senaste {{limit}} timmarna. Pro sparar i upp till 90 dagar."
+      "retention": "Gratis sparar de senaste {{limit}} timmarna. Pro sparar i upp till 30 dagar."
     },
     "depends": {
       "screenContext": "Förslag och minne behöver det inte.",

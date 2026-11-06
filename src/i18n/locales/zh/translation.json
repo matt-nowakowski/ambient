@@ -1817,7 +1817,7 @@
       "perWeek": "免费版：每周 {{limit}} 条",
       "perMonth": "免费版：每月 {{limit}} 场",
       "hours": "免费版：{{limit}} 小时",
-      "retention": "免费版保留最近 {{limit}} 小时。Pro 最长保留 90 天。"
+      "retention": "免费版保留最近 {{limit}} 小时。Pro 最长保留 30 天。"
     },
     "depends": {
       "screenContext": "建议和记忆不需要它。",

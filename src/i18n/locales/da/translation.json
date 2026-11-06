@@ -1817,7 +1817,7 @@
       "perWeek": "Gratis: {{limit}} om ugen",
       "perMonth": "Gratis: {{limit}} om måneden",
       "hours": "Gratis: {{limit}} timer",
-      "retention": "Gratis gemmer de seneste {{limit}} timer. Pro gemmer i op til 90 dage."
+      "retention": "Gratis gemmer de seneste {{limit}} timer. Pro gemmer i op til 30 dage."
     },
     "depends": {
       "screenContext": "Forslag og hukommelse har ikke brug for det.",

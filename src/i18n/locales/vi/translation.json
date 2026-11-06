@@ -1817,7 +1817,7 @@
       "perWeek": "Miễn phí: {{limit}} mỗi tuần",
       "perMonth": "Miễn phí: {{limit}} mỗi tháng",
       "hours": "Miễn phí: {{limit}} giờ",
-      "retention": "Gói Miễn phí giữ {{limit}} giờ gần nhất. Pro giữ tối đa 90 ngày."
+      "retention": "Gói Miễn phí giữ {{limit}} giờ gần nhất. Pro giữ tối đa 30 ngày."
     },
     "depends": {
       "screenContext": "Gợi ý và bộ nhớ không cần tùy chọn này.",

@@ -1829,7 +1829,7 @@
       "perWeek": "Grátis: {{limit}} por semana",
       "perMonth": "Grátis: {{limit}} por mês",
       "hours": "Grátis: {{limit}} horas",
-      "retention": "O plano Grátis guarda as últimas {{limit}} horas. O Pro guarda até 90 dias."
+      "retention": "O plano Grátis guarda as últimas {{limit}} horas. O Pro guarda até 30 dias."
     },
     "depends": {
       "screenContext": "Sugestões e memória não precisam disso.",

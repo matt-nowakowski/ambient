@@ -1836,7 +1836,7 @@
       "perWeek": "Darmowy: {{limit}} tygodniowo",
       "perMonth": "Darmowy: {{limit}} miesięcznie",
       "hours": "Darmowy: {{limit}} godz.",
-      "retention": "Plan Darmowy przechowuje ostatnie {{limit}} godz. Pro przechowuje do 90 dni."
+      "retention": "Plan Darmowy przechowuje ostatnie {{limit}} godz. Pro przechowuje do 30 dni."
     },
     "depends": {
       "screenContext": "Sugestie i pamięć ekranu działają bez tego.",

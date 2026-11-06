@@ -1817,7 +1817,7 @@
       "perWeek": "무료: 주 {{limit}}개",
       "perMonth": "무료: 월 {{limit}}회",
       "hours": "무료: {{limit}}시간",
-      "retention": "무료 플랜은 최근 {{limit}}시간을 보관합니다. Pro는 최대 90일간 보관합니다."
+      "retention": "무료 플랜은 최근 {{limit}}시간을 보관합니다. Pro는 최대 30일간 보관합니다."
     },
     "depends": {
       "screenContext": "제안과 메모리에는 필요하지 않습니다.",

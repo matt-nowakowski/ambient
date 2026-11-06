@@ -1829,7 +1829,7 @@
       "perWeek": "Gratuito: {{limit}} a settimana",
       "perMonth": "Gratuito: {{limit}} al mese",
       "hours": "Gratuito: {{limit}} ore",
-      "retention": "Il piano Gratuito conserva le ultime {{limit}} ore. Pro conserva fino a 90 giorni."
+      "retention": "Il piano Gratuito conserva le ultime {{limit}} ore. Pro conserva fino a 30 giorni."
     },
     "depends": {
       "screenContext": "Suggerimenti e memoria non ne hanno bisogno.",

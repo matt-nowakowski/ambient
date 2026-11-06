@@ -1817,7 +1817,7 @@
       "perWeek": "無料：週 {{limit}} 件",
       "perMonth": "無料：月 {{limit}} 回",
       "hours": "無料：{{limit}} 時間",
-      "retention": "無料プランでは直近 {{limit}} 時間分を保持します。Proなら最大90日間です。"
+      "retention": "無料プランでは直近 {{limit}} 時間分を保持します。Proなら最大30日間です。"
     },
     "depends": {
       "screenContext": "提案とメモリーには不要です。",
