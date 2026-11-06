@@ -13,7 +13,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "verify-license": "bun scripts/verify-license.ts",
-    "test:license-code": "bun scripts/license-code-test.ts"
+    "test:license-code": "bun scripts/license-code-test.ts",
+    "test:subscriptions": "bun scripts/subscriptions-test.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

@@ -9,6 +9,7 @@ import {
 import { resendConfigured, sendEmail } from "@/lib/email/resend";
 import { billingLink } from "@/lib/email/templates";
 import { ambientProducts, clientIp } from "@/lib/license-code";
+import { isAmbientProduct, warnIfNoProducts } from "@/lib/subscriptions";
 import { getPolar, notConfigured, readJson } from "@/lib/polar";
 
 /**
@@ -87,6 +88,9 @@ async function ambientCustomer(
   email: string,
 ): Promise<string | null> {
   const products = ambientProducts();
+  // Fail closed: with no product ids, any customer of the shared org would match.
+  warnIfNoProducts(products, "billing/link");
+  if (products.size === 0) return null;
   let best: { id: string; at: number } | null = null;
   for await (const page of await polar.customers.list({ email, limit: 20 })) {
     for (const c of page.result.items) {
@@ -96,7 +100,7 @@ async function ambientCustomer(
         limit: 50,
       })) {
         for (const sub of subs.result.items) {
-          if (products.size > 0 && !products.has(sub.productId)) continue;
+          if (!isAmbientProduct(sub.productId, products)) continue;
           const at = sub.createdAt.getTime();
           if (!best || at > best.at) best = { id: c.id, at };
         }

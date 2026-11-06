@@ -3,6 +3,7 @@ import { Polar } from "@polar-sh/sdk";
 import type { Subscription } from "@polar-sh/sdk/models/components/subscription.js";
 import { siteUrl } from "./brand";
 import { GRACE_SECONDS, mintLicense, planFromMetadata, type Plan } from "./license";
+import { ambientProductIds, liveAmbientSubscriptions, warnIfNoProducts } from "./subscriptions";
 
 /**
  * Polar is the merchant of record: it runs checkout, invoices, tax and the
@@ -10,7 +11,8 @@ import { GRACE_SECONDS, mintLicense, planFromMetadata, type Plan } from "./licen
  * site builds and renders without credentials.
  *
  * Env: POLAR_ACCESS_TOKEN, POLAR_ENV ("production" | "sandbox"),
- * POLAR_PRODUCT_PRO_MONTHLY, POLAR_PRODUCT_PRO_YEARLY.
+ * POLAR_PRODUCT_PRO_MONTHLY, POLAR_PRODUCT_PRO_YEARLY, POLAR_PRODUCT_TEAM
+ * (Ambient's products in the shared org; none set means nothing unlocks Pro).
  */
 let client: Polar | null = null;
 
@@ -54,6 +56,17 @@ export function licenseExpFor(sub: Pick<Subscription, "currentPeriodEnd">) {
   return Math.floor(sub.currentPeriodEnd.getTime() / 1000) + GRACE_SECONDS;
 }
 
+/**
+ * The real end of the paid period and whether it renews, for the app's
+ * "Renews …" / "Ends …" line. The token's `exp` is this plus the grace.
+ */
+export function billingPeriod(sub: Pick<Subscription, "currentPeriodEnd" | "cancelAtPeriodEnd">) {
+  return {
+    periodEnd: Math.floor(sub.currentPeriodEnd.getTime() / 1000),
+    cancelAtPeriodEnd: sub.cancelAtPeriodEnd === true,
+  };
+}
+
 export function planFor(sub: Pick<Subscription, "metadata">): Plan {
   // Polar metadata values may be strings, numbers or booleans; only `plan` matters.
   const plan = sub.metadata?.plan;
@@ -75,19 +88,20 @@ export function licenseForSubscription(
   return { key: mintLicense({ sub: customer.id, email: customer.email, plan, exp }), plan, exp };
 }
 
-const LIVE_STATUSES = new Set(["active", "trialing"]);
-
-/** Newest active/trialing subscription for a customer, or null. */
+/**
+ * Newest live Ambient subscription for a customer, or null. Same rules as
+ * activeAmbientSubscription (lib/subscriptions.ts), for callers that already
+ * hold a client.
+ */
 export async function findActiveSubscription(polar: Polar, customerId: string) {
-  const pages = await polar.subscriptions.list({ customerId, active: true, limit: 20 });
-  const live: Subscription[] = [];
-  for await (const page of pages) {
-    for (const sub of page.result.items) {
-      if (LIVE_STATUSES.has(sub.status)) live.push(sub);
-    }
+  const products = ambientProductIds();
+  warnIfNoProducts(products, "polar");
+  if (products.size === 0) return null;
+  const all: Subscription[] = [];
+  for await (const page of await polar.subscriptions.list({ customerId, limit: 50 })) {
+    all.push(...page.result.items);
   }
-  live.sort((a, b) => b.currentPeriodEnd.getTime() - a.currentPeriodEnd.getTime());
-  return live[0] ?? null;
+  return liveAmbientSubscriptions(all, products)[0] ?? null;
 }
 
 export async function readJson(req: Request): Promise<Record<string, unknown> | null> {

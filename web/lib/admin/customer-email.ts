@@ -8,6 +8,7 @@ import { highlightAsk, highlightMeetings, personalNote, welcome, winBack } from 
 import { getPolar, planFor } from "../polar";
 import { dailyQuota, templateById, unsubscribedEmails, type AdminTemplateId } from "./customers";
 import type { CustomerRow } from "./metrics";
+import { LIVE_STATUSES } from "../subscriptions";
 
 /**
  * Rendering and sending for /admin/customers. Every send:
@@ -66,7 +67,7 @@ async function build(template: AdminTemplateId, c: CustomerRow, note: Note, segm
       const polar = getPolar();
       if (!polar) return { ok: false, error: "Polar isn't configured." };
       const sub = await polar.subscriptions.get({ id: c.subscriptionId });
-      if (sub.status !== "active" && sub.status !== "trialing") return { ok: false, error: "No live subscription, so there's nothing to sign in to." };
+      if (!LIVE_STATUSES.has(sub.status)) return { ok: false, error: "No live subscription, so there's nothing to sign in to." };
       const plan = planFor(sub) === "team" ? "team" : "pro";
       email = welcome({ plan, interval: sub.recurringInterval === "year" ? "year" : "month", email: c.email, renewsAt: sub.currentPeriodEnd });
       break;

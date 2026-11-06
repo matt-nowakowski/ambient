@@ -4,6 +4,7 @@ import { currentWeek, isDatabaseConfigured, usageDb } from "../db";
 import type { Order } from "@polar-sh/sdk/models/components/order.js";
 import type { Subscription } from "@polar-sh/sdk/models/components/subscription.js";
 import { getPolar } from "../polar";
+import { ambientProductIds as sharedProductIds } from "../subscriptions";
 
 /**
  * Business metrics for /admin, from our own database and Polar (read-only).
@@ -193,13 +194,7 @@ export type PolarResult = PolarStats | { ok: false; error: string; missingEnv?: 
 const MAX_PAGES = 40;
 
 export function ambientProductIds(): string[] {
-  return [
-    process.env.POLAR_PRODUCT_PRO_MONTHLY,
-    process.env.POLAR_PRODUCT_PRO_YEARLY,
-    ...(process.env.POLAR_PRODUCT_TEAM ?? "").split(","),
-  ]
-    .map((x) => x?.trim())
-    .filter((x): x is string => Boolean(x));
+  return [...sharedProductIds()];
 }
 
 const loadPolar = unstable_cache(

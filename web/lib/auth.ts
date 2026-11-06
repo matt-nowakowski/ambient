@@ -1,9 +1,9 @@
 import "server-only";
 import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
-import { mintLicense, type Plan } from "./license";
+import { GRACE_SECONDS, mintLicense, type Plan } from "./license";
 import { ActivationConfigError, activeAmbientSubscription, polarBypass } from "./license-code";
-import { getPolar, licenseExpFor, planFor } from "./polar";
+import { billingPeriod, getPolar, licenseExpFor, planFor } from "./polar";
 
 /**
  * Email sign-in for the desktop app: a 6-digit code by email, then a
@@ -264,6 +264,13 @@ export type AccountStatus = {
   /** Signed license token while an Ambient subscription is live; null on Free. */
   key: string | null;
   exp: number | null;
+  /**
+   * Unix seconds the paid period really ends (`exp` adds a 7-day grace).
+   * Added in 0.1.20; older apps ignore it, so it stays optional for readers.
+   */
+  periodEnd?: number | null;
+  /** True when the plan is set to end at `periodEnd` rather than renew. */
+  cancelAtPeriodEnd?: boolean;
 };
 
 /**
@@ -275,7 +282,14 @@ export type AccountStatus = {
 export async function accountStatus(email: string): Promise<AccountStatus> {
   if (polarBypass()) {
     const exp = nowSecs() + 30 * 24 * 3600;
-    return { email, plan: "pro", key: mintLicense({ sub: `test_${emailId(email)}`, email, plan: "pro", exp }), exp };
+    return {
+      email,
+      plan: "pro",
+      key: mintLicense({ sub: `test_${emailId(email)}`, email, plan: "pro", exp }),
+      exp,
+      periodEnd: exp - GRACE_SECONDS,
+      cancelAtPeriodEnd: false,
+    };
   }
   const polar = getPolar();
   if (!polar) throw new ActivationConfigError("Polar");
@@ -292,9 +306,15 @@ export async function accountStatus(email: string): Promise<AccountStatus> {
     const sub = await activeAmbientSubscription(c.id);
     if (sub && (!best || sub.currentPeriodEnd > best.sub.currentPeriodEnd)) best = { customerId: c.id, sub };
   }
-  if (!best) return { email, plan: "free", key: null, exp: null };
+  if (!best) return { email, plan: "free", key: null, exp: null, periodEnd: null, cancelAtPeriodEnd: false };
 
   const plan = planFor(best.sub);
   const exp = licenseExpFor(best.sub);
-  return { email, plan, key: mintLicense({ sub: best.customerId, email, plan, exp }), exp };
+  return {
+    email,
+    plan,
+    key: mintLicense({ sub: best.customerId, email, plan, exp }),
+    exp,
+    ...billingPeriod(best.sub),
+  };
 }

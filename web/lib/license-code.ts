@@ -4,7 +4,8 @@ import type { Subscription } from "@polar-sh/sdk/models/components/subscription.
 import { brand } from "./brand";
 import { mintLicense, type Plan } from "./license";
 import { getOrCreateCode, normalizeCode, type CodeStore } from "./license-code-core";
-import { getPolar, licenseExpFor, planFor } from "./polar";
+import { billingPeriod, getPolar, licenseExpFor, planFor } from "./polar";
+import { ambientProductIds, liveAmbientSubscriptions, warnIfNoProducts } from "./subscriptions";
 
 export { normalizeCode } from "./license-code-core";
 
@@ -161,30 +162,27 @@ export function clientIp(req: Request) {
 /* Subscription check + token                                          */
 /* ------------------------------------------------------------------ */
 
-/** Ambient's products in the shared Polar org; empty = don't filter (sandbox). */
+/** Ambient's products in the shared Polar org. Empty means nothing unlocks Pro (fail closed). */
 export function ambientProducts() {
-  return new Set(
-    [process.env.POLAR_PRODUCT_PRO_MONTHLY, process.env.POLAR_PRODUCT_PRO_YEARLY, process.env.POLAR_PRODUCT_TEAM].filter(
-      (id): id is string => Boolean(id),
-    ),
-  );
+  return ambientProductIds();
 }
 
-/** Newest active/trialing Ambient subscription for a customer (read-only). */
+/**
+ * Newest live (active, trialing or past due) Ambient subscription for a
+ * customer (read-only). Lists every subscription rather than Polar's
+ * `active` filter, so a past-due one is seen whatever that filter means.
+ */
 export async function activeAmbientSubscription(customerId: string): Promise<Subscription | null> {
   const polar = getPolar();
   if (!polar) throw new ActivationConfigError("Polar");
   const products = ambientProducts();
-  const live: Subscription[] = [];
-  for await (const page of await polar.subscriptions.list({ customerId, active: true, limit: 20 })) {
-    for (const sub of page.result.items) {
-      if ((sub.status === "active" || sub.status === "trialing") && (products.size === 0 || products.has(sub.productId))) {
-        live.push(sub);
-      }
-    }
+  warnIfNoProducts(products, "license");
+  if (products.size === 0) return null;
+  const all: Subscription[] = [];
+  for await (const page of await polar.subscriptions.list({ customerId, limit: 50 })) {
+    all.push(...page.result.items);
   }
-  live.sort((a, b) => b.currentPeriodEnd.getTime() - a.currentPeriodEnd.getTime());
-  return live[0] ?? null;
+  return liveAmbientSubscriptions(all, products)[0] ?? null;
 }
 
 /**
@@ -200,7 +198,16 @@ export function polarBypass() {
 }
 
 export type Activation =
-  | { ok: true; key: string; code: string; plan: Plan; email: string; exp: number }
+  | {
+      ok: true;
+      key: string;
+      code: string;
+      plan: Plan;
+      email: string;
+      exp: number;
+      periodEnd?: number;
+      cancelAtPeriodEnd?: boolean;
+    }
   | { ok: false; error: "invalid_code" | "no_active_subscription" };
 
 /**
@@ -223,5 +230,13 @@ export async function activateCode(input: unknown): Promise<Activation> {
   const plan = planFor(sub);
   const exp = licenseExpFor(sub);
   const email = rec.email || sub.customer?.email || "";
-  return { ok: true, key: mintLicense({ sub: rec.sub, email, plan, exp }), code, plan, email, exp };
+  return {
+    ok: true,
+    key: mintLicense({ sub: rec.sub, email, plan, exp }),
+    code,
+    plan,
+    email,
+    exp,
+    ...billingPeriod(sub),
+  };
 }

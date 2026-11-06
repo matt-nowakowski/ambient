@@ -1,11 +1,11 @@
 import { noteActive } from "@/lib/activity";
 import { LicenseConfigError, isLicenseSigningConfigured, mintLicense, verifyLicense } from "@/lib/license";
 import { activeAmbientSubscription } from "@/lib/license-code";
-import { getPolar, licenseExpFor, notConfigured, planFor, readJson } from "@/lib/polar";
+import { billingPeriod, getPolar, licenseExpFor, notConfigured, planFor, readJson } from "@/lib/polar";
 
 /**
  * Verifies the signature (expiry ignored), then asks Polar for an
- * active/trialing Ambient subscription on the key's customer and re-issues the key
+ * live (active, trialing or past due) Ambient subscription on the key's customer and re-issues the key
  * with a fresh `exp`.
  */
 export async function POST(req: Request) {
@@ -32,7 +32,8 @@ export async function POST(req: Request) {
     const exp = licenseExpFor(sub);
     const key = mintLicense({ sub: result.payload.sub, email: result.payload.email, plan, exp });
     noteActive(result.payload.sub, plan);
-    return Response.json({ key, plan, exp });
+    // periodEnd / cancelAtPeriodEnd since 0.1.20; older apps read only key.
+    return Response.json({ key, plan, exp, ...billingPeriod(sub) });
   } catch (err) {
     if (err instanceof LicenseConfigError) return notConfigured("License signing");
     console.error("[license/refresh] failed", err);

@@ -34,8 +34,8 @@ export async function POST(req: Request) {
     if (!result.ok) {
       return Response.json({ error: result.error }, { status: result.error === "invalid_code" ? 400 : 402 });
     }
-    const { key, code, plan, email, exp } = result;
-    return Response.json({ key, code, plan, email, exp });
+    const { key, code, plan, email, exp, periodEnd, cancelAtPeriodEnd } = result;
+    return Response.json({ key, code, plan, email, exp, periodEnd, cancelAtPeriodEnd });
   } catch (err) {
     if (err instanceof LicenseConfigError || err instanceof ActivationConfigError) return notConfigured("License activation");
     console.error("[license/activate] failed", err instanceof Error ? err.message : "unknown error");

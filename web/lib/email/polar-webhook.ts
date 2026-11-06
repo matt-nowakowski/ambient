@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { ambientProductIds } from "../subscriptions";
 
 /**
  * Polar webhooks (Standard Webhooks), verified and mapped to emails.
@@ -113,16 +114,7 @@ export function fullyDiscounted(order: Json): { name: string | null; code: strin
 }
 
 /** Ambient's Polar product ids. Everything else in the shared org is ignored. */
-export function ambientProductIds(): Set<string> {
-  const ids = [
-    process.env.POLAR_PRODUCT_PRO_MONTHLY,
-    process.env.POLAR_PRODUCT_PRO_YEARLY,
-    ...(process.env.POLAR_PRODUCT_TEAM ?? "").split(","),
-  ]
-    .map((s) => s?.trim())
-    .filter((s): s is string => Boolean(s));
-  return new Set(ids);
-}
+export { ambientProductIds };
 
 export type EmailAction =
   | { email: "welcome"; to: string; customerId: string; sub: SubInfo }
