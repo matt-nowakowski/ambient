@@ -835,7 +835,7 @@ fn default_model() -> String {
     "".to_string()
 }
 
-const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 2;
+const CURRENT_SETTINGS_SCHEMA_VERSION: u32 = 3;
 
 fn default_settings_schema_version() -> u32 {
     CURRENT_SETTINGS_SCHEMA_VERSION
@@ -907,12 +907,14 @@ fn default_overlay_position() -> OverlayPosition {
 }
 
 fn default_overlay_style() -> OverlayStyle {
-    // Linux hides the overlay by default; other platforms show the live overlay.
+    // Linux hides the overlay by default; other platforms show the plain pill.
+    // Live words are a choice: they arrive a second or two behind speech, and
+    // the result lands in the app (or a card) the moment you stop anyway.
     // Position is independent and only selects top vs. bottom placement.
     #[cfg(target_os = "linux")]
     return OverlayStyle::None;
     #[cfg(not(target_os = "linux"))]
-    return OverlayStyle::Live;
+    return OverlayStyle::Minimal;
 }
 
 fn default_vad_enabled() -> bool {
@@ -1508,6 +1510,16 @@ fn apply_settings_migrations(
         settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
         updated = true;
     }
+    if stored_schema_version < 3 {
+        // Live words in the pill were the default and lagged behind speech;
+        // move everyone on that default to the plain pill once. Choosing Live
+        // again afterwards sticks.
+        if settings.overlay_style == OverlayStyle::Live {
+            settings.overlay_style = OverlayStyle::Minimal;
+        }
+        settings.settings_schema_version = CURRENT_SETTINGS_SCHEMA_VERSION;
+        updated = true;
+    }
 
     // The generic GPU choice was removed in favor of Auto or an exact device.
     // Normalize settings created by builds that exposed that short-lived option.
@@ -1520,7 +1532,7 @@ fn apply_settings_migrations(
 
     // One-time overlay migration (only while the new key is absent): the retired
     // overlay_position `none` meant "hide the overlay" → OverlayStyle::None; any
-    // other position had it visible → Live. The position enum no longer has a
+    // other position had it visible → the pill. The position enum no longer has a
     // `none` variant (legacy "none" deserializes to Bottom via a serde alias), so
     // read the raw stored string to recover the old intent.
     if settings_value.get("overlay_style").is_none() {
@@ -1531,7 +1543,7 @@ fn apply_settings_migrations(
         settings.overlay_style = if was_hidden {
             OverlayStyle::None
         } else {
-            OverlayStyle::Live
+            OverlayStyle::Minimal
         };
         updated = true;
     }
@@ -1965,8 +1977,32 @@ mod tests {
 
     #[cfg(not(target_os = "linux"))]
     #[test]
-    fn default_overlay_style_is_live_when_overlay_defaults_on() {
+    fn default_overlay_style_is_minimal_when_overlay_defaults_on() {
         let settings = get_default_settings();
+        assert_eq!(settings.overlay_style, OverlayStyle::Minimal);
+    }
+
+    #[test]
+    fn live_overlay_moves_to_minimal_once() {
+        let mut settings = get_default_settings();
+        settings.overlay_style = OverlayStyle::Live;
+        let raw = serde_json::json!({
+            "selected_model": "",
+            "overlay_style": "live",
+            "settings_schema_version": 2
+        });
+        assert!(apply_settings_migrations(&mut settings, &raw));
+        assert_eq!(settings.overlay_style, OverlayStyle::Minimal);
+
+        // Chosen again after the migration: it sticks.
+        let mut settings = get_default_settings();
+        settings.overlay_style = OverlayStyle::Live;
+        let raw = serde_json::json!({
+            "selected_model": "",
+            "overlay_style": "live",
+            "settings_schema_version": CURRENT_SETTINGS_SCHEMA_VERSION
+        });
+        apply_settings_migrations(&mut settings, &raw);
         assert_eq!(settings.overlay_style, OverlayStyle::Live);
     }
 
@@ -1996,7 +2032,7 @@ mod tests {
     }
 
     #[test]
-    fn overlay_migration_promotes_enabled_overlay_to_live() {
+    fn overlay_migration_keeps_enabled_overlay_on() {
         let mut settings = get_default_settings();
         settings.overlay_position = OverlayPosition::Top;
         settings.overlay_style = OverlayStyle::Minimal;
@@ -2007,7 +2043,7 @@ mod tests {
         });
 
         assert!(apply_settings_migrations(&mut settings, &raw));
-        assert_eq!(settings.overlay_style, OverlayStyle::Live);
+        assert_eq!(settings.overlay_style, OverlayStyle::Minimal);
         assert_eq!(settings.overlay_position, OverlayPosition::Top);
     }
 
