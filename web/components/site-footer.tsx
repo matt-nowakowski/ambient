@@ -20,6 +20,7 @@ const columns = [
       { href: "/docs/getting-started", label: "Getting started" },
       { href: "/docs/troubleshooting", label: "Troubleshooting" },
       { href: "/docs/linux", label: "Linux setup" },
+      { href: "/billing", label: "Manage your plan" },
       { href: "/contact", label: "Contact" },
       { href: "/sales", label: "Sales" },
     ],

@@ -162,7 +162,7 @@ export function clientIp(req: Request) {
 /* ------------------------------------------------------------------ */
 
 /** Ambient's products in the shared Polar org; empty = don't filter (sandbox). */
-function ambientProducts() {
+export function ambientProducts() {
   return new Set(
     [process.env.POLAR_PRODUCT_PRO_MONTHLY, process.env.POLAR_PRODUCT_PRO_YEARLY, process.env.POLAR_PRODUCT_TEAM].filter(
       (id): id is string => Boolean(id),

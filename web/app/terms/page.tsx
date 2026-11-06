@@ -78,8 +78,9 @@ export default function TermsPage() {
                   Subscriptions <strong>renew automatically</strong> at the end of each billing period until cancelled.
                 </li>
                 <li>
-                  You can <strong>cancel at any time</strong> from the billing portal (in the app: Account → Manage
-                  billing). Paid features stay on until the end of the period you have paid for.
+                  You can <strong>cancel at any time</strong> from the billing portal: in the app, Account → Manage
+                  billing, or at <Link href="/billing">{brand.domain}/billing</Link>, where we email you a link to it.
+                  Paid features stay on until the end of the period you have paid for.
                 </li>
                 <li>
                   <strong>Refunds:</strong> if {brand.name} isn’t right for you, email us within 14 days of your first

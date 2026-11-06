@@ -79,4 +79,8 @@ export const billingFaqs: FaqItem[] = [
     q: "How do I activate Pro?",
     a: `After checkout, open ${brand.name} → Account → Sign in, enter the email you paid with and the 6-digit code we email you. Manage or cancel from Account → Manage billing; Pro runs to the end of the period you paid for.`,
   },
+  {
+    q: "How do I cancel or change my plan?",
+    a: `In ${brand.name}, open Account → Manage billing. Without the app, go to ${brand.domain}/billing and enter the email you paid with: we’ll email you a secure link to your billing portal. There you can change or cancel your plan, update your card and download invoices. If you cancel, Pro stays on until the end of the period you’ve paid for, then ${brand.name} carries on as Free.`,
+  },
 ];

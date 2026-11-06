@@ -23,6 +23,7 @@ export const changelog: Release[] = [
           "Select any text on a card to copy just that part.",
           "Reading the window you're in and suggestions are now on for everyone, including people upgrading. Home shows a one-time note saying so, with a button to Privacy if you'd rather turn them off. Turning them off sticks, and replaying the tour no longer turns them back on.",
           "Privacy, Settings, Meetings and Account have more room to breathe, buttons no longer wrap, and sections open and close smoothly.",
+          "Manage or cancel your plan from Account, or from tryambient.ai/billing.",
         ],
       },
       {

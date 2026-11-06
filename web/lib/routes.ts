@@ -6,6 +6,7 @@ export const publicPages = [
   { path: "/features", title: "Features", priority: 0.8 },
   { path: "/changelog", title: "Release notes", priority: 0.6 },
   { path: "/contact", title: "Contact", priority: 0.5 },
+  { path: "/billing", title: "Manage your plan", priority: 0.4 },
   { path: "/sales", title: "Sales", priority: 0.5 },
   { path: "/docs/getting-started", title: "Getting started with the agent", priority: 0.7 },
   { path: "/docs/writing", title: "Smart writing", priority: 0.6 },

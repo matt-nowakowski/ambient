@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { Compare } from "@/components/compare";
 import { Faq } from "@/components/faq";
@@ -53,6 +54,15 @@ export default function PricingPage() {
           >
             {emails.sales}
           </a>
+        </p>
+        <p className="mt-2 text-center text-[13px] text-subtle">
+          Already subscribed?{" "}
+          <Link
+            href="/billing"
+            className="text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground"
+          >
+            Manage or cancel your plan
+          </Link>
         </p>
       </Container>
 

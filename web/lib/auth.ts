@@ -210,6 +210,22 @@ export async function allowSend(email: string, ip: string) {
   return (counts.get(emailKey) ?? 0) <= SENDS_PER_EMAIL_PER_HOUR && (counts.get(ipKey) ?? 0) <= SENDS_PER_IP_PER_HOUR;
 }
 
+/** Billing-link emails (/billing): fewer than sign-in codes, own counters. */
+const LINKS_PER_EMAIL_PER_HOUR = 3;
+const LINKS_PER_IP_PER_HOUR = 10;
+
+/** Counts a billing-link request; false when the email or IP is over its hourly limit. */
+export async function allowBillingLink(email: string, ip: string) {
+  const hour = Math.floor(nowSecs() / 3600);
+  const emailKey = `bill:e:${emailId(email)}:${hour}`;
+  const ipKey = `bill:i:${mac("ip", ip).toString("hex").slice(0, 32)}:${hour}`;
+  const counts = await bump([
+    { key: emailKey, ttl: 3600 },
+    { key: ipKey, ttl: 3600 },
+  ]);
+  return (counts.get(emailKey) ?? 0) <= LINKS_PER_EMAIL_PER_HOUR && (counts.get(ipKey) ?? 0) <= LINKS_PER_IP_PER_HOUR;
+}
+
 /** Counts a try at a challenge; returns how many tries it has had, this one included. */
 export async function countAttempt(nonce: string) {
   const key = `try:${nonce}`;

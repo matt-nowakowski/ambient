@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalPage } from "@/components/legal";
 import { brand, company, emails, mailto, siteUrl } from "@/lib/brand";
 import { LEGAL_EFFECTIVE } from "@/lib/legal";
@@ -426,6 +427,12 @@ export default function PrivacyPage() {
                 while you are signed in, we record your email address, your plan, and the dates you first and most recently
                 signed in, so we know who uses {brand.name}. This record is deleted 12 months after your latest sign-in, or
                 sooner if you ask us.
+              </p>
+              <p>
+                <strong>Billing links.</strong> If you ask for a link on our <Link href="/billing">billing page</Link>, we
+                use the email you enter only to look up an {brand.name} subscription with Polar and, if there is one, to
+                email you a link to Polar’s billing portal through Resend. We store nothing about the request beyond a
+                short-lived counter, keyed by one-way hashes of the address and your IP address, that stops repeated requests.
               </p>
               <p>
                 Once you are signed in, the app keeps a signed session on your device and receives a signed license

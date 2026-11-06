@@ -5,6 +5,8 @@
 //   cancelScheduled, ended
 // Transactional, sent by the app's sign-in (sendSignInCode in ./sign-in.ts):
 //   signInCode
+// Transactional, sent when someone asks for it on /billing (/api/billing/link):
+//   billingLink
 // Transactional, sent when the user asks the app to email meeting notes
 // (/api/meetings/email, only ever to the account's own address):
 //   meetingNotes
@@ -85,6 +87,12 @@ const guideLinks: Block = {
   ],
 };
 
+/** Where to change or cancel a plan without the app: /billing emails a portal link. */
+const managePlanNote: Block = {
+  t: "note",
+  text: ["No app to hand? ", { href: url("/billing"), label: "Manage your plan" }, " on the web."],
+};
+
 // ---------------------------------------------------------------------------
 // 1. Welcome: no key to paste. You sign in with the email you bought with.
 // ---------------------------------------------------------------------------
@@ -119,7 +127,13 @@ export function welcome(d: WelcomeData): Rendered {
         t: "callout",
         icon: "refresh",
         k: "Billing",
-        v: ["Manage or cancel any time from ", { b: "Settings › Account" }, ". Polar, our payment provider, sends your receipt separately."],
+        v: [
+          "Manage or cancel any time from ",
+          { b: "Account › Manage billing" },
+          " in the app, or at ",
+          { href: url("/billing"), label: `${siteUrl.replace(/^https?:\/\//, "")}/billing` },
+          ". Polar, our payment provider, sends your receipt separately.",
+        ],
       },
       { t: "rule" },
       threeThings,
@@ -200,6 +214,7 @@ export function planChanged(d: PlanChangedData): Rendered {
       d.interval === "year" && d.plan === "pro"
         ? { t: "note", text: "Yearly works out a quarter cheaper than monthly, and we get to plan further ahead. Both help." }
         : { t: "note", text: "Questions about seats or invoices for your team? Just reply." },
+      { t: "links", items: [{ href: url("/billing"), label: "Manage your plan" }] },
       { t: "sign" },
     ],
   });
@@ -262,8 +277,47 @@ export function cancelScheduled(d: CancelScheduledData): Rendered {
         k: "Changed your mind?",
         v: ["Open ", { b: brand.name }, " → ", { b: "Account" }, " → ", { b: "Manage billing" }, " and resume before ", date, ". Nothing else changes."],
       },
+      managePlanNote,
       { t: "p", text: "One question, if you have a second: what could we have done better? Just reply. Even one line helps." },
       { t: "sign" },
+    ],
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Billing link: asked for on /billing. Only sent when the address has an
+// Ambient plan with Polar; the page says the same thing either way.
+// ---------------------------------------------------------------------------
+export type BillingLinkData = { portalUrl: string; expiresAt: Date; assetBase?: string };
+
+/** "about an hour", "about 30 minutes": how long a Polar customer session lasts. */
+function lasts(expiresAt: Date) {
+  const minutes = Math.max(5, Math.round((expiresAt.getTime() - Date.now()) / 60_000));
+  if (minutes < 50) return `about ${Math.round(minutes / 5) * 5} minutes`;
+  if (minutes < 90) return "about an hour";
+  const hours = Math.round(minutes / 60);
+  return hours < 48 ? `about ${hours} hours` : `about ${Math.round(hours / 24)} days`;
+}
+
+export function billingLink(d: BillingLinkData): Rendered {
+  const span = lasts(d.expiresAt);
+  return renderEmail({
+    subject: `Your ${brand.name} billing link`,
+    preheader: "Change or cancel your plan, update your card, download invoices.",
+    eyebrow: "Manage your plan",
+    kind: "transactional",
+    category: "billing_link",
+    reason: `You’re getting this because someone asked for a billing link for this email on ${siteUrl.replace(/^https?:\/\//, "")}.`,
+    assetBase: d.assetBase,
+    blocks: [
+      { t: "h", text: "Your billing portal" },
+      {
+        t: "p",
+        text: "Change or cancel your plan, update your card, or download invoices. Polar, our payment provider, runs the portal.",
+      },
+      { t: "button", href: d.portalUrl, label: "Open billing portal" },
+      { t: "note", text: `The link signs you in, so don’t forward it. It works for ${span}; ask again any time for a new one.` },
+      { t: "note", text: "Didn’t ask for this? You can ignore it. The link was sent only to this inbox, and nothing changes unless it’s opened." },
     ],
   });
 }
@@ -713,6 +767,8 @@ export const samples = {
   welcome: (o: { assetBase?: string; unsubscribeUrl?: string }) => welcome({ plan: "pro", interval: "month", email: "ana.silva@example.com", renewsAt: inAMonth(), ...o }),
   "friends-welcome": (o: { assetBase?: string; unsubscribeUrl?: string }) => friendsWelcome({ plan: "pro", email: "ana.silva@example.com", ...o }),
   "sign-in-code": (o: { assetBase?: string; unsubscribeUrl?: string }) => signInCode({ code: "482913", ...o }),
+  "billing-link": (o: { assetBase?: string; unsubscribeUrl?: string }) =>
+    billingLink({ portalUrl: "https://polar.sh/example/portal?customer_session_token=sample", expiresAt: new Date(Date.now() + 3600_000), ...o }),
   "plan-changed-yearly": (o: { assetBase?: string; unsubscribeUrl?: string }) => planChanged({ plan: "pro", interval: "year", renewsAt: new Date(Date.now() + 365 * 86400_000), ...o }),
   "plan-changed-team": (o: { assetBase?: string; unsubscribeUrl?: string }) => planChanged({ plan: "team", interval: "year", renewsAt: new Date(Date.now() + 365 * 86400_000), ...o }),
   "cancel-scheduled": (o: { assetBase?: string; unsubscribeUrl?: string }) => cancelScheduled({ plan: "pro", endsAt: inAMonth(), ...o }),
