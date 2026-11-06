@@ -22,7 +22,8 @@ export default function TermsPage() {
         <p>
           These terms are an agreement between you and <strong>{company.legalName}</strong> (“we”, “us”) for the{" "}
           {brand.name} desktop app, the website and any paid plan. By downloading the app or buying a plan you agree to
-          them. If you use {brand.name} for an organisation, you agree on its behalf.
+          them. You must be 16 or older to use {brand.name}. If you use {brand.name} for an organisation, you agree on
+          its behalf.
         </p>
       }
       sections={[

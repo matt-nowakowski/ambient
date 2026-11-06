@@ -1,4 +1,10 @@
-import { brand, fairUse, freeMeetingsPerMonth, freeWordsLabel } from "./brand";
+import {
+  brand,
+  emails,
+  fairUse,
+  freeMeetingsPerMonth,
+  freeWordsLabel,
+} from "./brand";
 import { competitors } from "./content";
 
 export type FaqItem = { q: string; a: string };
@@ -35,6 +41,22 @@ export const faqs: FaqItem[] = [
   {
     q: `How is it different from ${competitors.join(" or ")}?`,
     a: `It’s a live agent, not only dictation or a notetaker: it answers, acts on your computer and nudges you when it can help, with nothing to connect and no bot on your calls. Your voice is transcribed on your computer, not in the cloud, and dictation is free and unlimited.`,
+  },
+  {
+    q: "Can I use Pro on more than one computer?",
+    a: `Yes. Install ${brand.name} on each computer you use and sign in with the same email (Account → Sign in). There’s no limit on the number of computers; fair use is counted per account, not per computer. Pro is for you personally: each person needs their own plan.`,
+  },
+  {
+    q: "How do I change my email?",
+    a: `Email ${brand.supportEmail} from the address you paid with and tell us the new one. We’ll move your plan to it, then sign in on each computer with the new email.`,
+  },
+  {
+    q: "How do I delete my account and data?",
+    a: `Most of your data never leaves your computer: history, meetings, screen memory and settings live there, and deleting ${brand.name}’s folders removes them (see ${brand.domain}/docs/uninstall). On our side we hold your sign-in email and plan, and your tips email if you asked for tips. To have that deleted, email ${emails.legal}; see “Your rights” in the privacy policy (${brand.domain}/privacy#rights). Cancel any subscription first. Billing records are kept as the law requires.`,
+  },
+  {
+    q: `How do I uninstall ${brand.name}?`,
+    a: `On a Mac, quit ${brand.name} and drag it from Applications to the Trash. On Windows, use Settings → Apps → Installed apps → Uninstall, and tick “Delete the application data” to remove your data too. On Linux, remove the package or delete the AppImage. Uninstalling doesn’t cancel Pro. To remove your data and downloaded models as well, follow ${brand.domain}/docs/uninstall.`,
   },
 ];
 

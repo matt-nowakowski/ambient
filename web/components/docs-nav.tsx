@@ -27,6 +27,7 @@ const groups = [
     title: "Help & account",
     links: [
       { href: "/docs/troubleshooting", label: "Troubleshooting" },
+      { href: "/docs/uninstall", label: "Uninstall" },
       { href: "/pricing", label: "Plans & billing" },
       { href: "/contact", label: "Contact" },
     ],

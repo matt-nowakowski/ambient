@@ -17,6 +17,7 @@ export const publicPages = [
   { path: "/docs/suggestions", title: "Suggestions", priority: 0.6 },
   { path: "/docs/privacy", title: "Privacy controls", priority: 0.6 },
   { path: "/docs/troubleshooting", title: "Troubleshooting", priority: 0.6 },
+  { path: "/docs/uninstall", title: "Uninstall", priority: 0.4 },
   { path: "/docs/linux", title: "Linux setup", priority: 0.6 },
   { path: "/privacy", title: "Privacy Policy", priority: 0.3 },
   { path: "/terms", title: "Terms of Service", priority: 0.3 },
