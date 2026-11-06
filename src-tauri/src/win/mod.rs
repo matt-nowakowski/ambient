@@ -14,4 +14,6 @@ pub mod com;
 #[cfg(target_os = "windows")]
 pub mod files;
 #[cfg(target_os = "windows")]
+pub mod power;
+#[cfg(target_os = "windows")]
 pub mod shortcuts;

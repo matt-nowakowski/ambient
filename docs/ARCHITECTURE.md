@@ -53,6 +53,32 @@ Audio stops at speech-to-text: from there only text moves on. The audio
 modules contain no network code and call no module that sends
 (`bun run check:egress` checks this).
 
+## The window is only UI
+
+The main window is only UI; everything runs in Rust and works with it
+closed. Most people keep Ambient in the menu bar or tray: on macOS closing
+the window hides it (and drops the Dock icon), a login item or
+`--start-hidden` launch never shows it, and a hidden webview's JavaScript
+and timers may be throttled or suspended (WKWebView, WebView2, WebKitGTK).
+So nothing that does work lives in `src/`:
+
+- Shortcuts and paste for a returning user start in Rust at launch
+  (`init_input_at_startup` in `lib.rs`); the interface turns them on only
+  at the end of onboarding.
+- Every loop is a Rust thread or task: the agent loop (suggestions, meeting
+  prep, screen memory), hands-free, meetings, plan and license refresh,
+  check-in, telemetry, remote config, update checks, on-device AI.
+- Cards, notices and the Esc/⏎ keys are the HUD's (`hud.rs`, `hud_keys.rs`),
+  a window Rust creates and shows itself. An error the main window shows as
+  a toast is also said on the HUD when the window isn't in front
+  (`agent::notice::error_outside_window`).
+- macOS opts out of App Nap (`NSAppSleepDisabled` in `Info.plist`) and
+  Windows out of power throttling (`win/power.rs`).
+
+Events the main window listens to only refresh what it shows. The scenario
+suite runs every scenario with `--start-hidden` and no window at all, and
+fails one that opens a window.
+
 ## Module map
 
 ### `src-tauri/src` (Rust)

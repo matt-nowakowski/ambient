@@ -1579,12 +1579,17 @@ impl ShortcutAction for TranscribeAction {
             utils::hide_recording_overlay(app);
             set_tray_state(app, TrayIconState::Idle);
             if let Some(err) = recording_error {
+                let error_type = recording_error_type(&err);
                 let _ = app.emit(
                     "recording-error",
                     RecordingErrorEvent {
-                        error_type: recording_error_type(&err).to_string(),
+                        error_type: error_type.to_string(),
                         detail: Some(format!("{err:#}")),
                     },
+                );
+                crate::agent::notice::error_outside_window(
+                    app,
+                    &crate::agent::notice::recording_error_key(error_type),
                 );
             }
         }
@@ -1953,6 +1958,10 @@ impl ShortcutAction for TranscribeAction {
                                             Err(e) => {
                                                 error!("Failed to paste transcription: {}", e);
                                                 let _ = ah_clone.emit("paste-error", ());
+                                                crate::agent::notice::error_outside_window(
+                                                    &ah_clone,
+                                                    "errors.pasteFailed",
+                                                );
                                                 TranscriptionOutcome::Failed
                                             }
                                         };
@@ -1997,6 +2006,10 @@ impl ShortcutAction for TranscribeAction {
                             // Surface the failure to the UI (toast). The full
                             // message is also in ambient.log via the line above.
                             let _ = ah.emit("transcription-error", err.to_string());
+                            crate::agent::notice::error_outside_window(
+                                &ah,
+                                "errors.titles.transcription",
+                            );
                             // Save entry with empty text so user can retry
                             if wav_saved {
                                 if let Err(save_err) = hm.save_entry(

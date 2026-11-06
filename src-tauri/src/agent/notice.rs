@@ -6,7 +6,7 @@
 
 use std::collections::BTreeMap;
 
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 
 use super::router::Action;
 use crate::hud::{self, HudContent, HudOffer, HudTone};
@@ -137,6 +137,31 @@ impl Notice {
     }
 }
 
+/// An error the main window shows as a toast. With the window closed (Ambient
+/// in the menu bar or tray) or behind another app nobody would see it, so it
+/// is said on the HUD instead. `key` is an i18n key the HUD translates.
+pub fn error_outside_window(app: &AppHandle, key: &str) {
+    let window_in_front = app
+        .get_webview_window("main")
+        .and_then(|w| w.is_focused().ok())
+        .unwrap_or(false);
+    if !window_in_front {
+        Notice::new(key, HudTone::Error).show(app);
+    }
+}
+
+/// The i18n key for a recording that couldn't start (see
+/// `managers::audio::recording_error_type`).
+pub fn recording_error_key(error_type: &str) -> String {
+    match error_type {
+        "microphone_permission_denied" => {
+            format!("errors.micPermissionDenied.{}", std::env::consts::OS)
+        }
+        "no_input_device" => "errors.noInputDevice".into(),
+        _ => "errors.titles.recording".into(),
+    }
+}
+
 /// A button on a notice was pressed.
 pub fn on_action(app: &AppHandle, _id: &str, action: &str, value: Option<String>) {
     let value = value.unwrap_or_default();
@@ -233,6 +258,17 @@ fn settings_url(pane: &str) -> Option<&'static str> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn recording_errors_have_keys_the_hud_can_say() {
+        assert_eq!(
+            recording_error_key("no_input_device"),
+            "errors.noInputDevice"
+        );
+        assert_eq!(recording_error_key("unknown"), "errors.titles.recording");
+        assert!(recording_error_key("microphone_permission_denied")
+            .starts_with("errors.micPermissionDenied."));
+    }
 
     #[test]
     fn notices_carry_their_alternatives() {
