@@ -11,6 +11,31 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.12",
+    date: "2026-11-06",
+    title: "Smoother from the first minute",
+    summary:
+      "A calmer setup, dictation that joins up naturally, no surprise permission prompts, and tidier cards.",
+    sections: [
+      {
+        heading: "Setup",
+        items: [
+          "“Where should the AI run?” now says plainly that it's about polishing, drafts, answers and suggestions; speech recognition always stays on your computer.",
+          "A new step for a few more choices: tidy up with AI, help improve Ambient, and tips by email, each with room to breathe.",
+          "The practice step uses plain dictation so you feel the speed, and every step shares the same calm layout.",
+        ],
+      },
+      {
+        heading: "Fixed",
+        items: [
+          "Dictating right after existing text adds the space and capitals you'd expect, in any app.",
+          "Ambient no longer asks to access your Downloads folder after setup.",
+          "Buttons on suggestions and answers stay on one line, answers no longer show reference numbers like [4], and sources are limited to the best three.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.11",
     date: "2026-11-05",
     title: "Steadier, in every language",
