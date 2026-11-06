@@ -138,7 +138,7 @@ export const nothingToConnect = {
   sources: [
     { k: "Your screen", v: "The text of the window in front of you." },
     { k: "Your open windows", v: "Every app you have open, read when you ask." },
-    { k: "Spotlight", v: "Your files: Spotlight on a Mac (Mail and notes too), Windows Search, or Tracker on Linux." },
+    { k: "Spotlight", v: "Your files: Spotlight on a Mac (documents and Mail), Windows Search, or Tracker on Linux." },
     { k: "Calendar and Reminders", v: "Your own: Calendar and Reminders on a Mac; Outlook and notifications on Windows; GNOME Calendar and notifications on Linux." },
     { k: "Your Shortcuts", v: "Run by name: Shortcuts on a Mac, Start menu shortcuts or Power Automate flows on Windows, your scripts on Linux." },
     { k: "Your browser", v: "Drive and Gmail searches open in the browser you’re already signed in to." },

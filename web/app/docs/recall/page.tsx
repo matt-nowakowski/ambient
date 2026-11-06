@@ -10,8 +10,8 @@ const where = [
   { k: "Your meetings", v: "Notes and transcripts from calls you noted." },
   { k: "Open windows", v: "The text of every window you have open, read when you ask." },
   { k: "The last two minutes", v: "What was on screen a moment ago. In memory only, never saved." },
-  { k: "Screen memory", v: "What you’ve seen, saved as text and encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro, up to 90." },
-  { k: "Your files", v: "Spotlight on a Mac (Mail and notes too), Windows Search, or Tracker and locate on Linux." },
+  { k: "Screen memory", v: "What you’ve seen, saved as text and encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro, up to 30." },
+  { k: "Your files", v: "Spotlight on a Mac (documents and Mail), Windows Search, or Tracker and locate on Linux." },
   { k: "Drive and Gmail", v: "One-click searches in the browser you’re already signed in to." },
 ] as const;
 
@@ -37,7 +37,7 @@ export default function RecallPage() {
           <strong>Remember what you’ve seen</strong>. Both are in {brand.name} → Privacy.
         </p>
         <p>
-          Screen memory never leaves your computer. Delete it any time.{" "}
+          Screen memory is stored only on your computer. Delete it any time.{" "}
           <Link href="/docs/privacy" className="text-foreground underline underline-offset-4">
             Privacy controls
           </Link>

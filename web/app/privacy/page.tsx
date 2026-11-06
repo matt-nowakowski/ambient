@@ -167,7 +167,7 @@ export default function PrivacyPage() {
                 device, encrypted (AES-256-GCM, with the key kept in your macOS Keychain, sealed to your Windows account
                 with Windows data protection, or in a key file in the app’s own data folder on Linux), so you can find
                 things you
-                saw earlier. On Pro it is kept for 7 days by default (you can choose 1 to 90 days); on Free it keeps the
+                saw earlier. On Pro it is kept for 7 days by default (you can choose 1 to 30 days); on Free it keeps the
                 last 24 hours. You can delete it for a single app or entirely at any time. Screen memory is never
                 uploaded.
               </p>
@@ -618,7 +618,7 @@ export default function PrivacyPage() {
               <li>Server logs: kept by our hosting provider for a short period, typically no more than 30 days.</li>
               <li>
                 Data on your device: dictation history, meeting transcripts, notes and summaries are kept until you
-                delete them; screen memory for 7 days by default on Pro (1 to 90 days, your choice) and 24 hours on
+                delete them; screen memory for 7 days by default on Pro (1 to 30 days, your choice) and 24 hours on
                 Free; the network ledger for 30
                 days; the screen context buffer for 2 minutes, in memory only.
               </li>
