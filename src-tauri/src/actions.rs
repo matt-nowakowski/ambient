@@ -945,13 +945,15 @@ pub(crate) async fn process_dictation_output(
                     return handled();
                 }
             }
-            Some((Route::Dismiss, _)) => {
-                if crate::hud::is_visible() {
-                    crate::telemetry::route("dismiss", ask, place.editable);
-                    crate::hud::hide(app);
-                }
+            // Closes the card that's up. With none up there was nothing to
+            // dismiss, so the words are typed as said below rather than
+            // silently dropped.
+            Some((Route::Dismiss, _)) if crate::hud::is_visible() => {
+                crate::telemetry::route("dismiss", ask, place.editable);
+                crate::hud::hide(app);
                 return handled();
             }
+            Some((Route::Dismiss, _)) => {}
             // Compose with a field focused: written in place, with "Use my
             // words". With none, drafted and offered (or put into a reply it
             // opens, `open`).

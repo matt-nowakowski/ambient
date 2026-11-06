@@ -505,6 +505,49 @@
       }
     },
     {
+      "id": "write.en.terminal.say-command",
+      "about": "At a shell prompt, \"say done\" is the macOS command they dictated: typed as said, never taken as an instruction to write something.",
+      "tags": ["terminal", "critical", "regression"],
+      "lang": "en",
+      "os": ["macos"],
+      "screen": "terminal_error",
+      "say": "say done",
+      "regression": "0.1.19 review: compose in a terminal must not swallow shell commands",
+      "expect": {
+        "route": "write",
+        "contains": ["say done"],
+        "must_not": ["silent"]
+      }
+    },
+    {
+      "id": "write.en.terminal.echo-command",
+      "about": "At a shell prompt, an echo command whose words read like a request is still the command: typed as said.",
+      "tags": ["terminal", "critical", "regression"],
+      "lang": "en",
+      "screen": "terminal_error",
+      "say": "echo tell her I'll be late",
+      "regression": "0.1.19 review: compose in a terminal must not swallow shell commands",
+      "expect": {
+        "route": "write",
+        "contains": ["echo", "tell her"],
+        "must_not": ["silent"]
+      }
+    },
+    {
+      "id": "write.en.terminal.git-commit-claude",
+      "about": "In a terminal running Claude Code, a git command is the words to type, not something to write for them.",
+      "tags": ["terminal", "regression"],
+      "lang": "en",
+      "screen": "terminal_claude_code",
+      "say": "git commit -m fix the login bug",
+      "regression": "0.1.19 review: compose in a terminal must not swallow shell commands",
+      "expect": {
+        "route": "write",
+        "contains": ["git commit"],
+        "must_not": ["silent"]
+      }
+    },
+    {
       "id": "draft.en.gmail.no-reply-box",
       "about": "Gmail thread with no reply box: drafted (Reply opened, or offered as a draft card).",
       "tags": ["gmail", "critical", "regression"],

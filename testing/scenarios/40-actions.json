@@ -438,6 +438,42 @@
       }
     },
     {
+      "id": "write.en.never-mind-in-prose",
+      "about": "With a suggestion up, a sendable sentence that merely starts with \"never mind\" is typed into the reply, not taken as closing the card.",
+      "tags": ["cards", "critical", "regression"],
+      "lang": "en",
+      "screen": "slack_dm_priya",
+      "say": "never mind about the numbers, I'll bring them to the review, see you at 3",
+      "card": {
+        "kind": "suggestion"
+      },
+      "settings": {
+        "intelligence": "cloud",
+        "polish": false,
+        "writing": "smart",
+        "cloud_suggestions": "accepted"
+      },
+      "regression": "0.1.19 review: dismiss only when dismissing is the whole utterance",
+      "expect": {
+        "route": ["write", "polish"],
+        "contains": ["numbers"],
+        "must_not": ["silent"]
+      }
+    },
+    {
+      "id": "dismiss.en.no-card-typed",
+      "about": "\"Never mind\" with no card up has nothing to close: the words are typed as said, never silently dropped.",
+      "tags": ["cards", "critical", "regression"],
+      "lang": "en",
+      "screen": "notes_empty",
+      "say": "never mind",
+      "regression": "0.1.19 review: a dismiss with no card up swallowed the words",
+      "expect": {
+        "route": ["write", "polish"],
+        "must_not": ["silent"]
+      }
+    },
+    {
       "id": "help.de.desktop",
       "tags": ["help", "desktop", "regression"],
       "lang": "de",
