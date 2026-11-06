@@ -1164,13 +1164,17 @@ pub fn run(cli_args: CliArgs) {
         .typ::<hud::HudContent>()
         .typ::<hud::HudActionEvent>();
 
-    #[cfg(debug_assertions)] // <- Only export on non-release builds
-    specta_builder
-        .export(
-            Typescript::default().bigint(BigIntExportBehavior::Number),
-            "../src/bindings.ts",
-        )
-        .expect("Failed to export typescript bindings");
+    // Only on non-release builds, and never from the test suite's runs (they
+    // start from other folders, where "../src" isn't this repo).
+    #[cfg(debug_assertions)]
+    if !test_mode {
+        specta_builder
+            .export(
+                Typescript::default().bigint(BigIntExportBehavior::Number),
+                "../src/bindings.ts",
+            )
+            .expect("Failed to export typescript bindings");
+    }
 
     let invoke_handler = specta_builder.invoke_handler();
 
