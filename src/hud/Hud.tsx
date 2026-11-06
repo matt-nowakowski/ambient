@@ -366,11 +366,13 @@ export default function Hud() {
     setFlash(Date.now());
   };
 
-  /** Selecting text in the answer copies it, like a terminal. */
-  const onAnswerMouseUp = () => {
+  /** Selecting text anywhere on a card copies it, like a terminal: the
+   * panel never takes keyboard focus (so the user's app keeps it), so
+   * ⌘C / Ctrl+C can't reach it. */
+  const onCardMouseUp = () => {
     const sel = window.getSelection();
     const text = sel?.toString() ?? "";
-    if (text.trim() && answerRef.current?.contains(sel?.anchorNode ?? null)) {
+    if (text.trim() && cardRef.current?.contains(sel?.anchorNode ?? null)) {
       copyPiece(text);
     }
   };
@@ -476,6 +478,7 @@ export default function Hud() {
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={gone}
             transition={transition}
+            onMouseUp={onCardMouseUp}
           >
             {content.kind === "answer" && (
               <>
@@ -494,7 +497,6 @@ export default function Hud() {
                 <div
                   ref={answerRef}
                   className="hud-answer"
-                  onMouseUp={onAnswerMouseUp}
                   onScroll={onAnswerScroll}
                 >
                   {answerText ? (
@@ -507,23 +509,6 @@ export default function Hud() {
                     <span className="hud-faint">{t("hud.thinking")}</span>
                   )}
                 </div>
-                <AnimatePresence>
-                  {flash > 0 && (
-                    <motion.span
-                      key={flash}
-                      className="hud-flash"
-                      role="status"
-                      initial={
-                        reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }
-                      }
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: reduceMotion ? 0.08 : 0.14 }}
-                    >
-                      {t("hud.copied")}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
                 {content.note && <p className="hud-note">{t(content.note)}</p>}
                 {content.sources.length > 0 && (
                   <ul className="hud-sources" aria-label={t("hud.sources")}>
@@ -982,6 +967,24 @@ export default function Hud() {
                 )}
               </>
             )}
+            {/* "Copied", for a selection on any card. */}
+            <AnimatePresence>
+              {flash > 0 && (
+                <motion.span
+                  key={flash}
+                  className="hud-flash"
+                  role="status"
+                  initial={
+                    reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }
+                  }
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0.08 : 0.14 }}
+                >
+                  {t("hud.copied")}
+                </motion.span>
+              )}
+            </AnimatePresence>
             {!reduceMotion && (
               <span className="hud-dissolve" aria-hidden="true">
                 {dissolveDots.map((dot, i) => (
