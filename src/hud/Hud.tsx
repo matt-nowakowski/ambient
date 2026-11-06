@@ -20,6 +20,7 @@ import {
 import { Orb } from "@/components/orb/Orb";
 import "./hud.css";
 import { AnswerText } from "./AnswerText";
+import { stripCitations } from "./parseAnswer";
 import { MeetingNotesCard } from "./MeetingNotesCard";
 import { Thumbs } from "./Thumbs";
 import { WritingChip } from "./WritingChip";
@@ -227,7 +228,14 @@ export default function Hud() {
 
   // A streaming answer scrolls with its text, smoothly, until the user
   // scrolls up to read; reaching the bottom again picks it back up.
-  const answerText = content?.kind === "answer" ? content.text : "";
+  // A web answer's text without "[1]"-style markers: its sources are the
+  // chips below. Rust and the server strip them already; this is the net.
+  const answerText =
+    content?.kind !== "answer"
+      ? ""
+      : content.sources.some((s) => /^https?:/.test(s.url))
+        ? stripCitations(content.text)
+        : content.text;
   useEffect(() => {
     const el = answerRef.current;
     if (!el || !stickRef.current) return;
@@ -247,11 +255,11 @@ export default function Hud() {
         (e.metaKey || e.ctrlKey) &&
         e.key.toLowerCase() === "c" &&
         content?.kind === "answer" &&
-        content.text &&
+        answerText &&
         !window.getSelection()?.toString()
       ) {
         e.preventDefault();
-        copy("copy", content.text);
+        copy("copy", answerText);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -468,9 +476,9 @@ export default function Hud() {
                   onMouseUp={onAnswerMouseUp}
                   onScroll={onAnswerScroll}
                 >
-                  {content.text ? (
+                  {answerText ? (
                     <AnswerText
-                      text={content.text}
+                      text={answerText}
                       onCopy={copyPiece}
                       onOpen={(url) => commands.hudAction("", "open", url)}
                     />
@@ -571,7 +579,7 @@ export default function Hud() {
                         }
                         disabled={busy !== null}
                         aria-busy={busy === a.kind}
-                        onClick={() => runAction(content.id, content.text, a)}
+                        onClick={() => runAction(content.id, answerText, a)}
                       >
                         {busy === a.kind && <Spinner />}
                         {actionLabel(a)}

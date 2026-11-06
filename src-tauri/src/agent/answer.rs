@@ -312,6 +312,68 @@ pub fn actions_for(text: &str, s: Situation) -> Vec<HudAnswerAction> {
     out
 }
 
+// ── Citation markers ──────────────────────────────────────────────────────
+//
+// The card shows its sources as chips, so "[4]" in an answer points at
+// nothing, and Insert would type it into the user's document. The server's
+// prompt asks for none and strips any that slip through
+// (web/lib/answer-core.ts); this is the same rule, for older servers and
+// answers made on this computer.
+
+/// [1], [1, 2], [1-3], [^1], 【1】, 【1†source】.
+const CITE: &str = r"(?:\[\^?\d{1,3}(?:\s*[,–-]\s*\^?\d{1,3})*\]|【\d{1,3}[^】\n]{0,40}】)";
+/// Markers that open a line, with the space after them.
+static CITE_LEADING: Lazy<Regex> =
+    Lazy::new(|| Regex::new(&format!(r"(?m)^(?:{CITE}[^\S\n]*)+")).expect("leading citations"));
+/// Markers inside a line, with the space before them.
+static CITE_INNER: Lazy<Regex> =
+    Lazy::new(|| Regex::new(&format!(r"[^\S\n]*{CITE}")).expect("citations"));
+/// Code keeps its brackets: fenced blocks (closed or still streaming) and `inline`.
+static CODE_SPAN: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(?s)```.*?(?:```|\z)|`[^`\n]*`").expect("code span"));
+
+/// One run of prose without its markers. A marker right before "(" is a
+/// markdown link's text, not a citation, and stays.
+fn strip_prose_citations(prose: &str, mid_line: bool) -> String {
+    // A run that follows code on the same line doesn't start a line.
+    let marked = if mid_line {
+        format!("\u{0}{prose}")
+    } else {
+        prose.to_string()
+    };
+    let keep_links = |re: &Regex, s: &str| -> String {
+        let mut out = String::with_capacity(s.len());
+        let mut at = 0;
+        for m in re.find_iter(s) {
+            out.push_str(&s[at..m.start()]);
+            if s[m.end()..].starts_with('(') {
+                out.push_str(m.as_str());
+            }
+            at = m.end();
+        }
+        out.push_str(&s[at..]);
+        out
+    };
+    let once = keep_links(&CITE_LEADING, &marked);
+    let twice = keep_links(&CITE_INNER, &once);
+    twice.strip_prefix('\u{0}').unwrap_or(&twice).to_string()
+}
+
+/// An answer without citation markers; code is left as it is.
+pub fn strip_citations(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    let mut at = 0;
+    for m in CODE_SPAN.find_iter(text) {
+        let mid_line = at > 0 && !text[..at].ends_with('\n');
+        out.push_str(&strip_prose_citations(&text[at..m.start()], mid_line));
+        out.push_str(m.as_str());
+        at = m.end();
+    }
+    let mid_line = at > 0 && !text[..at].ends_with('\n');
+    out.push_str(&strip_prose_citations(&text[at..], mid_line));
+    out
+}
+
 fn to_chips(sources: &[Source]) -> Vec<HudSource> {
     sources
         .iter()
@@ -496,6 +558,12 @@ pub async fn run_with(
                      done: bool,
                      actions: Vec<HudAnswerAction>,
                      note: Option<String>| {
+        // Answers never show citation markers; a draft is the user's text.
+        let text = &if opts.write {
+            text.to_string()
+        } else {
+            strip_citations(text)
+        };
         if !text.is_empty() {
             first_words.get_or_init(|| started.elapsed());
         }
@@ -661,7 +729,12 @@ pub async fn run_with(
 
     // Whatever streamed in, the card, the draft and the history get the
     // answer without any leaked reasoning; nothing left is a failure.
+    // An answer's citation markers go too: they'd be inserted and remembered.
     let result = result.and_then(|a| match super::reasoning::answer_of(&a.text) {
+        Some(text) if !opts.write => Ok(Answered {
+            text: strip_citations(&text),
+            ..a
+        }),
         Some(text) => Ok(Answered { text, ..a }),
         None => Err("hud.status.failed".to_string()),
     });
@@ -1066,6 +1139,39 @@ async fn server_answer(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn citation_markers_are_stripped_but_code_and_links_keep_theirs() {
+        let cases = [
+            (
+                "Sunny, 19 °C [1]. Rain unlikely [2][4].",
+                "Sunny, 19 °C. Rain unlikely.",
+            ),
+            (
+                "Sunny[1], warm [1, 2] and dry [3-5].",
+                "Sunny, warm and dry.",
+            ),
+            ("See note[^1] and 【4†source】 here.", "See note and here."),
+            (
+                "[1] Lisbon is sunny.\n[2] Porto too.",
+                "Lisbon is sunny.\nPorto too.",
+            ),
+            ("Use `arr[1]` here [2].", "Use `arr[1]` here."),
+            (
+                "```py\nx = a[1]\n```\nDone [1].",
+                "```py\nx = a[1]\n```\nDone.",
+            ),
+            (
+                "In [2024] the [1](https://x.y) link.",
+                "In [2024] the [1](https://x.y) link.",
+            ),
+            ("`x`[1] foo", "`x` foo"),
+            ("Still streaming:\n```\nb[2]", "Still streaming:\n```\nb[2]"),
+        ];
+        for (input, want) in cases {
+            assert_eq!(strip_citations(input), want, "{input}");
+        }
+    }
 
     fn kinds(a: &[HudAnswerAction]) -> Vec<&str> {
         a.iter().map(|a| a.kind.as_str()).collect()
