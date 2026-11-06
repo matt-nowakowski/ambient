@@ -331,6 +331,8 @@ const DemoLaptop: React.FC<{
       <div
         ref={screenRef}
         className={`demo-screen ${dimmed ? "is-dimmed" : ""}`}
+        // A suggestion arrives unasked: the window steps back behind it.
+        data-suggesting={(card === "offer" && cardShown) || undefined}
       >
         <div
           className="demo-app"
