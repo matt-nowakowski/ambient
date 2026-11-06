@@ -9,6 +9,26 @@
     }
   },
   "screens": {
+    "terminal_claude_code": {
+      "app": {
+        "macos": "Terminal",
+        "windows": "Windows Terminal",
+        "linux": "Terminal"
+      },
+      "bundle": {
+        "macos": "com.apple.Terminal",
+        "windows": "WindowsTerminal.exe",
+        "linux": "org.gnome.Terminal"
+      },
+      "title": "ai — claude — 187×56",
+      "text": "matt@MacBook-Air ai % claude\n✻ Welcome to Claude Code\n> fix the failing tests in the release workflow\n⏺ Reading .github/workflows/release.yml\n⏺ Running the scenario suite on the new build…\n  Brewing… (esc to interrupt)\n> ",
+      "focus": {
+        "role": "AXTextArea",
+        "editable": true,
+        "value": "",
+        "caret": 0
+      }
+    },
     "gmail_thread_lucia_es": {
       "app": {
         "macos": "Google Chrome",
@@ -468,6 +488,19 @@
         "route": "draft",
         "recipient": "Lucía",
         "language": "es",
+        "must_not": ["typed_verbatim", "silent"]
+      }
+    },
+    {
+      "id": "draft.en.terminal.tell-claude",
+      "about": "In a terminal running Claude Code, \"say that Claude should wait\" is an instruction to write the message for them, typed into the terminal, not the words typed verbatim.",
+      "tags": ["terminal", "critical", "regression"],
+      "lang": "en",
+      "screen": "terminal_claude_code",
+      "say": "hey here in the terminal say that Claude should wait",
+      "regression": "0.1.18: in Terminal, \"hey here in the terminal say that claude should wait\" was typed as said",
+      "expect": {
+        "route": "draft",
         "must_not": ["typed_verbatim", "silent"]
       }
     },

@@ -72,8 +72,8 @@ export const AgentTour: React.FC = () => {
   const agent = getSetting("agent");
   const [picked, setPicked] = useState<Record<Capability, boolean>>({
     screen_context: true,
-    // Suggestions stay off unless chosen (a privacy promise).
-    proactive: false,
+    // On by default, like the app's setting; the tour lets them turn it off.
+    proactive: true,
     meetings: true,
     wake_word: false,
     screen_memory: false,
@@ -85,7 +85,7 @@ export const AgentTour: React.FC = () => {
     if (!tourOpen) return;
     setStep(0);
     // A replayed tour shows suggestions as they are now.
-    setPicked((p) => ({ ...p, proactive: agent?.proactive ?? false }));
+    setPicked((p) => ({ ...p, proactive: agent?.proactive ?? true }));
   }, [tourOpen]);
 
   /** "Offer suggestions" is saved the moment it's switched, so it holds

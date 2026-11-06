@@ -787,9 +787,12 @@ impl Default for AgentSettings {
     fn default() -> Self {
         Self {
             routing: true,
-            screen_context: false,
+            // On from the start: what's said is understood with the window it
+            // was said in, and suggestions can help. Both turn off in the
+            // Privacy Center; screen memory stays opt-in.
+            screen_context: true,
             screen_memory: false,
-            proactive: false,
+            proactive: true,
             meetings: false,
             wake_word: false,
             retention_days: 7,

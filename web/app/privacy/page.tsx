@@ -139,12 +139,12 @@ export default function PrivacyPage() {
         },
         {
           id: "screen",
-          title: "Screen context and screen memory (optional)",
+          title: "Screen context and screen memory",
           body: (
             <>
               <p>
-                <strong>Screen context</strong> is off until you turn it on, on every plan. When you ask about
-                “this”, or ask {brand.name} to find something, the app reads the text of the front window and of your
+                <strong>Screen context</strong> is on by default, on every plan, and you can turn it off in the Privacy
+                Center. When you speak, ask about “this”, or ask {brand.name} to find something, the app reads the text of the front window and of your
                 other open windows using the system’s accessibility interface (Accessibility on macOS, UI Automation
                 on Windows, AT-SPI on Linux). It keeps a rolling buffer of the last 2 minutes of window
                 text in memory only; that buffer is never written to disk. Screenshots are never stored or sent.
@@ -235,10 +235,11 @@ export default function PrivacyPage() {
         },
         {
           id: "suggestions",
-          title: "Proactive suggestions (optional)",
+          title: "Proactive suggestions",
           body: (
             <p>
-              If you turn on suggestions, {brand.name} decides whether to offer help with the window you are using. With
+              Suggestions are on by default; you can turn them off in the Privacy Center. While they are on,{" "}
+              {brand.name} decides whether to offer help with the window you are using. With
               an on-device model (Apple Intelligence, or the model you downloaded) it decides on the device, and
               otherwise with local rules; nothing is sent unless you accept a suggestion. The exception is{" "}
               <strong>suggestions from the cloud</strong>, on Pro and during the trial: with Intelligence set to Cloud,
