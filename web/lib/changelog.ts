@@ -11,6 +11,23 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.17",
+    date: "2026-11-06",
+    title: "Steadier on Mac and Windows",
+    summary:
+      "Fixes a crash when Ambient replied to an email in Gmail, and cards that left an empty frame behind on Windows.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "On Mac, asking Ambient to reply to an email in Gmail could close Ambient instead of opening the reply. Replace and Undo on a card had the same problem. They all work now.",
+          "On Windows, a dismissed card could leave an empty outline in the corner that you couldn't close, covering what was under it. Cards now go away completely.",
+          "The recording pill no longer shows your words as you speak by default, because they arrived a second or two late. What you said still lands as soon as you stop. You can turn live words back on in Settings.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.16",
     date: "2026-11-06",
     title: "Models in one place",
