@@ -11,6 +11,24 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.27",
+    date: "2026-11-07",
+    title: "Fewer false alarms",
+    summary: "Terminals stop looking like wallets, and suggestion cards are cleaner.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "A terminal listing pasted images no longer looks like a recovery phrase, so Ambient stops pausing there.",
+        ],
+      },
+      {
+        heading: "Improved",
+        items: ["Suggestion cards drop the hint line underneath."],
+      },
+    ],
+  },
+  {
     version: "0.1.26",
     date: "2026-11-07",
     title: "Read at a glance",
