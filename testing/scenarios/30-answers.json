@@ -306,6 +306,34 @@
       }
     },
     {
+      "id": "answer.en.btc-trend-on-screen",
+      "about": "With BTC-USDC open on Hyperliquid, \"what trends are we seeing on bitcoin\" is answered about Bitcoin, from the screen and the web.",
+      "tags": ["about-screen", "critical", "regression"],
+      "lang": "en",
+      "screen": "hyperliquid_btc",
+      "say": "what trends are we seeing on bitcoin",
+      "regression": "0.1.20: answered from an earlier window's screen and sources (\"the sources are about VS Code\", \"the screen shows release notes\")",
+      "expect": {
+        "route": "answer",
+        "must_not": ["typed"],
+        "judge": "It describes Bitcoin's recent trend using real figures (from the page or the web); it never says the screen or sources are about something else or tells the user to check elsewhere."
+      }
+    },
+    {
+      "id": "answer.en.movie-rating",
+      "about": "A film open on HBO Max: \"how good is this movie\" gives its ratings and reviews from the web.",
+      "tags": ["about-screen", "web", "critical", "regression"],
+      "lang": "en",
+      "screen": "hbo_movie",
+      "say": "how good is this movie",
+      "regression": "0.1.20: told the user to check the ratings themselves",
+      "expect": {
+        "route": "answer",
+        "must_not": ["typed"],
+        "judge": "It gives The Lighthouse Keeper's ratings or reviews (scores, critics), not advice to look them up."
+      }
+    },
+    {
       "id": "answer.en.follow-up",
       "about": "A follow-up while an answer is up resolves \"them\" from it (an answer or a search of history).",
       "tags": ["follow-up", "regression"],

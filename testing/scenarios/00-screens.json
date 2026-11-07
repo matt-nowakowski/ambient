@@ -1,5 +1,21 @@
 {
   "screens": {
+    "hyperliquid_btc": {
+      "app": {"macos": "Google Chrome", "windows": "Google Chrome", "linux": "Google Chrome"},
+      "bundle": {"macos": "com.google.Chrome", "windows": "chrome.exe", "linux": "google-chrome"},
+      "title": "BTC-USDC | Hyperliquid",
+      "url": "https://app.hyperliquid.xyz/trade/BTC",
+      "text": "BTC-USDC\nMark 104,215\n24h Change +3.12%\n24h Volume $2.41B\nOpen Interest $3.9B\nFunding 0.0100%\n1h 4h 1D\nOrder Book\n104,230 0.42\n104,220 1.10\n104,210 0.88\nTrades",
+      "focus": {"role": "AXWebArea", "editable": false}
+    },
+    "hbo_movie": {
+      "app": {"macos": "Google Chrome", "windows": "Google Chrome", "linux": "Google Chrome"},
+      "bundle": {"macos": "com.google.Chrome", "windows": "chrome.exe", "linux": "google-chrome"},
+      "title": "The Lighthouse Keeper • HBO Max",
+      "url": "https://play.hbomax.com/movie/the-lighthouse-keeper",
+      "text": "The Lighthouse Keeper\n2025 · Drama · 2h 4m\nA keeper on a remote island begins to doubt what he sees.\nPlay\nTrailer\nMy List",
+      "focus": {"role": "AXWebArea", "editable": false}
+    },
     "mail_reply_sam": {
       "app": {
         "macos": "Mail",

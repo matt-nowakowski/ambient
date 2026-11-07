@@ -9,6 +9,22 @@
     }
   },
   "screens": {
+    "messages_emilia": {
+      "app": {"macos": "Messages"},
+      "bundle": {"macos": "com.apple.MobileSMS"},
+      "title": "Emilia",
+      "text": "Emilia\nAre you around tonight? Mum wants to plan Sunday.\nDelivered",
+      "focus": {"role": "AXTextArea", "editable": true, "value": "", "caret": 0}
+    },
+    "gmail_inbox": {
+      "app": {"macos": "Google Chrome", "windows": "Google Chrome", "linux": "Google Chrome"},
+      "bundle": {"macos": "com.google.Chrome", "windows": "chrome.exe", "linux": "google-chrome"},
+      "title": "Inbox (3) - matt@example.com - Gmail",
+      "url": "https://mail.google.com/mail/u/0/#inbox",
+      "text": "Compose\nInbox 3\nStarred\nSent\nDrafts\nMatías Romero — Weekend plans — Are we still on for Saturday?\nLinear — 4 issues assigned to you\nPolar — Your payout is on its way",
+      "focus": {"role": "AXWebArea", "editable": false},
+      "reply_button": true
+    },
     "terminal_claude_code": {
       "app": {
         "macos": "Terminal",
@@ -501,7 +517,8 @@
       "regression": "0.1.18: in Terminal, \"hey here in the terminal say that claude should wait\" was typed as said",
       "expect": {
         "route": "draft",
-        "must_not": ["typed_verbatim", "silent"]
+        "must_not": ["typed_verbatim", "silent"],
+        "judge": "It speaks to Claude asking it to wait (like \"Please wait.\"); it does not talk about Claude in the third person (not \"Claude should wait\")."
       }
     },
     {
@@ -545,6 +562,48 @@
         "route": "write",
         "contains": ["git commit"],
         "must_not": ["silent"]
+      }
+    },
+    {
+      "id": "draft.en.terminal.misheard-tell-claude",
+      "about": "In a terminal running Claude Code, a misheard \"tell Claude to wait for me\" is written as the message to Claude, not the instruction tidied up.",
+      "tags": ["terminal", "critical", "regression"],
+      "lang": "en",
+      "screen": "terminal_claude_code",
+      "say": "Talk Laude here that he should wait for me",
+      "regression": "0.1.20: \"Tell Claude to wait for me\" in Terminal was typed as \"Tell Claude to wait for me\" instead of a message to Claude",
+      "expect": {
+        "route": "draft",
+        "must_not": ["typed_verbatim", "silent"],
+        "judge": "It is a message to Claude asking it to wait (like \"Wait for me.\"), written to Claude; it does not say \"tell Claude\" or describe the instruction."
+      }
+    },
+    {
+      "id": "draft.en.messages.tell-emi",
+      "about": "In Messages with Emilia, \"tell Emi I will call her tomorrow\" is written to Emilia in the second person.",
+      "tags": ["messages", "critical", "regression"],
+      "lang": "en",
+      "screen": "messages_emilia",
+      "say": "tell Emi I will call her tomorrow",
+      "regression": "0.1.20: typed \"I will call her tomorrow.\" (Messages was never read, and \"her\" wasn't turned into \"you\")",
+      "expect": {
+        "route": "draft",
+        "must_not": ["typed_verbatim", "silent"],
+        "judge": "It speaks to Emilia in the second person, like \"I'll call you tomorrow\"; it doesn't say \"her\" or \"tell Emi\"."
+      }
+    },
+    {
+      "id": "draft.en.gmail.new-email",
+      "about": "Gmail's inbox, no message open: \"write an email to Matias saying hi\" is drafted and offered (never silence).",
+      "tags": ["gmail", "critical", "regression"],
+      "lang": "en",
+      "screen": "gmail_inbox",
+      "say": "write an email to Matias saying hi",
+      "regression": "0.1.20: nothing happened (it pressed Gmail's reply shortcut for a new email and pasted into nothing)",
+      "expect": {
+        "route": "draft",
+        "must_not": ["typed_verbatim", "silent"],
+        "judge": "It is a short greeting email to Matías (saying hi), written as Matt."
       }
     },
     {

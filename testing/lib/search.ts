@@ -40,6 +40,28 @@ const MANY: Result[] = [
 
 const CANNED: { match: RegExp; results: Result[] }[] = [
   {
+    match: /bitcoin|btc|crypto/i,
+    results: [
+      {
+        title: "Bitcoin price today, BTC to USD — Example Markets",
+        url: "https://markets.example.com/btc",
+        excerpt:
+          "Bitcoin trades near $104,200, up 3.1% over 24 hours and 8% over the week, after bouncing off support at $96,000; volume is 18% above its 30-day average.",
+      },
+    ],
+  },
+  {
+    match: /rating|review|imdb|rotten|metacritic|how good|movie|film|series/i,
+    results: [
+      {
+        title: "The Lighthouse Keeper (2025) — Example Movie Database",
+        url: "https://movies.example.com/the-lighthouse-keeper",
+        excerpt:
+          "The Lighthouse Keeper: IMDb-style rating 7.8/10 from 41,000 votes; critics 88% positive (Rotten Tomatoes-style), audience 81%. Praised for its performances, some found the ending slow.",
+      },
+    ],
+  },
+  {
     match:
       /weather|wetter|pogod|tiempo|météo|meteo|clima|天気|forecast|rain|deszcz/i,
     results: [
