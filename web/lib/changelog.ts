@@ -11,7 +11,7 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
-    version: "0.1.21",
+    version: "0.1.22",
     date: "2026-11-07",
     title: "Gets it right",
     summary:
@@ -26,12 +26,13 @@ export const changelog: Release[] = [
           "\"Tell Claude to wait for me\" is written as the message itself (\"Wait for me.\"), not your instruction tidied up.",
           "A new email presses Compose and gives you the draft to paste; a reply that can't be confirmed in the reply box is shown in a card too, so it's never lost.",
           "The \"Written for you\" chip can be closed, and always goes on its own.",
-          "Less waiting when the AI is slow: after 4 seconds your words are typed as said.",
+          "When the cloud is slow or down, Ambient answers on your computer if it has an on-device model, and otherwise tells you the connection is slow instead of spinning. Dictation never waits more than 6 seconds.",
         ],
       },
       {
         heading: "Improved",
         items: [
+          "Setup now shows what Ambient can do beyond dictation: ask anything, ask about your screen, have it write for you, and get things done.",
           "History shows what Ambient wrote beside what you said.",
           "Models has two tabs: Voice models and Reasoning models.",
           "Even spacing on every Privacy card, and the Account card fits the tips sign-up, which now matches the sign-in field.",
