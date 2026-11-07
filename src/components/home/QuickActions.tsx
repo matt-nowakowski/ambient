@@ -10,7 +10,8 @@ import { FilePlus, History, Plus } from "lucide-react";
 
 const PLUS = 36;
 const PILL_W = 168;
-const PILL_H = 30;
+// The same height, type and icon size as a md Button (History's "Transcribe a file").
+const PILL_H = 28;
 // Space between the "+" and the pills, and between the two pills. The goo
 // bridges anything closer than ~2x its blur, so these stay well above that
 // or the resting pills melt into one shape.
@@ -58,13 +59,13 @@ export const QuickActions: React.FC<{
     {
       key: "file",
       label: t("home.quickActions.transcribeFile"),
-      icon: <FilePlus width={13} height={13} strokeWidth={1.75} />,
+      icon: <FilePlus width={14} height={14} strokeWidth={1.75} />,
       run: onTranscribeFile,
     },
     {
       key: "history",
       label: t("home.quickActions.openHistory"),
-      icon: <History width={13} height={13} strokeWidth={1.75} />,
+      icon: <History width={14} height={14} strokeWidth={1.75} />,
       run: onOpenHistory,
     },
   ];
@@ -178,7 +179,7 @@ export const QuickActions: React.FC<{
                 a.run();
               }}
               style={{ width: PILL_W, height: PILL_H }}
-              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 text-small font-medium text-text transition-opacity duration-200 hover:text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 ${
+              className={`flex cursor-pointer items-center gap-1.5 rounded-full px-4 text-ui text-text transition-opacity duration-200 hover:text-ink-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 ${
                 open ? "pointer-events-auto opacity-100 delay-100" : "opacity-0"
               }`}
             >

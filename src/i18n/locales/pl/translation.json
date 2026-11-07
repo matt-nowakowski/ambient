@@ -16,10 +16,10 @@
     "installerTrashConfirm": "Przenieś do Kosza",
     "installerKeep": "Zachowaj",
     "moveToAppsTitle": "Przenieść {{appName}} do Aplikacji?",
-    "moveToAppsBody": "{{appName}} działa z obrazu dysku. Przenieś go do folderu Aplikacje, aby pozostał zainstalowany i sam się aktualizował.",
+    "moveToAppsBody": "Przenieś {{appName}} do Aplikacji, aby zostało zainstalowane i aktualne.",
     "moveToAppsConfirm": "Przenieś do Aplikacji",
     "moveToAppsLater": "Nie teraz",
-    "moveToAppsFailed": "Nie udało się przenieść {{appName}} do Aplikacji. Przeciągnij go do folderu Aplikacje.",
+    "moveToAppsFailed": "Nie udało się przenieść. Przeciągnij {{appName}} do Aplikacji ręcznie.",
     "sendFeedback": "Wyślij opinię..."
   },
   "sidebar": {
@@ -87,7 +87,7 @@
     },
     "welcome": {
       "title": "Twój współpracownik na pulpicie.",
-      "subtitle": "Ty mówisz, a on pisze, odpowiada, działa i daje znać, gdy coś zauważy. Wybierz wszystkie języki, w których będziesz mówić.",
+      "subtitle": "Ty mówisz, a on pisze, odpowiada i działa. Wybierz języki.",
       "languagesLabel": "Języki",
       "noMatch": "Brak wyników dla „{{query}}”. Więcej języków znajdziesz w ustawieniach.",
       "appLanguage": "Język aplikacji",
@@ -242,7 +242,7 @@
       "dictationApp": {
         "title": "Ustaw {{appName}} jako swoją aplikację do dyktowania",
         "description": "Jeśli inna aplikacja do dyktowania używa tego samego skrótu, {{appName}} go przejmuje.",
-        "found": "Jeśli inna aplikacja do dyktowania, np. {{apps}}, używa tego samego skrótu, {{appName}} go przejmuje."
+        "found": "Jeśli {{apps}} używa tego samego skrótu, {{appName}} go przejmie."
       }
     },
     "linux": {
@@ -251,7 +251,7 @@
     },
     "ai": {
       "title": "Gdzie ma działać AI?",
-      "sub": "Do szlifowania, szkiców, odpowiedzi i sugestii. Rozpoznawanie mowy zawsze zostaje na tym komputerze.",
+      "sub": "Do szlifowania, szkiców, odpowiedzi i sugestii. Mowa zostaje na tym komputerze.",
       "hint": "Możesz to zmienić w każdej chwili w Ustawieniach.",
       "cloud": {
         "title": "W chmurze",
@@ -283,7 +283,7 @@
     },
     "agent": {
       "title": "Po prostu powiedz, czego potrzebujesz",
-      "sub": "Sam decyduje na podstawie tego, co mówisz i co jest na ekranie. Żadnych poleceń do nauki, a zwykłe dyktowanie po prostu się wpisuje.",
+      "sub": "Rozumie, co mówisz i co jest na ekranie. Żadnych komend do nauki.",
       "askKey": "Aby zapytać zamiast pisać, przytrzymaj <keys/>",
       "noAi": "Bez AI tylko pisze. Włącz AI w Ustawieniach.",
       "screenLabel": "Cztery rzeczy, o które możesz poprosić: odpowiedzi z sieci, pomoc z tym, co na ekranie, odpowiedzi napisane za ciebie i sprawy załatwione za ciebie.",
@@ -332,7 +332,7 @@
   "modelTable": {
     "tags": {
       "preview": "Podgląd na żywo",
-      "previewTitle": "Pokazuje Twoje słowa w nakładce Na żywo podczas mówienia, a po zakończeniu wpisuje je",
+      "previewTitle": "Pokazuje słowa na żywo, gdy mówisz",
       "translate": "Tłumaczy",
       "translateTitle": "Potrafi zamienić to, co mówisz, na tekst angielski. Włącz to w ustawieniach"
     },
@@ -385,7 +385,7 @@
     "accuracy": "Dokładność",
     "search": "Szukaj modeli",
     "allLabel": "Modele mowy",
-    "noMatch": "Nic nie pasuje do „{{query}}”. Spróbuj wpisać język lub rodzinę, np. Whisper albo Parakeet",
+    "noMatch": "Brak wyników dla „{{query}}”. Spróbuj języka lub rodziny modeli.",
     "noFilterMatch": "Żaden model nie pasuje do tych filtrów",
     "speedUntested": "Szybkość nie została jeszcze zmierzona",
     "speedWords": {
@@ -450,7 +450,7 @@
         "keepClicks": "Kliknięcia lewym i prawym przyciskiem zostają Twoje; wybierz inny klawisz.",
         "doubleTap": {
           "label": "Podwójne naciśnięcie",
-          "description": "Naciśnij dwa razy, aby zacząć, i dwa razy, aby zatrzymać. Pojedyncze naciśnięcie lub przytrzymanie działa jak dotąd."
+          "description": "Stuknij dwa razy, by zacząć, i dwa razy, by skończyć."
         },
         "bindings": {
           "transcribe": {
@@ -463,11 +463,11 @@
           },
           "transcribe_with_post_process": {
             "name": "Skrót szlifowania AI",
-            "description": "Opcjonalnie: osobny skrót, który zawsze szlifuje transkrypcję przez AI."
+            "description": "Zawsze stosuje szlifowanie AI."
           },
           "ask_agent": {
             "name": "Skrót pytania",
-            "description": "Zawsze rozmawia z agentem: zadaj pytanie albo poproś o wykonanie czegoś. Nigdy nie wpisuje tekstu."
+            "description": "Zawsze rozmawia z agentem. Nigdy nie wpisuje."
           }
         },
         "errors": {
@@ -476,7 +476,7 @@
       },
       "language": {
         "title": "Język",
-        "description": "Wybierz język rozpoznawania mowy. Tryb automatyczny sam rozpozna język, a wybranie konkretnego może poprawić dokładność.",
+        "description": "Auto wykrywa język; wybór ręczny bywa dokładniejszy.",
         "searchPlaceholder": "Szukaj języka…",
         "noResults": "Nie znaleziono języków",
         "auto": "Automatycznie",
@@ -487,7 +487,7 @@
           "noMatch": "Żaden z Twoich języków nie działa z tym modelem"
         },
         "detectorMissingTitle": "Tryb automatyczny wymaga osobnego pobrania",
-        "detectorMissing": "Ten model nie rozpozna, w jakim języku mówisz. Tryb automatyczny potrzebuje małego detektora języka, żeby to ustalić",
+        "detectorMissing": "Ten model nie wykrywa języków. Auto wymaga małego detektora.",
         "stopDetectorDownload": "Zatrzymaj pobieranie detektora języka"
       },
       "preferredLanguages": {
@@ -512,11 +512,11 @@
       },
       "exclusiveShortcuts": {
         "label": "Tylko {{appName}} reaguje na swoje skróty",
-        "description": "Inne aplikacje, w tym inne aplikacje do dyktowania, nie zobaczą klawiszy Twoich skrótów {{appName}}. Wyłącz, jeśli inna aplikacja potrzebuje tych samych klawiszy."
+        "description": "Inne aplikacje nie zobaczą klawiszy skrótów {{appName}}."
       },
       "autoStop": {
         "label": "Zatrzymaj po pauzie",
-        "description": "Gdy zaczynasz naciśnięciem, dyktowanie kończy się też samo, gdy po mówieniu zrobisz pauzę. Krótkie pauzy w środku zdania się nie liczą, a dyktowanie nigdy nie kończy się, zanim cokolwiek powiesz.",
+        "description": "Stuknij, by zacząć; zatrzyma się, gdy zrobisz pauzę po mówieniu.",
         "delay": {
           "label": "Pauza przed zatrzymaniem",
           "description": "Jak długo milczeć po mówieniu, zanim dyktowanie się zatrzyma.",
@@ -550,10 +550,10 @@
       "cancelDownload": "Zatrzymaj pobieranie {{name}}",
       "legend": {
         "open": "Jak oceniamy modele",
-        "accuracyNote": "Dla każdego z Twoich języków: ile słów model pomylił w naszych nagraniach testowych.",
+        "accuracyNote": "Odsetek błędnych słów dla każdego języka, na naszych nagraniach testowych.",
         "speedNote": {
-          "accelerated": "Ile trwa wpisanie 30 sekund mowy na układzie graficznym naszego laptopa testowego. Ten komputer może się różnić.",
-          "cpu": "Ile trwa wpisanie 30 sekund mowy na procesorze naszego laptopa testowego. Ten komputer może się różnić."
+          "accelerated": "Czas transkrypcji 30 s mowy na GPU naszego laptopa testowego.",
+          "cpu": "Czas transkrypcji 30 s mowy na CPU naszego laptopa testowego."
         },
         "marks": "? jeszcze nie zmierzono. — nie rozumie tego języka."
       },
@@ -566,7 +566,7 @@
       },
       "rescan": {
         "label": "Skanuj ponownie",
-        "tooltip": "Skanuj ponownie w poszukiwaniu modeli dodanych do folderu modeli lub pamięci podręcznej Hugging Face poza {{appName}}"
+        "tooltip": "Wyszukaj ponownie modele dodane poza {{appName}}"
       },
       "tabs": {
         "voice": "Modele głosowe",
@@ -590,13 +590,13 @@
       },
       "channel": {
         "title": "Kanał wejściowy",
-        "description": "Dla interfejsów audio z kilkoma wejściami: wybierz to, do którego podłączony jest mikrofon. W innym razie zostaw „Wszystkie kanały razem”.",
+        "description": "Dla interfejsów audio z wieloma wejściami: wybierz wejście mikrofonu.",
         "average": "Wszystkie kanały razem",
         "channel": "Kanał {{n}}"
       },
       "keepMicReady": {
         "title": "Mikrofon w gotowości",
-        "description": "Po dyktowaniu mikrofon zostaje włączony jeszcze chwilę, więc następne dyktowanie zaczyna się od razu i łapie pierwsze słowo. Do zamknięcia mikrofonu komputer pokazuje, że jest on w użyciu. Ten dźwięk zostaje tylko w pamięci: nigdy nie jest zapisywany ani wysyłany.",
+        "description": "Trzyma mikrofon chwilę otwarty, by kolejne dyktowanie złapało pierwsze słowo. Nigdy nie zapisywane ani wysyłane.",
         "options": {
           "off": "Wyłączone",
           "sec30": "30 sekund",
@@ -635,7 +635,7 @@
       "acceleration": {
         "transcribe": {
           "title": "Akceleracja sprzętowa",
-          "description": "Wybierz sprzęt używany do transkrypcji. Tryb automatyczny używa GPU, jeśli jest dostępny, a w przeciwnym razie przełącza się na CPU."
+          "description": "Auto używa GPU, gdy jest dostępne, w przeciwnym razie CPU."
         },
         "gpuDevice": {
           "auto": "Automatycznie"
@@ -656,7 +656,7 @@
       "overlay": {
         "style": {
           "title": "Nakładka",
-          "description": "Wybierz nakładkę nagrywania: „Brak” ją ukrywa, „Minimalna” pokazuje kompaktowy wskaźnik, „Na żywo” wyświetla transkrypcję w czasie rzeczywistym podczas mówienia (tylko modele obsługujące streaming — szukaj etykiety „Streaming” przy wyborze modelu). W Linuksie zalecana jest opcja „Brak”.",
+          "description": "Brak je ukrywa. Minimalny to mała pigułka. Na żywo pokazuje słowa, gdy mówisz (modele strumieniowe).",
           "options": {
             "none": "Brak",
             "minimal": "Minimalna",
@@ -674,7 +674,7 @@
       },
       "pasteMethod": {
         "title": "Metoda wklejania",
-        "description": "Wybierz sposób wstawiania tekstu. „Bezpośrednio”: symuluje pisanie na klawiaturze. „Brak”: pomija wklejanie, aktualizuje tylko historię i schowek.",
+        "description": "Jak wstawiany jest tekst. Brak aktualizuje tylko historię i schowek.",
         "options": {
           "clipboard": "Schowek ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Schowek (Ctrl+Shift+V)",
@@ -687,14 +687,14 @@
       },
       "typingTool": {
         "title": "Narzędzie do wpisywania",
-        "description": "Wybierz narzędzie do wpisywania w Linuksie dla metody „Bezpośrednio”. Opcja „Automatycznie (zalecane)” sama wykryje i wybierze najlepsze dostępne narzędzie.",
+        "description": "Narzędzie do pisania w Linuksie dla Bezpośredniego wklejania. Auto wybiera najlepsze.",
         "options": {
           "auto": "Automatycznie (zalecane)"
         }
       },
       "clipboardHandling": {
         "title": "Obsługa schowka",
-        "description": "„Nie modyfikuj schowka” zachowuje jego dotychczasową zawartość po transkrypcji. „Kopiuj do schowka” zostawia w schowku wynik transkrypcji po wklejeniu.",
+        "description": "Zachowaj schowek bez zmian albo zostaw w nim dyktowanie.",
         "options": {
           "dontModify": "Nie modyfikuj schowka",
           "copyToClipboard": "Kopiuj do schowka"
@@ -702,7 +702,7 @@
       },
       "autoSubmit": {
         "title": "Automatyczne wysyłanie",
-        "description": "Automatycznie wysyła wybraną kombinację klawiszy po wstawieniu tekstu. Cmd+Enter dotyczy macOS, natomiast Windows/Linux używają Super+Enter.",
+        "description": "Po wstawieniu naciska kombinację klawiszy, np. Enter, by wysłać.",
         "options": {
           "off": "Wyłączone",
           "enter": "Enter",
@@ -713,11 +713,11 @@
       },
       "translateToEnglish": {
         "label": "Tłumacz na angielski",
-        "description": "Automatycznie tłumacz mowę z innych języków na angielski podczas transkrypcji."
+        "description": "Tłumaczy inne języki na angielski podczas dyktowania."
       },
       "modelUnload": {
         "title": "Zwalnianie modelu",
-        "description": "Zwalnia pamięć GPU/CPU, gdy model przez jakiś czas nie jest używany",
+        "description": "Zwalnia pamięć, gdy model jest bezczynny.",
         "options": {
           "never": "Nigdy",
           "immediately": "Natychmiast",
@@ -731,7 +731,7 @@
       },
       "customWords": {
         "title": "Własne słowa",
-        "description": "Pomóż obsługiwanym modelom rozpoznawać nazwy i specjalistyczne terminy. Poprawianie podobnie brzmiących słów działa na razie tylko dla liter A–Z i cyfr.",
+        "description": "Nazwy i terminy, które model ma rozpoznawać.",
         "placeholder": "Dodaj słowo",
         "add": "Dodaj",
         "remove": "Usuń {{word}}",
@@ -741,21 +741,21 @@
       },
       "voiceActivityDetection": {
         "title": "Wykrywanie aktywności głosowej",
-        "description": "Odfiltrowuje ciszę z nagrań. Modele obsługujące streaming używają dłuższego marginesu VAD; po wyłączeniu VAD nagrywany jest surowy dźwięk."
+        "description": "Wycina ciszę z nagrań."
       },
       "longFormChunking": {
         "title": "Dzielenie długich nagrań",
-        "description": "Dzieli długie nagrania w miejscach pauz przed transkrypcją, co zwykle poprawia jakość transkrypcji. Transkrybowane pliki i długie ponowne transkrypcje są zawsze dzielone."
+        "description": "Dzieli długie nagrania na pauzach dla lepszych wyników."
       },
       "languageDetection": {
         "title": "Ogranicz tryb automatyczny do moich języków",
-        "description": "Tryb automatyczny wybiera tylko spośród preferowanych języków, korzystając z małego detektora języka. Włącz to, jeśli tryb automatyczny wciąż wybiera język, którym nie mówisz",
+        "description": "Auto wybiera tylko spośród Twoich języków.",
         "downloadHint": "Włączenie pobiera mały detektor języka",
         "downloadingHint": "Pobieranie detektora języka. Wyłącz, aby anulować"
       },
       "vadBackend": {
         "title": "Backend wykrywania głosu",
-        "description": "Wybierz detektor używany do filtrowania ciszy. Earshot jest eksperymentalny; wróć do Silero, jeśli mowa jest ucinana lub szum jest zachowywany.",
+        "description": "Detektor ciszy. Earshot jest eksperymentalny; użyj Silero, jeśli słowa są ucinane.",
         "options": {
           "silero": "Silero",
           "earshot": "Earshot"
@@ -767,7 +767,7 @@
       },
       "chineseScript": {
         "title": "Pismo chińskie",
-        "description": "Zapisuje transkrypcje w języku mandaryńskim i kantońskim znakami uproszczonymi albo tradycyjnymi, w odmianie używanej na Tajwanie lub w Hongkongu. Inne języki pozostają bez zmian.",
+        "description": "Uproszczone lub tradycyjne (Tajwan lub Hongkong).",
         "options": {
           "asTranscribed": "Jak w transkrypcji",
           "simplified": "Uproszczone",
@@ -777,8 +777,8 @@
       },
       "learnCorrections": {
         "label": "Ucz się z moich poprawek",
-        "description": "Gdy po dyktowaniu poprawiasz ciągle to samo słowo, na przykład imię, {{appName}} zaproponuje, że je zapamięta. Na chwilę po wpisaniu czyta pole tekstowe, tylko na tym komputerze, i nigdy pól haseł.",
-        "unavailable": "{{appName}} nie może czytać pól tekstowych na tym komputerze, więc na razie nie ma się z czego uczyć. Zezwól na Dostępność w macOS albo włącz technologie wspomagające w Linuksie."
+        "description": "Popraw słowo po dyktowaniu, a {{appName}} zaproponuje, że je zapamięta. Nigdy nie czyta pól haseł.",
+        "unavailable": "Wymaga Dostępności, by czytać pola tekstowe."
       }
     },
     "postProcessing": {
@@ -821,7 +821,7 @@
       "playRecording": "Odtwórz nagranie",
       "hidePlayer": "Ukryj odtwarzacz",
       "emptyTitle": "Brak dyktowań",
-      "emptyDescription": "Wszystko, co transkrybuje {{appName}}, pojawia się tutaj, od najnowszych. Przytrzymaj skrót w dowolnej aplikacji i zacznij mówić.",
+      "emptyDescription": "Przytrzymaj skrót w dowolnej aplikacji i mów.",
       "noResultsTitle": "Brak wyników",
       "noResultsDescription": "Nic w historii nie pasuje do „{{query}}”.",
       "loadingMore": "Wczytywanie kolejnych…",
@@ -859,7 +859,7 @@
       },
       "liveLogs": {
         "title": "Logi na żywo",
-        "description": "Przesyłaj logi aplikacji na żywo, aby diagnozować problemy bez otwierania pliku logów. Wyświetlane są tylko logi utworzone, gdy ten panel jest otwarty; uwzględnia ustawienie Poziom logów powyżej.",
+        "description": "Strumieniuje logi, gdy ten panel jest otwarty.",
         "live": "Na żywo",
         "paused": "Wstrzymano",
         "pause": "Wstrzymaj",
@@ -882,7 +882,7 @@
       },
       "onboardingPreview": {
         "title": "Podgląd wprowadzenia",
-        "description": "Wyświetl ekrany wprowadzenia bez zmiany uprawnień, modeli ani stanu ukończenia",
+        "description": "Podejrzyj wdrożenie bez zmieniania czegokolwiek.",
         "exitButton": "Zakończ podgląd",
         "choose": "Wybierz ekran",
         "screens": {
@@ -899,12 +899,12 @@
       },
       "onboardingRun": {
         "title": "Uruchom wprowadzenie",
-        "description": "Przejdź wprowadzenie naprawdę od początku: poprosi o uprawnienia, pobierze modele i zapisze Twoje wybory",
+        "description": "Przejdź wdrożenie naprawdę: uprawnienia, pobrania i wybory.",
         "button": "Uruchom"
       },
       "modelMigration": {
         "title": "Migracja modeli",
-        "description": "Otwórz naprawdę ekran aktualizacji modeli w starym formacie: pobierze zamienniki, przełączy modele i usunie stare pliki",
+        "description": "Uruchom ekran aktualizacji modelu naprawdę.",
         "button": "Otwórz",
         "noRetired": "Brak modeli w starym formacie na dysku"
       },
@@ -958,31 +958,31 @@
       },
       "pasteDelay": {
         "title": "Opóźnienie wklejania (przed)",
-        "description": "Opóźnienie (w milisekundach) po skopiowaniu tekstu, przed wysłaniem klawisza wklejania. Zwiększ, jeśli nic nie jest wklejane."
+        "description": "Czekaj (ms) przed wklejeniem. Zwiększ, jeśli nic się nie wkleja."
       },
       "pasteDelayAfter": {
         "title": "Opóźnienie wklejania (po)",
-        "description": "Opóźnienie (w milisekundach) po klawiszu wklejania, przed przywróceniem poprzedniego schowka. Zwiększ, jeśli zamiast transkrypcji wklejana jest stara zawartość schowka."
+        "description": "Czekaj (ms) przed przywróceniem schowka. Zwiększ, jeśli wkleja się stary tekst."
       },
       "holdThreshold": {
         "title": "Próg przytrzymania",
-        "description": "Tylko w trybie automatycznym: jak długo (w milisekundach) trzeba trzymać skrót, aby liczyło się to jako przytrzymanie, a nie krótkie naciśnięcie. Zmniejsz, jeśli po krótkim przytrzymaniu nagrywanie zostaje włączone; zwiększ, jeśli celowe naciśnięcia są traktowane jak przytrzymanie."
+        "description": "Tryb auto: jak długo (ms) musi trwać naciśnięcie, by liczyło się jako przytrzymanie."
       },
       "reliablePaste": {
         "title": "Niezawodne wklejanie (Beta)",
-        "description": "Przywracaj schowek dopiero po tym, jak docelowa aplikacja faktycznie odczyta transkrypcję, a nie po ustalonym opóźnieniu. Ma naprawić wklejanie starej zawartości schowka przy obciążeniu systemu. Wymaga metody wklejania przez schowek; tylko macOS i Windows."
+        "description": "Przywraca schowek dopiero, gdy aplikacja go odczyta. macOS i Windows."
       },
       "recordingBuffer": {
         "title": "Dodatkowy bufor nagrywania",
-        "description": "Dodatkowy czas (w milisekundach) na kontynuowanie nagrywania po zwolnieniu klawisza, aby przechwycić końcowy dźwięk. 0 = brak dodatkowego bufora."
+        "description": "Dodatkowe nagrywanie (ms) po puszczeniu klawisza."
       },
       "languageDetectionWindow": {
         "title": "Dźwięk do wykrywania języka",
-        "description": "Ile sekund mowy słyszy detektor języka. Dłużej znaczy dokładniej, ale wolniej."
+        "description": "Ile sekund słucha detektor języka. Dłużej to wolniej, ale dokładniej."
       },
       "keyboardDiagnostic": {
         "title": "Diagnostyka klawiatury",
-        "description": "Sprawdza, czy zdarzenia klawiatury docierają do {{appName}}. Zapisywana jest tylko liczba zdarzeń — nigdy to, które klawisze naciskasz.",
+        "description": "Sprawdza, czy zdarzenia klawiatury docierają do {{appName}}. Tylko liczby, nigdy klawisze.",
         "run": "Uruchom diagnostykę (10 s)",
         "running": "Nasłuchiwanie… naciśnij swój skrót kilka razy (np. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -994,8 +994,8 @@
         "keyUp": "Klawisz zwolniony",
         "flagsChanged": "Modyfikatory",
         "mouse": "Mysz",
-        "verdictBlocked": "Secure Input blokuje zdarzenia klawiszy — skróty zawierające zwykły klawisz nie zadziałają, dopóki nie zostanie to rozwiązane.",
-        "verdictSuspicious": "Dotarły zdarzenia modyfikatorów, ale żadnych zdarzeń klawiszy — coś tłumi klawisze, mimo że Secure Input jest zgłaszany jako wyłączony. Zgłoś to na GitHubie.",
+        "verdictBlocked": "Secure Input blokuje klawisze. Skróty nie zadziałają, dopóki jest włączone.",
+        "verdictSuspicious": "Modyfikatory docierają, klawisze nie, choć Secure Input jest wyłączone. Zgłoś to.",
         "verdictOk": "Zdarzenia klawiszy docierają do {{appName}} normalnie.",
         "verdictNoEvents": "Nie przechwycono żadnych zdarzeń — czy w trakcie testu naciśnięto jakieś klawisze?",
         "failed": "Diagnostyka nie powiodła się: {{error}}"
@@ -1025,7 +1025,7 @@
         "ggml": {
           "title": "ggml",
           "description": "Wydajna biblioteka tensorowa do lokalnego uruchamiania modeli uczenia maszynowego",
-          "details": "Lokalne rozpoznawanie mowy w {{appName}} działa dzięki transcribe.cpp i ggml. Dziękujemy Georgiemu Gerganovowi i współtwórcom za ich świetną pracę."
+          "details": "Zamiana mowy na tekst oparta na transcribe.cpp i ggml. Dzięki, Georgi Gerganov i współtwórcy."
         },
         "licenses": {
           "title": "Licencje open source",
@@ -1050,12 +1050,12 @@
       "description": "Zadaj pytanie albo poproś o coś, zamiast pisać.",
       "routing": {
         "label": "Rozpoznawaj prośby podczas dyktowania",
-        "description": "Prośby są wykonywane, a wszystko inne wpisywane jak zwykle. Wyłącz, aby zawsze wpisywać. Skrót pytania działa w obu przypadkach.",
+        "description": "Prośby są obsługiwane; reszta jest wpisywana. Skrót Zapytaj działa zawsze.",
         "needsScreen": "Aby pytać o to, co jest na ekranie, włącz też"
       },
       "wake": {
         "label": "Bez użycia rąk: powiedz „Cześć Ambient”",
-        "description": "Rozmawiaj z {{appName}} bez klawisza: „Cześć Ambient, co mam w kalendarzu?”. Słucha na tym komputerze i ignoruje wszystko, co nie zaczyna się od jego nazwy. Gdy funkcja jest włączona, komputer pokazuje, że mikrofon jest w użyciu."
+        "description": "Powiedz „Hey Ambient”, by mówić bez klawisza. Słucha tylko na tym komputerze."
       }
     }
   },
@@ -1071,9 +1071,9 @@
     "checkForUpdates": "Sprawdź aktualizacje",
     "restartToUpdate": "Uruchom ponownie, aby zaktualizować",
     "portableUpdateTitle": "Wymagana ręczna aktualizacja",
-    "portableUpdateMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Pobierz poniżej instalator dla swojego systemu, uruchom go i zainstaluj w tym samym folderze — Twój folder Data/ (ustawienia, modele, nagrania) pozostaje na miejscu.",
+    "portableUpdateMessage": "Wersje przenośne nie aktualizują się same. Zainstaluj nową wersję w tym samym folderze; folder Data zostanie zachowany.",
     "portableUpdateButton": "Pobierz instalator",
-    "portableUpdateBrowseMessage": "Instalacji przenośnych nie można aktualizować automatycznie. Pobierz najnowszą wersję dla swojego systemu z tryambient.ai i zainstaluj ją w tym samym folderze — Twój folder Data/ (ustawienia, modele, nagrania) pozostaje na miejscu.",
+    "portableUpdateBrowseMessage": "Wersje przenośne nie aktualizują się same. Pobierz nową wersję i zainstaluj ją w tym samym folderze; folder Data zostanie zachowany.",
     "portableUpdateBrowseButton": "Otwórz stronę pobierania"
   },
   "updates": {
@@ -1099,13 +1099,13 @@
     "loadDirectory": "Błąd wczytywania katalogu: {{error}}",
     "micPermissionDeniedTitle": "Odmowa dostępu do mikrofonu",
     "micPermissionDenied": {
-      "generic": "System operacyjny odmówił dostępu do mikrofonu. Przyznaj uprawnienia do mikrofonu w ustawieniach systemowych.",
-      "windows": "Włącz dostęp do mikrofonu w Ustawienia → Prywatność i zabezpieczenia → Mikrofon (w tym dostęp aplikacji klasycznych).",
-      "macos": "Przyznaj dostęp do mikrofonu w Ustawienia systemowe → Prywatność i ochrona → Mikrofon.",
+      "generic": "Dostęp do mikrofonu jest wyłączony. Zezwól na niego w ustawieniach systemu.",
+      "windows": "Zezwól na mikrofon w Ustawienia → Prywatność i zabezpieczenia → Mikrofon.",
+      "macos": "Zezwól na mikrofon w Ustawienia systemowe → Prywatność i ochrona.",
       "linux": "Przyznaj dostęp do mikrofonu w ustawieniach dźwięku lub prywatności systemu."
     },
     "noInputDeviceTitle": "Nie znaleziono mikrofonu",
-    "noInputDevice": "Nie wykryto żadnego urządzenia wejściowego audio. Podłącz mikrofon lub słuchawki i spróbuj ponownie.",
+    "noInputDevice": "Nie znaleziono mikrofonu. Podłącz go i spróbuj ponownie.",
     "recordingFailed": "Nie udało się rozpocząć nagrywania: {{error}}",
     "modelLoadFailed": "Nie udało się załadować modelu: {{model}}",
     "modelLoadFailedUnknown": "nieznany model",
@@ -1137,7 +1137,7 @@
       "notFound": "Ten plik jest teraz niedostępny. Spróbuj później.",
       "diskFull": "Na tym komputerze brakuje wolnego miejsca. Zwolnij trochę i spróbuj ponownie.",
       "checksum": "Pobrany plik jest uszkodzony. Spróbuj ponownie.",
-      "permission": "{{appName}} nie ma na to pozwolenia. Sprawdź uprawnienia w ustawieniach systemu.",
+      "permission": "{{appName}} potrzebuje do tego uprawnień. Sprawdź ustawienia systemu.",
       "server": "Serwer napotkał problem. Spróbuj ponownie za chwilę.",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie."
     }
@@ -1172,13 +1172,13 @@
     "recorderBlockedWithCulprit": "{{name}} może blokować zmiany skrótów",
     "recorderBlockedNoCulprit": "macOS tymczasowo blokuje zmiany skrótów",
     "learnMore": "Jak to naprawić",
-    "recorderBlocked": "Nie można teraz nagrać skrótu — Secure Input w macOS blokuje zdarzenia klawiszy. Najpierw rozwiąż ostrzeżenie o Secure Input.",
+    "recorderBlocked": "Nie można nagrywać skrótów, gdy włączone jest Secure Input w macOS.",
     "dismiss": "Odrzuć"
   },
   "dictationConflict": {
-    "apps": "{{apps}} też może tu dyktować. Jeśli skrót jest taki sam jak w {{appName}}, mogą zareagować obie.",
-    "macosFn": "macOS też używa klawisza Fn (🌐). Jeśli otwiera się też Dyktowanie lub emoji, w ustawieniach Klawiatury ustaw „Naciśnij klawisz 🌐, aby” na Nic nie rób.",
-    "windowsVoiceTyping": "Win + H uruchamia też pisanie głosowe Windows. Wybierz inny skrót, by reagował tylko {{appName}}.",
+    "apps": "{{apps}} może reagować na ten sam skrót.",
+    "macosFn": "macOS też używa 🌐. W ustawieniach Klawiatury ustaw „Naciśnij klawisz 🌐, aby” na Nic nie rób.",
+    "windowsVoiceTyping": "Win + H uruchamia też pisanie głosowe Windows. Wybierz inny skrót.",
     "makeExclusive": "Niech reaguje tylko {{appName}}",
     "changeShortcut": "Zmień skrót",
     "openKeyboardSettings": "Otwórz ustawienia Klawiatury",
@@ -1200,12 +1200,13 @@
       "pastTitle": "Masz wcześniejszy plan?",
       "pastDescription": "Pobierz dawne faktury lub zarządzaj wcześniejszym planem w przeglądarce.",
       "openWeb": "Otwórz stronę płatności",
-      "opening": "Otwieranie…"
+      "opening": "Otwieranie…",
+      "title": "Płatności"
     },
     "usage": "{{used}} z {{limit}} słów w tym tygodniu",
     "usageShort": "{{used}} / {{limit}} słów",
     "resets": "Limit odnowi się: {{date}}",
-    "limitReached": "Wykorzystano darmowe słowa z tego tygodnia. Ulepsz plan, aby dyktować bez limitu, albo kontynuuj po resecie tygodnia.",
+    "limitReached": "Darmowe słowa na ten tydzień się skończyły. Ulepsz plan lub poczekaj na reset.",
     "limitToast": "Wykorzystano tygodniowy limit darmowych słów",
     "proFeatures": {
       "priority": "Priorytetowa pomoc techniczna",
@@ -1279,16 +1280,16 @@
     },
     "polish": {
       "title": "Szlifowanie AI",
-      "description": "Porządkuje każde dyktowanie: interpunkcję, wtrącenia, listy i poprawki w rodzaju „skasuj to”. Wysyłany jest tylko tekst, nigdy dźwięk.",
+      "description": "Poprawia interpunkcję, wtrącenia i „skasuj to”. Tylko tekst, nigdy dźwięk.",
       "unlock": "Odblokuj bez limitu",
       "onDevice": "Szlifuj na tym Macu",
       "onDeviceDescription": "Użyj zamiast tego Apple Intelligence. Nic nie opuszcza Twojego Maca.",
       "freeUsesLeft": "Pozostało {{left}} z {{limit}} darmowych użyć AI w tym tygodniu",
-      "scope": "Zmienia tylko to, jak porządkowane jest Twoje dyktowanie. Odpowiedzi, sugestie i czytanie ekranu to osobne ustawienia.",
+      "scope": "Nie wpływa na odpowiedzi ani sugestie.",
       "where": {
         "on_device": "Szlifowane na tym komputerze.",
         "cloud": "Szlifowane w chmurze.",
-        "blocked": "Pominięte: włączona jest opcja „Tylko na tym komputerze”, a ten komputer nie ma lokalnego modelu, więc dyktowanie jest wpisywane dosłownie."
+        "blocked": "Wyłączone: brak lokalnego modelu, a wybrano „Tylko na tym komputerze”."
       },
       "onDeviceAnswers": "Gdy inteligencja działa automatycznie, korzystają z tego też odpowiedzi."
     },
@@ -1298,7 +1299,7 @@
       "options": {
         "smart": {
           "title": "Inteligentnie",
-          "description": "{{appName}} decyduje za każdym razem: Twoje słowa dosłownie, wyszlifowane, gdy mowa jest chaotyczna, albo napisane za Ciebie, gdy o to poprosisz („powiedz mu, że nie dam rady, uprzejmie”). Pokazuje, co zrobił, a „Moje słowa” to cofa."
+          "description": "Twoje słowa, wyszlifowane albo napisane za Ciebie, gdy poprosisz. „Moje słowa” to cofa."
         },
         "as_said": {
           "title": "Zawsze dosłownie",
@@ -1309,8 +1310,10 @@
           "description": "Szlifowanie AI przy każdym dyktowaniu."
         }
       },
-      "needsPolish": "Szlifowanie AI jest wyłączone, więc dyktowanie wpisuje się od razu, a mowa zostaje dosłownie. {{appName}} nadal napisze za Ciebie, gdy poprosisz (to liczy się jako zapytanie AI).",
-      "scope": "Zmienia tylko to, co trafia do pól tekstowych. Pytania do {{appName}} i sugestie to osobne ustawienia."
+      "needsPolish": "Bez szlifowania AI chaotyczna mowa zostaje dosłowna.",
+      "scope": "Tylko to, co wpisywane w pola tekstowe.",
+      "turnOnPolish": "Włącz",
+      "polishIsOff": "Szlifowanie AI jest wyłączone."
     },
     "trial": {
       "daysLeft_one": "Pozostał {{count}} dzień",
@@ -1378,13 +1381,13 @@
     "viewAll": "Zobacz wszystko",
     "empty": {
       "title": "Na razie nic tu nie ma",
-      "description": "Naciśnij skrót w dowolnej aplikacji i mów. Twoje dyktowania pojawią się tutaj."
+      "description": "Przytrzymaj skrót w dowolnej aplikacji i mów."
     },
     "tips": {
       "holdOrTap": "Przytrzymaj skrót, aby mówić, albo naciśnij go raz, aby zacząć, i ponownie, aby zakończyć.",
-      "customWords": "Dodaj nazwy i żargon w Ustawienia → Zaawansowane → Własne słowa, aby poprawić dokładność.",
+      "customWords": "Dodaj nazwy i żargon w Ustawienia → Zaawansowane → Własne słowa.",
       "dropFile": "Upuść plik audio na to okno, aby go transkrybować.",
-      "languages": "Wybierz języki, którymi mówisz, w Ustawienia → Ogólne, aby uzyskać lepsze podpowiedzi modeli."
+      "languages": "Ustaw języki w Ustawienia → Ogólne."
     },
     "quickActions": {
       "label": "Szybkie akcje",
@@ -1410,7 +1413,7 @@
     },
     "screenNotice": {
       "title": "{{appName}} czyta teraz okno, w którym jesteś",
-      "body": "Żeby rozumieć, o co ci chodzi. Poufne dane są najpierw usuwane, a prywatne strony nigdy nie są czytane. Sugestie też są włączone. Każde z nich wyłączysz w Prywatności.",
+      "body": "Sekrety są usuwane, a prywatne strony pomijane. Zmień to w Prywatności.",
       "open": "Otwórz Prywatność",
       "dismiss": "Rozumiem"
     }
@@ -1461,11 +1464,11 @@
       "heardNothing": "Słyszałem, ale nie wychwyciłem żadnej prośby.",
       "noWebResults": "Nie udało się teraz przeszukać sieci, więc to odpowiedź z mojej wiedzy.",
       "timeout": "Połączenie jest teraz wolne. Spróbuj ponownie za chwilę.",
-      "needsCloud": "To wymaga chmury, a w ustawieniu „Gdzie działa inteligencja” wybrano „Tylko na tym komputerze”. Zmień to w sekcji Prywatność.",
+      "needsCloud": "Wymaga chmury. Wybrano „Tylko na tym komputerze”.",
       "aiOff": "AI jest wyłączone, więc {{appName}} nie może tego zrobić. Włącz je w Prywatności.",
       "cloudOfferOn": "Sugestie z chmury są włączone. Zmień to w sekcji Prywatność.",
       "cloudUnavailable": "Sugestie w chmurze są teraz niedostępne.",
-      "cloudLimited": "Sugestie w chmurze są na razie wstrzymane: dzisiejszy limit został osiągnięty albo wymagają Pro."
+      "cloudLimited": "Sugestie z chmury wstrzymane: dzienny limit osiągnięty lub tylko w Pro."
     },
     "undo": "Cofnij",
     "close": "Zamknij",
@@ -1537,7 +1540,7 @@
       "searchDrive": "Szukaj na Dysku Google",
       "searchGmail": "Szukaj w Gmailu"
     },
-    "cloudOffer": "{{appName}} może podpowiadać pomoc na tym komputerze, wysyłając na swoje serwery fragment okna z ukrytymi poufnymi danymi. Włączyć?",
+    "cloudOffer": "Zaproponować pomoc, wysyłając zanonimizowany fragment do chmury?",
     "when": {
       "today": "dziś o {{time}}",
       "tomorrow": "jutro o {{time}}",
@@ -1665,17 +1668,17 @@
     },
     "accessibility": "{{appName}} potrzebuje dostępu do funkcji Dostępność, aby odczytywać tekst z innych aplikacji.",
     "grant": "Zezwól na dostęp",
-    "accessibilityLinux": "Włącz ułatwienia dostępu, aby {{appName}} mógł czytać okno, w którym jesteś. Uruchom to polecenie, a potem wyloguj się i zaloguj ponownie.",
-    "accessibilityLinuxChrome": "Aplikacje Chrome, Chromium i Electron potrzebują też --force-renderer-accessibility.",
+    "accessibilityLinux": "Włącz dostępność, aby {{appName}} mógł czytać okna. Uruchom to, potem zaloguj się ponownie.",
+    "accessibilityLinuxChrome": "Aplikacje Chrome i Electron wymagają też --force-renderer-accessibility.",
     "copyCommand": "Kopiuj polecenie",
     "commandCopied": "Skopiowano polecenie",
     "commandCopyFailed": "Nie udało się skopiować polecenia",
     "capabilities": {
       "title": "Co może robić {{appName}}",
-      "description": "Czytanie okna, w którym jesteś, i sugestie są włączone od początku. Pozostałe funkcje są wyłączone, dopóki ich nie włączysz.",
+      "description": "Czytanie ekranu i sugestie są włączone; reszta wyłączona.",
       "screen_context": {
         "title": "Czytaj to, o co pytasz",
-        "reads": "Odczytuje okno, o które pytasz, oraz otwarte okna, gdy prosisz o znalezienie czegoś.",
+        "reads": "Czyta okno, o które pytasz.",
         "leaves": "Tylko to, co potrzebne do odpowiedzi, bez poufnych danych."
       },
       "screen_memory": {
@@ -1685,7 +1688,7 @@
       },
       "proactive": {
         "title": "Podsuwaj sugestie",
-        "reads": "Proponuje kolejny krok we właściwym momencie: wątki, szkice, daty, błędy, spotkania.",
+        "reads": "Proponuje kolejny krok we właściwej chwili.",
         "leaves": "Poza samą decyzją nic nie jest wysyłane, dopóki nie przyjmiesz sugestii."
       },
       "meetings": {
@@ -1695,7 +1698,7 @@
       },
       "wake_word": {
         "title": "Bez użycia rąk: powiedz „Cześć Ambient”",
-        "reads": "Nasłuchuje na tym komputerze frazy „Cześć Ambient”. Wszystko inne jest odrzucane na bieżąco.",
+        "reads": "Nasłuchuje „Hey Ambient” na tym komputerze.",
         "leaves": "Nic nie jest nagrywane ani wysyłane, dopóki tego nie powiesz."
       },
       "groups": {
@@ -1709,7 +1712,7 @@
     "preview": {
       "title": "Co widzi {{appName}}",
       "description": "Dokładnie to, co odczytałby z okna, po ukryciu poufnych danych.",
-      "hint": "Kliknij Podgląd, a następnie w ciągu 3 sekund przełącz się na dowolne okno.",
+      "hint": "Naciśnij Podgląd, a potem przełącz okno w ciągu 3 s.",
       "switchNow": "Przełącz się teraz na inne okno…",
       "button": "Podgląd",
       "noText": "Brak czytelnego tekstu w tym oknie.",
@@ -1722,7 +1725,7 @@
     },
     "neverWatch": {
       "title": "Nigdy nie obserwuj",
-      "description": "Nigdy nie są odczytywane, nawet gdy wszystko jest włączone. Pomijane są też pola haseł, okna prywatne, portfele i frazy odzyskiwania.",
+      "description": "Nigdy nie czytane. Hasła, portfele i okna prywatne są zawsze pomijane.",
       "this": "Nigdy nie obserwuj tej aplikacji",
       "added": "{{app}} nie będzie już odczytywana."
     },
@@ -1776,9 +1779,9 @@
     },
     "engine": {
       "title": "Używaj Apple Intelligence także do odpowiedzi",
-      "description": "Odpowiedzi i szlifowanie działają na tym Macu, gdy się zmieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone.",
+      "description": "Obsługuje tu odpowiedzi i szlifowanie, gdy się mieszczą. Mniej dopracowane.",
       "titleDownloaded": "Używaj AI na urządzeniu także do odpowiedzi",
-      "descriptionDownloaded": "Odpowiedzi i szlifowanie działają na tym komputerze, gdy się mieszczą. Wyniki są mniej dopracowane, więc domyślnie jest to wyłączone."
+      "descriptionDownloaded": "Obsługuje tu odpowiedzi i szlifowanie, gdy się mieszczą. Mniej dopracowane."
     },
     "suggestions": {
       "title": "Otrzymywane sugestie",
@@ -1803,23 +1806,23 @@
       },
       "learned": {
         "title": "Zapamiętane wskazówki",
-        "empty": "Jeszcze nic. Gdy odrzucisz sugestię, pojawi się tutaj.",
+        "empty": "Jeszcze nic.",
         "never": "Nigdy: {{kind}}",
         "notIn": "{{kind}}, nie w {{app}}",
         "undo": "Cofnij"
       },
-      "teach": "Gdy pojawi się sugestia, powiedz „nie teraz”, „nie pokazuj mi tego” albo „nie w tej aplikacji”, a {{appName}} to zapamięta.",
+      "teach": "Powiedz „nie teraz”, „nie pokazuj mi tego” albo „nie w tej aplikacji”.",
       "unknownKind": "Rodzaj sugestii"
     },
     "writing": {
       "title": "Pisanie",
       "learned": "Zapamiętane wskazówki",
-      "empty": "Jeszcze nic. Gdy wybierzesz „Moje słowa”, {{appName}} rzadziej przepisuje w tej aplikacji.",
+      "empty": "Jeszcze nic.",
       "less": {
         "written": "Rzadziej pisze za Ciebie w {{app}}",
         "polished": "Rzadziej szlifuje w {{app}}"
       },
-      "teach": "Gdy {{appName}} coś wyszlifuje lub napisze, kliknij „Moje słowa” albo to powiedz, aby odzyskać dokładnie swoje słowa."
+      "teach": "Kliknij lub powiedz „Moje słowa”, by odzyskać dokładnie swoje słowa."
     },
     "macOnly": "Na razie tylko na Macu",
     "days_few": "{{count}} dni",
@@ -1832,7 +1835,7 @@
     },
     "intelligence": {
       "title": "Gdzie działa inteligencja",
-      "description": "Gdzie powstają odpowiedzi, teksty pisane za Ciebie, sugestie, podsumowania spotkań i szlifowanie AI. Każda funkcja działa przy każdym wyborze.",
+      "description": "Gdzie działają odpowiedzi, pisanie, sugestie i szlifowanie.",
       "capability": {
         "apple": "Apple Intelligence jest dostępne na tym komputerze",
         "none": "Ten komputer nie ma lokalnego modelu AI",
@@ -1841,15 +1844,15 @@
       "options": {
         "auto": {
           "title": "Automatycznie",
-          "description": "Na tym komputerze, gdy to możliwe. Pyta raz, zanim użyje chmury do sugestii."
+          "description": "Na tym komputerze, gdy się da; pyta przed użyciem chmury."
         },
         "device": {
           "title": "Tylko na tym komputerze",
-          "description": "Nic nie jest wysyłane, by decydować lub odpowiadać. Funkcje wymagające modelu korzystają z prostych reguł albo informują, że nie mogą działać.",
+          "description": "Nic nie opuszcza tego komputera.",
           "titleBasic": "Tylko na tym komputerze (podstawowe, bez AI)",
-          "descriptionBasic": "Nic nie jest wysyłane. Tylko proste reguły: odpowiedzi i pisanie wymagają chmury, dopóki nie pobierzesz AI na urządzenie.",
-          "descriptionDownload": "Nic nie jest wysyłane. Ten wybór pobiera {{model}} (≈{{size}}) do działania tutaj; do tego czasu proste reguły.",
-          "descriptionDownloading": "Nic nie jest wysyłane. Pobieranie {{model}} (≈{{size}}); do tego czasu proste reguły."
+          "descriptionBasic": "Nic nie jest wysyłane. Pobierz lokalną AI do odpowiedzi i pisania.",
+          "descriptionDownload": "Nic nie jest wysyłane. Pobiera {{model}} (≈{{size}}).",
+          "descriptionDownloading": "Pobieranie {{model}} (≈{{size}})…"
         },
         "cloud": {
           "title": "Chmura",
@@ -1857,23 +1860,23 @@
         },
         "none": {
           "title": "Bez AI",
-          "description": "Samo dyktowanie i proste reguły. Nic nie jest wysyłane ani wygładzane, pisane czy podpowiadane."
+          "description": "Zwykłe dyktowanie. Nic nie jest wysyłane."
         }
       },
       "cloudSuggestions": {
         "title": "Sugestie z chmury",
-        "description": "Wysyła fragment okna, na którym zostajesz dłużej, z ukrytymi poufnymi danymi, by zdecydować, czy zaproponować pomoc. Każde żądanie jest wymienione poniżej."
+        "description": "Wysyła zanonimizowany fragment, by zdecydować, czy zaproponować pomoc."
       }
     },
     "onDeviceAi": {
       "title": "AI na urządzeniu",
       "download": "Pobierz AI na urządzenie (≈{{size}})",
-      "description": "Mały model AI działający na tym komputerze, dzięki któremu szlifowanie, inteligentne pisanie, sugestie i krótkie odpowiedzi działają bez chmury.",
-      "descriptionMac": "Alternatywa dla Apple Intelligence: mały model AI działający na tym komputerze do szlifowania, inteligentnego pisania, sugestii i krótkich odpowiedzi.",
+      "description": "Obsługuje tu szlifowanie, pisanie, sugestie i krótkie odpowiedzi.",
+      "descriptionMac": "Alternatywa dla Apple Intelligence działająca tutaj.",
       "downloadButton": "Pobierz",
       "downloading": "Pobieranie… {{percent}}%",
       "cancel": "Anuluj",
-      "ready": "Pobrano ({{size}}). Dopracowanie, inteligentne pisanie, sugestie i krótkie odpowiedzi mogą działać na tym komputerze.",
+      "ready": "Pobrano ({{size}}). Działa na tym komputerze.",
       "remove": "Usuń",
       "use": "Na tym Macu działa:",
       "engines": {
@@ -1884,24 +1887,24 @@
       "recommended": "Zalecany",
       "basic": "Podstawowy",
       "onThisComputer": "Na tym komputerze",
-      "scoresNote": "Paski porównują te modele między sobą: jakość według ich opublikowanych benchmarków, szybkość według rozmiaru. Nic nie było mierzone na tym komputerze.",
+      "scoresNote": "Porównane ze sobą: jakość z benchmarków, szybkość z rozmiaru.",
       "downloadingModel": "Pobieranie {{model}}… {{percent}}%",
       "downloadingTag": "Pobieranie",
       "removeModel": "Usuń {{name}}",
       "quality": "Jakość",
       "speed": "Szybkość",
       "modelInfo": {
-        "qwen3_0_6b": "Mały i szybki, najlżejszy dla pamięci i baterii. Dobry do szlifowania, mniej pewny przy pisaniu i odpowiadaniu.",
-        "qwen3_1_7b_q4": "Dobre szlifowanie i pisanie przy około połowie pobierania wersji 8-bitowej, niewiele tracąc.",
-        "qwen3_1_7b": "Poprzedni model na urządzeniu. Nieco lepszy od wersji 4-bitowej, kosztem większego pobierania.",
-        "qwen3_4b": "Najlepsza jakość na urządzeniu, ale największy i najwolniejszy. Do dobrego pisania i odpowiedzi bez chmury."
+        "qwen3_0_6b": "Najlżejszy. Wystarczy do szlifowania.",
+        "qwen3_1_7b_q4": "Najlepsza równowaga jakości i rozmiaru.",
+        "qwen3_1_7b": "Nieco lepszy, dwa razy większy.",
+        "qwen3_4b": "Najlepsza jakość. Największy i najwolniejszy."
       },
       "manage": "Zarządzaj modelami"
     },
     "telemetry": {
       "title": "Pomóż ulepszyć {{appName}}",
       "label": "Udostępniaj anonimowe statystyki użycia",
-      "description": "Tylko liczniki i czasy, nigdy to, co mówisz, piszesz lub widzisz. Wyłączone, dopóki tego nie włączysz."
+      "description": "Tylko liczby i czasy. Nigdy to, co mówisz, piszesz lub widzisz."
     },
     "free": {
       "perWeek": "Darmowy: {{limit}} tygodniowo",
@@ -1940,7 +1943,7 @@
   },
   "meetings": {
     "title": "Spotkania",
-    "intro": "Notatki z każdej rozmowy: Ty i rozmówcy, transkrypcja na tym komputerze. Dźwięk nigdy nie jest zapisywany.",
+    "intro": "Notatki z każdej rozmowy, transkrybowane tutaj. Dźwięk nigdy nie jest zapisywany.",
     "live": "Notowanie · {{time}}",
     "capturingBoth": "Słyszy Cię i rozmowę.",
     "capturingMic": "Słyszy tylko Twój mikrofon.",
@@ -1971,11 +1974,11 @@
     "you": "Ty",
     "them": "Rozmówcy",
     "systemAudio": {
-      "noPermission": "Zezwól na nagrywanie ekranu, aby {{appName}} słyszał rozmowę. Używany jest tylko dźwięk i nic nie jest zapisywane.",
-      "oldMacOS": "Słyszenie rozmowy wymaga systemu macOS 13 lub nowszego. Twój mikrofon jest nadal transkrybowany.",
-      "failed": "Nie udało się przechwycić dźwięku rozmowy. Twój mikrofon jest nadal transkrybowany.",
+      "noPermission": "Zezwól na nagrywanie ekranu, by słyszeć rozmowę. Tylko dźwięk, nigdy zapisywany.",
+      "oldMacOS": "Słyszenie rozmowy wymaga macOS 13+. Mikrofon nadal działa.",
+      "failed": "Nie udało się przechwycić rozmowy. Mikrofon nadal działa.",
       "unsupported": "Słyszenie rozmowy nie jest jeszcze dostępne w tym systemie.",
-      "linuxNoParec": "Do słyszenia rozmowy potrzebny jest parec (zainstaluj pulseaudio-utils). Twój mikrofon jest nadal transkrybowany."
+      "linuxNoParec": "Do słyszenia rozmowy potrzebny jest parec (pulseaudio-utils). Mikrofon nadal działa."
     },
     "error": {
       "storage": "Nie udało się otworzyć magazynu spotkań.",
@@ -1990,11 +1993,11 @@
     "startNowHint": "Rób notatki teraz, nie czekając na rozmowę",
     "auto": {
       "on": "Gotowe na kolejną rozmowę",
-      "onDetail": "Gdy zacznie się rozmowa, {{appName}} zaproponuje notatki. Zgódź się albo zignoruj.",
+      "onDetail": "Proponuje notatki, gdy zaczyna się rozmowa.",
       "off": "Wykrywanie rozmów jest wyłączone",
-      "offDetail": "Włącz, a {{appName}} zaproponuje notatki, gdy zacznie się rozmowa.",
+      "offDetail": "Włącz, by dostawać propozycje notatek z każdej rozmowy.",
       "paused": "Wstrzymano",
-      "pausedDetail": "{{appName}} nie zaproponuje notatek, dopóki nie wznowisz tego w sekcji Prywatność.",
+      "pausedDetail": "Wznów w Prywatności.",
       "unsupported": "Notatki wyłączone",
       "unsupportedDetail": "Zacznij notatki, gdy rozpocznie się rozmowa.",
       "turnOn": "Włącz"
@@ -2006,7 +2009,7 @@
     },
     "email": {
       "title": "Wysyłaj mi notatki e-mailem",
-      "description": "Wysyłane na {{email}} po każdej rozmowie. Sekrety są najpierw usuwane i nic nie jest przechowywane.",
+      "description": "Wysyłane na {{email}} po każdej rozmowie. Nic nie jest przechowywane.",
       "signedOut": "Zaloguj się, aby dostawać notatki e-mailem.",
       "options": {
         "off": "Wyłączone",
@@ -2075,13 +2078,13 @@
     },
     "offers": {
       "title": "Sam też proponuje pomoc",
-      "description": "Gdy może pomóc, np. przy długim wątku albo błędzie, proponuje to raz. Powiedz „tak” albo „nie teraz” lub to zignoruj. Uczy się.",
+      "description": "Gdy może pomóc, proponuje to raz. Powiedz „tak” albo „nie teraz”.",
       "app": "Poczta",
       "subject": "Plan premiery na Q3",
       "count": "40 wiadomości",
       "summaryHead": "Podsumowanie wątku",
       "summary": "Premiera przesuwa się na czwartek. Sam przygotowuje prezentację, Ana rezerwuje salę.",
-      "noOnDevice": "Bez Apple Intelligence decydują proste reguły na tym komputerze. Przed użyciem chmury zapyta raz.",
+      "noOnDevice": "Bez Apple Intelligence raz pyta przed użyciem chmury.",
       "screenLabel": "Wątek w poczcie z 40 wiadomościami. Sugestia proponuje podsumowanie; po „tak” pojawia się krótkie podsumowanie."
     }
   },
@@ -2103,7 +2106,7 @@
   "trySaying": {
     "title": "Co mogę powiedzieć?",
     "close": "Zamknij",
-    "footnote": "W ChatGPT lub Claude zacznij od „Cześć Ambient”, aby zamiast tego rozmawiać z agentem.",
+    "footnote": "W ChatGPT lub Claude zacznij od „Hey Ambient”.",
     "groups": {
       "answer": {
         "title": "Pytaj",
@@ -2185,7 +2188,7 @@
       "errors": "Jaki rodzaj błędu wystąpił, np. „przekroczono czas”",
       "basics": "Wersja aplikacji, system, plan i losowy identyfikator zmieniany co 30 dni"
     },
-    "never": "Nigdy tego, co mówisz, piszesz lub widzisz, tytułów okien, linków, nazw plików ani twojego e-maila.",
+    "never": "Nigdy to, co mówisz, piszesz lub widzisz.",
     "ledger": "Każde wysłanie jest widoczne w Prywatności, wśród żądań, które opuściły ten komputer."
   },
   "feedback": {
@@ -2209,7 +2212,7 @@
     },
     "diagnostics": {
       "label": "Dołącz diagnostykę",
-      "description": "Wersja aplikacji, system, plan, podsumowanie ustawień i ostatnie wiersze logu, bez sekretów, tytułów okien i linków."
+      "description": "Wersja, system, plan, ustawienia i ostatnie logi, bez sekretów."
     },
     "example": {
       "label": "Dołącz przykład",

@@ -34,6 +34,7 @@ import { useSettings } from "../../hooks/useSettings";
 import { openUpgrade } from "../account/usePlan";
 import { EmailNotesButton, MeetingsEmailSetting } from "./MeetingsEmail";
 import { usePendingMeeting } from "./pendingMeeting";
+import { InfoTooltip } from "../ui/InfoTooltip";
 
 /** Call detection and call audio: macOS, Windows and Linux. */
 const AUTO_DETECTS = hasScreenAgent(osType());
@@ -372,10 +373,10 @@ export const MeetingsPage: React.FC = () => {
     <Stagger key="list" className="max-w-3xl w-full mx-auto">
       <StaggerItem>
         <header className="mb-section">
-          <h1 className="text-title font-light">{t("meetings.title")}</h1>
-          <p className="mt-1 max-w-xl text-small text-ink-2">
-            {t("meetings.intro")}
-          </p>
+          <h1 className="flex items-center gap-2 text-title font-light">
+            {t("meetings.title")}
+            <InfoTooltip text={t("meetings.intro")} />
+          </h1>
         </header>
       </StaggerItem>
       <div className="space-y-section">

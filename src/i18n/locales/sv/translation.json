@@ -16,10 +16,10 @@
     "installerTrashConfirm": "Flytta till papperskorgen",
     "installerKeep": "Behåll",
     "moveToAppsTitle": "Flytta {{appName}} till Program?",
-    "moveToAppsBody": "{{appName}} körs från skivavbilden. Flytta det till mappen Program så att det förblir installerat och uppdaterar sig självt.",
+    "moveToAppsBody": "Flytta {{appName}} till Program så att den förblir installerad och uppdaterad.",
     "moveToAppsConfirm": "Flytta till Program",
     "moveToAppsLater": "Inte nu",
-    "moveToAppsFailed": "Kunde inte flytta {{appName}} till Program. Dra det till mappen Program i stället.",
+    "moveToAppsFailed": "Kunde inte flytta. Dra {{appName}} till Program själv.",
     "sendFeedback": "Skicka feedback..."
   },
   "sidebar": {
@@ -87,7 +87,7 @@
     },
     "welcome": {
       "title": "Din kollega på skrivbordet.",
-      "subtitle": "Du pratar; den skriver, svarar, agerar och påminner dig. Välj alla språk du kommer att tala.",
+      "subtitle": "Du pratar; den skriver, svarar och agerar. Välj dina språk.",
       "languagesLabel": "Språk",
       "noMatch": "Ingen träff för ”{{query}}”. Fler språk finns i inställningarna.",
       "appLanguage": "Appspråk",
@@ -240,7 +240,7 @@
       "dictationApp": {
         "title": "Gör {{appName}} till din dikteringsapp",
         "description": "Om en annan dikteringsapp använder samma kortkommando tar {{appName}} det.",
-        "found": "Om en annan dikteringsapp, som {{apps}}, använder samma kortkommando tar {{appName}} det."
+        "found": "Om {{apps}} använder samma kortkommando tar {{appName}} över det."
       }
     },
     "linux": {
@@ -249,7 +249,7 @@
     },
     "ai": {
       "title": "Var ska AI:n köras?",
-      "sub": "För finputsning, utkast, svar och förslag. Taligenkänningen stannar alltid på den här datorn.",
+      "sub": "För finslipning, utkast, svar och förslag. Talet stannar på den här datorn.",
       "hint": "Du kan ändra det när som helst i Inställningar.",
       "cloud": {
         "title": "I molnet",
@@ -281,7 +281,7 @@
     },
     "agent": {
       "title": "Säg bara vad du behöver",
-      "sub": "Den avgör själv utifrån vad du säger och vad som syns på skärmen. Inga kommandon att lära sig, och vanlig diktering skrivs bara ut.",
+      "sub": "Den förstår vad du säger och vad som syns på skärmen. Inga kommandon att lära sig.",
       "askKey": "Håll ned <keys/> för att fråga i stället för att skriva",
       "noAi": "Med Ingen AI skriver den bara. Slå på AI i Inställningar.",
       "screenLabel": "Fyra saker att be om: svar från webben, hjälp med det som syns på skärmen, svar skrivna åt dig och saker gjorda åt dig.",
@@ -330,7 +330,7 @@
   "modelTable": {
     "tags": {
       "preview": "Liveförhandsvisning",
-      "previewTitle": "Visar dina ord i realtidsöverlägget medan du talar och skriver dem när du slutar",
+      "previewTitle": "Visar dina ord live medan du pratar",
       "translate": "Översätter",
       "translateTitle": "Kan göra om det du säger till engelsk text. Slå på det i inställningarna"
     },
@@ -383,7 +383,7 @@
     "accuracy": "Noggrannhet",
     "search": "Sök modeller",
     "allLabel": "Talmodeller",
-    "noMatch": "Inget matchar ”{{query}}”. Prova ett språk eller en familj som Whisper eller Parakeet",
+    "noMatch": "Inget matchar ”{{query}}”. Prova ett språk eller en modellfamilj.",
     "noFilterMatch": "Inga modeller matchar de här filtren",
     "speedUntested": "Hastigheten har inte mätts ännu",
     "speedWords": {
@@ -446,7 +446,7 @@
         "keepClicks": "Vänster- och högerklick är dina; välj en annan tangent.",
         "doubleTap": {
           "label": "Dubbeltryck",
-          "description": "Tryck två gånger för att starta och två gånger igen för att stoppa. Ett enkelt tryck eller att hålla fungerar som vanligt."
+          "description": "Tryck två gånger för att starta, två för att stoppa."
         },
         "bindings": {
           "transcribe": {
@@ -459,11 +459,11 @@
           },
           "transcribe_with_post_process": {
             "name": "Kortkommando för efterbearbetning",
-            "description": "Valfritt: ett separat kortkommando som alltid tillämpar AI-efterbearbetning på transkriptionen."
+            "description": "Använder alltid AI-finslipning."
           },
           "ask_agent": {
             "name": "Kortkommando för frågor",
-            "description": "Pratar alltid med agenten: ställ en fråga eller be den göra något. Skriver aldrig."
+            "description": "Pratar alltid med agenten. Skriver aldrig."
           }
         },
         "errors": {
@@ -472,7 +472,7 @@
       },
       "language": {
         "title": "Språk",
-        "description": "Välj språk för taligenkänning. Automatiskt avgör språket själv, medan ett valt språk kan ge bättre noggrannhet för just det språket.",
+        "description": "Auto känner av språket; att välja ett kan ge bättre precision.",
         "searchPlaceholder": "Sök språk…",
         "noResults": "Inga språk hittades",
         "auto": "Automatiskt",
@@ -483,7 +483,7 @@
           "noMatch": "Inget av dina språk fungerar med den här modellen"
         },
         "detectorMissingTitle": "Automatiskt kräver en separat nedladdning",
-        "detectorMissing": "Den här modellen kan inte avgöra vilket språk du talar. Automatiskt behöver en liten språkidentifiering som tar reda på det",
+        "detectorMissing": "Den här modellen kan inte känna av språk. Auto behöver en liten detektor.",
         "stopDetectorDownload": "Stoppa nedladdningen av språkidentifieringen"
       },
       "preferredLanguages": {
@@ -508,11 +508,11 @@
       },
       "exclusiveShortcuts": {
         "label": "Bara {{appName}} svarar på sina kortkommandon",
-        "description": "Andra appar, även andra dikteringsappar, ser inte tangenterna i dina {{appName}}-kortkommandon. Stäng av om en annan app behöver samma tangenter."
+        "description": "Andra appar ser inte dina kortkommandon för {{appName}}."
       },
       "autoStop": {
         "label": "Stoppa efter en paus",
-        "description": "När du startar med ett tryck slutar dikteringen också av sig själv när du pausar efter att ha pratat. Korta pauser mitt i en mening räknas inte, och den slutar aldrig innan du har sagt något.",
+        "description": "Tryck för att starta; den stoppar när du pausar efter att ha pratat.",
         "delay": {
           "label": "Paus innan stopp",
           "description": "Hur länge du ska vara tyst efter att ha pratat innan dikteringen slutar.",
@@ -544,10 +544,10 @@
       "cancelDownload": "Stoppa nedladdningen av {{name}}",
       "legend": {
         "open": "Så betygsätts modellerna",
-        "accuracyNote": "För vart och ett av dina språk: hur många ord en modell fick fel i våra testinspelningar.",
+        "accuracyNote": "Ordfelsfrekvens per språk, på våra testinspelningar.",
         "speedNote": {
-          "accelerated": "Hur lång tid 30 sekunders tal tar att skriva ut på grafikchippet i vår testdator. Den här datorn kan skilja sig.",
-          "cpu": "Hur lång tid 30 sekunders tal tar att skriva ut på processorn i vår testdator. Den här datorn kan skilja sig."
+          "accelerated": "Tid att transkribera 30 s tal på vår testdators GPU.",
+          "cpu": "Tid att transkribera 30 s tal på vår testdators CPU."
         },
         "marks": "? har inte mätts ännu. — hör inte det språket."
       },
@@ -560,7 +560,7 @@
       },
       "rescan": {
         "label": "Skanna om",
-        "tooltip": "Skanna om efter modeller som lagts till i modellmappen eller Hugging Face-cachen utanför {{appName}}"
+        "tooltip": "Sök igen efter modeller som lagts till utanför {{appName}}"
       },
       "tabs": {
         "voice": "Röstmodeller",
@@ -584,13 +584,13 @@
       },
       "channel": {
         "title": "Ingångskanal",
-        "description": "För ljudgränssnitt med flera ingångar: välj den mikrofonen sitter i. Annars låt det stå på alla kanaler.",
+        "description": "För ljudgränssnitt med flera ingångar: välj mikrofonens ingång.",
         "average": "Alla kanaler, mixade",
         "channel": "Kanal {{n}}"
       },
       "keepMicReady": {
         "title": "Håll mikrofonen redo",
-        "description": "Efter att du dikterat förblir mikrofonen på en stund till, så att nästa diktering startar direkt och fångar ditt första ord. Datorn visar att mikrofonen används tills den stängs. Ljudet finns bara i minnet: det sparas aldrig och skickas aldrig.",
+        "description": "Håller mikrofonen öppen en stund så att nästa diktering fångar ditt första ord. Sparas eller skickas aldrig.",
         "options": {
           "off": "Av",
           "sec30": "30 sekunder",
@@ -629,7 +629,7 @@
       "acceleration": {
         "transcribe": {
           "title": "Hårdvaruacceleration",
-          "description": "Välj vilken hårdvara som används för transkription. Automatiskt använder GPU:n när den finns tillgänglig och faller annars tillbaka på CPU:n."
+          "description": "Auto använder GPU:n när den finns, annars CPU:n."
         },
         "gpuDevice": {
           "auto": "Automatiskt"
@@ -650,7 +650,7 @@
       "overlay": {
         "style": {
           "title": "Överlägg",
-          "description": "Välj inspelningsöverlägg: ”Ingen” döljer det, ”Minimal” visar en kompakt indikator, ”Realtid” visar transkriberingen i realtid medan du talar (endast modeller med strömningsstöd – leta efter märket ”Strömmande” i modellväljaren). På Linux rekommenderas ”Ingen”.",
+          "description": "Ingen döljer den. Minimal är en liten pill. Live visar orden medan du pratar (strömmande modeller).",
           "options": {
             "none": "Ingen",
             "minimal": "Minimal",
@@ -668,7 +668,7 @@
       },
       "pasteMethod": {
         "title": "Klistra-in-metod",
-        "description": "Välj hur text infogas. Direkt: simulerar skrivande via systeminmatning. Ingen: hoppar över klistra in, uppdaterar endast historik/urklipp.",
+        "description": "Hur text infogas. Ingen uppdaterar bara historik och urklipp.",
         "options": {
           "clipboard": "Urklipp ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Urklipp (Ctrl+Shift+V)",
@@ -681,14 +681,14 @@
       },
       "typingTool": {
         "title": "Skrivverktyg",
-        "description": "Välj vilket skrivverktyg för Linux som ska användas för inklistringsmetoden Direkt. Automatiskt hittar och använder det bästa verktyget som finns på ditt system.",
+        "description": "Linux-skrivverktyget för Direkt inklistring. Auto väljer det bästa.",
         "options": {
           "auto": "Automatiskt (rekommenderas)"
         }
       },
       "clipboardHandling": {
         "title": "Hantering av urklipp",
-        "description": "Ändra inte urklipp bevarar ditt nuvarande urklippsinnehåll efter transkription. Kopiera till urklipp lämnar transkriptionsresultatet i ditt urklipp efter att ha klistrat in.",
+        "description": "Behåll urklippet som det var, eller låt dikteringen ligga kvar där.",
         "options": {
           "dontModify": "Ändra inte urklipp",
           "copyToClipboard": "Kopiera till urklipp"
@@ -696,7 +696,7 @@
       },
       "autoSubmit": {
         "title": "Skicka automatiskt",
-        "description": "Skicka automatiskt den valda tangentkombinationen efter textinsättning. Cmd+Enter gäller på macOS, medan Windows/Linux använder Super+Enter.",
+        "description": "Trycker en tangentkombination efter infogning, t.ex. Enter för att skicka.",
         "options": {
           "off": "Av",
           "enter": "Enter",
@@ -707,11 +707,11 @@
       },
       "translateToEnglish": {
         "label": "Översätt till engelska",
-        "description": "Översätt automatiskt tal från andra språk till engelska under transkription."
+        "description": "Översätter andra språk till engelska medan du dikterar."
       },
       "modelUnload": {
         "title": "Ladda ur modell",
-        "description": "Frigör automatiskt GPU/CPU-minne när modellen inte har använts under den angivna tiden",
+        "description": "Frigör minne när modellen är inaktiv.",
         "options": {
           "never": "Aldrig",
           "immediately": "Omedelbart",
@@ -725,7 +725,7 @@
       },
       "customWords": {
         "title": "Anpassade ord",
-        "description": "Hjälp modeller som stöds att känna igen namn och specialtermer. Ungefärlig korrigering är för närvarande begränsad till ord med bokstäverna A–Z och siffror.",
+        "description": "Namn och termer som modellen ska känna igen.",
         "placeholder": "Lägg till ett ord",
         "add": "Lägg till",
         "remove": "Ta bort {{word}}",
@@ -735,21 +735,21 @@
       },
       "voiceActivityDetection": {
         "title": "Röstaktivitetsdetektering",
-        "description": "Filtrerar bort tystnad från inspelningar. Modeller med strömningsstöd använder en längre VAD-svans; om VAD stängs av spelas rått ljud in."
+        "description": "Klipper bort tystnad från inspelningar."
       },
       "longFormChunking": {
         "title": "Dela upp långt ljud",
-        "description": "Delar upp långa inspelningar vid pauser före transkribering, vilket oftast förbättrar transkriberingen. Transkriberade filer och långa omtranskriberingar delas alltid upp."
+        "description": "Delar långa inspelningar vid pauser för bättre resultat."
       },
       "languageDetection": {
         "title": "Begränsa Automatiskt till mina språk",
-        "description": "Automatiskt väljer bara bland dina föredragna språk med hjälp av en liten språkidentifiering. Slå på det om Automatiskt fortsätter att välja ett språk du inte talar",
+        "description": "Auto väljer bara bland dina språk.",
         "downloadHint": "När du slår på det laddas en liten språkidentifiering ner",
         "downloadingHint": "Språkidentifieringen laddas ner. Stäng av för att avbryta"
       },
       "vadBackend": {
         "title": "Backend för röstdetektering",
-        "description": "Välj detektorn som används för att filtrera bort tystnad. Earshot är experimentell; byt tillbaka till Silero om tal klipps eller brus behålls.",
+        "description": "Tystnadsdetektor. Earshot är experimentell; använd Silero om ord klipps.",
         "options": {
           "silero": "Silero",
           "earshot": "Earshot"
@@ -761,7 +761,7 @@
       },
       "chineseScript": {
         "title": "Kinesisk skrift",
-        "description": "Skriver mandarin- och kantonesiska transkriptioner med förenklade tecken, eller med traditionella tecken som de skrivs i Taiwan eller Hongkong. Andra språk lämnas oförändrade.",
+        "description": "Förenklad, eller traditionell (Taiwan eller Hongkong).",
         "options": {
           "asTranscribed": "Som transkriberat",
           "simplified": "Förenklade",
@@ -771,8 +771,8 @@
       },
       "learnCorrections": {
         "label": "Lär av mina rättelser",
-        "description": "När du rättar samma ord efter diktering, till exempel ett namn, erbjuder sig {{appName}} att komma ihåg det. Den läser textfältet en kort stund efter inmatningen, bara på den här datorn och aldrig lösenordsfält.",
-        "unavailable": "{{appName}} kan inte läsa textfält på den här datorn, så det finns inget att lära av än. Tillåt Hjälpmedel i macOS eller slå på hjälpmedelsteknik i Linux."
+        "description": "Rätta ett ord efter dikteringen så erbjuder {{appName}} att komma ihåg det. Läser aldrig lösenordsfält.",
+        "unavailable": "Behöver Hjälpmedel för att läsa textfält."
       }
     },
     "postProcessing": {
@@ -815,7 +815,7 @@
       "playRecording": "Spela upp inspelning",
       "hidePlayer": "Dölj spelaren",
       "emptyTitle": "Inga dikteringar ännu",
-      "emptyDescription": "Allt som {{appName}} transkriberar visas här, de nyaste först. Håll in kortkommandot i valfri app och börja prata.",
+      "emptyDescription": "Håll ned ditt kortkommando i valfri app och prata.",
       "noResultsTitle": "Inga träffar",
       "noResultsDescription": "Inget i din historik matchar ”{{query}}”.",
       "loadingMore": "Laddar fler…",
@@ -853,7 +853,7 @@
       },
       "liveLogs": {
         "title": "Liveloggar",
-        "description": "Strömma programmets loggar i realtid för att diagnostisera problem utan att öppna loggfilen. Endast loggar som skapas medan den här panelen är öppen visas; följer inställningen Loggnivå ovan.",
+        "description": "Strömmar loggar medan den här panelen är öppen.",
         "live": "Live",
         "paused": "Pausad",
         "pause": "Pausa",
@@ -876,7 +876,7 @@
       },
       "onboardingPreview": {
         "title": "Förhandsvisa introduktionen",
-        "description": "Förhandsvisa introduktionsskärmarna utan att ändra behörigheter, modeller eller slutförandestatus",
+        "description": "Förhandsvisa introduktionen utan att ändra något.",
         "exitButton": "Avsluta förhandsvisning",
         "choose": "Välj en skärm",
         "screens": {
@@ -893,12 +893,12 @@
       },
       "onboardingRun": {
         "title": "Kör introduktionen",
-        "description": "Gå igenom introduktionen på riktigt från början: den ber om behörigheter, laddar ner modeller och sparar dina val",
+        "description": "Kör introduktionen på riktigt: behörigheter, nedladdningar och val.",
         "button": "Starta"
       },
       "modelMigration": {
         "title": "Modellmigrering",
-        "description": "Öppna uppdateringsskärmen för modeller i gammalt format på riktigt: den laddar ner ersättare, byter modell och tar bort gamla filer",
+        "description": "Kör skärmen för modelluppdatering på riktigt.",
         "button": "Öppna",
         "noRetired": "Inga modeller i gammalt format på disken"
       },
@@ -952,31 +952,31 @@
       },
       "pasteDelay": {
         "title": "Fördröjning vid klistra in (före)",
-        "description": "Fördröjning (i millisekunder) efter att text kopierats, innan tangenttryckningen för att klistra in skickas. Öka om ingenting klistras in."
+        "description": "Väntetid (ms) före inklistring. Höj den om inget klistras in."
       },
       "pasteDelayAfter": {
         "title": "Fördröjning vid klistra in (efter)",
-        "description": "Fördröjning (i millisekunder) efter tangenttryckningen för att klistra in, innan ditt tidigare urklipp återställs. Öka om det gamla urklippsinnehållet klistras in i stället för transkriptionen."
+        "description": "Väntetid (ms) innan urklippet återställs. Höj den om gammal text klistras in."
       },
       "holdThreshold": {
         "title": "Tröskel för hållning",
-        "description": "Endast i automatiskt läge: hur länge (i millisekunder) kortkommandot måste hållas in för att räknas som hållning i stället för ett tryck. Sänk värdet om inspelningen fortsätter efter korta hållningar; höj det om avsiktliga tryck tolkas som hållning."
+        "description": "Autoläge: hur länge (ms) ett tryck måste vara för att räknas som att hålla."
       },
       "reliablePaste": {
         "title": "Tillförlitlig inklistring (beta)",
-        "description": "Återställ urklipp först när målappen faktiskt har läst transkriptionen, i stället för efter en fast fördröjning. Avsett att åtgärda att det gamla urklippsinnehållet klistras in när systemet är belastat. Kräver en klistra-in-metod via urklipp; endast macOS och Windows."
+        "description": "Återställer urklippet först när appen har läst det. macOS och Windows."
       },
       "recordingBuffer": {
         "title": "Extra inspelningsbuffert",
-        "description": "Extra tid (i millisekunder) för att fortsätta spela in efter att du släppt tangenten, för att fånga upp avslutande ljud. 0 = ingen extra buffert."
+        "description": "Extra inspelning (ms) efter att du släppt."
       },
       "languageDetectionWindow": {
         "title": "Ljud för språkidentifiering",
-        "description": "Sekunder tal som språkidentifieringen hör. Längre är noggrannare men långsammare."
+        "description": "Sekunder som språkdetektorn lyssnar. Längre är långsammare men säkrare."
       },
       "keyboardDiagnostic": {
         "title": "Tangentbordsdiagnostik",
-        "description": "Kontrollerar om tangentbordshändelser når {{appName}}. Endast antalet händelser registreras — aldrig vilka tangenter du trycker på.",
+        "description": "Kontrollerar att tangenthändelser når {{appName}}. Bara antal, aldrig tangenter.",
         "run": "Kör 10 s diagnostik",
         "running": "Lyssnar… tryck på ditt kortkommando några gånger (t.ex. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -988,8 +988,8 @@
         "keyUp": "Tangent upp",
         "flagsChanged": "Modifierare",
         "mouse": "Mus",
-        "verdictBlocked": "Secure Input blockerar tangenthändelser — kortkommandon med en vanlig tangent kan inte fungera förrän det är löst.",
-        "verdictSuspicious": "Modifierarhändelser kom fram men inga tangenthändelser — något undertrycker tangenter trots att Secure Input rapporteras som inaktiverat. Rapportera gärna detta på GitHub.",
+        "verdictBlocked": "Secure Input blockerar tangenter. Kortkommandon fungerar inte förrän det är av.",
+        "verdictSuspicious": "Modifierare kommer fram men inte tangenter, fast Secure Input är av. Rapportera gärna detta.",
         "verdictOk": "Tangenthändelser når {{appName}} som vanligt.",
         "verdictNoEvents": "Inga händelser fångades — tryckte du på några tangenter under testet?",
         "failed": "Diagnostiken misslyckades: {{error}}"
@@ -1019,7 +1019,7 @@
         "ggml": {
           "title": "ggml",
           "description": "Högpresterande tensorbibliotek för maskininlärningsinferens direkt på enheten",
-          "details": "{{appName}}s lokala tal-till-text bygger på transcribe.cpp och ggml. Tack till Georgi Gerganov och alla bidragsgivare för deras fantastiska arbete."
+          "details": "Tal till text byggt på transcribe.cpp och ggml. Tack, Georgi Gerganov och bidragsgivare."
         },
         "licenses": {
           "title": "Licenser för öppen källkod",
@@ -1044,12 +1044,12 @@
       "description": "Ställ en fråga eller be den göra något, i stället för att skriva.",
       "routing": {
         "label": "Förstå förfrågningar under diktering",
-        "description": "Förfrågningar hanteras; allt annat skrivs som vanligt. Stäng av för att alltid skriva. Fråga-kortkommandot fungerar ändå.",
+        "description": "Förfrågningar hanteras; allt annat skrivs. Fråga-kortkommandot fungerar alltid.",
         "needsScreen": "För att fråga om din skärm, slå också på"
       },
       "wake": {
         "label": "Handsfree: säg ”Hej Ambient”",
-        "description": "Prata med {{appName}} utan tangent: ”Hej Ambient, vad står i min kalender?” Den lyssnar på den här datorn och ignorerar allt som inte börjar med dess namn. Datorn visar att mikrofonen används medan funktionen är på."
+        "description": "Säg ”Hey Ambient” för att prata utan tangent. Lyssnar bara på den här datorn."
       }
     }
   },
@@ -1065,9 +1065,9 @@
     "checkForUpdates": "Sök efter uppdateringar",
     "restartToUpdate": "Starta om för att uppdatera",
     "portableUpdateTitle": "Manuell uppdatering krävs",
-    "portableUpdateMessage": "Portabla installationer kan inte uppdateras automatiskt. Ladda ner installeraren för ditt system nedan, kör den och installera i samma mapp — din Data/-mapp (inställningar, modeller, inspelningar) behålls.",
+    "portableUpdateMessage": "Portabla installationer uppdaterar sig inte själva. Installera den nya versionen i samma mapp; din Data-mapp behålls.",
     "portableUpdateButton": "Ladda ner installeraren",
-    "portableUpdateBrowseMessage": "Portabla installationer kan inte uppdateras automatiskt. Ladda ner den senaste versionen för ditt system från tryambient.ai och installera den i samma mapp — din Data/-mapp (inställningar, modeller, inspelningar) behålls.",
+    "portableUpdateBrowseMessage": "Portabla installationer uppdaterar sig inte själva. Ladda ned den nya versionen och installera den i samma mapp; din Data-mapp behålls.",
     "portableUpdateBrowseButton": "Öppna nedladdningssidan"
   },
   "updates": {
@@ -1098,13 +1098,13 @@
     "loadDirectory": "Det gick inte att läsa in mappen: {{error}}",
     "micPermissionDeniedTitle": "Mikrofonåtkomst nekad",
     "micPermissionDenied": {
-      "generic": "Mikrofonåtkomst nekades av operativsystemet. Bevilja mikrofonbehörighet i dina systeminställningar.",
-      "windows": "Aktivera mikrofonåtkomst i Inställningar → Integritet och säkerhet → Mikrofon (inklusive åtkomst till skrivbordsappar).",
-      "macos": "Bevilja mikrofonåtkomst i Systeminställningar → Integritet och säkerhet → Mikrofon.",
+      "generic": "Mikrofonåtkomst är av. Tillåt den i systeminställningarna.",
+      "windows": "Tillåt mikrofonen i Inställningar → Integritet och säkerhet → Mikrofon.",
+      "macos": "Tillåt mikrofonen i Systeminställningar → Integritet och säkerhet.",
       "linux": "Bevilja mikrofonåtkomst i systemets ljud- eller integritetsinställningar."
     },
     "noInputDeviceTitle": "Ingen mikrofon hittades",
-    "noInputDevice": "Ingen ljudenhet hittades. Anslut en mikrofon eller ett headset och försök igen.",
+    "noInputDevice": "Ingen mikrofon hittades. Anslut en och försök igen.",
     "recordingFailed": "Det gick inte att starta inspelningen: {{error}}",
     "modelLoadFailed": "Det gick inte att läsa in modellen: {{model}}",
     "modelLoadFailedUnknown": "okänd modell",
@@ -1136,7 +1136,7 @@
       "notFound": "Filen är inte tillgänglig just nu. Försök igen senare.",
       "diskFull": "Det finns inte tillräckligt med ledigt utrymme på datorn. Frigör utrymme och försök igen.",
       "checksum": "Nedladdningen kom fram skadad. Försök igen.",
-      "permission": "{{appName}} har inte behörighet att göra det. Kontrollera behörigheterna i systeminställningarna.",
+      "permission": "{{appName}} behöver behörighet för det. Kolla systeminställningarna.",
       "server": "Servern stötte på ett problem. Försök igen om en stund.",
       "unknown": "Något gick fel. Försök igen."
     }
@@ -1167,13 +1167,13 @@
     "recorderBlockedWithCulprit": "{{name}} kanske blockerar ändringar av kortkommandon",
     "recorderBlockedNoCulprit": "macOS blockerar tillfälligt ändringar av kortkommandon",
     "learnMore": "Så här löser du det",
-    "recorderBlocked": "Det går inte att spela in kortkommandon just nu — macOS Secure Input blockerar tangenthändelser. Lös varningen om Secure Input först.",
+    "recorderBlocked": "Kan inte spela in kortkommandon medan macOS Secure Input är på.",
     "dismiss": "Avfärda"
   },
   "dictationConflict": {
-    "apps": "{{apps}} kan också diktera här. Om ett kortkommando är samma som {{appName}}s kan båda svara.",
-    "macosFn": "macOS använder också Fn-tangenten (🌐). Om Diktering eller emoji också öppnas, ställ in ”Tryck på 🌐 för att” på Gör ingenting i Tangentbordsinställningar.",
-    "windowsVoiceTyping": "Win + H startar också Windows röstinmatning. Välj ett annat kortkommando så att bara {{appName}} svarar.",
+    "apps": "{{apps}} kan reagera på samma kortkommando.",
+    "macosFn": "macOS använder också 🌐. Ställ in ”Tryck på 🌐 för att” på Gör ingenting i Tangentbordsinställningar.",
+    "windowsVoiceTyping": "Win + H startar också Windows röstinmatning. Välj ett annat kortkommando.",
     "makeExclusive": "Låt bara {{appName}} svara",
     "changeShortcut": "Byt kortkommando",
     "openKeyboardSettings": "Öppna Tangentbordsinställningar",
@@ -1195,12 +1195,13 @@
       "pastTitle": "Har du haft ett abonnemang tidigare?",
       "pastDescription": "Ladda ner tidigare fakturor eller hantera ett gammalt abonnemang på webben.",
       "openWeb": "Öppna faktureringssidan",
-      "opening": "Öppnar…"
+      "opening": "Öppnar…",
+      "title": "Fakturering"
     },
     "usage": "{{used}} av {{limit}} ord den här veckan",
     "usageShort": "{{used}} / {{limit}} ord",
     "resets": "Återställs {{date}}",
-    "limitReached": "Du har använt veckans gratisord. Uppgradera för obegränsad diktering eller fortsätt när veckan återställs.",
+    "limitReached": "Veckans gratisord är slut. Uppgradera, eller vänta tills de nollställs.",
     "limitToast": "Veckans gratisord är slut",
     "proFeatures": {
       "priority": "Prioriterad support",
@@ -1274,16 +1275,16 @@
     },
     "polish": {
       "title": "AI-finslipning",
-      "description": "Städar upp varje diktering: skiljetecken, utfyllnadsord, listor och rättelser som ”stryk det”. Bara texten skickas, aldrig ljud.",
+      "description": "Fixar skiljetecken, utfyllnadsord och ”stryk det”. Bara text, aldrig ljud.",
       "unlock": "Skaffa obegränsat",
       "onDevice": "Behåll det på den här Macen",
       "onDeviceDescription": "Använd Apple Intelligence i stället. Inget lämnar din Mac.",
       "freeUsesLeft": "{{left}} av {{limit}} gratis AI-användningar kvar den här veckan",
-      "scope": "Ändrar bara hur din diktering städas upp. Svar, förslag och skärmläsning är separata.",
+      "scope": "Påverkar inte svar eller förslag.",
       "where": {
         "on_device": "Finslipas på den här datorn.",
         "cloud": "Finslipas i molnet.",
-        "blocked": "Hoppas över: ”Bara på den här datorn” är på och datorn har ingen lokal modell, så dikteringen skrivs som du sa den."
+        "blocked": "Av: ingen lokal modell, och du valde ”Bara på den här datorn”."
       },
       "onDeviceAnswers": "Med intelligensen på Automatiskt använder svar den också."
     },
@@ -1293,7 +1294,7 @@
       "options": {
         "smart": {
           "title": "Smart",
-          "description": "{{appName}} avgör varje gång: dina ord som du sa dem, putsade när talet blir rörigt, eller skrivna åt dig när du ber om det (”säg att jag inte kan komma, artigt”). Den visar vad den gjorde, och ”Mina ord” ångrar det."
+          "description": "Dina ord, finslipade, eller skrivna åt dig när du ber om det. ”Mina ord” ångrar det."
         },
         "as_said": {
           "title": "Alltid som jag sa",
@@ -1304,8 +1305,10 @@
           "description": "AI-putsning på varje diktering."
         }
       },
-      "needsPolish": "AI-putsning är av, så dikteringen skrivs direkt och rörigt tal blir som det sades. {{appName}} skriver fortfarande åt dig när du ber om det (det räknas som en AI-förfrågan).",
-      "scope": "Ändrar bara vad som skrivs i textfält. Att fråga {{appName}} och förslag är separata."
+      "needsPolish": "Med AI-finslipning av blir rörigt tal kvar som du sa det.",
+      "scope": "Bara det som skrivs i textfält.",
+      "turnOnPolish": "Slå på",
+      "polishIsOff": "AI-finslipning är av."
     },
     "trial": {
       "daysLeft_one": "{{count}} dag kvar",
@@ -1367,13 +1370,13 @@
     "viewAll": "Visa alla",
     "empty": {
       "title": "Inget här ännu",
-      "description": "Tryck på kortkommandot i valfri app och prata. Dina dikteringar visas här."
+      "description": "Håll ned ditt kortkommando i valfri app och prata."
     },
     "tips": {
       "holdOrTap": "Håll in kortkommandot för att prata, eller tryck en gång för att starta och en gång till för att stoppa.",
-      "customWords": "Lägg till namn och facktermer under Inställningar → Avancerat → Anpassade ord för bättre noggrannhet.",
+      "customWords": "Lägg till namn och jargong under Inställningar → Avancerat → Anpassade ord.",
       "dropFile": "Släpp en ljudfil på det här fönstret för att transkribera den.",
-      "languages": "Välj de språk du talar under Inställningar → Allmänt för bättre modellförslag."
+      "languages": "Ställ in dina språk under Inställningar → Allmänt."
     },
     "quickActions": {
       "label": "Snabbåtgärder",
@@ -1399,7 +1402,7 @@
     },
     "screenNotice": {
       "title": "{{appName}} läser nu fönstret du är i",
-      "body": "Så att den förstår vad du menar. Hemligheter tas bort först, och privata sidor läses aldrig. Förslag är också på. Stäng av dem under Integritet.",
+      "body": "Hemligheter tas bort och privata sidor hoppas över. Ändra det under Integritet.",
       "open": "Öppna Integritet",
       "dismiss": "Uppfattat"
     }
@@ -1450,11 +1453,11 @@
       "heardNothing": "Jag hörde dig, men uppfattade ingen begäran.",
       "noWebResults": "Kunde inte söka på webben just nu, så det här är vad jag vet.",
       "timeout": "Anslutningen är långsam just nu. Försök igen om en stund.",
-      "needsCloud": "Det här kräver molnet, men intelligensen är inställd på ”Bara på den här datorn”. Ändra det under Integritet.",
+      "needsCloud": "Kräver molnet. Du valde ”Bara på den här datorn”.",
       "aiOff": "AI är avstängt, så {{appName}} kan inte göra det. Slå på det under Integritet.",
       "cloudOfferOn": "Förslag från molnet är på. Ändra det under Integritet.",
       "cloudUnavailable": "Molnförslag är inte tillgängliga just nu.",
-      "cloudLimited": "Molnförslag är pausade tills vidare: dagens gräns är nådd, eller så kräver de Pro."
+      "cloudLimited": "Molnförslag pausade: dagsgränsen nådd, eller bara för Pro."
     },
     "undo": "Ångra",
     "close": "Stäng",
@@ -1526,7 +1529,7 @@
       "searchDrive": "Sök i Google Drive",
       "searchGmail": "Sök i Gmail"
     },
-    "cloudOffer": "{{appName}} kan föreslå hjälp på den här datorn genom att skicka ett maskerat utdrag av fönstret till sina servrar. Slå på?",
+    "cloudOffer": "Föreslå hjälp genom att skicka ett maskerat utdrag till molnet?",
     "when": {
       "today": "i dag kl. {{time}}",
       "tomorrow": "i morgon kl. {{time}}",
@@ -1654,17 +1657,17 @@
     },
     "accessibility": "{{appName}} behöver åtkomst till Hjälpmedel för att läsa text från andra appar.",
     "grant": "Tillåt åtkomst",
-    "accessibilityLinux": "Slå på hjälpmedel så att {{appName}} kan läsa fönstret du är i. Kör detta och logga sedan ut och in igen.",
-    "accessibilityLinuxChrome": "Chrome-, Chromium- och Electron-appar behöver också --force-renderer-accessibility.",
+    "accessibilityLinux": "Slå på hjälpmedel så att {{appName}} kan läsa fönster. Kör detta och logga sedan in igen.",
+    "accessibilityLinuxChrome": "Chrome- och Electron-appar behöver också --force-renderer-accessibility.",
     "copyCommand": "Kopiera kommando",
     "commandCopied": "Kommandot kopierat",
     "commandCopyFailed": "Kunde inte kopiera kommandot",
     "capabilities": {
       "title": "Vad {{appName}} får göra",
-      "description": "Att läsa fönstret du är i och förslag är på från början. Resten är avstängt tills du slår på det.",
+      "description": "Skärmläsning och förslag är på från början; resten är av.",
       "screen_context": {
         "title": "Läs det du frågar om",
-        "reads": "Läser fönstret du frågar om, och dina öppna fönster när du ber den hitta något.",
+        "reads": "Läser fönstret du frågar om.",
         "leaves": "Bara det som behövs för att svara, med hemligheter borttagna."
       },
       "screen_memory": {
@@ -1674,7 +1677,7 @@
       },
       "proactive": {
         "title": "Ge förslag",
-        "reads": "Föreslår ett nästa steg i rätt ögonblick: trådar, utkast, datum, fel, möten.",
+        "reads": "Erbjuder ett nästa steg i rätt ögonblick.",
         "leaves": "Utöver avgörandet skickas inget förrän du accepterar ett."
       },
       "meetings": {
@@ -1684,7 +1687,7 @@
       },
       "wake_word": {
         "title": "Handsfree: säg ”Hej Ambient”",
-        "reads": "Lyssnar efter ”Hej Ambient” på den här datorn. Allt annat kastas medan du pratar.",
+        "reads": "Lyssnar efter ”Hey Ambient” på den här datorn.",
         "leaves": "Inget spelas in eller skickas förrän du säger det."
       },
       "groups": {
@@ -1698,7 +1701,7 @@
     "preview": {
       "title": "Vad {{appName}} ser",
       "description": "Exakt det den skulle läsa från ett fönster, efter maskering.",
-      "hint": "Klicka på Förhandsvisa och byt sedan till valfritt fönster inom 3 sekunder.",
+      "hint": "Tryck på Förhandsvisa och byt fönster inom 3 s.",
       "switchNow": "Byt till ett annat fönster nu…",
       "button": "Förhandsvisa",
       "noText": "Ingen läsbar text i det här fönstret.",
@@ -1711,7 +1714,7 @@
     },
     "neverWatch": {
       "title": "Bevaka aldrig",
-      "description": "Läses aldrig, inte ens när allt är på. Lösenordsfält, privata fönster, plånböcker och återställningsfraser hoppas också över.",
+      "description": "Läses aldrig. Lösenord, plånböcker och privata fönster hoppas alltid över.",
       "this": "Bevaka aldrig den här appen",
       "added": "{{app}} kommer inte att läsas igen."
     },
@@ -1759,9 +1762,9 @@
     },
     "engine": {
       "title": "Använd Apple Intelligence för svar också",
-      "description": "Svar och finslipning körs på den här Macen när de får plats. Resultaten blir mindre finslipade, så det är avstängt som standard.",
+      "description": "Kör svar och finslipning här när de får plats. Mindre finslipat.",
       "titleDownloaded": "Använd AI på enheten för svar också",
-      "descriptionDownloaded": "Svar och finputsning körs på den här datorn när de får plats. Resultaten är mindre putsade, så det är av som standard."
+      "descriptionDownloaded": "Kör svar och finslipning här när de får plats. Mindre finslipat."
     },
     "suggestions": {
       "title": "Förslag du får",
@@ -1786,23 +1789,23 @@
       },
       "learned": {
         "title": "Det du har sagt till mig",
-        "empty": "Inget än. När du tackar nej till ett förslag visas det här.",
+        "empty": "Inget än.",
         "never": "Aldrig: {{kind}}",
         "notIn": "{{kind}}, inte i {{app}}",
         "undo": "Ångra"
       },
-      "teach": "När ett förslag dyker upp, säg ”inte nu”, ”visa inte sådana här” eller ”inte i den här appen”, så kommer {{appName}} ihåg det.",
+      "teach": "Säg ”inte nu”, ”visa inte sådana här” eller ”inte i den här appen”.",
       "unknownKind": "En typ av förslag"
     },
     "writing": {
       "title": "Skrivande",
       "learned": "Det du har sagt till mig",
-      "empty": "Inget än. När du väljer ”Mina ord” skriver {{appName}} om mindre i den appen.",
+      "empty": "Inget än.",
       "less": {
         "written": "Skriver mindre åt dig i {{app}}",
         "polished": "Putsar mindre i {{app}}"
       },
-      "teach": "När {{appName}} putsar eller skriver något, klicka på ”Mina ord” eller säg det för att få tillbaka dina exakta ord."
+      "teach": "Klicka eller säg ”Mina ord” för att få tillbaka dina exakta ord."
     },
     "macOnly": "Endast på Mac än så länge",
     "promises": {
@@ -1813,7 +1816,7 @@
     },
     "intelligence": {
       "title": "Var intelligensen körs",
-      "description": "Var svar, skrivande åt dig, förslag, mötessammanfattningar och AI-finslipning tas fram. Alla funktioner fungerar med varje val.",
+      "description": "Var svar, skrivande, förslag och finslipning körs.",
       "capability": {
         "apple": "Apple Intelligence finns på den här datorn",
         "none": "Ingen modell på enheten på den här datorn",
@@ -1822,15 +1825,15 @@
       "options": {
         "auto": {
           "title": "Automatiskt",
-          "description": "På den här datorn när det går. Frågar en gång innan molnet används för förslag."
+          "description": "På den här datorn när det går; frågar innan molnet används."
         },
         "device": {
           "title": "Bara på den här datorn",
-          "description": "Inget skickas för att avgöra eller svara. Funktioner som behöver en modell faller tillbaka på enkla regler eller säger att de inte kan.",
+          "description": "Inget lämnar den här datorn.",
           "titleBasic": "Bara på den här datorn (grundläggande, utan AI)",
-          "descriptionBasic": "Inget skickas. Bara enkla regler: svar och skrivande behöver molnet tills du hämtar AI på enheten.",
-          "descriptionDownload": "Inget skickas. Valet laddar ned {{model}} (≈{{size}}) för att köras här; enkla regler tills den är klar.",
-          "descriptionDownloading": "Inget skickas. Laddar ned {{model}} (≈{{size}}); enkla regler tills den är klar."
+          "descriptionBasic": "Inget skickas. Ladda ned lokal AI för svar och skrivande.",
+          "descriptionDownload": "Inget skickas. Laddar ned {{model}} (≈{{size}}).",
+          "descriptionDownloading": "Laddar ned {{model}} (≈{{size}})…"
         },
         "cloud": {
           "title": "Molnet",
@@ -1838,23 +1841,23 @@
         },
         "none": {
           "title": "Ingen AI",
-          "description": "Bara diktering och enkla regler. Inget skickas och inget slipas, skrivs eller föreslås."
+          "description": "Vanlig diktering. Inget skickas."
         }
       },
       "cloudSuggestions": {
         "title": "Förslag från molnet",
-        "description": "Skickar ett maskerat utdrag av ett fönster du stannat kvar i för att avgöra om hjälp ska erbjudas. Varje förfrågan listas nedan."
+        "description": "Skickar ett maskerat utdrag för att avgöra om hjälp ska erbjudas."
       }
     },
     "onDeviceAi": {
       "title": "AI på enheten",
       "download": "Hämta AI på enheten (≈{{size}})",
-      "description": "En liten AI-modell som körs på den här datorn, så att finputsning, smart skrivande, förslag och korta svar fungerar utan molnet.",
-      "descriptionMac": "Ett alternativ till Apple Intelligence: en liten AI-modell som körs på den här datorn för finputsning, smart skrivande, förslag och korta svar.",
+      "description": "Kör finslipning, skrivande, förslag och korta svar här.",
+      "descriptionMac": "Ett alternativ till Apple Intelligence som körs här.",
       "downloadButton": "Hämta",
       "downloading": "Hämtar… {{percent}} %",
       "cancel": "Avbryt",
-      "ready": "Hämtad ({{size}}). Finputsning, smart skrivande, förslag och korta svar kan köras på den här datorn.",
+      "ready": "Nedladdad ({{size}}). Körs på den här datorn.",
       "remove": "Ta bort",
       "use": "Körs på den här Macen:",
       "engines": {
@@ -1865,24 +1868,24 @@
       "recommended": "Rekommenderad",
       "basic": "Enkel",
       "onThisComputer": "På den här datorn",
-      "scoresNote": "Staplarna jämför modellerna med varandra: kvalitet från deras publicerade benchmarks, hastighet från deras storlek. Inget har mätts på den här datorn.",
+      "scoresNote": "Jämförda med varandra: kvalitet från benchmarks, hastighet från storlek.",
       "downloadingModel": "Laddar ned {{model}}… {{percent}} %",
       "downloadingTag": "Laddas ned",
       "removeModel": "Ta bort {{name}}",
       "quality": "Kvalitet",
       "speed": "Hastighet",
       "modelInfo": {
-        "qwen3_0_6b": "Liten och snabb, lättast för minne och batteri. Bra för finputs, mindre pålitlig för att skriva och svara.",
-        "qwen3_1_7b_q4": "Bra finputs och skrivande med ungefär halva nedladdningen jämfört med 8-bitarsversionen, och lite förlorat.",
-        "qwen3_1_7b": "Den tidigare modellen på enheten. Lite bättre än 4-bitarsversionen, för en större nedladdning.",
-        "qwen3_4b": "Bäst kvalitet på enheten, och störst och långsammast. För bra skrivande och svar utan molnet."
+        "qwen3_0_6b": "Lättast. Räcker för finslipning.",
+        "qwen3_1_7b_q4": "Bäst balans mellan kvalitet och storlek.",
+        "qwen3_1_7b": "Lite bättre, dubbelt så stor nedladdning.",
+        "qwen3_4b": "Bäst kvalitet. Störst och långsammast."
       },
       "manage": "Hantera modeller"
     },
     "telemetry": {
       "title": "Hjälp till att förbättra {{appName}}",
       "label": "Dela anonym användningsstatistik",
-      "description": "Bara räkningar och tider, aldrig vad du säger, skriver eller ser. Av tills du slår på det."
+      "description": "Bara antal och tider. Aldrig vad du säger, skriver eller ser."
     },
     "free": {
       "perWeek": "Gratis: {{limit}} i veckan",
@@ -1921,7 +1924,7 @@
   },
   "meetings": {
     "title": "Möten",
-    "intro": "Anteckningar för alla samtal: du och de andra, transkriberade på den här datorn. Ljud sparas aldrig.",
+    "intro": "Anteckningar för alla samtal, transkriberade här. Ljud sparas aldrig.",
     "live": "Antecknar · {{time}}",
     "capturingBoth": "Hör dig och samtalet.",
     "capturingMic": "Hör bara din mikrofon.",
@@ -1952,11 +1955,11 @@
     "you": "Du",
     "them": "De andra",
     "systemAudio": {
-      "noPermission": "Tillåt Skärminspelning så att {{appName}} kan höra samtalet. Bara ljud används, och inget sparas.",
-      "oldMacOS": "För att höra samtalet krävs macOS 13 eller senare. Din mikrofon transkriberas fortfarande.",
-      "failed": "Kunde inte fånga samtalsljudet. Din mikrofon transkriberas fortfarande.",
+      "noPermission": "Tillåt Skärminspelning för att höra samtalet. Bara ljud, sparas aldrig.",
+      "oldMacOS": "Att höra samtalet kräver macOS 13+. Mikrofonen fungerar ändå.",
+      "failed": "Kunde inte fånga samtalet. Mikrofonen fungerar ändå.",
       "unsupported": "Att höra samtalet är inte tillgängligt på det här systemet än.",
-      "linuxNoParec": "För att höra samtalet krävs parec (installera pulseaudio-utils). Din mikrofon transkriberas fortfarande."
+      "linuxNoParec": "Behöver parec (pulseaudio-utils) för att höra samtalet. Mikrofonen fungerar ändå."
     },
     "error": {
       "storage": "Kunde inte öppna möteslagringen.",
@@ -1971,11 +1974,11 @@
     "startNowHint": "Ta anteckningar nu, utan att vänta på ett samtal",
     "auto": {
       "on": "Redo för ditt nästa samtal",
-      "onDetail": "När ett samtal börjar erbjuder {{appName}} sig att ta anteckningar. Säg ja eller ignorera.",
+      "onDetail": "Erbjuder anteckningar när ett samtal börjar.",
       "off": "Samtalsavkänning är av",
-      "offDetail": "Slå på den så erbjuder {{appName}} sig att ta anteckningar när ett samtal börjar.",
+      "offDetail": "Slå på för att få anteckningar erbjudna vid varje samtal.",
       "paused": "Pausad",
-      "pausedDetail": "{{appName}} erbjuder inte anteckningar förrän du återupptar under Integritet.",
+      "pausedDetail": "Återuppta under Integritet.",
       "unsupported": "Tar inga anteckningar",
       "unsupportedDetail": "Starta anteckningar när ditt samtal börjar.",
       "turnOn": "Slå på"
@@ -1987,7 +1990,7 @@
     },
     "email": {
       "title": "Mejla anteckningar till mig",
-      "description": "Skickas till {{email}} efter varje samtal. Hemligheter tas bort först och inget sparas.",
+      "description": "Skickas till {{email}} efter varje samtal. Inget sparas.",
       "signedOut": "Logga in för att få dina anteckningar via e-post.",
       "options": {
         "off": "Av",
@@ -2056,13 +2059,13 @@
     },
     "offers": {
       "title": "Den erbjuder hjälp också",
-      "description": "När den kan hjälpa till, till exempel med en lång tråd eller ett fel, erbjuder den det en gång. Säg ”ja” eller ”inte nu”, eller strunta i det. Den lär sig.",
+      "description": "När den kan hjälpa till erbjuder den det en gång. Säg ”ja” eller ”inte nu”.",
       "app": "Mail",
       "subject": "Lanseringsplan för Q3",
       "count": "40 meddelanden",
       "summaryHead": "Sammanfattning av tråden",
       "summary": "Lanseringen flyttas till torsdag. Sam ansvarar för presentationen och Ana bokar rummet.",
-      "noOnDevice": "Utan Apple Intelligence avgör enkla regler på den här datorn. Den frågar en gång innan molnet används.",
+      "noOnDevice": "Utan Apple Intelligence frågar den en gång innan molnet används.",
       "screenLabel": "En e-posttråd med 40 meddelanden. Ett förslag erbjuder att sammanfatta den; efter ”ja” visas en kort sammanfattning."
     }
   },
@@ -2084,7 +2087,7 @@
   "trySaying": {
     "title": "Vad kan jag säga?",
     "close": "Stäng",
-    "footnote": "I ChatGPT eller Claude: börja med ”Hej Ambient” för att prata med agenten i stället.",
+    "footnote": "I ChatGPT eller Claude, börja med ”Hey Ambient”.",
     "groups": {
       "answer": {
         "title": "Fråga",
@@ -2166,7 +2169,7 @@
       "errors": "Vilken sorts fel som uppstod, till exempel ”tidsgränsen nåddes”",
       "basics": "Appversion, system, abonnemang och ett slumpmässigt ID som byts var 30:e dag"
     },
-    "never": "Aldrig vad du säger, skriver eller ser, fönstertitlar, länkar, filnamn eller din e-post.",
+    "never": "Aldrig vad du säger, skriver eller ser.",
     "ledger": "Varje uppladdning listas i Integritet, bland förfrågningar som lämnat den här datorn."
   },
   "feedback": {
@@ -2190,7 +2193,7 @@
     },
     "diagnostics": {
       "label": "Bifoga diagnostik",
-      "description": "Appversion, system, abonnemang, en sammanfattning av inställningar och de senaste loggraderna, utan hemligheter, fönstertitlar och länkar."
+      "description": "Version, system, abonnemang, inställningar och senaste loggar, utan hemligheter."
     },
     "example": {
       "label": "Bifoga exemplet",

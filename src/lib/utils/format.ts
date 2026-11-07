@@ -6,7 +6,8 @@ export const formatModelSize = (sizeMb: number | null | undefined): string => {
     return "Unknown size";
   }
 
-  if (sizeMb >= 1024) {
+  // From 1,000 MB up, in GB ("1.0 GB", not "1,000 MB" beside "1.7 GB").
+  if (sizeMb >= 1000) {
     const sizeGb = sizeMb / 1024;
     const formatter = new Intl.NumberFormat(undefined, {
       minimumFractionDigits: sizeGb >= 10 ? 0 : 1,

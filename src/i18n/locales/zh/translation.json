@@ -16,10 +16,10 @@
     "installerTrashConfirm": "移到废纸篓",
     "installerKeep": "保留",
     "moveToAppsTitle": "将 {{appName}} 移到“应用程序”？",
-    "moveToAppsBody": "{{appName}} 正在从磁盘映像运行。请将其移到“应用程序”文件夹，以便保持安装并自动更新。",
+    "moveToAppsBody": "将 {{appName}} 移到“应用程序”，以保持安装并自动更新。",
     "moveToAppsConfirm": "移到“应用程序”",
     "moveToAppsLater": "以后再说",
-    "moveToAppsFailed": "无法将 {{appName}} 移到“应用程序”。请手动将其拖到“应用程序”文件夹。",
+    "moveToAppsFailed": "无法移动。请将 {{appName}} 拖到“应用程序”。",
     "sendFeedback": "发送反馈..."
   },
   "sidebar": {
@@ -87,7 +87,7 @@
     },
     "welcome": {
       "title": "你桌面上的同事。",
-      "subtitle": "你说话，它来写、回答、行动，还会提醒你。选择你会说的所有语言。",
+      "subtitle": "你说话，它来写、回答、行动。选择你的语言。",
       "languagesLabel": "语言",
       "noMatch": "没有与“{{query}}”匹配的结果。更多语言请见设置。",
       "appLanguage": "应用语言",
@@ -240,7 +240,7 @@
       "dictationApp": {
         "title": "把 {{appName}} 设为你的听写应用",
         "description": "如果其他听写应用使用相同的快捷键，{{appName}} 会接管它。",
-        "found": "如果其他听写应用（如 {{apps}}）使用相同的快捷键，{{appName}} 会接管它。"
+        "found": "如果 {{apps}} 使用相同的快捷键，{{appName}} 会接管它。"
       }
     },
     "linux": {
@@ -249,7 +249,7 @@
     },
     "ai": {
       "title": "AI 在哪里运行？",
-      "sub": "用于润色、起草、回答和建议。语音识别始终在这台电脑上进行。",
+      "sub": "用于润色、起草、回答和建议。语音留在这台电脑上。",
       "hint": "你可以随时在设置中更改。",
       "cloud": {
         "title": "在云端",
@@ -281,7 +281,7 @@
     },
     "agent": {
       "title": "说出你需要什么就行",
-      "sub": "它会根据你说的话和屏幕上的内容自行判断。无需学习任何指令，普通听写照样直接输入。",
+      "sub": "它读取你说的话和屏幕上的内容。无需学习指令。",
       "askKey": "想提问而不是输入时，按住 <keys/>",
       "noAi": "选择“不用 AI”时只会输入文字。可在设置中开启 AI。",
       "screenLabel": "你可以让它做四件事：从网上找答案、帮你看懂屏幕上的内容、替你写回复、替你办事。",
@@ -330,7 +330,7 @@
   "modelTable": {
     "tags": {
       "preview": "实时预览",
-      "previewTitle": "说话时在“实时”悬浮窗中显示你的文字，停止后再输入",
+      "previewTitle": "说话时实时显示你的文字",
       "translate": "可翻译",
       "translateTitle": "可以把你说的话转成英文文本，需在设置中开启"
     },
@@ -383,7 +383,7 @@
     "accuracy": "准确度",
     "search": "搜索模型",
     "allLabel": "语音模型",
-    "noMatch": "没有与“{{query}}”匹配的内容。试试语言名称，或 Whisper、Parakeet 这样的模型系列",
+    "noMatch": "没有与“{{query}}”匹配的内容。试试语言或模型系列。",
     "noFilterMatch": "没有符合这些筛选条件的模型",
     "speedUntested": "尚未测速",
     "speedWords": {
@@ -446,7 +446,7 @@
         "keepClicks": "鼠标左键和右键留给你自己，请换一个按键。",
         "doubleTap": {
           "label": "双击",
-          "description": "连按两次开始，再连按两次停止。单击或长按仍照常使用。"
+          "description": "连按两次开始，再连按两次停止。"
         },
         "bindings": {
           "transcribe": {
@@ -459,11 +459,11 @@
           },
           "transcribe_with_post_process": {
             "name": "后处理快捷键",
-            "description": "可选：一个专用快捷键，始终对你的转录应用 AI 后处理。"
+            "description": "始终应用 AI 润色。"
           },
           "ask_agent": {
             "name": "提问快捷键",
-            "description": "始终与智能体对话：提问，或让它做某件事。从不输入文字。"
+            "description": "始终与智能体对话。从不输入文字。"
           }
         },
         "errors": {
@@ -472,7 +472,7 @@
       },
       "language": {
         "title": "语言",
-        "description": "选择语音识别的语言。选择“自动”会自动识别语言；选择特定语言可以提高该语言的准确度。",
+        "description": "“自动”会识别语言；选定一种语言可能更准确。",
         "searchPlaceholder": "搜索语言…",
         "noResults": "未找到语言",
         "auto": "自动",
@@ -483,7 +483,7 @@
           "noMatch": "你的语言都不适用于此模型"
         },
         "detectorMissingTitle": "自动模式需要单独下载",
-        "detectorMissing": "此模型无法分辨你说的是哪种语言。自动模式需要一个小型语言检测器来判断",
+        "detectorMissing": "此模型无法识别语言。“自动”需要一个小型检测器。",
         "stopDetectorDownload": "停止下载语言检测器"
       },
       "preferredLanguages": {
@@ -508,11 +508,11 @@
       },
       "exclusiveShortcuts": {
         "label": "只有 {{appName}} 响应它的快捷键",
-        "description": "其他应用（包括其他听写应用）不会收到 {{appName}} 快捷键的按键。如果其他应用需要相同的按键，请关闭此项。"
+        "description": "其他应用不会收到你的 {{appName}} 快捷键。"
       },
       "autoStop": {
         "label": "停顿后自动停止",
-        "description": "轻点开始时，说完话停顿一会儿，听写也会自动停止。句子中间的短暂停顿不算，在你开口之前也绝不会停止。",
+        "description": "轻点开始；说完停顿时自动停止。",
         "delay": {
           "label": "停止前的停顿时长",
           "description": "说完话后安静多久，听写才会停止。",
@@ -544,10 +544,10 @@
       "cancelDownload": "停止下载 {{name}}",
       "legend": {
         "open": "模型如何评级",
-        "accuracyNote": "针对你选择的每种语言：模型在我们的测试录音中听错了多少词。",
+        "accuracyNote": "各语言的词错误率，基于我们的测试录音。",
         "speedNote": {
-          "accelerated": "在我们测试用笔记本电脑的显卡上，把 30 秒语音转成文字所需的时间。这台电脑的速度可能不同。",
-          "cpu": "在我们测试用笔记本电脑的处理器上，把 30 秒语音转成文字所需的时间。这台电脑的速度可能不同。"
+          "accelerated": "在我们测试笔记本的 GPU 上转录 30 秒语音的时间。",
+          "cpu": "在我们测试笔记本的 CPU 上转录 30 秒语音的时间。"
         },
         "marks": "? 表示尚未测量。— 表示听不懂该语言。"
       },
@@ -560,7 +560,7 @@
       },
       "rescan": {
         "label": "重新扫描",
-        "tooltip": "重新扫描在 {{appName}} 之外添加到模型文件夹或 Hugging Face 缓存中的模型"
+        "tooltip": "重新扫描在 {{appName}} 之外添加的模型"
       },
       "tabs": {
         "voice": "语音模型",
@@ -584,13 +584,13 @@
       },
       "channel": {
         "title": "输入通道",
-        "description": "适用于有多个输入的音频接口：选择麦克风所接的输入。否则保持所有通道即可。",
+        "description": "适用于多输入音频接口：选择麦克风所接的输入。",
         "average": "所有通道混合",
         "channel": "通道 {{n}}"
       },
       "keepMicReady": {
         "title": "保持麦克风就绪",
-        "description": "听写结束后，麦克风会再开一会儿，让下一次听写立即开始，不漏掉第一个词。关闭前，电脑会显示麦克风正在使用。这段音频只在内存中：从不保存，也从不发送。",
+        "description": "让麦克风短暂保持开启，下一次听写不漏掉第一个词。从不保存或发送。",
         "options": {
           "off": "关闭",
           "sec30": "30 秒",
@@ -629,7 +629,7 @@
       "acceleration": {
         "transcribe": {
           "title": "硬件加速",
-          "description": "选择用于转录的硬件。自动模式在可用时使用 GPU，否则回退到 CPU。"
+          "description": "“自动”在可用时使用 GPU，否则使用 CPU。"
         },
         "gpuDevice": {
           "auto": "自动"
@@ -650,7 +650,7 @@
       "overlay": {
         "style": {
           "title": "悬浮窗",
-          "description": "选择录音悬浮窗的样式：“无”会隐藏悬浮窗，“精简”显示小巧的胶囊状指示，“实时”在你说话时实时显示转录内容（仅限支持流式的模型——请在模型选择器中查找“流式”标签）。在 Linux 上建议选择“无”。",
+          "description": "“无”隐藏。“精简”是小胶囊。“实时”边说边显示文字（流式模型）。",
           "options": {
             "none": "无",
             "minimal": "精简",
@@ -668,7 +668,7 @@
       },
       "pasteMethod": {
         "title": "粘贴方式",
-        "description": "选择文字插入方式。直接：通过系统输入模拟打字。无：跳过粘贴，仅更新历史记录/剪贴板。",
+        "description": "文字的插入方式。“无”只更新历史记录和剪贴板。",
         "options": {
           "clipboard": "剪贴板（{{modifier}}+V）",
           "clipboardCtrlShiftV": "剪贴板（Ctrl+Shift+V）",
@@ -681,14 +681,14 @@
       },
       "typingTool": {
         "title": "输入工具",
-        "description": "选择在“直接”粘贴方式下使用的 Linux 输入工具。“自动”会检测并使用系统中可用的最佳工具。",
+        "description": "“直接”粘贴所用的 Linux 输入工具。“自动”会选最合适的。",
         "options": {
           "auto": "自动（推荐）"
         }
       },
       "clipboardHandling": {
         "title": "剪贴板处理",
-        "description": "“不修改剪贴板”会在转录后保留当前剪贴板内容；“复制到剪贴板”会在粘贴后将转录结果留在剪贴板中。",
+        "description": "保持剪贴板原样，或把听写内容留在剪贴板上。",
         "options": {
           "dontModify": "不修改剪贴板",
           "copyToClipboard": "复制到剪贴板"
@@ -696,7 +696,7 @@
       },
       "autoSubmit": {
         "title": "自动提交",
-        "description": "在文本插入后自动发送所选的按键组合。macOS 上使用 Cmd+Enter，Windows/Linux 上使用 Super+Enter。",
+        "description": "插入后按下组合键，例如按 Enter 发送。",
         "options": {
           "off": "关闭",
           "enter": "Enter",
@@ -707,11 +707,11 @@
       },
       "translateToEnglish": {
         "label": "翻译为英语",
-        "description": "在转录过程中自动将其他语言的语音翻译为英语。"
+        "description": "听写时将其他语言翻译成英语。"
       },
       "modelUnload": {
         "title": "卸载模型",
-        "description": "当模型在指定时间内未使用时自动释放 GPU/CPU 内存",
+        "description": "模型闲置时释放内存。",
         "options": {
           "never": "从不",
           "immediately": "立即",
@@ -725,7 +725,7 @@
       },
       "customWords": {
         "title": "自定义词汇",
-        "description": "帮助受支持的模型识别名称和专业术语。目前，模糊纠错仅适用于使用 A–Z 字母和数字的词语。",
+        "description": "模型应识别的名称和术语。",
         "placeholder": "添加词汇",
         "add": "添加",
         "remove": "删除 {{word}}",
@@ -735,21 +735,21 @@
       },
       "voiceActivityDetection": {
         "title": "语音活动检测",
-        "description": "过滤录音中的静音。支持流式的模型会使用更长的 VAD 尾段；停用 VAD 则会录制原始音频。"
+        "description": "裁掉录音中的静音。"
       },
       "longFormChunking": {
         "title": "长音频分段",
-        "description": "在转录前按停顿处将长录音分段，通常可以提升转录效果。转录文件与较长的重新转录始终会分段。"
+        "description": "在停顿处切分长录音，效果更好。"
       },
       "languageDetection": {
         "title": "将自动模式限制为我的语言",
-        "description": "自动模式会借助一个小型语言检测器，只从你的首选语言中选择。如果自动模式总是选中你不说的语言，请打开此项",
+        "description": "“自动”只从你的语言中选择。",
         "downloadHint": "打开后会下载一个小型语言检测器",
         "downloadingHint": "正在下载语言检测器。关闭此项即可取消"
       },
       "vadBackend": {
         "title": "语音活动检测后端",
-        "description": "选择用于过滤静音的检测器。Earshot 为实验性功能；如果语音被截断或噪音被保留，请切换回 Silero。",
+        "description": "静音检测器。Earshot 为实验性；如果字词被截断，请用 Silero。",
         "options": {
           "silero": "Silero",
           "earshot": "Earshot"
@@ -761,7 +761,7 @@
       },
       "chineseScript": {
         "title": "简繁转换",
-        "description": "将普通话和粤语的转录结果输出为简体字，或台湾、香港通行的繁体字。其他语言保持不变。",
+        "description": "简体，或繁体（台湾或香港）。",
         "options": {
           "asTranscribed": "保持原样",
           "simplified": "简体",
@@ -771,8 +771,8 @@
       },
       "learnCorrections": {
         "label": "从我的修改中学习",
-        "description": "如果你在听写后反复修改同一个词（比如人名），{{appName}} 会提出记住它。它只在输入后短暂读取文本框，仅在这台电脑上进行，从不读取密码框。",
-        "unavailable": "{{appName}} 无法读取这台电脑上的文本框，所以暂时没有可学习的内容。请在 macOS 上允许辅助功能，或在 Linux 上开启辅助技术。"
+        "description": "听写后修改某个词，{{appName}} 会提议记住它。从不读取密码框。",
+        "unavailable": "需要辅助功能才能读取文本框。"
       }
     },
     "postProcessing": {
@@ -815,7 +815,7 @@
       "playRecording": "播放录音",
       "hidePlayer": "隐藏播放器",
       "emptyTitle": "还没有听写记录",
-      "emptyDescription": "{{appName}} 转录的所有内容都会按时间倒序显示在这里。在任意应用中按住快捷键并开始说话即可。",
+      "emptyDescription": "在任意应用中按住快捷键并说话。",
       "noResultsTitle": "没有匹配项",
       "noResultsDescription": "历史记录中没有与“{{query}}”匹配的内容。",
       "loadingMore": "正在加载更多…",
@@ -853,7 +853,7 @@
       },
       "liveLogs": {
         "title": "实时日志",
-        "description": "实时传输应用程序日志，无需打开日志文件即可诊断问题。仅显示此面板打开期间产生的日志；遵循上方的“日志级别”设置。",
+        "description": "此面板打开时实时显示日志。",
         "live": "实时",
         "paused": "已暂停",
         "pause": "暂停",
@@ -876,7 +876,7 @@
       },
       "onboardingPreview": {
         "title": "预览新手引导",
-        "description": "预览新手引导界面，而不更改权限、模型或完成状态",
+        "description": "预览新手引导，不做任何更改。",
         "exitButton": "退出预览",
         "choose": "选择一个界面",
         "screens": {
@@ -893,12 +893,12 @@
       },
       "onboardingRun": {
         "title": "运行引导流程",
-        "description": "从头真实走一遍引导流程：会请求权限、下载模型并保存你的选择",
+        "description": "真实运行新手引导：权限、下载和选择。",
         "button": "开始"
       },
       "modelMigration": {
         "title": "模型迁移",
-        "description": "真实打开旧格式模型更新界面：会下载替代模型、切换模型并删除旧文件",
+        "description": "真实运行模型更新界面。",
         "button": "打开",
         "noRetired": "磁盘上没有旧格式模型"
       },
@@ -952,31 +952,31 @@
       },
       "pasteDelay": {
         "title": "粘贴延迟（前）",
-        "description": "复制文本后、发送粘贴按键前的延迟（毫秒）。如果没有粘贴任何内容，请增加此值。"
+        "description": "粘贴前等待（毫秒）。如果没有粘贴内容，请调高。"
       },
       "pasteDelayAfter": {
         "title": "粘贴延迟（后）",
-        "description": "发送粘贴按键后、恢复先前剪贴板前的延迟（毫秒）。如果粘贴的是旧的剪贴板内容而非转录文本，请增加此值。"
+        "description": "恢复剪贴板前等待（毫秒）。如果粘贴出旧文本，请调高。"
       },
       "holdThreshold": {
         "title": "长按判定时长",
-        "description": "仅适用于“自动”模式：快捷键需要按住多长时间（毫秒）才算作按住而不是轻按。如果短暂按住后录音仍持续，请调低；如果有意的轻按被当作按住，请调高。"
+        "description": "“自动”模式：按住多久（毫秒）才算长按。"
       },
       "reliablePaste": {
         "title": "可靠粘贴（Beta）",
-        "description": "在目标应用程序真正读取转录文本之后再恢复剪贴板，而不是等待固定延迟。用于解决系统负载较高时粘贴旧剪贴板内容的问题。需要使用剪贴板类的粘贴方式；仅支持 macOS 和 Windows。"
+        "description": "应用读取后才恢复剪贴板。macOS 和 Windows。"
       },
       "recordingBuffer": {
         "title": "额外录音缓冲",
-        "description": "放开按键后继续录音的额外时间（毫秒），以捕捉尾音。0 = 无额外缓冲。"
+        "description": "松开后额外录音（毫秒）。"
       },
       "languageDetectionWindow": {
         "title": "语言检测音频",
-        "description": "语言检测器聆听的语音秒数。越长越准确，但越慢。"
+        "description": "语言检测器聆听的秒数。越长越慢，也越准。"
       },
       "keyboardDiagnostic": {
         "title": "键盘诊断",
-        "description": "检查键盘事件是否能到达 {{appName}}。仅记录事件数量，绝不记录你按了哪些键。",
+        "description": "检查键盘事件能否到达 {{appName}}。只计数，绝不记录按键。",
         "run": "运行 10 秒诊断",
         "running": "正在监听… 请按几次你的快捷键（例如 Option+Space）",
         "secureInputLabel": "Secure Input",
@@ -988,8 +988,8 @@
         "keyUp": "按键释放",
         "flagsChanged": "修饰键",
         "mouse": "鼠标",
-        "verdictBlocked": "Secure Input 正在阻止按键事件——在问题解决前，包含普通按键的快捷键无法工作。",
-        "verdictSuspicious": "收到了修饰键事件，但没有按键事件——尽管 Secure Input 报告为已禁用，仍有程序在抑制按键。请在 GitHub 上反馈此问题。",
+        "verdictBlocked": "Secure Input 正在阻止按键。关闭前快捷键无法使用。",
+        "verdictSuspicious": "修饰键能收到，按键却收不到，尽管 Secure Input 已关闭。请反馈此问题。",
         "verdictOk": "按键事件正常到达 {{appName}}。",
         "verdictNoEvents": "未捕获到任何事件——测试期间你按过键吗？",
         "failed": "诊断失败：{{error}}"
@@ -1019,7 +1019,7 @@
         "ggml": {
           "title": "ggml",
           "description": "用于设备端机器学习推理的高性能张量库",
-          "details": "{{appName}} 的本地语音转文字基于 transcribe.cpp 和 ggml 构建。感谢 Georgi Gerganov 和各位贡献者的出色工作。"
+          "details": "语音转文字基于 transcribe.cpp 和 ggml 构建。感谢 Georgi Gerganov 和各位贡献者。"
         },
         "licenses": {
           "title": "开源许可证",
@@ -1044,12 +1044,12 @@
       "description": "提问或让它做事，无需打字。",
       "routing": {
         "label": "听写时理解请求",
-        "description": "请求会被处理，其他内容照常输入。关闭后总是直接输入。提问快捷键始终可用。",
+        "description": "请求会被处理，其他内容照常输入。提问快捷键始终可用。",
         "needsScreen": "要询问屏幕上的内容，还需开启"
       },
       "wake": {
         "label": "免提：说“Hey Ambient”",
-        "description": "无需按键即可与 {{appName}} 对话：“Hey Ambient，我日历上有什么？”它在这台电脑上聆听，并忽略所有不以它名字开头的内容。开启期间，电脑会显示麦克风正在使用。"
+        "description": "说“Hey Ambient”即可免按键对话。仅在这台电脑上聆听。"
       }
     }
   },
@@ -1065,9 +1065,9 @@
     "checkForUpdates": "检查更新",
     "restartToUpdate": "重新启动以更新",
     "portableUpdateTitle": "需要手动更新",
-    "portableUpdateMessage": "便携版无法自动更新。请通过下方按钮下载适用于你的系统的安装程序，运行后安装到同一文件夹，你的 Data/ 文件夹（设置、模型、录音）会保留在原处。",
+    "portableUpdateMessage": "便携版不会自动更新。请将新版本安装到同一文件夹；Data 文件夹会保留。",
     "portableUpdateButton": "下载安装程序",
-    "portableUpdateBrowseMessage": "便携版无法自动更新。请从 tryambient.ai 下载适用于你的系统的最新版本，并安装到同一文件夹，你的 Data/ 文件夹（设置、模型、录音）会保留在原处。",
+    "portableUpdateBrowseMessage": "便携版不会自动更新。请下载新版本并安装到同一文件夹；Data 文件夹会保留。",
     "portableUpdateBrowseButton": "打开下载页面"
   },
   "updates": {
@@ -1098,13 +1098,13 @@
     "loadDirectory": "加载目录时出错：{{error}}",
     "micPermissionDeniedTitle": "麦克风访问被拒绝",
     "micPermissionDenied": {
-      "generic": "操作系统拒绝了麦克风访问。请在系统设置中授予麦克风权限。",
-      "windows": "在设置 → 隐私和安全性 → 麦克风（包括桌面应用访问）中启用麦克风访问。",
-      "macos": "在系统设置 → 隐私与安全性 → 麦克风中授予麦克风访问权限。",
+      "generic": "麦克风访问已关闭。请在系统设置中允许。",
+      "windows": "在设置 → 隐私和安全性 → 麦克风中允许麦克风。",
+      "macos": "在系统设置 → 隐私与安全性中允许麦克风。",
       "linux": "在系统的声音或隐私设置中授予麦克风访问权限。"
     },
     "noInputDeviceTitle": "未找到麦克风",
-    "noInputDevice": "未检测到音频输入设备。请连接麦克风或耳机后重试。",
+    "noInputDevice": "未找到麦克风。请连接后重试。",
     "recordingFailed": "录音启动失败：{{error}}",
     "modelLoadFailed": "加载模型失败：{{model}}",
     "modelLoadFailedUnknown": "未知模型",
@@ -1136,7 +1136,7 @@
       "notFound": "该文件目前不可用。请稍后重试。",
       "diskFull": "这台电脑的可用空间不足。请释放一些空间后重试。",
       "checksum": "下载的文件已损坏。请重试。",
-      "permission": "{{appName}} 没有执行此操作的权限。请在系统设置中检查其权限。",
+      "permission": "{{appName}} 需要相应权限。请检查系统设置。",
       "server": "服务器出现问题。请稍后重试。",
       "unknown": "出了点问题。请重试。"
     }
@@ -1167,13 +1167,13 @@
     "recorderBlockedWithCulprit": "{{name}} 可能正在阻止快捷键更改",
     "recorderBlockedNoCulprit": "macOS 正在暂时阻止快捷键更改",
     "learnMore": "如何解决",
-    "recorderBlocked": "当前无法录制快捷键——macOS 的 Secure Input 正在阻止按键事件。请先解决 Secure Input 警告。",
+    "recorderBlocked": "macOS 的 Secure Input 开启时无法录制快捷键。",
     "dismiss": "关闭"
   },
   "dictationConflict": {
-    "apps": "{{apps}} 也能在这里听写。如果快捷键与 {{appName}} 相同，两者可能都会响应。",
-    "macosFn": "macOS 也使用 Fn（🌐）键。如果听写或表情符号也会打开，请在键盘设置中将“按下 🌐 键时”设为“不执行任何操作”。",
-    "windowsVoiceTyping": "Win + H 也会启动 Windows 语音输入。请换一个快捷键，让只有 {{appName}} 响应。",
+    "apps": "{{apps}} 可能会响应同一快捷键。",
+    "macosFn": "macOS 也使用 🌐。请在键盘设置中将“按下 🌐 键时”设为“不执行任何操作”。",
+    "windowsVoiceTyping": "Win + H 也会启动 Windows 语音输入。请换一个快捷键。",
     "makeExclusive": "只让 {{appName}} 响应",
     "changeShortcut": "更改快捷键",
     "openKeyboardSettings": "打开键盘设置",
@@ -1195,12 +1195,13 @@
       "pastTitle": "以前订阅过方案？",
       "pastDescription": "在网页上下载过往发票或管理以前的方案。",
       "openWeb": "打开账单页面",
-      "opening": "正在打开…"
+      "opening": "正在打开…",
+      "title": "账单"
     },
     "usage": "本周已使用 {{used}} / {{limit}} 个词",
     "usageShort": "{{used}} / {{limit}} 词",
     "resets": "{{date}} 重置",
-    "limitReached": "你已用完本周的免费字数。升级即可无限听写，或等本周重置后继续使用。",
+    "limitReached": "本周免费字数已用完。升级，或等待重置。",
     "limitToast": "本周免费字数已用完",
     "proFeatures": {
       "priority": "优先支持",
@@ -1274,16 +1275,16 @@
     },
     "polish": {
       "title": "AI 润色",
-      "description": "清理每一次听写：标点、口头语、列表，以及“删掉刚才那句”这类更正。只发送文字，绝不发送音频。",
+      "description": "修正标点、口头语和“删掉刚才那句”。只发文字，绝不发音频。",
       "unlock": "获取无限次",
       "onDevice": "仅在这台 Mac 上处理",
       "onDeviceDescription": "改用 Apple Intelligence。任何内容都不会离开你的 Mac。",
       "freeUsesLeft": "本周还剩 {{left}} / {{limit}} 次免费 AI 使用",
-      "scope": "只改变听写内容的整理方式。回答、建议和读取屏幕是单独的设置。",
+      "scope": "不影响回答或建议。",
       "where": {
         "on_device": "在这台电脑上润色。",
         "cloud": "在云端润色。",
-        "blocked": "已跳过：已开启“仅在这台电脑上”，而这台电脑没有本地模型，所以按原话输入。"
+        "blocked": "已关闭：没有设备端模型，且你选择了“仅在这台电脑上”。"
       },
       "onDeviceAnswers": "智能功能设为“自动”时，回答也会用它。"
     },
@@ -1293,7 +1294,7 @@
       "options": {
         "smart": {
           "title": "智能",
-          "description": "{{appName}} 每次自动判断：按你说的原样输入，说得零乱时帮你润色，或在你要求时替你撰写（“告诉他我去不了，客气点”）。它会显示做了什么，点“用我的原话”即可还原。"
+          "description": "你的话，经过润色，或在你要求时替你撰写。“用我的原话”可撤销。"
         },
         "as_said": {
           "title": "始终按原话",
@@ -1304,8 +1305,10 @@
           "description": "每次口述都用 AI 润色。"
         }
       },
-      "needsPolish": "AI 润色已关闭，所以听写会立即输入，凌乱的口语保持原样。你开口要求时 {{appName}} 仍会替你写（计为一次 AI 请求）。",
-      "scope": "只改变输入到文本框的内容。向 {{appName}} 提问和建议是单独的设置。"
+      "needsPolish": "AI 润色关闭时，凌乱的口语保持原样。",
+      "scope": "仅限输入到文本框的内容。",
+      "turnOnPolish": "开启",
+      "polishIsOff": "AI 润色已关闭。"
     },
     "trial": {
       "daysLeft_one": "还剩 {{count}} 天",
@@ -1367,13 +1370,13 @@
     "viewAll": "查看全部",
     "empty": {
       "title": "这里还没有内容",
-      "description": "在任意应用中按下快捷键并开始说话，听写内容会显示在这里。"
+      "description": "在任意应用中按住快捷键并说话。"
     },
     "tips": {
       "holdOrTap": "按住快捷键说话，或按一次开始、再按一次停止。",
-      "customWords": "在“设置 → 高级 → 自定义词汇”中添加人名和专业术语，可提高准确度。",
+      "customWords": "在“设置 → 高级 → 自定义词汇”中添加名称和术语。",
       "dropFile": "将音频文件拖到此窗口即可转录。",
-      "languages": "在“设置 → 通用”中选择你使用的语言，以获得更合适的模型推荐。"
+      "languages": "在“设置 → 通用”中设置你的语言。"
     },
     "quickActions": {
       "label": "快捷操作",
@@ -1399,7 +1402,7 @@
     },
     "screenNotice": {
       "title": "{{appName}} 现在会读取你所在的窗口",
-      "body": "以便理解你的意思。敏感信息会先被移除，私密页面从不读取。建议也已开启。你可以在“隐私”中关闭任意一项。",
+      "body": "敏感信息会被移除，私密页面会跳过。可在“隐私”中更改。",
       "open": "打开“隐私”",
       "dismiss": "知道了"
     }
@@ -1450,11 +1453,11 @@
       "heardNothing": "听到了，但没听出具体请求。",
       "noWebResults": "暂时无法联网搜索，以下内容基于我已知的信息。",
       "timeout": "当前网络连接较慢，请稍后再试。",
-      "needsCloud": "这需要云端，但智能功能已设为“仅在这台电脑上”。请在“隐私”中更改。",
+      "needsCloud": "需要云端。你选择了“仅在这台电脑上”。",
       "aiOff": "AI 已关闭，因此 {{appName}} 无法执行此操作。请在“隐私”中开启。",
       "cloudOfferOn": "云端建议已开启。可在“隐私”中更改。",
       "cloudUnavailable": "云端建议暂时不可用。",
-      "cloudLimited": "云端建议已暂停：今天的次数已用完，或需要 Pro。"
+      "cloudLimited": "云端建议已暂停：已达每日上限，或仅限 Pro。"
     },
     "undo": "撤销",
     "close": "关闭",
@@ -1526,7 +1529,7 @@
       "searchDrive": "在 Google 云端硬盘中搜索",
       "searchGmail": "在 Gmail 中搜索"
     },
-    "cloudOffer": "{{appName}} 可以把当前窗口的一小段内容（已脱敏）发送到服务器，从而在这台电脑上为你提供帮助建议。要开启吗？",
+    "cloudOffer": "发送一段已脱敏的片段到云端，以便提供帮助建议？",
     "when": {
       "today": "今天 {{time}}",
       "tomorrow": "明天 {{time}}",
@@ -1654,17 +1657,17 @@
     },
     "accessibility": "{{appName}} 需要辅助功能权限才能读取其他应用中的文字。",
     "grant": "允许访问",
-    "accessibilityLinux": "开启辅助功能，让 {{appName}} 能读取你所在的窗口。运行此命令，然后注销并重新登录。",
-    "accessibilityLinuxChrome": "Chrome、Chromium 和 Electron 应用还需要 --force-renderer-accessibility。",
+    "accessibilityLinux": "开启辅助功能，让 {{appName}} 能读取窗口。运行此命令，然后重新登录。",
+    "accessibilityLinuxChrome": "Chrome 和 Electron 应用还需要 --force-renderer-accessibility。",
     "copyCommand": "复制命令",
     "commandCopied": "已复制命令",
     "commandCopyFailed": "无法复制命令",
     "capabilities": {
       "title": "{{appName}} 可以做什么",
-      "description": "读取你所在的窗口和提供建议从一开始就是开启的。其余功能在你打开之前保持关闭。",
+      "description": "读取屏幕和建议默认开启；其余默认关闭。",
       "screen_context": {
         "title": "读取你询问的内容",
-        "reads": "读取你询问的窗口；让它查找东西时，也会读取你打开的窗口。",
+        "reads": "读取你询问的窗口。",
         "leaves": "只发送回答所需的内容，并去除敏感信息。"
       },
       "screen_memory": {
@@ -1674,7 +1677,7 @@
       },
       "proactive": {
         "title": "提供建议",
-        "reads": "在合适的时机建议下一步：对话、草稿、日期、错误、会议。",
+        "reads": "在合适的时机建议下一步。",
         "leaves": "除判断外，在你接受建议之前不会发送任何内容。"
       },
       "meetings": {
@@ -1684,7 +1687,7 @@
       },
       "wake_word": {
         "title": "免提：说“Hey Ambient”",
-        "reads": "在这台电脑上聆听“Hey Ambient”。其他内容会在你说话时直接丢弃。",
+        "reads": "在这台电脑上聆听“Hey Ambient”。",
         "leaves": "在你说出之前，不会录制或发送任何内容。"
       },
       "groups": {
@@ -1698,7 +1701,7 @@
     "preview": {
       "title": "{{appName}} 看到的内容",
       "description": "脱敏后，它会从窗口中读取的确切内容。",
-      "hint": "点按“预览”，然后在 3 秒内切换到任意窗口。",
+      "hint": "点按“预览”，然后在 3 秒内切换窗口。",
       "switchNow": "现在切换到另一个窗口…",
       "button": "预览",
       "noText": "此窗口中没有可读取的文字。",
@@ -1711,7 +1714,7 @@
     },
     "neverWatch": {
       "title": "永不查看",
-      "description": "即使全部打开也绝不读取。密码字段、无痕窗口、钱包和助记词也会被跳过。",
+      "description": "绝不读取。密码、钱包和无痕窗口始终跳过。",
       "this": "永不查看此应用",
       "added": "将不再读取 {{app}}。"
     },
@@ -1759,9 +1762,9 @@
     },
     "engine": {
       "title": "回答也使用 Apple Intelligence",
-      "description": "条件允许时，回答和润色会在这台 Mac 上运行。效果不如云端精致，因此默认关闭。",
+      "description": "放得下时在本机运行回答和润色。效果稍逊。",
       "titleDownloaded": "回答也使用设备端 AI",
-      "descriptionDownloaded": "回答和润色在放得下时于这台电脑上运行。效果不如云端，因此默认关闭。"
+      "descriptionDownloaded": "放得下时在本机运行回答和润色。效果稍逊。"
     },
     "suggestions": {
       "title": "你收到的建议",
@@ -1786,23 +1789,23 @@
       },
       "learned": {
         "title": "你告诉我的",
-        "empty": "暂无内容。你拒绝某个建议后，它会显示在这里。",
+        "empty": "暂无内容。",
         "never": "永不：{{kind}}",
         "notIn": "{{kind}}，不在 {{app}} 中显示",
         "undo": "撤销"
       },
-      "teach": "建议出现时，说“现在不用”“别给我看这些”或“不要在这个应用里”，{{appName}} 就会记住。",
+      "teach": "说“以后再说”“别给我看这些”或“不要在这个应用里”。",
       "unknownKind": "某类建议"
     },
     "writing": {
       "title": "写作",
       "learned": "你告诉过我的",
-      "empty": "暂无内容。当你选择“用我的原话”，{{appName}} 会在该应用中减少改写。",
+      "empty": "暂无内容。",
       "less": {
         "written": "在 {{app}} 中减少替你撰写",
         "polished": "在 {{app}} 中减少润色"
       },
-      "teach": "{{appName}} 润色或撰写后，点击“用我的原话”或直接说出来，即可恢复你的原话。"
+      "teach": "点击或说出“用我的原话”，即可恢复你的原话。"
     },
     "macOnly": "目前仅限 Mac",
     "promises": {
@@ -1813,7 +1816,7 @@
     },
     "intelligence": {
       "title": "智能功能在哪里运行",
-      "description": "回答、代写、建议、会议摘要和 AI 润色在哪里处理。每个功能在任何选项下都能用。",
+      "description": "回答、写作、建议和润色在哪里运行。",
       "capability": {
         "apple": "这台电脑上可使用 Apple Intelligence",
         "none": "这台电脑上没有设备端模型",
@@ -1822,15 +1825,15 @@
       "options": {
         "auto": {
           "title": "自动",
-          "description": "尽可能在这台电脑上处理。使用云端提供建议前会先询问一次。"
+          "description": "尽可能在这台电脑上；使用云端前会先询问。"
         },
         "device": {
           "title": "仅在这台电脑上",
-          "description": "不会发送任何内容来做决定或回答。需要模型的功能会退回到简单规则，或告知无法完成。",
+          "description": "任何内容都不会离开这台电脑。",
           "titleBasic": "仅限这台电脑（基础，无 AI）",
-          "descriptionBasic": "不会发送任何内容。仅使用简单规则：在下载设备端 AI 之前，回答和写作需要云端。",
-          "descriptionDownload": "不发送任何内容。选择后会下载 {{model}}（约 {{size}}）在本机运行；就绪前使用简单规则。",
-          "descriptionDownloading": "不发送任何内容。正在下载 {{model}}（约 {{size}}）；就绪前使用简单规则。"
+          "descriptionBasic": "不发送任何内容。下载设备端 AI 以使用回答和写作。",
+          "descriptionDownload": "不发送任何内容。将下载 {{model}}（≈{{size}}）。",
+          "descriptionDownloading": "正在下载 {{model}}（≈{{size}}）…"
         },
         "cloud": {
           "title": "云端",
@@ -1838,23 +1841,23 @@
         },
         "none": {
           "title": "不使用 AI",
-          "description": "只做听写和简单规则。不发送任何内容，也不润色、代写或建议。"
+          "description": "仅听写。不发送任何内容。"
         }
       },
       "cloudSuggestions": {
         "title": "云端建议",
-        "description": "发送你停留过的窗口的脱敏片段，以判断是否提供帮助。每条请求都会列在下方。"
+        "description": "发送一段已脱敏的片段，以判断是否提供帮助。"
       }
     },
     "onDeviceAi": {
       "title": "设备端 AI",
       "download": "下载设备端 AI（约 {{size}}）",
-      "description": "一个在这台电脑上运行的小型 AI 模型，让润色、智能写作、建议和简短回答无需云端。",
-      "descriptionMac": "Apple Intelligence 的替代方案：一个在这台电脑上运行的小型 AI 模型，用于润色、智能写作、建议和简短回答。",
+      "description": "在本机运行润色、写作、建议和简短回答。",
+      "descriptionMac": "在本机运行的 Apple Intelligence 替代方案。",
       "downloadButton": "下载",
       "downloading": "正在下载… {{percent}}%",
       "cancel": "取消",
-      "ready": "已下载（{{size}}）。润色、智能写作、建议和简短回答可以在这台电脑上运行。",
+      "ready": "已下载（{{size}}）。在这台电脑上运行。",
       "remove": "移除",
       "use": "这台 Mac 使用：",
       "engines": {
@@ -1865,24 +1868,24 @@
       "recommended": "推荐",
       "basic": "基础",
       "onThisComputer": "在本机上",
-      "scoresNote": "条形图是这些模型之间的相互比较：质量来自其公开的基准测试，速度来自其大小。均未在这台电脑上实测。",
+      "scoresNote": "相互比较：质量来自基准测试，速度来自大小。",
       "downloadingModel": "正在下载 {{model}}… {{percent}}%",
       "downloadingTag": "下载中",
       "removeModel": "删除 {{name}}",
       "quality": "质量",
       "speed": "速度",
       "modelInfo": {
-        "qwen3_0_6b": "小巧快速，对内存和电池最友好。润色够用，写作和回答不太可靠。",
-        "qwen3_1_7b_q4": "下载量约为 8 位版本的一半，润色和写作依然不错，损失很小。",
-        "qwen3_1_7b": "之前的设备端模型。比 4 位版本略好，但下载更大。",
-        "qwen3_4b": "设备端质量最好，但也最大最慢。适合不用云端也要好好写作和回答。"
+        "qwen3_0_6b": "最轻量。润色够用。",
+        "qwen3_1_7b_q4": "质量与大小的最佳平衡。",
+        "qwen3_1_7b": "稍好一些，下载量翻倍。",
+        "qwen3_4b": "质量最好。最大也最慢。"
       },
       "manage": "管理模型"
     },
     "telemetry": {
       "title": "帮助改进 {{appName}}",
       "label": "分享匿名使用计数",
-      "description": "仅计数和耗时，绝不包括你说的、输入的或看到的内容。在你开启前保持关闭。"
+      "description": "仅计数和耗时。绝不包括你说的、输入的或看到的内容。"
     },
     "free": {
       "perWeek": "免费版：每周 {{limit}} 条",
@@ -1921,7 +1924,7 @@
   },
   "meetings": {
     "title": "会议",
-    "intro": "任何通话都能做笔记：你和对方，在这台电脑上转录。音频从不保存。",
+    "intro": "任何通话都能做笔记，在本机转录。音频从不保存。",
     "live": "正在记录 · {{time}}",
     "capturingBoth": "正在听你和通话。",
     "capturingMic": "仅在听你的麦克风。",
@@ -1952,11 +1955,11 @@
     "you": "你",
     "them": "对方",
     "systemAudio": {
-      "noPermission": "请允许录屏，以便 {{appName}} 听取通话。仅使用音频，不保存任何内容。",
-      "oldMacOS": "听取通话需要 macOS 13 或更高版本。你的麦克风仍在转录。",
-      "failed": "无法捕获通话音频。你的麦克风仍在转录。",
+      "noPermission": "允许录屏以听取通话。仅音频，从不保存。",
+      "oldMacOS": "听取通话需要 macOS 13+。你的麦克风仍可使用。",
+      "failed": "无法捕获通话。你的麦克风仍可使用。",
       "unsupported": "此系统暂不支持听取通话。",
-      "linuxNoParec": "听取通话需要 parec（请安装 pulseaudio-utils）。你的麦克风仍在转录。"
+      "linuxNoParec": "听取通话需要 parec（pulseaudio-utils）。你的麦克风仍可使用。"
     },
     "error": {
       "storage": "无法打开会议存储。",
@@ -1971,11 +1974,11 @@
     "startNowHint": "现在就做记录，无需等待通话",
     "auto": {
       "on": "已为下一次通话做好准备",
-      "onDetail": "通话开始时，{{appName}} 会提议做记录。同意，或忽略即可。",
+      "onDetail": "通话开始时提议做笔记。",
       "off": "通话检测已关闭",
-      "offDetail": "开启后，通话开始时 {{appName}} 会提议做记录。",
+      "offDetail": "开启后，每次通话都会提议做笔记。",
       "paused": "已暂停",
-      "pausedDetail": "在“隐私”中恢复之前，{{appName}} 不会提议做记录。",
+      "pausedDetail": "在“隐私”中恢复。",
       "unsupported": "未做记录",
       "unsupportedDetail": "通话开始时开始记录。",
       "turnOn": "开启"
@@ -1987,7 +1990,7 @@
     },
     "email": {
       "title": "将笔记发到我的邮箱",
-      "description": "每次通话后发送到 {{email}}。先移除机密信息，不保存任何内容。",
+      "description": "每次通话后发送到 {{email}}。不保存任何内容。",
       "signedOut": "登录后即可通过邮件接收笔记。",
       "options": {
         "off": "关闭",
@@ -2056,13 +2059,13 @@
     },
     "offers": {
       "title": "它还会主动帮忙",
-      "description": "遇到它能帮上忙的时候，比如长对话或报错，它会提议一次。说“好”或“以后再说”，或者直接忽略。它会学习。",
+      "description": "能帮上忙时，它会提议一次。说“是”或“以后再说”。",
       "app": "邮件",
       "subject": "第三季度发布计划",
       "count": "40 条消息",
       "summaryHead": "对话摘要",
       "summary": "发布改到周四。Sam 负责演示文稿，Ana 预订会议室。",
-      "noOnDevice": "没有 Apple Intelligence 时，由这台电脑上的简单规则来判断。使用云端前会先询问一次。",
+      "noOnDevice": "没有 Apple Intelligence 时，使用云端前会先询问一次。",
       "screenLabel": "一个有 40 条消息的邮件对话。一条建议提出要总结它；说“好”之后，出现一段简短摘要。"
     }
   },
@@ -2084,7 +2087,7 @@
   "trySaying": {
     "title": "我可以说什么？",
     "close": "关闭",
-    "footnote": "在 ChatGPT 或 Claude 中，以“Hey Ambient”开头即可改为与智能体对话。",
+    "footnote": "在 ChatGPT 或 Claude 中，以“Hey Ambient”开头。",
     "groups": {
       "answer": {
         "title": "提问",
@@ -2166,7 +2169,7 @@
       "errors": "发生的错误类型，例如“超时”",
       "basics": "应用版本、系统、套餐，以及每 30 天更换一次的随机 ID"
     },
-    "never": "绝不包括你说的、输入的或看到的内容、窗口标题、链接、文件名或你的邮箱。",
+    "never": "绝不包括你说的、输入的或看到的内容。",
     "ledger": "每次上传都会列在“隐私”中离开这台电脑的请求里。"
   },
   "feedback": {
@@ -2190,7 +2193,7 @@
     },
     "diagnostics": {
       "label": "附带诊断信息",
-      "description": "应用版本、系统、套餐、设置摘要和最近的日志行，已移除机密信息、窗口标题和链接。"
+      "description": "版本、系统、套餐、设置和最近日志，已移除机密信息。"
     },
     "example": {
       "label": "附带示例",

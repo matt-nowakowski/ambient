@@ -57,7 +57,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
         onClick={() => setOpen((o) => !o)}
         className={`cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 active:scale-95 ${
           text
-            ? `flex h-8 items-center gap-1 whitespace-nowrap rounded-full border-[0.5px] border-glass-edge ps-3 pe-2 text-small font-medium shadow-card ${
+            ? `flex h-control-sm items-center gap-1 whitespace-nowrap rounded-full border-[0.5px] border-glass-edge ps-3 pe-2 text-small shadow-card ${
                 open
                   ? "bg-glass-press text-text"
                   : "bg-glass-strong text-text hover:bg-glass-hover"

@@ -137,7 +137,7 @@ const VoiceModels: React.FC<ModelsSettingsProps> = ({ onChangeLanguages }) => {
     <button
       type="button"
       onClick={() => setMore((m) => !m)}
-      className="ms-[40px] mt-[2px] flex h-[28px] cursor-pointer items-center gap-[8px] rounded-chip px-[2px] text-small font-medium text-ink-2 hover:text-text focus:outline-none focus-visible:ring-1 focus-visible:ring-logo-primary"
+      className="ms-[40px] mt-[2px] flex h-[28px] cursor-pointer items-center gap-[8px] rounded-chip px-[2px] text-small text-ink-2 hover:text-text focus:outline-none focus-visible:ring-1 focus-visible:ring-logo-primary"
     >
       {more
         ? t("settings.models.showFewer")

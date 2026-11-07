@@ -16,10 +16,10 @@
     "installerTrashConfirm": "Pindahkan ke Tong Sampah",
     "installerKeep": "Simpan",
     "moveToAppsTitle": "Pindahkan {{appName}} ke Aplikasi?",
-    "moveToAppsBody": "{{appName}} berjalan dari image disk-nya. Pindahkan ke folder Aplikasi agar tetap terinstal dan memperbarui dirinya sendiri.",
+    "moveToAppsBody": "Pindahkan {{appName}} ke Applications agar tetap terpasang dan diperbarui.",
     "moveToAppsConfirm": "Pindahkan ke Aplikasi",
     "moveToAppsLater": "Nanti saja",
-    "moveToAppsFailed": "Tidak dapat memindahkan {{appName}} ke Aplikasi. Seret ke folder Aplikasi sebagai gantinya.",
+    "moveToAppsFailed": "Gagal memindahkan. Seret {{appName}} ke Applications.",
     "sendFeedback": "Kirim masukan..."
   },
   "sidebar": {
@@ -87,7 +87,7 @@
     },
     "welcome": {
       "title": "Rekan kerja di desktop Anda.",
-      "subtitle": "Anda bicara; ia menulis, menjawab, bertindak, dan mengingatkan Anda. Pilih semua bahasa yang akan Anda gunakan.",
+      "subtitle": "Anda bicara; ia menulis, menjawab, dan bertindak. Pilih bahasa Anda.",
       "languagesLabel": "Bahasa",
       "noMatch": "Tidak ada hasil untuk “{{query}}”. Bahasa lain ada di pengaturan.",
       "appLanguage": "Bahasa aplikasi",
@@ -240,7 +240,7 @@
       "dictationApp": {
         "title": "Jadikan {{appName}} aplikasi dikte Anda",
         "description": "Jika aplikasi dikte lain memakai pintasan yang sama, {{appName}} yang mengambilnya.",
-        "found": "Jika aplikasi dikte lain, seperti {{apps}}, memakai pintasan yang sama, {{appName}} yang mengambilnya."
+        "found": "Jika {{apps}} memakai pintasan yang sama, {{appName}} yang mengambilnya."
       }
     },
     "linux": {
@@ -249,7 +249,7 @@
     },
     "ai": {
       "title": "Di mana AI sebaiknya berjalan?",
-      "sub": "Untuk merapikan, draf, jawaban, dan saran. Pengenalan suara selalu tetap di komputer ini.",
+      "sub": "Untuk poles, draf, jawaban, dan saran. Suara tetap di komputer ini.",
       "hint": "Anda bisa mengubahnya kapan saja di Pengaturan.",
       "cloud": {
         "title": "Di cloud",
@@ -281,7 +281,7 @@
     },
     "agent": {
       "title": "Cukup katakan apa yang Anda perlukan",
-      "sub": "Ia memutuskan sendiri dari ucapan Anda dan isi layar. Tak ada perintah yang perlu dihafal, dan dikte biasa tetap diketik.",
+      "sub": "Ia membaca ucapan Anda dan isi layar. Tak perlu menghafal perintah.",
       "askKey": "Untuk bertanya alih-alih mengetik, tahan <keys/>",
       "noAi": "Dengan Tanpa AI, ia hanya mengetik. Aktifkan AI di Pengaturan.",
       "screenLabel": "Empat hal yang bisa diminta: jawaban dari web, bantuan soal isi layar, balasan yang ditulis untuk Anda, dan tugas yang dikerjakan untuk Anda.",
@@ -330,7 +330,7 @@
   "modelTable": {
     "tags": {
       "preview": "Pratinjau langsung",
-      "previewTitle": "Menampilkan kata-kata Anda di overlay Langsung saat Anda berbicara, lalu mengetiknya setelah Anda berhenti",
+      "previewTitle": "Menampilkan kata-kata secara langsung saat Anda bicara",
       "translate": "Menerjemahkan",
       "translateTitle": "Bisa mengubah ucapan Anda menjadi teks bahasa Inggris. Aktifkan di pengaturan"
     },
@@ -383,7 +383,7 @@
     "accuracy": "Akurasi",
     "search": "Cari model",
     "allLabel": "Model ucapan",
-    "noMatch": "Tidak ada yang cocok dengan “{{query}}”. Coba bahasa, atau keluarga seperti Whisper atau Parakeet",
+    "noMatch": "Tidak ada yang cocok dengan “{{query}}”. Coba bahasa atau keluarga model.",
     "noFilterMatch": "Tidak ada model yang cocok dengan filter ini",
     "speedUntested": "Kecepatan belum diukur",
     "speedWords": {
@@ -446,7 +446,7 @@
         "keepClicks": "Klik kiri dan kanan tetap milikmu; pilih tombol lain.",
         "doubleTap": {
           "label": "Ketuk dua kali",
-          "description": "Ketuk dua kali untuk mulai, dan dua kali lagi untuk berhenti. Sekali ketuk atau tahan tetap berfungsi seperti biasa."
+          "description": "Ketuk dua kali untuk mulai, dua kali untuk berhenti."
         },
         "bindings": {
           "transcribe": {
@@ -459,11 +459,11 @@
           },
           "transcribe_with_post_process": {
             "name": "Pintasan Pascaproses",
-            "description": "Opsional: pintasan khusus yang selalu menerapkan pascaproses AI pada transkripsi Anda."
+            "description": "Selalu memakai Poles AI."
           },
           "ask_agent": {
             "name": "Pintasan Tanya",
-            "description": "Selalu berbicara dengan agen: ajukan pertanyaan, atau minta ia melakukan sesuatu. Tidak pernah mengetik."
+            "description": "Selalu bicara ke agen. Tidak pernah mengetik."
           }
         },
         "errors": {
@@ -472,7 +472,7 @@
       },
       "language": {
         "title": "Bahasa",
-        "description": "Pilih bahasa untuk pengenalan ucapan. Opsi Otomatis akan mendeteksi bahasa, sedangkan memilih bahasa tertentu dapat meningkatkan akurasi untuk bahasa tersebut.",
+        "description": "Otomatis mendeteksi bahasa; memilih satu bisa lebih akurat.",
         "searchPlaceholder": "Cari bahasa…",
         "noResults": "Bahasa tidak ditemukan",
         "auto": "Otomatis",
@@ -483,7 +483,7 @@
           "noMatch": "Tidak ada bahasa Anda yang berfungsi dengan model ini"
         },
         "detectorMissingTitle": "Otomatis memerlukan unduhan terpisah",
-        "detectorMissing": "Model ini tidak dapat mengenali bahasa yang Anda ucapkan. Otomatis memerlukan pendeteksi bahasa kecil untuk mengenalinya",
+        "detectorMissing": "Model ini tak bisa mendeteksi bahasa. Otomatis butuh detektor kecil.",
         "stopDetectorDownload": "Hentikan unduhan pendeteksi bahasa"
       },
       "preferredLanguages": {
@@ -508,11 +508,11 @@
       },
       "exclusiveShortcuts": {
         "label": "Hanya {{appName}} yang merespons pintasannya",
-        "description": "Aplikasi lain, termasuk aplikasi dikte lain, tidak akan melihat tombol pintasan {{appName}} Anda. Matikan jika aplikasi lain butuh tombol yang sama."
+        "description": "Aplikasi lain tidak akan melihat tombol pintasan {{appName}}."
       },
       "autoStop": {
         "label": "Berhenti setelah jeda",
-        "description": "Saat Anda mulai dengan ketukan, dikte juga berhenti sendiri begitu Anda berhenti bicara sejenak. Jeda singkat di tengah kalimat tidak dihitung, dan dikte tidak pernah berhenti sebelum Anda mengatakan sesuatu.",
+        "description": "Ketuk untuk mulai; berhenti saat Anda jeda setelah bicara.",
         "delay": {
           "label": "Jeda sebelum berhenti",
           "description": "Berapa lama diam setelah bicara sebelum dikte berhenti.",
@@ -544,10 +544,10 @@
       "cancelDownload": "Hentikan unduhan {{name}}",
       "legend": {
         "open": "Cara model dinilai",
-        "accuracyNote": "Untuk setiap bahasa Anda: berapa banyak kata yang salah oleh model dalam rekaman uji kami.",
+        "accuracyNote": "Tingkat kesalahan kata per bahasa, pada rekaman uji kami.",
         "speedNote": {
-          "accelerated": "Berapa lama 30 detik ucapan diketik di chip grafis laptop uji kami. Komputer ini mungkin berbeda.",
-          "cpu": "Berapa lama 30 detik ucapan diketik di prosesor laptop uji kami. Komputer ini mungkin berbeda."
+          "accelerated": "Waktu mentranskripsi 30 dtk ucapan di GPU laptop uji kami.",
+          "cpu": "Waktu mentranskripsi 30 dtk ucapan di CPU laptop uji kami."
         },
         "marks": "? belum diukur. — tidak mengenali bahasa itu."
       },
@@ -560,7 +560,7 @@
       },
       "rescan": {
         "label": "Pindai Ulang",
-        "tooltip": "Pindai ulang model yang ditambahkan ke folder model atau cache Hugging Face dari luar {{appName}}"
+        "tooltip": "Pindai ulang model yang ditambahkan di luar {{appName}}"
       },
       "tabs": {
         "voice": "Model suara",
@@ -584,13 +584,13 @@
       },
       "channel": {
         "title": "Kanal Masukan",
-        "description": "Untuk antarmuka audio dengan beberapa input: pilih input mikrofon Anda. Jika tidak, biarkan di semua kanal.",
+        "description": "Untuk antarmuka audio multi-input: pilih input mikrofon Anda.",
         "average": "Semua kanal, digabung",
         "channel": "Kanal {{n}}"
       },
       "keepMicReady": {
         "title": "Biarkan mikrofon siap",
-        "description": "Setelah Anda mendikte, mikrofon tetap menyala sebentar agar dikte berikutnya langsung mulai dan menangkap kata pertama Anda. Komputer menunjukkan mikrofon sedang dipakai sampai ditutup. Audio itu hanya ada di memori: tidak pernah disimpan atau dikirim.",
+        "description": "Mikrofon tetap terbuka sebentar agar kata pertama dikte berikutnya tertangkap. Tak pernah disimpan atau dikirim.",
         "options": {
           "off": "Mati",
           "sec30": "30 detik",
@@ -629,7 +629,7 @@
       "acceleration": {
         "transcribe": {
           "title": "Akselerasi perangkat keras",
-          "description": "Pilih perangkat keras yang digunakan untuk transkripsi. Otomatis menggunakan GPU jika tersedia, dan beralih ke CPU jika tidak."
+          "description": "Otomatis memakai GPU bila ada, jika tidak CPU."
         },
         "gpuDevice": {
           "auto": "Otomatis"
@@ -650,7 +650,7 @@
       "overlay": {
         "style": {
           "title": "Overlay",
-          "description": "Pilih overlay perekaman: “Tidak Ada” menyembunyikannya, “Minimal” menampilkan indikator ringkas, dan “Langsung” menampilkan transkripsi secara waktu nyata saat Anda berbicara (hanya model yang mendukung streaming — cari lencana “Streaming” di pemilih model). Di Linux, “Tidak Ada” direkomendasikan.",
+          "description": "Tidak Ada menyembunyikannya. Minimal berupa pil kecil. Langsung menampilkan kata saat Anda bicara (model streaming).",
           "options": {
             "none": "Tidak Ada",
             "minimal": "Minimal",
@@ -668,7 +668,7 @@
       },
       "pasteMethod": {
         "title": "Metode Tempel",
-        "description": "Pilih cara teks dimasukkan. Langsung: mensimulasikan pengetikan melalui masukan sistem. Tidak Ada: melewati proses tempel dan hanya memperbarui riwayat/papan klip.",
+        "description": "Cara teks dimasukkan. Tidak Ada hanya memperbarui riwayat dan papan klip.",
         "options": {
           "clipboard": "Papan klip ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Papan klip (Ctrl+Shift+V)",
@@ -681,14 +681,14 @@
       },
       "typingTool": {
         "title": "Alat Pengetikan",
-        "description": "Pilih alat pengetikan Linux yang digunakan untuk metode tempel Langsung. Otomatis akan mendeteksi dan menggunakan alat terbaik yang tersedia untuk sistem Anda.",
+        "description": "Alat pengetik Linux untuk tempel Langsung. Otomatis memilih yang terbaik.",
         "options": {
           "auto": "Otomatis (Direkomendasikan)"
         }
       },
       "clipboardHandling": {
         "title": "Penanganan Papan Klip",
-        "description": "Jangan Ubah Papan Klip akan mempertahankan isi papan klip saat ini setelah transkripsi. Salin ke Papan Klip akan membiarkan hasil transkripsi tetap berada di papan klip setelah ditempel.",
+        "description": "Pulihkan papan klip seperti semula, atau biarkan hasil dikte di sana.",
         "options": {
           "dontModify": "Jangan Ubah Papan Klip",
           "copyToClipboard": "Salin ke Papan Klip"
@@ -696,7 +696,7 @@
       },
       "autoSubmit": {
         "title": "Kirim Otomatis",
-        "description": "Kirim kombinasi tombol yang dipilih secara otomatis setelah teks dimasukkan. Cmd+Enter berlaku di macOS, sedangkan Windows/Linux menggunakan Super+Enter.",
+        "description": "Menekan kombinasi tombol setelah memasukkan, mis. Enter untuk mengirim.",
         "options": {
           "off": "Nonaktif",
           "enter": "Enter",
@@ -707,11 +707,11 @@
       },
       "translateToEnglish": {
         "label": "Terjemahkan ke Bahasa Inggris",
-        "description": "Terjemahkan ucapan dari bahasa lain ke bahasa Inggris secara otomatis selama transkripsi."
+        "description": "Menerjemahkan bahasa lain ke bahasa Inggris saat Anda mendikte."
       },
       "modelUnload": {
         "title": "Keluarkan Model dari Memori",
-        "description": "Bebaskan memori GPU/CPU secara otomatis jika model tidak digunakan selama waktu yang ditentukan",
+        "description": "Mengosongkan memori saat model menganggur.",
         "options": {
           "never": "Tidak Pernah",
           "immediately": "Segera",
@@ -725,7 +725,7 @@
       },
       "customWords": {
         "title": "Kata Khusus",
-        "description": "Bantu model yang didukung mengenali nama dan istilah khusus. Koreksi fuzzy saat ini terbatas pada kata yang menggunakan huruf A–Z dan angka.",
+        "description": "Nama dan istilah yang perlu dikenali model.",
         "placeholder": "Tambahkan kata",
         "add": "Tambah",
         "remove": "Hapus {{word}}",
@@ -735,21 +735,21 @@
       },
       "voiceActivityDetection": {
         "title": "Deteksi Aktivitas Suara",
-        "description": "Saring keheningan dari rekaman. Model yang mendukung streaming memakai ekor VAD yang lebih panjang; jika VAD dinonaktifkan, audio direkam apa adanya."
+        "description": "Memangkas jeda hening dari rekaman."
       },
       "longFormChunking": {
         "title": "Pemisahan Audio Panjang",
-        "description": "Memisahkan rekaman panjang pada jeda sebelum ditranskripsi, yang biasanya meningkatkan kinerja transkripsi. File yang ditranskripsi dan transkripsi ulang yang panjang selalu dipisahkan."
+        "description": "Memecah rekaman panjang di jeda untuk hasil lebih baik."
       },
       "languageDetection": {
         "title": "Batasi Otomatis ke Bahasa Saya",
-        "description": "Otomatis hanya memilih dari bahasa pilihan Anda, menggunakan pendeteksi bahasa kecil. Aktifkan jika Otomatis terus memilih bahasa yang tidak Anda gunakan",
+        "description": "Otomatis hanya memilih dari bahasa Anda.",
         "downloadHint": "Mengaktifkan ini akan mengunduh pendeteksi bahasa kecil",
         "downloadingHint": "Mengunduh pendeteksi bahasa. Nonaktifkan untuk membatalkan"
       },
       "vadBackend": {
         "title": "Backend Deteksi Aktivitas Suara",
-        "description": "Pilih detektor yang digunakan untuk menyaring keheningan. Earshot bersifat eksperimental; kembali ke Silero jika ucapan terpotong atau kebisingan tetap terekam.",
+        "description": "Detektor hening. Earshot masih eksperimental; pakai Silero jika kata terpotong.",
         "options": {
           "silero": "Silero",
           "earshot": "Earshot"
@@ -761,7 +761,7 @@
       },
       "chineseScript": {
         "title": "Aksara Tionghoa",
-        "description": "Menulis transkripsi Mandarin dan Kanton dengan aksara Sederhana, atau aksara Tradisional seperti yang ditulis di Taiwan atau Hong Kong. Bahasa lain tidak diubah.",
+        "description": "Sederhana, atau Tradisional (Taiwan atau Hong Kong).",
         "options": {
           "asTranscribed": "Sesuai transkripsi",
           "simplified": "Sederhana",
@@ -771,8 +771,8 @@
       },
       "learnCorrections": {
         "label": "Belajar dari koreksi saya",
-        "description": "Saat Anda memperbaiki kata yang sama setelah mendikte, seperti nama, {{appName}} menawarkan untuk mengingatnya. Ia membaca kolom teks sebentar setelah mengetik, hanya di komputer ini, dan tidak pernah kolom kata sandi.",
-        "unavailable": "{{appName}} tidak bisa membaca kolom teks di komputer ini, jadi belum ada yang bisa dipelajari. Izinkan Aksesibilitas di macOS, atau aktifkan teknologi bantu di Linux."
+        "description": "Perbaiki kata setelah mendikte dan {{appName}} menawarkan untuk mengingatnya. Tak pernah membaca kolom kata sandi.",
+        "unavailable": "Butuh Aksesibilitas untuk membaca kolom teks."
       }
     },
     "postProcessing": {
@@ -815,7 +815,7 @@
       "playRecording": "Putar rekaman",
       "hidePlayer": "Sembunyikan pemutar",
       "emptyTitle": "Belum ada dikte",
-      "emptyDescription": "Semua yang ditranskripsikan {{appName}} muncul di sini, yang terbaru lebih dulu. Tahan pintasan Anda di aplikasi apa pun dan mulailah berbicara.",
+      "emptyDescription": "Tahan pintasan Anda di aplikasi mana pun dan bicaralah.",
       "noResultsTitle": "Tidak ada kecocokan",
       "noResultsDescription": "Tidak ada riwayat yang cocok dengan “{{query}}”.",
       "loadingMore": "Memuat lebih banyak…",
@@ -853,7 +853,7 @@
       },
       "liveLogs": {
         "title": "Log Waktu Nyata",
-        "description": "Tampilkan log aplikasi secara waktu nyata untuk mendiagnosis masalah tanpa membuka file log. Hanya log yang dihasilkan saat panel ini terbuka yang ditampilkan; mengikuti pengaturan Tingkat Log di atas.",
+        "description": "Menampilkan log selama panel ini terbuka.",
         "live": "Waktu Nyata",
         "paused": "Dijeda",
         "pause": "Jeda",
@@ -876,7 +876,7 @@
       },
       "onboardingPreview": {
         "title": "Pratinjau Penyiapan Awal",
-        "description": "Pratinjau layar penyiapan awal tanpa mengubah izin, model, atau status penyelesaian",
+        "description": "Pratinjau orientasi tanpa mengubah apa pun.",
         "exitButton": "Keluar dari Pratinjau",
         "choose": "Pilih layar",
         "screens": {
@@ -893,12 +893,12 @@
       },
       "onboardingRun": {
         "title": "Jalankan Orientasi",
-        "description": "Jalani orientasi sungguhan dari awal: meminta izin, mengunduh model, dan menyimpan pilihan Anda",
+        "description": "Jalankan orientasi sungguhan: izin, unduhan, dan pilihan.",
         "button": "Mulai"
       },
       "modelMigration": {
         "title": "Migrasi Model",
-        "description": "Buka layar pembaruan model format lama secara sungguhan: mengunduh pengganti, beralih model, dan menghapus file lama",
+        "description": "Jalankan layar pembaruan model sungguhan.",
         "button": "Buka",
         "noRetired": "Tidak ada model format lama di disk"
       },
@@ -952,31 +952,31 @@
       },
       "pasteDelay": {
         "title": "Jeda Tempel (Sebelum)",
-        "description": "Jeda (dalam milidetik) setelah menyalin teks sebelum mengirim perintah tempel. Tingkatkan jika tidak ada yang ditempel."
+        "description": "Jeda (md) sebelum menempel. Naikkan jika tak ada yang tertempel."
       },
       "pasteDelayAfter": {
         "title": "Jeda Tempel (Sesudah)",
-        "description": "Jeda (dalam milidetik) setelah perintah tempel dikirim sebelum mengembalikan isi papan klip sebelumnya. Tingkatkan jika isi papan klip lama yang ditempel alih-alih transkripsi."
+        "description": "Jeda (md) sebelum memulihkan papan klip. Naikkan jika teks lama yang tertempel."
       },
       "holdThreshold": {
         "title": "Ambang Waktu Tahan",
-        "description": "Hanya mode Otomatis: berapa lama (dalam milidetik) pintasan harus ditahan agar dianggap ditahan, bukan ditekan singkat. Turunkan jika penahanan singkat membuat perekaman tetap aktif; naikkan jika ketukan yang disengaja dianggap sebagai penahanan."
+        "description": "Mode Otomatis: berapa lama (md) tekanan dihitung sebagai tahan."
       },
       "reliablePaste": {
         "title": "Tempel Lebih Andal (Beta)",
-        "description": "Kembalikan papan klip hanya setelah aplikasi target benar-benar membaca transkripsi, bukan setelah jeda tetap. Ditujukan untuk memperbaiki kasus isi papan klip lama yang tertempel saat sistem sedang terbebani. Memerlukan metode tempel papan klip; hanya macOS dan Windows."
+        "description": "Memulihkan papan klip hanya setelah aplikasi membacanya. macOS dan Windows."
       },
       "recordingBuffer": {
         "title": "Buffer Perekaman Tambahan",
-        "description": "Waktu tambahan (dalam milidetik) untuk terus merekam setelah Anda melepas tombol agar audio di bagian akhir tetap tertangkap. 0 = tanpa buffer tambahan."
+        "description": "Rekaman tambahan (md) setelah Anda melepas."
       },
       "languageDetectionWindow": {
         "title": "Audio Deteksi Bahasa",
-        "description": "Detik ucapan yang didengar pendeteksi bahasa. Lebih lama lebih akurat tetapi lebih lambat."
+        "description": "Detik detektor bahasa mendengarkan. Lebih lama, lebih lambat dan akurat."
       },
       "keyboardDiagnostic": {
         "title": "Diagnostik Keyboard",
-        "description": "Memeriksa apakah peristiwa keyboard mencapai {{appName}}. Hanya jumlah peristiwa yang dicatat — bukan tombol yang Anda tekan.",
+        "description": "Memeriksa apakah event keyboard sampai ke {{appName}}. Hanya hitungan, tak pernah tombol.",
         "run": "Jalankan diagnostik 10 dtk",
         "running": "Mendengarkan… tekan pintasan Anda beberapa kali (mis. Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -988,8 +988,8 @@
         "keyUp": "Tombol dilepas",
         "flagsChanged": "Tombol pengubah",
         "mouse": "Mouse",
-        "verdictBlocked": "Secure Input memblokir peristiwa tombol — pintasan keyboard tidak dapat berfungsi sampai masalah ini diselesaikan.",
-        "verdictSuspicious": "Peristiwa tombol pengubah diterima, tetapi tidak ada peristiwa tombol — sesuatu memblokir input tombol meskipun Secure Input dilaporkan nonaktif. Harap laporkan ini di GitHub.",
+        "verdictBlocked": "Secure Input memblokir tombol. Pintasan tak berfungsi sampai dimatikan.",
+        "verdictSuspicious": "Modifier sampai tapi tombol tidak, padahal Secure Input mati. Mohon laporkan.",
         "verdictOk": "Peristiwa tombol mencapai {{appName}} secara normal.",
         "verdictNoEvents": "Tidak ada peristiwa yang tertangkap — apakah Anda menekan tombol selama pengujian?",
         "failed": "Diagnostik gagal: {{error}}"
@@ -1019,7 +1019,7 @@
         "ggml": {
           "title": "ggml",
           "description": "Pustaka tensor berkinerja tinggi untuk inferensi pembelajaran mesin di perangkat",
-          "details": "Fitur ucapan-ke-teks lokal {{appName}} dibangun menggunakan transcribe.cpp dan ggml. Terima kasih kepada Georgi Gerganov dan para kontributor atas karya luar biasa mereka."
+          "details": "Ucapan-ke-teks dibangun di atas transcribe.cpp dan ggml. Terima kasih, Georgi Gerganov dan para kontributor."
         },
         "licenses": {
           "title": "Lisensi sumber terbuka",
@@ -1044,12 +1044,12 @@
       "description": "Ajukan pertanyaan atau minta ia melakukan sesuatu, alih-alih mengetik.",
       "routing": {
         "label": "Pahami permintaan saat mendikte",
-        "description": "Permintaan ditangani; selebihnya diketik seperti biasa. Matikan agar selalu mengetik. Pintasan Tanya tetap berfungsi.",
+        "description": "Permintaan ditangani; selebihnya diketik. Pintasan Tanya tetap berfungsi.",
         "needsScreen": "Untuk bertanya tentang layar Anda, aktifkan juga"
       },
       "wake": {
         "label": "Tanpa tangan: ucapkan “Hey Ambient”",
-        "description": "Bicara dengan {{appName}} tanpa tombol: “Hey Ambient, apa jadwal di kalender saya?” Ia mendengarkan di komputer ini dan mengabaikan semua yang tidak diawali namanya. Komputer Anda menampilkan indikator mikrofon selama fitur ini aktif."
+        "description": "Ucapkan “Hey Ambient” untuk bicara tanpa tombol. Mendengarkan hanya di komputer ini."
       }
     }
   },
@@ -1065,9 +1065,9 @@
     "checkForUpdates": "Periksa pembaruan",
     "restartToUpdate": "Mulai ulang untuk memperbarui",
     "portableUpdateTitle": "Pembaruan manual diperlukan",
-    "portableUpdateMessage": "Instalasi portabel tidak dapat diperbarui secara otomatis. Unduh penginstal untuk sistem Anda di bawah ini, jalankan, lalu instal ke folder yang sama — folder Data/ Anda (pengaturan, model, rekaman) tetap dipertahankan.",
+    "portableUpdateMessage": "Instalasi portabel tidak memperbarui sendiri. Pasang versi baru ke folder yang sama; folder Data tetap ada.",
     "portableUpdateButton": "Unduh penginstal",
-    "portableUpdateBrowseMessage": "Instalasi portabel tidak dapat diperbarui secara otomatis. Unduh versi terbaru untuk sistem Anda dari tryambient.ai dan instal ke folder yang sama — folder Data/ Anda (pengaturan, model, rekaman) tetap dipertahankan.",
+    "portableUpdateBrowseMessage": "Instalasi portabel tidak memperbarui sendiri. Unduh versi baru dan pasang ke folder yang sama; folder Data tetap ada.",
     "portableUpdateBrowseButton": "Buka halaman unduhan"
   },
   "updates": {
@@ -1098,13 +1098,13 @@
     "loadDirectory": "Kesalahan saat memuat direktori: {{error}}",
     "micPermissionDeniedTitle": "Akses Mikrofon Ditolak",
     "micPermissionDenied": {
-      "generic": "Akses mikrofon ditolak oleh sistem operasi. Berikan izin mikrofon di pengaturan sistem Anda.",
-      "windows": "Aktifkan akses mikrofon di Pengaturan → Privasi & keamanan → Mikrofon (termasuk akses aplikasi desktop).",
-      "macos": "Berikan akses mikrofon di Pengaturan Sistem → Privasi & Keamanan → Mikrofon.",
+      "generic": "Akses mikrofon mati. Izinkan di pengaturan sistem.",
+      "windows": "Izinkan mikrofon di Pengaturan → Privasi & keamanan → Mikrofon.",
+      "macos": "Izinkan mikrofon di Pengaturan Sistem → Privasi & Keamanan.",
       "linux": "Berikan akses mikrofon di pengaturan suara atau privasi sistem Anda."
     },
     "noInputDeviceTitle": "Mikrofon Tidak Ditemukan",
-    "noInputDevice": "Tidak ada perangkat masukan audio yang terdeteksi. Hubungkan mikrofon atau headset lalu coba lagi.",
+    "noInputDevice": "Mikrofon tidak ditemukan. Sambungkan satu dan coba lagi.",
     "recordingFailed": "Gagal memulai perekaman: {{error}}",
     "modelLoadFailed": "Gagal memuat model: {{model}}",
     "modelLoadFailedUnknown": "model tidak dikenal",
@@ -1136,7 +1136,7 @@
       "notFound": "File itu sedang tidak tersedia. Coba lagi nanti.",
       "diskFull": "Ruang kosong di komputer ini tidak cukup. Kosongkan sedikit lalu coba lagi.",
       "checksum": "Unduhan tiba dalam keadaan rusak. Coba lagi.",
-      "permission": "{{appName}} tidak diizinkan melakukan itu. Periksa izinnya di pengaturan sistem.",
+      "permission": "{{appName}} butuh izin untuk itu. Periksa pengaturan sistem.",
       "server": "Server mengalami masalah. Coba lagi sebentar lagi.",
       "unknown": "Terjadi kesalahan. Coba lagi."
     }
@@ -1167,13 +1167,13 @@
     "recorderBlockedWithCulprit": "{{name}} mungkin memblokir perubahan pintasan",
     "recorderBlockedNoCulprit": "macOS untuk sementara memblokir perubahan pintasan",
     "learnMore": "Cara memperbaiki",
-    "recorderBlocked": "Pintasan tidak dapat direkam saat ini — macOS Secure Input memblokir peristiwa tombol. Selesaikan peringatan Secure Input terlebih dahulu.",
+    "recorderBlocked": "Tak bisa merekam pintasan saat Secure Input macOS aktif.",
     "dismiss": "Tutup"
   },
   "dictationConflict": {
-    "apps": "{{apps}} juga bisa mendikte di sini. Jika pintasannya sama dengan {{appName}}, keduanya bisa merespons.",
-    "macosFn": "macOS juga memakai tombol Fn (🌐). Jika Dikte atau emoji ikut terbuka, atur “Tekan tombol 🌐 untuk” ke Jangan Lakukan Apa-apa di pengaturan Papan Ketik.",
-    "windowsVoiceTyping": "Win + H juga memulai pengetikan suara Windows. Pilih pintasan lain agar hanya {{appName}} yang merespons.",
+    "apps": "{{apps}} mungkin merespons pintasan yang sama.",
+    "macosFn": "macOS juga memakai 🌐. Atur “Tekan tombol 🌐 untuk” ke Jangan Lakukan Apa-apa di pengaturan Papan Ketik.",
+    "windowsVoiceTyping": "Win + H juga memulai pengetikan suara Windows. Pilih pintasan lain.",
     "makeExclusive": "Biarkan hanya {{appName}} merespons",
     "changeShortcut": "Ubah pintasan",
     "openKeyboardSettings": "Buka pengaturan Papan Ketik",
@@ -1195,12 +1195,13 @@
       "pastTitle": "Pernah punya paket sebelumnya?",
       "pastDescription": "Unduh faktur lama atau kelola paket lama di web.",
       "openWeb": "Buka halaman penagihan",
-      "opening": "Membuka…"
+      "opening": "Membuka…",
+      "title": "Penagihan"
     },
     "usage": "{{used}} dari {{limit}} kata minggu ini",
     "usageShort": "{{used}} / {{limit}} kata",
     "resets": "Direset pada {{date}}",
-    "limitReached": "Kata gratis minggu ini sudah habis. Tingkatkan untuk dikte tanpa batas, atau lanjutkan saat minggu direset.",
+    "limitReached": "Kata gratis minggu ini sudah habis. Tingkatkan paket, atau tunggu reset.",
     "limitToast": "Kata gratis mingguan habis",
     "proFeatures": {
       "priority": "Dukungan prioritas",
@@ -1274,16 +1275,16 @@
     },
     "polish": {
       "title": "Poles AI",
-      "description": "Merapikan setiap dikte: tanda baca, kata pengisi, daftar, dan koreksi seperti “hapus itu”. Hanya teks yang dikirim, tidak pernah audio.",
+      "description": "Merapikan tanda baca, kata pengisi, dan “hapus itu”. Hanya teks, tak pernah audio.",
       "unlock": "Dapatkan tanpa batas",
       "onDevice": "Simpan di Mac ini",
       "onDeviceDescription": "Gunakan Apple Intelligence sebagai gantinya. Tidak ada yang keluar dari Mac Anda.",
       "freeUsesLeft": "Sisa {{left}} dari {{limit}} penggunaan AI gratis minggu ini",
-      "scope": "Hanya mengubah cara dikte Anda dirapikan. Jawaban, saran, dan pembacaan layar terpisah.",
+      "scope": "Tidak memengaruhi jawaban atau saran.",
       "where": {
         "on_device": "Dipoles di komputer ini.",
         "cloud": "Dipoles di cloud.",
-        "blocked": "Dilewati: “Hanya di komputer ini” aktif dan komputer ini tidak punya model lokal, jadi dikte diketik apa adanya."
+        "blocked": "Mati: tak ada model di perangkat, dan Anda memilih “Hanya di komputer ini”."
       },
       "onDeviceAnswers": "Dengan kecerdasan di Otomatis, jawaban juga memakainya."
     },
@@ -1293,7 +1294,7 @@
       "options": {
         "smart": {
           "title": "Pintar",
-          "description": "{{appName}} memutuskan setiap kali: kata-kata Anda apa adanya, dirapikan saat ucapan berantakan, atau dituliskan untuk Anda saat diminta (“bilang ke dia aku nggak bisa datang, yang sopan”). Ia menunjukkan apa yang dilakukan, dan “Kata-kata saya” membatalkannya."
+          "description": "Kata-kata Anda, dirapikan, atau dituliskan saat diminta. “Kata-kata saya” membatalkannya."
         },
         "as_said": {
           "title": "Selalu seperti yang saya ucapkan",
@@ -1304,8 +1305,10 @@
           "description": "Perapian AI di setiap dikte."
         }
       },
-      "needsPolish": "Poles AI mati, jadi dikte langsung diketik dan ucapan yang berantakan tetap seperti diucapkan. {{appName}} tetap menuliskan untukmu saat kamu minta (dihitung sebagai permintaan AI).",
-      "scope": "Hanya mengubah yang diketik ke kolom teks. Bertanya ke {{appName}} dan saran terpisah."
+      "needsPolish": "Dengan Poles AI mati, ucapan berantakan tetap apa adanya.",
+      "scope": "Hanya yang diketik ke kolom teks.",
+      "turnOnPolish": "Aktifkan",
+      "polishIsOff": "Poles AI mati."
     },
     "trial": {
       "daysLeft_one": "Sisa {{count}} hari",
@@ -1367,13 +1370,13 @@
     "viewAll": "Lihat semua",
     "empty": {
       "title": "Belum ada apa-apa",
-      "description": "Tekan pintasan Anda di aplikasi apa pun lalu berbicaralah. Dikte Anda akan muncul di sini."
+      "description": "Tahan pintasan Anda di aplikasi mana pun dan bicaralah."
     },
     "tips": {
       "holdOrTap": "Tahan pintasan untuk berbicara, atau tekan sekali untuk mulai dan sekali lagi untuk berhenti.",
-      "customWords": "Tambahkan nama dan istilah khusus di Pengaturan → Lanjutan → Kata Khusus untuk akurasi lebih baik.",
+      "customWords": "Tambahkan nama dan istilah di Pengaturan → Lanjutan → Kata Khusus.",
       "dropFile": "Seret file audio ke jendela ini untuk mentranskripsikannya.",
-      "languages": "Pilih bahasa yang Anda gunakan di Pengaturan → Umum untuk saran model terbaik."
+      "languages": "Atur bahasa Anda di Pengaturan → Umum."
     },
     "quickActions": {
       "label": "Aksi cepat",
@@ -1399,7 +1402,7 @@
     },
     "screenNotice": {
       "title": "{{appName}} kini membaca jendela yang sedang Anda gunakan",
-      "body": "Agar memahami maksud Anda. Data rahasia dihapus lebih dulu, dan halaman pribadi tidak pernah dibaca. Saran juga aktif. Nonaktifkan salah satunya di Privasi.",
+      "body": "Data rahasia dihapus dan halaman pribadi dilewati. Ubah di Privasi.",
       "open": "Buka Privasi",
       "dismiss": "Mengerti"
     }
@@ -1450,11 +1453,11 @@
       "heardNothing": "Saya mendengar Anda, tapi tidak menangkap permintaan.",
       "noWebResults": "Tidak bisa mencari di web saat ini, jadi ini dari yang saya tahu.",
       "timeout": "Koneksi sedang lambat. Coba lagi sebentar lagi.",
-      "needsCloud": "Ini memerlukan cloud, dan Kecerdasan diatur ke “Hanya di komputer ini”. Ubah di Privasi.",
+      "needsCloud": "Butuh cloud. Anda memilih “Hanya di komputer ini”.",
       "aiOff": "AI dimatikan, jadi {{appName}} tidak bisa melakukannya. Aktifkan di Privasi.",
       "cloudOfferOn": "Saran dari cloud aktif. Ubah di Privasi.",
       "cloudUnavailable": "Saran cloud sedang tidak tersedia.",
-      "cloudLimited": "Saran cloud dijeda untuk sementara: batas hari ini sudah tercapai, atau memerlukan Pro."
+      "cloudLimited": "Saran cloud dijeda: batas harian tercapai, atau khusus Pro."
     },
     "undo": "Urungkan",
     "close": "Tutup",
@@ -1526,7 +1529,7 @@
       "searchDrive": "Cari di Google Drive",
       "searchGmail": "Cari di Gmail"
     },
-    "cloudOffer": "{{appName}} dapat menyarankan bantuan di komputer ini dengan mengirim cuplikan jendela yang telah disamarkan ke servernya. Aktifkan?",
+    "cloudOffer": "Tawarkan bantuan dengan mengirim cuplikan yang disamarkan ke cloud?",
     "when": {
       "today": "hari ini pukul {{time}}",
       "tomorrow": "besok pukul {{time}}",
@@ -1654,17 +1657,17 @@
     },
     "accessibility": "{{appName}} memerlukan akses Aksesibilitas untuk membaca teks dari aplikasi lain.",
     "grant": "Izinkan akses",
-    "accessibilityLinux": "Aktifkan aksesibilitas agar {{appName}} bisa membaca jendela yang sedang Anda gunakan. Jalankan ini, lalu keluar dan masuk lagi.",
-    "accessibilityLinuxChrome": "Aplikasi Chrome, Chromium, dan Electron juga memerlukan --force-renderer-accessibility.",
+    "accessibilityLinux": "Aktifkan aksesibilitas agar {{appName}} bisa membaca jendela. Jalankan ini, lalu masuk ulang.",
+    "accessibilityLinuxChrome": "Aplikasi Chrome dan Electron juga butuh --force-renderer-accessibility.",
     "copyCommand": "Salin perintah",
     "commandCopied": "Perintah disalin",
     "commandCopyFailed": "Tidak bisa menyalin perintah",
     "capabilities": {
       "title": "Yang boleh dilakukan {{appName}}",
-      "description": "Membaca jendela yang sedang Anda gunakan dan saran aktif sejak awal. Sisanya tetap nonaktif sampai Anda mengaktifkannya.",
+      "description": "Membaca layar dan saran aktif sejak awal; sisanya mati.",
       "screen_context": {
         "title": "Baca yang Anda tanyakan",
-        "reads": "Membaca jendela yang Anda tanyakan, dan jendela yang terbuka saat Anda memintanya mencari sesuatu.",
+        "reads": "Membaca jendela yang Anda tanyakan.",
         "leaves": "Hanya yang diperlukan untuk menjawab, dengan data rahasia dihapus."
       },
       "screen_memory": {
@@ -1674,7 +1677,7 @@
       },
       "proactive": {
         "title": "Tawarkan saran",
-        "reads": "Menawarkan langkah berikutnya di saat yang tepat: utas, draf, tanggal, kesalahan, rapat.",
+        "reads": "Menawarkan langkah berikutnya di saat yang tepat.",
         "leaves": "Selain untuk memutuskan, tidak ada yang dikirim sampai Anda menerima saran."
       },
       "meetings": {
@@ -1684,7 +1687,7 @@
       },
       "wake_word": {
         "title": "Tanpa tangan: ucapkan “Hey Ambient”",
-        "reads": "Mendengarkan “Hey Ambient” di komputer ini. Selebihnya dibuang saat Anda berbicara.",
+        "reads": "Mendengarkan “Hey Ambient” di komputer ini.",
         "leaves": "Tidak ada yang direkam atau dikirim sampai Anda mengucapkannya."
       },
       "groups": {
@@ -1698,7 +1701,7 @@
     "preview": {
       "title": "Yang dilihat {{appName}}",
       "description": "Persis apa yang akan dibacanya dari jendela, setelah data sensitif disamarkan.",
-      "hint": "Klik Pratinjau, lalu beralih ke jendela mana pun dalam 3 detik.",
+      "hint": "Tekan Pratinjau, lalu pindah jendela dalam 3 dtk.",
       "switchNow": "Beralih ke jendela lain sekarang…",
       "button": "Pratinjau",
       "noText": "Tidak ada teks yang dapat dibaca di jendela ini.",
@@ -1711,7 +1714,7 @@
     },
     "neverWatch": {
       "title": "Jangan pernah amati",
-      "description": "Tidak pernah dibaca, bahkan saat semuanya aktif. Kolom kata sandi, jendela pribadi, dompet, dan frasa pemulihan juga dilewati.",
+      "description": "Tak pernah dibaca. Kata sandi, dompet, dan jendela pribadi selalu dilewati.",
       "this": "Jangan pernah amati aplikasi ini",
       "added": "{{app}} tidak akan dibaca lagi."
     },
@@ -1759,9 +1762,9 @@
     },
     "engine": {
       "title": "Gunakan Apple Intelligence untuk jawaban juga",
-      "description": "Jawaban dan poles AI berjalan di Mac ini bila memungkinkan. Hasilnya kurang rapi, jadi nonaktif secara default.",
+      "description": "Menjalankan jawaban dan poles di sini bila memungkinkan. Kurang rapi.",
       "titleDownloaded": "Gunakan AI di perangkat untuk jawaban juga",
-      "descriptionDownloaded": "Jawaban dan pemolesan berjalan di komputer ini jika muat. Hasilnya kurang rapi, jadi nonaktif secara default."
+      "descriptionDownloaded": "Menjalankan jawaban dan poles di sini bila memungkinkan. Kurang rapi."
     },
     "suggestions": {
       "title": "Saran yang Anda terima",
@@ -1786,23 +1789,23 @@
       },
       "learned": {
         "title": "Yang sudah Anda beri tahu saya",
-        "empty": "Belum ada. Saat Anda menolak saran, saran itu akan muncul di sini.",
+        "empty": "Belum ada.",
         "never": "Jangan pernah: {{kind}}",
         "notIn": "{{kind}}, tidak di {{app}}",
         "undo": "Urungkan"
       },
-      "teach": "Saat saran muncul, ucapkan “jangan sekarang”, “jangan tampilkan ini” atau “jangan di aplikasi ini”, dan {{appName}} akan mengingatnya.",
+      "teach": "Ucapkan “nanti saja”, “jangan tampilkan ini”, atau “jangan di aplikasi ini”.",
       "unknownKind": "Suatu jenis saran"
     },
     "writing": {
       "title": "Menulis",
       "learned": "Yang Anda katakan kepada saya",
-      "empty": "Belum ada. Saat Anda memilih “Kata-kata saya”, {{appName}} lebih jarang menulis ulang di aplikasi itu.",
+      "empty": "Belum ada.",
       "less": {
         "written": "Lebih jarang menuliskan untuk Anda di {{app}}",
         "polished": "Lebih jarang merapikan di {{app}}"
       },
-      "teach": "Setelah {{appName}} merapikan atau menulis sesuatu, klik “Kata-kata saya” atau ucapkan untuk mendapatkan kembali kata-kata persis Anda."
+      "teach": "Klik atau ucapkan “Kata-kata saya” untuk mendapatkan kembali kata-kata persis Anda."
     },
     "macOnly": "Untuk saat ini hanya di Mac",
     "promises": {
@@ -1813,7 +1816,7 @@
     },
     "intelligence": {
       "title": "Tempat kecerdasan berjalan",
-      "description": "Tempat jawaban, menulis untuk Anda, saran, ringkasan rapat, dan Poles AI diproses. Setiap fitur berjalan dengan pilihan apa pun.",
+      "description": "Tempat jawaban, tulisan, saran, dan poles dijalankan.",
       "capability": {
         "apple": "Apple Intelligence tersedia di komputer ini",
         "none": "Tidak ada model di perangkat pada komputer ini",
@@ -1822,15 +1825,15 @@
       "options": {
         "auto": {
           "title": "Otomatis",
-          "description": "Di komputer ini bila bisa. Bertanya sekali sebelum memakai cloud untuk saran."
+          "description": "Di komputer ini bila bisa; bertanya sebelum memakai cloud."
         },
         "device": {
           "title": "Hanya di komputer ini",
-          "description": "Tidak ada yang dikirim untuk memutuskan atau menjawab. Fitur yang memerlukan model beralih ke aturan sederhana, atau menyatakan tidak bisa.",
+          "description": "Tak ada yang keluar dari komputer ini.",
           "titleBasic": "Hanya di komputer ini (dasar, tanpa AI)",
-          "descriptionBasic": "Tidak ada yang dikirim. Hanya aturan sederhana: jawaban dan penulisan butuh cloud sampai Anda mengunduh AI di perangkat.",
-          "descriptionDownload": "Tidak ada yang dikirim. Memilih ini mengunduh {{model}} (≈{{size}}) untuk berjalan di sini; aturan sederhana sampai siap.",
-          "descriptionDownloading": "Tidak ada yang dikirim. Mengunduh {{model}} (≈{{size}}); aturan sederhana sampai siap."
+          "descriptionBasic": "Tak ada yang dikirim. Unduh AI di perangkat untuk jawaban dan tulisan.",
+          "descriptionDownload": "Tak ada yang dikirim. Mengunduh {{model}} (≈{{size}}).",
+          "descriptionDownloading": "Mengunduh {{model}} (≈{{size}})…"
         },
         "cloud": {
           "title": "Cloud",
@@ -1838,23 +1841,23 @@
         },
         "none": {
           "title": "Tanpa AI",
-          "description": "Hanya dikte dan aturan sederhana. Tidak ada yang dikirim, dipoles, ditulis, atau disarankan."
+          "description": "Dikte biasa. Tak ada yang dikirim."
         }
       },
       "cloudSuggestions": {
         "title": "Saran dari cloud",
-        "description": "Mengirim cuplikan jendela yang telah disamarkan, yang Anda buka cukup lama, untuk memutuskan apakah akan menawarkan bantuan. Setiap permintaan tercantum di bawah."
+        "description": "Mengirim cuplikan yang disamarkan untuk memutuskan apakah perlu menawarkan bantuan."
       }
     },
     "onDeviceAi": {
       "title": "AI di perangkat",
       "download": "Unduh AI di perangkat (≈{{size}})",
-      "description": "Model AI kecil yang berjalan di komputer ini, sehingga pemolesan, penulisan pintar, saran, dan jawaban singkat bekerja tanpa cloud.",
-      "descriptionMac": "Alternatif untuk Apple Intelligence: model AI kecil yang berjalan di komputer ini untuk pemolesan, penulisan pintar, saran, dan jawaban singkat.",
+      "description": "Menjalankan poles, tulisan, saran, dan jawaban singkat di sini.",
+      "descriptionMac": "Alternatif Apple Intelligence yang berjalan di sini.",
       "downloadButton": "Unduh",
       "downloading": "Mengunduh… {{percent}}%",
       "cancel": "Batal",
-      "ready": "Sudah diunduh ({{size}}). Pemolesan, penulisan pintar, saran, dan jawaban singkat bisa berjalan di komputer ini.",
+      "ready": "Terunduh ({{size}}). Berjalan di komputer ini.",
       "remove": "Hapus",
       "use": "Berjalan di Mac ini:",
       "engines": {
@@ -1865,24 +1868,24 @@
       "recommended": "Disarankan",
       "basic": "Dasar",
       "onThisComputer": "Di komputer ini",
-      "scoresNote": "Bilah membandingkan model-model ini satu sama lain: kualitas dari benchmark yang dipublikasikan, kecepatan dari ukurannya. Tidak ada yang diukur di komputer ini.",
+      "scoresNote": "Dibandingkan satu sama lain: kualitas dari benchmark, kecepatan dari ukuran.",
       "downloadingModel": "Mengunduh {{model}}… {{percent}}%",
       "downloadingTag": "Mengunduh",
       "removeModel": "Hapus {{name}}",
       "quality": "Kualitas",
       "speed": "Kecepatan",
       "modelInfo": {
-        "qwen3_0_6b": "Mungil dan cepat, paling ringan untuk memori dan baterai. Cukup untuk merapikan, kurang andal untuk menulis dan menjawab.",
-        "qwen3_1_7b_q4": "Merapikan dan menulis dengan baik dengan unduhan sekitar separuh versi 8-bit, tanpa banyak kehilangan.",
-        "qwen3_1_7b": "Model di perangkat sebelumnya. Sedikit lebih baik daripada versi 4-bit, dengan unduhan lebih besar.",
-        "qwen3_4b": "Kualitas terbaik di perangkat, tetapi paling besar dan paling lambat. Untuk menulis dan menjawab dengan baik tanpa cloud."
+        "qwen3_0_6b": "Paling ringan. Cukup untuk poles.",
+        "qwen3_1_7b_q4": "Keseimbangan terbaik antara kualitas dan ukuran.",
+        "qwen3_1_7b": "Sedikit lebih baik, unduhan dua kali lipat.",
+        "qwen3_4b": "Kualitas terbaik. Terbesar dan paling lambat."
       },
       "manage": "Kelola model"
     },
     "telemetry": {
       "title": "Bantu tingkatkan {{appName}}",
       "label": "Bagikan hitungan penggunaan anonim",
-      "description": "Hanya hitungan dan waktu, tidak pernah apa yang Anda ucapkan, ketik, atau lihat. Mati sampai Anda menyalakannya."
+      "description": "Hanya hitungan dan waktu. Tak pernah yang Anda ucapkan, ketik, atau lihat."
     },
     "free": {
       "perWeek": "Gratis: {{limit}} per minggu",
@@ -1921,7 +1924,7 @@
   },
   "meetings": {
     "title": "Rapat",
-    "intro": "Catatan untuk panggilan apa pun: Anda dan mereka, ditranskripsikan di komputer ini. Audio tidak pernah disimpan.",
+    "intro": "Catatan untuk panggilan apa pun, ditranskripsi di sini. Audio tak pernah disimpan.",
     "live": "Mencatat · {{time}}",
     "capturingBoth": "Mendengar Anda dan panggilan.",
     "capturingMic": "Hanya mendengar mikrofon Anda.",
@@ -1952,11 +1955,11 @@
     "you": "Anda",
     "them": "Mereka",
     "systemAudio": {
-      "noPermission": "Izinkan Perekaman Layar agar {{appName}} bisa mendengar panggilan. Hanya audio yang digunakan, dan tidak ada yang disimpan.",
-      "oldMacOS": "Mendengar panggilan memerlukan macOS 13 atau yang lebih baru. Mikrofon Anda tetap ditranskripsikan.",
-      "failed": "Tidak dapat menangkap audio panggilan. Mikrofon Anda tetap ditranskripsikan.",
+      "noPermission": "Izinkan Perekaman Layar untuk mendengar panggilan. Hanya audio, tak pernah disimpan.",
+      "oldMacOS": "Mendengar panggilan butuh macOS 13+. Mikrofon tetap berfungsi.",
+      "failed": "Gagal menangkap panggilan. Mikrofon tetap berfungsi.",
       "unsupported": "Mendengar panggilan belum tersedia di sistem ini.",
-      "linuxNoParec": "Untuk mendengar panggilan diperlukan parec (instal pulseaudio-utils). Mikrofon Anda tetap ditranskripsikan."
+      "linuxNoParec": "Butuh parec (pulseaudio-utils) untuk mendengar panggilan. Mikrofon tetap berfungsi."
     },
     "error": {
       "storage": "Tidak dapat membuka penyimpanan rapat.",
@@ -1971,11 +1974,11 @@
     "startNowHint": "Catat sekarang, tanpa menunggu panggilan",
     "auto": {
       "on": "Siap untuk panggilan berikutnya",
-      "onDetail": "Saat panggilan dimulai, {{appName}} menawarkan untuk mencatat. Setujui, atau abaikan.",
+      "onDetail": "Menawarkan mencatat saat panggilan dimulai.",
       "off": "Deteksi panggilan nonaktif",
-      "offDetail": "Aktifkan, dan {{appName}} menawarkan pencatatan saat panggilan dimulai.",
+      "offDetail": "Aktifkan agar ditawari catatan di tiap panggilan.",
       "paused": "Dijeda",
-      "pausedDetail": "{{appName}} tidak akan menawarkan pencatatan sampai Anda melanjutkannya di Privasi.",
+      "pausedDetail": "Lanjutkan di Privasi.",
       "unsupported": "Tidak mencatat",
       "unsupportedDetail": "Mulai mencatat saat panggilan Anda dimulai.",
       "turnOn": "Aktifkan"
@@ -1987,7 +1990,7 @@
     },
     "email": {
       "title": "Kirim catatan ke email saya",
-      "description": "Dikirim ke {{email}} setelah setiap panggilan. Rahasia dihapus terlebih dahulu, dan tidak ada yang disimpan.",
+      "description": "Dikirim ke {{email}} setelah tiap panggilan. Tak ada yang disimpan.",
       "signedOut": "Masuk untuk mendapatkan catatan lewat email.",
       "options": {
         "off": "Mati",
@@ -2056,13 +2059,13 @@
     },
     "offers": {
       "title": "Ia juga menawarkan bantuan",
-      "description": "Saat bisa membantu, misalnya untuk utas panjang atau kesalahan, ia menawarkan sekali. Ucapkan “ya” atau “nanti saja”, atau abaikan. Ia belajar.",
+      "description": "Saat bisa membantu, ia menawarkan sekali. Ucapkan “ya” atau “nanti saja”.",
       "app": "Mail",
       "subject": "Rencana peluncuran Q3",
       "count": "40 pesan",
       "summaryHead": "Ringkasan utas",
       "summary": "Peluncuran pindah ke Kamis. Sam mengurus presentasi, dan Ana memesan ruangan.",
-      "noOnDevice": "Tanpa Apple Intelligence, aturan sederhana memutuskan di komputer ini. Ia bertanya sekali sebelum memakai cloud.",
+      "noOnDevice": "Tanpa Apple Intelligence, ia bertanya sekali sebelum memakai cloud.",
       "screenLabel": "Utas email berisi 40 pesan. Sebuah saran menawarkan untuk meringkasnya; setelah “ya”, ringkasan singkat muncul."
     }
   },
@@ -2084,7 +2087,7 @@
   "trySaying": {
     "title": "Apa yang bisa saya katakan?",
     "close": "Tutup",
-    "footnote": "Di ChatGPT atau Claude, mulailah dengan “Hey Ambient” untuk berbicara dengan agen.",
+    "footnote": "Di ChatGPT atau Claude, awali dengan “Hey Ambient”.",
     "groups": {
       "answer": {
         "title": "Tanya",
@@ -2166,7 +2169,7 @@
       "errors": "Jenis kesalahan yang terjadi, seperti “waktu habis”",
       "basics": "Versi aplikasi, sistem, paket, dan ID acak yang berganti setiap 30 hari"
     },
-    "never": "Tidak pernah apa yang Anda ucapkan, ketik, atau lihat, judul jendela, tautan, nama file, atau email Anda.",
+    "never": "Tak pernah yang Anda ucapkan, ketik, atau lihat.",
     "ledger": "Setiap unggahan tercantum di Privasi, dalam daftar permintaan yang keluar dari komputer ini."
   },
   "feedback": {
@@ -2190,7 +2193,7 @@
     },
     "diagnostics": {
       "label": "Sertakan diagnostik",
-      "description": "Versi aplikasi, sistem, paket, ringkasan pengaturan, dan baris log terbaru, tanpa rahasia, judul jendela, dan tautan."
+      "description": "Versi, sistem, paket, pengaturan, dan log terbaru, tanpa data rahasia."
     },
     "example": {
       "label": "Sertakan contohnya",

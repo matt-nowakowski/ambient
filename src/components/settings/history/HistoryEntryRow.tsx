@@ -451,7 +451,7 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
           type="button"
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
-          className={`-mx-1.5 mt-1 cursor-pointer rounded-full px-1.5 py-0.5 text-small font-medium text-ink-3 transition-colors hover:text-text ${focusRing}`}
+          className={`-mx-1.5 mt-1 cursor-pointer rounded-full px-1.5 py-0.5 text-small text-ink-3 transition-colors hover:text-text ${focusRing}`}
         >
           {/* The chevron flips like transitions.dev's accordion. */}
           <span

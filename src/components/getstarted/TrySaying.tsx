@@ -127,7 +127,7 @@ export const TrySaying: React.FC<{
                   role="tab"
                   aria-selected={selected}
                   onClick={() => setActive(g.key)}
-                  className={`flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border-[0.5px] ps-2 pe-3 text-small font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 ${
+                  className={`flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border-[0.5px] ps-2 pe-3 text-small transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 ${
                     selected
                       ? "border-transparent bg-text text-background"
                       : "border-glass-edge bg-glass text-ink-2 hover:bg-glass-hover hover:text-text"

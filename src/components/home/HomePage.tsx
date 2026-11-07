@@ -268,7 +268,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 type="button"
                 onClick={onOpenHistory}
-                className="group flex cursor-pointer items-center gap-1 rounded-full px-inline py-1 text-small font-medium text-ink-2 transition-colors hover:bg-glass-hover hover:text-text"
+                className="group flex cursor-pointer items-center gap-1 rounded-full px-inline py-1 text-small text-ink-2 transition-colors hover:bg-glass-hover hover:text-text"
               >
                 {t("home.viewAll")}
                 <ArrowRight

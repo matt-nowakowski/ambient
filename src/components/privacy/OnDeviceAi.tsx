@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
-import { ArrowRight, Download, Trash2 } from "lucide-react";
+import { Cpu, Download, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   commands,
@@ -15,6 +15,7 @@ import { formatModelSize } from "@/lib/utils/format";
 import { useModelStore } from "@/stores/modelStore";
 import { SpeedBars } from "@/components/shared/SpeedBars";
 import { Button } from "../ui/Button";
+import { InfoTooltip } from "../ui/InfoTooltip";
 import { Radio } from "../ui/Radio";
 import { expand } from "../ui/Motion";
 import { useSearch } from "../search/searchStore";
@@ -169,39 +170,37 @@ export const OnDeviceAi: React.FC<{
   };
 
   return (
-    // 18px above and below, like the rest of Privacy's multi-line rows.
-    <div className="px-row-x py-4.5">
-      <div className="flex items-start justify-between gap-6">
-        <div className="min-w-0">
-          <p className="text-ui">
-            {status.downloaded
-              ? t("privacy.onDeviceAi.title")
-              : t("privacy.onDeviceAi.download", { size })}
-          </p>
-          <p className="mt-0.5 max-w-lg text-small text-ink-2">
-            {status.downloaded
-              ? t("privacy.onDeviceAi.ready", { size })
-              : status.apple_available
-                ? t("privacy.onDeviceAi.descriptionMac")
-                : t("privacy.onDeviceAi.description")}
-          </p>
-          {!list && models.length > 1 && (
-            <button
-              type="button"
-              onClick={openReasoningModels}
-              className="mt-1.5 inline-flex cursor-pointer items-center gap-0.5 text-meta font-medium text-text underline-offset-2 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-logo-primary"
-            >
-              {t("privacy.onDeviceAi.manage")}
-              <ArrowRight
-                width={11}
-                height={11}
-                strokeWidth={2}
-                className="shrink-0 rtl:rotate-180"
-                aria-hidden="true"
-              />
-            </button>
-          )}
-        </div>
+    // One line: what it is, its size, and the action; the rest is a hover away.
+    <div className="px-row-x py-3.5">
+      <div className="flex items-center gap-3.5">
+        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
+          <Cpu width={14} height={14} strokeWidth={1.75} />
+        </span>
+        <p className="flex min-w-0 flex-1 items-center gap-2 text-ui">
+          {t("privacy.onDeviceAi.title")}
+          <span className="whitespace-nowrap rounded-full bg-glass-press px-2 py-0.5 text-meta tabular-nums text-ink-2">
+            {status.downloaded ? t("privacy.onDeviceAi.onThisComputer") : size}
+          </span>
+          <InfoTooltip
+            text={
+              status.downloaded
+                ? t("privacy.onDeviceAi.ready", { size })
+                : status.apple_available
+                  ? t("privacy.onDeviceAi.descriptionMac")
+                  : t("privacy.onDeviceAi.description")
+            }
+          />
+        </p>
+        {!list && models.length > 1 && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="shrink-0"
+            onClick={openReasoningModels}
+          >
+            {t("privacy.onDeviceAi.manage")}
+          </Button>
+        )}
         {downloading ? (
           <Button
             variant="secondary"
@@ -268,8 +267,9 @@ export const OnDeviceAi: React.FC<{
       </AnimatePresence>
       {list && models.length > 1 && (
         <div className="mt-4">
-          <p className="text-meta text-ink-3">
+          <p className="flex items-center gap-1.5 text-meta text-ink-3">
             {t("privacy.onDeviceAi.models")}
+            <InfoTooltip text={t("privacy.onDeviceAi.scoresNote")} />
           </p>
           <div
             role="radiogroup"
@@ -291,7 +291,7 @@ export const OnDeviceAi: React.FC<{
                 >
                   <Radio checked={m.selected} className="shrink-0" />
                   <span className="min-w-0 flex-1">
-                    <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span className="text-ui">{m.name}</span>
                       <span className="text-meta tabular-nums text-ink-3">
                         {formatModelSize(m.size_mb)}
@@ -326,12 +326,10 @@ export const OnDeviceAi: React.FC<{
                             {tag.label}
                           </span>
                         ))}
+                      {description(m) && (
+                        <InfoTooltip nested text={description(m)} />
+                      )}
                     </span>
-                    {description(m) && (
-                      <span className="mt-0.5 block text-small text-ink-2">
-                        {description(m)}
-                      </span>
-                    )}
                   </span>
                   {m.accuracy !== null && m.speed !== null && (
                     <span className="ms-1 grid shrink-0 grid-cols-[auto_auto] items-center gap-x-2 gap-y-1 whitespace-nowrap text-meta text-ink-3">
@@ -370,9 +368,6 @@ export const OnDeviceAi: React.FC<{
               </div>
             ))}
           </div>
-          <p className="mt-2 max-w-lg text-meta text-ink-3">
-            {t("privacy.onDeviceAi.scoresNote")}
-          </p>
         </div>
       )}
       {/* A Mac with both: which one runs on-device tasks. */}

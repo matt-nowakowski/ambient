@@ -10,6 +10,7 @@ import {
   resolvePortableInstallerUrl,
   PORTABLE_RELEASES_URL,
 } from "./portableInstaller";
+import { Button } from "../ui/Button";
 
 interface UpdateCheckerProps {
   className?: string;
@@ -183,14 +184,16 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
                 : t("footer.portableUpdateBrowseMessage")}
             </p>
             <div className="flex gap-2 justify-end">
-              <button
-                className="px-3 py-1.5 text-small rounded-full border border-line hover:bg-wash transition-colors"
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => setShowPortableUpdateDialog(false)}
               >
                 {t("common.close")}
-              </button>
-              <button
-                className="px-3 py-1.5 text-small rounded-full bg-logo-primary text-on-primary hover:bg-logo-primary/85 transition-colors"
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={() => {
                   openUrl(portableInstallerUrl);
                   setShowPortableUpdateDialog(false);
@@ -199,7 +202,7 @@ const UpdateChecker: React.FC<UpdateCheckerProps> = ({ className = "" }) => {
                 {hasDirectInstaller
                   ? t("footer.portableUpdateButton")
                   : t("footer.portableUpdateBrowseButton")}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

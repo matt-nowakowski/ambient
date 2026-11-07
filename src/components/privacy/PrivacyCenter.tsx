@@ -43,6 +43,7 @@ import {
 import { Button } from "../ui/Button";
 import { Radio } from "../ui/Radio";
 import { Switch } from "../ui/Switch";
+import { InfoTooltip } from "../ui/InfoTooltip";
 import { MoreMenu, type MoreMenuItem } from "../ui/MoreMenu";
 import { SettingsGroup } from "../ui/SettingsGroup";
 import { DependencyNote } from "../ui/SettingLink";
@@ -81,6 +82,8 @@ const PREVIEW_DELAY_MS = 3000;
 const BLOCK = "px-row-x py-4.5";
 /** An icon, a title and its lines, and a control on the far side. */
 const ROW_RICH = "flex items-start gap-3.5 px-row-x py-4.5";
+/** A one-line row: an icon, a name, a control. */
+const ROW_ONE = "flex items-center gap-3.5 px-row-x py-3.5";
 /** A switch beside a row's 28px icon: centred on it (and on a Radio's mt-1.5). */
 const SWITCH_ALIGN = "mt-1 shrink-0";
 
@@ -311,29 +314,24 @@ export const PrivacyCenter: React.FC = () => {
     s.cloud_suggestions,
     paid,
   );
-  const intelligenceLink = {
-    section: "privacy" as const,
-    label: t("privacy.intelligence.title"),
-    children: t("privacy.intelligence.title"),
-  };
 
-  /** One line under a capability: what it depends on, or what it doesn't. */
-  const dependency = (cap: Capability): React.ReactNode => {
+  /** What a capability depends on, or doesn't: part of its tooltip. */
+  const aside = (cap: Capability): string | null => {
     switch (cap) {
       case "screen_context":
-        return (
-          <DependencyNote>{t("privacy.depends.screenContext")}</DependencyNote>
-        );
+        return t("privacy.depends.screenContext");
       case "screen_memory":
-        return (
-          <DependencyNote>{t("privacy.depends.screenMemory")}</DependencyNote>
-        );
+        return t("privacy.depends.screenMemory");
       case "proactive":
-        return s.proactive ? (
-          <DependencyNote link={intelligenceLink}>
-            {t(`privacy.depends.route.${route}`)}
-          </DependencyNote>
-        ) : null;
+        return s.proactive ? t(`privacy.depends.route.${route}`) : null;
+      default:
+        return null;
+    }
+  };
+
+  /** A line under a capability only when there's something to do about it. */
+  const dependency = (cap: Capability): React.ReactNode => {
+    switch (cap) {
       case "meetings":
         return s.meetings && !s.proactive ? (
           <DependencyNote
@@ -435,6 +433,15 @@ export const PrivacyCenter: React.FC = () => {
         <div className="min-w-0 flex-1">
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
             {t(`privacy.capabilities.${cap}.title`)}
+            <InfoTooltip
+              text={
+                <>
+                  {t(`privacy.capabilities.${cap}.reads`)}{" "}
+                  {t(`privacy.capabilities.${cap}.leaves`)}
+                  {aside(cap) && <> {aside(cap)}</>}
+                </>
+              }
+            />
             {unsupported ? (
               <span className="whitespace-nowrap rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
                 {t("privacy.macOnly")}
@@ -446,19 +453,6 @@ export const PrivacyCenter: React.FC = () => {
                 </span>
               )
             )}
-          </p>
-          <p className="mt-1 text-small leading-relaxed text-ink-2">
-            {t(`privacy.capabilities.${cap}.reads`)}
-          </p>
-          <p className="mt-2.5 flex items-center gap-1.5 text-meta text-ink-3">
-            <ArrowUpRight
-              width={11}
-              height={11}
-              strokeWidth={1.75}
-              className="shrink-0"
-              aria-hidden="true"
-            />
-            {t(`privacy.capabilities.${cap}.leaves`)}
           </p>
           {!unsupported && dependency(cap) && (
             <div className="mt-1.5">{dependency(cap)}</div>
@@ -586,9 +580,6 @@ export const PrivacyCenter: React.FC = () => {
       <StaggerItem>
         <header className="mb-section">
           <h1 className="text-title font-light">{t("privacy.title")}</h1>
-          <p className="mt-1 max-w-xl text-small text-ink-2">
-            {t("privacy.promise")}
-          </p>
         </header>
       </StaggerItem>
 
@@ -634,13 +625,17 @@ export const PrivacyCenter: React.FC = () => {
                   <p className="text-ui font-medium">
                     {t(`privacy.state.${state}`)}
                   </p>
-                  <p className="truncate text-small text-ink-2">
-                    {status.paused && s.paused_until
-                      ? t("privacy.state.pausedUntil", {
-                          time: time(s.paused_until),
-                        })
-                      : t(`privacy.state.${state}Detail`)}
-                  </p>
+                  {/* "Watching, as you allowed" says it all; a pause or
+                      "off" needs its line. */}
+                  {state !== "on" && (
+                    <p className="truncate text-small text-ink-2">
+                      {status.paused && s.paused_until
+                        ? t("privacy.state.pausedUntil", {
+                            time: time(s.paused_until),
+                          })
+                        : t(`privacy.state.${state}Detail`)}
+                    </p>
+                  )}
                 </div>
               </div>
               {state !== "off" &&
@@ -717,13 +712,11 @@ export const PrivacyCenter: React.FC = () => {
         {/* Capabilities, grouped by what they touch. Each row: what it reads,
             then (smaller) what leaves the Mac. */}
         <StaggerItem className="space-y-label">
-          <div className="px-row-x">
+          <div className="flex items-center gap-1.5 px-row-x">
             <h2 className="text-section font-medium text-ink-3">
               {t("privacy.capabilities.title")}
             </h2>
-            <p className="mt-1 text-meta text-ink-3">
-              {t("privacy.capabilities.description")}
-            </p>
+            <InfoTooltip text={t("privacy.capabilities.description")} />
           </div>
           {CAPABILITY_GROUPS.map((group) => (
             <div key={group.key} className="glass rounded-panel">
@@ -744,8 +737,9 @@ export const PrivacyCenter: React.FC = () => {
             {s.proactive && (
               <motion.div {...expand} className="overflow-hidden">
                 <div className={BLOCK}>
-                  <p className="text-meta font-medium text-ink-3">
+                  <p className="flex items-center gap-1.5 text-meta font-medium text-ink-3">
                     {t("privacy.suggestions.learned.title")}
+                    <InfoTooltip text={t("privacy.suggestions.teach")} />
                   </p>
                   {learned.length === 0 ? (
                     <p className="mt-1.5 text-small leading-relaxed text-ink-2">
@@ -791,9 +785,6 @@ export const PrivacyCenter: React.FC = () => {
                       ))}
                     </ul>
                   )}
-                  <p className="mt-4 text-meta leading-relaxed text-ink-3">
-                    {t("privacy.suggestions.teach")}
-                  </p>
                 </div>
               </motion.div>
             )}
@@ -803,8 +794,9 @@ export const PrivacyCenter: React.FC = () => {
         {/* Writing: what "Use my words" taught it, per app. */}
         <SettingsGroup title={t("privacy.writing.title")}>
           <div className={BLOCK}>
-            <p className="text-meta font-medium text-ink-3">
+            <p className="flex items-center gap-1.5 text-meta font-medium text-ink-3">
               {t("privacy.writing.learned")}
+              <InfoTooltip text={t("privacy.writing.teach")} />
             </p>
             {writingLearned.length === 0 ? (
               <p className="mt-1.5 text-small leading-relaxed text-ink-2">
@@ -842,9 +834,6 @@ export const PrivacyCenter: React.FC = () => {
                 ))}
               </ul>
             )}
-            <p className="mt-4 text-meta leading-relaxed text-ink-3">
-              {t("privacy.writing.teach")}
-            </p>
           </div>
         </SettingsGroup>
 
@@ -853,7 +842,7 @@ export const PrivacyCenter: React.FC = () => {
           title={t("privacy.intelligence.title")}
           description={t("privacy.intelligence.description")}
         >
-          <div className="flex items-center gap-2 px-row-x pt-4.5 text-meta text-ink-3">
+          <div className="flex items-center gap-2 px-row-x py-3.5 text-meta text-ink-3">
             <Cpu
               width={12}
               height={12}
@@ -892,40 +881,54 @@ export const PrivacyCenter: React.FC = () => {
                     save({ ...s, intelligence: key });
                     if (fetches && !aiDownloading) downloadAi(null);
                   }}
-                  className={`${ROW_RICH} w-full text-start`}
+                  className={`${ROW_ONE} w-full text-start`}
                 >
                   <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
                     <Icon width={14} height={14} strokeWidth={1.75} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-ui">
+                    <span className="flex items-center gap-1.5 text-ui">
                       {basic
                         ? t("privacy.intelligence.options.device.titleBasic")
                         : t(`privacy.intelligence.options.${key}.title`)}
+                      <InfoTooltip
+                        nested
+                        text={
+                          basic
+                            ? t(
+                                "privacy.intelligence.options.device.descriptionBasic",
+                              )
+                            : fetches && !aiDownloading
+                              ? t(
+                                  "privacy.intelligence.options.device.descriptionDownload",
+                                  {
+                                    model: toDownload.name,
+                                    size: formatModelSize(
+                                      onDeviceAi?.size_mb ?? toDownload.size_mb,
+                                    ),
+                                  },
+                                )
+                              : t(
+                                  `privacy.intelligence.options.${key}.description`,
+                                )
+                        }
+                      />
                     </span>
-                    <span className="mt-0.5 block text-small text-ink-2">
-                      {basic
-                        ? t(
-                            "privacy.intelligence.options.device.descriptionBasic",
-                          )
-                        : fetches
-                          ? t(
-                              aiDownloading
-                                ? "privacy.intelligence.options.device.descriptionDownloading"
-                                : "privacy.intelligence.options.device.descriptionDownload",
-                              {
-                                model: toDownload.name,
-                                size: formatModelSize(
-                                  onDeviceAi?.size_mb ?? toDownload.size_mb,
-                                ),
-                              },
-                            )
-                          : t(
-                              `privacy.intelligence.options.${key}.description`,
-                            )}
-                    </span>
+                    {fetches && aiDownloading && (
+                      <span className="mt-0.5 block text-small text-ink-2">
+                        {t(
+                          "privacy.intelligence.options.device.descriptionDownloading",
+                          {
+                            model: toDownload.name,
+                            size: formatModelSize(
+                              onDeviceAi?.size_mb ?? toDownload.size_mb,
+                            ),
+                          },
+                        )}
+                      </span>
+                    )}
                   </span>
-                  <Radio checked={picked} className="mt-1.5" />
+                  <Radio checked={picked} />
                 </button>
               );
             })}
@@ -949,15 +952,17 @@ export const PrivacyCenter: React.FC = () => {
               <motion.div key="engine" {...expand} className="overflow-hidden">
                 <div className="flex items-start justify-between gap-6 px-row-x py-4.5">
                   <div className="min-w-0">
-                    <p className="text-ui">
+                    <p className="flex items-center gap-1.5 text-ui">
                       {onDeviceAi?.engine === "downloaded"
                         ? t("privacy.engine.titleDownloaded")
                         : t("privacy.engine.title")}
-                    </p>
-                    <p className="mt-0.5 max-w-lg text-small text-ink-2">
-                      {onDeviceAi?.engine === "downloaded"
-                        ? t("privacy.engine.descriptionDownloaded")
-                        : t("privacy.engine.description")}
+                      <InfoTooltip
+                        text={
+                          onDeviceAi?.engine === "downloaded"
+                            ? t("privacy.engine.descriptionDownloaded")
+                            : t("privacy.engine.description")
+                        }
+                      />
                     </p>
                   </div>
                   <div className="shrink-0">
@@ -979,15 +984,17 @@ export const PrivacyCenter: React.FC = () => {
                   <div className="min-w-0">
                     <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
                       {t("privacy.intelligence.cloudSuggestions.title")}
+                      <InfoTooltip
+                        text={t(
+                          "privacy.intelligence.cloudSuggestions.description",
+                        )}
+                      />
                       {!paid && (
                         <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-glass-press px-2 py-0.5 text-meta text-ink-2">
                           <Lock width={10} height={10} />
                           {t("account.plans.pro")}
                         </span>
                       )}
-                    </p>
-                    <p className="mt-0.5 max-w-lg text-small text-ink-2">
-                      {t("privacy.intelligence.cloudSuggestions.description")}
                     </p>
                   </div>
                   <Switch
@@ -1124,16 +1131,29 @@ export const PrivacyCenter: React.FC = () => {
           description={t("privacy.stored.description")}
         >
           <div className={BLOCK}>
-            {status.stats && status.stats.screen_entries > 0 ? (
+            {/* What's kept, and the way to drop it, on one line. */}
+            <div className="flex items-center justify-between gap-4">
+              <p className="min-w-0 text-small text-ink-2">
+                {status.stats && status.stats.screen_entries > 0
+                  ? t("privacy.stored.summary", {
+                      count: status.stats.screen_entries,
+                      since: status.stats.oldest_ts
+                        ? time(status.stats.oldest_ts)
+                        : "",
+                    })
+                  : t("privacy.stored.empty")}
+              </p>
+              <Button
+                variant="danger-ghost"
+                size="sm"
+                className="shrink-0"
+                onClick={deleteAll}
+              >
+                {t("privacy.stored.deleteAll")}
+              </Button>
+            </div>
+            {status.stats && status.stats.screen_entries > 0 && (
               <>
-                <p className="text-small text-ink-2">
-                  {t("privacy.stored.summary", {
-                    count: status.stats.screen_entries,
-                    since: status.stats.oldest_ts
-                      ? time(status.stats.oldest_ts)
-                      : "",
-                  })}
-                </p>
                 <ul className="mt-3 space-y-1.5">
                   {status.stats.by_app.map((a) => (
                     <li
@@ -1162,16 +1182,7 @@ export const PrivacyCenter: React.FC = () => {
                   ))}
                 </ul>
               </>
-            ) : (
-              <p className="text-small text-ink-2">
-                {t("privacy.stored.empty")}
-              </p>
             )}
-            <div className="mt-4 flex justify-end">
-              <Button variant="danger-ghost" size="sm" onClick={deleteAll}>
-                {t("privacy.stored.deleteAll")}
-              </Button>
-            </div>
           </div>
         </SettingsGroup>
 

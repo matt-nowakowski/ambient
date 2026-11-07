@@ -4,6 +4,7 @@ import { PenLine, Quote, Sparkles, WandSparkles } from "lucide-react";
 import type { WritingMode } from "@/bindings";
 import { useSettings } from "../../hooks/useSettings";
 import { Radio } from "../ui/Radio";
+import { InfoTooltip } from "../ui/InfoTooltip";
 import { DependencyNote } from "../ui/SettingLink";
 
 const MODES: { key: WritingMode; icon: React.ElementType }[] = [
@@ -27,15 +28,16 @@ export const WritingCard: React.FC = () => {
         <span className="grid size-8 shrink-0 place-items-center rounded-card bg-glass-press">
           <PenLine width={15} height={15} strokeWidth={1.75} />
         </span>
-        <div className="min-w-0">
-          <h2 className="text-ui font-medium">{t("account.writing.title")}</h2>
-          <p className="mt-0.5 max-w-md text-small text-ink-2">
-            {t("account.writing.description")}
-          </p>
-          <p className="mt-1 max-w-md text-meta text-ink-3">
-            {t("account.writing.scope")}
-          </p>
-        </div>
+        <h2 className="flex min-w-0 items-center gap-1.5 text-ui font-medium">
+          {t("account.writing.title")}
+          <InfoTooltip
+            text={
+              <>
+                {t("account.writing.description")} {t("account.writing.scope")}
+              </>
+            }
+          />
+        </h2>
       </div>
       <div
         role="radiogroup"
@@ -53,35 +55,45 @@ export const WritingCard: React.FC = () => {
               data-search-row
               disabled={isUpdating("writing_mode")}
               onClick={() => updateSetting("writing_mode", key)}
-              className="flex w-full items-start gap-3 py-row-y text-start"
+              className="flex w-full items-center gap-3 py-3 text-start"
             >
               <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
                 <Icon width={14} height={14} strokeWidth={1.75} />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-ui">
+                <span className="flex items-center gap-1.5 text-ui">
                   {t(`account.writing.options.${key}.title`)}
-                </span>
-                <span className="mt-0.5 block text-small text-ink-2">
-                  {t(`account.writing.options.${key}.description`)}
+                  <InfoTooltip
+                    nested
+                    text={
+                      <>
+                        {t(`account.writing.options.${key}.description`)}
+                        {/* Smart without polish: what that means. */}
+                        {key === "smart" && !polishOn && (
+                          <> {t("account.writing.needsPolish")}</>
+                        )}
+                      </>
+                    }
+                  />
                 </span>
               </span>
-              <Radio checked={picked} className="mt-1.5" />
+              <Radio checked={picked} />
             </button>
           );
         })}
       </div>
-      {!polishOn && mode !== "as_said" && (
+      {/* "Always polish" with polish off can't do what it says: say so. */}
+      {!polishOn && mode === "polish" && (
         <DependencyNote
-          tone={mode === "polish" ? "warn" : "info"}
+          tone="warn"
           className="mt-2"
           link={{
             section: "account",
             label: t("account.polish.title"),
-            children: t("account.polish.title"),
+            children: t("account.writing.turnOnPolish"),
           }}
         >
-          {t("account.writing.needsPolish")}
+          {t("account.writing.polishIsOff")}
         </DependencyNote>
       )}
     </section>

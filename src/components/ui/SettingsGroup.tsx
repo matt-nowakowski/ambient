@@ -1,4 +1,5 @@
 import React from "react";
+import { InfoTooltip } from "./InfoTooltip";
 import { StaggerItem } from "./Motion";
 
 interface SettingsGroupProps {
@@ -18,11 +19,10 @@ export const SettingsGroup: React.FC<SettingsGroupProps> = ({
     <StaggerItem>
       <div data-search-row className="space-y-label">
         {title && (
-          <div className="px-row-x">
+          // The title only; what it means is one hover away, not a paragraph.
+          <div className="flex items-center gap-1.5 px-row-x">
             <h2 className="text-section font-medium text-ink-3">{title}</h2>
-            {description && (
-              <p className="text-meta text-ink-3 mt-1">{description}</p>
-            )}
+            {description && <InfoTooltip text={description} />}
           </div>
         )}
         <div data-search-panel className="glass rounded-panel overflow-visible">

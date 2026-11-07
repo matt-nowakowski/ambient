@@ -26,7 +26,7 @@ export const SettingLink: React.FC<SettingLinkProps> = ({
     type="button"
     data-search-skip
     onClick={() => useSearch.getState().jump({ section, tab, label })}
-    className={`inline-flex items-center gap-0.5 font-medium text-text underline-offset-2 hover:underline ${className}`}
+    className={`inline-flex items-center gap-0.5 text-text underline-offset-2 hover:underline ${className}`}
   >
     {children}
     <ArrowRight

@@ -244,7 +244,7 @@ export const ModelTable: React.FC<ModelTableProps> = ({
             setHighlighted(null);
             if (listRef.current) listRef.current.scrollTop = 0;
           }}
-          className={`flex h-[26px] shrink-0 cursor-pointer items-center gap-[6px] whitespace-nowrap rounded-chip px-[8px] text-small font-medium transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-logo-primary ${
+          className={`flex h-[26px] shrink-0 cursor-pointer items-center gap-[6px] whitespace-nowrap rounded-chip px-[8px] text-small transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-logo-primary ${
             filters[key]
               ? "bg-line text-text"
               : "text-ink-3 hover:bg-wash hover:text-text"

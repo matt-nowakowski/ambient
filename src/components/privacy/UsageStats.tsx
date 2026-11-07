@@ -22,7 +22,6 @@ export const UsageStats: React.FC = () => {
         isUpdating={isUpdating("telemetry")}
         label={t("privacy.telemetry.label")}
         description={t("privacy.telemetry.description")}
-        descriptionMode="inline"
         grouped
       />
       <div className="px-row-x py-row-y">

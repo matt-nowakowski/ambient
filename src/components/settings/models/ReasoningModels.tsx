@@ -4,7 +4,6 @@ import { commands, type AgentSettings } from "@/bindings";
 import { showError } from "@/lib/errors";
 import { OnDeviceAi, useOnDeviceAi } from "@/components/privacy/OnDeviceAi";
 import { SettingsGroup } from "@/components/ui/SettingsGroup";
-import { DependencyNote } from "@/components/ui/SettingLink";
 
 /** Models › Reasoning models: the on-device AI models to download, choose
  * between and remove. The same component Privacy shows beside the
@@ -38,17 +37,6 @@ export const ReasoningModels: React.FC = () => {
 
   return (
     <div className="space-y-label">
-      <div className="px-row-x">
-        <DependencyNote
-          link={{
-            section: "privacy",
-            label: t("privacy.intelligence.title"),
-            children: t("privacy.intelligence.title"),
-          }}
-        >
-          {t("settings.models.reasoning.note")}
-        </DependencyNote>
-      </div>
       <SettingsGroup>
         {ai.status.supported ? (
           <OnDeviceAi

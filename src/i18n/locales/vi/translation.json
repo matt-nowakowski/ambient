@@ -16,10 +16,10 @@
     "installerTrashConfirm": "Chuyển vào Thùng rác",
     "installerKeep": "Giữ lại",
     "moveToAppsTitle": "Chuyển {{appName}} vào Ứng dụng?",
-    "moveToAppsBody": "{{appName}} đang chạy từ ảnh đĩa. Hãy chuyển nó vào thư mục Ứng dụng để luôn được cài đặt và tự cập nhật.",
+    "moveToAppsBody": "Chuyển {{appName}} vào Ứng dụng để luôn được cài đặt và cập nhật.",
     "moveToAppsConfirm": "Chuyển vào Ứng dụng",
     "moveToAppsLater": "Để sau",
-    "moveToAppsFailed": "Không thể chuyển {{appName}} vào Ứng dụng. Hãy kéo nó vào thư mục Ứng dụng.",
+    "moveToAppsFailed": "Không thể chuyển. Hãy kéo {{appName}} vào Ứng dụng.",
     "sendFeedback": "Gửi phản hồi..."
   },
   "sidebar": {
@@ -87,7 +87,7 @@
     },
     "welcome": {
       "title": "Đồng nghiệp trên màn hình của bạn.",
-      "subtitle": "Bạn nói; nó viết, trả lời, hành động và nhắc bạn. Chọn mọi ngôn ngữ bạn sẽ nói.",
+      "subtitle": "Bạn nói; nó viết, trả lời và hành động. Chọn ngôn ngữ của bạn.",
       "languagesLabel": "Ngôn ngữ",
       "noMatch": "Không có kết quả cho “{{query}}”. Có thêm ngôn ngữ trong cài đặt.",
       "appLanguage": "Ngôn ngữ ứng dụng",
@@ -240,7 +240,7 @@
       "dictationApp": {
         "title": "Đặt {{appName}} làm ứng dụng đọc chính tả của bạn",
         "description": "Nếu một ứng dụng đọc chính tả khác dùng cùng phím tắt, {{appName}} sẽ nhận nó.",
-        "found": "Nếu một ứng dụng đọc chính tả khác, như {{apps}}, dùng cùng phím tắt, {{appName}} sẽ nhận nó."
+        "found": "Nếu {{apps}} dùng cùng phím tắt, {{appName}} sẽ nhận nó."
       }
     },
     "linux": {
@@ -249,7 +249,7 @@
     },
     "ai": {
       "title": "AI nên chạy ở đâu?",
-      "sub": "Để trau chuốt, soạn nháp, trả lời và gợi ý. Nhận dạng giọng nói luôn ở trên máy tính này.",
+      "sub": "Để trau chuốt, soạn nháp, trả lời và gợi ý. Giọng nói ở lại trên máy tính này.",
       "hint": "Bạn có thể đổi điều này bất cứ lúc nào trong Cài đặt.",
       "cloud": {
         "title": "Trên đám mây",
@@ -281,7 +281,7 @@
     },
     "agent": {
       "title": "Chỉ cần nói bạn cần gì",
-      "sub": "Nó tự quyết dựa trên điều bạn nói và những gì trên màn hình. Không cần học lệnh nào, và đọc chính tả thông thường vẫn chỉ gõ ra chữ.",
+      "sub": "Nó đọc điều bạn nói và những gì trên màn hình. Không cần học lệnh.",
       "askKey": "Để hỏi thay vì gõ, hãy giữ <keys/>",
       "noAi": "Với Không dùng AI, nó chỉ gõ chữ. Bật AI trong Cài đặt.",
       "screenLabel": "Bốn việc bạn có thể nhờ: câu trả lời từ web, trợ giúp về nội dung trên màn hình, trả lời viết sẵn cho bạn và việc làm giúp bạn.",
@@ -330,7 +330,7 @@
   "modelTable": {
     "tags": {
       "preview": "Xem trước trực tiếp",
-      "previewTitle": "Hiển thị lời bạn nói trong lớp phủ Trực tiếp khi bạn nói, rồi gõ ra khi bạn dừng",
+      "previewTitle": "Hiển thị trực tiếp lời bạn khi bạn nói",
       "translate": "Dịch",
       "translateTitle": "Có thể chuyển lời bạn nói thành văn bản tiếng Anh. Bật trong cài đặt"
     },
@@ -383,7 +383,7 @@
     "accuracy": "Độ chính xác",
     "search": "Tìm kiếm mô hình",
     "allLabel": "Các mô hình giọng nói",
-    "noMatch": "Không có gì khớp với “{{query}}”. Hãy thử một ngôn ngữ, hoặc một dòng mô hình như Whisper hay Parakeet",
+    "noMatch": "Không có gì khớp với “{{query}}”. Hãy thử một ngôn ngữ hoặc dòng mô hình.",
     "noFilterMatch": "Không có mô hình nào khớp với các bộ lọc này",
     "speedUntested": "Chưa đo tốc độ",
     "speedWords": {
@@ -446,7 +446,7 @@
         "keepClicks": "Chuột trái và chuột phải vẫn thuộc về bạn; hãy chọn phím khác.",
         "doubleTap": {
           "label": "Nhấn hai lần",
-          "description": "Nhấn hai lần để bắt đầu và hai lần nữa để dừng. Nhấn một lần hoặc giữ vẫn hoạt động như thường."
+          "description": "Nhấn hai lần để bắt đầu, hai lần để dừng."
         },
         "bindings": {
           "transcribe": {
@@ -459,11 +459,11 @@
           },
           "transcribe_with_post_process": {
             "name": "Phím tắt xử lý sau",
-            "description": "Tùy chọn: phím tắt riêng luôn áp dụng xử lý sau bằng AI cho bản chép lời của bạn."
+            "description": "Luôn áp dụng trau chuốt bằng AI."
           },
           "ask_agent": {
             "name": "Phím tắt hỏi",
-            "description": "Luôn nói chuyện với tác nhân: đặt câu hỏi hoặc nhờ nó làm việc gì đó. Không bao giờ nhập văn bản."
+            "description": "Luôn nói chuyện với tác nhân. Không bao giờ gõ."
           }
         },
         "errors": {
@@ -472,7 +472,7 @@
       },
       "language": {
         "title": "Ngôn ngữ",
-        "description": "Chọn ngôn ngữ để nhận dạng giọng nói. Tự động sẽ tự động xác định ngôn ngữ, trong khi chọn một ngôn ngữ cụ thể có thể cải thiện độ chính xác cho ngôn ngữ đó.",
+        "description": "Tự động nhận diện ngôn ngữ; chọn một ngôn ngữ có thể chính xác hơn.",
         "searchPlaceholder": "Tìm kiếm ngôn ngữ…",
         "noResults": "Không tìm thấy ngôn ngữ",
         "auto": "Tự động",
@@ -483,7 +483,7 @@
           "noMatch": "Không ngôn ngữ nào của bạn hoạt động với mô hình này"
         },
         "detectorMissingTitle": "Tự động cần tải xuống riêng",
-        "detectorMissing": "Mô hình này không nhận biết được bạn đang nói ngôn ngữ nào. Tự động cần một trình nhận diện ngôn ngữ nhỏ để xác định",
+        "detectorMissing": "Mô hình này không nhận diện được ngôn ngữ. Tự động cần một trình nhận diện nhỏ.",
         "stopDetectorDownload": "Dừng tải xuống trình nhận diện ngôn ngữ"
       },
       "preferredLanguages": {
@@ -508,11 +508,11 @@
       },
       "exclusiveShortcuts": {
         "label": "Chỉ {{appName}} phản hồi phím tắt của mình",
-        "description": "Các ứng dụng khác, kể cả ứng dụng đọc chính tả khác, sẽ không thấy phím của phím tắt {{appName}}. Tắt nếu ứng dụng khác cần cùng phím."
+        "description": "Ứng dụng khác sẽ không thấy phím tắt {{appName}} của bạn."
       },
       "autoStop": {
         "label": "Dừng sau khi ngừng nói",
-        "description": "Khi bạn nhấn để bắt đầu, chế độ đọc chính tả cũng tự dừng khi bạn ngừng nói một lúc. Những quãng nghỉ ngắn giữa câu không được tính, và nó không bao giờ dừng trước khi bạn nói gì.",
+        "description": "Nhấn để bắt đầu; tự dừng khi bạn ngừng nói.",
         "delay": {
           "label": "Khoảng lặng trước khi dừng",
           "description": "Cần im lặng bao lâu sau khi nói để chế độ đọc chính tả dừng.",
@@ -544,10 +544,10 @@
       "cancelDownload": "Dừng tải xuống {{name}}",
       "legend": {
         "open": "Cách xếp hạng mô hình",
-        "accuracyNote": "Với mỗi ngôn ngữ của bạn: số từ mô hình nhận sai trong các bản ghi âm kiểm thử của chúng tôi.",
+        "accuracyNote": "Tỷ lệ lỗi từ theo từng ngôn ngữ, trên bản ghi kiểm thử của chúng tôi.",
         "speedNote": {
-          "accelerated": "Thời gian để gõ ra 30 giây lời nói trên chip đồ họa của laptop kiểm thử của chúng tôi. Máy tính này có thể khác.",
-          "cpu": "Thời gian để gõ ra 30 giây lời nói trên bộ xử lý của laptop kiểm thử của chúng tôi. Máy tính này có thể khác."
+          "accelerated": "Thời gian chép lời 30 giây giọng nói trên GPU laptop kiểm thử của chúng tôi.",
+          "cpu": "Thời gian chép lời 30 giây giọng nói trên CPU laptop kiểm thử của chúng tôi."
         },
         "marks": "? chưa được đo. — không nghe được ngôn ngữ đó."
       },
@@ -560,7 +560,7 @@
       },
       "rescan": {
         "label": "Quét lại",
-        "tooltip": "Quét lại các mô hình được thêm vào thư mục mô hình hoặc bộ nhớ đệm Hugging Face bên ngoài {{appName}}"
+        "tooltip": "Quét lại mô hình được thêm bên ngoài {{appName}}"
       },
       "tabs": {
         "voice": "Mô hình giọng nói",
@@ -584,13 +584,13 @@
       },
       "channel": {
         "title": "Kênh đầu vào",
-        "description": "Cho giao diện âm thanh có nhiều đầu vào: chọn đầu vào gắn micro. Nếu không, cứ để tất cả kênh.",
+        "description": "Cho giao diện âm thanh nhiều đầu vào: chọn đầu vào của micrô.",
         "average": "Tất cả kênh, trộn chung",
         "channel": "Kênh {{n}}"
       },
       "keepMicReady": {
         "title": "Giữ micrô sẵn sàng",
-        "description": "Sau khi đọc chính tả, micrô vẫn bật thêm một lúc để lần tiếp theo bắt đầu ngay và không mất từ đầu tiên. Máy tính sẽ hiển thị micrô đang được dùng cho đến khi nó đóng. Âm thanh đó chỉ nằm trong bộ nhớ: không bao giờ được lưu hay gửi đi.",
+        "description": "Giữ micrô mở thêm một lúc để lần đọc tiếp theo bắt kịp từ đầu tiên. Không bao giờ lưu hay gửi.",
         "options": {
           "off": "Tắt",
           "sec30": "30 giây",
@@ -629,7 +629,7 @@
       "acceleration": {
         "transcribe": {
           "title": "Tăng tốc phần cứng",
-          "description": "Chọn phần cứng dùng để chép lời. Tự động sẽ dùng GPU nếu có, nếu không sẽ chuyển sang CPU."
+          "description": "Tự động dùng GPU nếu có, nếu không thì CPU."
         },
         "gpuDevice": {
           "auto": "Tự động"
@@ -650,7 +650,7 @@
       "overlay": {
         "style": {
           "title": "Lớp phủ",
-          "description": "Chọn lớp phủ khi ghi âm: “Không có” sẽ ẩn nó, “Tối giản” hiển thị một chỉ báo nhỏ gọn, “Trực tiếp” hiển thị bản chép lời theo thời gian thực khi bạn nói (chỉ với các mô hình hỗ trợ truyền trực tiếp — hãy tìm huy hiệu “Truyền trực tiếp” trong bộ chọn mô hình). Trên Linux, khuyến nghị chọn “Không có”.",
+          "description": "Không có: ẩn đi. Tối giản: một chỉ báo nhỏ. Trực tiếp: hiện chữ khi bạn nói (mô hình truyền trực tiếp).",
           "options": {
             "none": "Không có",
             "minimal": "Tối giản",
@@ -668,7 +668,7 @@
       },
       "pasteMethod": {
         "title": "Phương thức dán",
-        "description": "Chọn cách chèn văn bản. Trực tiếp: mô phỏng gõ phím qua đầu vào hệ thống. Không có: bỏ qua bước dán, chỉ cập nhật lịch sử/bảng nhớ tạm.",
+        "description": "Cách chèn văn bản. Không có: chỉ cập nhật lịch sử và bảng nhớ tạm.",
         "options": {
           "clipboard": "Bảng nhớ tạm ({{modifier}}+V)",
           "clipboardCtrlShiftV": "Bảng nhớ tạm (Ctrl+Shift+V)",
@@ -681,14 +681,14 @@
       },
       "typingTool": {
         "title": "Công cụ gõ",
-        "description": "Chọn công cụ gõ trên Linux cho phương thức dán Trực tiếp. Tự động sẽ phát hiện và dùng công cụ tốt nhất có sẵn trên hệ thống của bạn.",
+        "description": "Công cụ gõ trên Linux cho dán Trực tiếp. Tự động chọn công cụ tốt nhất.",
         "options": {
           "auto": "Tự động (Khuyến nghị)"
         }
       },
       "clipboardHandling": {
         "title": "Xử lý bảng nhớ tạm",
-        "description": "Không sửa bảng nhớ tạm: giữ nguyên nội dung bảng nhớ tạm hiện tại sau khi chép lời. Sao chép vào bảng nhớ tạm: để lại kết quả chép lời trong bảng nhớ tạm sau khi dán.",
+        "description": "Giữ nguyên bảng nhớ tạm, hoặc để lại nội dung vừa đọc trên đó.",
         "options": {
           "dontModify": "Không sửa bảng nhớ tạm",
           "copyToClipboard": "Sao chép vào bảng nhớ tạm"
@@ -696,7 +696,7 @@
       },
       "autoSubmit": {
         "title": "Gửi tự động",
-        "description": "Tự động gửi tổ hợp phím đã chọn sau khi chèn văn bản. Cmd+Enter áp dụng trên macOS, còn Windows/Linux dùng Super+Enter.",
+        "description": "Nhấn tổ hợp phím sau khi chèn, ví dụ Enter để gửi.",
         "options": {
           "off": "Tắt",
           "enter": "Enter",
@@ -707,11 +707,11 @@
       },
       "translateToEnglish": {
         "label": "Dịch sang tiếng Anh",
-        "description": "Tự động dịch lời nói từ các ngôn ngữ khác sang tiếng Anh khi chép lời."
+        "description": "Dịch các ngôn ngữ khác sang tiếng Anh khi bạn đọc."
       },
       "modelUnload": {
         "title": "Giải phóng mô hình",
-        "description": "Tự động giải phóng bộ nhớ GPU/CPU khi mô hình không được sử dụng trong thời gian quy định",
+        "description": "Giải phóng bộ nhớ khi mô hình không hoạt động.",
         "options": {
           "never": "Không bao giờ",
           "immediately": "Ngay lập tức",
@@ -725,7 +725,7 @@
       },
       "customWords": {
         "title": "Từ tùy chỉnh",
-        "description": "Giúp các mô hình được hỗ trợ nhận dạng tên và thuật ngữ chuyên ngành. Tính năng sửa gần đúng hiện chỉ áp dụng cho các từ sử dụng chữ cái A–Z và chữ số.",
+        "description": "Tên và thuật ngữ mô hình cần nhận ra.",
         "placeholder": "Thêm một từ",
         "add": "Thêm",
         "remove": "Xóa {{word}}",
@@ -735,21 +735,21 @@
       },
       "voiceActivityDetection": {
         "title": "Phát hiện hoạt động giọng nói",
-        "description": "Lọc bỏ khoảng lặng khỏi bản ghi. Các mô hình hỗ trợ truyền trực tiếp dùng đuôi VAD dài hơn; tắt VAD sẽ ghi âm thanh thô."
+        "description": "Cắt bỏ khoảng lặng khỏi bản ghi."
       },
       "longFormChunking": {
         "title": "Chia nhỏ âm thanh dài",
-        "description": "Chia các bản ghi dài tại các khoảng ngắt trước khi chép lời, việc này thường giúp chép lời tốt hơn. Tệp được chép lời và các lần chép lời lại dài luôn được chia nhỏ."
+        "description": "Chia bản ghi dài tại các khoảng ngắt để có kết quả tốt hơn."
       },
       "languageDetection": {
         "title": "Giới hạn Tự động trong ngôn ngữ của tôi",
-        "description": "Tự động chỉ chọn trong các ngôn ngữ ưu tiên của bạn, nhờ một trình nhận diện ngôn ngữ nhỏ. Bật lên nếu Tự động cứ chọn một ngôn ngữ bạn không nói",
+        "description": "Tự động chỉ chọn trong ngôn ngữ của bạn.",
         "downloadHint": "Bật lên sẽ tải xuống một trình nhận diện ngôn ngữ nhỏ",
         "downloadingHint": "Đang tải xuống trình nhận diện ngôn ngữ. Tắt để hủy"
       },
       "vadBackend": {
         "title": "Bộ phát hiện giọng nói",
-        "description": "Chọn bộ phát hiện dùng để lọc khoảng lặng. Earshot đang thử nghiệm; hãy chuyển về Silero nếu giọng nói bị cắt hoặc tiếng ồn vẫn còn.",
+        "description": "Bộ phát hiện khoảng lặng. Earshot đang thử nghiệm; dùng Silero nếu từ bị cắt.",
         "options": {
           "silero": "Silero",
           "earshot": "Earshot"
@@ -761,7 +761,7 @@
       },
       "chineseScript": {
         "title": "Chữ Hán",
-        "description": "Ghi bản chép lời tiếng Quan Thoại và tiếng Quảng Đông bằng chữ Giản thể, hoặc chữ Phồn thể theo cách viết ở Đài Loan hay Hồng Kông. Các ngôn ngữ khác giữ nguyên.",
+        "description": "Giản thể, hoặc Phồn thể (Đài Loan hay Hồng Kông).",
         "options": {
           "asTranscribed": "Giữ nguyên như khi chép",
           "simplified": "Giản thể",
@@ -771,8 +771,8 @@
       },
       "learnCorrections": {
         "label": "Học từ các chỉnh sửa của tôi",
-        "description": "Khi bạn sửa cùng một từ sau khi đọc chính tả, chẳng hạn một cái tên, {{appName}} sẽ đề nghị ghi nhớ nó. Ứng dụng đọc ô văn bản một lúc sau khi gõ, chỉ trên máy tính này, và không bao giờ đọc ô mật khẩu.",
-        "unavailable": "{{appName}} không đọc được ô văn bản trên máy tính này, nên chưa có gì để học. Hãy cho phép Trợ năng trên macOS, hoặc bật công nghệ hỗ trợ trên Linux."
+        "description": "Sửa một từ sau khi đọc và {{appName}} sẽ đề nghị ghi nhớ. Không bao giờ đọc ô mật khẩu.",
+        "unavailable": "Cần Trợ năng để đọc ô văn bản."
       }
     },
     "postProcessing": {
@@ -815,7 +815,7 @@
       "playRecording": "Phát bản ghi âm",
       "hidePlayer": "Ẩn trình phát",
       "emptyTitle": "Chưa có lần đọc chính tả nào",
-      "emptyDescription": "Mọi thứ {{appName}} chép lời sẽ hiện ở đây, mới nhất trước. Giữ phím tắt của bạn trong bất kỳ ứng dụng nào và bắt đầu nói.",
+      "emptyDescription": "Giữ phím tắt trong bất kỳ ứng dụng nào và nói.",
       "noResultsTitle": "Không có kết quả",
       "noResultsDescription": "Không có mục nào trong lịch sử khớp với “{{query}}”.",
       "loadingMore": "Đang tải thêm…",
@@ -853,7 +853,7 @@
       },
       "liveLogs": {
         "title": "Nhật ký trực tiếp",
-        "description": "Truyền nhật ký ứng dụng theo thời gian thực để chẩn đoán sự cố mà không cần mở tệp nhật ký. Chỉ hiển thị nhật ký được tạo khi bảng này đang mở; tuân theo cài đặt Mức nhật ký ở trên.",
+        "description": "Truyền nhật ký khi bảng này đang mở.",
         "live": "Trực tiếp",
         "paused": "Đã tạm dừng",
         "pause": "Tạm dừng",
@@ -876,7 +876,7 @@
       },
       "onboardingPreview": {
         "title": "Xem trước thiết lập ban đầu",
-        "description": "Xem trước các màn hình thiết lập mà không thay đổi quyền, mô hình hoặc trạng thái hoàn tất",
+        "description": "Xem trước phần thiết lập mà không thay đổi gì.",
         "exitButton": "Thoát xem trước",
         "choose": "Chọn một màn hình",
         "screens": {
@@ -893,12 +893,12 @@
       },
       "onboardingRun": {
         "title": "Chạy hướng dẫn làm quen",
-        "description": "Chạy hướng dẫn làm quen thật từ đầu: nó sẽ xin quyền, tải xuống mô hình và lưu lựa chọn của bạn",
+        "description": "Chạy thiết lập thật: quyền, tải xuống và lựa chọn.",
         "button": "Bắt đầu"
       },
       "modelMigration": {
         "title": "Chuyển đổi mô hình",
-        "description": "Mở thật màn hình cập nhật mô hình định dạng cũ: nó sẽ tải xuống bản thay thế, chuyển mô hình và xóa các tệp cũ",
+        "description": "Chạy thật màn hình cập nhật mô hình.",
         "button": "Mở",
         "noRetired": "Không có mô hình định dạng cũ trên ổ đĩa"
       },
@@ -952,31 +952,31 @@
       },
       "pasteDelay": {
         "title": "Độ trễ dán (trước)",
-        "description": "Độ trễ (tính bằng mili giây) sau khi sao chép văn bản, trước khi gửi phím dán. Tăng nếu không có gì được dán."
+        "description": "Chờ (ms) trước khi dán. Tăng lên nếu không dán được gì."
       },
       "pasteDelayAfter": {
         "title": "Độ trễ dán (sau)",
-        "description": "Độ trễ (tính bằng mili giây) sau khi gửi phím dán, trước khi khôi phục bảng nhớ tạm trước đó. Tăng nếu nội dung bảng nhớ tạm cũ được dán thay vì bản chép lời."
+        "description": "Chờ (ms) trước khi khôi phục bảng nhớ tạm. Tăng lên nếu văn bản cũ bị dán."
       },
       "holdThreshold": {
         "title": "Ngưỡng giữ phím",
-        "description": "Chỉ áp dụng cho chế độ Tự động: phím tắt phải được giữ trong bao lâu (mili giây) để được tính là giữ thay vì nhấn nhanh. Giảm xuống nếu bản ghi vẫn tiếp tục sau khi giữ ngắn; tăng lên nếu các lần nhấn nhanh có chủ ý bị coi là giữ phím."
+        "description": "Chế độ Tự động: nhấn bao lâu (ms) thì được tính là giữ."
       },
       "reliablePaste": {
         "title": "Dán đáng tin cậy (Beta)",
-        "description": "Chỉ khôi phục bảng nhớ tạm sau khi ứng dụng đích thực sự đọc bản chép lời, thay vì sau một độ trễ cố định. Nhằm khắc phục việc nội dung bảng nhớ tạm cũ bị dán khi hệ thống bị tải nặng. Cần một phương thức dán qua bảng nhớ tạm; chỉ dành cho macOS và Windows."
+        "description": "Chỉ khôi phục bảng nhớ tạm sau khi ứng dụng đã đọc. macOS và Windows."
       },
       "recordingBuffer": {
         "title": "Bộ đệm ghi âm thêm",
-        "description": "Thời gian thêm (tính bằng mili giây) để tiếp tục ghi âm sau khi nhả phím, để thu âm thanh cuối. 0 = không có bộ đệm thêm."
+        "description": "Ghi thêm (ms) sau khi bạn nhả phím."
       },
       "languageDetectionWindow": {
         "title": "Âm thanh nhận diện ngôn ngữ",
-        "description": "Số giây giọng nói mà trình nhận diện ngôn ngữ nghe. Dài hơn thì chính xác hơn nhưng chậm hơn."
+        "description": "Số giây trình nhận diện ngôn ngữ lắng nghe. Dài hơn thì chậm hơn, chính xác hơn."
       },
       "keyboardDiagnostic": {
         "title": "Chẩn đoán bàn phím",
-        "description": "Kiểm tra xem các sự kiện bàn phím có đến được {{appName}} hay không. Chỉ số lượng sự kiện được ghi lại — không bao giờ ghi lại bạn bấm phím nào.",
+        "description": "Kiểm tra sự kiện bàn phím có đến {{appName}} không. Chỉ đếm, không bao giờ ghi phím.",
         "run": "Chạy chẩn đoán 10 giây",
         "running": "Đang lắng nghe… hãy bấm phím tắt của bạn vài lần (ví dụ: Option+Space)",
         "secureInputLabel": "Secure Input",
@@ -988,8 +988,8 @@
         "keyUp": "Nhả phím",
         "flagsChanged": "Phím bổ trợ",
         "mouse": "Chuột",
-        "verdictBlocked": "Secure Input đang chặn các sự kiện phím — phím tắt có chứa phím thường không thể hoạt động cho đến khi vấn đề này được xử lý.",
-        "verdictSuspicious": "Có sự kiện phím bổ trợ nhưng không có sự kiện phím nào — thứ gì đó đang chặn phím dù Secure Input báo là đang tắt. Vui lòng báo cáo việc này trên GitHub.",
+        "verdictBlocked": "Secure Input đang chặn phím. Phím tắt sẽ không hoạt động cho đến khi tắt nó.",
+        "verdictSuspicious": "Phím bổ trợ đến nhưng phím thường thì không, dù Secure Input đang tắt. Vui lòng báo lỗi.",
         "verdictOk": "Các sự kiện phím đang đến {{appName}} bình thường.",
         "verdictNoEvents": "Không ghi nhận sự kiện nào — bạn có bấm phím nào trong lúc kiểm tra không?",
         "failed": "Chẩn đoán thất bại: {{error}}"
@@ -1019,7 +1019,7 @@
         "ggml": {
           "title": "ggml",
           "description": "Thư viện tensor hiệu năng cao cho suy luận học máy ngay trên thiết bị",
-          "details": "Tính năng chép lời cục bộ của {{appName}} được xây dựng trên transcribe.cpp và ggml. Cảm ơn công sức tuyệt vời của Georgi Gerganov và các cộng tác viên."
+          "details": "Chuyển giọng nói thành văn bản dựa trên transcribe.cpp và ggml. Cảm ơn Georgi Gerganov và các cộng tác viên."
         },
         "licenses": {
           "title": "Giấy phép mã nguồn mở",
@@ -1044,12 +1044,12 @@
       "description": "Đặt câu hỏi hoặc nhờ làm việc gì đó, thay vì gõ.",
       "routing": {
         "label": "Hiểu yêu cầu khi đọc chính tả",
-        "description": "Yêu cầu sẽ được xử lý; mọi thứ khác được gõ như thường. Tắt để luôn gõ. Phím tắt Hỏi vẫn hoạt động.",
+        "description": "Yêu cầu được xử lý; phần còn lại được gõ. Phím tắt hỏi luôn hoạt động.",
         "needsScreen": "Để hỏi về màn hình, hãy bật thêm"
       },
       "wake": {
         "label": "Rảnh tay: nói “Hey Ambient”",
-        "description": "Nói chuyện với {{appName}} không cần phím: “Hey Ambient, lịch của tôi có gì?” Nó lắng nghe trên máy tính này và bỏ qua mọi thứ không bắt đầu bằng tên của nó. Máy tính sẽ hiển thị đèn báo micrô khi tính năng này bật."
+        "description": "Nói “Hey Ambient” để trò chuyện không cần phím. Chỉ lắng nghe trên máy tính này."
       }
     }
   },
@@ -1065,9 +1065,9 @@
     "checkForUpdates": "Kiểm tra cập nhật",
     "restartToUpdate": "Khởi động lại để cập nhật",
     "portableUpdateTitle": "Cần cập nhật thủ công",
-    "portableUpdateMessage": "Bản cài đặt di động không thể cập nhật tự động. Hãy tải trình cài đặt phù hợp với hệ thống của bạn bên dưới, chạy nó và cài vào cùng thư mục — thư mục Data/ (cài đặt, mô hình, bản ghi) của bạn được giữ nguyên.",
+    "portableUpdateMessage": "Bản di động không tự cập nhật. Cài phiên bản mới vào cùng thư mục; thư mục Data được giữ nguyên.",
     "portableUpdateButton": "Tải trình cài đặt",
-    "portableUpdateBrowseMessage": "Bản cài đặt di động không thể cập nhật tự động. Hãy tải phiên bản mới nhất phù hợp với hệ thống của bạn từ tryambient.ai và cài vào cùng thư mục — thư mục Data/ (cài đặt, mô hình, bản ghi) của bạn được giữ nguyên.",
+    "portableUpdateBrowseMessage": "Bản di động không tự cập nhật. Tải phiên bản mới và cài vào cùng thư mục; thư mục Data được giữ nguyên.",
     "portableUpdateBrowseButton": "Mở trang tải xuống"
   },
   "updates": {
@@ -1098,13 +1098,13 @@
     "loadDirectory": "Lỗi khi tải thư mục: {{error}}",
     "micPermissionDeniedTitle": "Quyền truy cập micrô bị từ chối",
     "micPermissionDenied": {
-      "generic": "Quyền truy cập micrô đã bị hệ điều hành từ chối. Vui lòng cấp quyền micrô trong cài đặt hệ thống.",
-      "windows": "Bật quyền truy cập micrô trong Cài đặt → Quyền riêng tư & bảo mật → Micrô (bao gồm quyền truy cập ứng dụng máy tính).",
-      "macos": "Cấp quyền truy cập micrô trong Cài đặt hệ thống → Quyền riêng tư & Bảo mật → Micrô.",
+      "generic": "Quyền truy cập micrô đang tắt. Hãy cho phép trong cài đặt hệ thống.",
+      "windows": "Cho phép micrô trong Cài đặt → Quyền riêng tư & bảo mật → Micrô.",
+      "macos": "Cho phép micrô trong Cài đặt hệ thống → Quyền riêng tư & Bảo mật.",
       "linux": "Cấp quyền truy cập micrô trong cài đặt âm thanh hoặc quyền riêng tư của hệ thống."
     },
     "noInputDeviceTitle": "Không tìm thấy micrô",
-    "noInputDevice": "Không phát hiện thiết bị đầu vào âm thanh nào. Vui lòng kết nối micrô hoặc tai nghe và thử lại.",
+    "noInputDevice": "Không tìm thấy micrô. Hãy kết nối một cái và thử lại.",
     "recordingFailed": "Không thể bắt đầu ghi âm: {{error}}",
     "modelLoadFailed": "Không thể tải mô hình: {{model}}",
     "modelLoadFailedUnknown": "mô hình không xác định",
@@ -1136,7 +1136,7 @@
       "notFound": "Tệp đó hiện không có sẵn. Hãy thử lại sau.",
       "diskFull": "Máy này không đủ dung lượng trống. Hãy giải phóng bớt rồi thử lại.",
       "checksum": "Tệp tải xuống bị hỏng. Hãy thử lại.",
-      "permission": "{{appName}} không được phép làm việc đó. Hãy kiểm tra quyền trong cài đặt hệ thống.",
+      "permission": "{{appName}} cần quyền để làm việc đó. Hãy kiểm tra cài đặt hệ thống.",
       "server": "Máy chủ gặp sự cố. Hãy thử lại sau giây lát.",
       "unknown": "Đã xảy ra lỗi. Hãy thử lại."
     }
@@ -1167,13 +1167,13 @@
     "recorderBlockedWithCulprit": "{{name}} có thể đang chặn việc thay đổi phím tắt",
     "recorderBlockedNoCulprit": "macOS đang tạm thời chặn việc thay đổi phím tắt",
     "learnMore": "Cách khắc phục",
-    "recorderBlocked": "Hiện không thể ghi phím tắt — Secure Input của macOS đang chặn các sự kiện phím. Hãy xử lý cảnh báo Secure Input trước.",
+    "recorderBlocked": "Không thể ghi phím tắt khi Secure Input của macOS đang bật.",
     "dismiss": "Bỏ qua"
   },
   "dictationConflict": {
-    "apps": "{{apps}} cũng có thể đọc chính tả ở đây. Nếu phím tắt trùng với {{appName}}, cả hai có thể cùng phản hồi.",
-    "macosFn": "macOS cũng dùng phím Fn (🌐). Nếu Đọc chính tả hoặc biểu tượng cảm xúc cũng mở, hãy đặt “Nhấn phím 🌐 để” thành Không làm gì trong cài đặt Bàn phím.",
-    "windowsVoiceTyping": "Win + H cũng bật nhập bằng giọng nói của Windows. Hãy chọn phím tắt khác để chỉ {{appName}} phản hồi.",
+    "apps": "{{apps}} có thể phản hồi cùng phím tắt.",
+    "macosFn": "macOS cũng dùng 🌐. Hãy đặt “Nhấn phím 🌐 để” thành Không làm gì trong cài đặt Bàn phím.",
+    "windowsVoiceTyping": "Win + H cũng bật nhập bằng giọng nói của Windows. Hãy chọn phím tắt khác.",
     "makeExclusive": "Chỉ để {{appName}} phản hồi",
     "changeShortcut": "Đổi phím tắt",
     "openKeyboardSettings": "Mở cài đặt Bàn phím",
@@ -1195,12 +1195,13 @@
       "pastTitle": "Bạn từng có gói trước đây?",
       "pastDescription": "Tải hóa đơn cũ hoặc quản lý gói cũ trên web.",
       "openWeb": "Mở trang thanh toán",
-      "opening": "Đang mở…"
+      "opening": "Đang mở…",
+      "title": "Thanh toán"
     },
     "usage": "{{used}} trên {{limit}} từ trong tuần này",
     "usageShort": "{{used}} / {{limit}} từ",
     "resets": "Đặt lại vào {{date}}",
-    "limitReached": "Bạn đã dùng hết số từ miễn phí của tuần này. Hãy nâng cấp để đọc chính tả không giới hạn, hoặc tiếp tục khi tuần được đặt lại.",
+    "limitReached": "Đã hết số từ miễn phí tuần này. Hãy nâng cấp, hoặc chờ đặt lại.",
     "limitToast": "Đã dùng hết từ miễn phí trong tuần",
     "proFeatures": {
       "priority": "Hỗ trợ ưu tiên",
@@ -1274,16 +1275,16 @@
     },
     "polish": {
       "title": "Trau chuốt bằng AI",
-      "description": "Làm gọn mọi lần đọc chính tả: dấu câu, từ đệm, danh sách và các chỉnh sửa như “xóa câu đó”. Chỉ văn bản được gửi đi, không bao giờ gửi âm thanh.",
+      "description": "Sửa dấu câu, từ đệm và “xóa câu đó”. Chỉ văn bản, không bao giờ âm thanh.",
       "unlock": "Nhận không giới hạn",
       "onDevice": "Giữ trên Mac này",
       "onDeviceDescription": "Hãy dùng Apple Intelligence thay thế. Không có gì rời khỏi Mac của bạn.",
       "freeUsesLeft": "Còn {{left}}/{{limit}} lượt dùng AI miễn phí tuần này",
-      "scope": "Chỉ thay đổi cách nội dung bạn đọc chính tả được chỉnh gọn. Câu trả lời, gợi ý và việc đọc màn hình là riêng.",
+      "scope": "Không ảnh hưởng câu trả lời hay gợi ý.",
       "where": {
         "on_device": "Trau chuốt trên máy tính này.",
         "cloud": "Trau chuốt trên đám mây.",
-        "blocked": "Bỏ qua: “Chỉ trên máy tính này” đang bật và máy tính này không có mô hình cục bộ, nên nội dung được gõ đúng như bạn nói."
+        "blocked": "Tắt: không có mô hình trên thiết bị, và bạn đã chọn “Chỉ trên máy tính này”."
       },
       "onDeviceAnswers": "Khi Trí tuệ ở chế độ Tự động, câu trả lời cũng dùng nó."
     },
@@ -1293,7 +1294,7 @@
       "options": {
         "smart": {
           "title": "Thông minh",
-          "description": "{{appName}} quyết định mỗi lần: lời của bạn y như đã nói, được trau chuốt khi lời nói lộn xộn, hoặc được viết giúp khi bạn yêu cầu (“nói với anh ấy là tôi không đến được, lịch sự nhé”). Nó cho biết đã làm gì, và “Lời của tôi” hoàn tác lại."
+          "description": "Lời của bạn, được trau chuốt, hoặc viết giúp khi bạn yêu cầu. “Lời của tôi” hoàn tác."
         },
         "as_said": {
           "title": "Luôn như tôi nói",
@@ -1304,8 +1305,10 @@
           "description": "Trau chuốt bằng AI cho mọi lần đọc."
         }
       },
-      "needsPolish": "Trau chuốt bằng AI đang tắt, nên lời đọc được gõ ngay và lời nói lộn xộn giữ nguyên như đã nói. {{appName}} vẫn viết giúp bạn khi bạn yêu cầu (tính là một yêu cầu AI).",
-      "scope": "Chỉ thay đổi nội dung gõ vào ô văn bản. Việc hỏi {{appName}} và gợi ý là riêng."
+      "needsPolish": "Khi tắt Trau chuốt bằng AI, lời nói lộn xộn giữ nguyên như đã nói.",
+      "scope": "Chỉ nội dung gõ vào ô văn bản.",
+      "turnOnPolish": "Bật",
+      "polishIsOff": "Trau chuốt bằng AI đang tắt."
     },
     "trial": {
       "daysLeft_one": "Còn {{count}} ngày",
@@ -1367,13 +1370,13 @@
     "viewAll": "Xem tất cả",
     "empty": {
       "title": "Chưa có gì ở đây",
-      "description": "Nhấn phím tắt trong bất kỳ ứng dụng nào và nói. Các lần đọc chính tả của bạn sẽ hiện ở đây."
+      "description": "Giữ phím tắt trong bất kỳ ứng dụng nào và nói."
     },
     "tips": {
       "holdOrTap": "Giữ phím tắt để nói, hoặc nhấn một lần để bắt đầu và nhấn lại để dừng.",
-      "customWords": "Thêm tên riêng và thuật ngữ trong Cài đặt → Nâng cao → Từ tùy chỉnh để tăng độ chính xác.",
+      "customWords": "Thêm tên và thuật ngữ trong Cài đặt → Nâng cao → Từ tùy chỉnh.",
       "dropFile": "Thả tệp âm thanh vào cửa sổ này để chép lời.",
-      "languages": "Chọn các ngôn ngữ bạn nói trong Cài đặt → Chung để nhận gợi ý mô hình tốt hơn."
+      "languages": "Đặt ngôn ngữ của bạn trong Cài đặt → Chung."
     },
     "quickActions": {
       "label": "Thao tác nhanh",
@@ -1399,7 +1402,7 @@
     },
     "screenNotice": {
       "title": "{{appName}} giờ đọc cửa sổ bạn đang dùng",
-      "body": "Để hiểu ý bạn. Thông tin bí mật được xóa trước, và trang riêng tư không bao giờ được đọc. Gợi ý cũng đang bật. Tắt mục nào cũng được trong Quyền riêng tư.",
+      "body": "Thông tin bí mật được xóa, trang riêng tư bị bỏ qua. Đổi trong Quyền riêng tư.",
       "open": "Mở Quyền riêng tư",
       "dismiss": "Đã hiểu"
     }
@@ -1450,11 +1453,11 @@
       "heardNothing": "Đã nghe, nhưng chưa nhận ra yêu cầu.",
       "noWebResults": "Hiện không tìm được trên web, nên đây là từ những gì tôi biết.",
       "timeout": "Kết nối đang chậm. Hãy thử lại sau giây lát.",
-      "needsCloud": "Việc này cần đám mây, và Trí tuệ đang được đặt ở “Chỉ trên máy tính này”. Hãy đổi trong Quyền riêng tư.",
+      "needsCloud": "Cần đám mây. Bạn đã chọn “Chỉ trên máy tính này”.",
       "aiOff": "AI đang tắt nên {{appName}} không thể làm việc đó. Bật AI trong Quyền riêng tư.",
       "cloudOfferOn": "Gợi ý từ đám mây đang bật. Hãy đổi trong Quyền riêng tư.",
       "cloudUnavailable": "Gợi ý trên đám mây hiện không khả dụng.",
-      "cloudLimited": "Gợi ý trên đám mây đang tạm dừng: đã đạt giới hạn hôm nay hoặc cần gói Pro."
+      "cloudLimited": "Gợi ý trên đám mây tạm dừng: đã đạt giới hạn ngày, hoặc chỉ dành cho Pro."
     },
     "undo": "Hoàn tác",
     "close": "Đóng",
@@ -1526,7 +1529,7 @@
       "searchDrive": "Tìm trong Google Drive",
       "searchGmail": "Tìm trong Gmail"
     },
-    "cloudOffer": "{{appName}} có thể gợi ý trợ giúp trên máy tính này bằng cách gửi một đoạn trích đã ẩn thông tin nhạy cảm của cửa sổ đến máy chủ của mình. Bật chứ?",
+    "cloudOffer": "Gợi ý trợ giúp bằng cách gửi một đoạn đã ẩn thông tin lên đám mây?",
     "when": {
       "today": "{{time}} hôm nay",
       "tomorrow": "{{time}} ngày mai",
@@ -1654,17 +1657,17 @@
     },
     "accessibility": "{{appName}} cần quyền Trợ năng để đọc văn bản từ các ứng dụng khác.",
     "grant": "Cho phép truy cập",
-    "accessibilityLinux": "Bật trợ năng để {{appName}} có thể đọc cửa sổ bạn đang dùng. Chạy lệnh này, rồi đăng xuất và đăng nhập lại.",
-    "accessibilityLinuxChrome": "Ứng dụng Chrome, Chromium và Electron cũng cần --force-renderer-accessibility.",
+    "accessibilityLinux": "Bật trợ năng để {{appName}} đọc được cửa sổ. Chạy lệnh này, rồi đăng nhập lại.",
+    "accessibilityLinuxChrome": "Ứng dụng Chrome và Electron cũng cần --force-renderer-accessibility.",
     "copyCommand": "Sao chép lệnh",
     "commandCopied": "Đã sao chép lệnh",
     "commandCopyFailed": "Không thể sao chép lệnh",
     "capabilities": {
       "title": "Những gì {{appName}} được làm",
-      "description": "Đọc cửa sổ bạn đang dùng và gợi ý được bật ngay từ đầu. Các mục còn lại vẫn tắt cho đến khi bạn bật.",
+      "description": "Đọc màn hình và gợi ý bật sẵn; phần còn lại tắt sẵn.",
       "screen_context": {
         "title": "Đọc những gì bạn hỏi",
-        "reads": "Đọc cửa sổ bạn hỏi đến, và các cửa sổ đang mở khi bạn nhờ tìm thứ gì đó.",
+        "reads": "Đọc cửa sổ bạn hỏi đến.",
         "leaves": "Chỉ những gì cần để trả lời, đã loại bỏ thông tin bí mật."
       },
       "screen_memory": {
@@ -1674,7 +1677,7 @@
       },
       "proactive": {
         "title": "Đưa ra gợi ý",
-        "reads": "Gợi ý bước tiếp theo đúng lúc: chuỗi tin nhắn, bản nháp, ngày tháng, lỗi, cuộc họp.",
+        "reads": "Gợi ý bước tiếp theo đúng lúc.",
         "leaves": "Ngoài việc quyết định, không gì được gửi cho đến khi bạn chấp nhận một gợi ý."
       },
       "meetings": {
@@ -1684,7 +1687,7 @@
       },
       "wake_word": {
         "title": "Rảnh tay: nói “Hey Ambient”",
-        "reads": "Lắng nghe “Hey Ambient” trên máy tính này. Mọi thứ khác bị loại bỏ ngay khi bạn nói.",
+        "reads": "Lắng nghe “Hey Ambient” trên máy tính này.",
         "leaves": "Không ghi âm hay gửi gì cho đến khi bạn nói câu đó."
       },
       "groups": {
@@ -1698,7 +1701,7 @@
     "preview": {
       "title": "Những gì {{appName}} thấy",
       "description": "Chính xác những gì nó sẽ đọc từ một cửa sổ, sau khi ẩn thông tin nhạy cảm.",
-      "hint": "Nhấp Xem trước, rồi chuyển sang cửa sổ bất kỳ trong vòng 3 giây.",
+      "hint": "Nhấn Xem trước, rồi chuyển cửa sổ trong vòng 3 giây.",
       "switchNow": "Chuyển sang cửa sổ khác ngay…",
       "button": "Xem trước",
       "noText": "Không có văn bản đọc được trong cửa sổ này.",
@@ -1711,7 +1714,7 @@
     },
     "neverWatch": {
       "title": "Không bao giờ quan sát",
-      "description": "Không bao giờ được đọc, kể cả khi mọi thứ đều bật. Ô mật khẩu, cửa sổ riêng tư, ví và cụm từ khôi phục cũng được bỏ qua.",
+      "description": "Không bao giờ đọc. Mật khẩu, ví và cửa sổ riêng tư luôn được bỏ qua.",
       "this": "Không bao giờ quan sát ứng dụng này",
       "added": "{{app}} sẽ không được đọc nữa."
     },
@@ -1759,9 +1762,9 @@
     },
     "engine": {
       "title": "Dùng Apple Intelligence cho cả câu trả lời",
-      "description": "Câu trả lời và bước trau chuốt chạy trên máy Mac này khi phù hợp. Kết quả kém trau chuốt hơn, nên tính năng này tắt theo mặc định.",
+      "description": "Chạy câu trả lời và trau chuốt tại đây khi vừa. Kém trau chuốt hơn.",
       "titleDownloaded": "Dùng AI trên thiết bị cho cả câu trả lời",
-      "descriptionDownloaded": "Câu trả lời và trau chuốt chạy trên máy tính này khi vừa. Kết quả kém trau chuốt hơn nên mặc định tắt."
+      "descriptionDownloaded": "Chạy câu trả lời và trau chuốt tại đây khi vừa. Kém trau chuốt hơn."
     },
     "suggestions": {
       "title": "Gợi ý bạn nhận được",
@@ -1786,23 +1789,23 @@
       },
       "learned": {
         "title": "Những gì bạn đã dặn tôi",
-        "empty": "Chưa có gì. Khi bạn từ chối một gợi ý, nó sẽ hiện ở đây.",
+        "empty": "Chưa có gì.",
         "never": "Không bao giờ: {{kind}}",
         "notIn": "{{kind}}, không hiện trong {{app}}",
         "undo": "Hoàn tác"
       },
-      "teach": "Khi một gợi ý xuất hiện, hãy nói “không phải bây giờ”, “đừng hiện mấy cái này” hoặc “không trong ứng dụng này”, và {{appName}} sẽ ghi nhớ.",
+      "teach": "Nói “để sau”, “đừng hiện mấy cái này” hoặc “không trong ứng dụng này”.",
       "unknownKind": "Một loại gợi ý"
     },
     "writing": {
       "title": "Viết",
       "learned": "Những gì bạn đã nói với tôi",
-      "empty": "Chưa có gì. Khi bạn chọn “Lời của tôi”, {{appName}} sẽ ít viết lại hơn trong ứng dụng đó.",
+      "empty": "Chưa có gì.",
       "less": {
         "written": "Ít viết giúp bạn hơn trong {{app}}",
         "polished": "Ít trau chuốt hơn trong {{app}}"
       },
-      "teach": "Khi {{appName}} trau chuốt hoặc viết gì đó, hãy bấm “Lời của tôi” hoặc nói ra để lấy lại đúng lời của bạn."
+      "teach": "Bấm hoặc nói “Lời của tôi” để lấy lại đúng lời của bạn."
     },
     "macOnly": "Hiện chỉ có trên Mac",
     "promises": {
@@ -1813,7 +1816,7 @@
     },
     "intelligence": {
       "title": "Nơi Trí tuệ hoạt động",
-      "description": "Nơi xử lý câu trả lời, viết giúp bạn, gợi ý, tóm tắt cuộc họp và trau chuốt bằng AI. Mọi tính năng đều chạy với mỗi lựa chọn.",
+      "description": "Nơi chạy câu trả lời, viết, gợi ý và trau chuốt.",
       "capability": {
         "apple": "Apple Intelligence khả dụng trên máy tính này",
         "none": "Máy tính này không có mô hình chạy trên thiết bị",
@@ -1822,15 +1825,15 @@
       "options": {
         "auto": {
           "title": "Tự động",
-          "description": "Trên máy tính này khi có thể. Hỏi một lần trước khi dùng đám mây cho gợi ý."
+          "description": "Trên máy tính này khi có thể; hỏi trước khi dùng đám mây."
         },
         "device": {
           "title": "Chỉ trên máy tính này",
-          "description": "Không gửi gì để quyết định hay trả lời. Các tính năng cần mô hình sẽ dùng quy tắc đơn giản, hoặc báo là không làm được.",
+          "description": "Không gì rời khỏi máy tính này.",
           "titleBasic": "Chỉ trên máy tính này (cơ bản, không có AI)",
-          "descriptionBasic": "Không gửi gì đi. Chỉ quy tắc đơn giản: câu trả lời và viết cần đám mây cho đến khi bạn tải AI trên thiết bị.",
-          "descriptionDownload": "Không gửi gì cả. Chọn mục này sẽ tải {{model}} (≈{{size}}) để chạy tại đây; dùng quy tắc đơn giản cho đến khi sẵn sàng.",
-          "descriptionDownloading": "Không gửi gì cả. Đang tải {{model}} (≈{{size}}); dùng quy tắc đơn giản cho đến khi sẵn sàng."
+          "descriptionBasic": "Không gửi gì đi. Tải AI trên thiết bị để trả lời và viết.",
+          "descriptionDownload": "Không gửi gì đi. Tải {{model}} (≈{{size}}).",
+          "descriptionDownloading": "Đang tải {{model}} (≈{{size}})…"
         },
         "cloud": {
           "title": "Đám mây",
@@ -1838,23 +1841,23 @@
         },
         "none": {
           "title": "Không dùng AI",
-          "description": "Chỉ đọc chính tả và quy tắc đơn giản. Không gửi gì, không trau chuốt, viết hay gợi ý gì."
+          "description": "Chỉ đọc chính tả. Không gửi gì đi."
         }
       },
       "cloudSuggestions": {
         "title": "Gợi ý từ đám mây",
-        "description": "Gửi một đoạn trích đã ẩn thông tin nhạy cảm từ cửa sổ bạn đang dừng lại, để quyết định có nên đề nghị trợ giúp. Mọi yêu cầu đều được liệt kê bên dưới."
+        "description": "Gửi một đoạn đã ẩn thông tin để quyết định có đề nghị trợ giúp không."
       }
     },
     "onDeviceAi": {
       "title": "AI trên thiết bị",
       "download": "Tải AI trên thiết bị (≈{{size}})",
-      "description": "Một mô hình AI nhỏ chạy trên máy tính này, để trau chuốt, viết thông minh, gợi ý và câu trả lời ngắn hoạt động không cần đám mây.",
-      "descriptionMac": "Một lựa chọn thay cho Apple Intelligence: mô hình AI nhỏ chạy trên máy tính này để trau chuốt, viết thông minh, gợi ý và câu trả lời ngắn.",
+      "description": "Chạy trau chuốt, viết, gợi ý và câu trả lời ngắn tại đây.",
+      "descriptionMac": "Một lựa chọn thay cho Apple Intelligence, chạy tại đây.",
       "downloadButton": "Tải về",
       "downloading": "Đang tải… {{percent}}%",
       "cancel": "Hủy",
-      "ready": "Đã tải ({{size}}). Trau chuốt, viết thông minh, gợi ý và câu trả lời ngắn có thể chạy trên máy tính này.",
+      "ready": "Đã tải ({{size}}). Chạy trên máy tính này.",
       "remove": "Xóa",
       "use": "Chạy trên máy Mac này:",
       "engines": {
@@ -1865,24 +1868,24 @@
       "recommended": "Đề xuất",
       "basic": "Cơ bản",
       "onThisComputer": "Trên máy này",
-      "scoresNote": "Các thanh so sánh các mô hình này với nhau: chất lượng theo điểm chuẩn đã công bố, tốc độ theo kích thước. Không có gì được đo trên máy tính này.",
+      "scoresNote": "So sánh với nhau: chất lượng theo điểm chuẩn, tốc độ theo kích thước.",
       "downloadingModel": "Đang tải {{model}}… {{percent}}%",
       "downloadingTag": "Đang tải",
       "removeModel": "Gỡ {{name}}",
       "quality": "Chất lượng",
       "speed": "Tốc độ",
       "modelInfo": {
-        "qwen3_0_6b": "Nhỏ gọn và nhanh, nhẹ nhất cho bộ nhớ và pin. Ổn để trau chuốt, kém tin cậy hơn khi viết và trả lời.",
-        "qwen3_1_7b_q4": "Trau chuốt và viết tốt với dung lượng tải khoảng một nửa bản 8-bit, mất rất ít.",
-        "qwen3_1_7b": "Mô hình trên thiết bị trước đây. Tốt hơn một chút so với bản 4-bit, với dung lượng tải lớn hơn.",
-        "qwen3_4b": "Chất lượng tốt nhất trên thiết bị, nhưng lớn nhất và chậm nhất. Để viết và trả lời tốt mà không cần đám mây."
+        "qwen3_0_6b": "Nhẹ nhất. Đủ để trau chuốt.",
+        "qwen3_1_7b_q4": "Cân bằng tốt nhất giữa chất lượng và kích thước.",
+        "qwen3_1_7b": "Tốt hơn một chút, dung lượng tải gấp đôi.",
+        "qwen3_4b": "Chất lượng tốt nhất. Lớn nhất và chậm nhất."
       },
       "manage": "Quản lý mô hình"
     },
     "telemetry": {
       "title": "Giúp cải thiện {{appName}}",
       "label": "Chia sẻ số liệu sử dụng ẩn danh",
-      "description": "Chỉ số đếm và thời gian, không bao giờ là những gì bạn nói, gõ hay thấy. Tắt cho đến khi bạn bật."
+      "description": "Chỉ số đếm và thời gian. Không bao giờ là những gì bạn nói, gõ hay thấy."
     },
     "free": {
       "perWeek": "Miễn phí: {{limit}} mỗi tuần",
@@ -1921,7 +1924,7 @@
   },
   "meetings": {
     "title": "Cuộc họp",
-    "intro": "Ghi chú cho mọi cuộc gọi: bạn và người khác, được chép lời trên máy tính này. Âm thanh không bao giờ được lưu.",
+    "intro": "Ghi chú cho mọi cuộc gọi, chép lời tại đây. Âm thanh không bao giờ được lưu.",
     "live": "Đang ghi chú · {{time}}",
     "capturingBoth": "Đang nghe bạn và cuộc gọi.",
     "capturingMic": "Chỉ nghe micrô của bạn.",
@@ -1952,11 +1955,11 @@
     "you": "Bạn",
     "them": "Họ",
     "systemAudio": {
-      "noPermission": "Cho phép Ghi màn hình để {{appName}} có thể nghe cuộc gọi. Chỉ dùng âm thanh và không lưu gì cả.",
-      "oldMacOS": "Nghe cuộc gọi cần macOS 13 trở lên. Micrô của bạn vẫn đang được chép lời.",
-      "failed": "Không thể thu âm thanh cuộc gọi. Micrô của bạn vẫn đang được chép lời.",
+      "noPermission": "Cho phép Ghi màn hình để nghe cuộc gọi. Chỉ âm thanh, không bao giờ lưu.",
+      "oldMacOS": "Nghe cuộc gọi cần macOS 13+. Micrô của bạn vẫn hoạt động.",
+      "failed": "Không thể thu cuộc gọi. Micrô của bạn vẫn hoạt động.",
       "unsupported": "Tính năng nghe cuộc gọi chưa có trên hệ thống này.",
-      "linuxNoParec": "Để nghe cuộc gọi cần parec (cài pulseaudio-utils). Micrô của bạn vẫn đang được chép lời."
+      "linuxNoParec": "Nghe cuộc gọi cần parec (pulseaudio-utils). Micrô của bạn vẫn hoạt động."
     },
     "error": {
       "storage": "Không thể mở bộ nhớ cuộc họp.",
@@ -1971,11 +1974,11 @@
     "startNowHint": "Ghi chú ngay, không cần chờ cuộc gọi",
     "auto": {
       "on": "Sẵn sàng cho cuộc gọi tiếp theo",
-      "onDetail": "Khi cuộc gọi bắt đầu, {{appName}} đề nghị ghi chú. Đồng ý, hoặc bỏ qua.",
+      "onDetail": "Đề nghị ghi chú khi cuộc gọi bắt đầu.",
       "off": "Tính năng phát hiện cuộc gọi đang tắt",
-      "offDetail": "Bật lên và {{appName}} sẽ đề nghị ghi chú khi cuộc gọi bắt đầu.",
+      "offDetail": "Bật để được đề nghị ghi chú cho mỗi cuộc gọi.",
       "paused": "Đã tạm dừng",
-      "pausedDetail": "{{appName}} sẽ không đề nghị ghi chú cho đến khi bạn tiếp tục trong Quyền riêng tư.",
+      "pausedDetail": "Tiếp tục trong Quyền riêng tư.",
       "unsupported": "Không ghi chú",
       "unsupportedDetail": "Bắt đầu ghi chú khi cuộc gọi của bạn bắt đầu.",
       "turnOn": "Bật"
@@ -1987,7 +1990,7 @@
     },
     "email": {
       "title": "Gửi ghi chú qua email cho tôi",
-      "description": "Gửi đến {{email}} sau mỗi cuộc gọi. Thông tin bí mật được xóa trước và không lưu lại gì.",
+      "description": "Gửi đến {{email}} sau mỗi cuộc gọi. Không lưu lại gì.",
       "signedOut": "Đăng nhập để nhận ghi chú qua email.",
       "options": {
         "off": "Tắt",
@@ -2056,13 +2059,13 @@
     },
     "offers": {
       "title": "Nó còn chủ động giúp nữa",
-      "description": "Khi có thể giúp, như với một chuỗi thư dài hay một lỗi, nó đề nghị một lần. Nói “có” hoặc “để sau”, hoặc cứ bỏ qua. Nó sẽ học.",
+      "description": "Khi có thể giúp, nó đề nghị một lần. Nói “có” hoặc “để sau”.",
       "app": "Thư",
       "subject": "Kế hoạch ra mắt Q3",
       "count": "40 tin nhắn",
       "summaryHead": "Tóm tắt chuỗi thư",
       "summary": "Buổi ra mắt dời sang thứ Năm. Sam lo phần slide, còn Ana đặt phòng.",
-      "noOnDevice": "Khi không có Apple Intelligence, các quy tắc đơn giản sẽ quyết định ngay trên máy tính này. Nó sẽ hỏi một lần trước khi dùng đám mây.",
+      "noOnDevice": "Không có Apple Intelligence, nó hỏi một lần trước khi dùng đám mây.",
       "screenLabel": "Một chuỗi thư có 40 tin nhắn. Một gợi ý đề nghị tóm tắt chuỗi thư; sau khi nói “có”, một bản tóm tắt ngắn hiện ra."
     }
   },
@@ -2084,7 +2087,7 @@
   "trySaying": {
     "title": "Tôi có thể nói gì?",
     "close": "Đóng",
-    "footnote": "Trong ChatGPT hoặc Claude, hãy bắt đầu bằng “Hey Ambient” để nói chuyện với tác nhân.",
+    "footnote": "Trong ChatGPT hoặc Claude, hãy bắt đầu bằng “Hey Ambient”.",
     "groups": {
       "answer": {
         "title": "Hỏi",
@@ -2166,7 +2169,7 @@
       "errors": "Loại lỗi đã xảy ra, ví dụ “hết thời gian chờ”",
       "basics": "Phiên bản ứng dụng, hệ thống, gói và một ID ngẫu nhiên thay đổi mỗi 30 ngày"
     },
-    "never": "Không bao giờ là những gì bạn nói, gõ hay thấy, tiêu đề cửa sổ, liên kết, tên tệp hay email của bạn.",
+    "never": "Không bao giờ là những gì bạn nói, gõ hay thấy.",
     "ledger": "Mỗi lần tải lên đều có trong Quyền riêng tư, ở mục các yêu cầu đã rời khỏi máy tính này."
   },
   "feedback": {
@@ -2190,7 +2193,7 @@
     },
     "diagnostics": {
       "label": "Kèm thông tin chẩn đoán",
-      "description": "Phiên bản ứng dụng, hệ thống, gói, tóm tắt cài đặt và các dòng nhật ký gần đây, đã bỏ thông tin bí mật, tiêu đề cửa sổ và liên kết."
+      "description": "Phiên bản, hệ thống, gói, cài đặt và nhật ký gần đây, đã bỏ thông tin bí mật."
     },
     "example": {
       "label": "Kèm ví dụ",

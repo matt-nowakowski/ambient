@@ -111,7 +111,7 @@ const DictationConflictNotice: React.FC<{ onChangeShortcut: () => void }> = ({
         <div className="flex shrink-0 items-center gap-1">
           <button
             onClick={action.run}
-            className="cursor-pointer whitespace-nowrap rounded-full px-2.5 py-1 text-small font-medium text-text hover:text-warning focus:outline-none focus:ring-1 focus:ring-warning"
+            className="cursor-pointer whitespace-nowrap rounded-full px-2.5 py-1 text-small text-text hover:text-warning focus:outline-none focus:ring-1 focus:ring-warning"
           >
             <span className="border-b border-current leading-4">
               {action.label}

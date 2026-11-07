@@ -10,6 +10,7 @@ import {
 } from "@/bindings";
 import { useSettings } from "../../hooks/useSettings";
 import { Button } from "../ui/Button";
+import { InfoTooltip } from "../ui/InfoTooltip";
 import { Dropdown } from "../ui/Dropdown";
 import { Input } from "../ui/Input";
 
@@ -85,16 +86,20 @@ export const WritingStylesCard: React.FC = () => {
 
   return (
     <section className="glass rounded-panel p-card">
-      <div className="flex items-start gap-3">
+      <div className="flex items-center gap-3">
         <span className="grid size-8 shrink-0 place-items-center rounded-card bg-glass-press">
           <AppWindow width={15} height={15} strokeWidth={1.75} />
         </span>
-        <div className="min-w-0 flex-1">
-          <h2 className="text-ui font-medium">{t("account.styles.title")}</h2>
-          <p className="mt-0.5 max-w-md text-small text-ink-2">
-            {t("account.styles.description")}
-          </p>
-        </div>
+        <h2 className="flex min-w-0 flex-1 items-center gap-1.5 text-ui font-medium">
+          {t("account.styles.title")}
+          <InfoTooltip
+            text={
+              <>
+                {t("account.styles.description")} {t("account.styles.empty")}
+              </>
+            }
+          />
+        </h2>
       </div>
 
       {styles.length > 0 ? (
@@ -138,11 +143,7 @@ export const WritingStylesCard: React.FC = () => {
             );
           })}
         </ul>
-      ) : (
-        <p className="mt-3 max-w-md text-meta text-ink-3">
-          {t("account.styles.empty")}
-        </p>
-      )}
+      ) : null}
 
       {adding ? (
         <div className="mt-3 space-y-2">

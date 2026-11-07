@@ -5,6 +5,7 @@ import { CreditCard, ExternalLink } from "lucide-react";
 import type { PlanStatus } from "@/bindings";
 import { BRAND } from "@/lib/brand";
 import { Button } from "../ui/Button";
+import { InfoTooltip } from "../ui/InfoTooltip";
 import { TextSwap } from "../ui/Transitions";
 
 interface BillingCardProps {
@@ -31,22 +32,20 @@ export const BillingCard: React.FC<BillingCardProps> = ({
   return (
     <section data-search-row className="glass rounded-panel p-card">
       <div className="flex items-center justify-between gap-4">
-        <div className="flex min-w-0 items-start gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <span className="grid size-8 shrink-0 place-items-center rounded-card bg-glass-press">
             <CreditCard width={15} height={15} strokeWidth={1.75} />
           </span>
-          <div className="min-w-0">
-            <h2 className="text-ui font-medium">
-              {paid
-                ? t("account.manageBilling")
-                : t("account.billing.pastTitle")}
-            </h2>
-            <p className="mt-0.5 max-w-md text-small text-ink-2">
-              {paid
-                ? t("account.billing.description")
-                : t("account.billing.pastDescription")}
-            </p>
-          </div>
+          <h2 className="flex min-w-0 items-center gap-1.5 text-ui font-medium">
+            {paid ? t("account.billing.title") : t("account.billing.pastTitle")}
+            <InfoTooltip
+              text={
+                paid
+                  ? t("account.billing.description")
+                  : t("account.billing.pastDescription")
+              }
+            />
+          </h2>
         </div>
         {paid ? (
           <Button

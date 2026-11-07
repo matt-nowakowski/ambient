@@ -10,6 +10,7 @@ import {
 } from "@/lib/whereItRuns";
 import { useSettings } from "../../hooks/useSettings";
 import { Button } from "../ui/Button";
+import { InfoTooltip } from "../ui/InfoTooltip";
 import { DependencyNote } from "../ui/SettingLink";
 import { Switch } from "../ui/Switch";
 import { openUpgrade, usePlan, usePolishUsage } from "./usePlan";
@@ -71,18 +72,25 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
           <span className="grid size-8 shrink-0 place-items-center rounded-card bg-glass-press">
             <Sparkles width={15} height={15} strokeWidth={1.75} />
           </span>
-          <div className="min-w-0">
-            <h2 className="text-ui font-medium">{t("account.polish.title")}</h2>
-            <p className="mt-0.5 max-w-md text-small text-ink-2">
-              {t("account.polish.description")}
-            </p>
-            {/* What it doesn't touch: the question people actually ask. */}
-            <p className="mt-1 max-w-md text-meta text-ink-3">
-              {t("account.polish.scope")}
-            </p>
-            {route !== "off" && (
+          <div className="min-w-0 pt-1">
+            <h2 className="flex items-center gap-1.5 text-ui font-medium">
+              {t("account.polish.title")}
+              <InfoTooltip
+                text={
+                  <>
+                    {t("account.polish.description")}{" "}
+                    {t("account.polish.scope")}
+                    {route !== "off" && route !== "blocked" && (
+                      <> {t(`account.polish.where.${route}`)}</>
+                    )}
+                  </>
+                }
+              />
+            </h2>
+            {/* Only when it can't run as set: something to fix. */}
+            {route === "blocked" && (
               <DependencyNote
-                tone={route === "blocked" ? "warn" : "info"}
+                tone="warn"
                 className="mt-2 max-w-md"
                 link={intelligenceLink}
               >
@@ -118,19 +126,21 @@ export const AiPolishCard: React.FC<{ paid: boolean }> = ({ paid }) => {
       </div>
 
       {onDeviceAvailable && (
-        <div className="mt-4 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
-          <div className="min-w-0">
-            <p className="text-ui">{t("account.polish.onDevice")}</p>
-            <p className="mt-0.5 text-small text-ink-2">
-              {t("account.polish.onDeviceDescription")}
-            </p>
-            {/* Automatic follows the polish provider for answers too. */}
-            {intelligence === "auto" && (
-              <p className="mt-0.5 text-meta text-ink-3">
-                {t("account.polish.onDeviceAnswers")}
-              </p>
-            )}
-          </div>
+        <div className="mt-4 ms-11 flex items-center justify-between gap-4 border-t-[0.5px] border-glass-edge pt-4">
+          <p className="flex min-w-0 items-center gap-1.5 text-ui">
+            {t("account.polish.onDevice")}
+            <InfoTooltip
+              text={
+                <>
+                  {t("account.polish.onDeviceDescription")}
+                  {/* Automatic follows the polish provider for answers too. */}
+                  {intelligence === "auto" && (
+                    <> {t("account.polish.onDeviceAnswers")}</>
+                  )}
+                </>
+              }
+            />
+          </p>
           <Switch
             checked={local}
             disabled={!on}
