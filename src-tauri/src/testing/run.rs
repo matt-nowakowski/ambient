@@ -35,6 +35,21 @@ async fn run(app: AppHandle) -> Value {
         return json!({ "error": "no scenario" });
     };
     seed_card(&app);
+    // Windows looked at just before, for "the page we just looked at".
+    if let Some(sc) = scenario() {
+        crate::agent::earlier::seed(
+            sc.earlier
+                .iter()
+                .cloned()
+                .map(|e| crate::agent::earlier::Seen {
+                    app: e.app,
+                    title: e.title,
+                    url: e.url.unwrap_or_default(),
+                    text: e.text,
+                })
+                .collect(),
+        );
+    }
     let processed = match s.kind {
         Kind::Dictation => Some(dictation(&app, &s.transcript, s.key).await),
         Kind::Screen => {
@@ -83,6 +98,7 @@ fn seed_card(app: &AppHandle) {
         _ => HudContent::Answer {
             id: "answer-seeded".into(),
             question: card.question.clone(),
+            question_vars: None,
             text: card.text.clone(),
             sources: vec![],
             done: true,

@@ -22,11 +22,13 @@ use ::windows::Win32::System::Threading::{
     GetCurrentProcessId, OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
     PROCESS_QUERY_LIMITED_INFORMATION,
 };
+use ::windows::Win32::System::Variant::VARIANT;
 use ::windows::Win32::UI::Accessibility::{
     CUIAutomation, CUIAutomation8, IUIAutomation, IUIAutomation2, IUIAutomationElement,
     IUIAutomationElement5, IUIAutomationTextPattern, IUIAutomationTextRange,
     IUIAutomationTreeWalker, IUIAutomationValuePattern, TextPatternRangeEndpoint_End,
-    TextPatternRangeEndpoint_Start, TextUnit_Character, UIA_TextPatternId, UIA_ValuePatternId,
+    TextPatternRangeEndpoint_Start, TextUnit_Character, TreeScope_Descendants,
+    UIA_ControlTypePropertyId, UIA_TextPatternId, UIA_ValuePatternId,
 };
 use ::windows::Win32::UI::WindowsAndMessaging::{
     EnumChildWindows, EnumWindows, GetForegroundWindow, GetWindow, GetWindowLongPtrW,
@@ -317,6 +319,55 @@ fn document_text(el: &IUIAutomationElement, max: usize) -> Option<String> {
     (!text.trim().is_empty()).then_some(text)
 }
 
+/// Links in a page that lead off its own site, as "Website → https://…",
+/// so "open their website" can use the real link (a page's text alone has
+/// only the label). A browser's link exposes its URL as its value.
+fn outside_links(doc: &IUIAutomationElement, deadline: Instant) -> Vec<String> {
+    let Some(uia) = automation() else {
+        return Vec::new();
+    };
+    let page_host = value(doc).and_then(|u| super::link_host(&u).map(str::to_string));
+    let Ok(condition) = (unsafe {
+        uia.CreatePropertyCondition(
+            UIA_ControlTypePropertyId,
+            &VARIANT::from(control::HYPERLINK),
+        )
+    }) else {
+        return Vec::new();
+    };
+    let Ok(found) = (unsafe { doc.FindAll(TreeScope_Descendants, &condition) }) else {
+        return Vec::new();
+    };
+    let count = unsafe { found.Length() }.unwrap_or(0).min(300);
+    let mut out = Vec::new();
+    for i in 0..count {
+        if out.len() >= 40 || Instant::now() > deadline {
+            break;
+        }
+        let Ok(link) = (unsafe { found.GetElement(i) }) else {
+            continue;
+        };
+        let Some(href) = value(&link) else { continue };
+        let Some(host) = super::link_host(&href) else {
+            continue;
+        };
+        if page_host.as_deref() == Some(host) {
+            continue;
+        }
+        let label = name(&link);
+        let label = if label.trim().is_empty() {
+            "Link"
+        } else {
+            label.trim()
+        };
+        out.push(format!(
+            "{label} → {}",
+            href.chars().take(120).collect::<String>()
+        ));
+    }
+    out
+}
+
 /// Text of `region` inside `doc`, through the document's TextPattern.
 fn region_text(
     doc: &IUIAutomationElement,
@@ -383,6 +434,9 @@ fn collect_text(
         if ct == control::DOCUMENT {
             if let Some(text) = document_text(&el, max_chars.saturating_sub(out.len())) {
                 push_line(&mut out, &mut seen, &text);
+                for line in outside_links(&el, deadline) {
+                    push_line(&mut out, &mut seen, &line);
+                }
                 continue;
             }
         }

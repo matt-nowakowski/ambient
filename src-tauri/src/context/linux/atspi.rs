@@ -556,6 +556,18 @@ impl Bus {
         let mut seen = HashSet::new();
         let mut queue = VecDeque::from([root.clone()]);
         let mut visited = 0;
+        // Links off the page's own site keep where they go ("Website →
+        // https://truth.network"), so "open their website" can use the real
+        // link. Only on a web page whose address is known.
+        let page_host: Option<String> = call::<_, String>(
+            &self.conn,
+            root,
+            "org.a11y.atspi.Document",
+            "GetAttributeValue",
+            &("DocURL",),
+        )
+        .and_then(|u| crate::context::link_host(&u).map(str::to_string));
+        let mut links = 0;
         while let Some(n) = queue.pop_front() {
             if chars >= max_chars || visited >= 4000 || Instant::now() > deadline {
                 break;
@@ -564,6 +576,35 @@ impl Bus {
             let Some(r) = self.role(&n) else { continue };
             if SKIP_ROLES.contains(&r) {
                 continue;
+            }
+            if r == role::LINK && links < 40 {
+                if let Some(page) = &page_host {
+                    let href: Option<String> = call(
+                        &self.conn,
+                        &n,
+                        "org.a11y.atspi.Hyperlink",
+                        "GetURI",
+                        &(0i32,),
+                    );
+                    if let Some(href) = href.filter(|h| {
+                        crate::context::link_host(h).is_some_and(|host| host != page.as_str())
+                    }) {
+                        let label = self.name(&n);
+                        let label = if label.trim().is_empty() {
+                            "Link"
+                        } else {
+                            label.trim()
+                        };
+                        let line =
+                            format!("{label} → {}", href.chars().take(120).collect::<String>());
+                        if seen.insert(line.clone()) {
+                            links += 1;
+                            chars += line.chars().count() + 1;
+                            out.push_str(&line);
+                            out.push('\n');
+                        }
+                    }
+                }
             }
             if TEXT_ROLES.contains(&r) {
                 let value = self

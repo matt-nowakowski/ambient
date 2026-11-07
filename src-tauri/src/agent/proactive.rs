@@ -211,6 +211,9 @@ struct Pending {
     header: String,
     /// The user's own draft (TightenDraft), or the product title (PriceCheck).
     focus: String,
+    /// What the card said (an i18n key or the judge's words): the answer's
+    /// card is titled with it once accepted.
+    title: String,
     /// What the offer named ("name" of the person to reply to, …).
     vars: BTreeMap<String, String>,
 }
@@ -2100,6 +2103,12 @@ fn offer(
         .kind(kind.name())
         .cooldown;
     st.budget.record_shown(kind, bundle, &key, cooldown, now);
+    // The judge's own words (already a concrete question in the user's
+    // language); otherwise the kind's i18n key, naming what it can (the
+    // thread's length, who to reply to, the language).
+    let title: String = title
+        .filter(|t| !t.trim().is_empty())
+        .unwrap_or_else(|| kind.title_key_with(&vars).into());
     st.pending.clear();
     st.pending.insert(
         id.clone(),
@@ -2109,6 +2118,7 @@ fn offer(
             text,
             header,
             focus,
+            title: title.clone(),
             vars: vars.clone(),
         },
     );
@@ -2117,12 +2127,7 @@ fn offer(
         app,
         HudContent::Suggestion {
             id,
-            // The judge's own words (already a concrete question in the
-            // user's language); otherwise the kind's i18n key, naming what
-            // it can (the thread's length, who to reply to, the language).
-            title: title
-                .filter(|t| !t.trim().is_empty())
-                .unwrap_or_else(|| kind.title_key_with(&vars).into()),
+            title,
             accept_label: kind.accept_key_with(&vars).into(),
             vars,
         },
@@ -2204,6 +2209,8 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
     let needs_web = web.is_some();
     tauri::async_runtime::spawn(async move {
         let context = format!("{}\n{}", p.header, p.text);
+        // The card is titled with the offer they accepted.
+        let shown = Some((p.title.clone(), p.vars.clone()));
         match p.kind {
             Kind::SummariseThread => {
                 answer::run_with(
@@ -2215,7 +2222,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     // The offer says what it thinks this is. The answer reads
                     // the screen for itself, and if the two disagree the card
                     // is dropped rather than shown contradicting itself.
-                    answer::Opts { premise: Some("an email thread".into()), ..Default::default() },
+                    answer::Opts { shown: shown.clone(), premise: Some("an email thread".into()), ..Default::default() },
                 )
                 .await
             }
@@ -2226,7 +2233,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     needs_web,
                     false,
                     Some(context),
-                    answer::Opts { premise: Some("a page".into()), web_query: web, ..Default::default() },
+                    answer::Opts { shown: shown.clone(), premise: Some("a page".into()), web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2237,7 +2244,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     needs_web,
                     false,
                     Some(context),
-                    answer::Opts { premise: Some("an error".into()), web_query: web, ..Default::default() },
+                    answer::Opts { shown: shown.clone(), premise: Some("an error".into()), web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2248,7 +2255,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     false,
                     false,
                     Some(context),
-                    answer::Opts {
+                    answer::Opts { shown: shown.clone(),
                         write: true,
                         premise: Some("a message".into()),
                         ..Default::default()
@@ -2265,19 +2272,19 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     false,
                     false,
                     Some(p.focus),
-                    answer::Opts { replace: true, write: true, ..Default::default() },
+                    answer::Opts { shown: shown.clone(), replace: true, write: true, ..Default::default() },
                 )
                 .await
             }
-            Kind::AnswerSearch => answer::run(app, p.focus, true, false, None).await,
+            Kind::AnswerSearch => answer::run_shown(app, p.focus, true, false, None, shown.clone()).await,
             Kind::ReviewCode => {
-                answer::run(
+                answer::run_shown(
                     app,
                     "Review this pull request: what it changes in 2-3 sentences, then any bugs, risks or missing tests, most important first.".into(),
                     false,
                     false,
                     Some(context),
-                )
+                shown.clone())
                 .await
             }
             Kind::CommitMessage => {
@@ -2287,39 +2294,39 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     false,
                     false,
                     Some(context),
-                    answer::Opts { write: true, ..Default::default() },
+                    answer::Opts { shown: shown.clone(), write: true, ..Default::default() },
                 )
                 .await
             }
             Kind::FixFormula => {
-                answer::run(
+                answer::run_shown(
                     app,
                     "This spreadsheet shows formula errors. Say what's causing them and give the corrected formula.".into(),
                     false,
                     false,
                     Some(context),
-                )
+                shown.clone())
                 .await
             }
             Kind::FillForm => {
-                answer::run(
+                answer::run_shown(
                     app,
                     "Help me fill in this form: what each field needs, suggested answers where the page or what you know makes them clear, and anything to watch out for.".into(),
                     false,
                     false,
                     Some(context),
-                )
+                shown.clone())
                 .await
             }
             Kind::TranslatePage => {
                 let language = crate::settings::get_settings(&app).app_language;
-                answer::run(
+                answer::run_shown(
                     app,
                     format!("Translate the main content of this page into the language with code \"{language}\". Keep it faithful; skip menus and boilerplate."),
                     false,
                     false,
                     Some(context),
-                )
+                shown.clone())
                 .await
             }
             // The judge's offer, accepted: do what it offered, on the same
@@ -2333,7 +2340,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     needs_web,
                     false,
                     Some(context),
-                    answer::Opts { links, web_query: web, ..Default::default() },
+                    answer::Opts { shown: shown.clone(), links, web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2347,7 +2354,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     needs_web,
                     false,
                     Some(format!("{}\n\nRelated:\n{recalled}", p.text)),
-                    answer::Opts { links, web_query: web, ..Default::default() },
+                    answer::Opts { shown: shown.clone(), links, web_query: web, ..Default::default() },
                 )
                 .await
             }
@@ -2355,7 +2362,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                 // Search by the product title; the page's own price is the baseline.
                 let product = p.focus.split(" | ").next().unwrap_or(&p.focus).trim().to_string();
                 let prices: Vec<&str> = PRICE.find_iter(&p.text).map(|m| m.as_str()).take(3).collect();
-                answer::run(
+                answer::run_shown(
                     app,
                     format!(
                         "Where can I buy \"{product}\" cheaper than {}? List the best current prices with the shop names.",
@@ -2364,7 +2371,7 @@ fn run(app: AppHandle, p: Pending, content: Option<String>) {
                     true,
                     false,
                     None,
-                )
+                shown.clone())
                 .await
             }
         }

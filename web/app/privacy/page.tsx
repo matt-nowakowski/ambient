@@ -90,6 +90,10 @@ export default function PrivacyPage() {
                 with the window you are in: its app and title and, if you let {brand.name} read your screen, its text, with
                 details such as email addresses, phone and card numbers and keys removed first. Private windows (banking,
                 password managers, medical and government pages and the like) and apps on your never-watch list are never read.
+                So that you can refer to something you just looked at (&ldquo;open the website we just saw&rdquo;), the
+                decision and answers about your screen also include a short excerpt, redacted the same way, of up to three
+                windows you looked at in the last 15 minutes: from Remember what you&rsquo;ve seen when it is on, otherwise only
+                windows {brand.name} read for your own requests, kept in memory for those 15 minutes and never saved.
                 Where the Intelligence setting runs AI on your computer, this decision stays on your computer; otherwise it is
                 sent to our server for that one decision and not stored. With No AI nothing is sent: your words are typed as
                 you said them.

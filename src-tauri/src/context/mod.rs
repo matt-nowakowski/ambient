@@ -651,3 +651,14 @@ pub fn snapshot(max_chars: usize, never_watch: &[String]) -> Result<ContextSnaps
         Err(Skipped::Unavailable)
     }
 }
+
+/// A web link's host ("https://truth.network/about" → "truth.network");
+/// None for other schemes. Page readers keep links that leave the page's
+/// own site, with their destination.
+#[cfg_attr(target_os = "macos", allow(dead_code))]
+pub(crate) fn link_host(url: &str) -> Option<&str> {
+    let rest = url
+        .strip_prefix("https://")
+        .or_else(|| url.strip_prefix("http://"))?;
+    rest.split(['/', '?', '#']).next().filter(|h| !h.is_empty())
+}

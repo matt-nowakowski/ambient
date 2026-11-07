@@ -124,6 +124,8 @@ export type Case = {
   say?: string;
   now?: string;
   card?: { kind: string; question?: string; text?: string };
+  /** Windows looked at a moment before, newest first (screen names). */
+  earlier?: string[];
   settings?: Settings;
   plan?: "free" | "pro";
   me?: { name?: string; email?: string };
@@ -138,7 +140,11 @@ export type FileSpec = {
   cases: Case[];
 };
 
-export type Loaded = Case & { file: string; screenDef: Screen | null };
+export type Loaded = Case & {
+  file: string;
+  screenDef: Screen | null;
+  earlierDefs: Screen[];
+};
 
 export function hostOs(): Os {
   return process.platform === "darwin"
@@ -180,7 +186,13 @@ export function loadAll(dir: string): Loaded[] {
       } else if (s) screenDef = s;
       if (merged.lang && !merged.tags!.includes(merged.lang))
         merged.tags!.push(merged.lang);
-      out.push({ ...merged, file: f, screenDef });
+      const earlierDefs = (merged.earlier ?? []).map((name) => {
+        const def = shared[name];
+        if (!def)
+          throw new Error(`${merged.id}: unknown earlier screen ${name}`);
+        return def;
+      });
+      out.push({ ...merged, file: f, screenDef, earlierDefs });
     }
   }
   return out;
@@ -262,6 +274,12 @@ export function resolve(c: Loaded, os: Os, apiBase: string) {
           reply_button: sc.reply_button ?? false,
         }
       : null,
+    earlier: c.earlierDefs.map((e) => ({
+      app: pick(e.app, os) ?? "",
+      title: e.title ?? "",
+      url: e.url ?? null,
+      text: e.text ?? "",
+    })),
     card: c.card
       ? {
           kind: c.card.kind,

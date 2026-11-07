@@ -518,7 +518,7 @@
       "expect": {
         "route": "draft",
         "must_not": ["typed_verbatim", "silent"],
-        "judge": "It speaks to Claude directly, asking or telling it to wait (\"Please wait.\", \"Claude, wait for me.\" and similar are all right); it does not talk about Claude in the third person (not \"Claude should wait\")."
+        "judge": "Pass if it addresses Claude directly and asks or tells it to wait: \"Please wait.\", \"Wait.\", \"Claude, wait.\" and \"Claude, wait for me.\" all pass, even though the user phrased the request in the third person. Fail only if the text itself talks about Claude in the third person (\"Claude should wait\") or repeats the instruction (\"say that Claude should wait\")."
       }
     },
     {
@@ -586,6 +586,34 @@
       "screen": "messages_emilia",
       "say": "tell Emi I will call her tomorrow",
       "regression": "0.1.20: typed \"I will call her tomorrow.\" (Messages was never read, and \"her\" wasn't turned into \"you\")",
+      "expect": {
+        "route": "draft",
+        "must_not": ["typed_verbatim", "silent"],
+        "judge": "It speaks to Emilia in the second person, like \"I'll call you tomorrow\"; it doesn't say \"her\" or \"tell Emi\"."
+      }
+    },
+    {
+      "id": "draft.en.messages.tell-emmy-please",
+      "about": "In Messages with Emilia, \"Tell Emmy, please, I will call her tomorrow\" (a misheard name, \"please\" mid-sentence) is still written to Emilia in the second person.",
+      "tags": ["messages", "critical", "regression"],
+      "lang": "en",
+      "screen": "messages_emilia",
+      "say": "Tell Emmy, please, I will call her tomorrow",
+      "regression": "0.1.22: pasted the words back as said; the writer echoed the instruction",
+      "expect": {
+        "route": "draft",
+        "must_not": ["typed_verbatim", "silent"],
+        "judge": "It speaks to Emilia in the second person, like \"I'll call you tomorrow\"; it doesn't say \"her\" or \"tell Emi\"."
+      }
+    },
+    {
+      "id": "draft.en.messages.tell-me-please",
+      "about": "In Messages with Emilia, \"Tell me, please, I will call her tomorrow\" (a misheard name, \"please\" mid-sentence) is still written to Emilia in the second person.",
+      "tags": ["messages", "critical", "regression"],
+      "lang": "en",
+      "screen": "messages_emilia",
+      "say": "Tell me, please, I will call her tomorrow",
+      "regression": "0.1.22: pasted the words back as said; the writer echoed the instruction",
       "expect": {
         "route": "draft",
         "must_not": ["typed_verbatim", "silent"],

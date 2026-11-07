@@ -522,6 +522,56 @@
         "route": ["help", "answer"],
         "must_not": ["typed"]
       }
+    },
+    {
+      "id": "act.en.open-website-seen-earlier",
+      "about": "After looking at a token on Uniswap and moving on, \"open the Truth Network website we just looked at\" opens the website link that token page showed, not Uniswap.",
+      "tags": ["browser", "memory", "critical", "regression"],
+      "lang": "en",
+      "screen": "uniswap_explore",
+      "earlier": ["uniswap_truth_token"],
+      "say": "No, I meant to open the Truth Network website, the token we just looked at",
+      "regression": "0.1.22: opened Uniswap again; the page it meant was no longer in front",
+      "expect": {
+        "route": "act",
+        "act": "open_url",
+        "contains": ["truth.network"],
+        "not_contains": ["uniswap.org"]
+      }
+    },
+    {
+      "id": "answer.en.link-from-earlier-page",
+      "about": "Asked for the right link from the page looked at a moment ago, the answer reads that page from memory, not just the window in front.",
+      "tags": ["memory", "regression"],
+      "lang": "en",
+      "screen": "uniswap_explore",
+      "earlier": ["uniswap_truth_token"],
+      "say": "Look again at the Uniswap page we were looking at and find the correct link for their token's website",
+      "regression": "0.1.22: only looked at the current window",
+      "expect": { "route": ["answer", "act"], "contains": ["truth.network"] }
+    },
+    {
+      "id": "handled.en.yes-to-suggestion-title",
+      "about": "Accepting a suggestion shows a card titled with the offer the user saw, never the instruction sent to the model.",
+      "tags": ["cards", "critical", "regression"],
+      "lang": "en",
+      "screen": "terminal_error",
+      "say": "yes",
+      "card": { "kind": "suggestion" },
+      "settings": {
+        "intelligence": "cloud",
+        "polish": false,
+        "writing": "smart",
+        "cloud_suggestions": "accepted"
+      },
+      "regression": "0.1.22: the card read \"You offered the user: … and they said yes\"",
+      "expect": {
+        "not_shows": [
+          "You offered the user",
+          "they said yes",
+          "Explain this error and the most likely fix"
+        ]
+      }
     }
   ]
 }

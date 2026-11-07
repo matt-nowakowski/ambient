@@ -1,5 +1,7 @@
 {
   "screens": {
+    "uniswap_truth_token": {"app": {"macos": "Arc", "windows": "Google Chrome", "linux": "Google Chrome"}, "bundle": {"macos": "company.thebrowser.Browser", "windows": "chrome.exe", "linux": "google-chrome"}, "title": "Truth Network (TRUTH) price on Uniswap", "url": "https://app.uniswap.org/explore/tokens/ethereum/0x8a8b5318d3a59fa6d1d0a83a1b0506f2796b5670", "text": "Truth Network\nTRUTH\n$0.0412\n+6.3% today\nSwap\nBuy\nSell\nStats\nTVL $2.1M\nMarket cap $41.2M\nFDV $41.2M\n1 day volume $3.4M\nInfo\nTruth Network is a decentralised oracle network for prediction markets.\nWebsite → https://truth.network\nTwitter → https://x.com/truthnetwork\nEtherscan → https://etherscan.io/token/0x8a8b5318d3a59fa6d1d0a83a1b0506f2796b5670", "focus": {"role": "AXWebArea", "editable": false}},
+    "uniswap_explore": {"app": {"macos": "Arc", "windows": "Google Chrome", "linux": "Google Chrome"}, "bundle": {"macos": "company.thebrowser.Browser", "windows": "chrome.exe", "linux": "google-chrome"}, "title": "Uniswap Interface", "url": "https://app.uniswap.org/explore/tokens", "text": "Explore\nTokens\nPools\nTransactions\nTop tokens on Uniswap\n1 Ethereum ETH $3,412.10\n2 USD Coin USDC $1.00\n3 Tether USDT $1.00\n4 Wrapped BTC WBTC $97,120.00", "focus": {"role": "AXWebArea", "editable": false}},
     "hyperliquid_btc": {
       "app": {"macos": "Google Chrome", "windows": "Google Chrome", "linux": "Google Chrome"},
       "bundle": {"macos": "com.google.Chrome", "windows": "chrome.exe", "linux": "google-chrome"},

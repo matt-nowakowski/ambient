@@ -92,6 +92,16 @@ pub struct Screen {
     pub reply_button: bool,
 }
 
+/// A window looked at just before the scenario's.
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
+#[serde(default)]
+pub struct Earlier {
+    pub app: String,
+    pub title: String,
+    pub url: Option<String>,
+    pub text: String,
+}
+
 /// A card already on screen when the scenario starts.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 #[serde(default)]
@@ -124,6 +134,8 @@ pub struct Scenario {
     /// None: nothing in front (the desktop).
     pub screen: Option<Screen>,
     pub card: Option<Card>,
+    /// Windows looked at just before, newest first.
+    pub earlier: Vec<Earlier>,
     /// A JSON patch over the default settings (objects merge).
     pub settings: Value,
     /// "free" or "pro".

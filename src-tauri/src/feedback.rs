@@ -158,6 +158,7 @@ pub fn note_card(content: &HudContent) {
         HudContent::Answer {
             id,
             question,
+            question_vars: None,
             text,
             done: true,
             ..
@@ -590,6 +591,7 @@ mod tests {
         note_card(&HudContent::Answer {
             id: "answer-1".into(),
             question: "When is the dentist?".into(),
+            question_vars: None,
             text: "Tuesday at 10.".into(),
             sources: vec![],
             done: true,

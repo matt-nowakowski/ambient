@@ -144,12 +144,25 @@ private func collectText(_ root: AXUIElement, maxChars: Int, deadline: Date) -> 
 private func collectText(_ root: AXUIElement, maxChars: Int, deadline: Date, visited: inout Int) -> String {
     var out = ""
     var seen = Set<String>()
+    // Links off the page's own site keep where they go ("Website →
+    // https://truth.network"), so "open their website" can use the real link.
+    let pageHost = stringAttr(root, "AXURL").flatMap { URL(string: $0)?.host }
     var queue: [AXUIElement] = [root]
     while !queue.isEmpty, out.count < maxChars, visited < 4000, Date() < deadline {
         let el = queue.removeFirst()
         visited += 1
         let role = stringAttr(el, kAXRoleAttribute) ?? ""
         if skipRoles.contains(role) { continue }
+        if role == "AXLink", let href = stringAttr(el, "AXURL"), let link = URL(string: href),
+           link.scheme == "https" || link.scheme == "http", let host = link.host, host != pageHost {
+            let label = (stringAttr(el, kAXTitleAttribute) ?? stringAttr(el, kAXDescriptionAttribute) ?? "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let line = (label.isEmpty ? "Link" : label) + " → " + String(href.prefix(120))
+            if !seen.contains(line) {
+                seen.insert(line)
+                out += line + "\n"
+            }
+        }
         if textRoles.contains(role) {
             let value = stringAttr(el, kAXValueAttribute) ?? stringAttr(el, kAXTitleAttribute) ?? ""
             let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)

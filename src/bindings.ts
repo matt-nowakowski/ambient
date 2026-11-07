@@ -2050,7 +2050,7 @@ export type HudContent =
 /**
  * The answer card. `text` grows as the answer streams in.
  */
-{ kind: "answer"; id: string; question: string; text: string; sources: HudSource[]; done: boolean; replace: boolean; actions: HudAnswerAction[]; note: string | null } | 
+{ kind: "answer"; id: string; question: string; question_vars: Partial<{ [key in string]: string }> | null; text: string; sources: HudSource[]; done: boolean; replace: boolean; actions: HudAnswerAction[]; note: string | null } | 
 /**
  * A proactive suggestion: one line, accept or dismiss. `title` is an
  * i18n key (or the judge's own words); `vars` fill its placeholders

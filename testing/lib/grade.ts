@@ -122,7 +122,10 @@ export function outcomeOf(r: AppReport, c: Case, proxyCalls: number): Outcome {
       ...base,
       route: kind === "reminder" ? "remind" : "act",
       act: kind,
-      output: lastCard("notice")?.text,
+      // What it said, and where it went.
+      output: [lastCard("notice")?.text, ...openedUrls]
+        .filter(Boolean)
+        .join(" "),
     };
   }
   if (name === "recall")

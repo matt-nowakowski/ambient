@@ -45,7 +45,11 @@ pub enum HudContent {
     /// The answer card. `text` grows as the answer streams in.
     Answer {
         id: String,
+        /// What was asked, as typed or said. With `question_vars` it is the
+        /// accepted suggestion's own title instead (an i18n key or the
+        /// judge's words, like a Suggestion's `title`), never our prompt.
         question: String,
+        question_vars: Option<BTreeMap<String, String>>,
         text: String,
         sources: Vec<HudSource>,
         done: bool,
@@ -957,6 +961,7 @@ mod tests {
         HudContent::Answer {
             id: "answer-1".into(),
             question: "q".into(),
+            question_vars: None,
             text: text.into(),
             sources: Vec::new(),
             done,

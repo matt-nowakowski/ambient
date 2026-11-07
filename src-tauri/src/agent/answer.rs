@@ -129,6 +129,8 @@ pub fn last_turn() -> Option<(String, String)> {
 #[derive(Clone)]
 struct Screen {
     pid: i32,
+    /// The app's name.
+    app: String,
     /// The window's title and page when read: a read is reused only while
     /// they're still what's in front (another tab in the same browser is a
     /// different window).
@@ -202,13 +204,22 @@ fn capture_screen(app: &AppHandle) -> Option<Screen> {
     } else {
         snap.window_title.clone()
     };
+    let redacted = redact(&text).0;
+    // For "the page we just looked at" in the next few minutes.
+    super::earlier::remember(super::earlier::Seen {
+        app: snap.app.name.clone(),
+        title: snap.window_title.clone(),
+        url: snap.url.clone().unwrap_or_default(),
+        text: redacted.clone(),
+    });
     Some(Screen {
         pid: snap.app.pid,
+        app: snap.app.name.clone(),
         window: (
             snap.window_title.clone(),
             snap.url.clone().unwrap_or_default(),
         ),
-        text: format!("{header}\n{}", redact(&text).0),
+        text: format!("{header}\n{redacted}"),
         source: (!title.trim().is_empty()).then_some(HudSource { title, url }),
     })
 }
@@ -313,6 +324,38 @@ pub struct Opts {
     /// What the given context is, as its tag in the prompt: the selection
     /// being rewritten (`selected_text`), else the window (`window_text`).
     pub context_tag: Option<&'static str>,
+    /// An accepted suggestion: the card is titled with the offer the user
+    /// saw (its i18n key or the judge's words, and its vars), not the
+    /// instruction sent to the model.
+    pub shown: Option<(String, std::collections::BTreeMap<String, String>)>,
+    /// A second try at a draft whose first came back as the instruction
+    /// itself (see `echoes`): never tried a third time.
+    pub retried: bool,
+}
+
+/// [`run`] for an accepted suggestion, titled with its offer (`Opts::shown`).
+pub async fn run_shown(
+    app: AppHandle,
+    question: String,
+    needs_web: bool,
+    about_screen: bool,
+    given_context: Option<String>,
+    shown: Option<(String, std::collections::BTreeMap<String, String>)>,
+) {
+    let web_query = needs_web.then(|| question.clone());
+    run_with(
+        app,
+        question,
+        needs_web,
+        about_screen,
+        given_context,
+        Opts {
+            web_query,
+            shown,
+            ..Opts::default()
+        },
+    )
+    .await
 }
 
 /// `given_context` supplies the text to answer from (recall); otherwise
@@ -638,6 +681,19 @@ fn media_denied(answer: &str) -> u8 {
     mask
 }
 
+/// The same words, ignoring case and punctuation: a draft that only
+/// repeats the instruction it was given.
+fn echoes(text: &str, instruction: &str) -> bool {
+    let words = |s: &str| -> Vec<String> {
+        s.split(|c: char| !c.is_alphanumeric())
+            .filter(|w| !w.is_empty())
+            .map(str::to_lowercase)
+            .collect()
+    };
+    let said = words(instruction);
+    !said.is_empty() && words(text) == said
+}
+
 /// Whether the answer denies the screen the card promised. An answer that
 /// simply restates the promise ("this email thread is about Q4 pricing")
 /// stands; only a card whose body says the window is something else is
@@ -706,7 +762,12 @@ pub async fn run_with(
             &app,
             HudContent::Answer {
                 id: id.clone(),
-                question: question.clone(),
+                // An accepted suggestion shows its own offer, never our prompt.
+                question: match &opts.shown {
+                    Some((title, _)) => title.clone(),
+                    None => question.clone(),
+                },
+                question_vars: opts.shown.as_ref().map(|(_, vars)| vars.clone()),
                 text: text.to_string(),
                 sources: chips,
                 done,
@@ -753,7 +814,28 @@ pub async fn run_with(
                 if let Ok(mut g) = window_chip.lock() {
                     *g = s.source;
                 }
-                context = Some(s.text);
+                // The windows just before it, for "the token we just looked at".
+                let here = super::earlier::Seen {
+                    app: s.app.clone(),
+                    title: s.window.0.clone(),
+                    url: s.window.1.clone(),
+                    text: String::new(),
+                };
+                let a = app.clone();
+                let earlier = tauri::async_runtime::spawn_blocking(move || {
+                    super::earlier::windows(&a, Some(&here))
+                })
+                .await
+                .unwrap_or_default();
+                context = Some(if earlier.is_empty() {
+                    s.text
+                } else {
+                    format!(
+                        "{}\n\nWindows they looked at just before, newest first:\n{}",
+                        s.text,
+                        super::earlier::tagged(&earlier)
+                    )
+                });
             }
             None => {
                 // A private page (a bank, a checkout, a medical portal…): say
@@ -788,9 +870,14 @@ pub async fn run_with(
     let prompt = if opts.compose && !rewriting {
         let me = super::writing::Me::read(&app);
         let brief = super::writing::reply_brief(&question, &me, context.as_deref());
-        match opts.style_note {
+        let brief = match opts.style_note {
             Some(note) => format!("{brief}\n\n{note}"),
             None => brief,
+        };
+        if opts.retried {
+            format!("{brief}\n\n(Your last reply repeated my words back. They are an instruction, maybe misheard: write the message they ask for.)")
+        } else {
+            brief
         }
     } else {
         question.clone()
@@ -898,6 +985,24 @@ pub async fn run_with(
             .await
             .unwrap_or((true, false));
             let (can_insert, in_mail) = situation;
+            // A draft that is just the instruction back hasn't been
+            // written: ask once more rather than type their words.
+            if opts.compose && !rewriting && !opts.retried && echoes(&text, &question) {
+                log::info!("compose: the draft repeated the instruction; asking again");
+                let again = Opts {
+                    retried: true,
+                    ..opts
+                };
+                return Box::pin(run_with(
+                    app,
+                    question,
+                    needs_web,
+                    about_screen,
+                    None,
+                    again,
+                ))
+                .await;
+            }
             if opts.compose && !text.trim().is_empty() {
                 super::deliver_draft(&app, text.clone(), can_insert, opts.smart.clone());
             } else {
@@ -972,7 +1077,7 @@ fn on_device_system(write: bool) -> String {
     if write {
         Prompt {
             role: "You write text for the user to paste: an email reply, a rewritten draft, a message.",
-            task: "Do exactly what the user's instruction asks. A reply is from the user to the other person in the conversation (the request says who's who), never addressed to the user. The instruction was spoken and may be misheard (names especially: spell them as the screen shows them). It says what to write; write that text itself, never the instruction back, tidied or not: \"tell Claude to wait for me\" → \"Wait for me.\" and \"say that Claude should wait\" → \"Please wait.\" (Claude is the reader: speak to them, not about them); \"reply that Thursday works\" → \"Thursday works for me.\"".into(),
+            task: "Do exactly what the user's instruction asks. A reply is from the user to the other person in the conversation (the request says who's who), never addressed to the user. The instruction was spoken and may be misheard (names especially: spell them as the screen shows them). It says what to write; write that text itself, never the instruction back, tidied or not. Speech can garble the instruction itself; it is still an instruction: write your best reading of the message, never the garbled words back. For example: \"tell Claude to wait for me\" → \"Wait for me.\" and \"say that Claude should wait\" → \"Please wait.\" (Claude is the reader: speak to them, not about them); \"reply that Thursday works\" → \"Thursday works for me.\" A name in the instruction that sounds like, or is a nickname of, the person in the conversation (\"Emmy\" or \"Emi\" with Emilia on screen) is that person: the message is to them, in the second person. Words that only ask you (\"please\", \"can you\") aren't part of the message: \"tell Emmy, please, I will call her tomorrow\" in a chat with Emilia → \"I'll call you tomorrow.\"".into(),
             rules: bullets(WRITING_RULES),
             context: writing_context(),
             output: "Only the finished text, ready to paste.".into(),
@@ -1277,6 +1382,17 @@ async fn server_answer(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_draft_that_repeats_the_instruction_echoes() {
+        let said = "Talk Laude here that he should wait for me";
+        assert!(echoes("Talk Laude here, that he should wait for me.", said));
+        assert!(!echoes("Wait for me.", said));
+        assert!(!echoes(
+            "I'll call you tomorrow.",
+            "tell Emi I will call her tomorrow"
+        ));
+    }
 
     #[test]
     fn citation_markers_are_stripped_but_code_and_links_keep_theirs() {

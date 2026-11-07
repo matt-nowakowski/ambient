@@ -485,7 +485,15 @@ export default function Hud() {
               <>
                 <header className="hud-head">
                   <Orb variant={content.done ? "B1" : "S1"} size={18} />
-                  <span className="hud-question">{content.question}</span>
+                  <span className="hud-question">
+                    {/* An accepted suggestion is titled with its own offer. */}
+                    {content.question_vars
+                      ? t(content.question, {
+                          defaultValue: content.question,
+                          ...fill(content.question_vars),
+                        })
+                      : content.question}
+                  </span>
                   <button
                     type="button"
                     className="hud-close"
