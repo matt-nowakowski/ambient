@@ -128,7 +128,8 @@ export class Model {
 
   private async call(messages: Message[], maxTokens: number) {
     let last: unknown;
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 5; attempt++) {
+      let wait = 800 * (attempt + 1);
       try {
         const res = await fetch(BASETEN_URL, {
           method: "POST",
@@ -148,10 +149,16 @@ export class Model {
         if (res.ok) return await res.json();
         last = new Error(`upstream ${res.status}`);
         if (res.status < 500 && res.status !== 429) break;
+        // Rate limited (three OS gates share the key): back off for real.
+        if (res.status === 429) {
+          const after = Number(res.headers.get("retry-after"));
+          wait =
+            after > 0 ? after * 1000 : Math.min(2000 * 2 ** attempt, 15_000);
+        }
       } catch (e) {
         last = e;
       }
-      await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+      await new Promise((r) => setTimeout(r, wait));
     }
     throw last;
   }

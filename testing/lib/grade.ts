@@ -333,6 +333,9 @@ export async function judge(
     );
   } catch (err) {
     if (err instanceof Refused) return "skip";
+    // The provider failed us (rate limit, outage, timeout), not the app.
+    if (/upstream (429|5\d\d)|timeout|fetch failed/i.test(String(err)))
+      return "skip";
     return [`judge failed: ${String(err)}`];
   }
   const m = reply.match(/\{[\s\S]*\}/);

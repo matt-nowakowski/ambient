@@ -136,6 +136,27 @@ async function main() {
     }
   };
   await Promise.all(Array.from({ length: Math.max(1, jobs) }, worker));
+  // A scenario skipped because the model was slow or unavailable says
+  // nothing about the app; try those once more, one at a time, so a
+  // provider stall alone doesn't fail the gate.
+  if (!dry) {
+    const stalled = rows.filter(
+      (r) =>
+        r.status === "skip" &&
+        r.reasons.some((x) => x.startsWith("model unavailable")),
+    );
+    for (const r of stalled) {
+      const c = picked.find((p) => p.id === r.id);
+      if (!c) continue;
+      const again = await runOne(c, model, registry, server.port, out);
+      rows[rows.indexOf(r)] = again;
+      const mark =
+        again.status === "pass" ? "✓" : again.status === "skip" ? "–" : "✗";
+      console.log(
+        `${mark} ${c.id} (again)${again.status === "fail" ? `: ${again.reasons.join("; ")}` : ""}`,
+      );
+    }
+  }
   server.stop(true);
   rows.sort((a, b) => a.id.localeCompare(b.id));
   const summary = writeReports(out, rows, {

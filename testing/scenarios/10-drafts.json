@@ -603,7 +603,7 @@
       "expect": {
         "route": "draft",
         "must_not": ["typed_verbatim", "silent"],
-        "judge": "It speaks to Emilia in the second person, like \"I'll call you tomorrow\"; it doesn't say \"her\" or \"tell Emi\"."
+        "contains": ["you"], "not_contains": ["tell", "emmy", "call her", "please,"]
       }
     },
     {
@@ -617,7 +617,7 @@
       "expect": {
         "route": "draft",
         "must_not": ["typed_verbatim", "silent"],
-        "judge": "It speaks to Emilia in the second person, like \"I'll call you tomorrow\"; it doesn't say \"her\" or \"tell Emi\"."
+        "contains": ["you"], "not_contains": ["tell", "emmy", "call her", "please,"]
       }
     },
     {

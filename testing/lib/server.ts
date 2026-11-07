@@ -76,14 +76,20 @@ export function startServer(model: Model, registry: Registry) {
         if (path === "/api/ai/v1/chat/completions" && req.method === "POST") {
           const body = await req.json();
           const messages = (body.messages ?? []) as Message[];
-          const started = Date.now();
-          const content = await model.complete(
-            messages,
-            Number(body.max_tokens ?? 2048),
-          );
-          // Past the router's and polish's 10 s deadline the app has
+          // Past the router's 6 s deadline (ROUTE_TIMEOUT) the app has
           // already fallen back: that run says nothing about its reasoning.
-          if (Date.now() - started > 9_500) log.refused = "slow";
+          // Marked when the deadline passes, not when the reply arrives: by
+          // then the app may have finished and been graded.
+          const slow = setTimeout(() => (log.refused = "slow"), 5_500);
+          let content: string;
+          try {
+            content = await model.complete(
+              messages,
+              Number(body.max_tokens ?? 2048),
+            );
+          } finally {
+            clearTimeout(slow);
+          }
           return done(
             Response.json({
               id: "test",
