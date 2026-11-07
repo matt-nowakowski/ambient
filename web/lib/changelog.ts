@@ -11,6 +11,30 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.26",
+    date: "2026-11-07",
+    title: "Read at a glance",
+    summary:
+      "Shorter words everywhere, tooltips for the details, and one button style across the app.",
+    sections: [
+      {
+        heading: "Improved",
+        items: [
+          "Settings, Models, Privacy and Account show a name and a control; details moved into small ⓘ tooltips.",
+          "About 120 longer lines cut to a few words, in every language.",
+          "Every button follows one style: same height, weight and corners.",
+          "The on-device AI card fits on one line, and sizes read as \"1.0 GB\" instead of \"1,000 MB\".",
+        ],
+      },
+      {
+        heading: "Fixed",
+        items: [
+          "The Apple Intelligence row has proper space above and below.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.25",
     date: "2026-11-07",
     title: "Remembers what you just saw",
