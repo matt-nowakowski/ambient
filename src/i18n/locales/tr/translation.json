@@ -1401,7 +1401,7 @@
       "listening": "Dinliyor…",
       "heardNothing": "Duydum ama bir istek anlayamadım.",
       "noWebResults": "Şu an web’de arama yapılamadı, bu yüzden bildiklerimle yanıtlıyorum.",
-      "timeout": "Çok uzun sürdü. Tekrar deneyin.",
+      "timeout": "Bağlantı şu anda yavaş. Biraz sonra tekrar deneyin.",
       "needsCloud": "Bu işlem için bulut gerekiyor, ancak yapay zekâ “Yalnızca bu bilgisayarda” olarak ayarlı. Bunu Gizlilik’ten değiştirin.",
       "aiOff": "Yapay zekâ kapalı, bu yüzden {{appName}} bunu yapamaz. Gizlilik bölümünden açın.",
       "cloudOfferOn": "Buluttan öneriler açık. Bunu Gizlilik’ten değiştirin.",

@@ -1401,7 +1401,7 @@
       "listening": "Mendengarkan…",
       "heardNothing": "Saya mendengar Anda, tapi tidak menangkap permintaan.",
       "noWebResults": "Tidak bisa mencari di web saat ini, jadi ini dari yang saya tahu.",
-      "timeout": "Terlalu lama. Coba lagi.",
+      "timeout": "Koneksi sedang lambat. Coba lagi sebentar lagi.",
       "needsCloud": "Ini memerlukan cloud, dan Kecerdasan diatur ke “Hanya di komputer ini”. Ubah di Privasi.",
       "aiOff": "AI dimatikan, jadi {{appName}} tidak bisa melakukannya. Aktifkan di Privasi.",
       "cloudOfferOn": "Saran dari cloud aktif. Ubah di Privasi.",

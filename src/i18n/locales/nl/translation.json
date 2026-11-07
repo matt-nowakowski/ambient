@@ -1401,7 +1401,7 @@
       "listening": "Luistert…",
       "heardNothing": "Gehoord, maar geen verzoek opgevangen.",
       "noWebResults": "Zoeken op het web lukte nu niet, dus dit is wat ik weet.",
-      "timeout": "Dat duurde te lang. Probeer het opnieuw.",
+      "timeout": "De verbinding is nu traag. Probeer het zo opnieuw.",
       "needsCloud": "Hiervoor is de cloud nodig, maar de intelligentie staat op ‘Alleen op deze computer’. Wijzig dit in Privacy.",
       "aiOff": "AI staat uit, dus {{appName}} kan dat niet. Zet het aan bij Privacy.",
       "cloudOfferOn": "Suggesties uit de cloud staan aan. Wijzig dit in Privacy.",

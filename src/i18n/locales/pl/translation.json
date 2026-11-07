@@ -1412,7 +1412,7 @@
       "listening": "Słucham…",
       "heardNothing": "Słyszałem, ale nie wychwyciłem żadnej prośby.",
       "noWebResults": "Nie udało się teraz przeszukać sieci, więc to odpowiedź z mojej wiedzy.",
-      "timeout": "Trwało to zbyt długo. Spróbuj ponownie.",
+      "timeout": "Połączenie jest teraz wolne. Spróbuj ponownie za chwilę.",
       "needsCloud": "To wymaga chmury, a w ustawieniu „Gdzie działa inteligencja” wybrano „Tylko na tym komputerze”. Zmień to w sekcji Prywatność.",
       "aiOff": "AI jest wyłączone, więc {{appName}} nie może tego zrobić. Włącz je w Prywatności.",
       "cloudOfferOn": "Sugestie z chmury są włączone. Zmień to w sekcji Prywatność.",

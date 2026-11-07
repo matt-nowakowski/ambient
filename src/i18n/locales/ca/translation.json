@@ -1409,7 +1409,7 @@
       "listening": "Escoltant…",
       "heardNothing": "Us he sentit, però no he entès cap petició.",
       "noWebResults": "Ara no he pogut cercar al web, així que això és el que sé.",
-      "timeout": "Ha trigat massa. Torneu-ho a provar.",
+      "timeout": "Ara mateix la connexió és lenta. Torneu-ho a provar d’aquí a una estona.",
       "needsCloud": "Això necessita el núvol, i la intel·ligència està configurada a «Només en aquest ordinador». Canvieu-ho a Privadesa.",
       "aiOff": "La IA està desactivada, així que {{appName}} no pot fer-ho. Activa-la a Privadesa.",
       "cloudOfferOn": "Els suggeriments des del núvol estan activats. Canvieu-ho a Privadesa.",

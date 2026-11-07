@@ -1404,7 +1404,7 @@
       "listening": "Escuchando…",
       "heardNothing": "Te he oído, pero no he entendido la petición.",
       "noWebResults": "Ahora no pude buscar en la web, así que respondo con lo que sé.",
-      "timeout": "Ha tardado demasiado. Inténtalo de nuevo.",
+      "timeout": "La conexión va lenta ahora mismo. Inténtalo de nuevo en un momento.",
       "needsCloud": "Esto necesita la nube, y la inteligencia está configurada en «Solo en este equipo». Cámbialo en Privacidad.",
       "aiOff": "La IA está desactivada, así que {{appName}} no puede hacerlo. Actívala en Privacidad.",
       "cloudOfferOn": "Las sugerencias desde la nube están activadas. Cámbialo en Privacidad.",

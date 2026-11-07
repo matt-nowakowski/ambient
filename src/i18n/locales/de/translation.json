@@ -1396,7 +1396,7 @@
       "listening": "Hört zu…",
       "heardNothing": "Ich habe dich gehört, aber keine Anfrage erkannt.",
       "noWebResults": "Die Websuche hat gerade nicht geklappt, daher antworte ich aus meinem eigenen Wissen.",
-      "timeout": "Das hat zu lange gedauert. Versuch es noch einmal.",
+      "timeout": "Die Verbindung ist gerade langsam. Versuch es gleich noch einmal.",
       "needsCloud": "Dafür braucht es die Cloud, aber die KI ist auf „Nur auf diesem Computer“ eingestellt. Ändere das unter Datenschutz.",
       "aiOff": "KI ist aus, deshalb kann {{appName}} das nicht. Schalte sie unter Datenschutz ein.",
       "cloudOfferOn": "Vorschläge aus der Cloud sind aktiv. Ändere das unter Datenschutz.",

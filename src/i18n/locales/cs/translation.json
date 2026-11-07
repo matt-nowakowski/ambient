@@ -1417,7 +1417,7 @@
       "listening": "Poslouchám…",
       "heardNothing": "Slyšel jsem vás, ale nezachytil jsem žádný požadavek.",
       "noWebResults": "Teď se nepodařilo hledat na webu, takže odpovídám z toho, co vím.",
-      "timeout": "Trvalo to příliš dlouho. Zkuste to znovu.",
+      "timeout": "Připojení je teď pomalé. Zkuste to za chvíli znovu.",
       "needsCloud": "Tohle potřebuje cloud a Inteligence je nastavená na „Jen na tomto počítači“. Změňte to v Soukromí.",
       "aiOff": "AI je vypnutá, takže to {{appName}} nedokáže. Zapněte ji v Soukromí.",
       "cloudOfferOn": "Návrhy z cloudu jsou zapnuté. Změňte to v Soukromí.",

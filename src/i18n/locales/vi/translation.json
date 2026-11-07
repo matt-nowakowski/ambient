@@ -1401,7 +1401,7 @@
       "listening": "Đang nghe…",
       "heardNothing": "Đã nghe, nhưng chưa nhận ra yêu cầu.",
       "noWebResults": "Hiện không tìm được trên web, nên đây là từ những gì tôi biết.",
-      "timeout": "Mất quá lâu. Hãy thử lại.",
+      "timeout": "Kết nối đang chậm. Hãy thử lại sau giây lát.",
       "needsCloud": "Việc này cần đám mây, và Trí tuệ đang được đặt ở “Chỉ trên máy tính này”. Hãy đổi trong Quyền riêng tư.",
       "aiOff": "AI đang tắt nên {{appName}} không thể làm việc đó. Bật AI trong Quyền riêng tư.",
       "cloudOfferOn": "Gợi ý từ đám mây đang bật. Hãy đổi trong Quyền riêng tư.",

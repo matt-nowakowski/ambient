@@ -1401,7 +1401,7 @@
       "listening": "Listening…",
       "heardNothing": "Heard you, but didn't catch a request.",
       "noWebResults": "Couldn't search the web just now, so this is from what I know.",
-      "timeout": "That took too long. Try again.",
+      "timeout": "The connection is slow right now. Try again in a moment.",
       "needsCloud": "This needs the cloud, and Intelligence is set to “On this computer only”. Change it in Privacy.",
       "aiOff": "AI is off, so {{appName}} can't do that. Turn it on in Privacy.",
       "cloudOfferOn": "Suggestions from the cloud are on. Change it in Privacy.",

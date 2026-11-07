@@ -1409,7 +1409,7 @@
       "listening": "Ouvindo…",
       "heardNothing": "Ouvi você, mas não entendi nenhum pedido.",
       "noWebResults": "Não foi possível pesquisar na web agora, então a resposta vem do que eu já sei.",
-      "timeout": "Demorou demais. Tente novamente.",
+      "timeout": "A conexão está lenta agora. Tente novamente daqui a pouco.",
       "needsCloud": "Isso precisa da nuvem, e a Inteligência está em “Somente neste computador”. Mude em Privacidade.",
       "aiOff": "A IA está desligada, por isso o {{appName}} não pode fazer isso. Ligue-a em Privacidade.",
       "cloudOfferOn": "As sugestões da nuvem estão ativadas. Mude em Privacidade.",

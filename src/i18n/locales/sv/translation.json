@@ -1401,7 +1401,7 @@
       "listening": "Lyssnar…",
       "heardNothing": "Jag hörde dig, men uppfattade ingen begäran.",
       "noWebResults": "Kunde inte söka på webben just nu, så det här är vad jag vet.",
-      "timeout": "Det tog för lång tid. Försök igen.",
+      "timeout": "Anslutningen är långsam just nu. Försök igen om en stund.",
       "needsCloud": "Det här kräver molnet, men intelligensen är inställd på ”Bara på den här datorn”. Ändra det under Integritet.",
       "aiOff": "AI är avstängt, så {{appName}} kan inte göra det. Slå på det under Integritet.",
       "cloudOfferOn": "Förslag från molnet är på. Ändra det under Integritet.",

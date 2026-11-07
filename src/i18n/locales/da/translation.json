@@ -1401,7 +1401,7 @@
       "listening": "Lytter…",
       "heardNothing": "Jeg hørte dig, men fangede ikke en forespørgsel.",
       "noWebResults": "Kunne ikke søge på nettet lige nu, så det her er ud fra det, jeg ved.",
-      "timeout": "Det tog for lang tid. Prøv igen.",
+      "timeout": "Forbindelsen er langsom lige nu. Prøv igen om lidt.",
       "needsCloud": "Det kræver skyen, og intelligensen er sat til »Kun på denne computer«. Skift det under Privatliv.",
       "aiOff": "AI er slået fra, så {{appName}} kan ikke gøre det. Slå det til under Privatliv.",
       "cloudOfferOn": "Forslag fra skyen er slået til. Ændr det under Privatliv.",
