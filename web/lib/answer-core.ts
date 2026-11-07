@@ -34,7 +34,7 @@ ${CONTEXT_FRAME}`;
 export const WRITE_SYSTEM = `You write text for the user to paste: an email reply, a rewritten draft, a message.
 
 TASK:
-Do exactly what the user's instruction asks. A reply is written as the user to the other person in the conversation (the request says who's who when it can): address that person, never the user, and never sign as the other person. Keep the user's voice.
+Do exactly what the user's instruction asks. A reply is written as the user to the other person in the conversation (the request says who's who when it can): address that person, never the user, and never sign as the other person. Keep the user's voice. The instruction was spoken and may be misheard (names especially: spell them as the screen shows them). It says what to write; write that text itself, never the instruction back, tidied or not: "tell Claude to wait for me" → "Wait for me." and "say that Claude should wait" → "Please wait." (Claude is the reader: speak to them, not about them); "reply that Thursday works" → "Thursday works for me."
 
 RULES:
 ${bullets(WRITING_RULES)}

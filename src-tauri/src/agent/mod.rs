@@ -919,11 +919,37 @@ pub fn deliver_draft(
 /// Open a reply to the message in front and paste the draft into it; show
 /// the draft card if no reply box could be opened. Call off the main thread.
 fn reply_then_paste(app: &AppHandle, text: String) {
+    // A new message opens on its recipient field: open it, and offer the
+    // text to paste into the body instead of typing it into "To".
+    if reply_opener().is_some_and(|o| o.new) {
+        let how = open_reply_box(app);
+        log::debug!("compose: new message ({how:?}); offering the draft to paste");
+        show_draft(app, "hud.draft.composed", text, false);
+        return;
+    }
     match open_reply_box(app) {
         Ok(how) => {
             log::debug!("compose: reply box open ({how}); pasting the draft");
             if let Err(e) = crate::clipboard::paste(text.clone(), app.clone()) {
                 log::warn!("pasting the reply failed: {e}");
+                show_draft(app, "hud.draft.composed", text, false);
+                return;
+            }
+            // Unless the reply can be seen in the field, offer it in the card
+            // too: a press can hit a control that only looks like Reply, and
+            // the paste would then go nowhere.
+            std::thread::sleep(Duration::from_millis(250));
+            let nw = settings::get_settings(app).agent.never_watch;
+            let landed = crate::context::field::focused_field(true, &nw)
+                .and_then(|f| f.value)
+                .map(|v| {
+                    let start: String = text.trim().chars().take(24).collect();
+                    v.contains(start.trim())
+                });
+            if landed != Some(true) {
+                log::debug!(
+                    "compose: can't see the reply in the field ({landed:?}); showing the draft too"
+                );
                 show_draft(app, "hud.draft.composed", text, false);
             }
         }
@@ -1056,7 +1082,11 @@ fn open_reply_box(app: &AppHandle) -> Result<&'static str, &'static str> {
         log::debug!(
             "compose: reply button press result {pressed} (0 pressed, 1 not found, 2 failed, 3 unavailable)"
         );
-        if pressed == 0 && wait_for_field(Duration::from_millis(2500)) == Some(true) {
+        // Pressed: the reply box opens with focus in it. Webmail in some
+        // browsers doesn't report that focus as a text field, so only a
+        // focus that's certainly not one counts as failure; the paste is
+        // checked afterwards (`reply_then_paste`).
+        if pressed == 0 && wait_for_field(Duration::from_millis(2500)) != Some(false) {
             return Ok("reply button");
         }
     }
