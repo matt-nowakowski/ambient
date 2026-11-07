@@ -1514,7 +1514,6 @@
       "searchInstead": "Ya está escrito. ¿Prefieres buscarlo?",
       "search": "Buscar"
     },
-    "suggestionTip": "Di «sí», «ahora no» o «no me muestres esto».",
     "replace": "Reemplazar",
     "actions": {
       "reply": "Responder",
@@ -1634,7 +1633,6 @@
       "copiedOriginal": "Copiamos tu texto original. Pega para reemplazar.",
       "couldntRewrite": "No se pudo reescribir ahora, así que tu texto no cambió."
     },
-    "firstSuggestionTip": "Tu primera sugerencia. Di «sí», «ahora no» o «no me muestres esto». Aprende.",
     "learn": {
       "offer": "¿Escribir siempre «{{to}}» en lugar de «{{from}}»?",
       "remember": "Recordar",

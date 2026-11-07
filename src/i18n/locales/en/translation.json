@@ -1511,7 +1511,6 @@
       "searchInstead": "Typed it. Search this instead?",
       "search": "Search"
     },
-    "suggestionTip": "Say “yes”, “not now” or “don't show me these”.",
     "replace": "Replace",
     "actions": {
       "reply": "Reply",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Copied your original text. Paste to replace.",
       "couldntRewrite": "Couldn't rewrite that just now, so your text is unchanged."
     },
-    "firstSuggestionTip": "Your first suggestion. Say “yes”, “not now” or “don't show me these”. It learns.",
     "learn": {
       "offer": "Always write “{{to}}” instead of “{{from}}”?",
       "remember": "Remember",

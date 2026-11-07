@@ -1511,7 +1511,6 @@
       "searchInstead": "Skrivet. Sök på det i stället?",
       "search": "Sök"
     },
-    "suggestionTip": "Säg ”ja”, ”inte nu” eller ”visa inte sådana”.",
     "replace": "Ersätt",
     "actions": {
       "reply": "Svara",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Din ursprungliga text är kopierad. Klistra in för att ersätta.",
       "couldntRewrite": "Det gick inte att skriva om just nu, så din text är oförändrad."
     },
-    "firstSuggestionTip": "Ditt första förslag. Säg ”ja”, ”inte nu” eller ”visa inte sådana”. Den lär sig.",
     "learn": {
       "offer": "Skriv alltid ”{{to}}” i stället för ”{{from}}”?",
       "remember": "Kom ihåg",

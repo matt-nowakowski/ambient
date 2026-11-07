@@ -1522,7 +1522,6 @@
       "searchInstead": "Wpisano. Może zamiast tego wyszukać?",
       "search": "Szukaj"
     },
-    "suggestionTip": "Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”.",
     "replace": "Zastąp",
     "actions": {
       "reply": "Odpowiedz",
@@ -1642,7 +1641,6 @@
       "copiedOriginal": "Skopiowano twój oryginalny tekst. Wklej, aby zastąpić.",
       "couldntRewrite": "Nie udało się teraz tego przepisać, więc twój tekst się nie zmienił."
     },
-    "firstSuggestionTip": "Twoja pierwsza sugestia. Powiedz „tak”, „nie teraz” albo „nie pokazuj mi tego”. Uczy się.",
     "learn": {
       "offer": "Zawsze pisać „{{to}}” zamiast „{{from}}”?",
       "remember": "Zapamiętaj",

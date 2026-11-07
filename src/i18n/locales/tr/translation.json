@@ -1511,7 +1511,6 @@
       "searchInstead": "Yazıldı. Bunun yerine aransın mı?",
       "search": "Ara"
     },
-    "suggestionTip": "“Evet”, “şimdi değil” veya “bunları gösterme” deyin.",
     "replace": "Değiştir",
     "actions": {
       "reply": "Yanıtla",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Özgün metniniz kopyalandı. Değiştirmek için yapıştırın.",
       "couldntRewrite": "Şu anda yeniden yazılamadı, metniniz değişmedi."
     },
-    "firstSuggestionTip": "İlk öneriniz. “Evet”, “şimdi değil” veya “bunları gösterme” deyin. Öğrenir.",
     "learn": {
       "offer": "Her zaman “{{from}}” yerine “{{to}}” yazılsın mı?",
       "remember": "Hatırla",

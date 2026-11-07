@@ -282,13 +282,6 @@ button.hud-chip:hover {
   gap: 8px;
 }
 
-.hud-tip {
-  flex-basis: 100%;
-  padding-left: 26px;
-  font-size: 11px;
-  color: var(--h-faint);
-}
-
 /* The title keeps at least this much room beside the buttons; with less,
    the buttons move to a line of their own. */
 .hud-suggestion-title {

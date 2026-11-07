@@ -1511,7 +1511,6 @@
       "searchInstead": "Sudah diketik. Cari ini saja?",
       "search": "Cari"
     },
-    "suggestionTip": "Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”.",
     "replace": "Ganti",
     "actions": {
       "reply": "Balas",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Teks asli Anda sudah disalin. Tempel untuk mengganti.",
       "couldntRewrite": "Tidak bisa menulis ulang sekarang, jadi teks Anda tidak berubah."
     },
-    "firstSuggestionTip": "Saran pertama Anda. Ucapkan “ya”, “nanti saja”, atau “jangan tampilkan ini”. Ia belajar.",
     "learn": {
       "offer": "Selalu tulis “{{to}}” alih-alih “{{from}}”?",
       "remember": "Ingat",

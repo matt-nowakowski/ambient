@@ -1527,7 +1527,6 @@
       "searchInstead": "Napsáno. Místo toho to vyhledat?",
       "search": "Hledat"
     },
-    "suggestionTip": "Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“.",
     "replace": "Nahradit",
     "actions": {
       "reply": "Odpovědět",
@@ -1647,7 +1646,6 @@
       "copiedOriginal": "Váš původní text je zkopírovaný. Vložte ho pro nahrazení.",
       "couldntRewrite": "Teď to nešlo přepsat, takže váš text zůstal beze změny."
     },
-    "firstSuggestionTip": "Váš první návrh. Řekněte „ano“, „teď ne“ nebo „tyhle mi neukazuj“. Učí se.",
     "learn": {
       "offer": "Vždy psát „{{to}}“ místo „{{from}}“?",
       "remember": "Zapamatovat",

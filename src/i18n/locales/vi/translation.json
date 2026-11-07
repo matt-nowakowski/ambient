@@ -1511,7 +1511,6 @@
       "searchInstead": "Đã nhập. Tìm kiếm thay vào đó?",
       "search": "Tìm kiếm"
     },
-    "suggestionTip": "Nói “có”, “để sau” hoặc “đừng hiện những cái này”.",
     "replace": "Thay thế",
     "actions": {
       "reply": "Trả lời",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Đã sao chép văn bản gốc của bạn. Dán để thay thế.",
       "couldntRewrite": "Không viết lại được lúc này, nên văn bản của bạn không đổi."
     },
-    "firstSuggestionTip": "Gợi ý đầu tiên của bạn. Nói “có”, “để sau” hoặc “đừng hiện những cái này”. Nó sẽ học.",
     "learn": {
       "offer": "Luôn viết “{{to}}” thay cho “{{from}}”?",
       "remember": "Ghi nhớ",

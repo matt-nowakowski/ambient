@@ -1511,7 +1511,6 @@
       "searchInstead": "Getypt. In plaats daarvan hierop zoeken?",
       "search": "Zoeken"
     },
-    "suggestionTip": "Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’.",
     "replace": "Vervangen",
     "actions": {
       "reply": "Beantwoorden",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Je oorspronkelijke tekst is gekopieerd. Plak om te vervangen.",
       "couldntRewrite": "Herschrijven lukte nu niet, dus je tekst is ongewijzigd."
     },
-    "firstSuggestionTip": "Je eerste suggestie. Zeg ‘ja’, ‘niet nu’ of ‘laat deze niet meer zien’. Het leert ervan.",
     "learn": {
       "offer": "Altijd “{{to}}” schrijven in plaats van “{{from}}”?",
       "remember": "Onthouden",

@@ -1511,7 +1511,6 @@
       "searchInstead": "已輸入。改為搜尋這個？",
       "search": "搜尋"
     },
-    "suggestionTip": "說「好」「稍後再說」或「別給我看這些」。",
     "replace": "取代",
     "actions": {
       "reply": "回覆",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "已複製你的原文。貼上即可取代。",
       "couldntRewrite": "暫時無法改寫，你的文字保持不變。"
     },
-    "firstSuggestionTip": "這是你的第一則建議。說「好」「稍後再說」或「別給我看這些」。它會學習。",
     "learn": {
       "offer": "以後都把「{{from}}」寫成「{{to}}」嗎？",
       "remember": "記住",

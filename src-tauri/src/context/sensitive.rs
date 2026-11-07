@@ -413,21 +413,25 @@ pub enum Sensitive {
     PrivateKey,
 }
 
-/// Longest run of consecutive BIP-39 words, ignoring list numbering ("1.", "2)").
+/// The most different BIP-39 words in one unbroken run, ignoring list
+/// numbering ("1.", "2)"). Counting different words, not words: a phrase is
+/// drawn at random from 2,048, so it almost never repeats one, while a
+/// repeated label does ("[Image #3] [Image #4] …" in a terminal is "image"
+/// twenty times with the numbers skipped, and read as a recovery phrase).
 fn longest_bip39_run(text: &str) -> usize {
-    let (mut best, mut run) = (0, 0);
+    let mut best = 0;
+    let mut run: HashSet<String> = HashSet::new();
     for raw in text.split(|c: char| c.is_whitespace() || c == ',' || c == '·' || c == '|') {
         let token = raw.trim_matches(|c: char| !c.is_alphanumeric());
         if token.is_empty() || token.chars().all(|c| c.is_ascii_digit()) {
             continue; // numbering or separators don't break a phrase
         }
-        if BIP39.contains(token.to_lowercase().as_str())
-            && token.chars().all(|c| c.is_ascii_alphabetic())
-        {
-            run += 1;
-            best = best.max(run);
+        let word = token.to_lowercase();
+        if BIP39.contains(word.as_str()) && token.chars().all(|c| c.is_ascii_alphabetic()) {
+            run.insert(word);
+            best = best.max(run.len());
         } else {
-            run = 0;
+            run.clear();
         }
     }
     best
@@ -436,9 +440,10 @@ fn longest_bip39_run(text: &str) -> usize {
 /// Whether this text shows a recovery phrase or a private key.
 pub fn detect(text: &str) -> Option<Sensitive> {
     // Prose almost always contains words outside the list ("the", "of", "is"),
-    // so 12 in a row is a phrase. With a phrase hint nearby, 8 is enough.
+    // so 11 different ones in a row is a phrase (12 words, allowing one
+    // repeat). With a phrase hint nearby, 7 is enough.
     let run = longest_bip39_run(text);
-    if run >= 12 || (run >= 8 && PHRASE_WORDS.is_match(text)) {
+    if run >= 11 || (run >= 7 && PHRASE_WORDS.is_match(text)) {
         return Some(Sensitive::RecoveryPhrase);
     }
     if KEYS.iter().any(|re| re.is_match(text)) {
@@ -503,6 +508,18 @@ mod tests {
         assert_eq!(
             detect("exported from the wallet\n2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d6e7f8091a"),
             Some(Sensitive::PrivateKey)
+        );
+    }
+
+    #[test]
+    fn a_repeated_label_is_not_a_phrase() {
+        // Claude Code lists pasted screenshots like this; "image" is a BIP-39 word.
+        let list: String = (3..=23).map(|n| format!("  ⎿ [Image #{n}]\n")).collect();
+        assert_eq!(detect(&list), None);
+        // A real phrase with one word repeated is still a phrase.
+        assert_eq!(
+            detect("wagon trick ocean dial cluster bronze maple goat ocean nation crisp ladder"),
+            Some(Sensitive::RecoveryPhrase)
         );
     }
 

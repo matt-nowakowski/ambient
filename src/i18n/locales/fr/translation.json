@@ -1514,7 +1514,6 @@
       "searchInstead": "Texte tapé. Lancer plutôt une recherche ?",
       "search": "Rechercher"
     },
-    "suggestionTip": "Dites « oui », « pas maintenant » ou « ne me montre plus ça ».",
     "replace": "Remplacer",
     "actions": {
       "reply": "Répondre",
@@ -1634,7 +1633,6 @@
       "copiedOriginal": "Votre texte d'origine est copié. Collez pour remplacer.",
       "couldntRewrite": "Impossible de réécrire pour l'instant, votre texte n'a pas changé."
     },
-    "firstSuggestionTip": "Votre première suggestion. Dites « oui », « pas maintenant » ou « ne me montre plus ça ». Il apprend.",
     "learn": {
       "offer": "Toujours écrire « {{to}} » au lieu de « {{from}} » ?",
       "remember": "Retenir",

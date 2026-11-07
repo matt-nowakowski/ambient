@@ -1511,7 +1511,6 @@
       "searchInstead": "Skrevet. Skal jeg søge på det i stedet?",
       "search": "Søg"
     },
-    "suggestionTip": "Sig »ja«, »ikke nu« eller »vis mig ikke disse«.",
     "replace": "Erstat",
     "actions": {
       "reply": "Svar",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "Din oprindelige tekst er kopieret. Indsæt for at erstatte.",
       "couldntRewrite": "Det kunne ikke omskrives lige nu, så din tekst er uændret."
     },
-    "firstSuggestionTip": "Dit første forslag. Sig »ja«, »ikke nu« eller »vis mig ikke disse«. Den lærer.",
     "learn": {
       "offer": "Skriv altid “{{to}}” i stedet for “{{from}}”?",
       "remember": "Husk",

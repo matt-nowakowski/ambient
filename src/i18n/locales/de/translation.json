@@ -1506,7 +1506,6 @@
       "searchInstead": "Getippt. Stattdessen danach suchen?",
       "search": "Suchen"
     },
-    "suggestionTip": "Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“.",
     "replace": "Ersetzen",
     "actions": {
       "reply": "Antworten",
@@ -1626,7 +1625,6 @@
       "copiedOriginal": "Dein ursprünglicher Text ist kopiert. Zum Ersetzen einfügen.",
       "couldntRewrite": "Das ließ sich gerade nicht umschreiben, dein Text bleibt unverändert."
     },
-    "firstSuggestionTip": "Dein erster Vorschlag. Sag „ja“, „nicht jetzt“ oder „zeig mir das nicht mehr“. Es lernt dazu.",
     "learn": {
       "offer": "Immer „{{to}}“ statt „{{from}}“ schreiben?",
       "remember": "Merken",

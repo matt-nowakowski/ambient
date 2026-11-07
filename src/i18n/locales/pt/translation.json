@@ -1519,7 +1519,6 @@
       "searchInstead": "Digitado. Pesquisar isto em vez disso?",
       "search": "Pesquisar"
     },
-    "suggestionTip": "Diga “sim”, “agora não” ou “não me mostre isso”.",
     "replace": "Substituir",
     "actions": {
       "reply": "Responder",
@@ -1639,7 +1638,6 @@
       "copiedOriginal": "Seu texto original foi copiado. Cole para substituir.",
       "couldntRewrite": "Não deu para reescrever agora, então seu texto não mudou."
     },
-    "firstSuggestionTip": "Sua primeira sugestão. Diga “sim”, “agora não” ou “não me mostre isso”. Ele aprende.",
     "learn": {
       "offer": "Sempre escrever “{{to}}” em vez de “{{from}}”?",
       "remember": "Lembrar",

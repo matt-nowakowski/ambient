@@ -1511,7 +1511,6 @@
       "searchInstead": "입력했습니다. 대신 이걸 검색할까요?",
       "search": "검색"
     },
-    "suggestionTip": "“응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요.",
     "replace": "바꾸기",
     "actions": {
       "reply": "답장",
@@ -1631,7 +1630,6 @@
       "copiedOriginal": "원래 텍스트를 복사했습니다. 붙여넣어 바꾸세요.",
       "couldntRewrite": "지금은 다시 쓸 수 없어서 텍스트를 그대로 두었습니다."
     },
-    "firstSuggestionTip": "첫 번째 제안입니다. “응”, “나중에” 또는 “이런 건 보여 주지 마”라고 말하세요. 점점 배워 갑니다.",
     "learn": {
       "offer": "항상 “{{from}}” 대신 “{{to}}”(으)로 쓸까요?",
       "remember": "기억하기",

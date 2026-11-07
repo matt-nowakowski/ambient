@@ -1519,7 +1519,6 @@
       "searchInstead": "Ho he escrit. Voleu cercar-ho, en canvi?",
       "search": "Cerca"
     },
-    "suggestionTip": "Digueu «sí», «ara no» o «no me'ls mostris».",
     "replace": "Substitueix",
     "actions": {
       "reply": "Respon",
@@ -1639,7 +1638,6 @@
       "copiedOriginal": "S'ha copiat el text original. Enganxa per substituir.",
       "couldntRewrite": "Ara no s'ha pogut reescriure, així que el teu text no ha canviat."
     },
-    "firstSuggestionTip": "El vostre primer suggeriment. Digueu «sí», «ara no» o «no me'ls mostris». Aprèn.",
     "learn": {
       "offer": "Escriure sempre «{{to}}» en lloc de «{{from}}»?",
       "remember": "Recorda-ho",

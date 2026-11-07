@@ -1519,7 +1519,6 @@
       "searchInstead": "Scritto. Vuoi cercarlo invece?",
       "search": "Cerca"
     },
-    "suggestionTip": "Di' «sì», «non ora» o «non mostrarmeli».",
     "replace": "Sostituisci",
     "actions": {
       "reply": "Rispondi",
@@ -1639,7 +1638,6 @@
       "copiedOriginal": "Ho copiato il testo originale. Incolla per sostituire.",
       "couldntRewrite": "Non è stato possibile riscriverlo ora, quindi il testo è invariato."
     },
-    "firstSuggestionTip": "Il tuo primo suggerimento. Di' «sì», «non ora» o «non mostrarmeli». Impara.",
     "learn": {
       "offer": "Scrivere sempre “{{to}}” invece di “{{from}}”?",
       "remember": "Ricorda",
