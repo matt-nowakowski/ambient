@@ -10,7 +10,7 @@ import { TrustHighlights, TrustList } from "@/components/trust";
 import { ButtonLink, Container, Eyebrow, SectionHeading } from "@/components/ui";
 import { WriteDemo } from "@/components/write-demo";
 import { brand } from "@/lib/brand";
-import { comingSoon, featureGroups, macFirst, trust, type FeatureGroup } from "@/lib/content";
+import { comingSoon, featureGroups, trust, type FeatureGroup } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -71,7 +71,7 @@ export default function FeaturesPage() {
         <PageHeader
           eyebrow="Features"
           title="A live agent on your desktop."
-          intro={`Talk to it and it writes, answers, acts or recalls. It nudges you when it can help. Free gets all of it, with weekly limits. ${macFirst}`}
+          intro={`It writes, answers, acts and nudges. Free gets it all, with weekly limits.`}
         />
       </Container>
 

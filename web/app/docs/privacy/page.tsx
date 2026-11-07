@@ -18,7 +18,7 @@ const switches = [
 const never = [
   { k: "Password fields", v: "Never read, in any app." },
   { k: "Password managers and Keychain", v: "Never watched." },
-  { k: "Messages, WhatsApp, Signal, Telegram", v: "On the never-watch list by default. Add any app you like." },
+  { k: "Messaging apps", v: "Read like email, so it can write your replies. Add them to never-watch if you like." },
   { k: "Private and incognito windows", v: "Skipped." },
   { k: "Crypto wallets", v: "MetaMask, Ledger Live, Phantom, Exodus, Electrum, Trezor and others. Skipped, always." },
   { k: "Recovery phrases and private keys", v: `The whole window is dropped. ${brand.name} shows that it paused there.` },

@@ -1,7 +1,7 @@
 // Shared page copy, used by the pages, JSON-LD and /llms.txt so they never drift.
 import { brand, freeMeetingsPerMonth, freeWordsFeature, freeWordsLabel } from "./brand";
 
-export const description = `${brand.name} is a live agent on your desktop, like a colleague. Talk to it and it answers or acts, and it nudges you when it can help. Meeting notes with no bot, free dictation in any app, and speech recognition on your computer.`;
+export const description = `${brand.name} is a live agent on your desktop. Talk to it: it answers, acts, and nudges you when it can help. Meeting notes with no bot, and free dictation in any app.`;
 
 /** The hero eyebrow pill. */
 export const heroEyebrow = "A live agent on your desktop";
@@ -9,7 +9,7 @@ export const heroEyebrow = "A live agent on your desktop";
 /** The hero headline, one line at desktop widths. */
 export const heroTitle = ["Your desktop colleague."] as const;
 
-export const heroSub = "You talk, it writes, answers and acts. And when it can help, it nudges you.";
+export const heroSub = "You talk. It writes, answers and acts, and nudges you when it can help.";
 
 export const apps = ["Slack", "Gmail", "Notion", "Linear", "Cursor", "VS Code", "Google Docs", "Messages", "ChatGPT", "Figma"];
 
@@ -17,18 +17,18 @@ export const apps = ["Slack", "Gmail", "Notion", "Linear", "Cursor", "VS Code", 
 export const shortcuts = { dictate: "⌥ Space", ask: "⌃ ⌥ Space" };
 
 /** Honest platform note for the agent features. */
-export const macFirst = "Dictation and the agent run on macOS, Windows and Linux (the agent is in beta on Windows and Linux).";
+export const macFirst = "macOS, Windows and Linux. Agent in beta on Windows and Linux.";
 
 /** Free dictation (the landing-page grid). */
 export const features = [
-  { title: "Local & private", body: "Transcription runs on-device. Your audio never leaves your computer.", orb: "B1" },
-  { title: "Works offline", body: "No connection, no problem. On a plane, on a train, behind a firewall.", orb: "G5" },
-  { title: "Any app", body: "Push-to-talk or toggle with one global shortcut. Text lands where your cursor is.", orb: "C2" },
-  { title: "99 languages", body: "Dictate in your language with Whisper models, or translate any of them to English.", orb: "G2" },
-  { title: "Custom words", body: "Add names, jargon and product terms so they come out spelled your way.", orb: "S2" },
-  { title: "AI polish", body: "Punctuation, no filler words, “scratch that” applied. No API key.", orb: "S1" },
-  { title: "Every desktop", body: "macOS, Windows and Linux. Including the one other dictation tools forget.", orb: "M1" },
-  { title: "Open-source core", body: "The transcription engine is MIT-licensed. Read the code that hears you.", orb: "C3" },
+  { title: "Local & private", body: "Your audio never leaves your computer.", orb: "B1" },
+  { title: "Works offline", body: "On a plane, a train, behind a firewall.", orb: "G5" },
+  { title: "Any app", body: "One shortcut. Text lands at your cursor.", orb: "C2" },
+  { title: "99 languages", body: "Dictate in yours, or translate to English.", orb: "G2" },
+  { title: "Custom words", body: "Names and jargon, spelled your way.", orb: "S2" },
+  { title: "AI polish", body: "Punctuation fixed, filler gone. No API key.", orb: "S1" },
+  { title: "Every desktop", body: "macOS, Windows and Linux.", orb: "M1" },
+  { title: "Open-source core", body: "The engine that hears you is MIT-licensed.", orb: "C3" },
 ] as const;
 
 /** The voice agent: one key, four outcomes. Used by the landing demo and the features page. */
@@ -36,30 +36,30 @@ export const agentModes = [
   {
     k: "Write",
     say: "hey can we push the sync to thursday",
-    body: "Talking to someone? Your words, typed at your cursor, polished if you like.",
+    body: "Your words at your cursor, polished if you like.",
   },
   {
     k: "Answer",
     say: "what’s the difference between UTC and GMT",
-    body: "A short answer with sources. It searches the web only when needed.",
+    body: "A short answer with sources. Web only when needed.",
   },
   {
     k: "Act",
     say: "add lunch with Ana on Friday at 1",
-    body: "Reminders, calendar events, apps, links and your Shortcuts.",
+    body: "Reminders, calendar, apps, links, Shortcuts.",
   },
   {
     k: "Recall",
     say: "what did I say about pricing yesterday",
-    body: "What you said, saw or saved, found on your computer.",
+    body: "What you said, saw or saved.",
   },
 ] as const;
 
 export const agent = {
   eyebrow: "Talk to it",
   title: "Ask anything. It answers or does it.",
-  body: `Hold a key and talk. ${brand.name} works out whether to write, answer, act or recall.`,
-  handsFree: `Or turn on hands-free and just say “Hey ${brand.name}, …”. No key. Optional.`,
+  body: "Hold a key and talk. It writes, answers, acts or recalls.",
+  handsFree: `Or go hands-free: “Hey ${brand.name}, …”. Optional.`,
   /** Short chip for the landing page. */
   handsFreeChip: `Hands-free: “Hey ${brand.name}, …”`,
 };
@@ -67,7 +67,7 @@ export const agent = {
 export const meetings = {
   eyebrow: "Meetings",
   title: "Notes for any call. No bot joins.",
-  body: `Zoom, Meet, Teams, FaceTime or Slack huddles. You and them, transcribed on your computer.`,
+  body: "Zoom, Meet, Teams, FaceTime, Slack huddles. Transcribed on your computer.",
   /** The landing page shows these as chips. */
   chips: [
     { k: "Live notes", orb: "S2" },
@@ -76,8 +76,8 @@ export const meetings = {
     { k: "Audio never saved", orb: "G5" },
   ],
   points: [
-    { k: "While you talk", v: "Rolling notes, and a nudge when you’re asked or promise something." },
-    { k: "After the call", v: "Summary, decisions, action items and a follow-up email." },
+    { k: "While you talk", v: "Rolling notes, and a nudge when you’re asked." },
+    { k: "After the call", v: "Summary, action items, follow-up email." },
     { k: "Audio", v: "Never saved." },
   ],
 };
@@ -85,43 +85,43 @@ export const meetings = {
 export const suggestions = {
   eyebrow: "Suggestions",
   title: "It nudges you, like a colleague.",
-  body: "You don't have to ask. When it notices a moment it can help, it offers once. Say “yes”, “not now”, or ignore it, and it learns what you want.",
+  body: "When it can help, it offers once. Say “yes”, “not now”, or ignore it. It learns.",
   /** One line for the landing page. */
-  short: "When it can help, it offers once. Say “yes”, or ignore it. It learns.",
+  short: "It offers once. Say “yes”, or ignore it. It learns.",
   /** The examples as short chips, for the landing page. */
   chips: ["Summarise a long thread", "Reply to Ana?", "Remind me?", "Explain a failing test", "Translate a page", "Add a date to your calendar", "Tighten a draft", "Prep for a meeting"],
-  promiseShort: "On from the start, off with one switch in Privacy. Decided on your computer unless you choose the cloud.",
+  promiseShort: "On by default, off in Privacy. Decided on your computer.",
   examples: [
-    "A long email thread: “Want me to summarise these 40 messages?”",
-    "Someone waiting on you: “Reply to Ana?”, then just say what to say",
-    "A failing test or a stack trace: the likely fix",
-    "A page in another language: translate it",
-    "A date in an email or chat: add it to your calendar",
-    "A deadline in a message: “Remind me?”",
-    "A long draft: tighten it",
-    "A meeting in a few minutes: prep notes",
+    "Long thread: “Summarise these 40 messages?”",
+    "Someone waiting: “Reply to Ana?”",
+    "Failing test: the likely fix",
+    "Foreign page: translate it",
+    "A date: add it to your calendar",
+    "A deadline: “Remind me?”",
+    "Long draft: tighten it",
+    "Meeting soon: prep notes",
   ],
-  promise: "On from the start, off with one switch in Privacy. Decided on your computer, or by the cloud only if you choose it (Pro). Every check is listed in Privacy.",
+  promise: "On by default, off with one switch. Decided on your computer, or in the cloud if you choose (Pro).",
 };
 
 /** Writing: dictation as an assistant. The landing page's compact section. */
 export const writing = {
   eyebrow: "Writing, in any app",
   title: "Say it rough. It writes it right.",
-  body: "Free dictation on your computer, in any app. AI polish tidies your words, or writes the message for you.",
+  body: "Free dictation in any app. AI polish tidies it, or writes it for you.",
   chips: ["On your computer", "Works offline", "99 languages", "Custom words"],
   caption: `AI polish: unlimited with Pro, ${brand.freePolishPerWeek} uses a week on Free`,
 };
 
 /** Where Recall looks. Nothing to connect. */
 export const sources = [
-  { title: "Open windows", body: "The text of the windows open in every app, read when you ask." },
-  { title: "The last two minutes", body: "A short rolling buffer, in memory only, for “what was that number I just closed?”." },
-  { title: "Screen memory", body: "What was on screen, saved as text, encrypted on your computer. The last 24 hours on Free; 7 days by default on Pro." },
-  { title: "Your files", body: "Through Spotlight on a Mac (documents and Mail), Windows Search, or Tracker on Linux." },
-  { title: "Calendar", body: "Your events, from Calendar on a Mac, Outlook on Windows, or GNOME Calendar on Linux." },
+  { title: "Open windows", body: "Read when you ask." },
+  { title: "The last two minutes", body: "In memory only. “What was that number?”" },
+  { title: "Screen memory", body: "Text, encrypted. 24 hours on Free, 7 days on Pro." },
+  { title: "Your files", body: "Spotlight, Windows Search or Tracker." },
+  { title: "Calendar", body: "Calendar, Outlook or GNOME Calendar." },
   { title: "Dictation history", body: "Everything you’ve said to it." },
-  { title: "Drive and Gmail", body: "Searched in the browser you’re already signed in to. No login handed over." },
+  { title: "Drive and Gmail", body: "Via your signed-in browser. No login shared." },
 ] as const;
 
 /** The privacy promise. The highlights lead; the points are the rest of the rules. */
@@ -129,73 +129,73 @@ export const trust = {
   eyebrow: "Privacy",
   title: "What it hears, sees, keeps and sends.",
   /** The landing-page headline and line. */
-  short: { title: "Your voice never leaves your computer.", body: "It reads the window you’re in, redacted, and never private pages. Turn it off in Privacy." },
-  body: "It reads the window you’re in to understand you, redacted, and never private pages or apps you’ve told it never to watch. Here is exactly how it behaves.",
+  short: { title: "Your voice never leaves your computer.", body: "It reads your window, redacted. Never private pages." },
+  body: "It reads the window you’re in, redacted. Never private pages or apps you exclude.",
   /** The landing page: four promises, as icons with short labels. */
   promises: [
-    { k: "Your voice stays here", v: "Speech recognition runs on your computer.", orb: "B1" },
+    { k: "Your voice stays here", v: "Speech recognition on your computer.", orb: "B1" },
     { k: "Passwords never read", v: "Nor password managers or crypto wallets.", orb: "S3" },
-    { k: "Secrets removed first", v: "Cards, API keys and codes, before anything is sent.", orb: "M2" },
+    { k: "Secrets removed first", v: "Cards, keys and codes, before sending.", orb: "M2" },
     { k: "Every request on record", v: "See exactly what was sent.", orb: "S1" },
   ],
   highlights: [
     {
       k: "Your voice stays on your computer",
-      v: `Speech recognition runs on your computer. We never send or store your audio.`,
+      v: "We never send or store your audio.",
       orb: "B1",
     },
     {
       k: "Passwords are never read",
-      v: "Not in any app. Password managers and Keychain are never watched.",
+      v: "In any app. Password managers are never watched.",
       orb: "S3",
     },
     {
       k: "Crypto wallets are never read",
-      v: "MetaMask, Ledger Live, Phantom, Exodus, Electrum, Trezor and other wallet apps and extensions are skipped, always.",
+      v: "MetaMask, Ledger, Phantom and other wallets. Always skipped.",
       orb: "C3",
     },
     {
       k: "Recovery phrases are dropped",
-      v: `A window showing a recovery phrase or a private key is dropped entirely: not stored, not used, not sent. ${brand.name} shows that it paused there.`,
+      v: "The whole window is dropped: not stored, not sent.",
       orb: "G3",
     },
     {
       k: "Secrets removed first",
-      v: "Card numbers, API keys, passwords and one-time codes are removed on your computer before any text is sent.",
+      v: "Cards, API keys, passwords and codes, removed before sending.",
       orb: "M2",
     },
     {
       k: "Every request on the record",
-      v: `The network ledger shows every request ${brand.name} made and exactly what it sent.`,
+      v: "The network ledger shows what was sent.",
       orb: "S1",
     },
   ],
   points: [
-    { k: "The window you’re in, redacted", v: "Where your system allows, it reads the text of the window you’re in to understand what you mean, with secrets removed first. Text only, never screenshots. Turn it off in Privacy; screen memory stays off until you turn it on." },
+    { k: "The window you’re in, redacted", v: "Text only, secrets removed, never screenshots. Off in Privacy." },
     {
       k: "Never-watch list",
-      v: "Password managers, Keychain, Messages, WhatsApp, Signal, Telegram and private or incognito windows, by default. Add any app you like.",
+      v: "Password managers and private windows by default. Add any app.",
     },
     {
       k: "Hands-free is opt-in",
-      v: `Off by default. It listens on your computer, and nothing is recorded or sent until you say “Hey ${brand.name}”.`,
+      v: `Off by default. Nothing sent until “Hey ${brand.name}”.`,
     },
-    { k: "Suggestions stay local", v: "Decided on your computer unless you choose the cloud (Pro). Then a redacted snippet of the window is sent to decide, and each check is listed." },
+    { k: "Suggestions stay local", v: "Decided on your computer. Cloud only if you choose (Pro)." },
     {
       k: "Private pages left alone",
-      v: "Banking, payment, medical, password and ID pages are recognised by what they show, in any language, and not read.",
+      v: "Banking, medical and ID pages, in any language. Not read.",
     },
     {
       k: "Stored on your computer, encrypted",
-      v: "Screen memory is kept 24 hours on Free and 7 days by default on Pro, meetings until you delete them. Delete everything with one click.",
+      v: "Screen memory: 24 hours Free, 7 days Pro. Delete all in one click.",
     },
     {
       k: "On this computer only",
-      v: "An optional Intelligence mode: AI runs on your device (optional on-device AI on any computer, or Apple Intelligence on a Mac) and web search is off, so nothing is sent.",
+      v: "AI runs on your device, web search off. Nothing sent.",
     },
-    { k: "Or no AI at all", v: "Choose No AI and no model runs anywhere: plain dictation, nothing sent for AI." },
-    { k: "Invisible in screen shares", v: "The HUD doesn’t appear in screen shares or recordings. One key pauses everything." },
-    { k: "No bots, no accounts", v: "No bot joins your calls and there is nothing to connect. The only account is the email you sign in with for Pro, and Free needs none." },
+    { k: "Or no AI at all", v: "No model runs anywhere. Plain dictation." },
+    { k: "Invisible in screen shares", v: "Hidden from shares and recordings. One key pauses all." },
+    { k: "No bots, no accounts", v: "Nothing to connect. Free needs no account." },
   ],
 };
 
@@ -208,10 +208,10 @@ export const comingSoon = {
   body: `Say what you want done. ${brand.name} uses the apps on your screen, the way you would.`,
   examples: ["Open Linear and file a ticket for the login bug", "Move these rows into the sheet"],
   points: [
-    { k: "Clicks and types for you", v: "Through macOS accessibility, in the apps you already use." },
-    { k: "Shows each step", v: "You see what it is doing as it goes." },
-    { k: "Asks first", v: "Before anything that can’t be undone: sending, deleting or buying." },
-    { k: "Stops when you move", v: "Touch the keyboard or mouse and it stops at once." },
+    { k: "Clicks and types for you", v: "In the apps you already use." },
+    { k: "Shows each step", v: "Live, as it works." },
+    { k: "Asks first", v: "Before sending, deleting or buying." },
+    { k: "Stops when you move", v: "Touch the keyboard and it stops." },
   ],
 };
 
@@ -308,13 +308,13 @@ export const tiers = {
     ],
     features: [
       freeWordsFeature,
-      "On-device speech recognition, works offline",
+      "On-device speech, works offline",
       "macOS, Windows and Linux",
-      `${brand.trialDays}-day trial of Pro, no card`,
-      "Every agent feature: write, answer, act, recall, screen context, hands-free",
-      `${brand.freePolishPerWeek} AI uses a week, shared across polish, smart writing, answers, actions and meeting summaries`,
-      `Up to ${brand.freeSuggestionsPerWeek} suggestions a week, decided on your computer`,
-      "Screen memory keeps the last 24 hours",
+      `${brand.trialDays}-day Pro trial, no card`,
+      "Every agent feature",
+      `${brand.freePolishPerWeek} AI uses a week`,
+      `Up to ${brand.freeSuggestionsPerWeek} suggestions a week`,
+      "24 hours of screen memory",
       `${freeMeetingsPerMonth} meetings a month`,
     ],
   },
@@ -327,12 +327,12 @@ export const tiers = {
     yearlyPerMonth: brand.pricing.proYearlyPerMonth,
     yearlyTotal: brand.pricing.proYearlyTotal,
     features: [
-      "Everything in Free, with no weekly limits",
-      "Unlimited AI uses (fair use), no API key",
-      "Unlimited suggestions, with the option to judge them in the cloud",
-      "Unlimited meeting notes (fair use) with live nudges",
-      "Longer recall: screen memory for 7 days by default, up to 30",
-      "Computer use, coming soon",
+      "Everything in Free, no limits",
+      "Unlimited AI uses (fair use)",
+      "Unlimited suggestions, cloud optional",
+      "Unlimited meetings (fair use)",
+      "Screen memory for 7 days, up to 30",
+      "Computer use, soon",
     ],
   },
   team: {
@@ -340,7 +340,7 @@ export const tiers = {
     tagline: "For the whole team.",
     perUser: brand.pricing.teamYearlyPerUser,
     note: "Billed annually.",
-    features: ["Everything in Pro", "Centralized billing & invoicing", "Pro for every seat"],
+    features: ["Everything in Pro", "One bill for everyone", "Pro for every seat"],
   },
 };
 
@@ -360,72 +360,72 @@ export const featureGroups: FeatureGroup[] = [
     id: "agent",
     heading: "The agent",
     pro: true,
-    intro: `One shortcut. ${brand.name} decides from what you say whether to write, answer, act or recall. The Ask shortcut (${shortcuts.ask}) always goes to the agent. Free includes ${brand.freePolishPerWeek} AI uses a week.`,
+    intro: `One shortcut: it writes, answers, acts or recalls. ${shortcuts.ask} always asks. ${brand.freePolishPerWeek} AI uses a week on Free.`,
     items: [
-      { title: "Write", body: "Talking to someone? Your words are typed where your cursor is, exactly like dictation, and polished if AI polish is on.", orb: "C2" },
-      { title: "Answer", body: "Ask a question and a glass answer card appears near the top right, with up to three sources. It searches the web only when the answer needs it. Select any part to copy it.", orb: "B2" },
-      { title: "Answer about this", body: "“Summarise this” or “what does this error mean” uses the text of the window in front of you.", orb: "B3" },
-      { title: "Act", body: "“Remind me at 5 to call Sam” or “add lunch with Ana Friday at 1” lands in your own reminders and calendar. It also opens apps and links, and runs your shortcuts by name.", orb: "S3" },
-      { title: "Recall", body: "“What did I say about pricing yesterday?” is answered from your dictations, meetings and, if you turn it on, screen memory.", orb: "G3" },
-      { title: "Writing stays the default", body: "When it isn’t sure, it writes. Dictating an email stays dictating.", orb: "C1" },
-      { title: `“Hey ${brand.name}”`, body: `Start with it to talk to ${brand.name} from ChatGPT, Cursor, Slack or Mail, where your words would otherwise be typed.`, orb: "M3" },
-      { title: "Hands-free (optional)", body: `Turn it on and just say “Hey ${brand.name}, what’s on my calendar?” No key. It listens on your computer, and nothing is sent until you say it.`, orb: "G1" },
+      { title: "Write", body: "Your words at your cursor, polished if you like.", orb: "C2" },
+      { title: "Answer", body: "A glass card with up to three sources. Web only when needed.", orb: "B2" },
+      { title: "Answer about this", body: "“Summarise this” uses the window in front of you.", orb: "B3" },
+      { title: "Act", body: "Reminders, calendar events, apps, links and your shortcuts.", orb: "S3" },
+      { title: "Recall", body: "From your dictations, meetings and screen memory.", orb: "G3" },
+      { title: "Writing stays the default", body: "Unsure? It writes. Dictation stays dictation.", orb: "C1" },
+      { title: `“Hey ${brand.name}”`, body: `Ask ${brand.name} from inside ChatGPT, Cursor or Slack.`, orb: "M3" },
+      { title: "Hands-free (optional)", body: "No key. Nothing sent until you say it.", orb: "G1" },
     ],
   },
   {
     id: "meetings",
     heading: "Meetings",
     pro: true,
-    intro: `Notes for any call, with no bot joining and nothing to connect. Free includes ${freeMeetingsPerMonth} meetings a month.`,
+    intro: `No bot, nothing to connect. ${freeMeetingsPerMonth} meetings a month on Free.`,
     items: [
-      { title: "Any call", body: "Zoom, Google Meet, Microsoft Teams, FaceTime and Slack huddles. If it plays on your computer, it works.", orb: "C3" },
-      { title: "You and them", body: "Your microphone and the call’s audio are transcribed separately on your computer, so it knows who said what.", orb: "M2" },
-      { title: "Notes as you talk", body: "Rolling notes build during the call, so you can look back mid-meeting.", orb: "S2" },
-      { title: "Live nudges", body: "They asked you for something: Find it. You promised something: Remind me. Plus follow-up questions worth asking.", orb: "S1" },
-      { title: "After the call", body: "A summary, decisions, action items, questions for you, and a follow-up email draft ready to send.", orb: "B1" },
-      { title: "Audio never saved", body: "The audio is transcribed on your computer and thrown away. Only the text is kept, on your computer.", orb: "G5" },
+      { title: "Any call", body: "Zoom, Meet, Teams, FaceTime, Slack huddles.", orb: "C3" },
+      { title: "You and them", body: "Knows who said what.", orb: "M2" },
+      { title: "Notes as you talk", body: "Rolling notes during the call.", orb: "S2" },
+      { title: "Live nudges", body: "Asked for something? Find it. Promised? Remind me.", orb: "S1" },
+      { title: "After the call", body: "Summary, action items and a follow-up email.", orb: "B1" },
+      { title: "Audio never saved", body: "Only the text is kept, on your computer.", orb: "G5" },
     ],
   },
   {
     id: "suggestions",
     heading: "Suggestions",
     pro: true,
-    intro: `It nudges you when it can help, with one next step. Say “yes” or “not now”, and it learns. On from the start, off in Privacy. Decided on your computer unless you choose the cloud (Pro). Up to ${brand.freeSuggestionsPerWeek} a week on Free.`,
+    intro: `One next step, when it can help. It learns. ${brand.freeSuggestionsPerWeek} a week on Free.`,
     items: [
-      { title: "Email and chat", body: "Long threads: summarise them. A question waiting for you: dictate the gist, get the reply. A date: add it to your calendar. A deadline: “Remind me?”", orb: "B4" },
-      { title: "Writing", body: "A long draft: tighten it.", orb: "S4" },
-      { title: "Browsing", body: "A long page: summarise it. A page in another language: translate it. A product page: check prices elsewhere. Rephrasing the same search: just answer it.", orb: "G2" },
-      { title: "Work", body: "A spreadsheet formula error, a stack trace, a failing test or a new error in your terminal: explain it and suggest a fix.", orb: "M3" },
-      { title: "Meeting prep", body: "A few minutes before an event in your calendar, it offers a short brief to get you ready.", orb: "C4" },
-      { title: "Quiet by design", body: "One line, Enter or Esc, gone in seconds. Dismiss a kind of suggestion and it backs off.", orb: "G4" },
+      { title: "Email and chat", body: "Summarise threads, draft replies, add dates.", orb: "B4" },
+      { title: "Writing", body: "Tighten a long draft.", orb: "S4" },
+      { title: "Browsing", body: "Summarise, translate, compare prices.", orb: "G2" },
+      { title: "Work", body: "Errors and failing tests, explained and fixed.", orb: "M3" },
+      { title: "Meeting prep", body: "A short brief before each meeting.", orb: "C4" },
+      { title: "Quiet by design", body: "One line, gone in seconds. Dismiss it and it backs off.", orb: "G4" },
     ],
   },
   {
     id: "recall",
     heading: "Finds your own things",
     pro: true,
-    intro: "Nothing to connect. It looks where your things already are. Free keeps the last 24 hours of screen memory.",
+    intro: "Nothing to connect. It looks where your things already are.",
     items: sources.map((s, i) => ({ ...s, orb: ["C2", "M1", "B1", "S5", "C5", "G1", "B5"][i] })),
   },
   {
     id: "dictation",
     heading: "Writing, unlimited and free",
-    intro: "Dictation that knows when to type what you said, when to polish it, and when to write it for you, in any app and any language. Unlimited, on every platform, transcribed on your computer. On Free, polishing and writing for you count as AI uses.",
+    intro: "Any app, any language, transcribed on your computer.",
     items: [
-      { title: "Smart writing", body: "Say “tell him I can’t make it, be polite” or “reply that Thursday works”, in your language, and get a proper message to the right person. It judges from what’s on screen, in any app. A small chip shows what it did, and “Use my words” takes it back.", orb: "C1" },
-      { title: "Styles per app and site", body: "Casual for Slack, polished for Gmail, word for word in your code editor. Smart writing follows them.", orb: "M2" },
-      { title: "Edit by voice", body: "Say “shorter” or “warmer” to change what it wrote. Select text and say “make this more formal” to rewrite it. It learns, per app, how much you want.", orb: "S5" },
-      { title: "On-device transcription", body: "Speech-to-text runs locally with open models (Whisper, Parakeet, Moonshine, SenseVoice and more) with GPU acceleration where available. Your audio never leaves your computer.", orb: "B1" },
-      { title: "Works offline", body: "Once a model is downloaded, dictation needs no connection at all.", orb: "G5" },
-      { title: "99 languages", body: "Pick the languages you speak. Whisper models cover 99 of them, and can translate what you say into English.", orb: "G2" },
-      { title: "Choose your model", body: "Trade speed for accuracy: small, fast models for quick notes, larger ones for long-form writing. Switch any time.", orb: "S2" },
-      { title: "Any app", body: "Text is pasted wherever your cursor is: email, chat, docs, code editors, the terminal. Dictate after existing text and it adds the space and capital you’d expect.", orb: "C2" },
-      { title: "Push-to-talk or toggle", body: "Hold the shortcut while you speak, or tap once to start and again to stop. The shortcut is yours to choose.", orb: "C1" },
-      { title: "Custom words", body: "Add names, jargon and product terms so they come out spelled your way. Fix the same word twice and it offers to remember it.", orb: "S4" },
-      { title: "History and files", body: "Every transcription is kept on your device: search it, play it back, re-transcribe it. Drop in an audio file to get the text.", orb: "C3" },
-      { title: "AI polish", body: "Punctuation, no filler words, lists formatted, “scratch that” applied. Off by default, so dictation is instant; turn it on when you want it. Hosted with nothing to set up, or on your computer with optional on-device AI (or Apple Intelligence on a Mac). Only text is sent, never audio.", orb: "S1" },
-      { title: "On-device AI (optional)", body: "Download a small model (about 1.1 GB recommended, four sizes to choose from) and polish, smart writing, suggestions and short answers run on your computer, on macOS, Windows and Linux.", orb: "B1" },
-      { title: "macOS, Windows, Linux", body: "Native builds for all three, plus command-line flags for scripting and Wayland shortcuts.", orb: "M1" },
+      { title: "Smart writing", body: "“Reply that Thursday works” becomes a proper message.", orb: "C1" },
+      { title: "Styles per app and site", body: "Casual in Slack, polished in Gmail.", orb: "M2" },
+      { title: "Edit by voice", body: "Say “shorter” or “warmer”. It rewrites.", orb: "S5" },
+      { title: "On-device transcription", body: "Whisper, Parakeet and more, on your computer.", orb: "B1" },
+      { title: "Works offline", body: "No connection needed.", orb: "G5" },
+      { title: "99 languages", body: "Or translate what you say into English.", orb: "G2" },
+      { title: "Choose your model", body: "Fast or accurate. Switch any time.", orb: "S2" },
+      { title: "Any app", body: "Text lands at your cursor, anywhere.", orb: "C2" },
+      { title: "Push-to-talk or toggle", body: "Hold to talk, or tap to start and stop.", orb: "C1" },
+      { title: "Custom words", body: "Names and jargon, spelled your way.", orb: "S4" },
+      { title: "History and files", body: "Search, replay, or transcribe a file.", orb: "C3" },
+      { title: "AI polish", body: "Punctuation fixed, filler gone. Off by default.", orb: "S1" },
+      { title: "On-device AI (optional)", body: "A 1.1 GB model runs AI on your computer.", orb: "B1" },
+      { title: "macOS, Windows, Linux", body: "Native on all three.", orb: "M1" },
     ],
   },
 ];
