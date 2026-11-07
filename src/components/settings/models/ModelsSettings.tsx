@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RefreshCw } from "lucide-react";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { LiquidIndicatorGroup } from "@/components/ui/LiquidIndicator";
+import { PageTransition } from "@/components/ui/Motion";
 import { useModelStore } from "@/stores/modelStore";
 import {
   ModelTable,
@@ -13,6 +15,13 @@ import RetiredModelsNotice from "./RetiredModelsNotice";
 import { ModelRow } from "./ModelRow";
 import { Legend } from "./Legend";
 import { useModelEntries } from "./modelEntries";
+import { ReasoningModels } from "./ReasoningModels";
+import { useModelsTab, type ModelsTab } from "./modelsTab";
+
+const TABS: { id: ModelsTab; labelKey: string }[] = [
+  { id: "voice", labelKey: "settings.models.tabs.voice" },
+  { id: "reasoning", labelKey: "settings.models.tabs.reasoning" },
+];
 
 /** Past this many models on disk, the rest fold under "Show N more". */
 const YOURS_LIMIT = 5;
@@ -44,10 +53,71 @@ interface ModelsSettingsProps {
   onChangeLanguages?: () => void;
 }
 
-/** The Models page: onboarding's model table, filling the window. */
+/** The Models page: Voice models (speech recognition) and Reasoning models
+ * (on-device AI), split by the same segmented control as Settings. It opens
+ * on the tab used last. */
 export const ModelsSettings: React.FC<ModelsSettingsProps> = ({
   onChangeLanguages,
 }) => {
+  const { t } = useTranslation();
+  const tab = useModelsTab((s) => s.tab);
+  const setTab = useModelsTab((s) => s.setTab);
+
+  return (
+    <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col">
+      <header className="mb-section flex flex-none flex-wrap items-end justify-between gap-4">
+        <h1 className="text-title font-light">{t("settings.models.title")}</h1>
+        <LiquidIndicatorGroup
+          role="tablist"
+          className="glass flex rounded-full p-[3px]"
+          aria-label={t("settings.models.title")}
+          activeKey={tab}
+          fill="var(--color-background-ui)"
+          shadow="0 1px 3px rgba(0,0,0,0.2)"
+          radius={14}
+        >
+          {TABS.map((x) => {
+            const selected = x.id === tab;
+            return (
+              <button
+                key={x.id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                data-liquid-active={selected ? "" : undefined}
+                onClick={() => setTab(x.id)}
+                className={`relative h-control-sm cursor-pointer rounded-full px-3.5 text-small font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logo-primary/25 ${
+                  selected ? "text-on-primary" : "text-ink-2 hover:text-text"
+                }`}
+              >
+                {t(x.labelKey)}
+              </button>
+            );
+          })}
+        </LiquidIndicatorGroup>
+      </header>
+      {/* Voice's table scrolls itself; Reasoning scrolls as a page would,
+          with room at the sides for the cards' shadows. */}
+      <PageTransition
+        id={tab}
+        className={
+          tab === "voice"
+            ? "flex min-h-0 flex-1 flex-col"
+            : "-mx-3 min-h-0 flex-1 overflow-y-auto px-3 pb-3"
+        }
+      >
+        {tab === "voice" ? (
+          <VoiceModels onChangeLanguages={onChangeLanguages} />
+        ) : (
+          <ReasoningModels />
+        )}
+      </PageTransition>
+    </div>
+  );
+};
+
+/** Voice models: onboarding's model table, filling the window. */
+const VoiceModels: React.FC<ModelsSettingsProps> = ({ onChangeLanguages }) => {
   const { t } = useTranslation();
   const loading = useModelStore((s) => s.loading);
   const { facts, lists } = useModelEntries();
@@ -56,10 +126,8 @@ export const ModelsSettings: React.FC<ModelsSettingsProps> = ({
 
   if (loading) {
     return (
-      <div className="max-w-3xl w-full mx-auto">
-        <div className="flex items-center justify-center py-16">
-          <div className="w-8 h-8 border-2 border-logo-primary border-t-transparent rounded-full animate-spin" />
-        </div>
+      <div className="flex items-center justify-center py-16">
+        <div className="w-8 h-8 border-2 border-logo-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -136,12 +204,10 @@ export const ModelsSettings: React.FC<ModelsSettingsProps> = ({
       ];
 
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col">
-      {/* The title, and across from it where to change the languages the
-          grades are for. */}
-      <div className="mb-section flex flex-none items-end justify-between gap-item-x">
-        <h1 className="text-title font-light">{t("settings.models.title")}</h1>
-        {onChangeLanguages && (
+    <>
+      {/* Where to change the languages the grades are for. */}
+      {onChangeLanguages && (
+        <div className="mx-[12px] mb-[12px] flex flex-none justify-end">
           <button
             type="button"
             onClick={onChangeLanguages}
@@ -149,8 +215,8 @@ export const ModelsSettings: React.FC<ModelsSettingsProps> = ({
           >
             {t("settings.models.changeLanguages")}
           </button>
-        )}
-      </div>
+        </div>
+      )}
       <div className="mx-[12px] mb-[16px] flex-none empty:hidden">
         <RetiredModelsNotice />
       </div>
@@ -176,6 +242,6 @@ export const ModelsSettings: React.FC<ModelsSettingsProps> = ({
         }
         thinEdge
       />
-    </div>
+    </>
   );
 };

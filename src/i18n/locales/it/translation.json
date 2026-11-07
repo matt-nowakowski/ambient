@@ -517,7 +517,15 @@
         "label": "Riscansiona",
         "tooltip": "Riscansiona per trovare modelli aggiunti alla cartella dei modelli o alla cache di Hugging Face al di fuori di {{appName}}"
       },
-      "untestedHidden_many": "Altri {{count}} modelli non sono ottimizzati per la dettatura. Usa la ricerca per trovarne uno."
+      "untestedHidden_many": "Altri {{count}} modelli non sono ottimizzati per la dettatura. Usa la ricerca per trovarne uno.",
+      "tabs": {
+        "voice": "Modelli vocali",
+        "reasoning": "Modelli di ragionamento"
+      },
+      "reasoning": {
+        "note": "Usati quando l'IA funziona su questo computer. Scegli dove funziona:",
+        "unsupported": "L'IA sul dispositivo non è disponibile su questo computer."
+      }
     },
     "languages": {
       "title": "Lingue"
@@ -1831,7 +1839,8 @@
         "qwen3_1_7b_q4": "Buona rifinitura e scrittura con circa metà del download della versione a 8 bit, perdendo poco.",
         "qwen3_1_7b": "Il precedente modello sul dispositivo. Un po' migliore della versione a 4 bit, con un download più grande.",
         "qwen3_4b": "La migliore qualità sul dispositivo, ma il più grande e lento. Per scrivere e rispondere bene senza cloud."
-      }
+      },
+      "manage": "Gestisci modelli"
     },
     "telemetry": {
       "title": "Aiuta a migliorare {{appName}}",

@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Skanna om",
         "tooltip": "Skanna om efter modeller som lagts till i modellmappen eller Hugging Face-cachen utanför {{appName}}"
+      },
+      "tabs": {
+        "voice": "Röstmodeller",
+        "reasoning": "Resonemangsmodeller"
+      },
+      "reasoning": {
+        "note": "Används när AI körs på den här datorn. Välj var den körs:",
+        "unsupported": "AI på enheten är inte tillgänglig på den här datorn."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "Bra finputs och skrivande med ungefär halva nedladdningen jämfört med 8-bitarsversionen, och lite förlorat.",
         "qwen3_1_7b": "Den tidigare modellen på enheten. Lite bättre än 4-bitarsversionen, för en större nedladdning.",
         "qwen3_4b": "Bäst kvalitet på enheten, och störst och långsammast. För bra skrivande och svar utan molnet."
-      }
+      },
+      "manage": "Hantera modeller"
     },
     "telemetry": {
       "title": "Hjälp till att förbättra {{appName}}",

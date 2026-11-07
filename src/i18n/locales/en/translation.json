@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Rescan",
         "tooltip": "Rescan for models added to the models folder or Hugging Face cache outside {{appName}}"
+      },
+      "tabs": {
+        "voice": "Voice models",
+        "reasoning": "Reasoning models"
+      },
+      "reasoning": {
+        "note": "Used when AI runs on this computer. Choose where it runs:",
+        "unsupported": "On-device AI isn't available on this computer."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "Good polish and writing at about half the download of the 8-bit version, with little lost.",
         "qwen3_1_7b": "The previous on-device model. A little better than the 4-bit version, for a larger download.",
         "qwen3_4b": "The best on-device quality, and the largest and slowest. For capable writing and answers without the cloud."
-      }
+      },
+      "manage": "Manage models"
     },
     "telemetry": {
       "title": "Help improve {{appName}}",

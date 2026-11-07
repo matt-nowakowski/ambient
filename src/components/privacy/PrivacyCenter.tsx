@@ -38,8 +38,6 @@ import {
   type ContextSnapshot,
   type Intelligence,
   type LedgerEntry,
-  type OnDeviceAiStatus,
-  type ReasoningModelInfo,
   type UsageToday,
 } from "@/bindings";
 import { Button } from "../ui/Button";
@@ -58,7 +56,11 @@ import { AtAGlance, type GlanceItem } from "./AtAGlance";
 import { isPaid, usePlan } from "../account/usePlan";
 import { useGetStarted } from "../getstarted/store";
 import { UsageStats } from "./UsageStats";
-import { OnDeviceAi, useOnDeviceAiDownloading } from "./OnDeviceAi";
+import {
+  OnDeviceAi,
+  useOnDeviceAi,
+  useOnDeviceAiDownloading,
+} from "./OnDeviceAi";
 import { Stagger, StaggerItem, expand } from "../ui/Motion";
 
 const RETENTION_CHOICES = [1, 3, 7, 14, 30];
@@ -193,12 +195,15 @@ export const PrivacyCenter: React.FC = () => {
   const [previewNote, setPreviewNote] = useState<string | null>(null);
   // Free's limits, for the small "Free: 10 a week" hints.
   const [limits, setLimits] = useState<UsageToday | null>(null);
-  // "Download on-device AI", and which on-device model runs tasks.
-  const [onDeviceAi, setOnDeviceAi] = useState<OnDeviceAiStatus | null>(null);
-  const [reasoningModels, setReasoningModels] = useState<ReasoningModelInfo[]>(
-    [],
-  );
-  const [startingAi, setStartingAi] = useState(false);
+  // "Download on-device AI", and which on-device model runs tasks: shared
+  // with Models › Reasoning models.
+  const {
+    status: onDeviceAi,
+    models: reasoningModels,
+    starting: startingAi,
+    refresh: refreshAi,
+    download: fetchAi,
+  } = useOnDeviceAi();
   const { downloading: aiDownloading } = useOnDeviceAiDownloading(
     startingAi,
     reasoningModels,
@@ -212,11 +217,10 @@ export const PrivacyCenter: React.FC = () => {
   const refresh = useCallback(async () => {
     setStatus(await commands.getAgentStatus());
     setLimits(await commands.getUsageToday());
-    setOnDeviceAi(await commands.getOnDeviceAiStatus());
-    setReasoningModels(await commands.getReasoningModels());
+    await refreshAi();
     const l = await commands.getNetworkLedger(50);
     if (l.status === "ok") setLedger(l.data);
-  }, []);
+  }, [refreshAi]);
 
   useEffect(() => {
     useGetStarted.getState().mark("privacy");
@@ -225,22 +229,13 @@ export const PrivacyCenter: React.FC = () => {
     return () => clearInterval(id);
   }, [refresh]);
 
-  // Download on-device AI (a model, or None for the one that would run).
-  // Failure toasts come from the model store's download-failed listener.
+  // Download on-device AI, then re-read everything it changes here.
   const downloadAi = useCallback(
     async (modelId: string | null) => {
-      setStartingAi(true);
-      try {
-        const done = commands.downloadOnDeviceAi(modelId);
-        // The picker shows which model is downloading as soon as it starts.
-        setTimeout(refresh, 300);
-        await done;
-      } finally {
-        setStartingAi(false);
-      }
+      await fetchAi(modelId);
       await refresh();
     },
-    [refresh],
+    [fetchAi, refresh],
   );
 
   if (!status) return null;
@@ -936,6 +931,7 @@ export const PrivacyCenter: React.FC = () => {
               refresh={refresh}
               starting={startingAi}
               download={downloadAi}
+              list={false}
             />
           )}
           <AnimatePresence initial={false}>

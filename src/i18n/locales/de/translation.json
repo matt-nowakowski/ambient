@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Neu scannen",
         "tooltip": "Erneut nach Modellen scannen, die außerhalb von {{appName}} zum Modellordner oder Hugging-Face-Cache hinzugefügt wurden"
+      },
+      "tabs": {
+        "voice": "Sprachmodelle",
+        "reasoning": "Denkmodelle"
+      },
+      "reasoning": {
+        "note": "Werden genutzt, wenn KI auf diesem Computer läuft. Wähle, wo sie läuft:",
+        "unsupported": "KI auf dem Gerät ist auf diesem Computer nicht verfügbar."
       }
     },
     "languages": {
@@ -1815,7 +1823,8 @@
         "qwen3_1_7b_q4": "Guter Feinschliff und gutes Schreiben bei etwa halb so großem Download wie die 8-Bit-Version, mit wenig Verlust.",
         "qwen3_1_7b": "Das bisherige Modell auf dem Gerät. Etwas besser als die 4-Bit-Version, bei größerem Download.",
         "qwen3_4b": "Die beste Qualität auf dem Gerät, und das größte und langsamste Modell. Für gutes Schreiben und Antworten ohne Cloud."
-      }
+      },
+      "manage": "Modelle verwalten"
     },
     "telemetry": {
       "title": "Hilf mit, {{appName}} zu verbessern",

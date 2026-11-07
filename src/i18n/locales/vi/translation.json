@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Quét lại",
         "tooltip": "Quét lại các mô hình được thêm vào thư mục mô hình hoặc bộ nhớ đệm Hugging Face bên ngoài {{appName}}"
+      },
+      "tabs": {
+        "voice": "Mô hình giọng nói",
+        "reasoning": "Mô hình suy luận"
+      },
+      "reasoning": {
+        "note": "Dùng khi AI chạy trên máy tính này. Chọn nơi AI chạy:",
+        "unsupported": "AI trên thiết bị không khả dụng trên máy tính này."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "Trau chuốt và viết tốt với dung lượng tải khoảng một nửa bản 8-bit, mất rất ít.",
         "qwen3_1_7b": "Mô hình trên thiết bị trước đây. Tốt hơn một chút so với bản 4-bit, với dung lượng tải lớn hơn.",
         "qwen3_4b": "Chất lượng tốt nhất trên thiết bị, nhưng lớn nhất và chậm nhất. Để viết và trả lời tốt mà không cần đám mây."
-      }
+      },
+      "manage": "Quản lý mô hình"
     },
     "telemetry": {
       "title": "Giúp cải thiện {{appName}}",

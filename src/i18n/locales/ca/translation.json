@@ -517,7 +517,15 @@
         "label": "Torna a cercar",
         "tooltip": "Torna a cercar models afegits a la carpeta de models o a la memòria cau de Hugging Face des de fora del {{appName}}"
       },
-      "untestedHidden_many": "{{count}} models més no estan ajustats per al dictat. Feu una cerca per trobar-ne algun."
+      "untestedHidden_many": "{{count}} models més no estan ajustats per al dictat. Feu una cerca per trobar-ne algun.",
+      "tabs": {
+        "voice": "Models de veu",
+        "reasoning": "Models de raonament"
+      },
+      "reasoning": {
+        "note": "S'utilitzen quan la IA funciona en aquest ordinador. Tria on funciona:",
+        "unsupported": "La IA al dispositiu no està disponible en aquest ordinador."
+      }
     },
     "languages": {
       "title": "Llengües"
@@ -1831,7 +1839,8 @@
         "qwen3_1_7b_q4": "Bon polit i bona redacció amb la meitat de baixada que la versió de 8 bits, perdent poc.",
         "qwen3_1_7b": "L'anterior model al dispositiu. Una mica millor que la versió de 4 bits, amb una baixada més gran.",
         "qwen3_4b": "La millor qualitat al dispositiu, i el més gran i lent. Per escriure i respondre bé sense el núvol."
-      }
+      },
+      "manage": "Gestiona els models"
     },
     "telemetry": {
       "title": "Ajuda a millorar {{appName}}",

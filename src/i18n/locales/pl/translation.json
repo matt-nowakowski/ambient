@@ -520,6 +520,14 @@
       "rescan": {
         "label": "Skanuj ponownie",
         "tooltip": "Skanuj ponownie w poszukiwaniu modeli dodanych do folderu modeli lub pamięci podręcznej Hugging Face poza {{appName}}"
+      },
+      "tabs": {
+        "voice": "Modele głosowe",
+        "reasoning": "Modele rozumowania"
+      },
+      "reasoning": {
+        "note": "Używane, gdy AI działa na tym komputerze. Wybierz, gdzie działa:",
+        "unsupported": "AI na urządzeniu nie jest dostępna na tym komputerze."
       }
     },
     "languages": {
@@ -1839,7 +1847,8 @@
         "qwen3_1_7b_q4": "Dobre szlifowanie i pisanie przy około połowie pobierania wersji 8-bitowej, niewiele tracąc.",
         "qwen3_1_7b": "Poprzedni model na urządzeniu. Nieco lepszy od wersji 4-bitowej, kosztem większego pobierania.",
         "qwen3_4b": "Najlepsza jakość na urządzeniu, ale największy i najwolniejszy. Do dobrego pisania i odpowiedzi bez chmury."
-      }
+      },
+      "manage": "Zarządzaj modelami"
     },
     "telemetry": {
       "title": "Pomóż ulepszyć {{appName}}",

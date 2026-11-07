@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { listen } from "@tauri-apps/api/event";
-import { Download, Trash2 } from "lucide-react";
+import { ArrowRight, Download, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   commands,
@@ -17,6 +17,8 @@ import { SpeedBars } from "@/components/shared/SpeedBars";
 import { Button } from "../ui/Button";
 import { Radio } from "../ui/Radio";
 import { expand } from "../ui/Motion";
+import { useSearch } from "../search/searchStore";
+import { useModelsTab } from "../settings/models/modelsTab";
 
 /** Download id of on-device AI (`ON_DEVICE_AI_ID` in Rust). */
 export const ON_DEVICE_AI_ID = "on-device-ai";
@@ -47,9 +49,50 @@ export const useOnDeviceAiDownloading = (
   };
 };
 
+/** On-device AI's status and models, and starting a download. Privacy and
+ * Models › Reasoning models both read it, so the two never disagree. */
+export const useOnDeviceAi = () => {
+  const [status, setStatus] = useState<OnDeviceAiStatus | null>(null);
+  const [models, setModels] = useState<ReasoningModelInfo[]>([]);
+  const [starting, setStarting] = useState(false);
+
+  const refresh = useCallback(async () => {
+    setStatus(await commands.getOnDeviceAiStatus());
+    setModels(await commands.getReasoningModels());
+  }, []);
+
+  // Download on-device AI (a model, or None for the one that would run).
+  // Failure toasts come from the model store's download-failed listener.
+  const download = useCallback(
+    async (modelId: string | null) => {
+      setStarting(true);
+      try {
+        const done = commands.downloadOnDeviceAi(modelId);
+        // The picker shows which model is downloading as soon as it starts.
+        setTimeout(refresh, 300);
+        await done;
+      } finally {
+        setStarting(false);
+      }
+      await refresh();
+    },
+    [refresh],
+  );
+
+  return { status, models, starting, refresh, download };
+};
+
+/** Opens Models on its Reasoning models tab. */
+const openReasoningModels = () => {
+  useModelsTab.getState().setTab("reasoning");
+  useSearch.getState().jump({ section: "models" });
+};
+
 /** "Download on-device AI": a small model run on this computer, offered
  * everywhere, and on a Mac with Apple Intelligence as an alternative to it.
- * Lists the catalog's models to choose from, each removable on its own. */
+ * With `list` (Models › Reasoning models), the catalog's models to choose
+ * from, each removable on its own; without it (Privacy, beside the
+ * Intelligence setting) a short summary that links there. */
 export const OnDeviceAi: React.FC<{
   status: OnDeviceAiStatus;
   models: ReasoningModelInfo[];
@@ -61,7 +104,18 @@ export const OnDeviceAi: React.FC<{
   starting: boolean;
   /** Download a model (None: the one that would run). */
   download: (modelId: string | null) => Promise<void>;
-}> = ({ status, models, settings, save, refresh, starting, download }) => {
+  /** Show the models to choose from and remove (Models), or link to them. */
+  list?: boolean;
+}> = ({
+  status,
+  models,
+  settings,
+  save,
+  refresh,
+  starting,
+  download,
+  list = true,
+}) => {
   const { t, i18n } = useTranslation();
   const { progress, downloading } = useOnDeviceAiDownloading(starting, models);
 
@@ -130,6 +184,22 @@ export const OnDeviceAi: React.FC<{
                 ? t("privacy.onDeviceAi.descriptionMac")
                 : t("privacy.onDeviceAi.description")}
           </p>
+          {!list && models.length > 1 && (
+            <button
+              type="button"
+              onClick={openReasoningModels}
+              className="mt-1.5 inline-flex cursor-pointer items-center gap-0.5 text-meta font-medium text-text underline-offset-2 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-logo-primary"
+            >
+              {t("privacy.onDeviceAi.manage")}
+              <ArrowRight
+                width={11}
+                height={11}
+                strokeWidth={2}
+                className="shrink-0 rtl:rotate-180"
+                aria-hidden="true"
+              />
+            </button>
+          )}
         </div>
         {downloading ? (
           <Button
@@ -141,15 +211,18 @@ export const OnDeviceAi: React.FC<{
             {t("privacy.onDeviceAi.cancel")}
           </Button>
         ) : status.downloaded ? (
-          <Button
-            variant="secondary"
-            size="sm"
-            className="shrink-0 whitespace-nowrap"
-            onClick={removeAll}
-          >
-            <Trash2 width={12} height={12} aria-hidden="true" />
-            {t("privacy.onDeviceAi.remove")}
-          </Button>
+          // Removing lives with the models (Models › Reasoning models).
+          list && (
+            <Button
+              variant="secondary"
+              size="sm"
+              className="shrink-0 whitespace-nowrap"
+              onClick={removeAll}
+            >
+              <Trash2 width={12} height={12} aria-hidden="true" />
+              {t("privacy.onDeviceAi.remove")}
+            </Button>
+          )
         ) : (
           <Button
             variant="secondary"
@@ -192,7 +265,7 @@ export const OnDeviceAi: React.FC<{
           </motion.div>
         )}
       </AnimatePresence>
-      {models.length > 1 && (
+      {list && models.length > 1 && (
         <div className="mt-4">
           <p className="text-meta text-ink-3">
             {t("privacy.onDeviceAi.models")}

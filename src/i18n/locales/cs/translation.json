@@ -520,6 +520,14 @@
       "rescan": {
         "label": "Znovu prohledat",
         "tooltip": "Znovu prohledat modely přidané do složky modelů nebo mezipaměti Hugging Face mimo {{appName}}"
+      },
+      "tabs": {
+        "voice": "Hlasové modely",
+        "reasoning": "Modely pro uvažování"
+      },
+      "reasoning": {
+        "note": "Používají se, když AI běží na tomto počítači. Vyberte, kde běží:",
+        "unsupported": "AI v zařízení není na tomto počítači k dispozici."
       }
     },
     "languages": {
@@ -1844,7 +1852,8 @@
         "qwen3_1_7b_q4": "Dobré úpravy a psaní za zhruba poloviční stahování oproti 8bitové verzi, s malou ztrátou.",
         "qwen3_1_7b": "Předchozí model v zařízení. O něco lepší než 4bitová verze, za větší stahování.",
         "qwen3_4b": "Nejlepší kvalita v zařízení, ale největší a nejpomalejší. Pro schopné psaní a odpovědi bez cloudu."
-      }
+      },
+      "manage": "Spravovat modely"
     },
     "telemetry": {
       "title": "Pomozte vylepšit {{appName}}",

@@ -517,6 +517,14 @@
       "rescan": {
         "label": "Volver a escanear",
         "tooltip": "Vuelve a escanear en busca de modelos añadidos a la carpeta de modelos o a la caché de Hugging Face fuera de {{appName}}"
+      },
+      "tabs": {
+        "voice": "Modelos de voz",
+        "reasoning": "Modelos de razonamiento"
+      },
+      "reasoning": {
+        "note": "Se usan cuando la IA funciona en este ordenador. Elige dónde funciona:",
+        "unsupported": "La IA en el dispositivo no está disponible en este ordenador."
       }
     },
     "languages": {
@@ -1827,7 +1835,8 @@
         "qwen3_1_7b_q4": "Buen pulido y buena redacción con la mitad de descarga que la versión de 8 bits, perdiendo poco.",
         "qwen3_1_7b": "El modelo anterior en el dispositivo. Algo mejor que la versión de 4 bits, con una descarga mayor.",
         "qwen3_4b": "La mejor calidad en el dispositivo, y el más grande y lento. Para escribir y responder bien sin la nube."
-      }
+      },
+      "manage": "Gestionar modelos"
     },
     "telemetry": {
       "title": "Ayuda a mejorar {{appName}}",

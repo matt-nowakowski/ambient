@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Pindai Ulang",
         "tooltip": "Pindai ulang model yang ditambahkan ke folder model atau cache Hugging Face dari luar {{appName}}"
+      },
+      "tabs": {
+        "voice": "Model suara",
+        "reasoning": "Model penalaran"
+      },
+      "reasoning": {
+        "note": "Dipakai saat AI berjalan di komputer ini. Pilih tempat AI berjalan:",
+        "unsupported": "AI di perangkat tidak tersedia di komputer ini."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "Merapikan dan menulis dengan baik dengan unduhan sekitar separuh versi 8-bit, tanpa banyak kehilangan.",
         "qwen3_1_7b": "Model di perangkat sebelumnya. Sedikit lebih baik daripada versi 4-bit, dengan unduhan lebih besar.",
         "qwen3_4b": "Kualitas terbaik di perangkat, tetapi paling besar dan paling lambat. Untuk menulis dan menjawab dengan baik tanpa cloud."
-      }
+      },
+      "manage": "Kelola model"
     },
     "telemetry": {
       "title": "Bantu tingkatkan {{appName}}",

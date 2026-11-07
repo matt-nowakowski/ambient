@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Søg igen",
         "tooltip": "Søg igen efter modeller, der er tilføjet til modelmappen eller Hugging Face-cachen uden for {{appName}}"
+      },
+      "tabs": {
+        "voice": "Talemodeller",
+        "reasoning": "Ræsonneringsmodeller"
+      },
+      "reasoning": {
+        "note": "Bruges, når AI kører på denne computer. Vælg, hvor den kører:",
+        "unsupported": "AI på enheden er ikke tilgængelig på denne computer."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "God finpudsning og skrivning med omkring halvt så stor download som 8-bit-versionen, med lidt tabt.",
         "qwen3_1_7b": "Den tidligere model på enheden. Lidt bedre end 4-bit-versionen, for en større download.",
         "qwen3_4b": "Den bedste kvalitet på enheden, og den største og langsomste. Til god skrivning og svar uden skyen."
-      }
+      },
+      "manage": "Administrer modeller"
     },
     "telemetry": {
       "title": "Hjælp med at forbedre {{appName}}",

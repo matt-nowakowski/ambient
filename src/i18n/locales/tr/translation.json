@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Yeniden Tara",
         "tooltip": "{{appName}} dışında modeller klasörüne veya Hugging Face önbelleğine eklenen modelleri yeniden tara"
+      },
+      "tabs": {
+        "voice": "Ses modelleri",
+        "reasoning": "Akıl yürütme modelleri"
+      },
+      "reasoning": {
+        "note": "Yapay zekâ bu bilgisayarda çalıştığında kullanılır. Nerede çalışacağını seçin:",
+        "unsupported": "Cihaz üzerinde yapay zekâ bu bilgisayarda kullanılamıyor."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "8 bit sürümün yaklaşık yarısı kadar indirmeyle iyi düzeltme ve yazma, az kayıpla.",
         "qwen3_1_7b": "Önceki cihaz üzerindeki model. 4 bit sürümden biraz daha iyi, daha büyük bir indirme karşılığında.",
         "qwen3_4b": "Cihaz üzerinde en iyi kalite; en büyük ve en yavaş olanı. Bulut olmadan iyi yazma ve yanıtlar için."
-      }
+      },
+      "manage": "Modelleri yönet"
     },
     "telemetry": {
       "title": "{{appName}} uygulamasını geliştirmeye yardım et",

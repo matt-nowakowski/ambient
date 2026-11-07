@@ -514,6 +514,14 @@
       "rescan": {
         "label": "Opnieuw scannen",
         "tooltip": "Scannen naar modellen die buiten {{appName}} om zijn toegevoegd aan de modellenmap of Hugging Face-cache"
+      },
+      "tabs": {
+        "voice": "Spraakmodellen",
+        "reasoning": "Redeneermodellen"
+      },
+      "reasoning": {
+        "note": "Gebruikt wanneer AI op deze computer draait. Kies waar het draait:",
+        "unsupported": "AI op het apparaat is niet beschikbaar op deze computer."
       }
     },
     "languages": {
@@ -1820,7 +1828,8 @@
         "qwen3_1_7b_q4": "Goed oppoetsen en schrijven met ongeveer de helft van de download van de 8-bitversie, met weinig verlies.",
         "qwen3_1_7b": "Het vorige model op het apparaat. Iets beter dan de 4-bitversie, voor een grotere download.",
         "qwen3_4b": "De beste kwaliteit op het apparaat, en het grootste en traagste. Voor goed schrijven en antwoorden zonder cloud."
-      }
+      },
+      "manage": "Modellen beheren"
     },
     "telemetry": {
       "title": "Help {{appName}} verbeteren",
