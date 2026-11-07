@@ -278,6 +278,53 @@
         "bodyDevice": "Tidies messy speech before it's typed, on this computer."
       },
       "telemetry": "Share anonymous usage counts, never what you say, type or see."
+    },
+    "agent": {
+      "title": "Just say what you need",
+      "sub": "It decides from what you say and what's on screen. No commands to learn, and plain dictation still just types.",
+      "askKey": "To ask instead of typing, hold <keys/>",
+      "noAi": "With No AI, it only types. Turn AI on in Settings.",
+      "screenLabel": "Four things to ask for: answers from the web, help with what's on screen, replies written for you, and things done for you.",
+      "quote": "“{{said}}”",
+      "powers": {
+        "ask": {
+          "title": "Ask anything",
+          "weather": {
+            "said": "What's the weather in Lisbon tomorrow?",
+            "reply": "Sunny and 24°, with a light breeze."
+          }
+        },
+        "screen": {
+          "title": "About your screen",
+          "thread": {
+            "said": "Summarise this thread",
+            "reply": "Launch moves to Thursday. Sam owns the deck."
+          },
+          "error": {
+            "said": "What does this error mean?",
+            "reply": "The path is wrong: that folder doesn't exist."
+          }
+        },
+        "write": {
+          "title": "Write for you",
+          "reply": {
+            "said": "Reply that Thursday works",
+            "them": "Thursday or Friday?",
+            "reply": "Thursday works for me. See you then!"
+          }
+        },
+        "act": {
+          "title": "Do things",
+          "remind": {
+            "said": "Remind me at 5 to call Sam",
+            "reply": "Reminder set for 5 PM: call Sam."
+          },
+          "open": {
+            "said": "Open Linear",
+            "reply": "Opened Linear."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Model",
           "ai": "Where the AI runs",
           "choices": "More choices",
+          "agent": "What it can do",
           "demo": "Demo",
           "try": "Try it",
           "done": "All set"

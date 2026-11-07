@@ -278,6 +278,53 @@
         "bodyDevice": "Rydder op i rodet tale, før den skrives, på denne computer."
       },
       "telemetry": "Del anonyme brugstal, aldrig hvad du siger, skriver eller ser."
+    },
+    "agent": {
+      "title": "Sig bare, hvad du har brug for",
+      "sub": "Den afgør selv ud fra det, du siger, og det, der er på skærmen. Ingen kommandoer at lære, og almindelig diktat skrives bare.",
+      "askKey": "Hold <keys/> for at spørge i stedet for at skrive",
+      "noAi": "Med Ingen AI skriver den kun. Slå AI til i Indstillinger.",
+      "screenLabel": "Fire ting, du kan bede om: svar fra nettet, hjælp med det på skærmen, svar skrevet for dig og ting gjort for dig.",
+      "quote": "»{{said}}«",
+      "powers": {
+        "ask": {
+          "title": "Spørg om hvad som helst",
+          "weather": {
+            "said": "Hvordan bliver vejret i Lissabon i morgen?",
+            "reply": "Sol og 24°, med en let brise."
+          }
+        },
+        "screen": {
+          "title": "Om din skærm",
+          "thread": {
+            "said": "Opsummer denne tråd",
+            "reply": "Lanceringen rykkes til torsdag. Sam står for præsentationen."
+          },
+          "error": {
+            "said": "Hvad betyder denne fejl?",
+            "reply": "Stien er forkert: den mappe findes ikke."
+          }
+        },
+        "write": {
+          "title": "Skriver for dig",
+          "reply": {
+            "said": "Svar, at torsdag passer",
+            "them": "Torsdag eller fredag?",
+            "reply": "Torsdag passer mig fint. Vi ses!"
+          }
+        },
+        "act": {
+          "title": "Gør ting",
+          "remind": {
+            "said": "Mind mig om at ringe til Sam kl. 5",
+            "reply": "Påmindelse kl. 17.00: ring til Sam."
+          },
+          "open": {
+            "said": "Åbn Linear",
+            "reply": "Åbnede Linear."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Model",
           "ai": "Hvor AI'en kører",
           "choices": "Flere valg",
+          "agent": "Hvad den kan",
           "demo": "Demo",
           "try": "Prøv det",
           "done": "Klar"

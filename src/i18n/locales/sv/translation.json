@@ -278,6 +278,53 @@
         "bodyDevice": "Snyggar till rörigt tal innan det skrivs, på den här datorn."
       },
       "telemetry": "Dela anonym användningsstatistik, aldrig vad du säger, skriver eller ser."
+    },
+    "agent": {
+      "title": "Säg bara vad du behöver",
+      "sub": "Den avgör själv utifrån vad du säger och vad som syns på skärmen. Inga kommandon att lära sig, och vanlig diktering skrivs bara ut.",
+      "askKey": "Håll ned <keys/> för att fråga i stället för att skriva",
+      "noAi": "Med Ingen AI skriver den bara. Slå på AI i Inställningar.",
+      "screenLabel": "Fyra saker att be om: svar från webben, hjälp med det som syns på skärmen, svar skrivna åt dig och saker gjorda åt dig.",
+      "quote": "”{{said}}”",
+      "powers": {
+        "ask": {
+          "title": "Fråga vad som helst",
+          "weather": {
+            "said": "Hur blir vädret i Lissabon i morgon?",
+            "reply": "Sol och 24°, med en lätt bris."
+          }
+        },
+        "screen": {
+          "title": "Om din skärm",
+          "thread": {
+            "said": "Sammanfatta den här tråden",
+            "reply": "Lanseringen flyttas till torsdag. Sam tar presentationen."
+          },
+          "error": {
+            "said": "Vad betyder det här felet?",
+            "reply": "Sökvägen är fel: den mappen finns inte."
+          }
+        },
+        "write": {
+          "title": "Skriver åt dig",
+          "reply": {
+            "said": "Svara att torsdag funkar",
+            "them": "Torsdag eller fredag?",
+            "reply": "Torsdag funkar för mig. Vi ses då!"
+          }
+        },
+        "act": {
+          "title": "Fixar saker",
+          "remind": {
+            "said": "Påminn mig klockan 5 att ringa Sam",
+            "reply": "Påminnelse kl. 17.00: ring Sam."
+          },
+          "open": {
+            "said": "Öppna Linear",
+            "reply": "Öppnade Linear."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Modell",
           "ai": "Var AI:n körs",
           "choices": "Fler val",
+          "agent": "Vad den kan",
           "demo": "Demo",
           "try": "Testa",
           "done": "Klart"

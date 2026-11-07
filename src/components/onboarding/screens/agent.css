@@ -1,0 +1,316 @@
+/* What it can do (Agent.tsx): four tiles, each with a small drawn screen
+   (Demo's wallpaper and window glass) and the result on it as the real HUD
+   shows it: fixed dark glass in both themes (src/hud/hud.css, smaller). */
+
+/* The phrase to say: lit while it's being said, by stroke, not weight, so
+   the line never shifts (as Demo's sentence). */
+.agt-said {
+  color: var(--color-ink-2);
+  -webkit-text-stroke: 0.25px transparent;
+  transition:
+    color 220ms ease,
+    -webkit-text-stroke-color 220ms ease;
+}
+.agt-said[data-on] {
+  color: var(--color-text);
+  -webkit-text-stroke-color: currentColor;
+}
+
+/* ---------- the drawn screen ---------- */
+.agt-strip {
+  position: relative;
+  isolation: isolate;
+  height: 72px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--demo-wallpaper);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-text) 9%, transparent);
+  user-select: none;
+}
+
+/* An app window, frosted like Demo's, cut off by the screen's bottom edge. */
+.agt-window {
+  position: absolute;
+  top: 9px;
+  bottom: -8px;
+  border-radius: 9px;
+  overflow: hidden;
+  text-align: start;
+  background: color-mix(in srgb, var(--color-demo-window) 80%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+  box-shadow:
+    0 0 0 0.5px var(--color-line),
+    inset 0 0.5px 0 rgb(255 255 255 / 0.5),
+    0 8px 22px rgb(40 20 50 / 0.14);
+}
+/* About your screen: the window on the start side, the card over its end. */
+.agt-window-side {
+  inset-inline-start: 9px;
+  width: 104px;
+  padding: 7px 9px 0;
+}
+/* Write for you: a chat across the screen. */
+.agt-window-wide {
+  inset-inline: 9px;
+  padding: 7px 9px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.agt-dots {
+  display: flex;
+  gap: 4px;
+}
+.agt-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-line);
+}
+/* The thread, drawn, not written. */
+.agt-lines {
+  display: grid;
+  gap: 6px;
+  margin-top: 9px;
+}
+.agt-lines i {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-line);
+  transition: background-color 300ms ease;
+}
+.agt-lines i:nth-child(1) {
+  width: 82%;
+}
+.agt-lines i:nth-child(2) {
+  width: 64%;
+}
+.agt-lines i:nth-child(3) {
+  width: 90%;
+}
+.agt-lines i:nth-child(4) {
+  width: 52%;
+}
+/* The other example: a log, one line of it an error. */
+.agt-lines[data-error] i:nth-child(2) {
+  background: color-mix(in srgb, var(--color-error) 70%, transparent);
+}
+/* Listening: a soft band reads down the window. */
+.agt-scan {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 18px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--color-text) 9%, transparent),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+.agt-strip[data-listening] .agt-scan {
+  animation: agt-scan 1000ms var(--ease-glide) both;
+}
+@keyframes agt-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(64px);
+  }
+}
+/* Their message, and your reply field with the draft typed in place. */
+.agt-them {
+  align-self: flex-start;
+  max-width: 85%;
+  margin: 0;
+  padding: 2px 9px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-line);
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.agt-field {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 22px;
+  margin: 0;
+  padding: 0 9px;
+  overflow: hidden;
+  border-radius: 11px;
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  font-size: 11.5px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+.agt-caret {
+  flex: none;
+  width: 1.5px;
+  height: 12px;
+  margin-inline-start: 1px;
+  background: var(--color-text);
+  animation: agt-caret 1.05s steps(1) infinite;
+}
+@keyframes agt-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- the HUD card ---------- */
+.agt-card {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  z-index: 2;
+  width: calc(100% - 40px);
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: #fafafa;
+  text-align: start;
+  background: rgba(18, 18, 22, 0.74);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 22px rgb(20 10 30 / 0.22);
+  transform-origin: top right;
+  pointer-events: none;
+}
+[dir="rtl"] .agt-card {
+  transform-origin: top left;
+}
+/* Over the window's end, leaving its start in view. */
+.agt-card-narrow {
+  width: calc(100% - 100px);
+}
+.agt-reply {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 380;
+  line-height: 15px;
+}
+.agt-one-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.agt-two-lines {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+/* A web source, as the HUD's chip. */
+.agt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  margin-top: 6px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 10.5px;
+  line-height: 1;
+}
+/* Done: a notice with a check. */
+.agt-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 380;
+  line-height: 15px;
+}
+.agt-notice > :first-child {
+  margin-top: 0.5px;
+}
+
+/* ---------- the recording pill, small ---------- */
+.agt-pill {
+  position: absolute;
+  bottom: 8px;
+  inset-inline: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  height: 22px;
+  margin-inline: auto;
+  padding: 0 10px 0 9px;
+  border-radius: 999px;
+  background: var(--color-background);
+  box-shadow: var(--demo-pill-shadow);
+}
+.agt-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--onb-live, #ef4444);
+}
+.agt-pill-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 12px;
+}
+.agt-pill-bars i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-logo-primary);
+  transform-origin: center;
+  animation: agt-talk 640ms ease-in-out infinite alternate;
+}
+.agt-pill-bars i:nth-child(2) {
+  animation-delay: -160ms;
+}
+.agt-pill-bars i:nth-child(3) {
+  animation-delay: -420ms;
+}
+.agt-pill-bars i:nth-child(4) {
+  animation-delay: -260ms;
+}
+.agt-pill-bars i:nth-child(5) {
+  animation-delay: -520ms;
+}
+@keyframes agt-talk {
+  from {
+    transform: scaleY(0.25);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Infinite loops would strobe under the global 1ms rule: stop them. */
+@media (prefers-reduced-motion: reduce) {
+  .agt-caret,
+  .agt-scan,
+  .agt-pill-bars i {
+    animation: none !important;
+  }
+  .agt-caret {
+    visibility: hidden;
+  }
+}

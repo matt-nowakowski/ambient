@@ -278,6 +278,53 @@
         "bodyDevice": "Chỉnh lời nói lộn xộn trước khi gõ, ngay trên máy tính này."
       },
       "telemetry": "Chia sẻ số liệu sử dụng ẩn danh, không bao giờ là những gì bạn nói, gõ hay thấy."
+    },
+    "agent": {
+      "title": "Chỉ cần nói bạn cần gì",
+      "sub": "Nó tự quyết dựa trên điều bạn nói và những gì trên màn hình. Không cần học lệnh nào, và đọc chính tả thông thường vẫn chỉ gõ ra chữ.",
+      "askKey": "Để hỏi thay vì gõ, hãy giữ <keys/>",
+      "noAi": "Với Không dùng AI, nó chỉ gõ chữ. Bật AI trong Cài đặt.",
+      "screenLabel": "Bốn việc bạn có thể nhờ: câu trả lời từ web, trợ giúp về nội dung trên màn hình, trả lời viết sẵn cho bạn và việc làm giúp bạn.",
+      "quote": "“{{said}}”",
+      "powers": {
+        "ask": {
+          "title": "Hỏi bất cứ điều gì",
+          "weather": {
+            "said": "Ngày mai thời tiết ở Lisbon thế nào?",
+            "reply": "Nắng, 24°, có gió nhẹ."
+          }
+        },
+        "screen": {
+          "title": "Về màn hình của bạn",
+          "thread": {
+            "said": "Tóm tắt chuỗi tin này",
+            "reply": "Ra mắt dời sang thứ Năm. Sam lo phần slide."
+          },
+          "error": {
+            "said": "Lỗi này nghĩa là gì?",
+            "reply": "Sai đường dẫn: thư mục đó không tồn tại."
+          }
+        },
+        "write": {
+          "title": "Viết giúp bạn",
+          "reply": {
+            "said": "Trả lời là thứ Năm được",
+            "them": "Thứ Năm hay thứ Sáu?",
+            "reply": "Thứ Năm được nhé. Hẹn gặp bạn!"
+          }
+        },
+        "act": {
+          "title": "Làm việc giúp bạn",
+          "remind": {
+            "said": "Nhắc tôi lúc 5 giờ gọi cho Sam",
+            "reply": "Đã đặt nhắc lúc 17:00: gọi cho Sam."
+          },
+          "open": {
+            "said": "Mở Linear",
+            "reply": "Đã mở Linear."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Mô hình",
           "ai": "Nơi AI chạy",
           "choices": "Lựa chọn khác",
+          "agent": "Những gì nó làm được",
           "demo": "Demo",
           "try": "Thử xem",
           "done": "Hoàn tất"

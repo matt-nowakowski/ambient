@@ -279,6 +279,53 @@
         "bodyDevice": "Riordina il parlato confuso prima di scriverlo, su questo computer."
       },
       "telemetry": "Condividi conteggi d'uso anonimi, mai ciò che dici, scrivi o vedi."
+    },
+    "agent": {
+      "title": "Di' solo cosa ti serve",
+      "sub": "Decide da solo in base a ciò che dici e a ciò che è sullo schermo. Nessun comando da imparare, e la dettatura normale viene semplicemente scritta.",
+      "askKey": "Per chiedere invece di scrivere, tieni premuto <keys/>",
+      "noAi": "Con Nessuna IA scrive soltanto. Attiva l'IA nelle Impostazioni.",
+      "screenLabel": "Quattro cose da chiedere: risposte dal web, aiuto su ciò che è sullo schermo, risposte scritte per te e cose fatte per te.",
+      "quote": "«{{said}}»",
+      "powers": {
+        "ask": {
+          "title": "Chiedi qualsiasi cosa",
+          "weather": {
+            "said": "Che tempo farà domani a Lisbona?",
+            "reply": "Sole e 24°, con una brezza leggera."
+          }
+        },
+        "screen": {
+          "title": "Sul tuo schermo",
+          "thread": {
+            "said": "Riassumi questa conversazione",
+            "reply": "Il lancio slitta a giovedì. Sam si occupa delle slide."
+          },
+          "error": {
+            "said": "Cosa significa questo errore?",
+            "reply": "Il percorso è sbagliato: quella cartella non esiste."
+          }
+        },
+        "write": {
+          "title": "Scrive per te",
+          "reply": {
+            "said": "Rispondi che giovedì va bene",
+            "them": "Giovedì o venerdì?",
+            "reply": "Giovedì per me va bene. A presto!"
+          }
+        },
+        "act": {
+          "title": "Fa le cose",
+          "remind": {
+            "said": "Ricordami alle 5 di chiamare Sam",
+            "reply": "Promemoria alle 17:00: chiamare Sam."
+          },
+          "open": {
+            "said": "Apri Linear",
+            "reply": "Linear aperto."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -841,6 +888,7 @@
           "model": "Modello",
           "ai": "Dove funziona l'IA",
           "choices": "Altre scelte",
+          "agent": "Cosa sa fare",
           "demo": "Demo",
           "try": "Provalo",
           "done": "Tutto pronto"

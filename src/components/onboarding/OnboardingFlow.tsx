@@ -17,6 +17,7 @@ import { Permissions } from "./screens/Permissions";
 import { Model } from "./screens/Model";
 import { AiChoice } from "./screens/AiChoice";
 import { Choices } from "./screens/Choices";
+import { Agent } from "./screens/Agent";
 import { Demo } from "./screens/Demo";
 import { TryIt } from "./screens/TryIt";
 import { useOsType } from "@/hooks/useOsType";
@@ -225,6 +226,15 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
       return <AiChoice progress={progress} onBack={back} onContinue={next} />;
     case "choices":
       return <Choices progress={progress} onBack={back} onContinue={next} />;
+    case "agent":
+      return (
+        <Agent
+          progress={progress}
+          os={osType}
+          onBack={back}
+          onContinue={next}
+        />
+      );
     case "demo":
       return (
         <Demo

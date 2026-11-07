@@ -280,6 +280,53 @@
         "bodyDevice": "Porządkuje chaotyczną mowę, zanim zostanie wpisana, na tym komputerze."
       },
       "telemetry": "Udostępniaj anonimowe statystyki użycia, nigdy tego, co mówisz, piszesz lub widzisz."
+    },
+    "agent": {
+      "title": "Po prostu powiedz, czego potrzebujesz",
+      "sub": "Sam decyduje na podstawie tego, co mówisz i co jest na ekranie. Żadnych poleceń do nauki, a zwykłe dyktowanie po prostu się wpisuje.",
+      "askKey": "Aby zapytać zamiast pisać, przytrzymaj <keys/>",
+      "noAi": "Bez AI tylko pisze. Włącz AI w Ustawieniach.",
+      "screenLabel": "Cztery rzeczy, o które możesz poprosić: odpowiedzi z sieci, pomoc z tym, co na ekranie, odpowiedzi napisane za ciebie i sprawy załatwione za ciebie.",
+      "quote": "„{{said}}”",
+      "powers": {
+        "ask": {
+          "title": "Pytaj o wszystko",
+          "weather": {
+            "said": "Jaka będzie jutro pogoda w Lizbonie?",
+            "reply": "Słonecznie, 24°, lekki wiaterek."
+          }
+        },
+        "screen": {
+          "title": "O tym, co na ekranie",
+          "thread": {
+            "said": "Podsumuj ten wątek",
+            "reply": "Premiera przesunięta na czwartek. Prezentacja jest na głowie Sama."
+          },
+          "error": {
+            "said": "Co oznacza ten błąd?",
+            "reply": "Zła ścieżka: ten folder nie istnieje."
+          }
+        },
+        "write": {
+          "title": "Pisze za ciebie",
+          "reply": {
+            "said": "Odpisz, że czwartek mi pasuje",
+            "them": "Czwartek czy piątek?",
+            "reply": "Czwartek mi pasuje. Do zobaczenia!"
+          }
+        },
+        "act": {
+          "title": "Załatwia sprawy",
+          "remind": {
+            "said": "Przypomnij mi o 17, żeby zadzwonić do Sama",
+            "reply": "Przypomnienie na 17:00: zadzwoń do Sama."
+          },
+          "open": {
+            "said": "Otwórz Linear",
+            "reply": "Otwarto Linear."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -844,6 +891,7 @@
           "model": "Model",
           "ai": "Gdzie działa AI",
           "choices": "Więcej wyborów",
+          "agent": "Co potrafi",
           "demo": "Demo",
           "try": "Wypróbuj",
           "done": "Gotowe"

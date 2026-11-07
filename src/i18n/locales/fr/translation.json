@@ -279,6 +279,53 @@
         "bodyDevice": "Met de l'ordre dans une dictée brouillonne avant de la taper, sur cet ordinateur."
       },
       "telemetry": "Partagez des statistiques d'usage anonymes, jamais ce que vous dites, tapez ou voyez."
+    },
+    "agent": {
+      "title": "Dites simplement ce qu’il vous faut",
+      "sub": "Il décide seul d’après ce que vous dites et ce qui est à l’écran. Aucune commande à apprendre, et la dictée simple s’écrit telle quelle.",
+      "askKey": "Pour demander au lieu de taper, maintenez <keys/>",
+      "noAi": "Avec « Pas d’IA », il ne fait que taper. Activez l’IA dans Réglages.",
+      "screenLabel": "Quatre choses à demander : des réponses du web, de l’aide sur ce qui est à l’écran, des réponses rédigées pour vous et des tâches faites pour vous.",
+      "quote": "« {{said}} »",
+      "powers": {
+        "ask": {
+          "title": "Demandez n’importe quoi",
+          "weather": {
+            "said": "Quel temps fera-t-il demain à Lisbonne ?",
+            "reply": "Ensoleillé, 24°, avec une petite brise."
+          }
+        },
+        "screen": {
+          "title": "Sur votre écran",
+          "thread": {
+            "said": "Résume ce fil",
+            "reply": "Le lancement passe à jeudi. Sam s’occupe de la présentation."
+          },
+          "error": {
+            "said": "Que veut dire cette erreur ?",
+            "reply": "Le chemin est faux : ce dossier n’existe pas."
+          }
+        },
+        "write": {
+          "title": "Écrit pour vous",
+          "reply": {
+            "said": "Réponds que jeudi me va",
+            "them": "Jeudi ou vendredi ?",
+            "reply": "Jeudi me va très bien. À bientôt !"
+          }
+        },
+        "act": {
+          "title": "Agit pour vous",
+          "remind": {
+            "said": "Rappelle-moi d’appeler Sam à 17 h",
+            "reply": "Rappel à 17 h : appeler Sam."
+          },
+          "open": {
+            "said": "Ouvre Linear",
+            "reply": "Linear ouvert."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -841,6 +888,7 @@
           "model": "Modèle",
           "ai": "Où tourne l'IA",
           "choices": "Autres choix",
+          "agent": "Ce qu’il sait faire",
           "demo": "Démo",
           "try": "Essai",
           "done": "Tout est prêt"

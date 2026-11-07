@@ -280,6 +280,53 @@
         "bodyDevice": "Uhladí neuspořádanou řeč, než se napíše, v tomto počítači."
       },
       "telemetry": "Sdílejte anonymní statistiky používání, nikdy to, co říkáte, píšete nebo vidíte."
+    },
+    "agent": {
+      "title": "Prostě řekni, co potřebuješ",
+      "sub": "Sám pozná, co chceš, podle tvých slov a toho, co je na obrazovce. Žádné příkazy k učení a běžné diktování se prostě napíše.",
+      "askKey": "Chceš-li se zeptat místo psaní, podrž <keys/>",
+      "noAi": "Bez AI jen píše. AI zapneš v Nastavení.",
+      "screenLabel": "Čtyři věci, o které můžeš požádat: odpovědi z webu, pomoc s tím, co je na obrazovce, odpovědi napsané za tebe a hotové úkoly.",
+      "quote": "„{{said}}“",
+      "powers": {
+        "ask": {
+          "title": "Zeptej se na cokoli",
+          "weather": {
+            "said": "Jaké bude zítra počasí v Lisabonu?",
+            "reply": "Slunečno a 24°, mírný vánek."
+          }
+        },
+        "screen": {
+          "title": "K tvé obrazovce",
+          "thread": {
+            "said": "Shrň tohle vlákno",
+            "reply": "Spuštění se přesouvá na čtvrtek. Prezentaci má Sam."
+          },
+          "error": {
+            "said": "Co znamená tahle chyba?",
+            "reply": "Cesta je špatně: ta složka neexistuje."
+          }
+        },
+        "write": {
+          "title": "Píše za tebe",
+          "reply": {
+            "said": "Odpověz, že čtvrtek se hodí",
+            "them": "Čtvrtek, nebo pátek?",
+            "reply": "Čtvrtek mi vyhovuje. Uvidíme se!"
+          }
+        },
+        "act": {
+          "title": "Udělá to za tebe",
+          "remind": {
+            "said": "Připomeň mi v 5, ať zavolám Samovi",
+            "reply": "Připomínka v 17:00: zavolat Samovi."
+          },
+          "open": {
+            "said": "Otevři Linear",
+            "reply": "Linear je otevřený."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -844,6 +891,7 @@
           "model": "Model",
           "ai": "Kde běží AI",
           "choices": "Další volby",
+          "agent": "Co umí",
           "demo": "Ukázka",
           "try": "Vyzkoušet",
           "done": "Hotovo"

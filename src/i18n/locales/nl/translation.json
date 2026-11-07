@@ -278,6 +278,53 @@
         "bodyDevice": "Maakt rommelige spraak netjes voordat die getypt wordt, op deze computer."
       },
       "telemetry": "Deel anonieme gebruikstellingen, nooit wat je zegt, typt of ziet."
+    },
+    "agent": {
+      "title": "Zeg gewoon wat je nodig hebt",
+      "sub": "Het beslist zelf op basis van wat je zegt en wat er op je scherm staat. Geen commando's om te leren, en gewoon dicteren wordt gewoon getypt.",
+      "askKey": "Om te vragen in plaats van te typen, houd <keys/> ingedrukt",
+      "noAi": "Met Geen AI typt het alleen. Zet AI aan in Instellingen.",
+      "screenLabel": "Vier dingen om te vragen: antwoorden van het web, hulp met wat er op je scherm staat, antwoorden die het voor je schrijft en dingen die het voor je doet.",
+      "quote": "‘{{said}}’",
+      "powers": {
+        "ask": {
+          "title": "Vraag wat je wilt",
+          "weather": {
+            "said": "Wat voor weer wordt het morgen in Lissabon?",
+            "reply": "Zonnig en 24°, met een licht briesje."
+          }
+        },
+        "screen": {
+          "title": "Over je scherm",
+          "thread": {
+            "said": "Vat deze thread samen",
+            "reply": "De lancering schuift naar donderdag. Sam doet de presentatie."
+          },
+          "error": {
+            "said": "Wat betekent deze fout?",
+            "reply": "Het pad klopt niet: die map bestaat niet."
+          }
+        },
+        "write": {
+          "title": "Schrijft voor je",
+          "reply": {
+            "said": "Antwoord dat donderdag uitkomt",
+            "them": "Donderdag of vrijdag?",
+            "reply": "Donderdag komt me goed uit. Tot dan!"
+          }
+        },
+        "act": {
+          "title": "Regelt dingen",
+          "remind": {
+            "said": "Herinner me er om 5 uur aan om Sam te bellen",
+            "reply": "Herinnering om 17:00: Sam bellen."
+          },
+          "open": {
+            "said": "Open Linear",
+            "reply": "Linear geopend."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Model",
           "ai": "Waar de AI draait",
           "choices": "Meer keuzes",
+          "agent": "Wat het kan",
           "demo": "Demo",
           "try": "Proberen",
           "done": "Klaar"

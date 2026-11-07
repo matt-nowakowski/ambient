@@ -278,6 +278,53 @@
         "bodyDevice": "Dağınık konuşmayı yazılmadan önce bu bilgisayarda toparlar."
       },
       "telemetry": "Anonim kullanım sayılarını paylaş, söylediklerini, yazdıklarını veya gördüklerini asla."
+    },
+    "agent": {
+      "title": "Ne istediğini söylemen yeterli",
+      "sub": "Söylediğine ve ekranda olana bakıp kendisi karar verir. Öğrenilecek komut yok; düz dikte yine yalnızca yazılır.",
+      "askKey": "Yazmak yerine sormak için <keys/> tuşlarını basılı tut",
+      "noAi": "Yapay Zekâ Yok seçiliyken yalnızca yazar. Yapay zekâyı Ayarlar’dan aç.",
+      "screenLabel": "İsteyebileceğin dört şey: web’den yanıtlar, ekrandakiyle ilgili yardım, senin yerine yazılan yanıtlar ve senin yerine yapılan işler.",
+      "quote": "“{{said}}”",
+      "powers": {
+        "ask": {
+          "title": "Her şeyi sor",
+          "weather": {
+            "said": "Yarın Lizbon’da hava nasıl olacak?",
+            "reply": "Güneşli ve 24°, hafif bir esinti var."
+          }
+        },
+        "screen": {
+          "title": "Ekranın hakkında",
+          "thread": {
+            "said": "Bu yazışmayı özetle",
+            "reply": "Lansman perşembeye kaydı. Sunum Sam’de."
+          },
+          "error": {
+            "said": "Bu hata ne demek?",
+            "reply": "Yol yanlış: o klasör yok."
+          }
+        },
+        "write": {
+          "title": "Senin yerine yazar",
+          "reply": {
+            "said": "Perşembenin uygun olduğunu yaz",
+            "them": "Perşembe mi, cuma mı?",
+            "reply": "Perşembe bana uyar. Görüşürüz!"
+          }
+        },
+        "act": {
+          "title": "İş yapar",
+          "remind": {
+            "said": "Bana saat 5’te Sam’i aramayı hatırlat",
+            "reply": "Anımsatıcı kuruldu, 17.00: Sam’i ara."
+          },
+          "open": {
+            "said": "Linear’ı aç",
+            "reply": "Linear açıldı."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Model",
           "ai": "Yapay zekânın çalıştığı yer",
           "choices": "Diğer seçimler",
+          "agent": "Neler yapabilir",
           "demo": "Demo",
           "try": "Deneyin",
           "done": "Hazır"

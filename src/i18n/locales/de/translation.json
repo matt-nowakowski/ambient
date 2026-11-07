@@ -278,6 +278,53 @@
         "bodyDevice": "Glättet holprige Sprache, bevor sie getippt wird, auf diesem Computer."
       },
       "telemetry": "Teile anonyme Nutzungszahlen, nie, was du sagst, tippst oder siehst."
+    },
+    "agent": {
+      "title": "Sag einfach, was du brauchst",
+      "sub": "Es entscheidet selbst – nach dem, was du sagst, und dem, was auf dem Bildschirm ist. Keine Befehle lernen; normales Diktieren wird einfach getippt.",
+      "askKey": "Um zu fragen statt zu tippen, halte <keys/>",
+      "noAi": "Mit „Keine KI“ tippt es nur. Schalte KI in den Einstellungen ein.",
+      "screenLabel": "Vier Dinge, die du verlangen kannst: Antworten aus dem Web, Hilfe zu dem, was auf dem Bildschirm ist, Antworten, die es für dich schreibt, und Erledigtes.",
+      "quote": "„{{said}}“",
+      "powers": {
+        "ask": {
+          "title": "Frag einfach",
+          "weather": {
+            "said": "Wie wird das Wetter morgen in Lissabon?",
+            "reply": "Sonnig und 24°, mit leichter Brise."
+          }
+        },
+        "screen": {
+          "title": "Zu deinem Bildschirm",
+          "thread": {
+            "said": "Fasse diesen Verlauf zusammen",
+            "reply": "Der Launch rückt auf Donnerstag. Sam macht die Folien."
+          },
+          "error": {
+            "said": "Was bedeutet dieser Fehler?",
+            "reply": "Der Pfad stimmt nicht: Den Ordner gibt es nicht."
+          }
+        },
+        "write": {
+          "title": "Schreibt für dich",
+          "reply": {
+            "said": "Antworte, dass Donnerstag passt",
+            "them": "Donnerstag oder Freitag?",
+            "reply": "Donnerstag passt mir. Bis dann!"
+          }
+        },
+        "act": {
+          "title": "Erledigt Dinge",
+          "remind": {
+            "said": "Erinnere mich um 5 daran, Sam anzurufen",
+            "reply": "Erinnerung für 17 Uhr: Sam anrufen."
+          },
+          "open": {
+            "said": "Öffne Linear",
+            "reply": "Linear geöffnet."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Modell",
           "ai": "Wo die KI läuft",
           "choices": "Weitere Optionen",
+          "agent": "Was es kann",
           "demo": "Demo",
           "try": "Ausprobieren",
           "done": "Alles bereit"

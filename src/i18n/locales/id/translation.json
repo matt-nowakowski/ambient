@@ -278,6 +278,53 @@
         "bodyDevice": "Merapikan ucapan yang berantakan sebelum diketik, di komputer ini."
       },
       "telemetry": "Bagikan hitungan penggunaan anonim, tidak pernah apa yang Anda ucapkan, ketik, atau lihat."
+    },
+    "agent": {
+      "title": "Cukup katakan apa yang Anda perlukan",
+      "sub": "Ia memutuskan sendiri dari ucapan Anda dan isi layar. Tak ada perintah yang perlu dihafal, dan dikte biasa tetap diketik.",
+      "askKey": "Untuk bertanya alih-alih mengetik, tahan <keys/>",
+      "noAi": "Dengan Tanpa AI, ia hanya mengetik. Aktifkan AI di Pengaturan.",
+      "screenLabel": "Empat hal yang bisa diminta: jawaban dari web, bantuan soal isi layar, balasan yang ditulis untuk Anda, dan tugas yang dikerjakan untuk Anda.",
+      "quote": "“{{said}}”",
+      "powers": {
+        "ask": {
+          "title": "Tanya apa saja",
+          "weather": {
+            "said": "Bagaimana cuaca di Lisbon besok?",
+            "reply": "Cerah, 24°, dengan angin sepoi-sepoi."
+          }
+        },
+        "screen": {
+          "title": "Tentang layar Anda",
+          "thread": {
+            "said": "Ringkas utas ini",
+            "reply": "Peluncuran pindah ke Kamis. Sam pegang presentasinya."
+          },
+          "error": {
+            "said": "Apa arti galat ini?",
+            "reply": "Path-nya salah: folder itu tidak ada."
+          }
+        },
+        "write": {
+          "title": "Menulis untuk Anda",
+          "reply": {
+            "said": "Balas bahwa Kamis bisa",
+            "them": "Kamis atau Jumat?",
+            "reply": "Kamis bisa. Sampai ketemu!"
+          }
+        },
+        "act": {
+          "title": "Mengerjakan sesuatu",
+          "remind": {
+            "said": "Ingatkan saya jam 5 untuk menelepon Sam",
+            "reply": "Pengingat pukul 17.00: telepon Sam."
+          },
+          "open": {
+            "said": "Buka Linear",
+            "reply": "Linear dibuka."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -838,6 +885,7 @@
           "model": "Model",
           "ai": "Tempat AI berjalan",
           "choices": "Pilihan lainnya",
+          "agent": "Yang bisa dilakukannya",
           "demo": "Demo",
           "try": "Coba",
           "done": "Selesai"

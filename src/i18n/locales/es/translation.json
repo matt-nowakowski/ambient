@@ -279,6 +279,53 @@
         "bodyDevice": "Ordena el habla desordenada antes de escribirla, en este ordenador."
       },
       "telemetry": "Comparte recuentos de uso anónimos, nunca lo que dices, escribes o ves."
+    },
+    "agent": {
+      "title": "Solo di lo que necesitas",
+      "sub": "Decide por sí solo según lo que dices y lo que hay en pantalla. Sin comandos que aprender, y el dictado normal se escribe tal cual.",
+      "askKey": "Para preguntar en vez de escribir, mantén <keys/>",
+      "noAi": "Sin IA, solo escribe. Activa la IA en Ajustes.",
+      "screenLabel": "Cuatro cosas que puedes pedir: respuestas de la web, ayuda con lo que hay en pantalla, respuestas escritas por ti y tareas hechas por ti.",
+      "quote": "«{{said}}»",
+      "powers": {
+        "ask": {
+          "title": "Pregunta lo que sea",
+          "weather": {
+            "said": "¿Qué tiempo hará mañana en Lisboa?",
+            "reply": "Soleado y 24°, con una brisa suave."
+          }
+        },
+        "screen": {
+          "title": "Sobre tu pantalla",
+          "thread": {
+            "said": "Resume este hilo",
+            "reply": "El lanzamiento pasa al jueves. Sam se encarga de la presentación."
+          },
+          "error": {
+            "said": "¿Qué significa este error?",
+            "reply": "La ruta está mal: esa carpeta no existe."
+          }
+        },
+        "write": {
+          "title": "Escribe por ti",
+          "reply": {
+            "said": "Responde que el jueves me va bien",
+            "them": "¿Jueves o viernes?",
+            "reply": "El jueves me va bien. ¡Nos vemos!"
+          }
+        },
+        "act": {
+          "title": "Hace cosas",
+          "remind": {
+            "said": "Recuérdame a las 5 que llame a Sam",
+            "reply": "Recordatorio a las 17:00: llamar a Sam."
+          },
+          "open": {
+            "said": "Abre Linear",
+            "reply": "Linear abierto."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -841,6 +888,7 @@
           "model": "Modelo",
           "ai": "Dónde funciona la IA",
           "choices": "Más opciones",
+          "agent": "Qué puede hacer",
           "demo": "Demostración",
           "try": "Pruébalo",
           "done": "Todo listo"

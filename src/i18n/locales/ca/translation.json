@@ -279,6 +279,53 @@
         "bodyDevice": "Endreça la parla desordenada abans d'escriure-la, en aquest ordinador."
       },
       "telemetry": "Comparteix recomptes d'ús anònims, mai el que dius, escrius o veus."
+    },
+    "agent": {
+      "title": "Només digues què necessites",
+      "sub": "Decideix a partir del que dius i del que hi ha a la pantalla. Cap ordre per aprendre, i el dictat normal s'escriu tal qual.",
+      "askKey": "Per preguntar en lloc d'escriure, mantén premut <keys/>",
+      "noAi": "Sense IA, només escriu. Activa la IA a Configuració.",
+      "screenLabel": "Quatre coses que pots demanar: respostes del web, ajuda amb el que hi ha a la pantalla, respostes escrites per tu i feines fetes per tu.",
+      "quote": "«{{said}}»",
+      "powers": {
+        "ask": {
+          "title": "Pregunta el que vulguis",
+          "weather": {
+            "said": "Quin temps farà demà a Lisboa?",
+            "reply": "Assolellat i 24°, amb una mica de brisa."
+          }
+        },
+        "screen": {
+          "title": "Sobre la teva pantalla",
+          "thread": {
+            "said": "Resumeix aquest fil",
+            "reply": "El llançament passa a dijous. La Sam s'encarrega de la presentació."
+          },
+          "error": {
+            "said": "Què vol dir aquest error?",
+            "reply": "El camí és incorrecte: aquesta carpeta no existeix."
+          }
+        },
+        "write": {
+          "title": "Escriu per tu",
+          "reply": {
+            "said": "Respon que dijous em va bé",
+            "them": "Dijous o divendres?",
+            "reply": "Dijous em va bé. Fins aleshores!"
+          }
+        },
+        "act": {
+          "title": "Fa coses",
+          "remind": {
+            "said": "Recorda'm a les 5 que truqui a la Sam",
+            "reply": "Recordatori per a les 17:00: trucar a la Sam."
+          },
+          "open": {
+            "said": "Obre Linear",
+            "reply": "S'ha obert Linear."
+          }
+        }
+      }
     }
   },
   "modelTable": {
@@ -841,6 +888,7 @@
           "model": "Model",
           "ai": "On funciona la IA",
           "choices": "Més opcions",
+          "agent": "Què pot fer",
           "demo": "Demostració",
           "try": "Prova-ho",
           "done": "Tot a punt"
