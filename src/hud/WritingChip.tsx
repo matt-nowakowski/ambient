@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { motion, useReducedMotion } from "motion/react";
+import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { commands, type HudContent } from "@/bindings";
 import { Orb } from "@/components/orb/Orb";
@@ -12,6 +13,10 @@ type WritingCard = Extract<HudContent, { kind: "writing" }>;
 const TTL = { chip: 5, note: 6, editing: 40 } as const;
 /** After the cursor leaves the chip, it fades this much later. */
 const AFTER_HOVER = 2.5;
+/** It goes after this long whatever the hover says: Rust's hover is the
+ * panel's whole frame, which can be larger than the chip, so a cursor
+ * resting nearby must not keep it forever. Edit waits for speech instead. */
+const MAX_SECONDS = 20;
 
 /**
  * Keyed by the card's id, so each chip starts its own countdown.
@@ -57,6 +62,14 @@ export function WritingChip({ card }: { card: WritingCard }) {
     }, secs * 1000);
     return () => clearTimeout(id);
   }, [inside, wasHovered, card.id, ttl]);
+
+  useEffect(() => {
+    if (card.decision === "editing") return;
+    const id = setTimeout(() => {
+      commands.hudAction(card.id, "expire", null);
+    }, MAX_SECONDS * 1000);
+    return () => clearTimeout(id);
+  }, [card.id, card.decision]);
 
   const label =
     card.note !== null
@@ -109,6 +122,14 @@ export function WritingChip({ card }: { card: WritingCard }) {
           {t("hud.writing.cancel")}
         </button>
       )}
+      <button
+        type="button"
+        className="hud-close"
+        aria-label={t("hud.close")}
+        onClick={() => commands.hudAction(card.id, "expire", null)}
+      >
+        <X width={12} height={12} />
+      </button>
       {!reduceMotion && !inside && !wasHovered && (
         <motion.span
           key={card.id}
