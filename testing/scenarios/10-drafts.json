@@ -609,7 +609,7 @@
     {
       "id": "draft.en.messages.tell-me-please",
       "about": "In Messages with Emilia, \"Tell me, please, I will call her tomorrow\" (a misheard name, \"please\" mid-sentence) is still written to Emilia in the second person.",
-      "tags": ["messages", "critical", "regression"],
+      "tags": ["messages",  "regression"],
       "lang": "en",
       "screen": "messages_emilia",
       "say": "Tell me, please, I will call her tomorrow",
