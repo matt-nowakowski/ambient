@@ -846,7 +846,27 @@ pub async fn run_with(
         if answered.is_ok() {
             llm::record(crate::settings::AMBIENT_AI_PROVIDER_ID, started);
         }
-        answered
+        // The cloud is slow or unreachable: answer on this computer when it
+        // has a model (without the web); otherwise the card says why.
+        match answered {
+            Err(key)
+                if matches!(
+                    key.as_str(),
+                    "hud.status.timeout" | "hud.status.offline" | "hud.status.failed"
+                ) && llm::engine().is_some() =>
+            {
+                log::info!("answer: the cloud failed ({key}); answering on this computer");
+                on_device_answer(&app, &prompt, &history, context.as_deref(), opts.write, tag)
+                    .await
+                    .map(|t| Answered {
+                        text: t,
+                        sources: Vec::new(),
+                        note: None,
+                    })
+                    .map_err(|_| key)
+            }
+            other => other,
+        }
     };
 
     // Whatever streamed in, the card, the draft and the history get the

@@ -447,7 +447,16 @@ async fn complete_inner(
         Err(e) => {
             log::warn!("agent {purpose} call failed: {e}");
             crate::limits::check_model_error(app, &e, limit_show(purpose));
-            None
+            // The cloud is slow or unreachable: this computer's model, when
+            // there is one and the request fits it (it never leaves here).
+            let fits = |e: Engine| system.len() + user.len() <= e.max_chars();
+            match engine().filter(|&e| fits(e)) {
+                Some(e) if !took_local && take_local_use(app, purpose) => {
+                    log::info!("agent {purpose}: the cloud failed; answering on this computer");
+                    run_on(e, system, user, limits).await
+                }
+                _ => None,
+            }
         }
     }
 }
