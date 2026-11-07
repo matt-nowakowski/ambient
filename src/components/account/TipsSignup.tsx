@@ -2,11 +2,8 @@ import React, { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { commands } from "@/bindings";
-import { Button } from "../ui/Button";
+import { EmailField, looksLikeEmail } from "./EmailField";
 import { DoneMark } from "../shared/DoneMark";
-
-const looksLikeEmail = (input: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim());
 
 type State = "idle" | "busy" | "done" | "error";
 
@@ -15,7 +12,7 @@ type State = "idle" | "busy" | "done" | "error";
  * in (most Free users never sign in). The website emails a link to confirm
  * and stores nothing until it's clicked, so success here means "check your
  * inbox". The heading is the caller's (Account's section, setup's card);
- * this is the line under it, the field and Send side by side, and the
+ * this is the line under it, the field with Send inside it, and the
  * confirmation that replaces them. Send fills in once the address looks
  * right.
  */
@@ -47,45 +44,27 @@ export const TipsSignup: React.FC<{
     setState(result.status === "ok" ? "done" : "error");
   };
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    send();
-  };
-
+  // The same pill as signing in, Send inside it.
   const row = (
     <motion.div
       key="row"
       exit={reduce ? undefined : { opacity: 0, y: -2 }}
       transition={{ duration: 0.16 }}
-      className="flex items-center gap-2"
     >
-      <input
-        type="email"
+      <EmailField
         value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
+        onChange={(v) => {
+          setEmail(v);
           if (state === "error") setState("idle");
         }}
+        onSubmit={send}
         placeholder={t("account.signIn.emailPlaceholder")}
-        spellCheck={false}
-        autoComplete="email"
         aria-labelledby={labelledBy}
         aria-describedby={`${id}-about`}
-        aria-invalid={state === "error" || undefined}
-        className={`h-9 min-w-0 flex-1 rounded-control border bg-background px-3 text-ui text-text transition-[border-color,box-shadow] duration-150 placeholder:text-ink-3 focus:outline-none focus:ring-4 ${
-          state === "error"
-            ? "border-error focus:ring-error/10"
-            : "border-line-strong hover:border-ink-3 focus:border-ink-3 focus:ring-logo-primary/[0.07]"
-        }`}
+        invalid={state === "error"}
+        busy={state === "busy"}
+        button={t("account.tips.button")}
       />
-      <Button
-        type="submit"
-        variant={ready ? "primary" : "secondary"}
-        className="h-9 shrink-0 px-4"
-        disabled={state === "busy"}
-      >
-        {t("account.tips.button")}
-      </Button>
     </motion.div>
   );
 
@@ -101,7 +80,7 @@ export const TipsSignup: React.FC<{
         transitionEnd: { filter: "none" },
       }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className="m-0 flex h-9 items-center gap-2 text-ui font-medium text-moss"
+      className="m-0 flex h-10 items-center gap-2 text-ui font-medium text-moss"
     >
       <DoneMark />
       {t("account.tips.checkInbox")}
@@ -109,7 +88,7 @@ export const TipsSignup: React.FC<{
   );
 
   return (
-    <form onSubmit={submit} className={`flex flex-col ${className}`}>
+    <div className={`flex flex-col ${className}`}>
       {/* The error takes the line's place. */}
       <p
         id={`${id}-about`}
@@ -125,6 +104,6 @@ export const TipsSignup: React.FC<{
           {sent ? done : row}
         </AnimatePresence>
       </div>
-    </form>
+    </div>
   );
 };

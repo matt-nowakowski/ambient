@@ -31,6 +31,7 @@ import { SuccessCheck, TextSwap } from "../ui/Transitions";
 import { spring } from "../ui/Motion";
 import { openUpgrade } from "./usePlan";
 import { TipsSignup } from "./TipsSignup";
+import { EmailField, looksLikeEmail, pillFieldClass } from "./EmailField";
 import { friendlyMessage, logError } from "@/lib/errors";
 import { useOsType } from "@/hooks/useOsType";
 import { primaryShortcut } from "@/lib/utils/keyboard";
@@ -57,9 +58,6 @@ const looksLikeCode = (input: string) => {
     /^\d{4}$/.test(parts[2])
   );
 };
-
-const looksLikeEmail = (input: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim());
 
 const AUTH_PREFIX = "auth_error:";
 const AUTH_ERRORS = [
@@ -312,13 +310,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   ];
 
   const fieldClass = (ready: boolean) =>
-    `flex h-10 items-center gap-1 rounded-full border-[0.5px] bg-glass-strong ps-4 pe-1 transition-[border-color,box-shadow] ${
-      phase === "error"
-        ? "border-error shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-error)_12%,transparent)]"
-        : ready
-          ? "border-ink-3 shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-text)_6%,transparent)]"
-          : "border-glass-edge"
-    }`;
+    pillFieldClass(phase === "error" ? "error" : ready ? "ready" : "idle");
 
   const submitLabel = (idle: string, busy: string) => (
     <TextSwap
@@ -336,6 +328,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   let description: React.ReactNode;
   let body: React.ReactNode;
   let hint: React.ReactNode = null;
+  // Below the hint line: "Email me tips", on the sign-in step only.
+  let footer: React.ReactNode = null;
 
   if (signedIn) {
     title = t("account.signIn.signedInTitle");
@@ -361,51 +355,36 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     title = t("account.signIn.title");
     description = t("account.signIn.description");
     body = (
-      <>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            sendCode();
-          }}
-          className={fieldClass(looksLikeEmail(email))}
-        >
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (phase === "error") setPhase("idle");
-              setError(null);
-            }}
-            placeholder={t("account.signIn.emailPlaceholder")}
-            spellCheck={false}
-            autoComplete="email"
-            aria-label={t("account.signIn.emailLabel")}
-            className="min-w-0 flex-1 bg-transparent text-ui outline-none placeholder:text-ink-3"
-          />
-          <Button
-            type="submit"
-            variant="primary"
-            size="sm"
-            className="h-8 px-4"
-            disabled={!looksLikeEmail(email) || phase === "busy"}
-          >
-            {submitLabel(
-              t("account.signIn.continue"),
-              t("account.signIn.sending"),
-            )}
-          </Button>
-        </form>
-        {/* Optional, and separate from signing in: most Free users never
-            sign in, so this is how they can ask to hear from us. */}
-        <div className="mt-4 border-t-[0.5px] border-glass-edge pt-3">
+      <EmailField
+        value={email}
+        onChange={(v) => {
+          setEmail(v);
+          if (phase === "error") setPhase("idle");
+          setError(null);
+        }}
+        onSubmit={() => sendCode()}
+        placeholder={t("account.signIn.emailPlaceholder")}
+        aria-label={t("account.signIn.emailLabel")}
+        invalid={phase === "error"}
+        busy={phase === "busy"}
+        button={submitLabel(
+          t("account.signIn.continue"),
+          t("account.signIn.sending"),
+        )}
+      />
+    );
+    // Optional, and separate from signing in: most Free users never sign
+    // in, so this is how they can ask to hear from us. Not once the card
+    // has turned over: the back would grow to fit a field nobody sees.
+    if (!flipped)
+      footer = (
+        <div className="border-t-[0.5px] border-glass-edge pt-4">
           <h3 id="account-tips" className="m-0 text-ui font-medium text-text">
             {t("account.tips.label")}
           </h3>
           <TipsSignup labelledBy="account-tips" className="mt-0.5" />
         </div>
-      </>
-    );
+      );
   } else if (step === "code") {
     title = t("account.signIn.codeTitle");
     description = t("account.signIn.codeDescription", { email: email.trim() });
@@ -524,10 +503,13 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           animate={phase === "error" ? { x: [0, -10, 9, -6, 4, 0] } : { x: 0 }}
           transition={{ duration: 0.45, ease: "easeOut" }}
-          className="relative h-[244px] w-full"
+          className="relative w-full"
         >
+          {/* Both faces share one grid cell, so the card is as tall as the
+              taller face (never less than a card's 244px) and nothing is
+              cut off at the bottom edge. */}
           <motion.div
-            className="absolute inset-0 [transform-style:preserve-3d]"
+            className="grid [transform-style:preserve-3d]"
             style={{ rotateY: turn }}
           >
             {/* Front: sign in (or a gift code). */}
@@ -558,7 +540,11 @@ export const AccountCard: React.FC<AccountCardProps> = ({
                   </div>
                   <div className="flex flex-col gap-2">
                     {body}
-                    <div className="min-h-4 px-4 text-meta">
+                    {/* Room for a line under the field; with tips below it
+                        collapses, so the divider sits close to the field. */}
+                    <div
+                      className={`px-4 text-meta ${footer ? "" : "min-h-4"}`}
+                    >
                       <AnimatePresence mode="wait" initial={false}>
                         {error ? (
                           <motion.p
@@ -585,6 +571,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
                       </AnimatePresence>
                     </div>
                   </div>
+                  {footer}
                 </motion.div>
               </AnimatePresence>
 
@@ -855,7 +842,7 @@ const Face: React.FC<{
   children: React.ReactNode;
 }> = ({ glare, visibility, back = false, children }) => (
   <motion.div
-    className="glass-strong absolute inset-0 flex flex-col justify-between overflow-hidden rounded-panel p-hero [-webkit-backface-visibility:hidden] [backface-visibility:hidden]"
+    className="glass-strong relative flex min-h-[244px] flex-col overflow-hidden rounded-panel p-hero [grid-area:1/1] [-webkit-backface-visibility:hidden] [backface-visibility:hidden]"
     style={{ visibility, ...(back ? { rotateY: 180 } : {}) }}
   >
     {/* The foil and glare get their own clip with the card's radius: inside
@@ -875,7 +862,8 @@ const Face: React.FC<{
         style={{ background: glare }}
       />
     </div>
-    <div className="relative flex h-full flex-col justify-between">
+    {/* gap-5: the wordmark never crowds the title under it. */}
+    <div className="relative flex flex-1 flex-col justify-between gap-5">
       {children}
     </div>
   </motion.div>
