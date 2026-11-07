@@ -11,6 +11,35 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.21",
+    date: "2026-11-07",
+    title: "Gets it right",
+    summary:
+      "Replies land where they should, answers read the window you're actually in and look things up, and messages are written to the person you're talking to.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "Answers follow you: ask about a different window or tab and Ambient reads that one, instead of answering from the last page you asked about.",
+          "Questions about ratings, reviews, prices or anything specific search the web, even when the answer also reads your screen.",
+          "\"Tell Emi I'll call her tomorrow\" in Messages is written to Emi: \"I'll call you tomorrow.\" Messaging apps are read like email now, so Ambient can see who you're talking to.",
+          "\"Tell Claude to wait for me\" is written as the message itself (\"Wait for me.\"), not your instruction tidied up.",
+          "A new email presses Compose and gives you the draft to paste; a reply that can't be confirmed in the reply box is shown in a card too, so it's never lost.",
+          "The \"Written for you\" chip can be closed, and always goes on its own.",
+          "Less waiting when the AI is slow: after 4 seconds your words are typed as said.",
+        ],
+      },
+      {
+        heading: "Improved",
+        items: [
+          "History shows what Ambient wrote beside what you said.",
+          "Models has two tabs: Voice models and Reasoning models.",
+          "Even spacing on every Privacy card, and the Account card fits the tips sign-up, which now matches the sign-in field.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.20",
     date: "2026-11-06",
     title: "Tidier, and clearer about what it reads",
