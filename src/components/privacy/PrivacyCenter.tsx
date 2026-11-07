@@ -74,13 +74,13 @@ const PROMISES = [
 const PREVIEW_DELAY_MS = 3000;
 
 /* Privacy's cards hold several lines per row (what it reads, what leaves,
- * a note, chips), so rows get 14px above and below instead of a one-line
- * row's 10px, and a card's first and last lines sit as far from its top and
+ * a note, chips), so rows get 18px above and below instead of a one-line
+ * row's 10px, the lines inside a row get room between them, and a card's first and last lines sit as far from its top and
  * bottom edges as from each other. Every block on the page uses the same. */
 /** A block of text, chips or a list inside a card. */
-const BLOCK = "px-row-x py-3.5";
+const BLOCK = "px-row-x py-4.5";
 /** An icon, a title and its lines, and a control on the far side. */
-const ROW_RICH = "flex items-start gap-3 px-row-x py-3.5";
+const ROW_RICH = "flex items-start gap-3.5 px-row-x py-4.5";
 /** A switch beside a row's 28px icon: centred on it (and on a Radio's mt-1.5). */
 const SWITCH_ALIGN = "mt-1 shrink-0";
 
@@ -447,10 +447,10 @@ export const PrivacyCenter: React.FC = () => {
               )
             )}
           </p>
-          <p className="mt-0.5 text-small text-ink-2">
+          <p className="mt-1 text-small leading-relaxed text-ink-2">
             {t(`privacy.capabilities.${cap}.reads`)}
           </p>
-          <p className="mt-1 flex items-center gap-1 text-meta text-ink-3">
+          <p className="mt-2.5 flex items-center gap-1.5 text-meta text-ink-3">
             <ArrowUpRight
               width={11}
               height={11}
@@ -461,19 +461,19 @@ export const PrivacyCenter: React.FC = () => {
             {t(`privacy.capabilities.${cap}.leaves`)}
           </p>
           {!unsupported && dependency(cap) && (
-            <div className="mt-1">{dependency(cap)}</div>
+            <div className="mt-1.5">{dependency(cap)}</div>
           )}
           {/* Free keeps a day of memory; the choices are Pro's. */}
           {cap === "screen_memory" && s.screen_memory && hint && (
-            <p className="mt-2 text-small text-ink-2">
+            <p className="mt-3.5 text-small text-ink-2">
               {t("privacy.free.retention", {
                 limit: limits?.memory_hours_limit,
               })}
             </p>
           )}
           {cap === "screen_memory" && s.screen_memory && !hint && (
-            <div className="mt-2 flex flex-wrap items-center gap-1.5">
-              <span className="text-small text-ink-2">
+            <div className="mt-3.5 flex flex-wrap items-center gap-2">
+              <span className="me-0.5 text-small text-ink-2">
                 {t("privacy.retention")}
               </span>
               {RETENTION_CHOICES.map((d) => (
@@ -481,7 +481,7 @@ export const PrivacyCenter: React.FC = () => {
                   key={d}
                   type="button"
                   onClick={() => save({ ...s, retention_days: d })}
-                  className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-meta transition-colors ${
+                  className={`whitespace-nowrap rounded-full px-3 py-1 text-meta transition-colors ${
                     s.retention_days === d
                       ? "bg-text text-background"
                       : "bg-glass-press text-ink-2 hover:text-text"
@@ -727,7 +727,7 @@ export const PrivacyCenter: React.FC = () => {
           </div>
           {CAPABILITY_GROUPS.map((group) => (
             <div key={group.key} className="glass rounded-panel">
-              <p className="px-row-x pt-3.5 text-meta font-medium text-ink-3">
+              <p className="px-row-x pt-4.5 text-meta font-medium text-ink-3">
                 {t(`privacy.capabilities.groups.${group.key}`)}
               </p>
               <div className="divide-y divide-glass-edge">
@@ -748,15 +748,15 @@ export const PrivacyCenter: React.FC = () => {
                     {t("privacy.suggestions.learned.title")}
                   </p>
                   {learned.length === 0 ? (
-                    <p className="mt-1 text-small text-ink-2">
+                    <p className="mt-1.5 text-small leading-relaxed text-ink-2">
                       {t("privacy.suggestions.learned.empty")}
                     </p>
                   ) : (
-                    <ul className="mt-1 divide-y divide-glass-edge">
+                    <ul className="mt-1.5 divide-y divide-glass-edge">
                       {learned.map(({ kind, app }) => (
                         <li
                           key={`${kind}:${app ?? ""}`}
-                          className="flex items-center gap-3 py-2"
+                          className="flex items-center gap-3 py-2.5"
                         >
                           <BellOff
                             width={13}
@@ -791,7 +791,7 @@ export const PrivacyCenter: React.FC = () => {
                       ))}
                     </ul>
                   )}
-                  <p className="mt-3 text-meta text-ink-3">
+                  <p className="mt-4 text-meta leading-relaxed text-ink-3">
                     {t("privacy.suggestions.teach")}
                   </p>
                 </div>
@@ -807,15 +807,15 @@ export const PrivacyCenter: React.FC = () => {
               {t("privacy.writing.learned")}
             </p>
             {writingLearned.length === 0 ? (
-              <p className="mt-1 text-small text-ink-2">
+              <p className="mt-1.5 text-small leading-relaxed text-ink-2">
                 {t("privacy.writing.empty")}
               </p>
             ) : (
-              <ul className="mt-1 divide-y divide-glass-edge">
+              <ul className="mt-1.5 divide-y divide-glass-edge">
                 {writingLearned.map(({ bundle, name, kind }) => (
                   <li
                     key={`${bundle}:${kind}`}
-                    className="flex items-center gap-3 py-2"
+                    className="flex items-center gap-3 py-2.5"
                   >
                     <PenLine
                       width={13}
@@ -842,7 +842,7 @@ export const PrivacyCenter: React.FC = () => {
                 ))}
               </ul>
             )}
-            <p className="mt-3 text-meta text-ink-3">
+            <p className="mt-4 text-meta leading-relaxed text-ink-3">
               {t("privacy.writing.teach")}
             </p>
           </div>
@@ -853,7 +853,7 @@ export const PrivacyCenter: React.FC = () => {
           title={t("privacy.intelligence.title")}
           description={t("privacy.intelligence.description")}
         >
-          <div className="flex items-center gap-2 px-row-x pt-3.5 text-meta text-ink-3">
+          <div className="flex items-center gap-2 px-row-x pt-4.5 text-meta text-ink-3">
             <Cpu
               width={12}
               height={12}
@@ -947,7 +947,7 @@ export const PrivacyCenter: React.FC = () => {
             {/* Automatic, with an on-device model: also use it for answers? */}
             {s.intelligence === "auto" && status.on_device_ready && (
               <motion.div key="engine" {...expand} className="overflow-hidden">
-                <div className="flex items-start justify-between gap-6 px-row-x py-3.5">
+                <div className="flex items-start justify-between gap-6 px-row-x py-4.5">
                   <div className="min-w-0">
                     <p className="text-ui">
                       {onDeviceAi?.engine === "downloaded"
@@ -975,7 +975,7 @@ export const PrivacyCenter: React.FC = () => {
             {/* Automatic, no on-device model: the one-time cloud offer's answer. */}
             {s.intelligence === "auto" && !status.on_device_ready && (
               <motion.div key="cloud" {...expand} className="overflow-hidden">
-                <div className="flex items-start justify-between gap-6 px-row-x py-3.5">
+                <div className="flex items-start justify-between gap-6 px-row-x py-4.5">
                   <div className="min-w-0">
                     <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
                       {t("privacy.intelligence.cloudSuggestions.title")}

@@ -67,7 +67,7 @@ export const DependencyNote: React.FC<DependencyNoteProps> = ({
         className="mt-[3px] shrink-0"
         aria-hidden="true"
       />
-      <span className="min-w-0">
+      <span className="min-w-0 leading-relaxed">
         {children}
         {link && (
           <>
