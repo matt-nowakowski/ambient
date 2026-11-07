@@ -152,8 +152,9 @@ export default function PrivacyPage() {
               </p>
               <p>
                 Apps and sites on the <strong>never-watch list</strong> are never read. By default it includes password
-                managers, crypto wallets, private and incognito browser windows and messaging apps, and you can add any app
-                or site. Password fields are never read. <strong>Private pages</strong>, such as online banking, payment,
+                managers, crypto wallets and private and incognito browser windows, and you can add any app or site
+                (messaging apps are read like email, so {brand.name} can write your replies there; add them here if you’d
+                rather it didn’t). Password fields are never read. <strong>Private pages</strong>, such as online banking, payment,
                 medical, password and government ID pages, are recognised on your device from what they show (their
                 address, title and content, in any language) and are then not read or used. Only the text a request
                 needs is sent, after secrets are redacted as described above, and only when the request can’t be

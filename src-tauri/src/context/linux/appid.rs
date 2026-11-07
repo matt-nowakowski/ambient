@@ -119,7 +119,7 @@ pub const BROWSERS: &[&str] = &[
 ];
 
 /// Never read on Linux, beside the shared list: password managers and
-/// keyrings, private messengers and system settings (native and Flatpak ids).
+/// keyrings and system settings (native and Flatpak ids).
 pub const NEVER_WATCH: &[&str] = &[
     "1password",
     "bitwarden",
@@ -130,11 +130,6 @@ pub const NEVER_WATCH: &[&str] = &[
     "org.gnome.seahorse.application",
     "kwalletmanager5",
     "kwalletmanager",
-    "signal-desktop",
-    "org.signal.signal",
-    "telegram-desktop",
-    "org.telegram.desktop",
-    "whatsapp-for-linux",
     "gnome-control-center",
     "org.gnome.settings",
     "systemsettings",

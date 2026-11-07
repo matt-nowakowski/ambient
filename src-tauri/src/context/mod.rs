@@ -247,8 +247,10 @@ pub enum Skipped {
     Sensitive,
 }
 
-/// Apps whose text is never read: password managers, keychains, private
-/// messaging, and Ambient itself. Users can add more in the Privacy Center.
+/// Apps whose text is never read: password managers, keychains, system
+/// settings and sign-in prompts, and Ambient itself. Messaging apps aren't
+/// on it: Ambient writes replies there, which needs the conversation (read
+/// and redacted like email). Users can add any app in the Privacy Center.
 pub const DEFAULT_NEVER_WATCH: &[&str] = &[
     "com.1password.1password",
     "com.agilebits.onepassword7",
@@ -257,13 +259,9 @@ pub const DEFAULT_NEVER_WATCH: &[&str] = &[
     "com.dashlane.dashlanephonefinal",
     "com.apple.keychainaccess",
     "com.apple.Passwords",
-    "com.apple.MobileSMS",
-    "net.whatsapp.WhatsApp",
-    "org.whispersystems.signal-desktop",
-    "ru.keepcoder.Telegram",
     "com.apple.systempreferences",
-    // Windows (executable names): password managers, private messaging,
-    // Settings and the sign-in and credential prompts.
+    // Windows (executable names): password managers, Settings and the
+    // sign-in and credential prompts.
     "1password.exe",
     "bitwarden.exe",
     "keepass.exe",
@@ -273,10 +271,6 @@ pub const DEFAULT_NEVER_WATCH: &[&str] = &[
     "nordpass.exe",
     "proton pass.exe",
     "keeperpasswordmanager.exe",
-    "whatsapp.exe",
-    "whatsapp.root.exe",
-    "signal.exe",
-    "telegram.exe",
     "systemsettings.exe",
     "credentialuibroker.exe",
     "lockapp.exe",
