@@ -45,6 +45,23 @@ struct Conversation {
     turns: Vec<Turn>,
     sources: Vec<Source>,
     context: Option<String>,
+    /// The window it was about (app, title, page). A question asked in
+    /// another window starts afresh: it reads that window and searches again,
+    /// instead of answering from the last one's screen and sources.
+    window: Option<Window>,
+}
+
+/// A window's identity: its app's process, its title and its page.
+type Window = (i32, String, String);
+
+/// The window in front now. Metadata only. Blocking (AX).
+fn window_in_front(never_watch: &[String]) -> Option<Window> {
+    match context::snapshot(0, never_watch) {
+        Ok(s) => Some((s.app.pid, s.window_title, s.url.unwrap_or_default())),
+        // Not read (never watched, private): the app alone still tells
+        // one window from another app's.
+        Err(_) => context::frontmost_app().map(|f| (f.pid, String::new(), String::new())),
+    }
 }
 
 static LAST: Mutex<Option<Conversation>> = Mutex::new(None);
@@ -95,6 +112,7 @@ pub(crate) fn seed_turn(q: &str, a: &str) {
             }],
             sources: Vec::new(),
             context: None,
+            window: window_in_front(&[]),
         });
     }
 }
@@ -111,8 +129,24 @@ pub fn last_turn() -> Option<(String, String)> {
 #[derive(Clone)]
 struct Screen {
     pid: i32,
+    /// The window's title and page when read: a read is reused only while
+    /// they're still what's in front (another tab in the same browser is a
+    /// different window).
+    window: (String, String),
     text: String,
     source: Option<HudSource>,
+}
+
+/// Whether `s` was read from the window in front now: same app, same
+/// title and page. Metadata only (no text read). Blocking (AX).
+fn still_in_front(s: &Screen, never_watch: &[String]) -> bool {
+    context::snapshot(0, never_watch).is_ok_and(|now| {
+        now.app.pid == s.pid
+            && (
+                now.window_title.clone(),
+                now.url.clone().unwrap_or_default(),
+            ) == s.window
+    })
 }
 
 static PREFETCH: Mutex<Option<(Instant, Screen)>> = Mutex::new(None);
@@ -170,6 +204,10 @@ fn capture_screen(app: &AppHandle) -> Option<Screen> {
     };
     Some(Screen {
         pid: snap.app.pid,
+        window: (
+            snap.window_title.clone(),
+            snap.url.clone().unwrap_or_default(),
+        ),
         text: format!("{header}\n{}", redact(&text).0),
         source: (!title.trim().is_empty()).then_some(HudSource { title, url }),
     })
@@ -179,6 +217,10 @@ fn capture_screen(app: &AppHandle) -> Option<Screen> {
 /// an answer about the screen doesn't wait for it afterwards. Stays in memory
 /// for a few seconds and is only sent if the answer needs it.
 pub fn prefetch_screen(app: &AppHandle) {
+    // A read that fails must not leave an older window's text behind.
+    if let Ok(mut g) = PREFETCH.lock() {
+        *g = None;
+    }
     let app = app.clone();
     tauri::async_runtime::spawn_blocking(move || {
         if let Some(screen) = capture_screen(&app) {
@@ -194,23 +236,25 @@ pub fn prefetch_screen(app: &AppHandle) {
 const DECISION_FRESH: Duration = Duration::from_secs(120);
 
 /// The window in front for deciding what the user wants (`router::route`):
-/// the read taken when recording started if the same app is still in
-/// front, otherwise a new one. Redacted, never a private window, and only
+/// the read taken when recording started if that window (app, title, page)
+/// is still in front, otherwise a new one. Redacted, never a private window, and only
 /// while reading the screen is allowed. Left in place for an answer that
 /// follows.
 pub async fn decision_screen(app: &AppHandle) -> Option<String> {
-    let front = context::frontmost_app().map(|f| f.pid);
     let cached = PREFETCH.lock().ok().and_then(|g| g.clone());
-    if let Some((at, s)) = cached {
-        if at.elapsed() < DECISION_FRESH && front == Some(s.pid) {
-            return Some(s.text);
-        }
-    }
     let a = app.clone();
-    let screen = tauri::async_runtime::spawn_blocking(move || capture_screen(&a))
-        .await
-        .ok()
-        .flatten()?;
+    let screen = tauri::async_runtime::spawn_blocking(move || {
+        let never_watch = get_settings(&a).agent.never_watch;
+        match cached {
+            Some((at, s)) if at.elapsed() < DECISION_FRESH && still_in_front(&s, &never_watch) => {
+                Some(s)
+            }
+            _ => capture_screen(&a),
+        }
+    })
+    .await
+    .ok()
+    .flatten()?;
     if let Ok(mut g) = PREFETCH.lock() {
         *g = Some((Instant::now(), screen.clone()));
     }
@@ -218,20 +262,22 @@ pub async fn decision_screen(app: &AppHandle) -> Option<String> {
 }
 
 /// The window in front: the prefetched capture if it's fresh and still the
-/// same app, otherwise a new one.
+/// window in front (app, title, page), otherwise a new one.
 async fn screen(app: &AppHandle) -> Option<Screen> {
     let cached = PREFETCH.lock().ok().and_then(|mut g| g.take());
-    let front = context::frontmost_app().map(|f| f.pid);
-    if let Some((at, s)) = cached {
-        if at.elapsed() < PREFETCH_FRESH && front == Some(s.pid) {
-            return Some(s);
-        }
-    }
     let app = app.clone();
-    tauri::async_runtime::spawn_blocking(move || capture_screen(&app))
-        .await
-        .ok()
-        .flatten()
+    tauri::async_runtime::spawn_blocking(move || {
+        let never_watch = get_settings(&app).agent.never_watch;
+        match cached {
+            Some((at, s)) if at.elapsed() < PREFETCH_FRESH && still_in_front(&s, &never_watch) => {
+                Some(s)
+            }
+            _ => capture_screen(&app),
+        }
+    })
+    .await
+    .ok()
+    .flatten()
 }
 
 /// How an answer card behaves beyond the question itself.
@@ -278,13 +324,19 @@ pub async fn run(
     about_screen: bool,
     given_context: Option<String>,
 ) {
+    // A question that needs the web is searched even when the screen goes
+    // with it: the question (never the window text) is the search query.
+    let web_query = needs_web.then(|| question.clone());
     run_with(
         app,
         question,
         needs_web,
         about_screen,
         given_context,
-        Opts::default(),
+        Opts {
+            web_query,
+            ..Opts::default()
+        },
     )
     .await
 }
@@ -675,12 +727,19 @@ pub async fn run_with(
     // The card first, so the user sees it was heard while context is read.
     show("", &[], false);
 
-    // Continue the previous conversation if it's recent.
-    let previous = LAST
-        .lock()
-        .ok()
-        .and_then(|mut g| g.take())
-        .filter(|c| c.at.elapsed() < FOLLOW_UP_WINDOW);
+    // Continue the previous conversation if it's recent and about the same
+    // window; in another window, start afresh.
+    let here = {
+        let nw = get_settings(&app).agent.never_watch;
+        tauri::async_runtime::spawn_blocking(move || window_in_front(&nw))
+            .await
+            .ok()
+            .flatten()
+    };
+    let previous =
+        LAST.lock().ok().and_then(|mut g| g.take()).filter(|c| {
+            c.at.elapsed() < FOLLOW_UP_WINDOW && c.window.is_some() && c.window == here
+        });
     let (history, sources_in, mut context) = match previous {
         Some(c) => (c.turns, c.sources, c.context),
         None => (Vec::new(), Vec::new(), None),
@@ -844,6 +903,7 @@ pub async fn run_with(
                     turns,
                     sources,
                     context,
+                    window: here.clone(),
                 });
             }
         }
@@ -892,7 +952,7 @@ fn on_device_system(write: bool) -> String {
     if write {
         Prompt {
             role: "You write text for the user to paste: an email reply, a rewritten draft, a message.",
-            task: "Do exactly what the user's instruction asks. A reply is from the user to the other person in the conversation (the request says who's who), never addressed to the user.".into(),
+            task: "Do exactly what the user's instruction asks. A reply is from the user to the other person in the conversation (the request says who's who), never addressed to the user. The instruction was spoken and may be misheard (names especially: spell them as the screen shows them). It says what to write; write that text itself, never the instruction back, tidied or not: \"tell Claude to wait for me\" → \"Wait for me.\" and \"say that Claude should wait\" → \"Please wait.\" (Claude is the reader: speak to them, not about them); \"reply that Thursday works\" → \"Thursday works for me.\"".into(),
             rules: bullets(WRITING_RULES),
             context: writing_context(),
             output: "Only the finished text, ready to paste.".into(),
