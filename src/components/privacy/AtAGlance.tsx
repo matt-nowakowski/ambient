@@ -26,7 +26,7 @@ export const AtAGlance: React.FC<{
     items: GlanceItem[],
     empty: string,
   ) => (
-    <div className="flex items-start gap-3 px-row-x py-row-y">
+    <div className="flex items-start gap-3 px-row-x py-3.5">
       <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
         <Icon width={14} height={14} strokeWidth={1.75} />
       </span>

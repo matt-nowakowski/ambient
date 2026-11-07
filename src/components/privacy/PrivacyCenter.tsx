@@ -73,6 +73,17 @@ const PROMISES = [
 ] as const;
 const PREVIEW_DELAY_MS = 3000;
 
+/* Privacy's cards hold several lines per row (what it reads, what leaves,
+ * a note, chips), so rows get 14px above and below instead of a one-line
+ * row's 10px, and a card's first and last lines sit as far from its top and
+ * bottom edges as from each other. Every block on the page uses the same. */
+/** A block of text, chips or a list inside a card. */
+const BLOCK = "px-row-x py-3.5";
+/** An icon, a title and its lines, and a control on the far side. */
+const ROW_RICH = "flex items-start gap-3 px-row-x py-3.5";
+/** A switch beside a row's 28px icon: centred on it (and on a Radio's mt-1.5). */
+const SWITCH_ALIGN = "mt-1 shrink-0";
+
 /** "com.tinyspeck.slackmacgap" → "slackmacgap"; good enough without a name lookup. */
 const shortBundle = (id: string) => id.split(".").pop() || id;
 
@@ -417,11 +428,7 @@ export const PrivacyCenter: React.FC = () => {
     const unsupported = UNSUPPORTED.includes(cap);
     const hint = freeHint(cap);
     return (
-      <div
-        key={cap}
-        data-search-row
-        className="flex items-start gap-3 px-row-x py-row-y"
-      >
+      <div key={cap} data-search-row className={ROW_RICH}>
         <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
           <Icon width={14} height={14} strokeWidth={1.75} />
         </span>
@@ -486,12 +493,14 @@ export const PrivacyCenter: React.FC = () => {
             </div>
           )}
         </div>
-        <Switch
-          checked={s[cap]}
-          disabled={unsupported}
-          ariaLabel={t(`privacy.capabilities.${cap}.title`)}
-          onChange={(on) => save({ ...s, [cap]: on })}
-        />
+        <div className={SWITCH_ALIGN}>
+          <Switch
+            checked={s[cap]}
+            disabled={unsupported}
+            ariaLabel={t(`privacy.capabilities.${cap}.title`)}
+            onChange={(on) => save({ ...s, [cap]: on })}
+          />
+        </div>
       </div>
     );
   };
@@ -718,7 +727,7 @@ export const PrivacyCenter: React.FC = () => {
           </div>
           {CAPABILITY_GROUPS.map((group) => (
             <div key={group.key} className="glass rounded-panel">
-              <p className="px-row-x pt-3 pb-1 text-meta font-medium text-ink-3">
+              <p className="px-row-x pt-3.5 text-meta font-medium text-ink-3">
                 {t(`privacy.capabilities.groups.${group.key}`)}
               </p>
               <div className="divide-y divide-glass-edge">
@@ -734,7 +743,7 @@ export const PrivacyCenter: React.FC = () => {
           <AnimatePresence initial={false}>
             {s.proactive && (
               <motion.div {...expand} className="overflow-hidden">
-                <div className="px-row-x py-row-y">
+                <div className={BLOCK}>
                   <p className="text-meta font-medium text-ink-3">
                     {t("privacy.suggestions.learned.title")}
                   </p>
@@ -793,7 +802,7 @@ export const PrivacyCenter: React.FC = () => {
 
         {/* Writing: what "Use my words" taught it, per app. */}
         <SettingsGroup title={t("privacy.writing.title")}>
-          <div className="px-row-x py-row-y">
+          <div className={BLOCK}>
             <p className="text-meta font-medium text-ink-3">
               {t("privacy.writing.learned")}
             </p>
@@ -844,7 +853,7 @@ export const PrivacyCenter: React.FC = () => {
           title={t("privacy.intelligence.title")}
           description={t("privacy.intelligence.description")}
         >
-          <div className="flex items-center gap-2 px-row-x pt-3 pb-1 text-meta text-ink-3">
+          <div className="flex items-center gap-2 px-row-x pt-3.5 text-meta text-ink-3">
             <Cpu
               width={12}
               height={12}
@@ -883,7 +892,7 @@ export const PrivacyCenter: React.FC = () => {
                     save({ ...s, intelligence: key });
                     if (fetches && !aiDownloading) downloadAi(null);
                   }}
-                  className="flex w-full items-start gap-3 px-row-x py-row-y text-start"
+                  className={`${ROW_RICH} w-full text-start`}
                 >
                   <span className="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-glass-press text-text">
                     <Icon width={14} height={14} strokeWidth={1.75} />
@@ -938,7 +947,7 @@ export const PrivacyCenter: React.FC = () => {
             {/* Automatic, with an on-device model: also use it for answers? */}
             {s.intelligence === "auto" && status.on_device_ready && (
               <motion.div key="engine" {...expand} className="overflow-hidden">
-                <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
+                <div className="flex items-start justify-between gap-6 px-row-x py-3.5">
                   <div className="min-w-0">
                     <p className="text-ui">
                       {onDeviceAi?.engine === "downloaded"
@@ -951,20 +960,22 @@ export const PrivacyCenter: React.FC = () => {
                         : t("privacy.engine.description")}
                     </p>
                   </div>
-                  <Switch
-                    checked={s.on_device_when_possible}
-                    ariaLabel={t("privacy.engine.title")}
-                    onChange={(on) =>
-                      save({ ...s, on_device_when_possible: on })
-                    }
-                  />
+                  <div className="shrink-0">
+                    <Switch
+                      checked={s.on_device_when_possible}
+                      ariaLabel={t("privacy.engine.title")}
+                      onChange={(on) =>
+                        save({ ...s, on_device_when_possible: on })
+                      }
+                    />
+                  </div>
                 </div>
               </motion.div>
             )}
             {/* Automatic, no on-device model: the one-time cloud offer's answer. */}
             {s.intelligence === "auto" && !status.on_device_ready && (
               <motion.div key="cloud" {...expand} className="overflow-hidden">
-                <div className="flex items-start justify-between gap-6 px-row-x py-row-y">
+                <div className="flex items-start justify-between gap-6 px-row-x py-3.5">
                   <div className="min-w-0">
                     <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-ui">
                       {t("privacy.intelligence.cloudSuggestions.title")}
@@ -1002,7 +1013,7 @@ export const PrivacyCenter: React.FC = () => {
             title={t("privacy.preview.title")}
             description={t("privacy.preview.description")}
           >
-            <div className="px-row-x py-row-y">
+            <div className={BLOCK}>
               <div className="flex items-center justify-between gap-4">
                 <p className="min-w-0 text-small text-ink-2">
                   {previewing
@@ -1075,7 +1086,7 @@ export const PrivacyCenter: React.FC = () => {
           title={t("privacy.neverWatch.title")}
           description={t("privacy.neverWatch.description")}
         >
-          <div className="flex flex-wrap gap-1.5 px-row-x py-row-y">
+          <div className={`flex flex-wrap gap-1.5 ${BLOCK}`}>
             {status.never_watch_defaults.map((id) => (
               <span
                 key={id}
@@ -1112,7 +1123,7 @@ export const PrivacyCenter: React.FC = () => {
           title={t("privacy.stored.title")}
           description={t("privacy.stored.description")}
         >
-          <div className="px-row-x py-row-y">
+          <div className={BLOCK}>
             {status.stats && status.stats.screen_entries > 0 ? (
               <>
                 <p className="text-small text-ink-2">
@@ -1172,7 +1183,7 @@ export const PrivacyCenter: React.FC = () => {
           description={t("privacy.ledger.description")}
         >
           {ledger.length === 0 ? (
-            <p className="px-row-x py-row-y text-small text-ink-2">
+            <p className={`${BLOCK} text-small text-ink-2`}>
               {t("privacy.ledger.empty")}
             </p>
           ) : (

@@ -169,7 +169,8 @@ export const OnDeviceAi: React.FC<{
   };
 
   return (
-    <div className="px-row-x py-row-y">
+    // 14px above and below, like the rest of Privacy's multi-line rows.
+    <div className="px-row-x py-3.5">
       <div className="flex items-start justify-between gap-6">
         <div className="min-w-0">
           <p className="text-ui">
