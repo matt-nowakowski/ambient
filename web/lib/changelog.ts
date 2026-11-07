@@ -11,6 +11,30 @@ export type Release = {
 /** Newest first. Add a new object at the top for each release. */
 export const changelog: Release[] = [
   {
+    version: "0.1.23",
+    date: "2026-11-07",
+    title: "Remembers what you just saw",
+    summary:
+      "Ambient can refer back to the window you looked at a moment ago, writes messages even when a name is misheard, and suggestion cards speak to you, not to themselves.",
+    sections: [
+      {
+        heading: "Fixed",
+        items: [
+          "\"Open the website we just looked at\" works: Ambient keeps the windows you looked at in the last few minutes (from Remember what you've seen when it's on) and opens the real link from that page instead of guessing.",
+          "Links on a page are read with where they go, so \"open their website\" uses the site's own address.",
+          "\"Tell Emmy, please, I'll call her tomorrow\" in a chat with Emilia is written to her (\"I'll call you tomorrow.\"), even when the name is misheard. A draft never comes back as your own words repeated.",
+          "Saying yes to a suggestion shows a card titled with what it offered, never Ambient's own instructions.",
+        ],
+      },
+      {
+        heading: "Improved",
+        items: [
+          "More room inside the Privacy cards: the lines under each setting and the Keep for choices no longer feel crammed.",
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.22",
     date: "2026-11-07",
     title: "Gets it right",
