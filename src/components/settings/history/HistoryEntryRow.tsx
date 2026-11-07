@@ -403,6 +403,24 @@ export const HistoryEntryRow: React.FC<HistoryEntryRowProps> = ({
           t("settings.history.transcriptionFailed")
         )}
       </p>
+      {/* What Ambient typed instead, when it differs: written or polished. */}
+      {!retrying &&
+        entry.post_processed_text &&
+        entry.post_processed_text.trim() !==
+          entry.transcription_text.trim() && (
+          <div className="mt-2 rounded-control bg-glass-press px-3 py-2">
+            <p className="text-meta text-ink-3">
+              {t(
+                entry.details?.write_decision === "written"
+                  ? "settings.history.detail.written"
+                  : "settings.history.detail.polished",
+              )}
+            </p>
+            <p className="mt-0.5 whitespace-pre-wrap text-small text-ink-2">
+              {entry.post_processed_text}
+            </p>
+          </div>
+        )}
       {detailRows.length > 0 && (
         <button
           type="button"

@@ -1597,11 +1597,21 @@ impl ShortcutAction for TranscribeAction {
                                 utils::hide_recording_overlay(&ah);
                                 set_tray_state(&ah, TrayIconState::Idle);
                                 let app = ah.clone();
+                                let hm_written = Arc::clone(&hm);
+                                let raw = request.raw.clone();
                                 tauri::async_runtime::spawn(async move {
                                     let ((), uses) = crate::agent::llm::traced(
                                         crate::agent::writing::write_now(app, request),
                                     )
                                     .await;
+                                    // History keeps what was written beside what was said.
+                                    if let (Some(id), Some(text)) =
+                                        (entry_id, crate::agent::writing::written_for(&raw))
+                                    {
+                                        if let Err(err) = hm_written.set_written_text(id, &text) {
+                                            error!("Failed to save the written text: {}", err);
+                                        }
+                                    }
                                     if !uses.is_empty() {
                                         finish_details(details, &uses);
                                     }

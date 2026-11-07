@@ -496,6 +496,20 @@ impl HistoryManager {
         self.announce_update(&conn, id)
     }
 
+    /// What Ambient wrote for this dictation (a message written for the
+    /// user), kept beside what they said so History shows both.
+    pub fn set_written_text(&self, id: i64, text: &str) -> Result<HistoryEntry> {
+        let conn = self.get_connection()?;
+        let updated = conn.execute(
+            "UPDATE transcription_history SET post_processed_text = ?1 WHERE id = ?2",
+            params![text, id],
+        )?;
+        if updated == 0 {
+            return Err(anyhow!("History entry {} not found", id));
+        }
+        self.announce_update(&conn, id)
+    }
+
     /// Replace an entry's details: after the paste (the total time), or
     /// once a draft is written (its engine and time).
     pub fn update_details(&self, id: i64, details: &EntryDetails) -> Result<HistoryEntry> {

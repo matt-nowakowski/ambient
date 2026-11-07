@@ -219,6 +219,15 @@ pub struct Inserted {
     pub at: Instant,
 }
 
+/// What was just written for `raw` (its words as said), for History. None
+/// when the last insertion was for something else or isn't recent.
+pub fn written_for(raw: &str) -> Option<String> {
+    let g = LAST.lock().ok()?;
+    let ins = g.as_ref()?;
+    (ins.raw.trim() == raw.trim() && ins.at.elapsed() < VOICE_WINDOW)
+        .then(|| ins.text.trim_end().to_string())
+}
+
 /// HUD ids of the chip and its notes.
 pub const PREFIX: &str = "writing-";
 /// How long after typing "use my words" by voice still applies.
